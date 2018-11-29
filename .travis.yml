@@ -5,6 +5,9 @@ dotnet: 2.1.500
   
 solution: Navtrack.sln
 
+script:
+ - dotnet restore
+
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
