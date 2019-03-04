@@ -1,4 +1,6 @@
 ﻿using System;
+using Navtrack.Library.DI;
+using Navtrack.Listener.Services;
 
 namespace Navtrack.Listener
 {
@@ -6,7 +8,13 @@ namespace Navtrack.Listener
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Bootstrapper bootstrapper = new Bootstrapper();
+            
+            bootstrapper.Initalise();
+
+            IListener listener = bootstrapper.GetService<IListener>();
+            
+            listener.Listen();
         }
     }
 }
