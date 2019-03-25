@@ -10,7 +10,7 @@ namespace Navtrack.Listener
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             
-            bootstrapper.Initalise();
+            bootstrapper.Initialise();
 
             IListener listener = bootstrapper.GetService<IListener>();
             

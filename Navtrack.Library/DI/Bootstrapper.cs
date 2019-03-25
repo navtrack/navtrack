@@ -10,7 +10,7 @@ namespace Navtrack.Library.DI
     {
         private ServiceProvider serviceProvider;
 
-        public void Initalise()
+        public void Initialise()
         {
             ServiceCollection serviceCollection = new ServiceCollection();
 
@@ -24,7 +24,7 @@ namespace Navtrack.Library.DI
             return serviceProvider.GetService<T>();
         }
 
-        private void RegisterTypes(ServiceCollection serviceCollection)
+        private static void RegisterTypes(IServiceCollection serviceCollection)
         {
             IEnumerable<Assembly> assemblies = GetAssemblies();
             
@@ -41,7 +41,7 @@ namespace Navtrack.Library.DI
             }
         }
 
-        private IEnumerable<Assembly> GetAssemblies()
+        private static IEnumerable<Assembly> GetAssemblies()
         {
             List<Assembly> assemblies = new List<Assembly>
             {
