@@ -1,2 +1,2 @@
 # navtrack
-<a href="https://gitlab.com/navtrack/navtrack/commits/master"><img alt="pipeline status" src="https://gitlab.com/navtrack/navtrack/badges/master/pipeline.svg" /></a>
+<a href="https://gitlab.com/navtrack/navtrack/pipelines" target="_blank"><img alt="pipeline status" src="https://gitlab.com/navtrack/navtrack/badges/master/pipeline.svg" /></a>
