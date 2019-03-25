@@ -1,2 +1,2 @@
 # navtrack
-[![Build Status](https://travis-ci.com/navtrack/navtrack.svg?branch=master)](https://travis-ci.com/navtrack/navtrack)
+![pipeline status](https://gitlab.com/navtrack/navtrack/badges/master/pipeline.svg)
