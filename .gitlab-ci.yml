@@ -1,1 +1,7 @@
 image: docker:latest
+
+build-api:
+  stage: build
+  script:
+  - cd Navtrack.Api
+  - docker build .
