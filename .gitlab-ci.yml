@@ -1,5 +1,8 @@
 image: docker:latest
 
+variables:
+  DOCKER_HOST: tcp://localhost:2375
+
 build-api:
   stage: build
   script:
