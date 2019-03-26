@@ -1,11 +1,15 @@
 image: docker:latest
 
 services:
-- docker:dind
+  - docker:dind
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p "$CI_REGISTRY_PASSWORD"
 
 build-api:
   stage: build
   script:
   - cd Navtrack.Api
   - docker info
-  - docker build .
+  - docker build . -t navtrack/api
+  - docker push navtrack/api
