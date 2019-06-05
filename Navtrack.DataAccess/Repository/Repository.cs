@@ -18,5 +18,10 @@ namespace Navtrack.DataAccess.Repository
         {
             return dbContext.Set<T>().AsNoTracking();
         }
+
+        public IUnitOfWork CreateUnitOfWork()
+        {
+            return new UnitOfWork(dbContext); // TODO
+        }
     }
 }
