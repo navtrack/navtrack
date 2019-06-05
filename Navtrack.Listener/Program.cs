@@ -1,20 +1,18 @@
-﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Navtrack.Library.DI;
-using Navtrack.Listener.Services;
 
 namespace Navtrack.Listener
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Bootstrapper bootstrapper = new Bootstrapper();
-            
-            bootstrapper.Initialise();
-
-            IListener listener = bootstrapper.GetService<IListener>();
-            
-            listener.Listen();
+            await CreateHostBuilder(args).Build().RunAsync();
         }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices(Bootstrapper.ConfigureServices);
     }
 }

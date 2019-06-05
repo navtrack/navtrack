@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Navtrack.Library.DI
 {
@@ -8,7 +9,14 @@ namespace Navtrack.Library.DI
         {
             Type = type;
         }
+        
+        public ServiceAttribute(Type type, ServiceLifetime serviceLifetime)
+        {
+            Type = type;
+            ServiceLifetime = serviceLifetime;
+        }
 
         public Type Type { get; }
+        public ServiceLifetime ServiceLifetime { get; }
     }
 }

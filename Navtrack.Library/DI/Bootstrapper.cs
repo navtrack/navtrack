@@ -6,25 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Navtrack.Library.DI
 {
-    public class Bootstrapper
+    public static class Bootstrapper
     {
-        private ServiceProvider serviceProvider;
-
-        public void Initialise()
-        {
-            ServiceCollection serviceCollection = new ServiceCollection();
-
-            RegisterTypes(serviceCollection);
-
-            serviceProvider = serviceCollection.BuildServiceProvider();
-        }
-
-        public T GetService<T>()
-        {
-            return serviceProvider.GetService<T>();
-        }
-
-        private static void RegisterTypes(IServiceCollection serviceCollection)
+        public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             IEnumerable<Assembly> assemblies = GetAssemblies();
             
@@ -37,18 +21,17 @@ namespace Navtrack.Library.DI
 
             foreach (KeyValuePair<Type, ServiceAttribute> serviceAttribute in serviceAttributes)
             {
-                serviceCollection.AddScoped(serviceAttribute.Value.Type, serviceAttribute.Key);
+                serviceCollection.Add(new ServiceDescriptor(serviceAttribute.Value.Type, serviceAttribute.Key,
+                    serviceAttribute.Value.ServiceLifetime));
             }
         }
 
         private static IEnumerable<Assembly> GetAssemblies()
         {
-            List<Assembly> assemblies = new List<Assembly>
-            {
-                Assembly.GetEntryAssembly()
-            };
-
-            assemblies.AddRange(Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(Assembly.Load));
+            List<Assembly> assemblies =
+                Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
+            
+            assemblies.Add(Assembly.GetEntryAssembly());
 
             return assemblies;
         }
