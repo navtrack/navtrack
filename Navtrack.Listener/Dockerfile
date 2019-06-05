@@ -1,7 +1,7 @@
-FROM microsoft/dotnet:2.2-runtime AS base
+FROM microsoft/dotnet:3.0-runtime AS base
 WORKDIR /app
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM microsoft/dotnet:3.0-sdk AS build
 WORKDIR /src
 COPY ["Navtrack.Listener/Navtrack.Listener.csproj", "Navtrack.Listener/"]
 COPY ["Navtrack.Library/Navtrack.Library.csproj", "Navtrack.Library/"]

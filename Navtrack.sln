@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Library", "Navtrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "Navtrack.Listener\Navtrack.Listener.csproj", "{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,9 +1,9 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
+FROM microsoft/dotnet:3.0-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM microsoft/dotnet:3.0-sdk AS build
 WORKDIR /src
 COPY ["Navtrack.Api.csproj", "Navtrack.Api/"]
 RUN dotnet restore "Navtrack.Api/Navtrack.Api.csproj"
