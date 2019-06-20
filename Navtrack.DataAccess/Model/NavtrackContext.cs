@@ -20,7 +20,7 @@ namespace Navtrack.DataAccess.Model
                 .IsRequired();
             
             modelBuilder.Entity<Location>()
-                .Property(x => x.Date)
+                .Property(x => x.DateTime)
                 .IsRequired();
         }
     }

@@ -7,6 +7,6 @@ namespace Navtrack.DataAccess.Model
         public int Id { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }
