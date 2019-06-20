@@ -5,9 +5,11 @@ services:
     image: navtrack/api
     ports:
       - 1234:1234
+    restart: always
 
   listener:
     image: navtrack/listener
     ports:
       - 80:80
       - 443:443
+    restart: always
