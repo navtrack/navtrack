@@ -1,15 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
-        <UserSecretsId>dotnet-Navtrack.Listener2-BB04863F-3137-4A63-807D-9488DA63419C</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview6.19304.6" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview6.19304.6" />
+      <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
     </ItemGroup>
 </Project>

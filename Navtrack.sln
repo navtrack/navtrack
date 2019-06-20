@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "Navtrack.Api\Navtrack.Api.csproj", "{59F83EC7-179D-44A5-BC8E-29F4DE194D43}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Library", "Navtrack.Library\Navtrack.Library.csproj", "{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "Navtrack.Listener\Navtrack.Listener.csproj", "{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "Navtrack.Api\Navtrack.Api.csproj", "{B63705DB-939D-4885-A776-C1E995F6706D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{59F83EC7-179D-44A5-BC8E-29F4DE194D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59F83EC7-179D-44A5-BC8E-29F4DE194D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59F83EC7-179D-44A5-BC8E-29F4DE194D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59F83EC7-179D-44A5-BC8E-29F4DE194D43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14EE78E0-CF19-4329-8C70-A46CCC4F45F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B63705DB-939D-4885-A776-C1E995F6706D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B63705DB-939D-4885-A776-C1E995F6706D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B63705DB-939D-4885-A776-C1E995F6706D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B63705DB-939D-4885-A776-C1E995F6706D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
