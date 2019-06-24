@@ -22,6 +22,6 @@ build-listener:
 deploy:
   stage: deploy
   before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - 'which ssh-agent || ( apk update -y && apk add openssh-client -y )'
   script:
   - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && docker-compose pull && docker-compose up -d"
