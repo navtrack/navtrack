@@ -18,3 +18,8 @@ build-listener:
   script:
   - docker build . -f Navtrack.Listener/Dockerfile -t navtrack/listener
   - docker push navtrack/listener
+
+deploy:
+  stage: deploy
+  script:
+  - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && docker-compose pull && docker-compose up -d"
