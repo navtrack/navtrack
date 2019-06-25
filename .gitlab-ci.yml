@@ -22,12 +22,12 @@ build-listener:
 deploy:
   stage: deploy
   before_script:
-  - 'which ssh-agent || ( apk update -y && apk add openssh-client -y )'
+  - 'which ssh-agent || ( apk update && apk add openssh-client )'
   script:
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - echo "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
   - eval $(ssh-agent -s)
-  - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null 2>&1
   - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && docker-compose pull && docker-compose up -d"
