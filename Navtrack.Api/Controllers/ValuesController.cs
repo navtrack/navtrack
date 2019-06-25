@@ -14,7 +14,7 @@ namespace Navtrack.Api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] {"value1", "value2"};
+            return new[] {"value1", "value2", "value3"};
         }
 
         // GET api/values/5
