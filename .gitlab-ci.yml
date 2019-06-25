@@ -24,5 +24,6 @@ deploy:
   before_script:
   - 'which ssh-agent || ( apk update -y && apk add openssh-client -y )'
   script:
+  - eval $(ssh-agent -s)
   - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && docker-compose pull && docker-compose up -d"
