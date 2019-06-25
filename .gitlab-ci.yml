@@ -24,6 +24,8 @@ deploy:
   before_script:
   - 'which ssh-agent || ( apk update -y && apk add openssh-client -y )'
   script:
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
   - echo "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
   - eval $(ssh-agent -s)
