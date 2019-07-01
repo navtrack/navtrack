@@ -5,8 +5,15 @@ namespace Navtrack.DataAccess.Model
     public class Location
     {
         public int Id { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
         public DateTime DateTime { get; set; }
+        public int Speed { get; set; }
+        public int Heading { get; set; }
+        public int Altitude { get; set; }
+        public Device Device { get; set; }
+        public int DeviceId { get; set; }
+        public Asset Asset { get; set; }
+        public int AssetId { get; set; }
     }
 }
