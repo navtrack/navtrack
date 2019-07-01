@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -8,79 +9,55 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Services.Protocols;
+using Navtrack.Listener.Services.Protocols.Meitrack;
 
 namespace Navtrack.Listener.Services
 {
     [Service(typeof(IHostedService), ServiceLifetime.Singleton)]
     public class ListenerHostedService : BackgroundService
     {
-         private readonly ILogger<ListenerHostedService> logger;
-        private TcpListener listener;
+        private readonly IEnumerable<IProtocol> protocols;
+        
+        private readonly ILogger<ListenerHostedService> logger;
+        private readonly IMeitrackLocationParser meitrackLocationParser;
 
-        public ListenerHostedService(ILogger<ListenerHostedService> logger)
+        public ListenerHostedService(ILogger<ListenerHostedService> logger,
+            IMeitrackLocationParser meitrackLocationParser, IEnumerable<IProtocol> protocols)
         {
             this.logger = logger;
+            this.meitrackLocationParser = meitrackLocationParser;
+            this.protocols = protocols;
         }
-
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            try
+            foreach (IProtocol protocol in protocols)
             {
-                listener = new TcpListener(IPAddress.Any, 1234);
-
-                listener.Start();
-
-                while (true)
+                TcpListener listener = null;
+                
+                try
                 {
-                    TcpClient client = await listener.AcceptTcpClientAsync();
+                    listener = new TcpListener(IPAddress.Any, 12345);
 
-                    HandleClient(client, stoppingToken);
-                }
-            }
-            catch (Exception exception)
-            {
-                logger.Log(LogLevel.Critical, exception, $"{nameof(ListenerHostedService)}");
-            }
-            finally
-            {
-                listener.Stop();
-            }
-        }
+                    listener.Start();
 
-
-        private async Task HandleClient(TcpClient client, CancellationToken stoppingToken)
-        {
-            await using (NetworkStream networkStream = client.GetStream())
-            using (StreamReader streamReader = new StreamReader(networkStream))
-            await using (StreamWriter streamWriter = new StreamWriter(networkStream))
-            {
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    string line = await streamReader.ReadLineAsync();
-
-                    if (!string.IsNullOrEmpty(line))
+                    while (true)
                     {
-                        Console.WriteLine(line);
+                        TcpClient client = await listener.AcceptTcpClientAsync();
 
-                        await streamWriter.WriteLineAsync(line);
-                        await streamWriter.FlushAsync();
-                    }
-                    else
-                    {
-                        break;
+                        protocol.HandleClient(client, stoppingToken);
                     }
                 }
-
-                await streamWriter.WriteLineAsync("closing");
-                await streamWriter.FlushAsync();
-
-                streamWriter.Close();
-                streamReader.Close();
-                networkStream.Close();
+                catch (Exception exception)
+                {
+                    logger.Log(LogLevel.Critical, exception, $"{nameof(ListenerHostedService)}");
+                }
+                finally
+                {
+                    listener?.Stop();
+                }
             }
-
-            client.Close();
         }
     }
 }
