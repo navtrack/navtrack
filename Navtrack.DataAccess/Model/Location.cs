@@ -13,7 +13,7 @@ namespace Navtrack.DataAccess.Model
         public int Altitude { get; set; }
         public Device Device { get; set; }
         public int DeviceId { get; set; }
-        public Asset Asset { get; set; }
-        public int AssetId { get; set; }
+        public Object Object { get; set; }
+        public int ObjectId { get; set; }
     }
 }

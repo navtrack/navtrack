@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Services.Protocols;
-using Navtrack.Listener.Services.Protocols.Meitrack;
 
 namespace Navtrack.Listener.Services
 {
@@ -18,15 +16,11 @@ namespace Navtrack.Listener.Services
     public class ListenerHostedService : BackgroundService
     {
         private readonly IEnumerable<IProtocol> protocols;
-        
         private readonly ILogger<ListenerHostedService> logger;
-        private readonly IMeitrackLocationParser meitrackLocationParser;
 
-        public ListenerHostedService(ILogger<ListenerHostedService> logger,
-            IMeitrackLocationParser meitrackLocationParser, IEnumerable<IProtocol> protocols)
+        public ListenerHostedService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols)
         {
             this.logger = logger;
-            this.meitrackLocationParser = meitrackLocationParser;
             this.protocols = protocols;
         }
 

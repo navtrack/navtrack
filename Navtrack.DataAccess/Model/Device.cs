@@ -12,5 +12,6 @@ namespace Navtrack.DataAccess.Model
         public int Id { get; set; }
         public string IMEI { get; set; }
         public ICollection<Location> Locations { get; set; }
+        public Object Object { get; set; }
     }
 }

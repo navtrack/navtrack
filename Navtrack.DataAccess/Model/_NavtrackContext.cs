@@ -8,6 +8,7 @@ namespace Navtrack.DataAccess.Model
         {
         }
 
+        public DbSet<Object> Objects { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Device> Devices { get; set; }
 
@@ -16,47 +17,56 @@ namespace Navtrack.DataAccess.Model
             modelBuilder.Entity<Location>(entity =>
             {
                 entity.HasKey(x => x.Id);
-
-                entity.Property(x => x.Latitude)
-                    .IsRequired();
-            
-                entity.Property(x => x.Longitude)
-                    .IsRequired();
-                
-                entity.Property(x => x.DateTime)
-                    .IsRequired();
+                entity.Property(x => x.Latitude).IsRequired();
+                entity.Property(x => x.Longitude).IsRequired();
+                entity.Property(x => x.DateTime).IsRequired();
+                entity.Property(x => x.Speed).IsRequired();
+                entity.Property(x => x.Heading).IsRequired();
+                entity.Property(x => x.Altitude).IsRequired();
+                entity.Property(x => x.DeviceId).IsRequired();
 
                 entity.HasOne(x => x.Device)
                     .WithMany(x => x.Locations)
-                    .HasForeignKey(x => x.DeviceId);
+                    .HasForeignKey(x => x.DeviceId)
+                    .OnDelete(DeleteBehavior.NoAction);
                 
-                entity.HasOne(x => x.Asset)
+                entity.HasOne(x => x.Object)
                     .WithMany(x => x.Locations)
-                    .HasForeignKey(x => x.AssetId);
+                    .HasForeignKey(x => x.ObjectId)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
             
             modelBuilder.Entity<Device>(entity =>
             {
                 entity.HasKey(x => x.Id);
-
-                entity.Property(x => x.IMEI)
-                    .IsRequired();
+                entity.Property(x => x.IMEI).HasMaxLength(15).IsRequired();
 
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Device)
-                    .HasForeignKey(x => x.DeviceId);
+                    .HasForeignKey(x => x.DeviceId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Object)
+                    .WithOne(x => x.Device)
+                    .HasForeignKey<Object>(x => x.DeviceId)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
             
-            modelBuilder.Entity<Asset>(entity =>
+            modelBuilder.Entity<Object>(entity =>
             {
                 entity.HasKey(x => x.Id);
-
-                entity.Property(x => x.Name)
-                    .IsRequired();
+                entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                entity.Property(x => x.DeviceId).IsRequired();
 
                 entity.HasMany(x => x.Locations)
-                    .WithOne(x => x.Asset)
-                    .HasForeignKey(x => x.AssetId);
+                    .WithOne(x => x.Object)
+                    .HasForeignKey(x => x.ObjectId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Device)
+                    .WithOne(x => x.Object)
+                    .HasForeignKey<Object>(x => x.DeviceId)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
         }
     }

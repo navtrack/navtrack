@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Repository;
+using Navtrack.Library.DI;
 
-namespace Navtrack.DataAccess.Migrations
+namespace Navtrack.DataAccess.Model
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
+    [Service(typeof(IDbContextFactory))]
+    public class NavtrackDbContextFactory : IDbContextFactory
     {
-        public NavtrackContext CreateDbContext(string[] args)
+        public DbContext CreateDbContext()
         {
             DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
                 new DbContextOptionsBuilder<NavtrackContext>();

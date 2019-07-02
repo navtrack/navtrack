@@ -38,7 +38,8 @@ namespace Navtrack.Library.Services
 
         public TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
         {
-            IMapper<TSource, TDestination> mapper = serviceProvider.GetService<IMapper<TSource, TDestination>>();
+            IMapper<TSource, TDestination>
+                mapper = serviceProvider.GetRequiredService<IMapper<TSource, TDestination>>();
 
             return mapper.Map(source, destination);
         }
@@ -47,7 +48,7 @@ namespace Navtrack.Library.Services
             TDestination destination)
         {
             IMapper<TSource1, TSource2, TDestination> mapper =
-                serviceProvider.GetService<IMapper<TSource1, TSource2, TDestination>>();
+                serviceProvider.GetRequiredService<IMapper<TSource1, TSource2, TDestination>>();
 
             return mapper.Map(source1, source2, destination);
         }
@@ -56,7 +57,7 @@ namespace Navtrack.Library.Services
             TSource3 source3, TDestination destination)
         {
             IMapper<TSource1, TSource2, TSource3, TDestination> mapper =
-                serviceProvider.GetService<IMapper<TSource1, TSource2, TSource3, TDestination>>();
+                serviceProvider.GetRequiredService<IMapper<TSource1, TSource2, TSource3, TDestination>>();
 
             return mapper.Map(source1, source2, source3, destination);
         }

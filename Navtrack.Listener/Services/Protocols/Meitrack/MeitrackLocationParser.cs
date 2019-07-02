@@ -21,8 +21,8 @@ namespace Navtrack.Listener.Services.Protocols.Meitrack
                     {
                         Device = new Device
                         {
-                            IMEI = splitInput[1],
-                            Voltage = Utility.Hex2Volts(splitInput[4])
+                            IMEI = splitInput[1]
+                            //Voltage = Utility.Hex2Volts(splitInput[4]) TODO
                         },
                         Latitude = Convert.ToDecimal(splitInput[4], CultureInfo.InvariantCulture),
                         Longitude = Convert.ToDecimal(splitInput[5], CultureInfo.InvariantCulture),

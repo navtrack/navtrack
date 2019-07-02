@@ -7,11 +7,14 @@ namespace Navtrack.DataAccess.Repository
     [Service(typeof(IRepository))]
     public class Repository : IRepository
     {
+        private readonly IDbContextFactory dbContextFactory;
         private readonly DbContext dbContext;
 
-        public Repository(DbContext dbContext)
+        public Repository(IDbContextFactory dbContextFactory)
         {
-            this.dbContext = dbContext;
+            this.dbContextFactory = dbContextFactory;
+            
+            dbContext = dbContextFactory.CreateDbContext();
         }
 
         public IQueryable<T> GetEntities<T>() where T : class
@@ -21,7 +24,7 @@ namespace Navtrack.DataAccess.Repository
 
         public IUnitOfWork CreateUnitOfWork()
         {
-            return new UnitOfWork(dbContext); // TODO
+            return new UnitOfWork(dbContextFactory.CreateDbContext());
         }
     }
 }
