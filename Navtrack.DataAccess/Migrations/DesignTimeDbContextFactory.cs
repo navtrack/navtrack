@@ -1,21 +1,29 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using Navtrack.DataAccess.Model;
-using Navtrack.DataAccess.Repository;
 
 namespace Navtrack.DataAccess.Migrations
 {
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
     {
-        private readonly IDbContextFactory dbContextFactory;
+        private readonly IConfiguration configuration;
 
-        public DesignTimeDbContextFactory(IDbContextFactory dbContextFactory)
+        public DesignTimeDbContextFactory(IConfiguration configuration)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.configuration = configuration;
         }
 
         public NavtrackContext CreateDbContext(string[] args)
         {
-            return (NavtrackContext) dbContextFactory.CreateDbContext();
+            DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
+                new DbContextOptionsBuilder<NavtrackContext>();
+
+            string connectionString = configuration.GetConnectionString("navtrack");
+            
+            optionsBuilder.UseSqlServer(connectionString);
+
+            return new NavtrackContext(optionsBuilder.Options);
         }
     }
 }
