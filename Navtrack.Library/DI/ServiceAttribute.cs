@@ -8,6 +8,7 @@ namespace Navtrack.Library.DI
         public ServiceAttribute(Type type)
         {
             Type = type;
+            ServiceLifetime = ServiceLifetime.Scoped;
         }
         
         public ServiceAttribute(Type type, ServiceLifetime serviceLifetime)

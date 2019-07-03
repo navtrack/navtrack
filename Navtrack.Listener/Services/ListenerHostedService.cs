@@ -15,8 +15,8 @@ namespace Navtrack.Listener.Services
     [Service(typeof(IHostedService), ServiceLifetime.Singleton)]
     public class ListenerHostedService : BackgroundService
     {
-        private readonly IEnumerable<IProtocol> protocols;
         private readonly ILogger<ListenerHostedService> logger;
+        private readonly IEnumerable<IProtocol> protocols;
 
         public ListenerHostedService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols)
         {

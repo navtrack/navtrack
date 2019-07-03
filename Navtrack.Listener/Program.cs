@@ -8,7 +8,9 @@ namespace Navtrack.Listener
     {
         public static async Task Main(string[] args)
         {
-            await CreateHostBuilder(args).Build().RunAsync();
+            IHost host = CreateHostBuilder(args).Build();
+
+            await host.RunAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
