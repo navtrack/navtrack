@@ -7,6 +7,8 @@ services:
       - 80:80
       - 443:443
     restart: always
+    environment:
+      - sqlconnstr_navtrack: ${sqlconnstr_navtrack}
 
   listener:
     image: navtrack/listener

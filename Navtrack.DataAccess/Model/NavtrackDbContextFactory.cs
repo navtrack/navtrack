@@ -20,7 +20,9 @@ namespace Navtrack.DataAccess.Model
             DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
                 new DbContextOptionsBuilder<NavtrackContext>();
 
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("navtrack"));
+            string connectionString = configuration.GetConnectionString("navtrack");
+            
+            optionsBuilder.UseSqlServer(connectionString);
 
             return new NavtrackContext(optionsBuilder.Options);
         }
