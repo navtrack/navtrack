@@ -13,3 +13,5 @@ services:
     ports:
       - 6801:6801
     restart: always
+    environment:
+      - sqlconnstr_navtrack: ${sqlconnstr_navtrack}
