@@ -1,5 +1,8 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Listener
@@ -9,6 +12,12 @@ namespace Navtrack.Listener
         public static async Task Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
+
+            await host.Services
+                .GetService<IDbContextFactory>()
+                .CreateDbContext()
+                .Database
+                .MigrateAsync();
 
             await host.RunAsync();
         }
