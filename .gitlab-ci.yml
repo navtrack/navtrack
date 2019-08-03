@@ -33,4 +33,5 @@ deploy:
     - chmod 644 ~/.ssh/known_hosts
     - eval $(ssh-agent -s)
     - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null 2>&1
-    - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && wget https://raw.githubusercontent.com/navtrack/navtrack/master/docker-compose.yml -O docker-compose.yml && docker-compose pull && docker-compose up -d -e SQLCONNSTR_NAVTRACK"
+    - export SQLCONNSTR_NAVTRACK=${SQLCONNSTR_NAVTRACK}
+    - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && wget https://raw.githubusercontent.com/navtrack/navtrack/master/docker-compose.yml -O docker-compose.yml && docker-compose pull && docker-compose up -d"

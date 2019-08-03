@@ -8,7 +8,7 @@ services:
       - 443:443
     restart: always
     environment:
-      - SQLCONNSTR_NAVTRACK
+      - 'SQLCONNSTR_NAVTRACK=${SQLCONNSTR_NAVTRACK}'
 
   listener:
     image: navtrack/listener
@@ -16,4 +16,4 @@ services:
       - 6801:6801
     restart: always
     environment:
-      - SQLCONNSTR_NAVTRACK
+      - 'SQLCONNSTR_NAVTRACK=${SQLCONNSTR_NAVTRACK}'
