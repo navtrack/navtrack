@@ -5,6 +5,8 @@ EXPOSE 6801
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
 COPY ["Navtrack.Listener/Navtrack.Listener.csproj", "Navtrack.Listener/"]
+COPY ["Navtrack.Common/Navtrack.Common.csproj", "Navtrack.Common/"]
+COPY ["Navtrack.DataAccess/Navtrack.DataAccess.csproj", "Navtrack.DataAccess/"]
 COPY ["Navtrack.Library/Navtrack.Library.csproj", "Navtrack.Library/"]
 RUN dotnet restore "Navtrack.Listener/Navtrack.Listener.csproj"
 COPY . .

@@ -13,7 +13,7 @@ build-api:
   stage: build
   script:
     - cd Navtrack.Api
-    - docker build . -t navtrack/api
+    - docker build . -f Navtrack.Api/Dockerfile -t navtrack/api
     - docker push navtrack/api
 
 build-listener:

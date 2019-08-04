@@ -5,9 +5,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
-COPY ["Navtrack.Api.csproj", "Navtrack.Api/"]
+COPY ["Navtrack.Api/Navtrack.Api.csproj", "Navtrack.Api/"]
+COPY ["Navtrack.Common/Navtrack.Common.csproj", "Navtrack.Common/"]
+COPY ["Navtrack.DataAccess/Navtrack.DataAccess.csproj", "Navtrack.DataAccess/"]
+COPY ["Navtrack.Library/Navtrack.Library.csproj", "Navtrack.Library/"]
 RUN dotnet restore "Navtrack.Api/Navtrack.Api.csproj"
-COPY . Navtrack.Api/
+COPY . .
 WORKDIR /src/Navtrack.Api
 RUN dotnet build "Navtrack.Api.csproj" -c Release -o /app
 
