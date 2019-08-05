@@ -15,5 +15,8 @@ namespace Navtrack.DataAccess.Model
         public int DeviceId { get; set; }
         public Object Object { get; set; }
         public int ObjectId { get; set; }
+        public short Satellites { get; set; }
+        public double HDOP { get; set; }
+        public string ProtocolData { get; set; }
     }
 }

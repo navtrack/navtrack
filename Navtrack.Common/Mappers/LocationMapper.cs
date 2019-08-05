@@ -18,6 +18,9 @@ namespace Navtrack.Common.Mappers
             destination.Altitude = source1.Altitude;
             destination.DeviceId = source2.DeviceId;
             destination.ObjectId = source2.Id;
+            destination.Satellites = source1.Satellites;
+            destination.HDOP = source1.HDOP;
+            destination.ProtocolData = source1.ProtocolData;
 
             return destination;
         }

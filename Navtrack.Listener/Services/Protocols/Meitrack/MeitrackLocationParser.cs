@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using Navtrack.Common.Model;
 using Navtrack.Library.DI;
 
@@ -33,7 +34,14 @@ namespace Navtrack.Listener.Services.Protocols.Meitrack
                         HDOP = Convert.ToDouble(splitInput[12]),
                         Altitude = Convert.ToInt32(splitInput[13]),
                         Odometer = Convert.ToInt32(splitInput[14]),
-                        Message = input
+                        Message = input,
+//                        ProtocolData = JsonSerializer.Serialize(new MeitrackData
+//                        {
+//                            Journey = Convert.ToInt32(splitInput[14]),
+//                            Message = input,
+//                            Runtime =  Convert.ToInt32(splitInput[15]),
+//                            BaseId = splitInput[16],
+//                        })
                     };
 
                     return location;
@@ -82,5 +90,13 @@ namespace Navtrack.Listener.Services.Protocols.Meitrack
 
         private static int GetChecksumPosition(string input) =>
             input.LastIndexOf("*", StringComparison.InvariantCultureIgnoreCase) + 1;
+    }
+
+    public class MeitrackData
+    {
+        public int Journey { get; set; }
+        public string Message { get; set; }
+        public int Runtime { get; set; }
+        public string BaseId { get; set; }
     }
 }
