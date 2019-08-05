@@ -7,13 +7,13 @@ services:
       - 80:80
       - 443:443
     restart: always
-    environment:
-      - 'SQLCONNSTR_NAVTRACK=${SQLCONNSTR_NAVTRACK}'
+    env_file:
+      - .env_navtrack
 
   listener:
     image: navtrack/listener
     ports:
       - 6801:6801
     restart: always
-    environment:
-      - 'SQLCONNSTR_NAVTRACK=${SQLCONNSTR_NAVTRACK}'
+    env_file:
+      - .env_navtrack
