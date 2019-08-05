@@ -32,7 +32,7 @@ namespace Navtrack.Listener.Services
                 
                 try
                 {
-                    listener = new TcpListener(IPAddress.Any, 12345);
+                    listener = new TcpListener(IPAddress.Any, protocol.Port);
 
                     listener.Start();
 
