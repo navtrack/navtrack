@@ -9,11 +9,6 @@ variables:
 before_script:
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
 
-test:
-  stage: test
-  script:
-    - docker build . -f Navtrack.Listener.Tests/Dockerfile
-
 build-api:
   stage: build
   script:
@@ -25,6 +20,11 @@ build-listener:
   script:
     - docker build . -f Navtrack.Listener/Dockerfile -t navtrack/listener
     - docker push navtrack/listener
+
+test-listener:
+  stage: test
+  script:
+    - docker build . -f Navtrack.Listener.Tests/Dockerfile
 
 deploy:
   stage: deploy
