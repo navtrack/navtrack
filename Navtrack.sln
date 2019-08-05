@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "Navtra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Common", "Navtrack.Common\Navtrack.Common.csproj", "{17363B48-67D0-4183-AE79-BC083AD7DEA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.Tests", "Navtrack.Listener.Tests\Navtrack.Listener.Tests.csproj", "{703CB45E-01DA-4CF3-8114-E47C20455A83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{17363B48-67D0-4183-AE79-BC083AD7DEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17363B48-67D0-4183-AE79-BC083AD7DEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17363B48-67D0-4183-AE79-BC083AD7DEA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{703CB45E-01DA-4CF3-8114-E47C20455A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{703CB45E-01DA-4CF3-8114-E47C20455A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{703CB45E-01DA-4CF3-8114-E47C20455A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{703CB45E-01DA-4CF3-8114-E47C20455A83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
