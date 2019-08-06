@@ -14,6 +14,7 @@ services:
     image: navtrack/listener
     ports:
       - 6801:6801
+      - 6802:6802
     restart: always
     env_file:
       - .env_navtrack
