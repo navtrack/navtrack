@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.Library.DI;
@@ -17,6 +18,11 @@ namespace Navtrack.DataAccess.Repository
         public void Add<T>(T entity) where T : class
         {
             dbContext.Add(entity);
+        }
+
+        public void AddRange<T>(IEnumerable<T> locations) where T : class
+        {
+            dbContext.AddRange(locations);
         }
 
         public Task SaveChanges()

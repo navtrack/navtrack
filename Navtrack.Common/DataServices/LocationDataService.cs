@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
@@ -20,6 +21,15 @@ namespace Navtrack.Common.DataServices
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             
             unitOfWork.Add(location);
+
+            await unitOfWork.SaveChanges();
+        }
+
+        public async Task AddRange(IEnumerable<Location> locations)
+        {
+            using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
+            
+            unitOfWork.AddRange(locations);
 
             await unitOfWork.SaveChanges();
         }

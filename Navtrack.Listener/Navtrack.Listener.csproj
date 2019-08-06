@@ -13,4 +13,8 @@
       <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
       <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Protocols\Teltonika" />
+    </ItemGroup>
 </Project>
