@@ -19,14 +19,14 @@ before_script:
 build-api:
   stage: build
   script:
-    - docker build . -f Navtrack.Api/Dockerfile -t egistry.gitlab.com/navtrack/navtrack/api:build
-    - docker push registry.gitlab.com/navtrack/navtrack/api:build
+    - docker build . -f Navtrack.Api/Dockerfile -t registry.gitlab.com/navtrack/api:build
+    - docker push registry.gitlab.com/navtrack/api:build
 
 build-listener:
   stage: build
   script:
-    - docker build . -f Navtrack.Listener/Dockerfile -t registry.gitlab.com/navtrack/navtrack/listener:build
-    - docker push registry.gitlab.com/navtrack/navtrack/listener:build
+    - docker build . -f Navtrack.Listener/Dockerfile -t registry.gitlab.com/navtrack/listener:build
+    - docker push registry.gitlab.com/navtrack/listener:build
 
 test-listener:
   stage: test
@@ -38,18 +38,18 @@ publish-api:
   dependencies:
     - build-api
   script:
-    - docker pull registry.gitlab.com/navtrack/navtrack/api:build
-    - docker tag registry.gitlab.com/navtrack/navtrack/api:build navtrack/api:latest
-    - docker push docker.io/navtrack/api:latest
+    - docker pull registry.gitlab.com/navtrack/api:build
+    - docker tag registry.gitlab.com/navtrack/api:build navtrack/api:latest
+    - docker push navtrack/api:latest
 
 publish-listener:
   stage: publish
   dependencies:
     - build-listener
   script:
-    - docker pull registry.gitlab.com/navtrack/navtrack/listener:build
-    - docker tag registry.gitlab.com/navtrack/navtrack/listener:build navtrack/listener:latest
-    - docker push docker.io/navtrack/listener:latest
+    - docker pull registry.gitlab.com/navtrack/listener:build
+    - docker tag registry.gitlab.com/navtrack/listener:build navtrack/listener:latest
+    - docker push navtrack/listener:latest
 
 deploy:
   stage: deploy
