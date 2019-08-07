@@ -33,14 +33,14 @@ test-listener:
 publish-api:
   stage: publish
   dependencies:
-    - build:build-api
+    - build-api
   script:
     - docker push navtrack/api
 
 publish-listener:
   stage: publish
   dependencies:
-    - build:build-listener
+    - build-listener
   script:
     - docker push navtrack/listener
 
