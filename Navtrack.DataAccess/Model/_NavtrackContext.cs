@@ -17,8 +17,8 @@ namespace Navtrack.DataAccess.Model
             modelBuilder.Entity<Location>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Latitude).IsRequired();
-                entity.Property(x => x.Longitude).IsRequired();
+                entity.Property(x => x.Latitude).HasColumnType("decimal(9, 6)").IsRequired();
+                entity.Property(x => x.Longitude).HasColumnType("decimal(9, 6)").IsRequired();
                 entity.Property(x => x.DateTime).IsRequired();
                 entity.Property(x => x.Speed).IsRequired();
                 entity.Property(x => x.Heading).IsRequired();

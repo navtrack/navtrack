@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations
 {
     [DbContext(typeof(NavtrackContext))]
-    partial class NavtrackContextModelSnapshot : ModelSnapshot
+    [Migration("20190807112342_FixedLatLongColumnTypes")]
+    partial class FixedLatLongColumnTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
