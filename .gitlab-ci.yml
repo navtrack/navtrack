@@ -6,6 +6,12 @@ services:
 variables:
   DOCKER_TLS_CERTDIR: ""
 
+stages:
+  - build
+  - test
+  - publish
+  - deploy
+
 before_script:
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
 
@@ -13,18 +19,26 @@ build-api:
   stage: build
   script:
     - docker build . -f Navtrack.Api/Dockerfile -t navtrack/api
-    - docker push navtrack/api
 
 build-listener:
   stage: build
   script:
     - docker build . -f Navtrack.Listener/Dockerfile -t navtrack/listener
-    - docker push navtrack/listener
 
 test-listener:
   stage: test
   script:
     - docker build . -f Navtrack.Listener.Tests/Dockerfile
+
+publish-api:
+  stage: publish
+  script:
+    - docker push navtrack/api
+
+publish-listener:
+  stage: publish
+  script:
+    - docker push navtrack/listener
 
 deploy:
   stage: deploy
