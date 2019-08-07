@@ -10,9 +10,9 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
     [Service(typeof(ITeltonikaLocationParser))]
     public class TeltonikaLocationParser : ITeltonikaLocationParser
     {
-        public IEnumerable<Location> Convert(byte[] input, string imei)
+        public List<LocationHolder> Convert(byte[] input, string imei)
         {
-            List<Location> locations = new List<Location>();
+            List<LocationHolder> locations = new List<LocationHolder>();
 
             int? locationsIndex = GetLocationsReceivedIndex(input);
 
@@ -24,12 +24,12 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
 
                 for (int i = 0; i < locationsReceived; i++)
                 {
-                    Location location = GetLocation(input, imei, ref lastIndex);
+                    LocationHolder location = GetLocation(input, imei, ref lastIndex);
 
                     locations.Add(location);
                 }
             }
-            
+
             return locations;
         }
 
@@ -47,7 +47,7 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
             return null;
         }
 
-        private static Location GetLocation(byte[] input, string imei, ref int lastIndex)
+        private static LocationHolder GetLocation(byte[] input, string imei, ref int lastIndex)
         {
             Location location = new Location
             {
@@ -96,8 +96,10 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
             // NUMBER of events
             lastIndex++; // skip over the number of events
 
+            List<Event> events = new List<Event>();
+
             // 1 BYTE VALUE EVENTS
-            GetEvents(input, ref lastIndex, 1); // skip 1 byte events
+            events.AddRange(GetEvents(input, ref lastIndex, 1)); // skip 1 byte events
 
             // 2 BYTES VALUE EVENTS
             GetEvents(input, ref lastIndex, 2); // skip 2 byte events
@@ -108,9 +110,71 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
             // 8 BYTES VALUE EVENTS
             GetEvents(input, ref lastIndex, 8); // skip 8 byte events
 
-            location.ProtocolData = JsonSerializer.Serialize((input.Skip(startIndex).Take(lastIndex - startIndex)));
+            TeltonikaData teltonikaData = new TeltonikaData
+            {
+                Movement = GetMovement(events),
+                Voltage = GetVoltage(events),
+                Odometer = GetOdometer(events),
+                CurrentProfile = GetCurrentProfile(events),
+                GsmSignal = GetGsmSignal(events),
+                MobileCountryCode = $"{(GetOperatorCode(events) / 100)}",
+                MobileNetworkCode = $"{(GetOperatorCode(events) % 100)}",
+                //DigitalInputs = GetDigitalInput(events),
+                Events = events,
+                Input = input
+            };
 
-            return location;
+            location.ProtocolData = JsonSerializer.Serialize(teltonikaData);
+
+            return new LocationHolder
+            {
+                Location = location,
+                ProtocolData = teltonikaData
+            };
+        }
+
+        private static int GetOperatorCode(IEnumerable<Event> events)
+        {
+            Event operatorCodeEvent = events.FirstOrDefault(x => x.Id == 241);
+
+            return operatorCodeEvent?.Value ?? 0;
+        }
+
+        private static int GetGsmSignal(IEnumerable<Event> events)
+        {
+            Event gsmSignalEvent = events.FirstOrDefault(x => x.Id == 21);
+
+            return gsmSignalEvent?.Value * 20 ?? 0;
+        }
+
+        private static string GetCurrentProfile(IEnumerable<Event> events)
+        {
+            Event currentProfileEvent = events.FirstOrDefault(x => x.Id == 22);
+
+            return currentProfileEvent != null
+                ? currentProfileEvent.Value.ToString(CultureInfo.InvariantCulture)
+                : string.Empty;
+        }
+
+        private static bool GetMovement(IEnumerable<Event> events)
+        {
+            Event movementEvent = events.FirstOrDefault(x => x.Id == 240);
+
+            return movementEvent?.Value == 1;
+        }
+
+        private static double GetVoltage(IEnumerable<Event> events)
+        {
+            Event voltageEvent = events.FirstOrDefault(x => x.Id == 66);
+
+            return voltageEvent != null ? (double) voltageEvent.Value / 1000 : 0;
+        }
+
+        private static int GetOdometer(IEnumerable<Event> events)
+        {
+            Event odometerEvent = events.FirstOrDefault(x => x.Id == 199);
+
+            return odometerEvent?.Value ?? 0;
         }
 
         private static decimal GetCoordinate(string coordinate)
@@ -136,8 +200,8 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
 
             for (int i = 0; i < numberOfEvents; i++)
             {
-                var eventId = Utility.ConvertToHex(input[position++]);
-                var value = Utility.GetNextBytes(input, ref position, eventBytes);
+                string eventId = Utility.ConvertToHex(input[position++]);
+                string value = Utility.GetNextBytes(input, ref position, eventBytes);
 
                 events.Add(new Event
                 {

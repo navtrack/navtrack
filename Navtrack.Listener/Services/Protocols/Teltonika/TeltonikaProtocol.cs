@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Navtrack.Common.Model;
 using Navtrack.Common.Services;
 using Navtrack.Library.DI;
-using Navtrack.Library.Services;
 
 namespace Navtrack.Listener.Services.Protocols.Teltonika
 {
@@ -16,12 +17,10 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
     {
         private readonly ITeltonikaLocationParser teltonikaLocationParser;
         private readonly ILocationService locationService;
-        private readonly IMapper mapper;
 
-        public TeltonikaProtocol(ITeltonikaLocationParser teltonikaLocationParser, IMapper mapper, ILocationService locationService)
+        public TeltonikaProtocol(ITeltonikaLocationParser teltonikaLocationParser, ILocationService locationService)
         {
             this.teltonikaLocationParser = teltonikaLocationParser;
-            this.mapper = mapper;
             this.locationService = locationService;
         }
 
@@ -31,20 +30,27 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
             using BinaryReader binaryReader = new BinaryReader(networkStream);
             await using (BinaryWriter binaryWriter = new BinaryWriter(networkStream))
             {
+                List<byte> allData = new List<byte>();
                 byte[] data = new byte[2048];
                 bool firstDataReceived = true;
 
                 string imei = string.Empty;
 
+                if (allData.Count > 10000)
+                {
+                    allData.Clear();
+                }
+                
                 while (binaryReader.Read() != -1)
                 {
                     binaryReader.Read(data, 0, data.Length);
+                    allData.AddRange(data);
 
                     if (firstDataReceived)
                     {
                         for (int i = 1; i <= 15; i++)
                         {
-                            imei += (char)data[i];
+                            imei += (char) data[i];
                         }
 
                         binaryWriter.Write(01);
@@ -52,22 +58,17 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
                     }
                     else
                     {
-                        List<Location> locations = teltonikaLocationParser.Convert(data, imei).ToList();
+                        List<LocationHolder> locations = teltonikaLocationParser.Convert(data, imei).ToList();
 
                         if (locations.Any())
                         {
-                            await locationService.AddRange(locations);
+                            LocationHolder first = locations.First();
+                            first.ProtocolData.Input = allData.ToArray();
+                            first.Location.ProtocolData = JsonSerializer.Serialize(first.ProtocolData);
+                            
+                            await locationService.AddRange(locations.Select(x => x.Location).ToList());
 
-                            string reply = "000000";
-
-                            if (true)
-                            {
-                                reply += Utility.ConvertToHex(locations.Count);
-                            }
-                            else
-                            {
-                                reply += Utility.ConvertToHex(0);
-                            }
+                            string reply = "000000" + Utility.ConvertToHex(locations.Count);
 
                             binaryWriter.Write(Utility.HexStringToByteArray(reply));
                         }
