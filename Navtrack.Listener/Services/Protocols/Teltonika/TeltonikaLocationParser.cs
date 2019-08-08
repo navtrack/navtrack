@@ -120,8 +120,7 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
                 MobileCountryCode = $"{(GetOperatorCode(events) / 100)}",
                 MobileNetworkCode = $"{(GetOperatorCode(events) % 100)}",
                 //DigitalInputs = GetDigitalInput(events),
-                Events = events,
-                Input = input
+                Events = events
             };
 
             location.ProtocolData = JsonSerializer.Serialize(teltonikaData);
