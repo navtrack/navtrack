@@ -30,7 +30,7 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
             using BinaryReader binaryReader = new BinaryReader(networkStream);
             await using (BinaryWriter binaryWriter = new BinaryWriter(networkStream))
             {
-                List<byte> allData = new List<byte>();
+                List<byte[]> allData = new List<byte[]>();
                 byte[] data = new byte[2048];
                 bool firstDataReceived = true;
 
@@ -44,7 +44,7 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
                 while (binaryReader.Read() != -1)
                 {
                     binaryReader.Read(data, 0, data.Length);
-                    allData.AddRange(data);
+                    allData.Add(data);
 
                     if (firstDataReceived)
                     {
