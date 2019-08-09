@@ -40,7 +40,8 @@ namespace Navtrack.Listener.Services
                     {
                         TcpClient client = await listener.AcceptTcpClientAsync();
 
-                        protocol.HandleClient(client, stoppingToken);
+                        // ReSharper disable once AssignmentIsFullyDiscarded
+                        _ = protocol.HandleClient(client, stoppingToken);
                     }
                 }
                 catch (Exception exception)
