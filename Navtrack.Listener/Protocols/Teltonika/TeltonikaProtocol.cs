@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,11 +5,10 @@ using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Navtrack.Common.Model;
 using Navtrack.Common.Services;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Listener.Services.Protocols.Teltonika
+namespace Navtrack.Listener.Protocols.Teltonika
 {
     [Service(typeof(IProtocol))]
     public class TeltonikaProtocol : IProtocol
@@ -63,7 +61,7 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
                         if (locations.Any())
                         {
                             LocationHolder first = locations.First();
-                            first.ProtocolData.Input = allData.ToArray();
+                            //first.ProtocolData.Input = allData.ToArray();
                             first.Location.ProtocolData = JsonSerializer.Serialize(first.ProtocolData);
                             
                             await locationService.AddRange(locations.Select(x => x.Location).ToList());

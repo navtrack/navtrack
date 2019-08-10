@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Navtrack.Common.Services;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Listener.Services.Protocols.Meitrack
+namespace Navtrack.Listener.Protocols.Meitrack
 {
     [Service(typeof(IProtocol))]
     public class MeitrackProtocol : IProtocol

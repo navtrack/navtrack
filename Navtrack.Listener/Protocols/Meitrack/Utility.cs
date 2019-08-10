@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Navtrack.Listener.Services.Protocols.Meitrack
+namespace Navtrack.Listener.Protocols.Meitrack
 {
     public static class Utility
     {

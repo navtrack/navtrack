@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -5,7 +6,7 @@ using System.Text.Json;
 using Navtrack.Common.Model;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Listener.Services.Protocols.Teltonika
+namespace Navtrack.Listener.Protocols.Teltonika
 {
     [Service(typeof(ITeltonikaLocationParser))]
     public class TeltonikaLocationParser : ITeltonikaLocationParser
@@ -210,6 +211,18 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
             }
 
             return events;
+        }
+
+        public string GetIMEI(byte[] bytes)
+        {
+            string imei = String.Empty;
+            
+            for (int i = 1; i <= 15; i++)
+            {
+                imei += (char) bytes[i];
+            }
+
+            return imei;
         }
     }
 }

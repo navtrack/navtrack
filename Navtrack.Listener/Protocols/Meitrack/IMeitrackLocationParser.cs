@@ -1,4 +1,4 @@
-namespace Navtrack.Listener.Services.Protocols.Meitrack
+namespace Navtrack.Listener.Protocols.Meitrack
 {
     public interface IMeitrackLocationParser
     {

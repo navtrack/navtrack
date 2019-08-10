@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Navtrack.Listener.Services.Protocols.Teltonika
+namespace Navtrack.Listener.Protocols.Teltonika
 {
     public static class Utility
     {

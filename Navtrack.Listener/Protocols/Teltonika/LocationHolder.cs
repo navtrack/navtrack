@@ -1,6 +1,6 @@
 using Navtrack.Common.Model;
 
-namespace Navtrack.Listener.Services.Protocols.Teltonika
+namespace Navtrack.Listener.Protocols.Teltonika
 {
     public class LocationHolder
     {

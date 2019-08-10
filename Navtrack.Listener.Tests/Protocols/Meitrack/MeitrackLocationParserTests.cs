@@ -1,7 +1,7 @@
-using Navtrack.Listener.Services.Protocols.Meitrack;
+using Navtrack.Listener.Protocols.Meitrack;
 using NUnit.Framework;
 
-namespace Navtrack.Listener.Tests
+namespace Navtrack.Listener.Tests.Protocols.Meitrack
 {
     public class MeitrackLocationParserTests
     {

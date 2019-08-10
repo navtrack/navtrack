@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Navtrack.Listener.Services.Protocols.Teltonika
+namespace Navtrack.Listener.Protocols.Teltonika
 {
     public class TeltonikaData
     {
@@ -15,6 +15,6 @@ namespace Navtrack.Listener.Services.Protocols.Teltonika
         public string MobileNetworkCode { get; set; }
         public double Voltage { get; set; }
         public int Odometer { get; set; }
-        public byte[][] Input { get; set; }
+        public byte[] Input { get; set; }
     }
 }

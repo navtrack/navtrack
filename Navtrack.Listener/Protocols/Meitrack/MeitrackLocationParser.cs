@@ -1,11 +1,10 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Text.Json;
 using Navtrack.Common.Model;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Listener.Services.Protocols.Meitrack
+namespace Navtrack.Listener.Protocols.Meitrack
 {
     [Service(typeof(IMeitrackLocationParser))]
     public class MeitrackLocationParser : IMeitrackLocationParser

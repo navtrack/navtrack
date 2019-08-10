@@ -2,7 +2,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Navtrack.Listener.Services.Protocols
+namespace Navtrack.Listener.Protocols
 {
     public interface IProtocol
     {

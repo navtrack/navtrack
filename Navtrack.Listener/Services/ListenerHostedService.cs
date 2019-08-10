@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Navtrack.Library.DI;
-using Navtrack.Listener.Services.Protocols;
+using Navtrack.Listener.Protocols;
 
 namespace Navtrack.Listener.Services
 {
