@@ -1,6 +1,7 @@
 using Navtrack.Listener.Protocols.Teltonika;
 using NUnit.Framework;
 
+namespace Navtrack.Listener.Tests.Protocols.Teltonika
 {
     public class TeltonikaLocationParserTests
     {
