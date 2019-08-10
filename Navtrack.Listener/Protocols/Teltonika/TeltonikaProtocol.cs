@@ -22,9 +22,10 @@ namespace Navtrack.Listener.Protocols.Teltonika
             this.locationService = locationService;
         }
 
-        public async Task HandleClient(TcpClient client, CancellationToken stoppingToken)
+        public int Port => 6802;
+        
+        public async Task HandleStream(NetworkStream networkStream, CancellationToken stoppingToken)
         {
-            await using NetworkStream networkStream = client.GetStream();
             using BinaryReader binaryReader = new BinaryReader(networkStream);
             await using (BinaryWriter binaryWriter = new BinaryWriter(networkStream))
             {
@@ -77,9 +78,6 @@ namespace Navtrack.Listener.Protocols.Teltonika
             }
 
             binaryReader.Close();
-            networkStream.Close();
         }
-
-        public int Port => 6802;
     }
 }

@@ -41,7 +41,7 @@ namespace Navtrack.Listener.Services
                         TcpClient client = await listener.AcceptTcpClientAsync();
 
                         // ReSharper disable once AssignmentIsFullyDiscarded
-                        _ = protocol.HandleClient(client, stoppingToken);
+                        _ = HandleClient(client, protocol, stoppingToken);
                     }
                 }
                 catch (Exception exception)
@@ -53,6 +53,18 @@ namespace Navtrack.Listener.Services
                     listener?.Stop();
                 }
             }
+        }
+
+        private static async Task HandleClient(TcpClient tcpClient, IProtocol protocol, CancellationToken stoppingToken)
+        {
+            await using (NetworkStream networkStream = tcpClient.GetStream())
+            {
+                await protocol.HandleStream(networkStream, stoppingToken);
+                
+                networkStream.Close();
+            }
+            
+            tcpClient.Close();
         }
     }
 }

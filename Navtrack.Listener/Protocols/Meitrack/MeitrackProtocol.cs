@@ -19,28 +19,25 @@ namespace Navtrack.Listener.Protocols.Meitrack
             this.locationService = locationService;
         }
 
-        public async Task HandleClient(TcpClient client, CancellationToken stoppingToken)
+        public int Port => 6801;
+
+        public async Task HandleStream(NetworkStream networkStream, CancellationToken stoppingToken)
         {
-            using (StreamReader streamReader = new StreamReader(client.GetStream()))
+            using StreamReader streamReader = new StreamReader(networkStream);
+
+            while (!stoppingToken.IsCancellationRequested)
             {
-                while (!stoppingToken.IsCancellationRequested)
+                string data = await streamReader.ReadLineAsync();
+
+                MeitrackLocation location = meitrackLocationParser.Parse(data);
+
+                if (location != null)
                 {
-                    string line = await streamReader.ReadLineAsync();
-
-                    MeitrackLocation location = meitrackLocationParser.Parse(line);
-
-                    if (location != null)
-                    {
-                        await locationService.Add(location);
-                    }
+                    await locationService.Add(location);
                 }
-
-                streamReader.Close();
             }
 
-            client.Close();
+            streamReader.Close();
         }
-
-        public int Port => 6801;
     }
 }

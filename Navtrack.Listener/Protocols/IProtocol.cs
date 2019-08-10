@@ -6,7 +6,7 @@ namespace Navtrack.Listener.Protocols
 {
     public interface IProtocol
     {
-        Task HandleClient(TcpClient client, CancellationToken stoppingToken);
+        Task HandleStream(NetworkStream networkStream, CancellationToken stoppingToken);
         int Port { get; }
     }
 }
