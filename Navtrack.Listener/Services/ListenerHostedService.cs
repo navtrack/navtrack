@@ -11,6 +11,7 @@ using Navtrack.Common.Services;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols;
+// ReSharper disable AssignmentIsFullyDiscarded
 
 namespace Navtrack.Listener.Services
 {
@@ -29,34 +30,40 @@ namespace Navtrack.Listener.Services
             this.connectionService = connectionService;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             foreach (IProtocol protocol in protocols)
             {
-                TcpListener listener = null;
+                _ = HandleProtocol(protocol, stoppingToken);
+            }
 
-                try
+            return Task.CompletedTask;
+        }
+
+        private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken)
+        {
+            TcpListener listener = null;
+
+            try
+            {
+                listener = new TcpListener(IPAddress.Any, protocol.Port);
+
+                listener.Start();
+
+                while (true)
                 {
-                    listener = new TcpListener(IPAddress.Any, protocol.Port);
+                    TcpClient client = await listener.AcceptTcpClientAsync();
 
-                    listener.Start();
-
-                    while (true)
-                    {
-                        TcpClient client = await listener.AcceptTcpClientAsync();
-
-                        // ReSharper disable once AssignmentIsFullyDiscarded
-                        _ = HandleClient(client, protocol, stoppingToken);
-                    }
+                    _ = HandleClient(client, protocol, stoppingToken);
                 }
-                catch (Exception exception)
-                {
-                    logger.Log(LogLevel.Critical, exception, $"{nameof(ListenerHostedService)}");
-                }
-                finally
-                {
-                    listener?.Stop();
-                }
+            }
+            catch (Exception exception)
+            {
+                logger.Log(LogLevel.Critical, exception, $"{nameof(ListenerHostedService)}");
+            }
+            finally
+            {
+                listener?.Stop();
             }
         }
 
