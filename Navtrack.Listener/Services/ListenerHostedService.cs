@@ -29,7 +29,7 @@ namespace Navtrack.Listener.Services
             foreach (IProtocol protocol in protocols)
             {
                 TcpListener listener = null;
-                
+
                 try
                 {
                     listener = new TcpListener(IPAddress.Any, protocol.Port);
@@ -59,11 +59,17 @@ namespace Navtrack.Listener.Services
         {
             await using (NetworkStream networkStream = tcpClient.GetStream())
             {
-                await protocol.HandleStream(networkStream, stoppingToken);
-                
+                ProtocolInput protocolInput = new ProtocolInput
+                {
+                    NetworkStream = networkStream,
+                    StoppingToken = stoppingToken
+                };
+
+                await protocol.HandleStream(protocolInput);
+
                 networkStream.Close();
             }
-            
+
             tcpClient.Close();
         }
     }
