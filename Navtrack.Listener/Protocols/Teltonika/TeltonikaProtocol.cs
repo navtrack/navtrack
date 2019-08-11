@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Navtrack.Common.Services;
 using Navtrack.Library.DI;
@@ -22,28 +19,19 @@ namespace Navtrack.Listener.Protocols.Teltonika
             this.locationService = locationService;
         }
 
-        public int Port => 6802;
-        
-        public async Task HandleStream(NetworkStream networkStream, CancellationToken stoppingToken)
+        public async Task HandleStream(ProtocolInput protocolInput)
         {
-            using BinaryReader binaryReader = new BinaryReader(networkStream);
-            await using (BinaryWriter binaryWriter = new BinaryWriter(networkStream))
+            using BinaryReader binaryReader = new BinaryReader(protocolInput.NetworkStream);
+            await using (BinaryWriter binaryWriter = new BinaryWriter(protocolInput.NetworkStream))
             {
-                List<byte[]> allData = new List<byte[]>();
                 byte[] data = new byte[2048];
                 bool firstDataReceived = true;
 
                 string imei = string.Empty;
 
-                if (allData.Count > 10000)
-                {
-                    allData.Clear();
-                }
-                
-                while (binaryReader.Read() != -1)
+                while (binaryReader.Read() != -1 || !protocolInput.StoppingToken.IsCancellationRequested)
                 {
                     binaryReader.Read(data, 0, data.Length);
-                    allData.Add(data);
 
                     if (firstDataReceived)
                     {
@@ -61,10 +49,6 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
                         if (locations.Any())
                         {
-                            LocationHolder first = locations.First();
-                            //first.ProtocolData.Input = allData.ToArray();
-                            first.Location.ProtocolData = JsonSerializer.Serialize(first.ProtocolData);
-                            
                             await locationService.AddRange(locations.Select(x => x.Location).ToList());
 
                             string reply = "000000" + Utility.ConvertToHex(locations.Count);
@@ -79,5 +63,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
             binaryReader.Close();
         }
+
+        public int Port => 6802;
     }
 }

@@ -20,12 +20,12 @@ namespace Navtrack.Listener.Protocols.Meitrack
         }
 
         public int Port => 6801;
-
-        public async Task HandleStream(NetworkStream networkStream, CancellationToken stoppingToken)
+        
+        public async Task HandleStream(ProtocolInput protocolInput)
         {
-            using StreamReader streamReader = new StreamReader(networkStream);
+            using StreamReader streamReader = new StreamReader(protocolInput.NetworkStream);
 
-            while (!stoppingToken.IsCancellationRequested)
+            while (!protocolInput.StoppingToken.IsCancellationRequested)
             {
                 string data = await streamReader.ReadLineAsync();
 
