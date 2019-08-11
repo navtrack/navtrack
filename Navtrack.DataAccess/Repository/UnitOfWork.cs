@@ -30,6 +30,11 @@ namespace Navtrack.DataAccess.Repository
             return dbContext.SaveChangesAsync();
         }
 
+        public void Update<T>(T entity) where T : class
+        {
+            dbContext.Update(entity);
+        }
+
         public void Dispose()
         {
             dbContext?.Dispose();

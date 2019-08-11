@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Navtrack.Common.Services;
+using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols;
 
@@ -17,11 +19,14 @@ namespace Navtrack.Listener.Services
     {
         private readonly ILogger<ListenerHostedService> logger;
         private readonly IEnumerable<IProtocol> protocols;
+        private readonly IConnectionService connectionService;
 
-        public ListenerHostedService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols)
+        public ListenerHostedService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols,
+            IConnectionService connectionService)
         {
             this.logger = logger;
             this.protocols = protocols;
+            this.connectionService = connectionService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -55,22 +60,41 @@ namespace Navtrack.Listener.Services
             }
         }
 
-        private static async Task HandleClient(TcpClient tcpClient, IProtocol protocol, CancellationToken stoppingToken)
+        private async Task HandleClient(TcpClient tcpClient, IProtocol protocol, CancellationToken stoppingToken)
         {
-            await using (NetworkStream networkStream = tcpClient.GetStream())
+            Connection connection = null;
+
+            try
             {
-                ProtocolInput protocolInput = new ProtocolInput
+                connection = await connectionService.NewConnection((IPEndPoint) tcpClient.Client.RemoteEndPoint);
+
+                await using (NetworkStream networkStream = tcpClient.GetStream())
                 {
-                    NetworkStream = networkStream,
-                    StoppingToken = stoppingToken
-                };
+                    ProtocolInput protocolInput = new ProtocolInput
+                    {
+                        NetworkStream = networkStream,
+                        StoppingToken = stoppingToken
+                    };
 
-                await protocol.HandleStream(protocolInput);
+                    await protocol.HandleStream(protocolInput);
 
-                networkStream.Close();
+                    networkStream.Close();
+                }
+
+                tcpClient.Close();
             }
-
-            tcpClient.Close();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    await connectionService.MarkConnectionAsClosed(connection);
+                }
+            }
         }
     }
 }
