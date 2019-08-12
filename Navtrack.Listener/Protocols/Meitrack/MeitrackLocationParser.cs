@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Navtrack.Common.Model;
 using Navtrack.Library.DI;
+using static System.Char;
 
 namespace Navtrack.Listener.Protocols.Meitrack
 {
@@ -60,8 +61,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 Data = input,
                 Journey = Convert.ToInt32(splitInput[14]),
                 Runtime = Convert.ToInt32(splitInput[15]),
-                Output = io.Take(8).Select(Convert.ToInt32).ToArray(),
-                Input = io.Skip(8).Take(8).Select(Convert.ToInt32).ToArray(),
+                Output = io.Take(8).Select(x => (int)GetNumericValue(x)).ToArray(),
+                Input = io.Skip(8).Take(8).Select(x => (int)GetNumericValue(x)).ToArray(),
                 MobileCountryCode = Convert.ToInt32(baseId[0]),
                 MobileNetworkCode = Convert.ToInt32(baseId[1]),
                 LocationAreaCode = int.Parse(baseId[2], NumberStyles.HexNumber),
