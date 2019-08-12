@@ -58,8 +58,6 @@ namespace Navtrack.Listener.Protocols.Teltonika
                 }
             };
 
-            int startIndex = lastIndex;
-
             // TIME
             string tmp = Utility.GetNextBytes(input, ref lastIndex, 8);
             location.DateTime = Utility.UnixTimeStampToDateTime(long.Parse(tmp, NumberStyles.HexNumber));
