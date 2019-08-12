@@ -10,8 +10,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
         public string Data { get; set; }
         public int Journey { get; set; }
         public int Runtime { get; set; }
-        public bool[] Output { get; set; }
-        public bool[] Input { get; set; }
+        public int[] Output { get; set; }
+        public int[] Input { get; set; }
         
         [JsonPropertyName("MCC")]
         public int MobileCountryCode { get; set; }
