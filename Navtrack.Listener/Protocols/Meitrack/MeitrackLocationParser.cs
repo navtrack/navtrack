@@ -61,8 +61,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 Runtime = Convert.ToInt32(splitInput[15]),
                 Output = io.Take(8).Select(x => x == '1').ToArray(),
                 Input = io.Skip(8).Take(8).Select(x => x == '1').ToArray(),
-                MobileCountryCode = baseId[0],
-                MobileNetworkCode = baseId[1],
+                MobileCountryCode = Convert.ToInt32(baseId[0]),
+                MobileNetworkCode = Convert.ToInt32(baseId[1]),
                 LocationAreaCode = int.Parse(baseId[2], NumberStyles.HexNumber),
                 CellId = int.Parse(baseId[3], NumberStyles.HexNumber)
             };

@@ -14,10 +14,10 @@ namespace Navtrack.Listener.Protocols.Meitrack
         public bool[] Input { get; set; }
         
         [JsonPropertyName("MCC")]
-        public string MobileCountryCode { get; set; }
+        public int MobileCountryCode { get; set; }
         
         [JsonPropertyName("MNC")]
-        public string MobileNetworkCode { get; set; }
+        public int MobileNetworkCode { get; set; }
         
         [JsonPropertyName("LAC")]
         public int LocationAreaCode { get; set; }
