@@ -63,8 +63,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 Input = io.Skip(8).Take(8).Select(x => x == '1').ToArray(),
                 MobileCountryCode = baseId[0],
                 MobileNetworkCode = baseId[1],
-                LocationAreaCode = baseId[2],
-                CellId = baseId[3]
+                LocationAreaCode = int.Parse(baseId[2], NumberStyles.HexNumber),
+                CellId = int.Parse(baseId[3], NumberStyles.HexNumber)
             };
 
             return meitrackData;

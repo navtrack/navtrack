@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Navtrack.Listener.Protocols.Meitrack
 {
     public class MeitrackData
@@ -10,9 +12,16 @@ namespace Navtrack.Listener.Protocols.Meitrack
         public int Runtime { get; set; }
         public bool[] Output { get; set; }
         public bool[] Input { get; set; }
+        
+        [JsonPropertyName("MCC")]
         public string MobileCountryCode { get; set; }
+        
+        [JsonPropertyName("MNC")]
         public string MobileNetworkCode { get; set; }
-        public string LocationAreaCode { get; set; }
-        public string CellId { get; set; }
+        
+        [JsonPropertyName("LAC")]
+        public int LocationAreaCode { get; set; }
+        
+        public int CellId { get; set; }
     }
 }
