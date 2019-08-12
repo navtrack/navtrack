@@ -1,7 +1,9 @@
+using Navtrack.Common.Model;
+
 namespace Navtrack.Listener.Protocols.Meitrack
 {
     public interface IMeitrackLocationParser
     {
-        MeitrackLocation Parse(string input);
+        Location<MeitrackData> Parse(string input);
     }
 }

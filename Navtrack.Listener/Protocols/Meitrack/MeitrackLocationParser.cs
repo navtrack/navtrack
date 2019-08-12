@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
     [Service(typeof(IMeitrackLocationParser))]
     public class MeitrackLocationParser : IMeitrackLocationParser
     {
-        public MeitrackLocation Parse(string input)
+        public Location<MeitrackData> Parse(string input)
         {
             if (IsValidMessage(input))
             {
@@ -17,7 +17,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
 
                 try
                 {
-                    MeitrackLocation location = new MeitrackLocation
+                    Location<MeitrackData> location = new Location<MeitrackData>
                     {
                         Device = new Device
                         {
@@ -32,15 +32,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                         Heading = Convert.ToInt32(splitInput[11]),
                         HDOP = Convert.ToDouble(splitInput[12]),
                         Altitude = Convert.ToInt32(splitInput[13]),
-                        Odometer = Convert.ToInt32(splitInput[14]),
-                        Message = input,
-//                        ProtocolData = JsonSerializer.Serialize(new MeitrackData
-//                        {
-//                            Journey = Convert.ToInt32(splitInput[14]),
-//                            Message = input,
-//                            Runtime =  Convert.ToInt32(splitInput[15]),
-//                            BaseId = splitInput[16],
-//                        })
+                        Data = GetMeitrackData(input, splitInput)
                     };
 
                     return location;
@@ -52,6 +44,30 @@ namespace Navtrack.Listener.Protocols.Meitrack
             }
 
             return null;
+        }
+
+        private MeitrackData GetMeitrackData(string input, string[] splitInput)
+        {
+            string io = Utility.Hex2Bin(splitInput[17]);
+            string[] baseId = splitInput[16].Split('|');
+
+            MeitrackData meitrackData = new MeitrackData
+            {
+                GPSStatus = splitInput[7],
+                Event = Enum.Parse<Event>(splitInput[3]),
+                GSMSignal = Convert.ToInt32(splitInput[9]),
+                Data = input,
+                Journey = Convert.ToInt32(splitInput[14]),
+                Runtime = Convert.ToInt32(splitInput[15]),
+                Output = io.Take(8).Select(x => x == '1').ToArray(),
+                Input = io.Skip(8).Take(8).Select(x => x == '1').ToArray(),
+                MobileCountryCode = baseId[0],
+                MobileNetworkCode = baseId[1],
+                LocationAreaCode = baseId[2],
+                CellId = baseId[3]
+            };
+
+            return meitrackData;
         }
 
         private static bool IsValidMessage(string input) =>
@@ -89,13 +105,5 @@ namespace Navtrack.Listener.Protocols.Meitrack
 
         private static int GetChecksumPosition(string input) =>
             input.LastIndexOf("*", StringComparison.InvariantCultureIgnoreCase) + 1;
-    }
-
-    public class MeitrackData
-    {
-        public int Journey { get; set; }
-        public string Message { get; set; }
-        public int Runtime { get; set; }
-        public string BaseId { get; set; }
     }
 }

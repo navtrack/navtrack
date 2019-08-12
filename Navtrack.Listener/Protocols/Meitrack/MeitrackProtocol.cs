@@ -2,7 +2,9 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Navtrack.Common.Model;
 using Navtrack.Common.Services;
+using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Meitrack
@@ -29,7 +31,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
             {
                 string data = await streamReader.ReadLineAsync();
 
-                MeitrackLocation location = meitrackLocationParser.Parse(data);
+                Location<MeitrackData> location = meitrackLocationParser.Parse(data);
 
                 if (location != null)
                 {
