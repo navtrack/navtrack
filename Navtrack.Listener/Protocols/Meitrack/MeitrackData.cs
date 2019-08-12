@@ -23,5 +23,6 @@ namespace Navtrack.Listener.Protocols.Meitrack
         public int LocationAreaCode { get; set; }
         
         public int CellId { get; set; }
+        public long[] Voltage { get; set; }
     }
 }

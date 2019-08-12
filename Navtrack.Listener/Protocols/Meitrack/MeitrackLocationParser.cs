@@ -51,6 +51,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
             string io = Utility.Hex2Bin(splitInput[17]);
             string[] baseId = splitInput[16].Split('|');
 
+            string[] voltage = splitInput[18].Split('');
+
             MeitrackData meitrackData = new MeitrackData
             {
                 GPSStatus = splitInput[7],
@@ -64,10 +66,27 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 MobileCountryCode = Convert.ToInt32(baseId[0]),
                 MobileNetworkCode = Convert.ToInt32(baseId[1]),
                 LocationAreaCode = int.Parse(baseId[2], NumberStyles.HexNumber),
-                CellId = int.Parse(baseId[3], NumberStyles.HexNumber)
+                CellId = int.Parse(baseId[3], NumberStyles.HexNumber),
+                Voltage = voltage.Select(CalculateVoltage).ToArray()
             };
 
             return meitrackData;
+        }
+
+        private static long CalculateVoltage(string input, int index)
+        {
+            Voltage voltage = (Voltage) index;
+            int value = int.Parse(input, NumberStyles.HexNumber);
+
+            return voltage switch
+            {
+                Voltage.AnalogInput1 => (value * 6 / 1024),
+                Voltage.AnalogInput2 => (value * 6 / 1024),
+                Voltage.AnalogInput3 => (value * 6 / 1024),
+                Voltage.Battery => (value * 3 * 2 / 1024),
+                Voltage.External => (value * 3 * 16 / 1024),
+                _ => 0
+            };
         }
 
         private static bool IsValidMessage(string input) =>
