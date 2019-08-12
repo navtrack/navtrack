@@ -1,10 +1,7 @@
 using System.IO;
-using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using Navtrack.Common.Model;
 using Navtrack.Common.Services;
-using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Meitrack
