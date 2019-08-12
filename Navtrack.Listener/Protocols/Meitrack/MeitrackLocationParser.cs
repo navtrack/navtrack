@@ -72,20 +72,24 @@ namespace Navtrack.Listener.Protocols.Meitrack
             return meitrackData;
         }
 
-        private static long CalculateVoltage(string input, int index)
+        private static long? CalculateVoltage(string input, int index)
         {
             Voltage voltage = (Voltage) index;
-            int value = int.Parse(input, NumberStyles.HexNumber);
 
-            return voltage switch
+            if (int.TryParse(input, NumberStyles.HexNumber, null, out int value))
             {
-                Voltage.AnalogInput1 => (value * 6 / 1024),
-                Voltage.AnalogInput2 => (value * 6 / 1024),
-                Voltage.AnalogInput3 => (value * 6 / 1024),
-                Voltage.Battery => (value * 3 * 2 / 1024),
-                Voltage.External => (value * 3 * 16 / 1024),
-                _ => 0
-            };
+                return voltage switch
+                {
+                    Voltage.AnalogInput1 => (value * 6 / 1024),
+                    Voltage.AnalogInput2 => (value * 6 / 1024),
+                    Voltage.AnalogInput3 => (value * 6 / 1024),
+                    Voltage.Battery => (value * 3 * 2 / 1024),
+                    Voltage.External => (value * 3 * 16 / 1024),
+                    _ => 0
+                };
+            }
+
+            return null;
         }
 
         private static bool IsValidMessage(string input) =>
