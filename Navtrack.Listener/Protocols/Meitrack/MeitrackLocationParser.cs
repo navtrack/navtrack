@@ -46,12 +46,11 @@ namespace Navtrack.Listener.Protocols.Meitrack
             return null;
         }
 
-        private MeitrackData GetMeitrackData(string input, string[] splitInput)
+        private static MeitrackData GetMeitrackData(string input, string[] splitInput)
         {
             string io = Utility.Hex2Bin(splitInput[17]);
             string[] baseId = splitInput[16].Split('|');
-
-            string[] voltage = splitInput[18].Split('');
+            string[] analogInput = splitInput[18].Split('|');
 
             MeitrackData meitrackData = new MeitrackData
             {
@@ -67,7 +66,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 MobileNetworkCode = Convert.ToInt32(baseId[1]),
                 LocationAreaCode = int.Parse(baseId[2], NumberStyles.HexNumber),
                 CellId = int.Parse(baseId[3], NumberStyles.HexNumber),
-                Voltage = voltage.Select(CalculateVoltage).ToArray()
+                Voltage = analogInput.Select(CalculateVoltage).ToArray()
             };
 
             return meitrackData;
