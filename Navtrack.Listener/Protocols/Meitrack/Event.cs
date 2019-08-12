@@ -35,6 +35,19 @@ namespace Navtrack.Listener.Protocols.Meitrack
         RFID = 37,
         GetAddressFromServer = 38,
         Picture = 39,
+        PowerOff = 40,
+        StopMoving = 41,
+        StartMoving = 42,
+        GSMJamming = 44,
+        TemperatureHigh = 50,
+        TemperatureLow = 51,
+        FullFuel = 52,
+        LowFuel = 53,
+        FuelTheft = 54,
+        Armed = 56,
+        Disarmed = 57,
+        VehicleTheft = 58,
+        NoGSMJamming = 63,
         PressInput1ToCall = 65,
         PressInput2ToCall = 66,
         PressInput3ToCall = 67,
@@ -43,6 +56,10 @@ namespace Navtrack.Listener.Protocols.Meitrack
         RejectIncomingCall = 70,
         ReportLocationAfterCallingIn = 71,
         AutoAnswerIncomingCall = 72,
-        ListenIn = 73
+        ListenIn = 73,
+        Fall = 79,
+        Install = 80,
+        DropOff = 81,
+        MaintenanceNotice = 139
     }
 }
