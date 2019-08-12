@@ -1,7 +1,8 @@
-using Navtrack.DataAccess.Model;
+using System;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 using Location = Navtrack.Common.Model.Location;
+using Object = Navtrack.DataAccess.Model.Object;
 
 namespace Navtrack.Common.Mappers
 {
@@ -21,6 +22,7 @@ namespace Navtrack.Common.Mappers
             destination.Satellites = source1.Satellites;
             destination.HDOP = source1.HDOP;
             destination.ProtocolData = source1.ProtocolData;
+            destination.CreatedAt = DateTime.UtcNow;
 
             return destination;
         }
