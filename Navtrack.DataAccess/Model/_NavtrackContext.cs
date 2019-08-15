@@ -12,6 +12,7 @@ namespace Navtrack.DataAccess.Model
         public DbSet<Location> Locations { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Connection> Connections { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,6 +77,11 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.RemoteEndPoint)
                     .HasMaxLength(64)
                     .IsRequired();
+            });
+            
+            modelBuilder.Entity<Log>(entity =>
+            {
+                entity.HasKey(x => x.Id);
             });
         }
     }
