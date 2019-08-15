@@ -11,6 +11,8 @@ using Navtrack.Common.Services;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols;
+using ILogger = Navtrack.Common.Services.Logging.ILogger;
+
 // ReSharper disable AssignmentIsFullyDiscarded
 
 namespace Navtrack.Listener.Services
@@ -21,23 +23,25 @@ namespace Navtrack.Listener.Services
         private readonly ILogger<ListenerHostedService> logger;
         private readonly IEnumerable<IProtocol> protocols;
         private readonly IConnectionService connectionService;
+        private readonly ILogger logger2;
 
         public ListenerHostedService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols,
-            IConnectionService connectionService)
+            IConnectionService connectionService, ILogger logger2)
         {
             this.logger = logger;
             this.protocols = protocols;
             this.connectionService = connectionService;
+            this.logger2 = logger2;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await logger2.Log("test");
+            
             foreach (IProtocol protocol in protocols)
             {
                 _ = HandleProtocol(protocol, stoppingToken);
             }
-
-            return Task.CompletedTask;
         }
 
         private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken)

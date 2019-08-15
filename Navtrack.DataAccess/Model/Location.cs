@@ -2,7 +2,7 @@ using System;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class Location
+    public class Location : EntityAudit
     {
         public int Id { get; set; }
         public decimal Latitude { get; set; }
@@ -18,6 +18,5 @@ namespace Navtrack.DataAccess.Model
         public short Satellites { get; set; }
         public double HDOP { get; set; }
         public string ProtocolData { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }

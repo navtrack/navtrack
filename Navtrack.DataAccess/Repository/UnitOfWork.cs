@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Navtrack.Library.DI;
 
 namespace Navtrack.DataAccess.Repository
 {
-    [Service(typeof(IUnitOfWork))]
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext dbContext;
+        private readonly IInterceptorService interceptorService;
 
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(DbContext dbContext, IInterceptorService interceptorService)
         {
             this.dbContext = dbContext;
+            this.interceptorService = interceptorService;
         }
 
         public void Add<T>(T entity) where T : class
@@ -20,13 +20,15 @@ namespace Navtrack.DataAccess.Repository
             dbContext.Add(entity);
         }
 
-        public void AddRange<T>(IEnumerable<T> locations) where T : class
+        public void AddRange<T>(IEnumerable<T> entities) where T : class
         {
-            dbContext.AddRange(locations);
+            dbContext.AddRange(entities);
         }
 
         public Task SaveChanges()
         {
+            interceptorService.InterceptChanges(dbContext);
+            
             return dbContext.SaveChangesAsync();
         }
 

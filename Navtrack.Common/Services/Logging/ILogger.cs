@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Navtrack.Common.Services
+namespace Navtrack.Common.Services.Logging
 {
     public interface ILogger
     {

@@ -9,11 +9,13 @@ namespace Navtrack.DataAccess.Repository
     {
         private readonly IDbContextFactory dbContextFactory;
         private readonly DbContext dbContext;
+        private readonly IInterceptorService interceptorService;
 
-        public Repository(IDbContextFactory dbContextFactory)
+        public Repository(IDbContextFactory dbContextFactory, IInterceptorService interceptorService)
         {
             this.dbContextFactory = dbContextFactory;
-            
+            this.interceptorService = interceptorService;
+
             dbContext = dbContextFactory.CreateDbContext();
         }
 
@@ -24,7 +26,7 @@ namespace Navtrack.DataAccess.Repository
 
         public IUnitOfWork CreateUnitOfWork()
         {
-            return new UnitOfWork(dbContextFactory.CreateDbContext());
+            return new UnitOfWork(dbContextFactory.CreateDbContext(), interceptorService);
         }
     }
 }
