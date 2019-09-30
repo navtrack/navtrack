@@ -6,6 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Test the solution
     - uses: actions/checkout@v1
-    - run: docker build -f Navtrack.Listener.Tests/Dockerfile .
+    - name: Test the solution
+      run: docker build -f Navtrack.Listener.Tests/Dockerfile .
