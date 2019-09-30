@@ -3,10 +3,9 @@ name: Test
 on: [push]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
     - name: Test the solution
-    - uses: actions/checkout@v1
-      run: docker build -f Navtrack.Listener.Tests/Dockerfile . 
+      uses: actions/checkout@v1
+      run: docker build -f Navtrack.Listener.Tests/Dockerfile .
