@@ -10,4 +10,6 @@ jobs:
  
     steps:
     - name: Test the solution
-      run: docker build -f ./Navtrack.Listener.Tests/Dockerfile . 
+      run: |
+      ls -a
+      docker build -f ./Navtrack.Listener.Tests/Dockerfile . 
