@@ -5,9 +5,8 @@ on: [push]
 jobs:
 
   build:
- 
     runs-on: ubuntu-latest
- 
     steps:
     - name: Test the solution
-      run: ls -a
+    - uses: actions/checkout@v1
+      run: docker build -f Navtrack.Listener.Tests/Dockerfile . 
