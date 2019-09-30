@@ -1,0 +1,13 @@
+name: Test
+
+on: [push]
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Test the solution
+      run: docker build -f Navtrack.Listener.Tests/Dockerfile . 
