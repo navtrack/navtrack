@@ -12,6 +12,7 @@ jobs:
       run: dotnet build 
       
   test:
+    runs-on: windows-latest
     steps:
     - name: Test solution
       run: dotnet test
