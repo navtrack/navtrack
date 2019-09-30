@@ -8,4 +8,5 @@ jobs:
     steps:
     - name: Test the solution
       uses: actions/checkout@v1
-      run: docker build -f Navtrack.Listener.Tests/Dockerfile . 
+      run: docker build -f Navtrack.Listener.Tests/Dockerfile .
+      
