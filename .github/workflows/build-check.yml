@@ -1,20 +1,14 @@
-name: Build check
+name: CI
 
 on: [push]
 
 jobs:
-  build:
+  build-check:
     runs-on: windows-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Build solution
       run: dotnet build 
-      
-  test:
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
     - name: Test solution
       run: dotnet test

@@ -16,11 +16,11 @@ before_script:
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
-build-api:
+build-web:
   stage: build
   script:
-    - docker build . -f Navtrack.Api/Dockerfile -t registry.gitlab.com/navtrack/navtrack/api:build
-    - docker push registry.gitlab.com/navtrack/navtrack/api:build
+    - docker build . -f Navtrack.Web/Dockerfile -t registry.gitlab.com/navtrack/navtrack/web:build
+    - docker push registry.gitlab.com/navtrack/navtrack/web:build
 
 build-listener:
   stage: build
@@ -33,14 +33,14 @@ test-listener:
   script:
     - docker build . -f Navtrack.Listener.Tests/Dockerfile
 
-publish-api:
+publish-web:
   stage: publish
   dependencies:
-    - build-api
+    - build-web
   script:
-    - docker pull registry.gitlab.com/navtrack/navtrack/api:build
-    - docker tag registry.gitlab.com/navtrack/navtrack/api:build navtrack/api:latest
-    - docker push navtrack/api:latest
+    - docker pull registry.gitlab.com/navtrack/navtrack/web:build
+    - docker tag registry.gitlab.com/navtrack/navtrack/web:build navtrack/web:latest
+    - docker push navtrack/web:latest
 
 publish-listener:
   stage: publish
