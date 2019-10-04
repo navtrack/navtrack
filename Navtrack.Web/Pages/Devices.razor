@@ -1,0 +1,44 @@
+﻿@page "/devices"
+
+@using Navtrack.Web.Data
+@using Navtrack.Web.Models
+@using Navtrack.Web.Services
+@inject IDeviceService DeviceService
+
+<h1>Devices</h1>
+
+@if (devices == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>IMEI</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Device device in devices)
+            {
+                <tr>
+                    <td>@device.Id</td>
+                    <td>@device.Name</td>
+                    <td>@device.IMEI</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Device> devices;
+
+    protected override async Task OnInitializedAsync()
+    {
+        devices = await DeviceService.GetDevices();
+    }
+}

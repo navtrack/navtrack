@@ -4,4 +4,9 @@
         <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
+      <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
+    </ItemGroup>
+
 </Project>
