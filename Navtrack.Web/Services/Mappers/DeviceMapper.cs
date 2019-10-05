@@ -10,8 +10,8 @@ namespace Navtrack.Web.Services.Mappers
         public Device Map(DataAccess.Model.Device source, Device destination)
         {
             destination.Id = source.Id;
-            destination.Name = source.Object.Name;
-            destination.IMEI = destination.IMEI;
+            destination.Name = source.Object?.Name;
+            destination.IMEI = source.IMEI;
 
             return destination;
         }
