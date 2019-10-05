@@ -2,5 +2,5 @@ services:
   - docker
  
 script:
-  - docker build . -f Navtrack.Api/Dockerfile 
+  - docker build . -f Navtrack.Web/Dockerfile 
   - docker build . -f Navtrack.Listener/Dockerfile
