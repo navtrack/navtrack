@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,23 @@ namespace Navtrack.Web.Services
             List<Device> mapped = devices.Select(x => mapper.Map<Navtrack.DataAccess.Model.Device, Device>(x)).ToList();
 
             return mapped;
+        }
+
+        public async Task Add(Device device)
+        {
+            using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
+            
+            unitOfWork.Add(new DataAccess.Model.Device
+            {
+                IMEI = device.IMEI
+            });
+
+            await unitOfWork.SaveChanges();
+        }
+
+        public Task<bool> IsValidNewDevice(Device device)
+        {
+            return repository.GetEntities<DataAccess.Model.Device>().AllAsync(x => x.IMEI != device.IMEI);
         }
     }
 }

@@ -1,0 +1,37 @@
+﻿@page "/devices/add"
+
+@using Navtrack.Web.Models
+@using Navtrack.Web.Services
+@inject IDeviceService DeviceService
+
+<h1>Add device</h1>
+
+
+<EditForm Model="@exampleModel" OnSubmit="@HandleValidSubmit" L >
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label>IMEI:</label>
+    <InputText id="@nameof(Device.IMEI)" @bind-Value="@exampleModel.IMEI" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private Device exampleModel = new Device();
+
+    private async Task HandleValidSubmit()
+    {
+        if (await DeviceService.IsValidNewDevice(exampleModel))
+        {
+            await DeviceService.Add(exampleModel);
+        }
+        else
+        {
+            // error
+        }
+        
+        
+        Console.WriteLine("OnValidSubmit");
+    }
+}
