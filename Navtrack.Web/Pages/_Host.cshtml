@@ -4,19 +4,32 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Navtrack.Web</title>
-    <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Navtrack</title>
+  <!-- Favicon -->
+  <link href="img/brand/favicon.png" rel="icon" type="image/png">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <!-- Icons -->
+  <link href="js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+  <link href="js/plugins/@@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
 </head>
-<body>
+<body class="bg-default">
     <app>
         @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
     </app>
 
     <script src="_framework/blazor.server.js"></script>
+  <!--   Core   -->
+  <script src="js/plugins/jquery/dist/jquery.min.js"></script>
+  <script src="js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!--   Optional JS   -->
+  <!--   Argon JS   -->
+  <script src="js/argon-dashboard.min.js?v=1.1.0"></script>
 </body>
 </html>
