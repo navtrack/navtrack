@@ -13,6 +13,7 @@ stages:
   - deploy
 
 before_script:
+  - apk --update add nodejs
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
