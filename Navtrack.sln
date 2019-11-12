@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Library", "Navtrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "Navtrack.Api\Navtrack.Api.csproj", "{B63705DB-939D-4885-A776-C1E995F6706D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Common", "Navtrack.Common\Navtrack.Common.csproj", "{17363B48-67D0-4183-AE79-BC083AD7DEA9}"
@@ -31,10 +29,6 @@ Global
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B63705DB-939D-4885-A776-C1E995F6706D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B63705DB-939D-4885-A776-C1E995F6706D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B63705DB-939D-4885-A776-C1E995F6706D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B63705DB-939D-4885-A776-C1E995F6706D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
