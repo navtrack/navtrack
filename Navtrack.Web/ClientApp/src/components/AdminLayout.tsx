@@ -1,3 +1,4 @@
+import React from "react";
 import AdminSidebar from "./AdminSidebar";
 import AdminFooter from "./AdminFooter";
 import AdminNavbar from "./AdminNavbar";
@@ -7,14 +8,10 @@ export default function AdminLayout() {
         <>
             <AdminSidebar/>
             <div className="main-content">
-                <!-- Navbar -->
                 <AdminNavbar/>
-                <!-- End Navbar -->
-                <!-- Header -->
                 <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8">
                     <div className="container-fluid">
                         <div className="header-body">
-                            <!-- Card stats -->
                             <div className="row">
                                 <div className="col-xl-3 col-lg-6">
                                     <div className="card card-stats mb-4 mb-xl-0">
@@ -147,9 +144,7 @@ export default function AdminLayout() {
                                     </div>
                                 </div>
                                 <div className="card-body">
-                                    <!-- Chart -->
                                     <div className="chart">
-                                        <!-- Chart wrapper -->
                                         <canvas id="chart-sales" className="chart-canvas"></canvas>
                                     </div>
                                 </div>
@@ -166,7 +161,6 @@ export default function AdminLayout() {
                                     </div>
                                 </div>
                                 <div className="card-body">
-                                    <!-- Chart -->
                                     <div className="chart">
                                         <canvas id="chart-orders" className="chart-canvas"></canvas>
                                     </div>
@@ -188,7 +182,6 @@ export default function AdminLayout() {
                                     </div>
                                 </div>
                                 <div className="table-responsive">
-                                    <!-- Projects table -->
                                     <table className="table align-items-center table-flush">
                                         <thead className="thead-light">
                                         <tr>
@@ -287,7 +280,6 @@ export default function AdminLayout() {
                                     </div>
                                 </div>
                                 <div className="table-responsive">
-                                    <!-- Projects table -->
                                     <table className="table align-items-center table-flush">
                                         <thead className="thead-light">
                                         <tr>
@@ -311,9 +303,7 @@ export default function AdminLayout() {
                                                         <div className="progress">
                                                             <div className="progress-bar bg-gradient-danger"
                                                                  role="progressbar"
-                                                                 aria-valuenow="60" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width: 60%;"></div>
+                                                                  ></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -332,10 +322,7 @@ export default function AdminLayout() {
                                                     <div>
                                                         <div className="progress">
                                                             <div className="progress-bar bg-gradient-success"
-                                                                 role="progressbar"
-                                                                 aria-valuenow="70" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width: 70%;"></div>
+                                                                 role="progressbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -354,10 +341,7 @@ export default function AdminLayout() {
                                                     <div>
                                                         <div className="progress">
                                                             <div className="progress-bar bg-gradient-primary"
-                                                                 role="progressbar"
-                                                                 aria-valuenow="80" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width: 80%;"></div>
+                                                                 role="progressbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -376,10 +360,7 @@ export default function AdminLayout() {
                                                     <div>
                                                         <div className="progress">
                                                             <div className="progress-bar bg-gradient-info"
-                                                                 role="progressbar"
-                                                                 aria-valuenow="75" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width: 75%;"></div>
+                                                                 role="progressbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -398,10 +379,7 @@ export default function AdminLayout() {
                                                     <div>
                                                         <div className="progress">
                                                             <div className="progress-bar bg-gradient-warning"
-                                                                 role="progressbar"
-                                                                 aria-valuenow="30" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width: 30%;"></div>
+                                                                 role="progressbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -413,10 +391,9 @@ export default function AdminLayout() {
                             </div>
                         </div>
                     </div>
-                    <!-- Footer -->
                     <AdminFooter/>
                 </div>
             </div>
         </>
-);
+    );
 }

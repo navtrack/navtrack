@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function AdminSidebar() {
     return (
         <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">

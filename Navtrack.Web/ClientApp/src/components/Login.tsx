@@ -1,16 +1,15 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export default function Login() {
     return (
         <>
             <div className="header bg-gradient-primary py-7 py-lg-8">
                 <div className="container">
-                    <div className="header-body text-center mb-7">
+                    <div className="header-body text-center mb-1">
                         <div className="row justify-content-center">
                             <div className="col-lg-5 col-md-6">
                                 <h1 className="text-white">Welcome!</h1>
-                                <p className="text-lead text-light">Use these awesome forms to login or create new
-                                    account in your project for free.</p>
                             </div>
                         </div>
                     </div>
@@ -26,26 +25,11 @@ export default function Login() {
                 <div className="row justify-content-center">
                     <div className="col-lg-5 col-md-7">
                         <div className="card bg-secondary shadow border-0">
-                            <div className="card-header bg-transparent pb-5">
-                                <div className="text-muted text-center mt-2 mb-3"><small>Sign in with</small></div>
-                                <div className="btn-wrapper text-center">
-                                    <a href="#" className="btn btn-neutral btn-icon">
-                                        <span className="btn-inner--icon"><img
-                                            src="../assets/img/icons/common/github.svg"/></span>
-                                        <span className="btn-inner--text">Github</span>
-                                    </a>
-                                    <a href="#" className="btn btn-neutral btn-icon">
-                                        <span className="btn-inner--icon"><img
-                                            src="../assets/img/icons/common/google.svg"/></span>
-                                        <span className="btn-inner--text">Google</span>
-                                    </a>
-                                </div>
-                            </div>
                             <div className="card-body px-lg-5 py-lg-5">
                                 <div className="text-center text-muted mb-4">
-                                    <small>Or sign in with credentials</small>
+                                    <small>Sign in to Navtrack.</small>
                                 </div>
-                                <form role="form">
+                                <form>
                                     <div className="form-group mb-3">
                                         <div className="input-group input-group-alternative">
                                             <div className="input-group-prepend">
@@ -71,17 +55,17 @@ export default function Login() {
                                         </label>
                                     </div>
                                     <div className="text-center">
-                                        <button type="button" className="btn btn-primary my-4">Sign in</button>
+                                        <button type="button" className="btn btn-primary mt-4">Sign in</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div className="row mt-3">
                             <div className="col-6">
-                                <a href="#" className="text-light"><small>Forgot password?</small></a>
+                                <Link to="/SignUp" className="text-white"><small>Create new account</small></Link>
                             </div>
                             <div className="col-6 text-right">
-                                <a href="#" className="text-light"><small>Create new account</small></a>
+                                <Link to="/ForgotPassword" className="text-white"><small>Forgot password?</small></Link>
                             </div>
                         </div>
                     </div>

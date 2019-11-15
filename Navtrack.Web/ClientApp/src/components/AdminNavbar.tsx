@@ -1,3 +1,5 @@
+import React from "react";
+
 import AdminSidebar from "./AdminSidebar";
 import AdminFooter from "./AdminFooter";
 
