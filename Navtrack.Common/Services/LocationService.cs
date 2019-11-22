@@ -26,12 +26,12 @@ namespace Navtrack.Common.Services
 
         public async Task Add(Location location)
         {
-            Object @object = await objectDataService.GetObjectByIMEI(location.Device.IMEI);
+            Asset asset = await objectDataService.GetObjectByIMEI(location.Device.IMEI);
 
-            if (@object != null)
+            if (asset != null)
             {
                 DataAccess.Model.Location mapped =
-                    mapper.Map<Location, Object, DataAccess.Model.Location>(location, @object);
+                    mapper.Map<Location, Asset, DataAccess.Model.Location>(location, asset);
 
                 await locationDataService.Add(mapped);
             }
@@ -43,12 +43,12 @@ namespace Navtrack.Common.Services
             {
                 string imei = locations.First().Device.IMEI;
 
-                Object @object = await objectDataService.GetObjectByIMEI(imei);
+                Asset asset = await objectDataService.GetObjectByIMEI(imei);
 
-                if (@object != null)
+                if (asset != null)
                 {
                     List<DataAccess.Model.Location> mapped =
-                        locations.Select(x => mapper.Map<Location, Object, DataAccess.Model.Location>(x, @object))
+                        locations.Select(x => mapper.Map<Location, Asset, DataAccess.Model.Location>(x, asset))
                             .ToList();
 
                     await locationDataService.AddRange(mapped);

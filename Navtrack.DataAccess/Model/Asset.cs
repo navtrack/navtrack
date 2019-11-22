@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class Object
+    public class Asset
     {
-        public Object()
+        public Asset()
         {
             Locations = new HashSet<Location>();
         }

@@ -24,10 +24,10 @@ namespace Navtrack.Web.Services
 
         public async Task<List<AssetModel>> Get()
         {
-            List<Object> objects =
-                await repository.GetEntities<Object>().ToListAsync();
+            List<Asset> objects =
+                await repository.GetEntities<Asset>().ToListAsync();
 
-            List<AssetModel> mapped = objects.Select(mapper.Map<Object, AssetModel>).ToList();
+            List<AssetModel> mapped = objects.Select(mapper.Map<Asset, AssetModel>).ToList();
 
             return mapped;
         }

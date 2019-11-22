@@ -30,7 +30,7 @@ namespace Navtrack.Web.Services
         public async Task<LocationModel> GetLatestLocation(int objectId)
         {
             Location location = await repository.GetEntities<Location>()
-                .Where(x => x.ObjectId == objectId)
+                .Where(x => x.AssetId == objectId)
                 .OrderByDescending(x => x.DateTime)
                 .FirstOrDefaultAsync();
 

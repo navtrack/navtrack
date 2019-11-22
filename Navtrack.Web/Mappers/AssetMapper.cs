@@ -5,10 +5,10 @@ using Navtrack.Web.Model.Models;
 
 namespace Navtrack.Web.Mappers
 {
-    [Service(typeof(IMapper<Object, AssetModel>))]
-    public class AssetMapper : IMapper<Object, AssetModel>
+    [Service(typeof(IMapper<Asset, AssetModel>))]
+    public class AssetMapper : IMapper<Asset, AssetModel>
     {
-        public AssetModel Map(Object source, AssetModel destination)
+        public AssetModel Map(Asset source, AssetModel destination)
         {
             destination.Id = source.Id;
             destination.Name = source.Name;

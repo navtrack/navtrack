@@ -5,6 +5,6 @@ namespace Navtrack.Common.DataServices
 {
     public interface IObjectDataService
     {
-        Task<Object> GetObjectByIMEI(string imei);
+        Task<Asset> GetObjectByIMEI(string imei);
     }
 }

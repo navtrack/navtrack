@@ -8,7 +8,7 @@ namespace Navtrack.DataAccess.Model
         {
         }
 
-        public DbSet<Object> Objects { get; set; }
+        public DbSet<Asset> Objects { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Connection> Connections { get; set; }
@@ -32,9 +32,9 @@ namespace Navtrack.DataAccess.Model
                     .HasForeignKey(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.NoAction);
                 
-                entity.HasOne(x => x.Object)
+                entity.HasOne(x => x.Asset)
                     .WithMany(x => x.Locations)
-                    .HasForeignKey(x => x.ObjectId)
+                    .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
             
@@ -49,26 +49,27 @@ namespace Navtrack.DataAccess.Model
                     .HasForeignKey(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(x => x.Object)
+                entity.HasOne(x => x.Asset)
                     .WithOne(x => x.Device)
-                    .HasForeignKey<Object>(x => x.DeviceId)
+                    .HasForeignKey<Asset>(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
             
-            modelBuilder.Entity<Object>(entity =>
+            modelBuilder.Entity<Asset>(entity =>
             {
+                entity.ToTable("Assets");
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
                 entity.Property(x => x.DeviceId).IsRequired();
 
                 entity.HasMany(x => x.Locations)
-                    .WithOne(x => x.Object)
-                    .HasForeignKey(x => x.ObjectId)
+                    .WithOne(x => x.Asset)
+                    .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(x => x.Device)
-                    .WithOne(x => x.Object)
-                    .HasForeignKey<Object>(x => x.DeviceId)
+                    .WithOne(x => x.Asset)
+                    .HasForeignKey<Asset>(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
             

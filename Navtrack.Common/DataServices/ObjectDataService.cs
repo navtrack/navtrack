@@ -16,9 +16,9 @@ namespace Navtrack.Common.DataServices
             this.repository = repository;
         }
 
-        public Task<Object> GetObjectByIMEI(string imei)
+        public Task<Asset> GetObjectByIMEI(string imei)
         {
-            return repository.GetEntities<Object>()
+            return repository.GetEntities<Asset>()
                 .Include(x => x.Device)
                 .FirstOrDefaultAsync(x => x.Device.IMEI == imei);
         }
