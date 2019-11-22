@@ -8,7 +8,7 @@ namespace Navtrack.DataAccess.Model
         {
         }
 
-        public DbSet<Asset> Objects { get; set; }
+        public DbSet<Asset> Assets { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Connection> Connections { get; set; }
@@ -57,7 +57,6 @@ namespace Navtrack.DataAccess.Model
             
             modelBuilder.Entity<Asset>(entity =>
             {
-                entity.ToTable("Assets");
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
                 entity.Property(x => x.DeviceId).IsRequired();
