@@ -7,14 +7,24 @@ export const Api = {
         }).then(handleResponse<T>())
     },
 
-    post: <T>(url: string, bodyObject: any): Promise<T> => {
+    post: (url: string, bodyObject: any): Promise<Response> => {
         return fetch(ApiUtil.apiUrl(url), {
             method: "post",
             headers: {
                 "Content-Type": "application/json-patch+json",
             },
             body: JSON.stringify(bodyObject)
-        }).then(handleResponse<T>());
+        });
+    },
+
+    put: (url: string, bodyObject: any): Promise<Response> => {
+        return fetch(ApiUtil.apiUrl(url), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json-patch+json",
+            },
+            body: JSON.stringify(bodyObject)
+        });
     }
 };
 

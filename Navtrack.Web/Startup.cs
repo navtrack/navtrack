@@ -24,15 +24,19 @@ namespace Navtrack.Web
         public void ConfigureServices(IServiceCollection services)
         {
             Bootstrapper.ConfigureServices(services);
-            
-            
+
+
             services.AddCors(options =>
             {
-                options.AddPolicy(DefaultCorsPolicy,
-                    builder => { builder.AllowAnyOrigin(); });
+                options.AddPolicy(DefaultCorsPolicy, builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
             });
-            
-            
+
+
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
 
@@ -56,7 +60,7 @@ namespace Navtrack.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             app.UseCors(DefaultCorsPolicy);
 
             app.UseHttpsRedirection();

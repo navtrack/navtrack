@@ -19,16 +19,16 @@ export default function Devices() {
         {
             Header: "IMEI",
             accessor: "imei",
+            Cell: (cell: any) => <Link to={"/devices/"+ cell.row.original.id}>{cell.cell.value}</Link>,
         },
         {
-            Header: "",
+            Header: "Name",
             accessor: "name"
         },
         {
-            Header: "",
             accessor: "id",
-            width: 50,
             Cell: (cell: any) => <Link to={"/devices/"+ cell.cell.value}><i className="fas fa-edit" /></Link>,
+            disableSortBy: true
         }
     ], []);
 

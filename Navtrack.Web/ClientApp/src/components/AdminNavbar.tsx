@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 export default function AdminNavbar() {
-    const [email, setEmail] = useState("email@navtrack.io");
-
     return (
         <nav className="navbar navbar navbar-expand-md navbar-dark bg-dark">
             <div className="container-fluid">
@@ -11,7 +9,7 @@ export default function AdminNavbar() {
                     href="./index.html">Dashboard</a>
                 <ul className="navbar-nav align-items-center d-none d-md-flex">
                     <li className="nav-item dropdown">
-                        <a className="nav-link pr-0" href="#" role="button" data-toggle="dropdown"
+                        <a className="nav-link pr-0" href="#tmp" role="button" data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false">
                             <div className="media align-items-center">
@@ -19,7 +17,7 @@ export default function AdminNavbar() {
                                     <i className="fa fa-user text-gray-dark fa-lg" />
                                 </span>
                                 <div className="media-body ml-2 d-none d-lg-block">
-                                    <span className="mb-0 text-sm  font-weight-bold">{email}</span>
+                                    <span className="mb-0 text-sm  font-weight-bold">contact@navtrack.io</span>
                                 </div>
                             </div>
                         </a>

@@ -10,7 +10,11 @@ export const DeviceApi = {
         return Api.get<Device[]>("devices")
     },
     
-    save: function(device: Device) : Promise<Device> {
-        return Api.post<Device>("devices", device);
+    update: function(device: Device) : Promise<Response> {
+        return Api.put("devices/" + device.id, device);
+    },
+    
+    add: function(device: Device) : Promise<Response> {
+        return Api.post("devices", device);
     }
 }

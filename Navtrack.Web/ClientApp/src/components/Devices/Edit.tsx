@@ -3,6 +3,7 @@ import { Device } from "../../services/Api/Types/Device";
 import { Protocol } from "../../services/Api/Types/Protocol";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { ProtocolApi } from "../../services/Api/ProtocolApi";
+import { useHistory } from "react-router";
 
 type Props = {
     id: number
@@ -11,6 +12,7 @@ type Props = {
 export default function EditDevice(props: Props) {
     const [device, setDevice] = useState<Device | null>(null);
     const [protocols, setProtocols] = useState<Protocol[]>([]);
+    const history = useHistory();
 
     useEffect(() => {
         DeviceApi.get(props.id).then(x => setDevice(x));
@@ -19,7 +21,7 @@ export default function EditDevice(props: Props) {
 
     const submitForm = () => {
         if (device) {
-            DeviceApi.save(device);
+            DeviceApi.update(device);
         }
     }
 
@@ -59,7 +61,8 @@ export default function EditDevice(props: Props) {
                     <div className="card-footer">
                         <div className="row align-items-center">
                             <div className="col">
-                                <button className="btn btn-primary" onClick={submitForm}>Save</button>
+                                <button className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
+                                <button className="btn btn-default" onClick={submitForm}>Save</button>
                             </div>
                         </div>
                     </div>

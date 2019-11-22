@@ -26,7 +26,7 @@ namespace Navtrack.Web.Services
             this.mapper = mapper;
         }
 
-        public async Task<List<DeviceModel>> Get()
+        public async Task<List<DeviceModel>> GetAll()
         {
             List<Device> devices =
                 await repository.GetEntities<Device>().ToListAsync();
@@ -41,17 +41,11 @@ namespace Navtrack.Web.Services
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            unitOfWork.Add(new Device
-            {
-                IMEI = deviceModel.IMEI
-            });
+            Device mapped = mapper.Map<DeviceModel, Device>(deviceModel);
+
+            unitOfWork.Add(mapped);
 
             await unitOfWork.SaveChanges();
-        }
-
-        public Task<bool> IsValidNewDevice(DeviceModel model)
-        {
-            return repository.GetEntities<Device>().AllAsync(x => x.IMEI != model.IMEI);
         }
 
         public async Task<DeviceModel> Get(int id)
@@ -64,9 +58,11 @@ namespace Navtrack.Web.Services
                 : null;
         }
 
-        public List<ProtocolModel> GetProtocols()
+        public IEnumerable<ProtocolModel> GetProtocols()
         {
-            return Enum.GetValues(typeof(Protocol)).Cast<Protocol>().Select(mapper.Map<Protocol, ProtocolModel>)
+            return Enum.GetValues(typeof(Protocol)).Cast<Protocol>()
+                .Select(mapper.Map<Protocol, ProtocolModel>)
+                .OrderBy(x => x.Name)
                 .ToList();
         }
 
@@ -79,6 +75,11 @@ namespace Navtrack.Web.Services
             unitOfWork.Update(mapped);
 
             await unitOfWork.SaveChanges();
+        }
+
+        public Task<bool> IMEIAlreadyExists(string imei)
+        {
+            return repository.GetEntities<Device>().AnyAsync(x => x.IMEI == imei);
         }
     }
 }

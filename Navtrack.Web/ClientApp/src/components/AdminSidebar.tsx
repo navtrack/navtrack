@@ -1,10 +1,7 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
 export default function AdminSidebar() {
-    const history = useHistory();
-
     return (
         <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
             <div className="container-fluid">
@@ -21,24 +18,24 @@ export default function AdminSidebar() {
 
                 <ul className="nav align-items-center d-md-none">
                     <li className="nav-item dropdown">
-                        <a className="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown"
+                        <a className="nav-link nav-link-icon" href="#tmp" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i className="ni ni-bell-55"></i>
                         </a>
                         <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right"
                             aria-labelledby="navbar-default_dropdown_1">
-                            <a className="dropdown-item" href="#">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
+                            <a className="dropdown-item" href="#tmp">Action</a>
+                            <a className="dropdown-item" href="#tmp">Another action</a>
                             <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#">Something else here</a>
+                            <a className="dropdown-item" href="#tmp">Something else here</a>
                         </div>
                     </li>
                     <li className="nav-item dropdown">
-                        <a className="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        <a className="nav-link" href="#tmp" role="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             <div className="media align-items-center">
                                 <span className="avatar avatar-sm rounded-circle">
-                                    <img alt="Image placeholder" src="./assets/img/theme/team-1-800x800.jpg" />
+                                    <img alt="placeholder" src="./assets/img/theme/team-1-800x800.jpg" />
                                 </span>
                             </div>
                         </a>
@@ -77,7 +74,7 @@ export default function AdminSidebar() {
                         <div className="row">
                             <div className="col-6 collapse-brand">
                                 <a href="./index.html">
-                                    <img src="./assets/img/brand/blue.png" />
+                                    <img alt="tmp" src="./assets/img/brand/blue.png" />
                                 </a>
                             </div>
                             <div className="col-6 collapse-close">
