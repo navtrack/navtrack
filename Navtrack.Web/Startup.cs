@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -10,6 +11,8 @@ namespace Navtrack.Web
 {
     public class Startup
     {
+        private const string DefaultCorsPolicy = "defaultCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,7 +24,20 @@ namespace Navtrack.Web
         public void ConfigureServices(IServiceCollection services)
         {
             Bootstrapper.ConfigureServices(services);
+            
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(DefaultCorsPolicy,
+                    builder => { builder.AllowAnyOrigin(); });
+            });
+            
+            
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
@@ -40,11 +56,15 @@ namespace Navtrack.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
+            app.UseCors(DefaultCorsPolicy);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -54,15 +74,15 @@ namespace Navtrack.Web
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
-            });
+//            app.UseSpa(spa =>
+//            {
+//                spa.Options.SourcePath = "ClientApp";
+//
+//                if (env.IsDevelopment())
+//                {
+//                    spa.UseReactDevelopmentServer(npmScript: "start");
+//                }
+//            });
         }
     }
 }

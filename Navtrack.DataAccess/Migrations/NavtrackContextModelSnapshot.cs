@@ -15,7 +15,7 @@ namespace Navtrack.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-preview7.19362.6")
+                .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -23,16 +23,21 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("ClosedAt");
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("OpenedAt");
+                    b.Property<DateTime>("OpenedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RemoteEndPoint")
                         .IsRequired()
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
                     b.HasKey("Id");
@@ -44,11 +49,18 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("IMEI")
                         .IsRequired()
+                        .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 
@@ -59,19 +71,26 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Altitude");
+                    b.Property<int>("Altitude")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("DeviceId");
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("int");
 
-                    b.Property<double>("HDOP");
+                    b.Property<double>("HDOP")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Heading");
+                    b.Property<int>("Heading")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(9, 6)");
@@ -79,13 +98,17 @@ namespace Navtrack.DataAccess.Migrations
                     b.Property<decimal>("Longitude")
                         .HasColumnType("decimal(9, 6)");
 
-                    b.Property<int>("ObjectId");
+                    b.Property<int>("ObjectId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ProtocolData");
+                    b.Property<string>("ProtocolData")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("Satellites");
+                    b.Property<short>("Satellites")
+                        .HasColumnType("smallint");
 
-                    b.Property<int>("Speed");
+                    b.Property<int>("Speed")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -100,11 +123,14 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Data");
+                    b.Property<string>("Data")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -115,12 +141,15 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DeviceId");
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");

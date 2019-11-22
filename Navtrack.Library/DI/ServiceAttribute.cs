@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Navtrack.Library.DI
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class ServiceAttribute : Attribute
     {
         public ServiceAttribute(Type type)

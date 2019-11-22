@@ -1,28 +1,32 @@
 import React from "react";
+import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function AdminSidebar() {
+    const history = useHistory();
+
     return (
         <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
             <div className="container-fluid">
 
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false"
-                        aria-label="Toggle navigation">
+                    data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
                 <a className="navbar-brand pt-0" href="./index.html">
-                    <img src="./assets/img/brand/blue.png" className="navbar-brand-img" alt="..."/>
+                    <img src="./assets/img/brand/blue.png" className="navbar-brand-img" alt="..." />
                 </a>
 
                 <ul className="nav align-items-center d-md-none">
                     <li className="nav-item dropdown">
                         <a className="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                            aria-haspopup="true" aria-expanded="false">
                             <i className="ni ni-bell-55"></i>
                         </a>
                         <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right"
-                             aria-labelledby="navbar-default_dropdown_1">
+                            aria-labelledby="navbar-default_dropdown_1">
                             <a className="dropdown-item" href="#">Action</a>
                             <a className="dropdown-item" href="#">Another action</a>
                             <div className="dropdown-divider"></div>
@@ -31,11 +35,11 @@ export default function AdminSidebar() {
                     </li>
                     <li className="nav-item dropdown">
                         <a className="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                           aria-expanded="false">
+                            aria-expanded="false">
                             <div className="media align-items-center">
-              <span className="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="./assets/img/theme/team-1-800x800.jpg"/>
-              </span>
+                                <span className="avatar avatar-sm rounded-circle">
+                                    <img alt="Image placeholder" src="./assets/img/theme/team-1-800x800.jpg" />
+                                </span>
                             </div>
                         </a>
                         <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
@@ -73,13 +77,13 @@ export default function AdminSidebar() {
                         <div className="row">
                             <div className="col-6 collapse-brand">
                                 <a href="./index.html">
-                                    <img src="./assets/img/brand/blue.png"/>
+                                    <img src="./assets/img/brand/blue.png" />
                                 </a>
                             </div>
                             <div className="col-6 collapse-close">
                                 <button type="button" className="navbar-toggler" data-toggle="collapse"
-                                        data-target="#sidenav-collapse-main" aria-controls="sidenav-main"
-                                        aria-expanded="false" aria-label="Toggle sidenav">
+                                    data-target="#sidenav-collapse-main" aria-controls="sidenav-main"
+                                    aria-expanded="false" aria-label="Toggle sidenav">
                                     <span></span>
                                     <span></span>
                                 </button>
@@ -90,7 +94,7 @@ export default function AdminSidebar() {
                     <form className="mt-4 mb-3 d-md-none">
                         <div className="input-group input-group-rounded input-group-merge">
                             <input type="search" className="form-control form-control-rounded form-control-prepended"
-                                   placeholder="Search" aria-label="Search"/>
+                                placeholder="Search" aria-label="Search" />
                             <div className="input-group-prepend">
                                 <div className="input-group-text">
                                     <span className="fa fa-search"></span>
@@ -102,7 +106,7 @@ export default function AdminSidebar() {
                     <ul className="navbar-nav">
                         <li className="nav-item active active">
                             <a className=" nav-link active " href=" ./index.html"> <i
-                                className="ni ni-tv-2 text-primary"/> Dashboard
+                                className="ni ni-tv-2 text-primary" /> Dashboard
                             </a>
                         </li>
                         <li className="nav-item">
@@ -136,28 +140,43 @@ export default function AdminSidebar() {
                             </a>
                         </li>
                     </ul>
+                    <hr className="my-3" />
 
-                    <hr className="my-3"/>
+                    <h6 className="navbar-heading text-muted">Management</h6>
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/assets">
+                                <i className="fas fa-map-marker-alt" /> Assets
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/devices">
+                                <i className="fas fa-hdd" /> Devices
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <hr className="my-3" />
 
                     <h6 className="navbar-heading text-muted">Documentation</h6>
 
                     <ul className="navbar-nav mb-md-3">
                         <li className="nav-item">
                             <a className="nav-link"
-                               href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
-                                <i className="ni ni-spaceship"/> Getting started
+                                href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
+                                <i className="ni ni-spaceship" /> Getting started
                             </a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link"
-                               href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html">
-                                <i className="ni ni-palette"/> Foundation
+                                href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html">
+                                <i className="ni ni-palette" /> Foundation
                             </a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link"
-                               href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
-                                <i className="ni ni-ui-04"/> Components
+                                href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
+                                <i className="ni ni-ui-04" /> Components
                             </a>
                         </li>
                     </ul>

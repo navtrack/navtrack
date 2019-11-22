@@ -1,7 +1,42 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {ChangeEvent, FormEvent, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
+import {AccountApi} from "../services/Api/AccountApi";
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [showEmailRequiredError, setShowEmailRequiredError] = useState(false);
+    const [showPasswordRequiredError, setShowPasswordRequiredError] = useState(false);
+    
+    const history = useHistory();
+
+
+    const signIn = async (e: FormEvent) => {
+        e.preventDefault();
+
+        setShowEmailRequiredError(!email);
+        setShowPasswordRequiredError(!password);
+        
+        if (email && password) {
+            const response = await AccountApi.login(email, password);
+            
+            if (response.ok) {
+                history.push("/");
+            }
+        }
+    };
+
+    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setShowEmailRequiredError(false);
+        setEmail(e.target.value);
+    };
+
+    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setShowPasswordRequiredError(false);
+        setPassword(e.target.value);
+    };
+
     return (
         <>
             <div className="header bg-gradient-primary py-7 py-lg-8">
@@ -29,15 +64,18 @@ export default function Login() {
                                 <div className="text-center text-muted mb-4">
                                     <small>Sign in to Navtrack.</small>
                                 </div>
-                                <form>
+                                <form onSubmit={(e) => signIn(e)}>
                                     <div className="form-group mb-3">
                                         <div className="input-group input-group-alternative">
                                             <div className="input-group-prepend">
                                                 <span className="input-group-text"><i
                                                     className="ni ni-email-83"/></span>
                                             </div>
-                                            <input className="form-control" placeholder="Email" type="email"/>
+                                            <input className="form-control" placeholder="Email" type="email"
+                                                   value={email} onChange={(e) => handleEmailChange(e)}/>
                                         </div>
+                                        {showEmailRequiredError &&
+                                        <div className="text-red text-sm mt-1">Please provide an email.</div>}
                                     </div>
                                     <div className="form-group">
                                         <div className="input-group input-group-alternative">
@@ -45,8 +83,11 @@ export default function Login() {
                                                 <span className="input-group-text"><i
                                                     className="ni ni-lock-circle-open"/></span>
                                             </div>
-                                            <input className="form-control" placeholder="Password" type="password"/>
+                                            <input className="form-control" placeholder="Password" type="password"
+                                                   value={password} onChange={(e) => handlePasswordChange(e)}/>
                                         </div>
+                                        {showPasswordRequiredError &&
+                                        <div className="text-red text-sm mt-1">Please provide a password.</div>}
                                     </div>
                                     <div className="custom-control custom-control-alternative custom-checkbox">
                                         <input className="custom-control-input" id=" customCheckLogin" type="checkbox"/>
@@ -55,7 +96,7 @@ export default function Login() {
                                         </label>
                                     </div>
                                     <div className="text-center">
-                                        <button type="button" className="btn btn-primary mt-4">Sign in</button>
+                                        <button type="submit" className="btn btn-primary mt-4">Sign in</button>
                                     </div>
                                 </form>
                             </div>

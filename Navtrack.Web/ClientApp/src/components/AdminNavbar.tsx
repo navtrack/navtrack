@@ -1,39 +1,25 @@
-import React from "react";
-
-import AdminSidebar from "./AdminSidebar";
-import AdminFooter from "./AdminFooter";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function AdminNavbar() {
+    const [email, setEmail] = useState("email@navtrack.io");
+
     return (
-
-        <nav className="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+        <nav className="navbar navbar navbar-expand-md navbar-dark bg-dark">
             <div className="container-fluid">
-     
                 <a className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-                   href="./index.html">Dashboard</a>
-
-                <form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-                    <div className="form-group mb-0">
-                        <div className="input-group input-group-alternative">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text"><i className="fas fa-search"></i></span>
-                            </div>
-                            <input className="form-control" placeholder="Search" type="text"/>
-                        </div>
-                    </div>
-                </form>
-
+                    href="./index.html">Dashboard</a>
                 <ul className="navbar-nav align-items-center d-none d-md-flex">
                     <li className="nav-item dropdown">
                         <a className="nav-link pr-0" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false">
+                            aria-haspopup="true"
+                            aria-expanded="false">
                             <div className="media align-items-center">
-                <span className="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="./assets/img/theme/team-4-800x800.jpg"/>
-                </span>
+                                <span className="avatar avatar-sm rounded-circle bg-white">
+                                    <i className="fa fa-user text-gray-dark fa-lg" />
+                                </span>
                                 <div className="media-body ml-2 d-none d-lg-block">
-                                    <span className="mb-0 text-sm  font-weight-bold">Jessica Jones</span>
+                                    <span className="mb-0 text-sm  font-weight-bold">{email}</span>
                                 </div>
                             </div>
                         </a>
@@ -58,10 +44,9 @@ export default function AdminNavbar() {
                                 <span>Support</span>
                             </a>
                             <div className="dropdown-divider"></div>
-                            <a href="#!" className="dropdown-item">
-                                <i className="ni ni-user-run"></i>
-                                <span>Logout</span>
-                            </a>
+                            <Link to="/logout" className="dropdown-item">
+                                <i className="fas fa-sign-out-alt"/><span>Logout</span>
+                            </Link>
                         </div>
                     </li>
                 </ul>

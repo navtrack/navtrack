@@ -29,8 +29,9 @@ namespace Navtrack.Library.DI
         private static IEnumerable<Assembly> GetAssemblies()
         {
             List<Assembly> assemblies =
-                Assembly.GetEntryAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
-            
+                Assembly.GetEntryAssembly()?.GetReferencedAssemblies().Select(Assembly.Load).ToList() ??
+                new List<Assembly>();
+
             assemblies.Add(Assembly.GetEntryAssembly());
 
             return assemblies;
