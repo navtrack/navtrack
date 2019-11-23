@@ -1,5 +1,6 @@
 import { Api } from "./Api";
 import { Device } from "./Types/Device";
+import { DeviceType } from "./Types/DeviceType";
 
 export const DeviceApi = {
     get: function(id: number) : Promise<Device> {
@@ -7,7 +8,11 @@ export const DeviceApi = {
     },
 
     getAll: function() : Promise<Device[]> {
-        return Api.get<Device[]>("devices")
+        return Api.get<Device[]>("devices");
+    },
+
+    getTypes: function() : Promise<DeviceType[]> {
+        return Api.get<DeviceType[]>("devices/types");
     },
     
     update: function(device: Device) : Promise<Response> {

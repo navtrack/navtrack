@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Navtrack.Common.Devices;
 using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
@@ -80,6 +79,20 @@ namespace Navtrack.Web.Services
         public Task<bool> IMEIAlreadyExists(string imei)
         {
             return repository.GetEntities<Device>().AnyAsync(x => x.IMEI == imei);
+        }
+
+        public async Task<List<DeviceTypeModel>> GetTypes()
+        {
+            List<DeviceType> devices =
+                await repository.GetEntities<DeviceType>()
+                    .OrderBy(x => x.Brand)
+                    .ThenBy(x => x.Model)
+                    .ToListAsync();
+
+            List<DeviceTypeModel> mapped = devices.Select(mapper.Map<DeviceType, DeviceTypeModel>)
+                .ToList();
+
+            return mapped;
         }
     }
 }

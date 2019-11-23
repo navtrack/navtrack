@@ -134,7 +134,7 @@ export default function ReactTable({ columns, data }) {
             </CardFooter>
             :
             <CardBody className="py-4 text-center">
-              No data.
+              No items.
             </CardBody>}
       </div>
     </>

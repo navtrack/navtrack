@@ -1,7 +1,7 @@
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Navtrack.Web.Model.Models;
+using DeviceModel = Navtrack.Web.Model.Models.DeviceModel;
 
 namespace Navtrack.Web.Mappers
 {

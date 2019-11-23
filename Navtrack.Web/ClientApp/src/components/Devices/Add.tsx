@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Device } from "../../services/Api/Types/Device";
-import { Protocol } from "../../services/Api/Types/Protocol";
 import { DeviceApi } from "../../services/Api/DeviceApi";
-import { ProtocolApi } from "../../services/Api/ProtocolApi";
 import { useHistory } from "react-router";
+import { DeviceType } from "../../services/Api/Types/DeviceType";
 
 export default function AddDevice() {
     const [device, setDevice] = useState<Device>({ imei: "", name: "", protocolId: "1", id: 0 });
-    const [protocols, setProtocols] = useState<Protocol[]>([]);
+    const [deviceTypes, setDeviceTypes] = useState<DeviceType[]>([]);
     const history = useHistory();
 
     useEffect(() => {
-        ProtocolApi.getAll().then(protocols => {
-            setDevice(device => ({ ...device, protocolId: `${protocols[0].id}` }))
-            setProtocols(protocols)
+        DeviceApi.getTypes().then(deviceTypes => {
+            setDeviceTypes(deviceTypes)
         });
     }, [])
 
@@ -50,7 +48,7 @@ export default function AddDevice() {
                         <label className="col-md-1 col-form-label form-control-label">Model</label>
                         <div className="col-md-4">
                             <select className="form-control form-control-alternative" onChange={(e) => setDevice({ ...device, protocolId: e.target.value })}>
-                                {protocols.map(x => <option value={x.id} key={x.id}>{x.name}</option>)}
+                                {deviceTypes.map(x => <option value={x.id} key={x.id}>{x.name}</option>)}
                             </select>
                         </div>
                     </div>

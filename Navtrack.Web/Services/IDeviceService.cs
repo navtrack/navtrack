@@ -12,5 +12,6 @@ namespace Navtrack.Web.Services
         IEnumerable<ProtocolModel> GetProtocols();
         Task Update(DeviceModel model);
         Task<bool> IMEIAlreadyExists(string imei);
+        Task<List<DeviceTypeModel>> GetTypes();
     }
 }

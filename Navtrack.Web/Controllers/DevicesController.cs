@@ -36,7 +36,7 @@ namespace Navtrack.Web.Controllers
             {
                 ModelState.AddModelError(nameof(DeviceModel.IMEI), "IMEI already exists in the database.");
 
-                return new BadRequestObjectResult(ModelState);
+                return ValidationProblem();
             }
             else
             {
@@ -58,6 +58,12 @@ namespace Navtrack.Web.Controllers
         public IEnumerable<ProtocolModel> GetProtocols()
         {
             return deviceService.GetProtocols();
+        }
+        
+        [HttpGet("types")]
+        public Task<List<DeviceTypeModel>> GetTypes()
+        {
+            return deviceService.GetTypes();
         }
     }
 }

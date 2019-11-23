@@ -1,4 +1,4 @@
-using Navtrack.Common.Devices;
+using Navtrack.DataAccess.Model.Custom;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 using Navtrack.Web.Model.Models;
