@@ -13,6 +13,7 @@ namespace Navtrack.DataAccess.Model
         public DbSet<Device> Devices { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<DeviceType> DeviceTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,11 +48,16 @@ namespace Navtrack.DataAccess.Model
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Device)
                     .HasForeignKey(x => x.DeviceId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne(x => x.Asset)
                     .WithOne(x => x.Device)
                     .HasForeignKey<Asset>(x => x.DeviceId)
+                    .OnDelete(DeleteBehavior.NoAction);
+                
+                entity.HasOne(x => x.DeviceType)
+                    .WithMany(x => x.Devices)
+                    .HasForeignKey(x => x.DeviceTypeId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
             
@@ -64,7 +70,7 @@ namespace Navtrack.DataAccess.Model
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Asset)
                     .HasForeignKey(x => x.AssetId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne(x => x.Device)
                     .WithOne(x => x.Asset)
@@ -83,6 +89,19 @@ namespace Navtrack.DataAccess.Model
             modelBuilder.Entity<Log>(entity =>
             {
                 entity.HasKey(x => x.Id);
+            });
+            
+            modelBuilder.Entity<DeviceType>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Brand).HasMaxLength(200).IsRequired();
+                entity.Property(x => x.Model).HasMaxLength(200).IsRequired();
+                entity.Property(x => x.ProtocolId).IsRequired();
+
+                entity.HasMany(x => x.Devices)
+                    .WithOne(x => x.DeviceType)
+                    .HasForeignKey(x => x.DeviceTypeId)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
         }
     }

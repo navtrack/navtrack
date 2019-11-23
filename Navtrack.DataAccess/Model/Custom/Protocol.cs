@@ -1,4 +1,4 @@
-namespace Navtrack.Common.Devices
+namespace Navtrack.DataAccess.Model.Custom
 {
     public enum Protocol
     {
