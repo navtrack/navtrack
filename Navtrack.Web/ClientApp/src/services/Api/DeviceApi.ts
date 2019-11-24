@@ -15,6 +15,12 @@ export const DeviceApi = {
         return Api.get<DeviceType[]>("devices/types");
     },
     
+    getAvailableDevices: function(id?: number) : Promise<Device[]> {
+        const url = id ? `devices/available/${id}` : "devices/available";
+
+        return Api.get<Device[]>(url);
+    },
+    
     update: function(device: Device) : Promise<Response> {
         return Api.put("devices/" + device.id, device);
     },

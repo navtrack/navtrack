@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Model.Custom;
@@ -28,7 +29,9 @@ namespace Navtrack.Web.Services
         public async Task<List<DeviceModel>> GetAll()
         {
             List<Device> devices =
-                await repository.GetEntities<Device>().ToListAsync();
+                await repository.GetEntities<Device>()
+                    .Include(x => x.DeviceType)
+                    .ToListAsync();
 
             List<DeviceModel> mapped = devices.Select(mapper.Map<Device, DeviceModel>)
                 .ToList();
@@ -36,11 +39,11 @@ namespace Navtrack.Web.Services
             return mapped;
         }
 
-        public async Task Add(DeviceModel deviceModel)
+        public async Task Add(DeviceModel device)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            Device mapped = mapper.Map<DeviceModel, Device>(deviceModel);
+            Device mapped = mapper.Map<DeviceModel, Device>(device);
 
             unitOfWork.Add(mapped);
 
@@ -50,7 +53,9 @@ namespace Navtrack.Web.Services
         public async Task<DeviceModel> Get(int id)
         {
             Device device = await 
-                repository.GetEntities<Device>().FirstOrDefaultAsync(x => x.Id == id);
+                repository.GetEntities<Device>()
+                    .Include(x => x.DeviceType)
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
             return device != null
                 ? mapper.Map<Device, DeviceModel>(device)
@@ -65,11 +70,11 @@ namespace Navtrack.Web.Services
                 .ToList();
         }
 
-        public async Task Update(DeviceModel model)
+        public async Task Update(DeviceModel device)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             
-            Device mapped = mapper.Map<DeviceModel, Device>(model);
+            Device mapped = mapper.Map<DeviceModel, Device>(device);
 
             unitOfWork.Update(mapped);
 
@@ -90,6 +95,33 @@ namespace Navtrack.Web.Services
                     .ToListAsync();
 
             List<DeviceTypeModel> mapped = devices.Select(mapper.Map<DeviceType, DeviceTypeModel>)
+                .ToList();
+
+            return mapped;
+        }
+
+        public async Task ValidateModel(DeviceModel device, ModelStateDictionary modelState)
+        {
+            if (await repository.GetEntities<Device>().AnyAsync(x => x.IMEI == device.IMEI && x.Id != device.Id))
+            {
+                modelState.AddModelError(nameof(DeviceModel.IMEI), "IMEI already exists in the database.");
+            }
+
+            if (await repository.GetEntities<DeviceType>().AllAsync(x => x.Id != device.DeviceTypeId))
+            {
+                modelState.AddModelError(nameof(DeviceModel.IMEI), "No such device type.");
+            }
+        }
+
+        public async Task<List<DeviceModel>> GetAllAvailableIncluding(int? id)
+        {
+            List<Device> devices =
+                await repository.GetEntities<Device>()
+                    .Include(x => x.DeviceType)
+                    .Where(x => x.Asset == null || (id.HasValue && x.Id == id))
+                    .ToListAsync();
+
+            List<DeviceModel> mapped = devices.Select(mapper.Map<Device, DeviceModel>)
                 .ToList();
 
             return mapped;

@@ -3,37 +3,52 @@ import { Device } from "../../services/Api/Types/Device";
 import { DeviceType } from "../../services/Api/Types/DeviceType";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { useHistory } from "react-router";
+import AdminLayout from "../AdminLayout";
 
 type Props = {
-    id: number
+    id?: number
 }
 
-export default function EditDevice(props: Props) {
-    const [device, setDevice] = useState<Device | null>(null);
+export default function DeviceEdit(props: Props) {
+    const [device, setDevice] = useState<Device>({
+        id: 0,
+        imei: '',
+        name: '',
+        type: '',
+        deviceTypeId: 0
+    });
     const [deviceTypes, setDeviceTypes] = useState<DeviceType[]>([]);
     const history = useHistory();
 
     useEffect(() => {
-        DeviceApi.get(props.id).then(x => setDevice(x));
+        if (props.id) {
+            DeviceApi.get(props.id).then(x => setDevice(x));
+        }
+
         DeviceApi.getTypes().then(deviceTypes => {
             setDeviceTypes(deviceTypes)
         });
     }, [props.id])
 
-    const submitForm = () => {
-        if (device) {
-            DeviceApi.update(device);
+    const submitForm = async () => {
+        if (device.id > 0) {
+            await DeviceApi.update(device);
         }
+        else {
+            await DeviceApi.add(device);
+        }
+
+        history.goBack();
     }
 
     return (
-        <>
+        <AdminLayout>
             {device &&
                 <div className="card shadow">
                     <div className="card-header">
                         <div className="row align-items-center">
                             <div className="col">
-                                <h3 className="mb-0">Edit device</h3>
+                                <h3 className="mb-0">{props.id ? <>Edit device</> : <>Add device</>}</h3>
                             </div>
                         </div>
                     </div>
@@ -51,9 +66,9 @@ export default function EditDevice(props: Props) {
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label className="col-md-1 col-form-label form-control-label">Model</label>
+                            <label className="col-md-1 col-form-label form-control-label">Type</label>
                             <div className="col-md-4">
-                                <select className="form-control form-control-alternative" onChange={(e) => setDevice({ ...device, protocolId: e.target.value })}>
+                                <select className="form-control form-control-alternative" value={device.deviceTypeId} onChange={(e) => setDevice({ ...device, deviceTypeId: parseInt(e.target.value) })}>
                                     {deviceTypes.map(x => <option value={x.id} key={x.id}>{x.name}</option>)}
                                 </select>
                             </div>
@@ -69,6 +84,6 @@ export default function EditDevice(props: Props) {
                     </div>
                 </div>
             }
-        </>
+        </AdminLayout>
     );
 }

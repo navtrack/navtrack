@@ -14,6 +14,8 @@ namespace Navtrack.Web.Mappers
             destination.Id = source.Id;
             destination.IMEI = source.IMEI;
             destination.Name = source.Name;
+            destination.DeviceTypeId = source.DeviceTypeId;
+            destination.Type = $"{source.DeviceType.Brand} {source.DeviceType.Model}";
 
             return destination;
         }
@@ -23,6 +25,7 @@ namespace Navtrack.Web.Mappers
             destination.Id = source.Id;
             destination.IMEI = source.IMEI;
             destination.Name = source.Name;
+            destination.DeviceTypeId = source.DeviceTypeId;
 
             return destination;
         }

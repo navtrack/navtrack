@@ -7,11 +7,13 @@ import LoginLayout from "./components/LoginLayout";
 import Login from "./components/Login";
 import AdminLayout from "./components/AdminLayout";
 import LiveTracking from "./components/LiveTracking";
-import AddDevice from "./components/Devices/Add";
 import Home from "./components/Home";
 
-import Devices from "./components/Devices"
-import EditDevice from './components/Devices/Edit';
+import DeviceList from "./components/Devices/List"
+import DeviceEdit from './components/Devices/Edit';
+
+import AssetList from "./components/Assets/List"
+import AssetEdit from './components/Assets/Edit';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -19,18 +21,23 @@ export default class App extends Component {
     render() {
         return (
             <>
-                <Route path='/live'><AdminLayout><LiveTracking /></AdminLayout></Route>
-                <Route path='/counter' component={Counter} />
-                <Route path='/fetch-data' component={FetchData} />
                 <Switch>
-                    <Route exact path="/devices"><AdminLayout><Devices /></AdminLayout></Route>
-                    <Route exact path="/devices/add"><AdminLayout><AddDevice /></AdminLayout></Route>
-                    <Route path="/devices/:id" render={(props) => <AdminLayout><EditDevice id={props.match.params.id} /></AdminLayout>}></Route>
+                    <Route path='/live'><AdminLayout><LiveTracking /></AdminLayout></Route>
+                    <Route path='/counter' component={Counter} />
+                    <Route path='/fetch-data' component={FetchData} />
+
+                    <Route exact path="/devices"><DeviceList /></Route>
+                    <Route path="/devices/add"><DeviceEdit /></Route>
+                    <Route path="/devices/:id" render={(props) => <DeviceEdit id={props.match.params.id} />}></Route>
+
+                    <Route exact path="/assets"><AssetList /></Route>
+                    <Route path="/assets/add"><AssetEdit /></Route>
+                    <Route path="/assets/:id" render={(props) => <AssetEdit id={props.match.params.id} />}></Route>
+
+                    <Route path="/login"><LoginLayout><Login /></LoginLayout></Route>
+                    <Route exact path="/"><AdminLayout><Home /></AdminLayout></Route>
                 </Switch>
-                <Route path="/assets/add"><AdminLayout><AddDevice /></AdminLayout></Route>
-                <Route exact path="/assets"><AdminLayout><Devices /></AdminLayout></Route>
-                <Route path="/login"><LoginLayout><Login /></LoginLayout></Route>
-                <Route exact path="/"><AdminLayout><Home /></AdminLayout></Route>
+
             </>
         );
     }

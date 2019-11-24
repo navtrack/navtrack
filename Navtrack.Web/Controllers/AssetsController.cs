@@ -17,10 +17,31 @@ namespace Navtrack.Web.Controllers
             this.assetService = assetService;
         }
 
-        [HttpGet]
-        public Task<List<AssetModel>> Get()
+        [HttpGet("{id}")]
+        public Task<AssetModel> Get(int id)
         {
-            return assetService.Get();
+            return assetService.Get(id);
+        }
+
+        [HttpGet]
+        public Task<List<AssetModel>> GetAll()
+        {
+            return assetService.GetAll();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Add(AssetModel asset)
+        {
+            await assetService.ValidateModel(asset, ModelState);
+            
+            if (ModelState.IsValid)
+            {
+                await assetService.Add(asset);
+
+                return Ok();
+            }
+            
+            return ValidationProblem();
         }
     }
 }

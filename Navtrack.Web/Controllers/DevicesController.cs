@@ -29,29 +29,41 @@ namespace Navtrack.Web.Controllers
             return deviceService.GetAll();
         }
         
-        [HttpPost]
-        public async Task<IActionResult> Add(DeviceModel model)
+        [HttpGet("available")]
+        [HttpGet("available/{id}")]
+        public Task<List<DeviceModel>> GetAll(int? id)
         {
-            if (await deviceService.IMEIAlreadyExists(model.IMEI))
-            {
-                ModelState.AddModelError(nameof(DeviceModel.IMEI), "IMEI already exists in the database.");
+            return deviceService.GetAllAvailableIncluding(id);
+        }
 
-                return ValidationProblem();
-            }
-            else
+        [HttpPost]
+        public async Task<IActionResult> Add(DeviceModel device)
+        {
+            await deviceService.ValidateModel(device, ModelState);
+            
+            if (ModelState.IsValid)
             {
-                await deviceService.Add(model);
+                await deviceService.Add(device);
 
                 return Ok();
             }
+            
+            return ValidationProblem();
         }
         
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(DeviceModel model)
+        [HttpPut]
+        public async Task<IActionResult> Update(DeviceModel device)
         {
-            await deviceService.Update(model);
+            await deviceService.ValidateModel(device, ModelState);
+            
+            if (ModelState.IsValid)
+            {
+                await deviceService.Update(device);
 
-            return Ok();
+                return Ok();
+            }
+
+            return ValidationProblem();
         }
 
         [HttpGet("protocols")]

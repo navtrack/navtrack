@@ -4,36 +4,39 @@ import { useHistory } from "react-router";
 import { Device } from "../../services/Api/Types/Device";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { Link } from "react-router-dom";
+import AdminLayout from "../AdminLayout";
 
-export default function Devices() {
+export default function DeviceList() {
     const [devices, setDevices] = useState<Device[]>([]);
-
     const history = useHistory();
 
     useEffect(() => {
         DeviceApi.getAll().then(x => setDevices(x));
     }, []);
 
-
     const columns = useMemo(() => [
-        {
-            Header: "IMEI",
-            accessor: "imei",
-            Cell: (cell: any) => <Link to={"/devices/"+ cell.row.original.id}>{cell.cell.value}</Link>,
-        },
         {
             Header: "Name",
             accessor: "name"
         },
         {
+            Header: "Type",
+            accessor: "type"
+        },
+        {
+            Header: "IMEI",
+            accessor: "imei",
+            Cell: (cell: any) => <Link to={"/devices/" + cell.row.original.id}>{cell.cell.value}</Link>,
+        },
+        {
             accessor: "id",
-            Cell: (cell: any) => <Link to={"/devices/"+ cell.cell.value}><i className="fas fa-edit" /></Link>,
+            Cell: (cell: any) => <Link to={"/devices/" + cell.cell.value}><i className="fas fa-edit" /></Link>,
             disableSortBy: true
         }
     ], []);
 
     return (
-        <>
+        <AdminLayout>
             <div className="card shadow">
                 <div className="card-header border-0">
                     <div className="row align-items-center">
@@ -49,6 +52,6 @@ export default function Devices() {
                     <ReactTable columns={columns} data={devices} />
                 </div>
             </div>
-        </>
+        </AdminLayout>
     );
 }
