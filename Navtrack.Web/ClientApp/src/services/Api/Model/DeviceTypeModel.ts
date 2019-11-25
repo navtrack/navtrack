@@ -1,4 +1,4 @@
-export type DeviceType = {
+export type DeviceTypeModel = {
   id: number,
   name: string,
   protocolId: number

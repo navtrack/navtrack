@@ -9,11 +9,11 @@ import AdminLayout from "./components/AdminLayout";
 import LiveTracking from "./components/LiveTracking";
 import Home from "./components/Home";
 
-import DeviceList from "./components/Devices/List"
-import DeviceEdit from './components/Devices/Edit';
+import DeviceList from "./components/Devices/DeviceList"
+import DeviceEdit from './components/Devices/DeviceEdit';
 
-import AssetList from "./components/Assets/List"
-import AssetEdit from './components/Assets/Edit';
+import AssetList from "./components/Assets/AssetList"
+import AssetEdit from './components/Assets/AssetEdit';
 
 export default class App extends Component {
     static displayName = App.name;

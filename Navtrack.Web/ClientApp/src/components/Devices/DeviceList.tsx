@@ -1,13 +1,13 @@
 import React, { useMemo, useState, useEffect } from "react";
 import ReactTable from "../Table/ReactTable"
 import { useHistory } from "react-router";
-import { Device } from "../../services/Api/Types/Device";
+import { DeviceModel } from "../../services/Api/Model/DeviceModel";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { Link } from "react-router-dom";
 import AdminLayout from "../AdminLayout";
 
 export default function DeviceList() {
-    const [devices, setDevices] = useState<Device[]>([]);
+    const [devices, setDevices] = useState<DeviceModel[]>([]);
     const history = useHistory();
 
     useEffect(() => {

@@ -1,8 +1,8 @@
-import {ApiUtil} from "./ApiUtil";
+import {HttpClientUtil} from "../HttpClient/HttpClientUtil";
 
 export const AccountApi = {
     login: function (email: string, password: string): Promise<Response> {
-        return fetch(ApiUtil.apiUrl("account/login"), {
+        return fetch(HttpClientUtil.apiUrl("account/login"), {
             method: "post",
             headers: {
                 "Content-Type": "application/json"

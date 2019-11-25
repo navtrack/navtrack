@@ -1,4 +1,4 @@
-export type Asset = {
+export type AssetModel = {
   id: number,
   name: string,
   deviceId: number,

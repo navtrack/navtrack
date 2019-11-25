@@ -3,11 +3,11 @@ import ReactTable from "../Table/ReactTable"
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import AdminLayout from "../AdminLayout";
-import { Asset } from "../../services/Api/Types/Asset";
+import { AssetModel } from "../../services/Api/Model/AssetModel";
 import { AssetApi } from "../../services/Api/AssetApi";
 
 export default function AssetList() {
-    const [assets, setAssets] = useState<Asset[]>([]);
+    const [assets, setAssets] = useState<AssetModel[]>([]);
     const history = useHistory();
 
     useEffect(() => {

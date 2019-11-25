@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Device } from "../../services/Api/Types/Device";
-import { DeviceType } from "../../services/Api/Types/DeviceType";
+import { DeviceModel } from "../../services/Api/Model/DeviceModel";
+import { DeviceTypeModel } from "../../services/Api/Model/DeviceTypeModel";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { useHistory } from "react-router";
 import AdminLayout from "../AdminLayout";
@@ -10,14 +10,14 @@ type Props = {
 }
 
 export default function DeviceEdit(props: Props) {
-    const [device, setDevice] = useState<Device>({
+    const [device, setDevice] = useState<DeviceModel>({
         id: 0,
         imei: '',
         name: '',
         type: '',
         deviceTypeId: 0
     });
-    const [deviceTypes, setDeviceTypes] = useState<DeviceType[]>([]);
+    const [deviceTypes, setDeviceTypes] = useState<DeviceTypeModel[]>([]);
     const history = useHistory();
 
     useEffect(() => {

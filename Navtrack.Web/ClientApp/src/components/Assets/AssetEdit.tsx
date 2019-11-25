@@ -2,40 +2,60 @@ import React, { useState, useEffect } from "react";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { useHistory } from "react-router";
 import AdminLayout from "../AdminLayout";
-import { Asset } from "../../services/Api/Types/Asset";
+import { AssetModel } from "../../services/Api/Model/AssetModel";
 import { AssetApi } from "../../services/Api/AssetApi";
-import { Device } from "../../services/Api/Types/Device";
+import { DeviceModel } from "../../services/Api/Model/DeviceModel";
+import InputError from "../Common/InputError";
 
 type Props = {
     id?: number
 }
 
 export default function AssetEdit(props: Props) {
-    const [asset, setAsset] = useState<Asset>({
+    const [asset, setAsset] = useState<AssetModel>({
         id: 0,
         name: '',
-        deviceId: 0
+        deviceId: 0,
+        deviceType: ''
     });
-    const [devices, setDevices] = useState<Device[]>([]);
+    const [devices, setDevices] = useState<DeviceModel[]>([]);
+    const [errors, setErrors] = useState<{ [id: string]: string[]; }>({});
     const history = useHistory();
 
     useEffect(() => {
         if (props.id) {
-            AssetApi.get(props.id).then(x => setAsset(x));
+            AssetApi.get(props.id)
+                .then(x => setAsset(x));
         }
 
         DeviceApi.getAvailableDevices(props.id).then(devices => setDevices(devices));
     }, [props.id])
 
     const submitForm = async () => {
-        if (asset.id > 0) {
-            await AssetApi.update(asset);
+        if (validModel()) {
+            if (asset.id > 0) {
+                await AssetApi.update(asset)
+                    .catch(x => setErrors(x.errors));
+            }
+            else {
+                AssetApi.add(asset)
+                    .catch(x => setErrors(x.errors));
+            }
+
+            history.goBack();
         }
-        else {
-            await AssetApi.add(asset);
+    }
+
+    const validModel = (): boolean => {
+        const errors: { [id: string]: string[]; } = {};
+
+        if (!(asset.name.length > 0)) {
+            errors["name"] = ["The Name field is required."];
         }
 
-        history.goBack();
+        setErrors(errors);
+
+        return Object.keys(errors).length === 0;
     }
 
     return (
@@ -53,7 +73,11 @@ export default function AssetEdit(props: Props) {
                         <div className="form-group row">
                             <label className="col-md-1 col-form-label form-control-label">Name</label>
                             <div className="col-md-5">
-                                <input className="form-control form-control-alternative" type="text" value={asset.name} onChange={(e) => setAsset({ ...asset, name: e.target.value })} />
+                                <input className="form-control form-control-alternative" type="text" value={asset.name} onChange={(e) => {
+                                    setAsset({ ...asset, name: e.target.value });
+                                    setErrors({ ...errors, name: [] })
+                                }} />
+                                <InputError name="name" errors={errors} />
                             </div>
                         </div>
                         <div className="form-group row">

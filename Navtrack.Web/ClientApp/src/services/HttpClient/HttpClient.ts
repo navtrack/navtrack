@@ -1,24 +1,24 @@
-import { ApiUtil } from "./ApiUtil";
+import { HttpClientUtil } from "./HttpClientUtil";
 
-export const Api = {
+export const HttpClient = {
     get: <T>(url: string) => {
-        return fetch(ApiUtil.apiUrl(url), {
-            method: "get"
+        return fetch(HttpClientUtil.apiUrl(url), {
+            method: "GET"
         }).then(handleResponse<T>())
     },
 
     post: (url: string, bodyObject: any): Promise<Response> => {
-        return fetch(ApiUtil.apiUrl(url), {
-            method: "post",
+        return fetch(HttpClientUtil.apiUrl(url), {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json-patch+json",
             },
             body: JSON.stringify(bodyObject)
-        });
+        }).then(handleResponse<Response>());
     },
 
     put: (url: string, bodyObject: any): Promise<Response> => {
-        return fetch(ApiUtil.apiUrl(url), {
+        return fetch(HttpClientUtil.apiUrl(url), {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json-patch+json",
@@ -33,9 +33,7 @@ function handleResponse<T>(): (value: Response) => Promise<T> {
         const json = await response.json();
 
         if (!response.ok) {
-            const apiError = { ...json, error: response.status };
-
-            throw apiError;
+            throw json;
         }
 
         return json as T;

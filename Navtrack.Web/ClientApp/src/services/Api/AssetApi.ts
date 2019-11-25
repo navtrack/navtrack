@@ -1,20 +1,20 @@
-import { Api } from "./Api";
-import { Asset } from "./Types/Asset";
+import { HttpClient } from "../HttpClient/HttpClient";
+import { AssetModel } from "./Model/AssetModel";
 
 export const AssetApi = {
-    get: function(id: number) : Promise<Asset> {
-        return Api.get<Asset>("assets/" + id);
+    get: function(id: number) : Promise<AssetModel> {
+        return HttpClient.get<AssetModel>("assets/" + id);
     },
 
-    getAll: function() : Promise<Asset[]> {
-        return Api.get<Asset[]>("assets");
+    getAll: function() : Promise<AssetModel[]> {
+        return HttpClient.get<AssetModel[]>("assets");
     },
 
-    update: function(asset: Asset) : Promise<Response> {
-        return Api.put("assets/" + asset.id, asset);
+    update: function(asset: AssetModel) : Promise<Response> {
+        return HttpClient.put("assets/" + asset.id, asset);
     },
     
-    add: function(asset: Asset) : Promise<Response> {
-        return Api.post("assets", asset);
+    add: function(asset: AssetModel) : Promise<Response> {
+        return HttpClient.post("assets", asset);
     }
 }
