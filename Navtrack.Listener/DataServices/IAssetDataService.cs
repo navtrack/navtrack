@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model;
 
-namespace Navtrack.Common.DataServices
+namespace Navtrack.Listener.DataServices
 {
-    public interface IObjectDataService
+    public interface IAssetDataService
     {
         Task<Asset> GetObjectByIMEI(string imei);
     }

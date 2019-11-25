@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json;
-using Navtrack.Common.Model;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Protocols.Teltonika
 {

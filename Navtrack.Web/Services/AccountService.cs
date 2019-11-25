@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Navtrack.Library.DI;
-using Navtrack.Web.Model.Account;
+using Navtrack.Web.Models.Account;
 
 namespace Navtrack.Web.Services
 {

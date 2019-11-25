@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model;
 
-namespace Navtrack.Common.DataServices
+namespace Navtrack.Listener.DataServices
 {
     public interface ILocationDataService
     {

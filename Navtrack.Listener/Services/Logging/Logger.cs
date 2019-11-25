@@ -3,7 +3,7 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Common.Services.Logging
+namespace Navtrack.Listener.Services.Logging
 {
     [Service(typeof(ILogger))]
     public class Logger : ILogger

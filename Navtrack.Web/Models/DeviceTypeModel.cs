@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace Navtrack.Web.Model.Models
+namespace Navtrack.Web.Models
 {
     public class DeviceTypeModel
     {

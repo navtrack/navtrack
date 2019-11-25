@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Navtrack.Common.Services;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Services;
 
 namespace Navtrack.Listener.Protocols.Teltonika
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 
-namespace Navtrack.Common.Model
+namespace Navtrack.Listener.Models
 {
     public class Location
     {

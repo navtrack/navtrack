@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Navtrack.Common.Services;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols;
-using ILogger = Navtrack.Common.Services.Logging.ILogger;
+using ILogger = Navtrack.Listener.Services.Logging.ILogger;
 
 // ReSharper disable AssignmentIsFullyDiscarded
 

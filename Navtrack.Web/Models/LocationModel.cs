@@ -1,6 +1,6 @@
 using System;
 
-namespace Navtrack.Web.Model
+namespace Navtrack.Web.Models
 {
     public class LocationModel
     {

@@ -5,7 +5,7 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Common.Services
+namespace Navtrack.Listener.Services
 {
     [Service(typeof(IConnectionService))]
     public class ConnectionService : IConnectionService

@@ -7,7 +7,7 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Navtrack.Web.Model.Models;
+using Navtrack.Web.Models;
 
 namespace Navtrack.Web.Services
 {

@@ -4,14 +4,14 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Common.DataServices
+namespace Navtrack.Listener.DataServices
 {
-    [Service(typeof(IObjectDataService))]
-    public class ObjectDataService : IObjectDataService
+    [Service(typeof(IAssetDataService))]
+    public class AssetDataService : IAssetDataService
     {
         private readonly IRepository repository;
 
-        public ObjectDataService(IRepository repository)
+        public AssetDataService(IRepository repository)
         {
             this.repository = repository;
         }

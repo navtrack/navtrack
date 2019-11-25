@@ -1,4 +1,4 @@
-using Navtrack.Common.Model;
+using Navtrack.Listener.Models;
 using Navtrack.Listener.Protocols.Meitrack;
 using NUnit.Framework;
 

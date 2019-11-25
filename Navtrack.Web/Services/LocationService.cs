@@ -6,7 +6,7 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Navtrack.Web.Model;
+using Navtrack.Web.Models;
 
 namespace Navtrack.Web.Services
 {
@@ -27,10 +27,10 @@ namespace Navtrack.Web.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<LocationModel> GetLatestLocation(int objectId)
+        public async Task<LocationModel> GetLatestLocation(int assetId)
         {
             Location location = await repository.GetEntities<Location>()
-                .Where(x => x.AssetId == objectId)
+                .Where(x => x.AssetId == assetId)
                 .OrderByDescending(x => x.DateTime)
                 .FirstOrDefaultAsync();
 

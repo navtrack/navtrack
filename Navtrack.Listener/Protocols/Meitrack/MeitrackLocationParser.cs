@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using Navtrack.Common.Model;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Models;
 using static System.Char;
 
 namespace Navtrack.Listener.Protocols.Meitrack

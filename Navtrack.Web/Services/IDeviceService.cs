@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Navtrack.Web.Model.Models;
+using Navtrack.Web.Models;
 
 namespace Navtrack.Web.Services
 {

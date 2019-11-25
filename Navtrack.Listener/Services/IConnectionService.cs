@@ -2,7 +2,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model;
 
-namespace Navtrack.Common.Services
+namespace Navtrack.Listener.Services
 {
     public interface IConnectionService
     {

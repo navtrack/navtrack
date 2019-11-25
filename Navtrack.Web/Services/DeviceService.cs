@@ -9,8 +9,8 @@ using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Navtrack.Web.Model.Models;
-using DeviceModel = Navtrack.Web.Model.Models.DeviceModel;
+using Navtrack.Web.Models;
+using DeviceModel = Navtrack.Web.Models.DeviceModel;
 
 namespace Navtrack.Web.Services
 {

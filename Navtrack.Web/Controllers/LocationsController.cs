@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Web.Model;
+using Navtrack.Web.Models;
 using Navtrack.Web.Services;
 
 namespace Navtrack.Web.Controllers
@@ -16,10 +16,10 @@ namespace Navtrack.Web.Controllers
             this.locationService = locationService;
         }
 
-        [HttpGet("{objectId}/latest")]
-        public async Task<LocationModel> Get(int objectId)
+        [HttpGet("latest/{assetId}")]
+        public async Task<LocationModel> Get(int assetId)
         {
-            LocationModel location = await locationService.GetLatestLocation(objectId);
+            LocationModel location = await locationService.GetLatestLocation(assetId);
 
             return location;
         }

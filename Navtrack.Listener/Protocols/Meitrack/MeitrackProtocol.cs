@@ -1,8 +1,8 @@
 using System.IO;
 using System.Threading.Tasks;
-using Navtrack.Common.Model;
-using Navtrack.Common.Services;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Models;
+using Navtrack.Listener.Services;
 
 namespace Navtrack.Listener.Protocols.Meitrack
 {

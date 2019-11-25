@@ -1,4 +1,4 @@
-﻿namespace Navtrack.Common.Helpers
+﻿namespace Navtrack.Listener.Helpers
 {
     public static class Gps
     {

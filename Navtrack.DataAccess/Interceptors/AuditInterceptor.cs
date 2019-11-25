@@ -10,9 +10,7 @@ namespace Navtrack.DataAccess.Interceptors
     {
         public override void OnAdd<T>(T entity)
         {
-            EntityAudit entityAudit = entity as EntityAudit;
-
-            if (entityAudit != null)
+            if (entity is EntityAudit entityAudit)
             {
                 entityAudit.CreatedAt = DateTime.Now;
             }

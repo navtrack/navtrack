@@ -1,4 +1,4 @@
-namespace Navtrack.Web.Model.Account
+namespace Navtrack.Web.Models.Account
 {
     public class UserInfo
     {

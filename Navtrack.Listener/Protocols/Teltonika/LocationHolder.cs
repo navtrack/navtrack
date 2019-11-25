@@ -1,4 +1,4 @@
-using Navtrack.Common.Model;
+using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Protocols.Teltonika
 {

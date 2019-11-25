@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Navtrack.Web.Model.Account;
+using Navtrack.Web.Models.Account;
 
 namespace Navtrack.Web.Services
 {

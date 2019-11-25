@@ -1,32 +1,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Navtrack.Common.DataServices;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Location = Navtrack.Common.Model.Location;
+using Navtrack.Listener.DataServices;
+using Location = Navtrack.Listener.Models.Location;
 
-namespace Navtrack.Common.Services
+namespace Navtrack.Listener.Services
 {
     [Service(typeof(ILocationService))]
     public class LocationService : ILocationService
     {
         private readonly ILocationDataService locationDataService;
-        private readonly IObjectDataService objectDataService;
+        private readonly IAssetDataService assetDataService;
         private readonly IMapper mapper;
 
         public LocationService(ILocationDataService locationDataService, IMapper mapper,
-            IObjectDataService objectDataService)
+            IAssetDataService assetDataService)
         {
             this.locationDataService = locationDataService;
             this.mapper = mapper;
-            this.objectDataService = objectDataService;
+            this.assetDataService = assetDataService;
         }
 
         public async Task Add(Location location)
         {
-            Asset asset = await objectDataService.GetObjectByIMEI(location.Device.IMEI);
+            Asset asset = await assetDataService.GetObjectByIMEI(location.Device.IMEI);
 
             if (asset != null)
             {
@@ -43,7 +43,7 @@ namespace Navtrack.Common.Services
             {
                 string imei = locations.First().Device.IMEI;
 
-                Asset asset = await objectDataService.GetObjectByIMEI(imei);
+                Asset asset = await assetDataService.GetObjectByIMEI(imei);
 
                 if (asset != null)
                 {

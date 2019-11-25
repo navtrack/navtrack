@@ -2,9 +2,9 @@ using System;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Location = Navtrack.Common.Model.Location;
+using Location = Navtrack.Listener.Models.Location;
 
-namespace Navtrack.Common.Mappers
+namespace Navtrack.Listener.Mappers
 {
     [Service(typeof(IMapper<Location, Asset, DataAccess.Model.Location>))]
     public class LocationMapper : IMapper<Location, Asset, DataAccess.Model.Location>

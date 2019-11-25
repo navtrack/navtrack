@@ -1,4 +1,4 @@
-namespace Navtrack.Common.Model
+namespace Navtrack.Listener.Models
 {
     public class Device
     {
