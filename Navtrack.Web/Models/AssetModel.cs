@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Web.Models
 {
-    public class AssetModel
+    public class AssetModel : IModel
     {
         public int Id { get; set; }
         

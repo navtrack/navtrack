@@ -1,7 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export default function AdminSidebar() {
+    const history = useHistory();
+
+
+    const navItemClassName = (url: string): string => {
+        if (history.location.pathname.includes(url)) {
+            return "nav-item active";
+        }
+
+        return "nav-item";
+    }
+
     return (
         <nav className="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
             <div className="container-fluid">
@@ -101,52 +112,22 @@ export default function AdminSidebar() {
                     </form>
 
                     <ul className="navbar-nav">
-                        <li className="nav-item active active">
-                            <a className=" nav-link active " href=" ./index.html"> <i
-                                className="ni ni-tv-2 text-primary" /> Dashboard
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link " href="./examples/icons.html">
-                                <i className="ni ni-planet text-blue"></i> Icons
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link " href="./examples/maps.html">
-                                <i className="ni ni-pin-3 text-orange"></i> Maps
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link " href="./examples/profile.html">
-                                <i className="ni ni-single-02 text-yellow"></i> User profile
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link " href="./examples/tables.html">
-                                <i className="ni ni-bullet-list-67 text-red"></i> Tables
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="./examples/login.html">
-                                <i className="ni ni-key-25 text-info"></i> Login
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="./examples/register.html">
-                                <i className="ni ni-circle-08 text-pink"></i> Register
-                            </a>
+                        <li className={navItemClassName("/live")}>
+                            <Link className="nav-link" to="/live">
+                                <i className="fas fa-map-marked-alt" /> Live Tracking
+                            </Link>
                         </li>
                     </ul>
                     <hr className="my-3" />
 
                     <h6 className="navbar-heading text-muted">Management</h6>
                     <ul className="navbar-nav">
-                        <li className="nav-item">
+                        <li className={navItemClassName("/assets")}>
                             <Link className="nav-link" to="/assets">
                                 <i className="fas fa-map-marker-alt" /> Assets
                             </Link>
                         </li>
-                        <li className="nav-item">
+                        <li className={navItemClassName("/devices")}>
                             <Link className="nav-link" to="/devices">
                                 <i className="fas fa-hdd" /> Devices
                             </Link>

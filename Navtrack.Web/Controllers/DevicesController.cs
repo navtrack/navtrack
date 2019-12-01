@@ -1,69 +1,26 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Navtrack.DataAccess.Model;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services;
 
 namespace Navtrack.Web.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class DevicesController : ControllerBase
+    public class DevicesController : GenericController<Device, DeviceModel>
     {
         private readonly IDeviceService deviceService;
 
-        public DevicesController(IDeviceService deviceService)
+        public DevicesController(IDeviceService deviceService) : base(deviceService)
         {
             this.deviceService = deviceService;
         }
 
-        [HttpGet("{id}")]
-        public Task<DeviceModel> Get(int id)
-        {
-            return deviceService.Get(id);
-        }
-        
-        [HttpGet]
-        public Task<List<DeviceModel>> GetAll()
-        {
-            return deviceService.GetAll();
-        }
-        
         [HttpGet("available")]
         [HttpGet("available/{id}")]
         public Task<List<DeviceModel>> GetAll(int? id)
         {
             return deviceService.GetAllAvailableIncluding(id);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Add(DeviceModel device)
-        {
-            await deviceService.ValidateModel(device, ModelState);
-            
-            if (ModelState.IsValid)
-            {
-                await deviceService.Add(device);
-
-                return Ok();
-            }
-            
-            return ValidationProblem();
-        }
-        
-        [HttpPut]
-        public async Task<IActionResult> Update(DeviceModel device)
-        {
-            await deviceService.ValidateModel(device, ModelState);
-            
-            if (ModelState.IsValid)
-            {
-                await deviceService.Update(device);
-
-                return Ok();
-            }
-
-            return ValidationProblem();
         }
 
         [HttpGet("protocols")]

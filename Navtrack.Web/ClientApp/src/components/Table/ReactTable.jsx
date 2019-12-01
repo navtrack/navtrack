@@ -25,7 +25,6 @@ export default function ReactTable({ columns, data }) {
     page,
     canPreviousPage,
     canNextPage,
-    pageOptions,
     pageCount,
     gotoPage,
     nextPage,
@@ -102,7 +101,7 @@ export default function ReactTable({ columns, data }) {
                   </UncontrolledDropdown>
                 </Col>
                 <Col md="4" className="text-center">
-                  Page {pageIndex + 1} out of {pageOptions.length}
+                  Showing {pageSize * pageIndex + 1} to {pageSize * (pageIndex + 1)}  of {data.length} entries
                 </Col>
                 <Col md="4">
                   <Pagination
@@ -116,6 +115,11 @@ export default function ReactTable({ columns, data }) {
                     <PaginationItem className={!canPreviousPage ? "disabled" : ""}>
                       <PaginationLink onClick={() => previousPage()} tabIndex="-1">
                         <i className="fas fa-angle-left" />
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem className="disabled">
+                      <PaginationLink>
+                        {pageIndex + 1}
                       </PaginationLink>
                     </PaginationItem>
                     <PaginationItem className={!canNextPage ? "disabled" : ""}>

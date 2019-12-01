@@ -1,15 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Navtrack.DataAccess.Model;
 using Navtrack.Web.Models;
+using Navtrack.Web.Services.Generic;
 
 namespace Navtrack.Web.Services
 {
-    public interface IAssetService
+    public interface IAssetService : IGenericService<Asset, AssetModel>
     {
-        Task<List<AssetModel>> GetAll();
-        Task<AssetModel> Get(int id);
-        Task ValidateModel(AssetModel asset, ModelStateDictionary modelState);
-        Task Add(AssetModel asset);
     }
 }

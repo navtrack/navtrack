@@ -1,41 +1,75 @@
 import { HttpClientUtil } from "./HttpClientUtil";
+import { ResponseModel } from "../Api/Model/ResponseModel";
 
 export const HttpClient = {
-    get: <T>(url: string) => {
-        return fetch(HttpClientUtil.apiUrl(url), {
+    get: <T>(url: string) =>
+        fetch(HttpClientUtil.apiUrl(url), {
             method: "GET"
-        }).then(handleResponse<T>())
-    },
+        }).then(response => handleResponse<T>(response)),
 
-    post: (url: string, bodyObject: any): Promise<Response> => {
-        return fetch(HttpClientUtil.apiUrl(url), {
+    post: (url: string, bodyObject: any): Promise<ResponseModel> =>
+        fetch(HttpClientUtil.apiUrl(url), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json-patch+json",
             },
             body: JSON.stringify(bodyObject)
-        }).then(handleResponse<Response>());
-    },
+        }).then(x => handleResponse<ResponseModel>(x)),
 
-    put: (url: string, bodyObject: any): Promise<Response> => {
-        return fetch(HttpClientUtil.apiUrl(url), {
+    delete: (url: string): Promise<ResponseModel> =>
+        fetch(HttpClientUtil.apiUrl(url), {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json-patch+json",
+            }
+        }).then(x => handleResponse<ResponseModel>(x)),
+
+    put: (url: string, bodyObject: any): Promise<ResponseModel> =>
+        fetch(HttpClientUtil.apiUrl(url), {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json-patch+json",
             },
             body: JSON.stringify(bodyObject)
-        });
-    }
+        }).then(x => handleResponse<ResponseModel>(x))
 };
 
-function handleResponse<T>(): (value: Response) => Promise<T> {
-    return async (response) => {
-        const json = await response.json();
+export type Errors = Record<string, string[]>;
 
-        if (!response.ok) {
-            throw json;
+async function handleResponse<T>(response: Response): Promise<T> {
+    if (response.ok) {
+        try {
+            const json = await response.json();
+
+            return json as T;
+        } catch (error) {
+            const responseModel = {
+                status: response.status
+            };
+
+            return responseModel as unknown as T;
+        }
+    } else {
+        let json: { errors?: Errors } = {};
+
+        try {
+            json = await response.json();
+        } catch (error) {
         }
 
-        return json as T;
-    };
+        if (json.errors) {
+            throw new ApiError(json.errors);
+        }
+    }
+
+    throw new ApiError({});
+}
+
+export class ApiError extends Error {
+    errors: Errors;
+
+    constructor(errors: Errors) {
+        super('ApiError');
+        this.errors = errors;
+    }
 }

@@ -4,3 +4,10 @@ export type AssetModel = {
   deviceId: number,
   deviceType: string
 };
+
+export const DefaultAssetModel : AssetModel = {
+  id: 0,
+  name: "",
+  deviceId: 0,
+  deviceType: ""
+};

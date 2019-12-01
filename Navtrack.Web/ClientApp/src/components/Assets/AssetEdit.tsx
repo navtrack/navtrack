@@ -1,66 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { useHistory } from "react-router";
-import AdminLayout from "../AdminLayout";
-import { AssetModel } from "../../services/Api/Model/AssetModel";
+import AdminLayout from "../Layouts/Admin/AdminLayout";
+import { AssetModel, DefaultAssetModel } from "../../services/Api/Model/AssetModel";
 import { AssetApi } from "../../services/Api/AssetApi";
 import { DeviceModel } from "../../services/Api/Model/DeviceModel";
-import InputError from "../Common/InputError";
+import InputError, { AddError, HasErrors } from "../Common/InputError";
+import { Errors, ApiError } from "../../services/HttpClient/HttpClient";
+import { addNotification } from "../Notifications";
 
 type Props = {
     id?: number
 }
 
 export default function AssetEdit(props: Props) {
-    const [asset, setAsset] = useState<AssetModel>({
-        id: 0,
-        name: '',
-        deviceId: 0,
-        deviceType: ''
-    });
+    const [asset, setAsset] = useState<AssetModel>(DefaultAssetModel);
     const [devices, setDevices] = useState<DeviceModel[]>([]);
-    const [errors, setErrors] = useState<{ [id: string]: string[]; }>({});
+    const [errors, setErrors] = useState<Errors>({});
+    const [show, setShow] = useState(!props.id);
     const history = useHistory();
 
     useEffect(() => {
+        DeviceApi.getAvailableDevices(props.id)
+            .then(devices => setDevices(devices));
+
         if (props.id) {
             AssetApi.get(props.id)
-                .then(x => setAsset(x));
+                .then(x => {
+                    setAsset(x);
+                    setShow(true);
+                });
         }
-
-        DeviceApi.getAvailableDevices(props.id).then(devices => setDevices(devices));
     }, [props.id])
 
     const submitForm = async () => {
-        if (validModel()) {
+        const errors = validateModel(asset);
+
+        if (HasErrors(errors)) {
+            setErrors(errors);
+        } else {
             if (asset.id > 0) {
-                await AssetApi.update(asset)
-                    .catch(x => setErrors(x.errors));
-            }
-            else {
+                AssetApi.update(asset)
+                    .then(() => {
+                        history.push("/assets");
+                        addNotification("Asset saved successfully.");
+                    })
+                    .catch((error: ApiError) => {
+                        setErrors(error.errors)
+                    });
+            } else {
                 AssetApi.add(asset)
-                    .catch(x => setErrors(x.errors));
+                    .then(() => {
+                        history.push("/assets");
+                        addNotification("Asset added successfully.");
+                    })
+                    .catch((error: ApiError) => {
+                        setErrors(error.errors);
+                    });
             }
-
-            history.goBack();
         }
-    }
-
-    const validModel = (): boolean => {
-        const errors: { [id: string]: string[]; } = {};
-
-        if (!(asset.name.length > 0)) {
-            errors["name"] = ["The Name field is required."];
-        }
-
-        setErrors(errors);
-
-        return Object.keys(errors).length === 0;
-    }
+    };
 
     return (
         <AdminLayout>
-            {asset &&
+            {show &&
                 <div className="card shadow">
                     <div className="card-header">
                         <div className="row align-items-center">
@@ -104,3 +107,14 @@ export default function AssetEdit(props: Props) {
         </AdminLayout>
     );
 }
+
+
+const validateModel = (asset: AssetModel): Record<string, string[]> => {
+    const errors: Record<string, string[]> = {};
+
+    if (asset.name.length === 0) {
+        AddError(errors, "name", "The Name field is required.");
+    }
+
+    return errors;
+};

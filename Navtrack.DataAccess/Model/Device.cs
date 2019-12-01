@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class Device
+    public class Device : IEntity
     {
         public Device()
         {

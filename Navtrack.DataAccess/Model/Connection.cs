@@ -2,7 +2,7 @@ using System;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class Connection : EntityAudit
+    public class Connection : EntityAudit, IEntity
     {
         public int Id { get; set; }
         public DateTime OpenedAt { get; set; }

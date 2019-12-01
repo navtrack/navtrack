@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,16 @@ namespace Navtrack.DataAccess.Repository
         public void Update<T>(T entity) where T : class
         {
             dbContext.Update(entity);
+        }
+
+        public IQueryable<T> GetEntities<T>() where T : class
+        {
+            return dbContext.Set<T>();
+        }
+
+        public void Delete<T>(T entity) where T : class
+        {
+            dbContext.Remove(entity);
         }
 
         public void Dispose()

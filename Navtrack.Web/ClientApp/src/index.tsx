@@ -15,4 +15,3 @@ ReactDOM.render(
   rootElement);
 
 registerServiceWorker();
-
