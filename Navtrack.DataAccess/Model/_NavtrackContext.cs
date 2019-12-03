@@ -14,6 +14,7 @@ namespace Navtrack.DataAccess.Model
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -102,6 +103,15 @@ namespace Navtrack.DataAccess.Model
                     .WithOne(x => x.DeviceType)
                     .HasForeignKey(x => x.DeviceTypeId)
                     .OnDelete(DeleteBehavior.NoAction);
+            });
+            
+            
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Email).HasMaxLength(254).IsRequired();
+                entity.Property(x => x.Salt).HasMaxLength(44).IsRequired();
+                entity.Property(x => x.Hash).HasMaxLength(88).IsRequired();
             });
         }
     }

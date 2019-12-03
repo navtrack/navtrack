@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { AccountApi } from "../../services/Api/AccountApi";
 import LoginLayout from "../Layouts/Login/LoginLayout";
+import AppContext from "../../services/AppContext";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export default function Login() {
 
     const [showEmailRequiredError, setShowEmailRequiredError] = useState(false);
     const [showPasswordRequiredError, setShowPasswordRequiredError] = useState(false);
+    const { appContext, setAppContext } = useContext(AppContext);
 
     const history = useHistory();
 
@@ -23,6 +25,9 @@ export default function Login() {
             const response = await AccountApi.login(email, password);
 
             if (response.ok) {
+
+                setAppContext({ ...appContext, user: { username: email, authenticated: true }})
+
                 history.push("/");
             }
         }

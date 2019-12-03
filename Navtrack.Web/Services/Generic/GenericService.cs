@@ -23,25 +23,25 @@ namespace Navtrack.Web.Services.Generic
         {
             TEntity entity = await GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
 
-            return entity != null
-                ? mapper.Map<TEntity, TModel>(entity)
-                : default;
+            TModel model = MapToModel(entity);
+
+            return model;
         }
         
         public async Task<List<TModel>> GetAll()
         {
-            List<TEntity> devices = await GetQueryable().ToListAsync();
+            List<TEntity> entities = await GetQueryable().ToListAsync();
 
-            List<TModel> mapped = devices.Select(mapper.Map<TEntity, TModel>).ToList();
+            List<TModel> models = entities.Select(MapToModel).ToList();
 
-            return mapped;
+            return models;
         }
 
         public async Task Add(TModel model)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            TEntity mapped = mapper.Map<TModel, TEntity>(model);
+            TEntity mapped = MapToEntity(model);
 
             unitOfWork.Add(mapped);
 
@@ -52,9 +52,9 @@ namespace Navtrack.Web.Services.Generic
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            TEntity mapped = mapper.Map<TModel, TEntity>(model);
+            TEntity entity = MapToEntity(model);
 
-            unitOfWork.Update(mapped);
+            unitOfWork.Update(entity);
 
             await unitOfWork.SaveChanges();
         }
@@ -107,6 +107,16 @@ namespace Navtrack.Web.Services.Generic
         protected virtual IQueryable<TEntity> GetQueryable()
         {
             return repository.GetEntities<TEntity>();
+        }
+
+        protected TModel MapToModel(TEntity entity)
+        {
+            return entity != null ? mapper.Map<TEntity, TModel>(entity) : default;
+        }
+        
+        protected TEntity MapToEntity(TModel model)
+        {
+            return model != null ? mapper.Map<TModel, TEntity>(model) : default;
         }
     }
 }

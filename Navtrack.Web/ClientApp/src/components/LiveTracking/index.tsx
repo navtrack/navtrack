@@ -3,6 +3,7 @@ import { Map, TileLayer } from "react-leaflet"
 import { LatLngTuple } from "leaflet";
 
 import "leaflet/dist/leaflet.css"
+import AdminLayout from "../Layouts/Admin/AdminLayout";
 
 export default function LiveTracking() {
     const [latitude] = useState(51.505);
@@ -12,7 +13,7 @@ export default function LiveTracking() {
     const [position] = useState<LatLngTuple>([latitude, longitude]);
 
     return (
-        <>
+        <AdminLayout>
             <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8">
                 <div className="container-fluid">
                     <div className="header-body">
@@ -120,6 +121,6 @@ export default function LiveTracking() {
                     </div>
                 </div>
             </div>
-        </>
+        </AdminLayout>
     );
 }

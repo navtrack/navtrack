@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Web.Models.Account;
-using Navtrack.Web.Services;
+using Navtrack.Web.Models;
+using Navtrack.Web.Services.Authentication;
+using Navtrack.Web.Services.Generic;
 
 namespace Navtrack.Web.Controllers
 {
@@ -9,11 +10,11 @@ namespace Navtrack.Web.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountService accountService;
+        private readonly IAuthenticationService authenticationService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAuthenticationService authenticationService)
         {
-            this.accountService = accountService;
+            this.authenticationService = authenticationService;
         }
 
         [HttpGet("userInfo")]
@@ -29,15 +30,20 @@ namespace Navtrack.Web.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
-            await accountService.Login(loginModel);
-            
-            return Ok();
+            ValidationResult validationResult = await authenticationService.Login(loginModel);
+
+            if (validationResult.IsValid)
+            {
+                return Ok();
+            }
+
+            return BadRequest(new ErrorModel(validationResult));
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            await accountService.Logout();
+            await authenticationService.Logout();
 
             return Ok();
         }

@@ -1,8 +1,9 @@
 import React from "react";
+import AdminLayout from "../Layouts/Admin/AdminLayout";
 
 export default function Home() {
     return (
-        <>
+        <AdminLayout>
             <div className="row">
                 <div className="col-xl-8 mb-5 mb-xl-0">
                     <div className="card bg-gradient-default shadow">
@@ -283,6 +284,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-        </>
+        </AdminLayout>
     );
 }

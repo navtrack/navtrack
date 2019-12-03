@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services.Generic;
@@ -8,6 +9,7 @@ namespace Navtrack.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class GenericController<TEntity, TModel> : ControllerBase 
         where TEntity : class
         where TModel : IModel

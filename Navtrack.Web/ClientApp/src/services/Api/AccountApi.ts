@@ -9,5 +9,14 @@ export const AccountApi = {
             },
             body: JSON.stringify({email, password})
         });
+    },
+
+    logout: function (): Promise<Response> {
+        return fetch(HttpClientUtil.apiUrl("account/logout"), {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
     }
 };
