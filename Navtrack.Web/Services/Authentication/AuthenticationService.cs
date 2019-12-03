@@ -56,7 +56,7 @@ namespace Navtrack.Web.Services.Authentication
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, loginModel.Email)
+                new Claim(ClaimTypes.Name, loginModel.Email)
             };
 
             ClaimsIdentity claimsIdentity =
