@@ -62,11 +62,15 @@ namespace Navtrack.Web.Services.Authentication
             ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            await httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
-                {
-                    IsPersistent = loginModel.RememberMe
-                });
+            AuthenticationProperties authenticationProperties = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+
+            await httpContextAccessor.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authenticationProperties);
         }
 
         public Task Logout()
