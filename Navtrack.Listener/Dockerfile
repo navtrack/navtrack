@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:3.0 AS base
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1 AS base
 WORKDIR /app
 EXPOSE 6801
 EXPOSE 6802
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY ["Navtrack.Listener/Navtrack.Listener.csproj", "Navtrack.Listener/"]
 COPY ["Navtrack.Common/Navtrack.Common.csproj", "Navtrack.Common/"]

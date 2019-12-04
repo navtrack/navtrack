@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS test
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS test
 WORKDIR /src
 COPY ["Navtrack.Listener/Navtrack.Listener.csproj", "Navtrack.Listener/"]
 COPY ["Navtrack.Common/Navtrack.Common.csproj", "Navtrack.Common/"]
