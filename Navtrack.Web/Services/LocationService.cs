@@ -22,11 +22,6 @@ namespace Navtrack.Web.Services
             this.mapper = mapper;
         }
 
-        public Task<List<LocationModel>> Get()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<LocationModel> GetLatestLocation(int assetId)
         {
             Location location = await repository.GetEntities<Location>()
@@ -42,6 +37,20 @@ namespace Navtrack.Web.Services
             }
 
             return null;
+        }
+
+        public async Task<List<LocationModel>> GetLocations(int assetId)
+        {
+            List<Location> locations = await repository.GetEntities<Location>()
+                .Where(x => x.AssetId == assetId)
+                .OrderByDescending(x => x.DateTime)
+                .Take(1000)
+                .ToListAsync();
+            
+            
+            List<LocationModel> mapped = locations.Select(mapper.Map<Location, LocationModel>).ToList();
+
+            return mapped;
         }
     }
 }

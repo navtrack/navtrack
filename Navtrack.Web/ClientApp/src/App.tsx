@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router';
 
 import Login from "./components/Login";
 import LiveTracking from "./components/LiveTracking";
+import LocationHistory from "./components/Location/LocationHistory";
 import Home from "./components/Home";
 
 import DeviceList from "./components/Devices/DeviceList"
@@ -15,6 +16,7 @@ import Notifications from './components/Notifications';
 import { AppContext, GetAppContext, SetUserInLocalStorage } from './services/AppContext';
 import PrivateRoute from "./components/Routing/PrivateRoute";
 import { AppContextAccessor } from "./services/AppContext/AppContextAccessor";
+import { AssetApi } from './services/Api/AssetApi';
 
 export default function App() {
     const [appContext, setAppContext] = useState(GetAppContext());
@@ -23,10 +25,15 @@ export default function App() {
 
     useEffect(() => {
         AppContextAccessor.setNewAppContext(appContext);
-
         SetUserInLocalStorage(appContext.user);
     }, [appContext]);
 
+    useEffect(() => {
+        if (!appContext.assets && appContext.user.authenticated) {
+            AssetApi.getAll()
+                .then(x => setAppContext({ ...appContext, assets: x }));
+        }
+    }, [appContext, appContext.user.authenticated]);
 
     return (
         <AppContext.Provider value={appContextWrapper}>
@@ -34,7 +41,8 @@ export default function App() {
             <Switch>
                 <PrivateRoute path='/imei'><IMEIGenerator /></PrivateRoute>
 
-                <PrivateRoute path='/live'><LiveTracking /></PrivateRoute>
+                <PrivateRoute path={'/live/:assetId'}><LiveTracking /></PrivateRoute>
+                <PrivateRoute path='/history'><LocationHistory /></PrivateRoute>
 
                 <PrivateRoute exact path="/devices"><DeviceList /></PrivateRoute>
                 <PrivateRoute path="/devices/add"><DeviceEdit /></PrivateRoute>

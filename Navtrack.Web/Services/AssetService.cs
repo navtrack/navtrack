@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace Navtrack.Web.Services
         }
 
         protected override IQueryable<Asset> GetQueryable()
-        {
+        { 
             return base.GetQueryable()
                 .Include(x => x.Device)
                 .ThenInclude(x => x.DeviceType);
@@ -37,6 +38,18 @@ namespace Navtrack.Web.Services
             {
                 validationResult.AddError(nameof(AssetModel.DeviceId), "Device is already assigned to another asset.");
             }
+        }
+
+        public async Task<AssetStatsModel> GetStats()
+        {
+            AssetStatsModel model = new AssetStatsModel
+            {
+                OnlineAssets = await repository.GetEntities<Asset>()
+                    .Where(x => x.Locations.Any(y => y.DateTime > DateTime.Now.AddMinutes(-5))).CountAsync(),
+                TotalAssets = await repository.GetEntities<Asset>().CountAsync()
+            };
+
+            return model;
         }
     }
 }

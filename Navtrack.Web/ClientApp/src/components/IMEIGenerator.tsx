@@ -1,5 +1,5 @@
 import React from "react";
-import AdminLayout from "./Layouts/Admin/AdminLayout";
+import AdminLayout from "./Framework/Layouts/Admin/AdminLayout";
 
 type Props = {
     id?: number

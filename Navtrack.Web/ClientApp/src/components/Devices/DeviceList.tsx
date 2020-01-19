@@ -4,10 +4,10 @@ import { useHistory } from "react-router";
 import { DeviceModel } from "../../services/Api/Model/DeviceModel";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { Link } from "react-router-dom";
-import AdminLayout from "../Layouts/Admin/AdminLayout";
 import DeleteModal from "../Common/DeleteModal";
 import { addNotification } from "../Notifications";
 import { ApiError } from "../../services/HttpClient/HttpClient";
+import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
 
 export default function DeviceList() {
     const [devices, setDevices] = useState<DeviceModel[]>([]);

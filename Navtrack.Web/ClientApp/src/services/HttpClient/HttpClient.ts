@@ -4,12 +4,14 @@ import { ResponseModel } from "../Api/Model/ResponseModel";
 export const HttpClient = {
     get: <T>(url: string) =>
         fetch(HttpClientUtil.apiUrl(url), {
-            method: "GET"
+            method: "GET",
+            credentials: "include"
         }).then(response => handleResponse<T>(response)),
 
     post: (url: string, bodyObject: any): Promise<ResponseModel> =>
         fetch(HttpClientUtil.apiUrl(url), {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json-patch+json",
             },
@@ -19,6 +21,7 @@ export const HttpClient = {
     delete: (url: string): Promise<ResponseModel> =>
         fetch(HttpClientUtil.apiUrl(url), {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json-patch+json",
             }
@@ -27,8 +30,9 @@ export const HttpClient = {
     put: (url: string, bodyObject: any): Promise<ResponseModel> =>
         fetch(HttpClientUtil.apiUrl(url), {
             method: "PUT",
+            credentials: "include",
             headers: {
-                "Content-Type": "application/json-patch+json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(bodyObject)
         }).then(x => handleResponse<ResponseModel>(x))

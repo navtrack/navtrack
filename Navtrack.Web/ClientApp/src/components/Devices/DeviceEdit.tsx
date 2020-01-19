@@ -3,10 +3,10 @@ import { DeviceModel, DefaultDeviceModel } from "../../services/Api/Model/Device
 import { DeviceTypeModel } from "../../services/Api/Model/DeviceTypeModel";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { useHistory } from "react-router";
-import AdminLayout from "../Layouts/Admin/AdminLayout";
 import InputError, { AddError, HasErrors } from "../Common/InputError";
 import { ApiError, Errors } from "../../services/HttpClient/HttpClient";
 import { addNotification } from "../Notifications";
+import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
 
 type Props = {
     id?: number

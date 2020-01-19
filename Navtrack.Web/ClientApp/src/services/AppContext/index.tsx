@@ -1,4 +1,5 @@
 import React from "react";
+import { AssetModel } from "../Api/Model/AssetModel";
 
 type AppContextWrapper = {
     appContext: AppContext,
@@ -6,7 +7,8 @@ type AppContextWrapper = {
 }
 
 export type AppContext = {
-    user: User
+    user: User,
+    assets?: AssetModel[]
 }
 
 export type User = {

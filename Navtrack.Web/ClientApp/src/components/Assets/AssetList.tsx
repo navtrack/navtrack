@@ -5,9 +5,9 @@ import { AssetApi } from "../../services/Api/AssetApi";
 import { addNotification } from "../Notifications";
 import { ApiError } from "../../services/HttpClient/HttpClient";
 import { Link } from "react-router-dom";
-import AdminLayout from "../Layouts/Admin/AdminLayout";
 import DeleteModal from "../Common/DeleteModal";
 import ReactTable from "../Table/ReactTable";
+import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
 
 
 export default function AssetList() {

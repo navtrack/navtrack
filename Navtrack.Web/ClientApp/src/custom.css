@@ -1,0 +1,16 @@
+.sidebar {
+    min-width: 200px;
+    align-items: baseline;
+}
+
+.navbar {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.login {
+    width: 360px;
+}
+.login-hack {
+    height: 64px;
+}

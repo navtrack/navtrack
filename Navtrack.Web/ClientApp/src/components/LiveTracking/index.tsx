@@ -1,126 +1,59 @@
-import React, { useState } from "react";
-import { Map, TileLayer } from "react-leaflet"
-import { LatLngTuple } from "leaflet";
-
+import React, { useState, useEffect, ReactNode, useCallback } from "react";
 import "leaflet/dist/leaflet.css"
-import AdminLayout from "../Layouts/Admin/AdminLayout";
+import MapC from "../Map";
+import { LocationModel, DefaultLocationModel } from "../../services/Api/Model/LocationModel";
+import { LocationApi } from "../../services/Api/LocationApi";
+import { useParams } from "react-router";
+import AssetLayout from "components/Framework/Layouts/Admin/AssetLayout";
 
 export default function LiveTracking() {
-    const [latitude] = useState(51.505);
-    const [longitude] = useState(-0.09);
-    const [zoom] = useState(13);
+    let { assetId } = useParams();
+    const [location, setLocation] = useState<LocationModel>(DefaultLocationModel);
 
-    const [position] = useState<LatLngTuple>([latitude, longitude]);
+    const updateLocation = useCallback(() => {
+        if (assetId) {
+            LocationApi.getLatest(+assetId)
+                .then((x) => setLocation(x));
+        }
+    }, [assetId]);
+
+    useEffect(() => {
+        updateLocation();
+        setInterval(updateLocation, 1000 * 10); // TODO replace with signalr
+    }, [assetId, updateLocation]);
 
     return (
-        <AdminLayout>
-            <div className="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-                <div className="container-fluid">
-                    <div className="header-body">
-                        <div className="row">
-                            <div className="col-xl-3 col-lg-6">
-                                <div className="card card-stats mb-4 mb-xl-0">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col">
-                                                <h5 className="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                                                <span className="h2 font-weight-bold mb-0">350,897</span>
-                                            </div>
-                                            <div className="col-auto">
-                                                <div
-                                                    className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                                    <i className="fas fa-chart-bar" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p className="mt-3 mb-0 text-muted text-sm">
-                                            <span className="text-success mr-2"><i
-                                                className="fa fa-arrow-up" /> 3.48%</span>
-                                            <span className="text-nowrap">Since last month</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-6">
-                                <div className="card card-stats mb-4 mb-xl-0">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col">
-                                                <h5 className="card-title text-uppercase text-muted mb-0">New users</h5>
-                                                <span className="h2 font-weight-bold mb-0">2,356</span>
-                                            </div>
-                                            <div className="col-auto">
-                                                <div
-                                                    className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                                    <i className="fas fa-chart-pie" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p className="mt-3 mb-0 text-muted text-sm">
-                                            <span className="text-danger mr-2"><i className="fas fa-arrow-down" /> 3.48%</span>
-                                            <span className="text-nowrap">Since last week</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-6">
-                                <div className="card card-stats mb-4 mb-xl-0">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col">
-                                                <h5 className="card-title text-uppercase text-muted mb-0">Sales</h5>
-                                                <span className="h2 font-weight-bold mb-0">924</span>
-                                            </div>
-                                            <div className="col-auto">
-                                                <div
-                                                    className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                                                    <i className="fas fa-users" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p className="mt-3 mb-0 text-muted text-sm">
-                                            <span className="text-warning mr-2"><i className="fas fa-arrow-down" /> 1.10%</span>
-                                            <span className="text-nowrap">Since yesterday</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-6">
-                                <div className="card card-stats mb-4 mb-xl-0">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col">
-                                                <h5 className="card-title text-uppercase text-muted mb-0">Performance</h5>
-                                                <span className="h2 font-weight-bold mb-0">49,65%</span>
-                                            </div>
-                                            <div className="col-auto">
-                                                <div
-                                                    className="icon icon-shape bg-info text-white rounded-circle shadow">
-                                                    <i className="fas fa-percent" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p className="mt-3 mb-0 text-muted text-sm">
-                                            <span className="text-success mr-2"><i
-                                                className="fas fa-arrow-up" /> 12%</span>
-                                            <span className="text-nowrap">Since last month</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <AssetLayout id={2} name={"BN01SBU"}>
+                <div className="card shadow mb-3">
+                    <div className="card-body py-3">
+                        <LocationInfo title="Date" hideMargin={true}><>{location.dateTime?.toString()}</></LocationInfo>
+                        <LocationInfo title="Latitude">{location.latitude}</LocationInfo>
+                        <LocationInfo title="Longitude">{location.longitude}</LocationInfo>
+                        <LocationInfo title="Altitude">{location.altitude} m</LocationInfo>
+                        <LocationInfo title="Speed">{location.speed} km/h</LocationInfo>
+                        <LocationInfo title="Heading">{location.heading}°</LocationInfo>
+                        <LocationInfo title="Satellites">{location.satellites}</LocationInfo>
+                        <LocationInfo title="HDOP">{location.hdop}</LocationInfo>
                     </div>
                 </div>
-            </div>
-            <div className="row">
-                <div className="col">
-                    <div className="card shadow border-0 rounded">
-                        <Map center={position} zoom={zoom} className="p-8">
-                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                        </Map>
-                    </div>
+                <div className="card shadow flex-fill">
+                    <MapC location={location} />
                 </div>
-            </div>
-        </AdminLayout>
+        </AssetLayout>
+    );
+}
+
+type LocationInfoProps = {
+    title: string,
+    children: ReactNode,
+    hideMargin?: boolean
+}
+
+function LocationInfo(props: LocationInfoProps) {
+    return (
+        <div className={`float-left mr-4`}>
+            <h5 className="mb-0 text-muted">{props.title}</h5>
+            <h4 className="mb-0">{props.children}</h4>
+        </div>
     );
 }

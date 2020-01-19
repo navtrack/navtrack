@@ -17,7 +17,7 @@ export default function InputError(props: Props) {
     );
 }
 
-export const AddError = (errors: Record<string, string[]>, key: string, message: string) => {
+export const AddError = <T extends {}>(errors: Record<keyof T, string[]>, key: keyof T, message: string) => {
     if (key in errors) {
         errors[key].push(message);
     } else {

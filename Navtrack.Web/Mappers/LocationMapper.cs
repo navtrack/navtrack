@@ -14,7 +14,12 @@ namespace Navtrack.Web.Mappers
             destination.Latitude = source.Latitude;
             destination.Longitude = source.Longitude;
             destination.DateTime = source.DateTime;
-
+            destination.Speed = source.Speed;
+            destination.Heading = source.Heading;
+            destination.Altitude = source.Altitude;
+            destination.Satellites = source.Satellites;
+            destination.HDOP = source.HDOP;
+            
             return destination;
         }
     }

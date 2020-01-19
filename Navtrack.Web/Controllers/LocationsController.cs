@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services;
@@ -16,8 +17,16 @@ namespace Navtrack.Web.Controllers
             this.locationService = locationService;
         }
 
-        [HttpGet("latest/{assetId}")]
-        public async Task<LocationModel> Get(int assetId)
+        [HttpGet("{assetId}/history")]
+        public async Task<List<LocationModel>> GetHistory(int assetId)
+        {
+            List<LocationModel> locations = await locationService.GetLocations(assetId);
+
+            return locations;
+        }
+        
+        [HttpGet("{assetId}/latest")]
+        public async Task<LocationModel> GetLatest(int assetId)
         {
             LocationModel location = await locationService.GetLatestLocation(assetId);
 

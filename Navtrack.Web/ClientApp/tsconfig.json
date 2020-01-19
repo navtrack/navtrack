@@ -17,9 +17,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": "src"
   },
   "include": [
-    "src"
+    "src", "assets"
   ]
 }

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { DeviceApi } from "../../services/Api/DeviceApi";
 import { useHistory } from "react-router";
-import AdminLayout from "../Layouts/Admin/AdminLayout";
 import { AssetModel, DefaultAssetModel } from "../../services/Api/Model/AssetModel";
 import { AssetApi } from "../../services/Api/AssetApi";
 import { DeviceModel } from "../../services/Api/Model/DeviceModel";
 import InputError, { AddError, HasErrors } from "../Common/InputError";
 import { Errors, ApiError } from "../../services/HttpClient/HttpClient";
 import { addNotification } from "../Notifications";
+import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
 
 type Props = {
     id?: number

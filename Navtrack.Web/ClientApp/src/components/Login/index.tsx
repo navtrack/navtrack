@@ -1,125 +1,116 @@
-import React, { ChangeEvent, FormEvent, useState, useContext } from "react";
+import React, { FormEvent, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { AccountApi } from "../../services/Api/AccountApi";
-import LoginLayout from "../Layouts/Login/LoginLayout";
 import AppContext from "../../services/AppContext";
+import LoginLayout from "components/Framework/Layouts/Login/LoginLayout";
+import { ApiError, Errors } from "services/HttpClient/HttpClient";
+import InputError, { AddError, HasErrors } from "components/Common/InputError";
+import { LoginModel, DefaultLoginModel } from "./LoginModel"
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const [showEmailRequiredError, setShowEmailRequiredError] = useState(false);
-    const [showPasswordRequiredError, setShowPasswordRequiredError] = useState(false);
-    const { appContext, setAppContext } = useContext(AppContext);
-
+    const [login, setLogin] = useState<LoginModel>(DefaultLoginModel);
+    const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
+    const [errors, setErrors] = useState<Errors>({});
     const history = useHistory();
-
+    const { appContext, setAppContext } = useContext(AppContext);
 
     const signIn = async (e: FormEvent) => {
         e.preventDefault();
 
-        setShowEmailRequiredError(!email);
-        setShowPasswordRequiredError(!password);
+        const errors = validateModel(login);
 
-        if (email && password) {
-            const response = await AccountApi.login(email, password);
+        if (HasErrors(errors)) {
+            setErrors(errors);
+        } else {
+            setShowLoadingIndicator(true);
 
-            if (response.ok) {
+            await AccountApi.login(login.email, login.password)
+                .then(() => {
+                    setAppContext({ ...appContext, user: { username: login.email, authenticated: true } })
 
-                setAppContext({ ...appContext, user: { username: email, authenticated: true }})
-
-                history.push("/");
-            }
+                    history.push("/");
+                })
+                .catch((error: ApiError) => {
+                    setErrors(error.errors);
+                    setShowLoadingIndicator(false);
+                });
         }
-    };
-
-    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setShowEmailRequiredError(false);
-        setEmail(e.target.value);
-    };
-
-    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setShowPasswordRequiredError(false);
-        setPassword(e.target.value);
     };
 
     return (
         <LoginLayout>
-            <>
-                <div className="header bg-gradient-primary py-7 py-lg-8">
-                    <div className="container">
-                        <div className="header-body text-center mb-1">
-                            <div className="row justify-content-center">
-                                <div className="col-lg-5 col-md-6">
-                                    <h1 className="text-white">Welcome!</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="separator separator-bottom separator-skew zindex-100">
-                        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <polygon className="fill-default" points="2560 0 2560 100 0 100"></polygon>
-                        </svg>
-                    </div>
-                </div>
-                <div className="container mt--8 pb-5">
-                    <div className="row justify-content-center">
-                        <div className="col-lg-5 col-md-7">
-                            <div className="card bg-secondary shadow border-0">
-                                <div className="card-body px-lg-5 py-lg-5">
-                                    <div className="text-center text-muted mb-4">
-                                        <small>Sign in to Navtrack.</small>
+            <div className="flex-grow-1 d-flex align-items-center flex-column justify-content-center">
+                <a href="https://www.navtrack.io">
+                    <img src="/navtrack.png" width="64" className="mb-4" alt="Navtrack" />
+                </a>
+                <div className="login">
+                    <div className="card bg-secondary shadow border-0 login">
+                        <div className="card-body">
+                            <div className="text-center mb-4 text-default">Sign in to Navtrack</div>
+                            <form onSubmit={(e) => signIn(e)}>
+                                <div className="form-group mb-3">
+                                    <div className="input-group input-group-alternative">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">
+                                                <i className="fas fa-envelope" />
+                                            </span>
+                                        </div>
+                                        <input className="form-control" placeholder="Email" type="email"
+                                            value={login.email} onChange={(e) => setLogin({ ...login, email: e.target.value })} />
                                     </div>
-                                    <form onSubmit={(e) => signIn(e)}>
-                                        <div className="form-group mb-3">
-                                            <div className="input-group input-group-alternative">
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i
-                                                        className="ni ni-email-83" /></span>
-                                                </div>
-                                                <input className="form-control" placeholder="Email" type="email"
-                                                    value={email} onChange={(e) => handleEmailChange(e)} />
-                                            </div>
-                                            {showEmailRequiredError &&
-                                                <div className="text-red text-sm mt-1">Please provide an email.</div>}
-                                        </div>
-                                        <div className="form-group">
-                                            <div className="input-group input-group-alternative">
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i
-                                                        className="ni ni-lock-circle-open" /></span>
-                                                </div>
-                                                <input className="form-control" placeholder="Password" type="password"
-                                                    value={password} onChange={(e) => handlePasswordChange(e)} />
-                                            </div>
-                                            {showPasswordRequiredError &&
-                                                <div className="text-red text-sm mt-1">Please provide a password.</div>}
-                                        </div>
-                                        <div className="custom-control custom-control-alternative custom-checkbox">
-                                            <input className="custom-control-input" id=" customCheckLogin" type="checkbox" />
-                                            <label className="custom-control-label" htmlFor=" customCheckLogin">
-                                                <span className="text-muted">Remember me</span>
-                                            </label>
-                                        </div>
-                                        <div className="text-center">
-                                            <button type="submit" className="btn btn-primary mt-4">Sign in</button>
-                                        </div>
-                                    </form>
+                                    <InputError name="email" errors={errors} />
                                 </div>
-                            </div>
-                            <div className="row mt-3">
-                                <div className="col-6">
-                                    <Link to="/SignUp" className="text-white"><small>Create new account</small></Link>
+                                <div className="form-group mb-4">
+                                    <div className="input-group input-group-alternative">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">
+                                                <i className="fas fa-unlock-alt" />
+                                            </span>
+                                        </div>
+                                        <input className="form-control" placeholder="Password" type="password"
+                                            value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })} />
+                                    </div>
+                                    <InputError name="password" errors={errors} />
                                 </div>
-                                <div className="col-6 text-right">
-                                    <Link to="/ForgotPassword" className="text-white"><small>Forgot password?</small></Link>
+                                {/* <div className="custom-control custom-control-alternative custom-checkbox">
+                                    <input className="custom-control-input" id=" customCheckLogin" type="checkbox" />
+                                    <label className="custom-control-label" htmlFor=" customCheckLogin">
+                                        <span className="text-muted">Remember me</span>
+                                    </label>
+                                </div> */}
+                                <div className="text-center">
+                                    <button type="submit" className="btn btn-primary">
+                                        {showLoadingIndicator && <i className="fas fa-spinner fa-spin mr-2" />}
+                                        Sign in
+                                    </button>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div className="d-flex">
+                        <div className="flex-fill">
+                            <Link to="/SignUp" className="text-white"><small>Create new account</small></Link>
+                        </div>
+                        <div className="flex-fill text-right">
+                            <Link to="/ForgotPassword" className="text-white"><small>Forgot password?</small></Link>
                         </div>
                     </div>
                 </div>
-            </>
+                <div className="login-hack"></div>
+            </div>
         </LoginLayout>
     );
 }
+
+const validateModel = (login: LoginModel): Record<string, string[]> => {
+    const errors: Record<string, string[]> = {};
+
+    if (login.email.length === 0) {
+        AddError<LoginModel>(errors, "email", "Email is required.");
+    }
+    if (login.email.length === 0) {
+        AddError<LoginModel>(errors, "password", "Password is required.");
+    }
+
+    return errors;
+};
