@@ -10604,10 +10604,8 @@ a.btn-icon-only {
 
 .form-control {
   font-size: 0.875rem; }
-  .form-control:focus {
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); }
-    .form-control:focus::placeholder {
-      color: #adb5bd; }
+  .form-control:focus::placeholder {
+    color: #adb5bd; }
 
 textarea[resize="none"] {
   resize: none !important; }
@@ -10740,7 +10738,7 @@ textarea[resize="horizontal"] {
   .icon-xl i, .icon-xl svg {
     font-size: 4.25rem; }
   .icon-xl + .icon-text {
-    width: calc(100% - $icon-size-xl - 1); }
+    width: calc(100% - 5rem - 1); }
 
 .icon-lg {
   width: 4rem;
@@ -10748,7 +10746,7 @@ textarea[resize="horizontal"] {
   .icon-lg i, .icon-lg svg {
     font-size: 3.25rem; }
   .icon-lg + .icon-text {
-    width: calc(100% - $icon-size-lg - 1); }
+    width: calc(100% - 4rem - 1); }
 
 .icon-sm {
   width: 2rem;
@@ -10756,7 +10754,7 @@ textarea[resize="horizontal"] {
   .icon-sm i, .icon-sm svg {
     font-size: 1.25rem; }
   .icon-sm + .icon-text {
-    width: calc(100% - $icon-size-sm - 1); }
+    width: calc(100% - 2rem - 1); }
 
 .icon-shape {
   padding: 12px;
@@ -13931,3 +13929,5 @@ pre > code.highlight {
     display: inline-block; }
     .ct-footer-links li + li {
       margin-left: 1rem; }
+
+/*# sourceMappingURL=argon-dashboard.css.map */

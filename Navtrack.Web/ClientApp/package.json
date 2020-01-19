@@ -53,7 +53,7 @@
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/",
-    "compile-sass": "node-sass src/assets/scss/argon-dashboard.scss src/assets/css/argon-dashboard.css"
+    "compile-sass": "node-sass src/assets/scss/argon-dashboard.scss src/assets/css/argon-dashboard.css --source-map true"
   },
   "browserslist": {
     "production": [
