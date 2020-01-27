@@ -26,7 +26,7 @@ export default function Login() {
 
             await AccountApi.login(login.email, login.password)
                 .then(() => {
-                    setAppContext({ ...appContext, user: { username: login.email, authenticated: true } })
+                    setAppContext({ ...appContext, user: { username: login.email }, authenticated: true })
 
                     history.push("/");
                 })
@@ -39,64 +39,40 @@ export default function Login() {
 
     return (
         <LoginLayout>
-            <div className="flex-grow-1 d-flex align-items-center flex-column justify-content-center">
-                <a href="https://www.navtrack.io">
-                    <img src="/navtrack.png" width="64" className="mb-4" alt="Navtrack" />
-                </a>
-                <div className="login">
-                    <div className="card bg-secondary shadow border-0 login">
-                        <div className="card-body">
-                            <div className="text-center mb-4 text-default">Sign in to Navtrack</div>
-                            <form onSubmit={(e) => signIn(e)}>
-                                <div className="form-group mb-3">
-                                    <div className="input-group input-group-alternative">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text">
-                                                <i className="fas fa-envelope" />
-                                            </span>
-                                        </div>
-                                        <input className="form-control" placeholder="Email" type="email"
-                                            value={login.email} onChange={(e) => setLogin({ ...login, email: e.target.value })} />
-                                    </div>
-                                    <InputError name="email" errors={errors} />
-                                </div>
-                                <div className="form-group mb-4">
-                                    <div className="input-group input-group-alternative">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text">
-                                                <i className="fas fa-unlock-alt" />
-                                            </span>
-                                        </div>
-                                        <input className="form-control" placeholder="Password" type="password"
-                                            value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })} />
-                                    </div>
-                                    <InputError name="password" errors={errors} />
-                                </div>
-                                {/* <div className="custom-control custom-control-alternative custom-checkbox">
-                                    <input className="custom-control-input" id=" customCheckLogin" type="checkbox" />
-                                    <label className="custom-control-label" htmlFor=" customCheckLogin">
-                                        <span className="text-muted">Remember me</span>
-                                    </label>
-                                </div> */}
-                                <div className="text-center">
-                                    <button type="submit" className="btn btn-primary">
-                                        {showLoadingIndicator && <i className="fas fa-spinner fa-spin mr-2" />}
-                                        Sign in
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+            <div className="max-w-xs w-full flex flex-col items-center">
+                <div className="h-16 m-3 ">
+                    <a href="https://www.navtrack.io">
+                        <img src="/navtrack.png" width="64" className="mb-4" alt="Navtrack" />
+                    </a>
+                </div>
+                <form className="shadow-xl bg-white rounded px-8 w-full bg-gray-100" onSubmit={(e) => signIn(e)}>
+                    <div className="text-center my-6">Sign in to Navtrack</div>
+                    <div className="mb-4">
+                        <input className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none" id="email" type="email" placeholder="Email"
+                            value={login.email} onChange={(e) => setLogin({ ...login, email: e.target.value })}
+                        />
+                        <InputError name="email" errors={errors} />
                     </div>
-                    <div className="d-flex">
-                        <div className="flex-fill">
-                            <Link to="/SignUp" className="text-white"><small>Create new account</small></Link>
-                        </div>
-                        <div className="flex-fill text-right">
-                            <Link to="/ForgotPassword" className="text-white"><small>Forgot password?</small></Link>
-                        </div>
+                    <div className="mb-4">
+                        <input className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border focus:border-gray-900" id="password" type="password" placeholder="Password"
+                            value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })}
+                        />
+                        <InputError name="password" errors={errors} />
+                    </div>
+                    <div className="flex justify-center my-6">
+                        <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none" type="submit">
+                            {showLoadingIndicator && <i className="fas fa-spinner fa-spin mr-2" />} Sign in
+                    </button>
+                    </div>
+                </form>
+                <div className="h-20 flex w-full">
+                    <div className="flex-grow">
+                        <Link to="/register" className="text-white text-xs">Create new account</Link>
+                    </div>
+                    <div className="flex-grow text-right">
+                        {/* <Link to="/forgotpassword" className="text-white text-xs">Forgot password?</Link> */}
                     </div>
                 </div>
-                <div className="login-hack"></div>
             </div>
         </LoginLayout>
     );

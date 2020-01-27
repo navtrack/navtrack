@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Map, TileLayer, Popup, Marker, useLeaflet } from "react-leaflet"
-
 import "leaflet/dist/leaflet.css"
 import { LocationModel } from "../../services/Api/Model/LocationModel";
 import { LatLngExpression } from "leaflet";
@@ -17,8 +16,21 @@ export default function MapC(props: Props) {
         setPosition([props.location.latitude, props.location.longitude]);
     }, [props.location]);
 
+
+    React.useEffect(() => {
+        const L = require("leaflet");
+
+        delete L.Icon.Default.prototype._getIconUrl;
+
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+            iconUrl: require("leaflet/dist/images/marker-icon.png"),
+            shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+        });
+    }, []);
+    
     return (
-        <Map center={position} zoom={zoom} className="rounded flex-fill">
+        <Map center={position} zoom={zoom} className="flex w-full h-full rounded">
             <Location location={props.location} />
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <Marker position={position}>

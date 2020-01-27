@@ -1,63 +1,58 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { AccountApi } from "services/Api/AccountApi";
-import AppContext from "services/AppContext";
+import AppContext, { DefaultUser } from "services/AppContext";
+import Icon from "components/Framework/Util/Icon";
 
 export default function AdminNavbar() {
     const { appContext, setAppContext } = useContext(AppContext);
     const history = useHistory();
+    const [show, setShow] = useState(false);
 
     const handleLogout = () => {
         AccountApi.logout().then(x => {
             if (x.ok) {
-                setAppContext({ ...appContext, user: { username: "", authenticated: false } });
+                setAppContext({ ...appContext, user: DefaultUser, authenticated: false });
                 history.push("/");
             }
         })
     }
 
+    useEffect(() => {
+        function handleClickOutside() {
+            setShow(false);
+        }
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        }
+    });
+
     return (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-            <div className="flex-fill text-white">NAVTRACK</div>
-                <ul className="navbar-nav align-items-center d-none d-md-flex">
-                    <li className="nav-item dropdown">
-                        <a className="nav-link p-0" href="#tmp" role="button" data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                            <div className="media align-items-center">
-                                    <i className="fa fa-user" />
-                                <div className="media-body ml-2 d-none d-lg-block">
-                                    <span className="mb-0 text-sm  font-weight-bold">{appContext.user.username}</span>
+        <nav className="p-3 flex bg-gray-900 shadow z-20">
+            <h1 className="text-white font-medium">NAVTRACK</h1>
+            <div className="flex-grow flex flex-row text-white justify-end">
+                <div className="mx-2 cursor-pointer">
+                    <div id="dropdown" className="relative inline-block" onClick={(e) => {
+                        e.stopPropagation();
+                        e.nativeEvent.stopImmediatePropagation();
+                        setShow(true);
+                    }}>
+                        <i className="fa fa-user mr-1" />
+                        <span className="font-medium text-sm">{appContext.user && appContext.user.username}</span>
+                        {show &&
+                            <div className="mt-2 absolute right-0 fadeIn animated faster">
+                                <div className="w-48 bg-white rounded-lg shadow-lg overflow-hidden">
+                                    <div className="block px-6 py-3 leading-tight hover:bg-gray-200 text-gray-600 hover:text-gray-900" onClick={handleLogout}>
+                                        <Icon icon="fa-sign-out-alt" /> Logout
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
-                            <div className=" dropdown-header noti-title">
-                                <h6 className="text-overflow m-0">Welcome!</h6>
-                            </div>
-                            {/* <a href="./examples/profile.html" className="dropdown-item">
-                                <i className="ni ni-single-02"></i>
-                                <span>My profile</span>
-                            </a>
-                            <a href="./examples/profile.html" className="dropdown-item">
-                                <i className="ni ni-settings-gear-65"></i>
-                                <span>Settings</span>
-                            </a>
-                            <a href="./examples/profile.html" className="dropdown-item">
-                                <i className="ni ni-calendar-grid-58"></i>
-                                <span>Activity</span>
-                            </a>
-                            <a href="./examples/profile.html" className="dropdown-item">
-                                <i className="ni ni-support-16"></i>
-                                <span>Support</span>
-                            </a>
-                            <div className="dropdown-divider"></div> */}
-                            <div className="btn-link dropdown-item font-weight-normal" onClick={handleLogout}>
-                                <i className="fas fa-sign-out-alt" /> Logout
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                            </div>}
+                    </div>
+                </div>
+            </div>
         </nav>
     );
 }

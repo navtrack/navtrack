@@ -10,5 +10,7 @@ namespace Navtrack.Web.Models
         public string Name { get; set; }
         public int DeviceId { get; set; }
         public string DeviceType { get; set; }
+        
+        public LocationModel Location { get; set; }
     }
 }

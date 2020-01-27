@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 type Props = {
     show: boolean
@@ -16,14 +16,15 @@ export default function DeleteModal(props: Props) {
     }
 
     return (
-        <Modal show={props.show} onHide={() => props.setShow(false)}>
-            <Modal.Header></Modal.Header>
-            <div className="text-center">Are you sure you want to delete this item?</div>
-            {props.description && <div className="text-center">{props.description}</div>}
-            <Modal.Footer>
-                <Button variant="secondary" onClick={() => props.setShow(false)}>Cancel</Button>
-                <Button variant="primary" onClick={handleDelete}>Delete</Button>
-            </Modal.Footer>
-        </Modal>
+        <></>
+        // <Modal show={props.show} onHide={() => props.setShow(false)}>
+        //     <Modal.Header></Modal.Header>
+        //     <div className="text-center">Are you sure you want to delete this item?</div>
+        //     {props.description && <div className="text-center">{props.description}</div>}
+        //     <Modal.Footer>
+        //         <button color="secondary" onClick={() => props.setShow(false)}>Cancel</button>
+        //         <button color="primary" onClick={handleDelete}>Delete</button>
+        //     </Modal.Footer>
+        // </Modal>
     );
 }

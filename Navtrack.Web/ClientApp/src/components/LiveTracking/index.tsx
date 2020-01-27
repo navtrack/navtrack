@@ -1,59 +1,56 @@
-import React, { useState, useEffect, ReactNode, useCallback } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "leaflet/dist/leaflet.css"
 import MapC from "../Map";
-import { LocationModel, DefaultLocationModel } from "../../services/Api/Model/LocationModel";
-import { LocationApi } from "../../services/Api/LocationApi";
 import { useParams } from "react-router";
-import AssetLayout from "components/Framework/Layouts/Admin/AssetLayout";
+import AssetLayout from "components/Framework/Layouts/Asset/AssetLayout";
+import AppContext from "services/AppContext";
+import { AssetModel, DefaultAssetModel } from "services/Api/Model/AssetModel";
+import { LocationInfo } from "./LocationInfo";
 
 export default function LiveTracking() {
+    const { appContext } = useContext(AppContext);
     let { assetId } = useParams();
-    const [location, setLocation] = useState<LocationModel>(DefaultLocationModel);
-
-    const updateLocation = useCallback(() => {
-        if (assetId) {
-            LocationApi.getLatest(+assetId)
-                .then((x) => setLocation(x));
-        }
-    }, [assetId]);
+    const [asset, setAsset] = useState<AssetModel>(DefaultAssetModel);
 
     useEffect(() => {
-        updateLocation();
-        setInterval(updateLocation, 1000 * 10); // TODO replace with signalr
-    }, [assetId, updateLocation]);
+        if (assetId !== undefined) {
+            const id = parseInt(assetId);
+            const filteredAsset = appContext.assets?.find(x => x.id === id);
+
+            if (filteredAsset) {
+                setAsset(filteredAsset);
+            }
+        }
+    }, [appContext.assets, assetId]);
 
     return (
-        <AssetLayout id={2} name={"BN01SBU"}>
-                <div className="card shadow mb-3">
-                    <div className="card-body py-3">
-                        <LocationInfo title="Date" hideMargin={true}><>{location.dateTime?.toString()}</></LocationInfo>
-                        <LocationInfo title="Latitude">{location.latitude}</LocationInfo>
-                        <LocationInfo title="Longitude">{location.longitude}</LocationInfo>
-                        <LocationInfo title="Altitude">{location.altitude} m</LocationInfo>
-                        <LocationInfo title="Speed">{location.speed} km/h</LocationInfo>
-                        <LocationInfo title="Heading">{location.heading}°</LocationInfo>
-                        <LocationInfo title="Satellites">{location.satellites}</LocationInfo>
-                        <LocationInfo title="HDOP">{location.hdop}</LocationInfo>
+        <>
+            {asset &&
+                <AssetLayout id={asset.id} name={asset.name}>
+                    <div className="bg-white shadow p-3 rounded mb-3 flex">
+                        {asset.location ?
+                            <>
+                                <LocationInfo title="Location" hideMargin={true}>{asset.location.dateTime?.toString()}</LocationInfo>
+                                <LocationInfo title="Date" hideMargin={true}>{asset.location.dateTime?.toString()}</LocationInfo>
+                                <LocationInfo title="Latitude">{asset.location.latitude}</LocationInfo>
+                                <LocationInfo title="Longitude">{asset.location.longitude}</LocationInfo>
+                                <LocationInfo title="Altitude">{asset.location.altitude} m</LocationInfo>
+                                <LocationInfo title="Speed">{asset.location.speed} km/h</LocationInfo>
+                                <LocationInfo title="Heading">{asset.location.heading}°</LocationInfo>
+                                <LocationInfo title="Satellites">{asset.location.satellites}</LocationInfo>
+                                <LocationInfo title="HDOP">{asset.location.hdop}</LocationInfo>
+                            </>
+                            :
+                            <>No location data available.</>
+                        }
                     </div>
-                </div>
-                <div className="card shadow flex-fill">
-                    <MapC location={location} />
-                </div>
-        </AssetLayout>
-    );
-}
-
-type LocationInfoProps = {
-    title: string,
-    children: ReactNode,
-    hideMargin?: boolean
-}
-
-function LocationInfo(props: LocationInfoProps) {
-    return (
-        <div className={`float-left mr-4`}>
-            <h5 className="mb-0 text-muted">{props.title}</h5>
-            <h4 className="mb-0">{props.children}</h4>
-        </div>
+                    {asset.location &&
+                        <div className="flex-grow shadow rounded">
+                            <MapC location={asset.location} />
+                        </div>
+                    }
+                </AssetLayout>
+            }
+        </>
     );
 }

@@ -7,47 +7,60 @@ type AppContextWrapper = {
 }
 
 export type AppContext = {
-    user: User,
-    assets?: AssetModel[]
+    user?: User,
+    assets?: AssetModel[],
+    authenticated: boolean
+}
+
+const DefaultAppContext : AppContext = {
+    authenticated: false
 }
 
 export type User = {
-    authenticated: boolean,
     username: string
 }
 
-const userKey = "user";
+export const DefaultUser : User = {
+    username: ""
+}
+
+const appContextKey = "navtrack.appContext";
 
 export function GetAppContext(): AppContext {
-    const user: User = GetUserFromLocalStorage();
+    const localStorageAppContext: LocalStorageAppContext = GetFromLocalStorage();
 
     return {
-        user: user
+        authenticated: localStorageAppContext.authenticated
     };
 }
 
 export const AppContext = React.createContext<AppContextWrapper>({
-    appContext: GetAppContext(),
+    appContext: DefaultAppContext,
     setAppContext: () => { }
 });
 
 export default AppContext;
 
-export function SetUserInLocalStorage(user: User) {
-    localStorage.setItem(userKey, JSON.stringify(user));
+type LocalStorageAppContext = {
+    authenticated: boolean
 }
 
-export function GetUserFromLocalStorage() : User  {
-    const localStorageUser = localStorage.getItem(userKey);
+const DefaultLocalStorageAppContext : LocalStorageAppContext = {
+    authenticated: false
+}
 
-    if (localStorageUser) {
-        const user = JSON.parse(localStorageUser);
+export function SaveToLocalStorage(appContext: LocalStorageAppContext) {
+    localStorage.setItem(appContextKey, JSON.stringify(appContext));
+}
 
-        return user;
+export function GetFromLocalStorage() : LocalStorageAppContext  {
+    const localStorageAppContextJson = localStorage.getItem(appContextKey);
+
+    if (localStorageAppContextJson) {
+        const appContext = JSON.parse(localStorageAppContextJson);
+
+        return appContext;
     }
 
-    return { 
-        authenticated: false,
-        username: ''
-    };
+    return DefaultLocalStorageAppContext;
 }

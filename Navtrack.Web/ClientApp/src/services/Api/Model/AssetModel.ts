@@ -1,13 +1,17 @@
+import { LocationModel, DefaultLocationModel } from "./LocationModel";
+
 export type AssetModel = {
   id: number,
   name: string,
   deviceId: number,
-  deviceType: string
+  deviceType: string,
+  location: LocationModel
 };
 
 export const DefaultAssetModel : AssetModel = {
   id: 0,
   name: "",
   deviceId: 0,
-  deviceType: ""
+  deviceType: "",
+  location: DefaultLocationModel
 };

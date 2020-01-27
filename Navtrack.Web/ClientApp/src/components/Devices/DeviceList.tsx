@@ -29,7 +29,7 @@ export default function DeviceList() {
             .then(() => {
                 addNotification("Device deleted successfully.");
                 setDevices(devices.filter(x => x.id !== id));
-                
+
             })
             .catch((error: ApiError) => {
                 addNotification(error.message);
@@ -62,22 +62,19 @@ export default function DeviceList() {
     ], [handleDeleteClick]);
 
     return (
+
         <AdminLayout>
             <DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} deleteHandler={deleteHandler} />
-            <div className="card shadow">
-                <div className="card-header border-0">
-                    <div className="row align-items-center">
-                        <div className="col">
-                            <h3 className="mb-0">Devices</h3>
-                        </div>
-                        <div className="col text-right">
-                            <button className="btn btn-sm btn-primary" onClick={() => history.push("/devices/add")}>Add device</button>
-                        </div>
+            <div className="shadow rounded bg-white flex flex-col">
+                <div className="p-3 flex">
+                    <div className="flex-grow font-medium text-lg">Devices</div>
+                    <div className="flex-grow flex justify-end">
+                        <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none" onClick={() => history.push("/devices/add")}>
+                            Add device
+                        </button>
                     </div>
                 </div>
-                <div className="table-responsive">
-                    <ReactTable columns={columns} data={devices} />
-                </div>
+                <ReactTable columns={columns} data={devices} />
             </div>
         </AdminLayout>
     );

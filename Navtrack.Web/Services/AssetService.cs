@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,28 @@ namespace Navtrack.Web.Services
             this.mapper = mapper;
         }
 
+        public override async Task<List<AssetModel>> GetAll()
+        {
+            var entities = await (from asset in GetQueryable()
+                join latestLocation in repository.GetEntities<Location>()
+                .GroupBy(x => x.AssetId)
+                .Select(x => new { AssetId = x.Key, LatestDateTime = x.Max(y => y.DateTime)})
+                    on asset.Id equals latestLocation.AssetId into latestLocations
+                from latestLocation in latestLocations.DefaultIfEmpty()
+                join location in repository.GetEntities<Location>()
+                    on new { AssetId = asset.Id, DateTime = latestLocation.LatestDateTime } equals new { location.AssetId, location.DateTime }
+                        into locations
+                from location in locations.DefaultIfEmpty()
+                    select new { asset, location})
+                .ToListAsync();
+            
+            List<AssetModel> models = entities.Select(x => mapper.Map<Asset, Location, AssetModel>(x.asset, x.location)).ToList();
+
+            return models;
+        }
+
         protected override IQueryable<Asset> GetQueryable()
-        { 
+        {
             return base.GetQueryable()
                 .Include(x => x.Device)
                 .ThenInclude(x => x.DeviceType);

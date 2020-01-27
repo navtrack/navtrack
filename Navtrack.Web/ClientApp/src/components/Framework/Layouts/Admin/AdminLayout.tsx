@@ -2,24 +2,22 @@ import React from "react";
 import AdminSidebar from "./AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import AdminFooter from "./AdminFooter";
+import classNames from "classnames";
 
 type Props = {
     children: React.ReactNode
+    hidePadding?: boolean
 }
 
 export default function AdminLayout(props: Props) {
     return (
-        <div className="d-flex vh-100 flex-column">
-            <div className="bg-primary">
-                <AdminNavbar />
-            </div>
-            <div className="d-flex flex-row flex-fill">
+        <div className="flex min-h-screen flex-col bg-gray-200">
+            <AdminNavbar />
+            <div className="flex flex-row flex-grow">
                 <AdminSidebar />
-                <div className="d-flex flex-fill flex-column">
+                <div className={classNames("flex flex-grow flex-col", { "p-5": !props.hidePadding })}>
                     {props.children}
-                    <div className="p-3">
-                        <AdminFooter />
-                    </div>
+                    <AdminFooter className={classNames({ "m-5": props.hidePadding })} />
                 </div>
             </div>
         </div>

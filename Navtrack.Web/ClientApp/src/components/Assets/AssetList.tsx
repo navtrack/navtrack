@@ -59,22 +59,19 @@ export default function AssetList() {
 
     return (
         <AdminLayout>
-            <DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} deleteHandler={deleteHandler} 
-            description="All the location history of this asset will also be removed." />
-            <div className="card shadow">
-                <div className="card-header border-0">
-                    <div className="row align-items-center">
-                        <div className="col">
-                            <h3 className="mb-0">Assets</h3>
-                        </div>
-                        <div className="col text-right">
-                            <button className="btn btn-sm btn-primary" onClick={() => history.push("/assets/add")}>Add new asset</button>
-                        </div>
+            <DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} deleteHandler={deleteHandler}
+                description="All the location history of this asset will also be removed." />
+
+            <div className="shadow rounded bg-white flex flex-col">
+                <div className="p-4 flex">
+                    <div className="flex-grow font-medium text-lg">Assets</div>
+                    <div className="flex-grow flex justify-end">
+                        <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none" onClick={() => history.push("/assets/add")}>
+                            Add asset
+                        </button>
                     </div>
                 </div>
-                <div className="table-responsive">
-                    <ReactTable columns={columns} data={assets} />
-                </div>
+                <ReactTable columns={columns} data={assets} />
             </div>
         </AdminLayout>
     );

@@ -64,43 +64,48 @@ export default function AssetEdit(props: Props) {
     return (
         <AdminLayout>
             {show &&
-                <div className="card shadow">
-                    <div className="card-header">
-                        <div className="row align-items-center">
-                            <div className="col">
-                                <h3 className="mb-0">{props.id ? <>Edit asset</> : <>Add asset</>}</h3>
-                            </div>
-                        </div>
+                <div className="shadow rounded bg-white flex flex-col">
+                    <div className="p-4">
+                        <div className="font-medium text-lg">{props.id ? <>Edit asset</> : <>Add asset</>}</div>
                     </div>
-                    <div className="card-body bg-secondary">
-                        <div className="form-group row">
-                            <label className="col-md-1 col-form-label form-control-label">Name</label>
-                            <div className="col-md-5">
-                                <input className="form-control form-control-alternative" type="text" value={asset.name} onChange={(e) => {
-                                    setAsset({ ...asset, name: e.target.value });
-                                    setErrors({ ...errors, name: [] })
-                                }} />
+                    <div className="p-4">
+                        <div className="flex flex-row mb-5">
+                            <div className="w-20 text-gray-700 font-medium h-10 flex items-center">Name</div>
+                            <div className="text-gray-700 font-medium w-5/12">
+                                <input className="h-10 shadow bg-gray-100 appearance-none rounded py-2 px-3 text-gray-700 focus:outline-none focus:border focus:border-gray-900 w-full"
+                                    value={asset.name}
+                                    onChange={(e) => {
+                                        setAsset({ ...asset, name: e.target.value });
+                                        setErrors({ ...errors, name: [] })
+                                    }}
+                                />
                                 <InputError name="name" errors={errors} />
                             </div>
                         </div>
-                        <div className="form-group row">
-                            <label className="col-md-1 col-form-label form-control-label">Device</label>
-                            <div className="col-md-5">
-                                <select className="form-control form-control-alternative" value={asset.deviceId} onChange={(e) => setAsset({ ...asset, deviceId: parseInt(e.target.value) })}>
-                                    <option value={0} key={0}>None</option>
-                                    {devices.map(x => <option value={x.id} key={x.id}>{x.type} (IMEI: {x.imei})</option>)}
-                                </select>
+                        <div className="flex flex-row">
+                            <div className="w-20 text-gray-700 font-medium h-10 flex items-center">Device</div>
+                            <div className="w-20 text-gray-700 font-medium w-5/12">
+                                <div className="relative shadow rounded bg-gray-100 w-full">
+                                    <select className="block appearance-none bg-white px-3 py-2 cursor-pointer focus:outline-none bg-gray-100 w-full"
+                                        onChange={(e) => setAsset({ ...asset, deviceId: parseInt(e.target.value) })}
+                                        value={asset.deviceId}>
+                                        <option value={0} key={0}>None</option>
+                                        {devices.map(x => <option value={x.id} key={x.id}>{x.type} (IMEI: {x.imei})</option>)}
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 pt-1">
+                                        <i className="fas fa-chevron-down" />
+                                    </div>
+                                </div>
+                                <InputError name="deviceId" errors={errors} />
                             </div>
-                            <label className="col-md-6 col-form-label pl-0">Showing unassigned devices.</label>
+                            <div className="ml-4 text-gray-700 text-sm h-10 flex items-center">Showing unassigned devices.</div>
                         </div>
                     </div>
-                    <div className="card-footer">
-                        <div className="row align-items-center">
-                            <div className="col">
-                                <button className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
-                                <button className="btn btn-default" onClick={submitForm}>Save</button>
-                            </div>
-                        </div>
+                    <div className="p-4">
+                        <button className="shadow-md bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded focus:outline-none"
+                            onClick={() => history.goBack()}>Cancel</button>
+                        <button className="shadow-md bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded focus:outline-none ml-3"
+                            onClick={submitForm}>Save</button>
                     </div>
                 </div>
             }

@@ -1,6 +1,6 @@
 import React, {} from "react";
 import {Errors} from "../../services/HttpClient/HttpClient";
-import {getParameterCaseInsensitive} from "../../services/ObjectUtil";
+import {getParameterCaseInsensitive} from "../../services/Util/ObjectUtil";
 
 type Props = {
     name: string,
@@ -12,7 +12,7 @@ export default function InputError(props: Props) {
     return (
         <>
             {errors && errors.map((x, i) =>
-                <div className="text-red text-sm mt-1" key={i}>{x}</div>)}
+            <p className="text-red-500 text-xs italic mt-2" key={i}>{x}</p>)}
         </>
     );
 }

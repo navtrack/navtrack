@@ -6,12 +6,8 @@ type Props = {
 
 export default function LoginLayout(props: Props) {
     return (
-        <div className="bg-default min-vh-100 d-flex">
-            <div className="d-flex flex-column container flex-fill">
-                {/* <LoginNavbar /> */}
-                {props.children}
-                {/* <LoginFooter /> */}
-            </div>
+        <div className="bg-gray-800 flex min-h-screen items-center justify-center flex-col">
+            {props.children}
         </div>
     );
 }

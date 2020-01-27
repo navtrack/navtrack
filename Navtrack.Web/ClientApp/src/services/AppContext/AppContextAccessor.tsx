@@ -25,7 +25,7 @@ export const AppContextAccessor = {
         }
     },
 
-    setNewSetAppContext: (setAppContext: (newAppContext: AppContext) => unknown) => {
+    setAppContextSetter: (setAppContext: (newAppContext: AppContext) => unknown) => {
         _setAppContext = setAppContext;
     }
 }

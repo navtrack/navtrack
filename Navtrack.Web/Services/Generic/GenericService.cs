@@ -28,7 +28,7 @@ namespace Navtrack.Web.Services.Generic
             return model;
         }
         
-        public async Task<List<TModel>> GetAll()
+        public virtual async Task<List<TModel>> GetAll()
         {
             List<TEntity> entities = await GetQueryable().ToListAsync();
 
@@ -103,7 +103,6 @@ namespace Navtrack.Web.Services.Generic
             return Task.CompletedTask;
         }
 
-
         protected virtual IQueryable<TEntity> GetQueryable()
         {
             return repository.GetEntities<TEntity>();
@@ -113,7 +112,7 @@ namespace Navtrack.Web.Services.Generic
         {
             return entity != null ? mapper.Map<TEntity, TModel>(entity) : default;
         }
-        
+
         protected TEntity MapToEntity(TModel model)
         {
             return model != null ? mapper.Map<TModel, TEntity>(model) : default;

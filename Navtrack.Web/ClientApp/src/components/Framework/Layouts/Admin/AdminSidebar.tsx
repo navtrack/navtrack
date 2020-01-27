@@ -1,47 +1,41 @@
 import React, { useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AppContext from "services/AppContext";
 
 export default function AdminSidebar() {
-    const history = useHistory();
     const { appContext } = useContext(AppContext);
 
-    const navItemClassName = (url: string): string => {
-        return history.location.pathname.includes(url) ? "nav-item active" : "nav-item";
-    }
-
     return (
-        <nav className="p-3 navbar-vertical sidebar navbar-light bg-white">
-                <h6 className="navbar-heading text-muted">Assets</h6>
-
-                {appContext.assets ? appContext.assets.length > 0 ?
-                    <ul className="navbar-nav">
-                        {appContext.assets.map(x =>
-                            <li key={x.id} className={navItemClassName("/live")}>
-                                <Link className="nav-link" to={`/live/${x.id}`}>
-                                    <i className="fas fa-circle fa-xs text-green" /> {x.name}
-                                </Link>
-                            </li>)}
-                    </ul>
-                    :
-                    <h5>No assets.</h5>
-                    :
-                    <h5>Loading assets.</h5>
-                }
-                <hr className="my-3" />
-                <h6 className="navbar-heading text-muted">Management</h6>
-                <ul className="navbar-nav">
-                    <li className={navItemClassName("/assets")}>
-                        <Link className="nav-link" to="/assets">
-                            <i className="fas fa-map-marker-alt" /> Assets
+        <nav className="p-3 bg-white w-48 text-sm shadow z-10">
+            <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Assets</h5>
+            {appContext.assets ? appContext.assets.length > 0 ?
+                <ul>
+                    {appContext.assets.map(x =>
+                        <li key={x.id} className="mb-2">
+                            <Link className="text-gray-600 hover:text-gray-900" to={`/live/${x.id}`}>
+                                <i className="fa fa-circle mr-1 w-4 text-center text-green-600 text-xs" /> {x.name}
                             </Link>
-                    </li>
-                    <li className={navItemClassName("/devices")}>
-                        <Link className="nav-link" to="/devices">
-                            <i className="fas fa-hdd" /> Devices
-                            </Link>
-                    </li>
+                        </li>)}
                 </ul>
+                :
+                <div>No assets.</div>
+                :
+                <div>Loading assets.</div>
+            }
+            <hr className="my-3" />
+            <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Management</h5>
+            <ul>
+                <li className="mb-2">
+                    <Link className="text-gray-600 hover:text-gray-900" to="/assets">
+                        <i className="fa fa-car-alt mr-1 w-4 text-center" /> Assets
+                    </Link>
+                </li>
+                <li className="mb-2">
+                    <Link className="text-gray-600 hover:text-gray-900" to="/devices">
+                        <i className="fas fa-hdd mr-1 w-4" /> Devices
+                    </Link>
+                </li>
+            </ul>
         </nav>
     );
 }
