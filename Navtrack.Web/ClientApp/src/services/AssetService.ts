@@ -1,13 +1,12 @@
-import {AppContextAccessor} from "./AppContext/AppContextAccessor";
-import {AssetApi} from "./Api/AssetApi";
+import { AppContextAccessor } from "./AppContext/AppContextAccessor";
+import { AssetApi } from "./Api/AssetApi";
 
 export const AssetService = {
-    refreshAssets: async () => {
-        const appContext = AppContextAccessor.getAppContext();
+  refreshAssets: async () => {
+    if (AppContextAccessor.getAppContext().authenticated) {
+      let assets = await AssetApi.getAll();
 
-        if (appContext.authenticated) {
-            await AssetApi.getAll()
-                .then(x => AppContextAccessor.setAppContext({...appContext, assets: x}));
-        }
+      AppContextAccessor.setAppContext({ ...AppContextAccessor.getAppContext(), assets: assets });
     }
+  }
 };

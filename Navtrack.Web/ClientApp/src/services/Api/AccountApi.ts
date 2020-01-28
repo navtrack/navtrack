@@ -1,6 +1,8 @@
 import {HttpClientUtil} from "../HttpClient/HttpClientUtil";
 import { HttpClient } from "services/HttpClient/HttpClient";
 import { ResponseModel } from "./Model/ResponseModel";
+import { UserModel } from "./Model/UserModel";
+import { RegisterModel } from "components/Account/Register/RegisterModel";
 
 export const AccountApi = {
     login: function (email: string, password: string): Promise<ResponseModel> {
@@ -15,5 +17,13 @@ export const AccountApi = {
                 "Content-Type": "application/json"
             }
         });
-    }
+    },
+
+    get: function (): Promise<UserModel> {
+      return HttpClient.get<UserModel>("account");
+    },
+
+    register: function (registerModel: RegisterModel): Promise<ResponseModel> {
+      return HttpClient.post("account/register", registerModel);
+  },
 };

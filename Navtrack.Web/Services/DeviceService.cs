@@ -17,13 +17,8 @@ namespace Navtrack.Web.Services
     [Service(typeof(IGenericService<Device, DeviceModel>))]
     public class DeviceService : GenericService<Device, DeviceModel>, IDeviceService
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
-
         public DeviceService(IRepository repository, IMapper mapper) : base(repository, mapper)
         {
-            this.repository = repository;
-            this.mapper = mapper;
         }
 
         protected override IQueryable<Device> GetQueryable()

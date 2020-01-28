@@ -1,30 +1,28 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Web.Models;
+using Navtrack.Web.Services;
 using Navtrack.Web.Services.Authentication;
 using Navtrack.Web.Services.Generic;
 
 namespace Navtrack.Web.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly IAuthenticationService authenticationService;
+        private readonly IUserService userService;
 
-        public AccountController(IAuthenticationService authenticationService)
+        public AccountController(IAuthenticationService authenticationService, IUserService userService)
         {
             this.authenticationService = authenticationService;
+            this.userService = userService;
         }
 
-        [HttpGet("userInfo")]
-        public UserInfo UserInfo()
+        [HttpGet]
+        public Task<UserModel> Get()
         {
-            return new UserInfo
-            {
-                Email = User.Identity.Name,
-                IsAuthenticated = User.Identity.IsAuthenticated
-            };
+            return userService.GetAuthenticatedUser(User.Identity.Name);
         }
 
         [HttpPost("login")]
@@ -32,12 +30,15 @@ namespace Navtrack.Web.Controllers
         {
             ValidationResult validationResult = await authenticationService.Login(loginModel);
 
-            if (validationResult.IsValid)
-            {
-                return Ok();
-            }
+            return ValidationResult(validationResult);
+        }
 
-            return BadRequest(new ErrorModel(validationResult));
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
+        {
+            ValidationResult validationResult = await authenticationService.Register(registerModel);
+
+            return ValidationResult(validationResult);
         }
 
         [HttpPost("logout")]

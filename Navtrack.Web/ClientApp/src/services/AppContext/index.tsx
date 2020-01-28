@@ -1,66 +1,69 @@
 import React from "react";
-import { AssetModel } from "../Api/Model/AssetModel";
-
-type AppContextWrapper = {
-    appContext: AppContext,
-    setAppContext: (newAppContext: AppContext) => unknown;
-}
+import { UserModel } from "services/Api/Model/UserModel";
+import { AssetModel } from "services/Api/Model/AssetModel";
 
 export type AppContext = {
-    user?: User,
-    assets?: AssetModel[],
-    authenticated: boolean
+  user?: UserModel;
+  assets?: AssetModel[];
+  authenticated: boolean;
+};
+
+const DefaultAppContext: AppContext = {
+  authenticated: false
+};
+
+type AppContextWrapper = {
+  appContext: AppContext,
+  setAppContext: (newAppContext: AppContext) => unknown;
 }
 
-const DefaultAppContext : AppContext = {
-    authenticated: false
-}
+export function CreateAppContext(): AppContext {
+  const appContext = DefaultAppContext;
 
-export type User = {
-    username: string
-}
+  const localStorageAppContext: LocalStorageAppContext | null = GetFromLocalStorage();
 
-export const DefaultUser : User = {
-    username: ""
-}
+  if (localStorageAppContext) {
+    MapFromLocalStorage(localStorageAppContext, appContext);
+  }
 
-const appContextKey = "navtrack.appContext";
-
-export function GetAppContext(): AppContext {
-    const localStorageAppContext: LocalStorageAppContext = GetFromLocalStorage();
-
-    return {
-        authenticated: localStorageAppContext.authenticated
-    };
+  return appContext;
 }
 
 export const AppContext = React.createContext<AppContextWrapper>({
-    appContext: DefaultAppContext,
-    setAppContext: () => { }
+  appContext: DefaultAppContext,
+  setAppContext: () => { }
 });
 
 export default AppContext;
 
-type LocalStorageAppContext = {
-    authenticated: boolean
+const appContextKey = "navtrack.appContext";
+
+export type LocalStorageAppContext = {
+  authenticated: boolean
 }
 
-const DefaultLocalStorageAppContext : LocalStorageAppContext = {
-    authenticated: false
+export function SaveToLocalStorage(appContext: AppContext) {
+  localStorage.setItem(appContextKey, JSON.stringify(MapToLocalStorage(appContext)));
 }
 
-export function SaveToLocalStorage(appContext: LocalStorageAppContext) {
-    localStorage.setItem(appContextKey, JSON.stringify(appContext));
+function GetFromLocalStorage(): LocalStorageAppContext | null {
+  const localStorageAppContextJson = localStorage.getItem(appContextKey);
+
+  if (localStorageAppContextJson) {
+    const localStorageAppContext = JSON.parse(localStorageAppContextJson);
+
+    return localStorageAppContext;
+  }
+
+  return null;
 }
 
-export function GetFromLocalStorage() : LocalStorageAppContext  {
-    const localStorageAppContextJson = localStorage.getItem(appContextKey);
+function MapToLocalStorage(source: AppContext): LocalStorageAppContext {
+  return {
+    authenticated: source.authenticated
+  };
+}
 
-    if (localStorageAppContextJson) {
-        const appContext = JSON.parse(localStorageAppContextJson);
-
-        return appContext;
-    }
-
-    return DefaultLocalStorageAppContext;
+function MapFromLocalStorage(source: LocalStorageAppContext, destination: AppContext) {
+  destination.authenticated = source.authenticated;
 }

@@ -8,5 +8,6 @@ namespace Navtrack.Web.Services.Authentication
     {
         Task<ValidationResult> Login(LoginModel loginModel);
         Task Logout();
+        Task<ValidationResult> Register(RegisterModel registerModel);
     }
 }

@@ -16,13 +16,8 @@ namespace Navtrack.Web.Services
     [Service(typeof(IGenericService<Asset, AssetModel>))]
     public class AssetService : GenericService<Asset, AssetModel>, IAssetService
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
-
         public AssetService(IRepository repository, IMapper mapper) : base(repository, mapper)
         {
-            this.repository = repository;
-            this.mapper = mapper;
         }
 
         public override async Task<List<AssetModel>> GetAll()

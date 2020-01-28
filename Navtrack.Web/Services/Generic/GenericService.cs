@@ -10,8 +10,8 @@ namespace Navtrack.Web.Services.Generic
 {
     public class GenericService<TEntity, TModel> : IGenericService<TEntity, TModel> where TEntity : class, IEntity
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
+        protected readonly IRepository repository;
+        protected readonly IMapper mapper;
 
         protected GenericService(IRepository repository, IMapper mapper)
         {

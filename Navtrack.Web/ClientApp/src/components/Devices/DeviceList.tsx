@@ -66,7 +66,7 @@ export default function DeviceList() {
         <AdminLayout>
             <DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} deleteHandler={deleteHandler} />
             <div className="shadow rounded bg-white flex flex-col">
-                <div className="p-3 flex">
+                <div className="p-4 flex">
                     <div className="flex-grow font-medium text-lg">Devices</div>
                     <div className="flex-grow flex justify-end">
                         <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none" onClick={() => history.push("/devices/add")}>
