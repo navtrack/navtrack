@@ -1,5 +1,3 @@
 # navtrack - Work in progress.
-First release by the end of this year (2019), hopefully.
-
-
+![CI](https://github.com/navtrack/navtrack/workflows/CI/badge.svg)
 [![Build Status](https://travis-ci.org/navtrack/navtrack.svg?branch=master)](https://travis-ci.org/navtrack/navtrack)
