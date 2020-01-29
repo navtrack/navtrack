@@ -1,12 +1,21 @@
 import React from "react";
+import classNames from "classnames";
+import { ClassDictionary } from "classnames/types";
 
 type Props = {
-  icon: string,
-  show?: boolean
+  show?: boolean,
+  margin?: number,
+  className?: string
 }
 
 export default function Icon(props: Props) {
   let show = props.show === undefined || props.show;
 
-  return (show ? <i className={`fas ${props.icon} mr-2`} /> : <></>);
+  let classes: ClassDictionary = {};
+
+  if (props.margin && props.margin > 0) {
+    classes[`mr-${props.margin}`] = true;
+  }
+
+  return (show ? <i className={classNames("fas", classes, props.className)} /> : <></>);
 }

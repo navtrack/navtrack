@@ -2,10 +2,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router";
 import LocationHistory from "./components/Location/LocationHistory";
 import Home from "./components/Home";
-import DeviceList from "./components/Devices/DeviceList"
-import DeviceEdit from "./components/Devices/DeviceEdit";
-import AssetList from "./components/Assets/AssetList"
-import AssetEdit from "./components/Assets/AssetEdit";
 import Notifications from "./components/Notifications";
 import { CreateAppContext, SaveToLocalStorage } from "./services/AppContext";
 import { AppContext } from "./services/AppContext";
@@ -16,6 +12,12 @@ import { AccountService } from "services/AccountService";
 import LiveTracking from "components/Asset/LiveTracking";
 import Login from "components/Account/Login";
 import Register from "components/Account/Register";
+import DeviceList from "components/Management/Devices/DeviceList";
+import DeviceEdit from "components/Management/Devices/DeviceEdit";
+import AssetList from "components/Management/Assets/AssetList";
+import AssetEdit from "components/Management/Assets/AssetEdit";
+import UserList from "components/Management/Users/UserList";
+import UserEdit from "components/Management/Users/UserEdit";
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
@@ -51,6 +53,10 @@ export default function App() {
         <PrivateRoute exact path="/assets"><AssetList /></PrivateRoute>
         <PrivateRoute path="/assets/add"><AssetEdit /></PrivateRoute>
         <Route path="/assets/:id" render={(props) => <AssetEdit id={props.match.params.id} />}></Route>
+
+        <PrivateRoute exact path="/users"><UserList /></PrivateRoute>
+        <PrivateRoute path="/users/add"><UserEdit /></PrivateRoute>
+        <Route path="/users/:id" render={(props) => <UserEdit id={props.match.params.id} />}></Route>
 
         <Route path="/login"><Login /></Route>
         <Route path="/register"><Register /></Route>

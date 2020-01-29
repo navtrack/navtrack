@@ -1,7 +1,6 @@
-import React, { FormEvent, useState, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { FormEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import { Errors, ApiError } from "services/HttpClient/HttpClient";
-import AppContext from "services/AppContext";
 import InputError, { HasErrors, AddError } from "components/Common/InputError";
 import { AccountApi } from "services/Api/AccountApi";
 import LoginLayout from "components/Framework/Layouts/Login/LoginLayout";
@@ -71,7 +70,7 @@ export default function Register() {
                 </div>
                 <div className="flex justify-center my-6">
                   <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none" type="submit">
-                    <Icon icon="fa-spinner fa-spin" show={showLoadingIndicator} /> Register
+                    <Icon className="fa-spinner fa-spin" show={showLoadingIndicator} /> Register
                 </button>
                 </div>
               </form>
@@ -103,7 +102,7 @@ const validateModel = (registerModel: RegisterModel): Record<string, string[]> =
   if (registerModel.confirmPassword.length === 0) {
     AddError<RegisterModel>(errors, "confirmPassword", "Password confirmation is required.");
   }
-  else if (registerModel.password != registerModel.confirmPassword) {
+  else if (registerModel.password !== registerModel.confirmPassword) {
     AddError<RegisterModel>(errors, "confirmPassword", "The passwords must match.");
   }
 

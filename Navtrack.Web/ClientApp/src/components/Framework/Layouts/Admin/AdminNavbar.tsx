@@ -47,7 +47,7 @@ export default function AdminNavbar() {
               <div className="mt-2 absolute right-0 fadeIn animated faster">
                 <div className="w-48 bg-white rounded-lg shadow-lg overflow-hidden">
                   <div className="block px-6 py-3 leading-tight hover:bg-gray-200 text-gray-600 hover:text-gray-900" onClick={handleLogout}>
-                    <Icon icon="fa-sign-out-alt" /> Logout
+                    <Icon className="fa-sign-out-alt" /> Logout
                   </div>
                 </div>
               </div>}
