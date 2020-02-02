@@ -105,7 +105,6 @@ namespace Navtrack.DataAccess.Model
                     .OnDelete(DeleteBehavior.NoAction);
             });
             
-            
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -113,6 +112,33 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.Salt).HasMaxLength(44).IsRequired();
                 entity.Property(x => x.Hash).HasMaxLength(88).IsRequired();
             });
+            
+            modelBuilder.Entity<UserAsset>()
+                .HasKey(t => new { t.UserId, t.AssetId });
+
+            modelBuilder.Entity<UserAsset>()
+                .HasOne(pt => pt.User)
+                .WithMany(p => p.Assets)
+                .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<UserAsset>()
+                .HasOne(pt => pt.Asset)
+                .WithMany(t => t.Users)
+                .HasForeignKey(pt => pt.AssetId);
+            
+            
+            modelBuilder.Entity<UserDevice>()
+                .HasKey(t => new { t.UserId, t.DeviceId });
+
+            modelBuilder.Entity<UserDevice>()
+                .HasOne(pt => pt.User)
+                .WithMany(p => p.Devices)
+                .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<UserDevice>()
+                .HasOne(pt => pt.Device)
+                .WithMany(t => t.Users)
+                .HasForeignKey(pt => pt.DeviceId);
         }
     }
 }

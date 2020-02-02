@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Navtrack.DataAccess.Model.Custom;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services.Generic;
 
@@ -22,9 +23,21 @@ namespace Navtrack.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public Task<TModel> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return genericService.Get(id);
+            if (await genericService.Exists(id))
+            {
+                if (await genericService.Authorize(id, Role.Viewer))
+                {
+                    TModel model = await genericService.Get(id);
+
+                    return Ok(model);
+                }
+
+                return Unauthorized();
+            }
+
+            return NotFound();
         }
 
         [HttpGet]
@@ -53,23 +66,28 @@ namespace Navtrack.Web.Controllers
             return ValidationProblem();
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(TModel model)
         {
             if (ModelState.IsValid)
             {
                 if (await genericService.Exists(model.Id))
                 {
-                    ValidationResult validationResult = await genericService.ValidateSave(model);
-
-                    if (validationResult.IsValid)
+                    if (await genericService.Authorize(model.Id, Role.Owner))
                     {
-                        await genericService.Update(model);
+                        ValidationResult validationResult = await genericService.ValidateSave(model);
 
-                        return Ok();
+                        if (validationResult.IsValid)
+                        {
+                            await genericService.Update(model);
+
+                            return Ok();
+                        }
+
+                        return BadRequest(new ErrorModel(validationResult));
                     }
 
-                    return BadRequest(new ErrorModel(validationResult));
+                    return Unauthorized();
                 }
 
                 return NotFound();
@@ -83,16 +101,21 @@ namespace Navtrack.Web.Controllers
         {
             if (await genericService.Exists(id))
             {
-                ValidationResult validationResult = await genericService.ValidateDelete(id);
-
-                if (validationResult.IsValid)
+                if (await genericService.Authorize(id, Role.Owner))
                 {
-                    await genericService.Delete(id);
+                    ValidationResult validationResult = await genericService.ValidateDelete(id);
 
-                    return Ok();
+                    if (validationResult.IsValid)
+                    {
+                        await genericService.Delete(id);
+
+                        return Ok();
+                    }
+
+                    return BadRequest(new ErrorModel(validationResult));
                 }
 
-                return BadRequest(new ErrorModel(validationResult));
+                return Unauthorized();
             }
 
             return NotFound();

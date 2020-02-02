@@ -13,7 +13,7 @@ export const DeviceApi = {
     },
 
     delete: function(id: number) : Promise<ResponseModel> {
-        return HttpClient.delete("devices/" + id);
+        return HttpClient.delete(`devices/${id}`);
     },
 
     getTypes: function() : Promise<DeviceTypeModel[]> {
@@ -26,8 +26,8 @@ export const DeviceApi = {
         return HttpClient.get<DeviceModel[]>(url);
     },
     
-    update: function(device: DeviceModel) : Promise<ResponseModel> {
-        return HttpClient.put("devices", device);
+    put: function(device: DeviceModel) : Promise<ResponseModel> {
+        return HttpClient.put(`devices/${device.id}`, device);
     },
     
     add: function(device: DeviceModel) : Promise<ResponseModel> {

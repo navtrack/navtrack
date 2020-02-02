@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services;
 using Navtrack.Web.Services.Authentication;
+using Navtrack.Web.Services.Extensions;
 using Navtrack.Web.Services.Generic;
 
 namespace Navtrack.Web.Controllers
@@ -22,7 +23,7 @@ namespace Navtrack.Web.Controllers
         [HttpGet]
         public Task<UserModel> Get()
         {
-            return userService.GetAuthenticatedUser(User.Identity.Name);
+            return userService.Get(User.GetId());
         }
 
         [HttpPost("login")]

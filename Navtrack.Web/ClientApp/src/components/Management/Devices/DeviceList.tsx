@@ -3,7 +3,7 @@ import { DeviceModel } from "services/Api/Model/DeviceModel";
 import { useHistory } from "react-router";
 import { DeviceApi } from "services/Api/DeviceApi";
 import { addNotification } from "components/Notifications";
-import { ApiError } from "services/HttpClient/HttpClient";
+import { AppError } from "services/HttpClient/AppError";
 import { Link } from "react-router-dom";
 import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
 import DeleteModal from "components/Common/DeleteModal";
@@ -31,8 +31,8 @@ export default function DeviceList() {
         setDevices(devices.filter(x => x.id !== id));
 
       })
-      .catch((error: ApiError) => {
-        addNotification(error.message);
+      .catch((error: AppError) => {
+        addNotification(`${error.message}`);
       });
   }
 
@@ -69,9 +69,10 @@ export default function DeviceList() {
         <div className="p-4 flex">
           <div className="flex-grow font-medium text-lg">Devices</div>
           <div className="flex-grow flex justify-end">
-            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none" onClick={() => history.push("/devices/add")}>
+            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none"
+              onClick={() => history.push("/devices/add")}>
               Add device
-                        </button>
+            </button>
           </div>
         </div>
         <ReactTable columns={columns} data={devices} />

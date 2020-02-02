@@ -1,17 +1,18 @@
 import React, { FormEvent, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { LoginModel, DefaultLoginModel } from "./LoginModel";
-import { Errors, ApiError } from "services/HttpClient/HttpClient";
+import { AppError } from "services/HttpClient/AppError";
 import AppContext from "services/AppContext";
 import InputError, { HasErrors, AddError } from "components/Common/InputError";
 import { AccountApi } from "services/Api/AccountApi";
 import LoginLayout from "components/Framework/Layouts/Login/LoginLayout";
 import Icon from "components/Framework/Util/Icon";
+import { ValidationResult } from "components/Common/ValidatonResult";
 
 export default function Login() {
   const [login, setLogin] = useState<LoginModel>(DefaultLoginModel);
   const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
-  const [errors, setErrors] = useState<Errors>({});
+  const [error, setError] = useState<AppError>();
   const history = useHistory();
   const { appContext, setAppContext } = useContext(AppContext);
 
@@ -21,7 +22,7 @@ export default function Login() {
     const errors = validateModel(login);
 
     if (HasErrors(errors)) {
-      setErrors(errors);
+      setError(new AppError(errors));
     } else {
       setShowLoadingIndicator(true);
 
@@ -31,8 +32,8 @@ export default function Login() {
 
           history.push("/");
         })
-        .catch((error: ApiError) => {
-          setErrors(error.errors);
+        .catch((error: AppError) => {
+          setError(error);
           setShowLoadingIndicator(false);
         });
     }
@@ -53,13 +54,13 @@ export default function Login() {
               <input className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none" id="email" type="email" placeholder="Email"
                 value={login.email} onChange={(e) => setLogin({ ...login, email: e.target.value })}
               />
-              <InputError name="email" errors={errors} />
+              <InputError name="email" errors={error} />
             </div>
             <div className="mb-4">
               <input className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border focus:border-gray-900" id="password" type="password" placeholder="Password"
                 value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })}
               />
-              <InputError name="password" errors={errors} />
+              <InputError name="password" errors={error} />
             </div>
             <div className="flex justify-center my-6">
               <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none" type="submit">
@@ -81,14 +82,14 @@ export default function Login() {
   );
 };
 
-const validateModel = (login: LoginModel): Record<string, string[]> => {
-  const errors: Record<string, string[]> = {};
+const validateModel = (login: LoginModel): ValidationResult => {
+  const errors: ValidationResult = {};
 
   if (login.email.length === 0) {
-    AddError<LoginModel>(errors, "email", "Email is required.");
+    AddError<LoginModel>(errors, "email", "The email is required.");
   }
   if (login.password.length === 0) {
-    AddError<LoginModel>(errors, "password", "Password is required.");
+    AddError<LoginModel>(errors, "password", "The password is required.");
   }
 
   return errors;

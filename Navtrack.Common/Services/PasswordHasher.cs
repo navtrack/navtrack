@@ -25,13 +25,13 @@ namespace Navtrack.Common.Services
             string key = Convert.ToBase64String(inArray);
             string salt = Convert.ToBase64String(algorithm.Salt);
 
-            return (salt, key);
+            return (key, salt);
         }
 
-        public bool CheckPassword(string password, string salt, string hash)
+        public bool CheckPassword(string password, string hash, string salt)
         {
-            byte[] saltBytes = Convert.FromBase64String(salt);
             byte[] keyBytes = Convert.FromBase64String(hash);
+            byte[] saltBytes = Convert.FromBase64String(salt);
 
             using Rfc2898DeriveBytes algorithm = new Rfc2898DeriveBytes(
                 password,

@@ -8,6 +8,7 @@ using Navtrack.Common.Services;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
+using Navtrack.Library.Services;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services.Generic;
 
@@ -20,14 +21,16 @@ namespace Navtrack.Web.Services.Authentication
         private readonly IUserService userService;
         private readonly IPasswordHasher passwordHasher;
         private readonly IRepository repository;
+        private readonly IMapper mapper;
 
         public AuthenticationService(IHttpContextAccessor httpContextAccessor, IUserService userService,
-            IPasswordHasher passwordHasher, IRepository repository)
+            IPasswordHasher passwordHasher, IRepository repository, IMapper mapper)
         {
             this.httpContextAccessor = httpContextAccessor;
             this.userService = userService;
             this.passwordHasher = passwordHasher;
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         public async Task<ValidationResult> Login(LoginModel loginModel)
@@ -38,9 +41,9 @@ namespace Navtrack.Web.Services.Authentication
 
             if (user != null)
             {
-                if (passwordHasher.CheckPassword(loginModel.Password, user.Salt, user.Hash))
+                if (passwordHasher.CheckPassword(loginModel.Password, user.Hash, user.Salt))
                 {
-                    await SignIn(loginModel);
+                    await SignIn(user);
                 }
                 else
                 {
@@ -55,11 +58,12 @@ namespace Navtrack.Web.Services.Authentication
             return validationResult;
         }
 
-        private async Task SignIn(LoginModel loginModel)
+        private async Task SignIn(User user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, loginModel.Email)
+                new Claim(ClaimTypes.NameIdentifier, $"{user.Id}"),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             ClaimsIdentity claimsIdentity =
@@ -98,16 +102,9 @@ namespace Navtrack.Web.Services.Authentication
             if (validationResult.IsValid)
             {
                 using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
-                
-                (string, string) password = passwordHasher.Hash(registerModel.Password);
-                    
-                User user = new User
-                {
-                    Email = registerModel.Email,
-                    Salt = password.Item1,
-                    Hash = password.Item2
-                };
 
+                User user = mapper.Map<RegisterModel, User>(registerModel);
+                
                 unitOfWork.Add(user);
 
                 await unitOfWork.SaveChanges();

@@ -7,6 +7,7 @@ namespace Navtrack.DataAccess.Model
         public Asset()
         {
             Locations = new HashSet<Location>();
+            Users = new HashSet<UserAsset>();
         }
         
         public int Id { get; set; }
@@ -14,5 +15,6 @@ namespace Navtrack.DataAccess.Model
         public Device Device { get; set; }
         public int DeviceId { get; set; }
         public ICollection<Location> Locations { get; set; }
+        public ICollection<UserAsset> Users { get; set; }
     }
 }

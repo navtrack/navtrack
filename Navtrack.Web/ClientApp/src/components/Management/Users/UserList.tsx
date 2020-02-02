@@ -3,7 +3,7 @@ import { UserModel } from "services/Api/Model/UserModel";
 import { useHistory } from "react-router";
 import { UserApi } from "services/Api/UserApi";
 import { addNotification } from "components/Notifications";
-import { ApiError } from "services/HttpClient/HttpClient";
+import { AppError } from "services/HttpClient/AppError";
 import { Link } from "react-router-dom";
 import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
 import DeleteModal from "components/Common/DeleteModal";
@@ -31,8 +31,8 @@ export default function UserList() {
         setUsers(users.filter(x => x.id !== id));
 
       })
-      .catch((error: ApiError) => {
-        addNotification(error.message);
+      .catch((error: AppError) => {
+        addNotification(`${error.message}`);
       });
   }
 
@@ -61,7 +61,8 @@ export default function UserList() {
         <div className="p-4 flex">
           <div className="flex-grow font-medium text-lg">Users</div>
           <div className="flex-grow flex justify-end">
-            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none" onClick={() => history.push("/users/add")}>
+            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none"
+              onClick={() => history.push("/users/add")}>
               Add user
             </button>
           </div>

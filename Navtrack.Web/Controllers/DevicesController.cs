@@ -20,7 +20,7 @@ namespace Navtrack.Web.Controllers
         [HttpGet("available/{id}")]
         public Task<List<DeviceModel>> GetAll(int? id)
         {
-            return deviceService.GetAllAvailableIncluding(id);
+            return deviceService.GetAllAvailableForAsset(id);
         }
 
         [HttpGet("protocols")]

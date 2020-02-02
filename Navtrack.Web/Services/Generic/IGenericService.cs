@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Navtrack.DataAccess.Model.Custom;
 
 namespace Navtrack.Web.Services.Generic
 {
@@ -13,5 +14,6 @@ namespace Navtrack.Web.Services.Generic
         Task Update(TModel model);
         Task<ValidationResult> ValidateDelete(int id);
         Task Delete(int id);
+        Task<bool> Authorize(int id, Role role);
     }
 }

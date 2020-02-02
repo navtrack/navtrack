@@ -4,7 +4,7 @@ import { AssetModel } from "services/Api/Model/AssetModel";
 import { useHistory } from "react-router";
 import { AssetApi } from "services/Api/AssetApi";
 import { addNotification } from "components/Notifications";
-import { ApiError } from "services/HttpClient/HttpClient";
+import { AppError } from "services/HttpClient/AppError";
 import { Link } from "react-router-dom";
 import DeleteModal from "components/Common/DeleteModal";
 import ReactTable from "components/Table/ReactTable";
@@ -31,8 +31,8 @@ export default function AssetList() {
         addNotification("Asset deleted successfully.");
         setAssets(devices.filter(x => x.id !== id));
       })
-      .catch((error: ApiError) => {
-        addNotification(error.message);
+      .catch((error: AppError) => {
+        addNotification(`${error.message}`);
       });
   }
 
@@ -66,9 +66,10 @@ export default function AssetList() {
         <div className="p-4 flex">
           <div className="flex-grow font-medium text-lg">Assets</div>
           <div className="flex-grow flex justify-end">
-            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none" onClick={() => history.push("/assets/add")}>
+            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none"
+              onClick={() => history.push("/assets/add")}>
               Add asset
-                        </button>
+              </button>
           </div>
         </div>
         <ReactTable columns={columns} data={assets} />

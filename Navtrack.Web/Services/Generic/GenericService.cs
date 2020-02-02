@@ -1,22 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.Services;
+using Navtrack.Web.Models;
+using Navtrack.Web.Services.Extensions;
 
 namespace Navtrack.Web.Services.Generic
 {
-    public class GenericService<TEntity, TModel> : IGenericService<TEntity, TModel> where TEntity : class, IEntity
+    public class GenericService<TEntity, TModel> : IGenericService<TEntity, TModel>
+        where TEntity : class, IEntity where TModel : class, IModel
     {
         protected readonly IRepository repository;
         protected readonly IMapper mapper;
+        protected readonly IHttpContextAccessor httpContextAccessor;
 
-        protected GenericService(IRepository repository, IMapper mapper)
+        protected GenericService(IRepository repository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.repository = repository;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<TModel> Get(int id)
@@ -27,7 +34,7 @@ namespace Navtrack.Web.Services.Generic
 
             return model;
         }
-        
+
         public virtual async Task<List<TModel>> GetAll()
         {
             List<TEntity> entities = await GetQueryable().ToListAsync();
@@ -41,9 +48,11 @@ namespace Navtrack.Web.Services.Generic
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            TEntity mapped = MapToEntity(model);
+            TEntity entity = MapToEntity(model);
 
-            unitOfWork.Add(mapped);
+            await BeforeAdd(unitOfWork, model, entity);
+
+            unitOfWork.Add(entity);
 
             await unitOfWork.SaveChanges();
         }
@@ -52,7 +61,9 @@ namespace Navtrack.Web.Services.Generic
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            TEntity entity = MapToEntity(model);
+            TEntity entity = await repository.GetEntities<TEntity>().FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            mapper.Map(model, entity);
 
             unitOfWork.Update(entity);
 
@@ -80,7 +91,7 @@ namespace Navtrack.Web.Services.Generic
             ValidationResult validationResult = new ValidationResult();
 
             await ValidateSave(model, validationResult);
-            
+
             return validationResult;
         }
 
@@ -94,7 +105,7 @@ namespace Navtrack.Web.Services.Generic
             ValidationResult validationResult = new ValidationResult();
 
             await ValidateDelete(id, validationResult);
-            
+
             return validationResult;
         }
 
@@ -108,6 +119,21 @@ namespace Navtrack.Web.Services.Generic
             return repository.GetEntities<TEntity>();
         }
 
+        public async Task<bool> Authorize(int id, Role role)
+        {
+            IUserRelation userRelation = await GetUserRelation(id);
+
+            return userRelation == null ||
+                   userRelation.UserId == httpContextAccessor.HttpContext.User.GetId() &&
+                   userRelation.RoleId == (int) role ||
+                   role == Role.Viewer && userRelation.RoleId == (int) Role.Owner; // TODO change this
+        }
+
+        protected virtual Task<IUserRelation> GetUserRelation(int id)
+        {
+            return null;
+        }
+
         protected TModel MapToModel(TEntity entity)
         {
             return entity != null ? mapper.Map<TEntity, TModel>(entity) : default;
@@ -116,6 +142,11 @@ namespace Navtrack.Web.Services.Generic
         protected TEntity MapToEntity(TModel model)
         {
             return model != null ? mapper.Map<TModel, TEntity>(model) : default;
+        }
+
+        protected virtual Task BeforeAdd(IUnitOfWork unitOfWork, TModel model, TEntity entity)
+        {
+            return Task.CompletedTask;
         }
     }
 }

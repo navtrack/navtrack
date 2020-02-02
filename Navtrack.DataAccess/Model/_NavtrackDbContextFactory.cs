@@ -6,11 +6,11 @@ using Navtrack.Library.DI;
 namespace Navtrack.DataAccess.Model
 {
     [Service(typeof(IDbContextFactory))]
-    public class NavtrackDbContextFactory : IDbContextFactory
+    public class _NavtrackDbContextFactory : IDbContextFactory
     {
         private readonly IConfiguration configuration;
 
-        public NavtrackDbContextFactory(IConfiguration configuration)
+        public _NavtrackDbContextFactory(IConfiguration configuration)
         {
             this.configuration = configuration;
         }

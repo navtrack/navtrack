@@ -10,6 +10,6 @@ namespace Navtrack.Web.Services
     {
         IEnumerable<ProtocolModel> GetProtocols();
         Task<List<DeviceTypeModel>> GetTypes();
-        Task<List<DeviceModel>> GetAllAvailableIncluding(int? id);
+        Task<List<DeviceModel>> GetAllAvailableForAsset(int? assetId);
     }
 }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { DeviceModel, DefaultDeviceModel } from "services/Api/Model/DeviceModel";
 import { DeviceTypeModel } from "services/Api/Model/DeviceTypeModel";
-import { Errors, ApiError } from "services/HttpClient/HttpClient";
+import { AppError } from "services/HttpClient/AppError";
 import { useHistory } from "react-router";
 import { DeviceApi } from "services/Api/DeviceApi";
-import InputError, { HasErrors, AddError } from "components/Common/InputError";
+import InputError, { HasErrors, AddError, ClearError } from "components/Common/InputError";
 import { addNotification } from "components/Notifications";
 import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
+import { ValidationResult } from "components/Common/ValidatonResult";
 
 type Props = {
   id?: number
@@ -15,7 +16,7 @@ type Props = {
 export default function DeviceEdit(props: Props) {
   const [device, setDevice] = useState<DeviceModel>(DefaultDeviceModel);
   const [deviceTypes, setDeviceTypes] = useState<DeviceTypeModel[]>([]);
-  const [errors, setErrors] = useState<Errors>({});
+  const [error, setError] = useState<AppError>();
   const [show, setShow] = useState(!props.id);
   const history = useHistory();
 
@@ -23,37 +24,35 @@ export default function DeviceEdit(props: Props) {
     DeviceApi.getTypes().then(deviceTypes => setDeviceTypes(deviceTypes));
 
     if (props.id) {
-      DeviceApi.get(props.id).then(x => {
-        setDevice(x);
-        setShow(true);
-      });
+      DeviceApi.get(props.id)
+        .then(x => {
+          setDevice(x);
+          setShow(true);
+        })
+        .catch(setError);
     }
   }, [props.id]);
 
   const submitForm = async () => {
-    const errors = validateModel(device);
+    const validationResult = validateModel(device);
 
-    if (HasErrors(errors)) {
-      setErrors(errors);
+    if (HasErrors(validationResult)) {
+      setError(new AppError(validationResult));
     } else {
       if (device.id > 0) {
-        DeviceApi.update(device)
+        DeviceApi.put(device)
           .then(() => {
             history.push("/devices");
             addNotification("Device saved successfully.");
           })
-          .catch((error: ApiError) => {
-            setErrors(error.errors)
-          });
+          .catch(setError);
       } else {
         DeviceApi.add(device)
           .then(() => {
             history.push("/devices");
             addNotification("Device added successfully.");
           })
-          .catch((error: ApiError) => {
-            setErrors(error.errors);
-          });
+          .catch(setError);
       }
     }
   };
@@ -74,9 +73,9 @@ export default function DeviceEdit(props: Props) {
                   placeholder="IMEI"
                   onChange={(e) => {
                     setDevice({ ...device, imei: e.target.value });
-                    setErrors({ ...errors, imei: [] });
+                    setError(x => ClearError<DeviceModel>(x, "imei"));
                   }} />
-                <InputError name="imei" errors={errors} />
+                <InputError name="imei" errors={error} />
               </div>
             </div>
             <div className="flex flex-row mb-5">
@@ -87,9 +86,9 @@ export default function DeviceEdit(props: Props) {
                   placeholder="Name"
                   onChange={(e) => {
                     setDevice({ ...device, name: e.target.value });
-                    setErrors({ ...errors, name: [] });
+                    setError(x => ClearError<DeviceModel>(x, "name"));
                   }} />
-                <InputError name="name" errors={errors} />
+                <InputError name="name" errors={error} />
               </div>
             </div>
             <div className="flex flex-row">
@@ -106,7 +105,7 @@ export default function DeviceEdit(props: Props) {
                     <i className="fas fa-chevron-down" />
                   </div>
                 </div>
-                <InputError name="deviceTypeId" errors={errors} />
+                <InputError name="deviceTypeId" errors={error} />
               </div>
               <div className="ml-4 text-gray-700 text-sm h-10 flex items-center">Showing unassigned devices.</div>
             </div>
@@ -122,21 +121,21 @@ export default function DeviceEdit(props: Props) {
   );
 }
 
-const validateModel = (device: DeviceModel): Record<string, string[]> => {
-  const errors: Record<string, string[]> = {};
+const validateModel = (device: DeviceModel): ValidationResult => {
+  const validationResult: ValidationResult = {};
 
   if (device.name.length === 0) {
-    AddError(errors, "name", "The Name field is required.");
+    AddError<DeviceModel>(validationResult, "name", "The name is required.");
   }
   if (device.imei.length === 0) {
-    AddError(errors, "imei", "The IMEI field is required.");
+    AddError<DeviceModel>(validationResult, "imei", "The IMEI is required.");
   }
   else if (device.imei.length < 15) {
-    AddError(errors, "imei", "The IMEI field minimum length is 15 characters.");
+    AddError<DeviceModel>(validationResult, "imei", "The IMEI must be 15 characters.");
   }
   if (device.deviceTypeId <= 0) {
-    AddError(errors, "deviceTypeId", "The device type field is required.");
+    AddError<DeviceModel>(validationResult, "deviceTypeId", "The device type is required.");
   }
 
-  return errors;
+  return validationResult;
 };

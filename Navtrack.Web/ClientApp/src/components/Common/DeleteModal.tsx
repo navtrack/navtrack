@@ -1,5 +1,4 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
 
 type Props = {
   show: boolean
@@ -10,10 +9,10 @@ type Props = {
 
 export default function DeleteModal(props: Props) {
 
-  const handleDelete = () => {
-    props.setShow(false);
-    props.deleteHandler();
-  }
+  // const handleDelete = () => {
+  //   props.setShow(false);
+  //   props.deleteHandler();
+  // }
 
   return (
     <></>

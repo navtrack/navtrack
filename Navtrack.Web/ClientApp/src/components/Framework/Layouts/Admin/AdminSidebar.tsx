@@ -24,7 +24,7 @@ export default function AdminSidebar() {
         <div>Loading assets.</div>
       }
       <hr className="my-3" />
-      <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Management</h5>
+      <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Settings</h5>
       <ul>
         <li className="mb-2">
           <Link className="text-gray-600 hover:text-gray-900" to="/assets">
@@ -36,12 +36,15 @@ export default function AdminSidebar() {
             <Icon className="fa-hdd w-4" margin={1} /> Devices
                     </Link>
         </li>
+      </ul>
+      {/* <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Admin</h5>
+      <ul>
         <li className="mb-2">
           <Link className="text-gray-600 hover:text-gray-900" to="/users">
             <Icon className="fa-user w-4" margin={1} /> Users
                     </Link>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   );
 }

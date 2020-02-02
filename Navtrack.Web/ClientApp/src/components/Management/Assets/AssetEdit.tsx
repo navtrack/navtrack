@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { AssetModel, DefaultAssetModel } from "services/Api/Model/AssetModel";
 import { DeviceModel } from "services/Api/Model/DeviceModel";
-import { Errors, ApiError } from "services/HttpClient/HttpClient";
+import { AppError } from "services/HttpClient/AppError";
 import { useHistory } from "react-router";
 import { DeviceApi } from "services/Api/DeviceApi";
 import { AssetApi } from "services/Api/AssetApi";
-import InputError, { HasErrors, AddError } from "components/Common/InputError";
+import InputError, { HasErrors, AddError, ClearError } from "components/Common/InputError";
 import { addNotification } from "components/Notifications";
 import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
+import { ValidationResult } from "components/Common/ValidatonResult";
 
 type Props = {
   id?: number
@@ -16,7 +17,7 @@ type Props = {
 export default function AssetEdit(props: Props) {
   const [asset, setAsset] = useState<AssetModel>(DefaultAssetModel);
   const [devices, setDevices] = useState<DeviceModel[]>([]);
-  const [errors, setErrors] = useState<Errors>({});
+  const [error, setError] = useState<AppError>();
   const [show, setShow] = useState(!props.id);
   const history = useHistory();
 
@@ -29,40 +30,37 @@ export default function AssetEdit(props: Props) {
         .then(x => {
           setAsset(x);
           setShow(true);
-        });
+        })
+        .catch(setError);
     }
   }, [props.id])
 
   const submitForm = async () => {
-    const errors = validateModel(asset);
+    const validationResult = validateModel(asset);
 
-    if (HasErrors(errors)) {
-      setErrors(errors);
+    if (HasErrors(validationResult)) {
+      setError(new AppError(validationResult));
     } else {
       if (asset.id > 0) {
-        AssetApi.update(asset)
+        AssetApi.put(asset)
           .then(() => {
             history.push("/assets");
             addNotification("Asset saved successfully.");
           })
-          .catch((error: ApiError) => {
-            setErrors(error.errors)
-          });
+          .catch(setError);
       } else {
         AssetApi.add(asset)
           .then(() => {
             history.push("/assets");
             addNotification("Asset added successfully.");
           })
-          .catch((error: ApiError) => {
-            setErrors(error.errors);
-          });
+          .catch(setError);
       }
     }
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout error={error}>
       {show &&
         <div className="shadow rounded bg-white flex flex-col">
           <div className="p-4">
@@ -76,10 +74,10 @@ export default function AssetEdit(props: Props) {
                   value={asset.name}
                   onChange={(e) => {
                     setAsset({ ...asset, name: e.target.value });
-                    setErrors({ ...errors, name: [] })
+                    setError(x => ClearError<AssetModel>(x, "name"));
                   }}
                 />
-                <InputError name="name" errors={errors} />
+                <InputError name="name" errors={error} />
               </div>
             </div>
             <div className="flex flex-row">
@@ -96,7 +94,7 @@ export default function AssetEdit(props: Props) {
                     <i className="fas fa-chevron-down" />
                   </div>
                 </div>
-                <InputError name="deviceId" errors={errors} />
+                <InputError name="deviceId" errors={error} />
               </div>
               <div className="ml-4 text-gray-700 text-sm h-10 flex items-center">Showing unassigned devices.</div>
             </div>
@@ -113,13 +111,12 @@ export default function AssetEdit(props: Props) {
   );
 }
 
-
-const validateModel = (asset: AssetModel): Record<string, string[]> => {
-  const errors: Record<string, string[]> = {};
+const validateModel = (asset: AssetModel): ValidationResult => {
+  const validationResult: ValidationResult = {};
 
   if (asset.name.length === 0) {
-    AddError(errors, "name", "The Name field is required.");
+    AddError<AssetModel>(validationResult, "name", "The name is required.");
   }
 
-  return errors;
+  return validationResult;
 };

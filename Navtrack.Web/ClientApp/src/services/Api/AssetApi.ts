@@ -4,7 +4,7 @@ import { ResponseModel } from "./Model/ResponseModel";
 
 export const AssetApi = {
     get: function(id: number) : Promise<AssetModel> {
-        return HttpClient.get<AssetModel>("assets/" + id);
+        return HttpClient.get<AssetModel>(`assets/${id}`);
     },
 
     getAll: function() : Promise<AssetModel[]> {
@@ -12,11 +12,11 @@ export const AssetApi = {
     },
 
     delete: function(id: number) : Promise<ResponseModel> {
-        return HttpClient.delete("assets/" + id);
+        return HttpClient.delete(`assets/${id}`);
     },
 
-    update: function(asset: AssetModel) : Promise<ResponseModel> {
-        return HttpClient.put("assets/" + asset.id, asset);
+    put: function(asset: AssetModel) : Promise<ResponseModel> {
+        return HttpClient.put(`assets/${asset.id}`, asset);
     },
     
     add: function(asset: AssetModel) : Promise<ResponseModel> {
