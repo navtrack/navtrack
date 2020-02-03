@@ -23,14 +23,14 @@ export const NotificationService: {
     animationInProgress: () => NotificationService.notifications.filter(x => x.animating).length > 0,
 
     cleanUp: () => {
-        if (NotificationService.notifications.filter(x => x.show || x.animating).length === 0) {
+        if (NotificationService.notifications.filter(x => x.visible || x.animating).length === 0) {
             updateNotificationsState([]);
         }
     }
 }
 
 function GetNotificationsArray() {
-    let visibleNotifications: number = NotificationService.notifications.filter(x => x.animating || x.show).length;
+    let visibleNotifications: number = NotificationService.notifications.filter(x => x.animating || x.visible).length;
 
     let newNotifications: Notification[] = visibleNotifications > 0 ? NotificationService.notifications.slice() : [];
 
@@ -41,7 +41,7 @@ function addNotificationToArray(newNotifications: Notification[], notification: 
     let added = false;
 
     for (let i = 0; i < newNotifications.length && !added; i++) {
-        if (!newNotifications[i].show) {
+        if (!newNotifications[i].visible) {
             newNotifications[i] = notification;
             added = true;
         }

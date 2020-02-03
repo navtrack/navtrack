@@ -20,8 +20,8 @@ export default function Notifications() {
     }, []);
 
     return (
-        <div className="fixed-top">
+        <div className="fixed z-50 w-full flex flex-col items-center">
             {notifications.map((x, i) => <NotificationComponent notification={x} key={x.id} />)}
         </div>
-    )
+    );
 }

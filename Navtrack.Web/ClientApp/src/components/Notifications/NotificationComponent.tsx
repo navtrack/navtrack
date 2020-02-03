@@ -1,48 +1,56 @@
 import React, { useState, useEffect } from "react";
 import Notification from "./Notification";
 import { NotificationService } from "./NotificationService";
+import classNames from "classnames";
+import Icon from "components/Framework/Util/Icon";
+import { NotificationType } from "./NotificationType";
 
 type Props = {
-    notification: Notification
+  notification: Notification
 }
 
 export default function NotificationComponent(props: Props) {
-    const [className, setClassName] = useState("fadeInDown animated bounce slow");
+  const [className, setClassName] = useState("fadeInDown animated bounce fast");
+  const [show, setShow] = useState(true);
 
-    useEffect(() => {
-        console.log("starting transition in");
-        props.notification.animating = true;
+  let background = props.notification.type === NotificationType.Info ? "bg-gray-200" : "bg-red-200";
+  let textColor = props.notification.type === NotificationType.Info ? "text-gray-700" : "text-red-700";
 
-        setTimeout(() => {
-            console.log("finished transition in");
-            props.notification.animating = false;
-        }, 2000);
+  useEffect(() => {
+    props.notification.animating = true;
 
-        setTimeout(() => {
-            console.log("starting transition out");
-            setClassName("fadeOutUp animated bounce slow");
-            props.notification.animating = true;
-        }, 3000);
+    setTimeout(() => {
+      props.notification.animating = false;
+    }, 2000);
 
-        setTimeout(() => {
-            console.log("finished transition out");
-            props.notification.animating = false;
-            props.notification.show = false;
-            NotificationService.cleanUp();
-        }, 4500);
-    }, [props.notification.animating, props.notification.show]);
+    setTimeout(() => {
+      setClassName("fadeOutUp animated bounce slow");
+      props.notification.animating = true;
+    }, 3000);
 
-    return (
-        <div className={className}>
-            <div className="col-md-4 offset-md-4">
-                <div className="alert alert-default alert-dismissible  show m-4">
-                    <span className="alert-icon"><i className="ni ni-like-2"></i></span>
-                    <span className="alert-text">{props.notification.message}</span>
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+    setTimeout(() => {
+      props.notification.animating = false;
+      props.notification.visible = false;
+      NotificationService.cleanUp();
+    }, 4500);
+  }, [props.notification.animating, props.notification.visible]);
+
+  return (
+    <>
+      {show &&
+        <div className={classNames(className, "w-1/3")}>
+          <div className={classNames("bg-gray-300 mt-4 rounded shadow-lg p-4 pl-4 flex w-full ", background)}>
+            <div className={classNames("flex-grow", textColor)}>
+              {props.notification.message}
             </div>
+            <div>
+              <button type="button" className="focus:outline-none" onClick={() => setShow(false)}>
+                <Icon className={classNames("fa-times", textColor)} />
+              </button>
+            </div>
+          </div>
         </div>
-    );
+      }
+    </>
+  );
 }
