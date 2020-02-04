@@ -26,7 +26,7 @@ export default function LiveTracking() {
   return (
     <>
       {asset &&
-        <AssetLayout id={asset.id} name={asset.name}>
+        <AssetLayout>
           <div className="bg-white shadow p-3 rounded mb-3 flex">
             {asset.location ?
               <>

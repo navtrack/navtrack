@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router";
-import LocationHistory from "./components/Location/LocationHistory";
 import Home from "./components/Home";
 import Notifications from "./components/Notifications";
 import { CreateAppContext, SaveToLocalStorage } from "./services/AppContext";
@@ -18,6 +17,7 @@ import AssetList from "components/Management/Assets/AssetList";
 import AssetEdit from "components/Management/Assets/AssetEdit";
 import UserList from "components/Management/Users/UserList";
 import UserEdit from "components/Management/Users/UserEdit";
+import AssetLog from "components/Asset/Log";
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
@@ -44,7 +44,7 @@ export default function App() {
       <Notifications />
       <Switch>
         <PrivateRoute path={'/live/:assetId'}><LiveTracking /></PrivateRoute>
-        <PrivateRoute path='/history'><LocationHistory /></PrivateRoute>
+        <PrivateRoute path={'/log/:assetId'}><AssetLog /></PrivateRoute>
 
         <PrivateRoute exact path="/devices"><DeviceList /></PrivateRoute>
         <PrivateRoute path="/devices/add"><DeviceEdit /></PrivateRoute>
