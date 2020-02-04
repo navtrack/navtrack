@@ -13,7 +13,9 @@ export default function AssetLayoutNavbar() {
   return (
     <>
       {asset && <div className="bg-white shadow flex text-sm">
-        <div className="mx-4 py-2 text-center font-semibold"><div className="pr-4 border-r">{asset.name}</div></div>
+        <div className="mx-4 py-2 text-center font-semibold">
+          <div className="pr-4 border-r">{asset.name}</div>
+        </div>
         <ul className="flex flex-row py-2">
           <LinkItem url={`/live/${asset.id}`} icon="fa-map-marker-alt" text="Live Tracking" />
           <LinkItem url={`/log/${asset.id}`} icon="fa-database" text="Log" />
