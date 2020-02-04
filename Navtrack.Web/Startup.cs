@@ -25,7 +25,7 @@ namespace Navtrack.Web
         {
             Bootstrapper.ConfigureServices(services);
 
-            services.AddLetsEncrypt();
+            // services.AddLetsEncrypt();
 
             services.AddCors(options =>
             {
