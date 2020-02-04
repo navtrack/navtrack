@@ -8,11 +8,9 @@ namespace Navtrack.Web.Services.Extensions
     {
         public static int GetId(this ClaimsPrincipal claimsPrincipal)
         {
-            Claim nameIdentifier = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier);
+            Claim nameIdentifier = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            int userId = Parse(nameIdentifier.Value);
-
-            return userId;
+            return nameIdentifier != null && TryParse(nameIdentifier.Value, out int userId) ? userId : 0;
         }
     }
 }
