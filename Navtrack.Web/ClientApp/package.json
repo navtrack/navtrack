@@ -27,7 +27,7 @@
     "rimraf": "^3.0.0",
     "start": "^5.1.0",
     "tailwindcss": "^1.1.4",
-    "yarn": "^1.19.2"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.7",
