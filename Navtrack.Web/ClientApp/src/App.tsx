@@ -11,12 +11,12 @@ import { AccountService } from "services/AccountService";
 import LiveTracking from "components/Asset/LiveTracking";
 import Login from "components/Account/Login";
 import Register from "components/Account/Register";
-import DeviceList from "components/Management/Devices/DeviceList";
-import DeviceEdit from "components/Management/Devices/DeviceEdit";
-import AssetList from "components/Management/Assets/AssetList";
-import AssetEdit from "components/Management/Assets/AssetEdit";
-import UserList from "components/Management/Users/UserList";
-import UserEdit from "components/Management/Users/UserEdit";
+import DeviceList from "components/Settings/Devices/DeviceList";
+import DeviceEdit from "components/Settings/Devices/DeviceEdit";
+import AssetList from "components/Settings/Assets/AssetList";
+import AssetEdit from "components/Settings/Assets/AssetEdit";
+import UserList from "components/Settings/Users/UserList";
+import UserEdit from "components/Settings/Users/UserEdit";
 import AssetLog from "components/Asset/Log";
 
 export default function App() {
@@ -33,8 +33,7 @@ export default function App() {
     if (appContext.authenticated) {
       LocationService.init();
       AccountService.getUserInfo();
-    }
-    else {
+    } else {
       LocationService.clear();
     }
   }, [appContext.authenticated]);
@@ -43,25 +42,42 @@ export default function App() {
     <AppContext.Provider value={appContextWrapper}>
       <Notifications />
       <Switch>
-        <PrivateRoute path={'/live/:assetId'}><LiveTracking /></PrivateRoute>
-        <PrivateRoute path={'/log/:assetId'}><AssetLog /></PrivateRoute>
-
-        <PrivateRoute exact path="/devices"><DeviceList /></PrivateRoute>
-        <PrivateRoute path="/devices/add"><DeviceEdit /></PrivateRoute>
-        <Route path="/devices/:id(\d+)" render={(props) => <DeviceEdit id={props.match.params.id} />}></Route>
-
-        <PrivateRoute exact path="/assets"><AssetList /></PrivateRoute>
-        <PrivateRoute path="/assets/add"><AssetEdit /></PrivateRoute>
-        <Route path="/assets/:id" render={(props) => <AssetEdit id={props.match.params.id} />}></Route>
-
-        <PrivateRoute exact path="/users"><UserList /></PrivateRoute>
-        <PrivateRoute path="/users/add"><UserEdit /></PrivateRoute>
-        <Route path="/users/:id" render={(props) => <UserEdit id={props.match.params.id} />}></Route>
-
-        <Route path="/login"><Login /></Route>
-        <Route path="/register"><Register /></Route>
-        <PrivateRoute path="/"><Home /></PrivateRoute>
-
+        <PrivateRoute path={"/live/:assetId"}>
+          <LiveTracking />
+        </PrivateRoute>
+        <PrivateRoute path={"/log/:assetId"}>
+          <AssetLog />
+        </PrivateRoute>
+        <PrivateRoute exact path="/devices">
+          <DeviceList />
+        </PrivateRoute>
+        <PrivateRoute path="/devices/add">
+          <DeviceEdit />
+        </PrivateRoute>
+        <Route path="/devices/:id(\d+)" render={props => <DeviceEdit id={props.match.params.id} />}></Route>
+        <PrivateRoute exact path="/assets">
+          <AssetList />
+        </PrivateRoute>
+        <PrivateRoute path="/assets/add">
+          <AssetEdit />
+        </PrivateRoute>
+        <Route path="/assets/:id" render={props => <AssetEdit id={props.match.params.id} />}></Route>
+        <PrivateRoute exact path="/users">
+          <UserList />
+        </PrivateRoute>
+        <PrivateRoute path="/users/add">
+          <UserEdit />
+        </PrivateRoute>
+        <Route path="/users/:id" render={props => <UserEdit id={props.match.params.id} />}></Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <PrivateRoute path="/">
+          <Home />
+        </PrivateRoute>
         <Redirect from="*" to="/" />
       </Switch>
     </AppContext.Provider>

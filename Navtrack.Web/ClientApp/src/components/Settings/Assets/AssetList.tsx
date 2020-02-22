@@ -8,7 +8,7 @@ import { AppError } from "services/HttpClient/AppError";
 import { Link } from "react-router-dom";
 import DeleteModal from "components/Common/DeleteModal";
 import ReactTable from "components/Table/ReactTable";
-
+import Button from "components/Framework/Elements/Button";
 
 export default function AssetList() {
   const [assets, setAssets] = useState<AssetModel[]>([]);
@@ -61,15 +61,11 @@ export default function AssetList() {
     <AdminLayout>
       <DeleteModal show={showDeleteModal} setShow={setShowDeleteModal} deleteHandler={deleteHandler}
         description="All the location history of this asset will also be removed." />
-
       <div className="shadow rounded bg-white flex flex-col">
-        <div className="p-4 flex">
+        <div className="p-3 flex">
           <div className="flex-grow font-medium text-lg">Assets</div>
           <div className="flex-grow flex justify-end">
-            <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white text-sm py-1 px-4 rounded focus:outline-none"
-              onClick={() => history.push("/assets/add")}>
-              Add asset
-              </button>
+            <Button color="primary" onClick={() => history.push("/assets/add")}>Add asset</Button>
           </div>
         </div>
         <ReactTable columns={columns} data={assets} />

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Web.Models;
+using Navtrack.Web.Models.Locations;
 using Navtrack.Web.Services;
 
 namespace Navtrack.Web.Controllers
@@ -17,14 +18,14 @@ namespace Navtrack.Web.Controllers
             this.locationService = locationService;
         }
 
-        [HttpGet("{assetId}/history")]
-        public async Task<List<LocationModel>> GetHistory(int assetId)
+        [HttpGet("history")]
+        public async Task<List<LocationModel>> GetHistory([FromQuery] LocationHistoryRequestModel model)
         {
-            List<LocationModel> locations = await locationService.GetLocations(assetId);
+            List<LocationModel> locations = await locationService.GetLocations(model);
 
             return locations;
         }
-        
+
         [HttpGet("{assetId}/latest")]
         public async Task<LocationModel> GetLatest(int assetId)
         {

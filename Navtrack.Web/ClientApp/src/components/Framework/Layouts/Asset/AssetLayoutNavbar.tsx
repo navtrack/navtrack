@@ -12,27 +12,29 @@ export default function AssetLayoutNavbar() {
 
   return (
     <>
-      {asset && <div className="bg-white shadow flex text-sm">
-        <div className="mx-4 py-2 text-center font-semibold">
-          <div className="pr-4 border-r">{asset.name}</div>
+      {asset && (
+        <div className="bg-white shadow flex text-sm" style={{ minWidth: "630px" }}>
+          <div className="mx-4 py-2 text-center font-semibold">
+            <div className="pr-4 border-r">{asset.name}</div>
+          </div>
+          <ul className="flex flex-row py-2">
+            <LinkItem url={`/live/${asset.id}`} icon="fa-map-marker-alt" text="Live Tracking" />
+            <LinkItem url={`/log/${asset.id}`} icon="fa-database" text="Log" />
+            <LinkItem url={`/reports/${asset.id}`} icon="fa-table" text="Reports" />
+            <LinkItem url={`/alerts/${asset.id}`} icon="fa-bell" text="Alerts" />
+            <LinkItem url={`/settings/${asset.id}`} icon="fa-cog" text="Settings" />
+          </ul>
         </div>
-        <ul className="flex flex-row py-2">
-          <LinkItem url={`/live/${asset.id}`} icon="fa-map-marker-alt" text="Live Tracking" />
-          <LinkItem url={`/log/${asset.id}`} icon="fa-database" text="Log" />
-          <LinkItem url={`/reports/${asset.id}`} icon="fa-table" text="Reports" />
-          <LinkItem url={`/alerts/${asset.id}`} icon="fa-bell" text="Alerts" />
-          <LinkItem url={`/settings/${asset.id}`} icon="fa-cog" text="Settings" />
-        </ul>
-      </div>}
+      )}
     </>
   );
 }
 
 type Props = {
-  url: string,
-  icon: string,
-  text: string
-}
+  url: string;
+  icon: string;
+  text: string;
+};
 
 function LinkItem(props: Props) {
   const location = useLocation();
@@ -40,7 +42,9 @@ function LinkItem(props: Props) {
 
   return (
     <li className={classNames("text-gray-600 hover:text-gray-900 mr-4", { "text-gray-900": isHighlighted })}>
-      <Link to={props.url}><Icon className={props.icon} margin={1} /> {props.text}</Link>
+      <Link to={props.url}>
+        <Icon className={props.icon} margin={1} /> {props.text}
+      </Link>
     </li>
   );
 }

@@ -13,9 +13,9 @@ const DefaultAppContext: AppContext = {
 };
 
 type AppContextWrapper = {
-  appContext: AppContext,
+  appContext: AppContext;
   setAppContext: (newAppContext: AppContext) => unknown;
-}
+};
 
 export function CreateAppContext(): AppContext {
   const appContext = DefaultAppContext;
@@ -31,7 +31,7 @@ export function CreateAppContext(): AppContext {
 
 export const AppContext = React.createContext<AppContextWrapper>({
   appContext: DefaultAppContext,
-  setAppContext: () => { }
+  setAppContext: () => {}
 });
 
 export default AppContext;
@@ -39,8 +39,8 @@ export default AppContext;
 const appContextKey = "navtrack.appContext";
 
 export type LocalStorageAppContext = {
-  authenticated: boolean
-}
+  authenticated: boolean;
+};
 
 export function SaveToLocalStorage(appContext: AppContext) {
   localStorage.setItem(appContextKey, JSON.stringify(MapToLocalStorage(appContext)));

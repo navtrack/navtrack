@@ -17,5 +17,5 @@ export default function Icon(props: Props) {
     classes[`mr-${props.margin}`] = true;
   }
 
-  return (show ? <i className={classNames("fas", classes, props.className)} /> : <></>);
+  return (show ? <i className={classNames("fa", classes, props.className)} /> : <></>);
 }

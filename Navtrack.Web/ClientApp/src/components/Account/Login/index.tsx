@@ -54,13 +54,13 @@ export default function Login() {
               <input className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none" id="email" type="email" placeholder="Email"
                 value={login.email} onChange={(e) => setLogin({ ...login, email: e.target.value })}
               />
-              <InputError name="email" errors={error} />
+              <InputError name="email" error={error} />
             </div>
             <div className="mb-4">
               <input className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border focus:border-gray-900" id="password" type="password" placeholder="Password"
                 value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })}
               />
-              <InputError name="password" errors={error} />
+              <InputError name="password" error={error} />
             </div>
             <div className="flex justify-center my-6">
               <button className="shadow-md bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none" type="submit">
