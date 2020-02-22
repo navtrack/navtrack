@@ -36,16 +36,8 @@
     "@types/react-leaflet": "^2.5.0",
     "@types/react-router": "^5.1.2",
     "@types/react-router-dom": "^5.1.2",
-    "@typescript-eslint/eslint-plugin": "^2.19.2",
-    "@typescript-eslint/parser": "^2.19.2",
     "ajv": "^6.9.1",
     "cross-env": "^6.0.3",
-    "eslint": "^6.8.0",
-    "eslint-config-react-app": "^5.0.2",
-    "eslint-plugin-flowtype": "^4.4.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.18.3",
     "typescript": "~3.7.2"
   },
   "eslintConfig": {
