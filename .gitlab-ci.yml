@@ -1,59 +1,11 @@
-image: docker:latest
-
-services:
-  - docker:dind
-  
-variables:
-  DOCKER_TLS_CERTDIR: ""
+image: ubuntu:latest
 
 stages:
-  - build
-  - test
-  - publish
   - deploy
-
-before_script:
-  - apk --update add nodejs
-  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-
-build-web:
-  stage: build
-  script:
-    - docker build . -f Navtrack.Web/Dockerfile -t registry.gitlab.com/navtrack/navtrack/web:build
-    - docker push registry.gitlab.com/navtrack/navtrack/web:build
-
-build-listener:
-  stage: build
-  script:
-    - docker build . -f Navtrack.Listener/Dockerfile -t registry.gitlab.com/navtrack/navtrack/listener:build
-    - docker push registry.gitlab.com/navtrack/navtrack/listener:build
-
-test-listener:
-  stage: test
-  script:
-    - docker build . -f Navtrack.Listener.Tests/Dockerfile
-
-publish-web:
-  stage: publish
-  dependencies:
-    - build-web
-  script:
-    - docker pull registry.gitlab.com/navtrack/navtrack/web:build
-    - docker tag registry.gitlab.com/navtrack/navtrack/web:build navtrack/web:latest
-    - docker push navtrack/web:latest
-
-publish-listener:
-  stage: publish
-  dependencies:
-    - build-listener
-  script:
-    - docker pull registry.gitlab.com/navtrack/navtrack/listener:build
-    - docker tag registry.gitlab.com/navtrack/navtrack/listener:build navtrack/listener:latest
-    - docker push navtrack/listener:latest
 
 deploy:
   stage: deploy
+  when: manual
   before_script:
     - 'which ssh-agent || ( apk update && apk add openssh-client )'
   script:
