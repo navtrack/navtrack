@@ -10,8 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="McMaster.AspNetCore.LetsEncrypt" Version="0.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
+        <PackageReference Include="Certes" Version="2.3.3" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.2" />
     </ItemGroup>
 
     <ItemGroup>

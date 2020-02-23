@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace Navtrack.DataAccess.Model
@@ -15,6 +16,7 @@ namespace Navtrack.DataAccess.Model
         public DbSet<Log> Logs { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,13 +35,13 @@ namespace Navtrack.DataAccess.Model
                     .WithMany(x => x.Locations)
                     .HasForeignKey(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.NoAction);
-                
+
                 entity.HasOne(x => x.Asset)
                     .WithMany(x => x.Locations)
                     .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
-            
+
             modelBuilder.Entity<Device>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -55,13 +57,13 @@ namespace Navtrack.DataAccess.Model
                     .WithOne(x => x.Device)
                     .HasForeignKey<Asset>(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.NoAction);
-                
+
                 entity.HasOne(x => x.DeviceType)
                     .WithMany(x => x.Devices)
                     .HasForeignKey(x => x.DeviceTypeId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
-            
+
             modelBuilder.Entity<Asset>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -78,7 +80,7 @@ namespace Navtrack.DataAccess.Model
                     .HasForeignKey<Asset>(x => x.DeviceId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
-            
+
             modelBuilder.Entity<Connection>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -86,12 +88,9 @@ namespace Navtrack.DataAccess.Model
                     .HasMaxLength(64)
                     .IsRequired();
             });
-            
-            modelBuilder.Entity<Log>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-            });
-            
+
+            modelBuilder.Entity<Log>(entity => { entity.HasKey(x => x.Id); });
+
             modelBuilder.Entity<DeviceType>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -104,7 +103,7 @@ namespace Navtrack.DataAccess.Model
                     .HasForeignKey(x => x.DeviceTypeId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
-            
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -112,9 +111,9 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.Salt).HasMaxLength(44).IsRequired();
                 entity.Property(x => x.Hash).HasMaxLength(88).IsRequired();
             });
-            
+
             modelBuilder.Entity<UserAsset>()
-                .HasKey(t => new { t.UserId, t.AssetId });
+                .HasKey(t => new {t.UserId, t.AssetId});
 
             modelBuilder.Entity<UserAsset>()
                 .HasOne(pt => pt.User)
@@ -125,10 +124,10 @@ namespace Navtrack.DataAccess.Model
                 .HasOne(pt => pt.Asset)
                 .WithMany(t => t.Users)
                 .HasForeignKey(pt => pt.AssetId);
-            
-            
+
+
             modelBuilder.Entity<UserDevice>()
-                .HasKey(t => new { t.UserId, t.DeviceId });
+                .HasKey(t => new {t.UserId, t.DeviceId});
 
             modelBuilder.Entity<UserDevice>()
                 .HasOne(pt => pt.User)
@@ -139,6 +138,13 @@ namespace Navtrack.DataAccess.Model
                 .HasOne(pt => pt.Device)
                 .WithMany(t => t.Users)
                 .HasForeignKey(pt => pt.DeviceId);
+
+            modelBuilder.Entity<Configuration>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Key).IsRequired().HasMaxLength(500);
+                entity.Property(x => x.Value).IsRequired();
+            });
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Library.DI;
+using Navtrack.Web.Services.LetsEncrypt;
 
 namespace Navtrack.Web
 {
@@ -24,8 +25,6 @@ namespace Navtrack.Web
         public void ConfigureServices(IServiceCollection services)
         {
             Bootstrapper.ConfigureServices(services);
-
-            // services.AddLetsEncrypt();
 
             services.AddCors(options =>
             {
@@ -70,8 +69,7 @@ namespace Navtrack.Web
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
-            
-            
+            services.AddLetsEncrypt();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,11 +85,11 @@ namespace Navtrack.Web
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             app.UseCors(DefaultCorsPolicy);
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
