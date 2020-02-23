@@ -1,4 +1,4 @@
-name: Docker build & publish
+name: Docker build & push
 
 on:
   push:
@@ -13,7 +13,7 @@ env:
   IMAGE_NAME_LISTENER: listener
 
 jobs:
-  build-web:
+  build-push:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
