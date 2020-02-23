@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   web:
-    image: navtrack/web
+    image: docker.pkg.github.com/navtrack/navtrack/web:latest
     ports:
       - 80:80
       - 443:443
@@ -11,7 +11,7 @@ services:
       - .env_navtrack
 
   listener:
-    image: navtrack/listener
+    image: docker.pkg.github.com/navtrack/navtrack/listener:latest
     ports:
       - 6801:6801
       - 6802:6802
