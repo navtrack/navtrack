@@ -1,4 +1,7 @@
-image: ubuntu:latest
+image: docker:latest
+
+services:	services:
+  - docker:dind
 
 stages:
   - deploy
