@@ -12,7 +12,7 @@ env:
   IMAGE_NAME: web
 
 jobs:
-  build web:
+  build-web:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
