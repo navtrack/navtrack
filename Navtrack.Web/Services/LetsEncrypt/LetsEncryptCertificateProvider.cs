@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Navtrack.Common.Services;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Web.Services.LetsEncrypt
@@ -12,38 +13,52 @@ namespace Navtrack.Web.Services.LetsEncrypt
     [Service(typeof(ICertificateProvider), ServiceLifetime.Singleton)]
     internal class LetsEncryptCertificateProvider : ICertificateProvider
     {
-        private readonly ICertificateDataService certificateDataService;
         private readonly ILetsEncryptClient letsEncryptClient;
+        private readonly IDbConfiguration dbConfiguration;
 
-        public LetsEncryptCertificateProvider(ICertificateDataService certificateDataService,
-            ILetsEncryptClient letsEncryptClient)
+        public LetsEncryptCertificateProvider(ILetsEncryptClient letsEncryptClient, IDbConfiguration dbConfiguration)
         {
-            this.certificateDataService = certificateDataService;
             this.letsEncryptClient = letsEncryptClient;
+            this.dbConfiguration = dbConfiguration;
         }
 
         public async Task<IEnumerable<X509Certificate2>> GetCertificatesAsync(CancellationToken cancellationToken)
         {
-            X509Certificate2 certificate = await certificateDataService.GetCertificate();
+            X509Certificate2 certificate = await GetExistingCertificate();
             
-            if (certificate == null || certificate.NotAfter <= DateTime.Now)
+            if (CertificateIsInvalid(certificate))
             {
-                certificate = await GetNewCertificate();
+                certificate = await CreateNewCertificate();
             }
 
             return certificate != null ? new[] {certificate} : Enumerable.Empty<X509Certificate2>();
         }
 
-        private async Task<X509Certificate2> GetNewCertificate()
+        private async Task<X509Certificate2> GetExistingCertificate()
         {
-            X509Certificate2 certificate = await letsEncryptClient.GetCertificate();
-            
-            if (certificate != null)
+            string pfx = await dbConfiguration.Get<WebConfiguration>(x => x.Certificate);
+
+            return !string.IsNullOrEmpty(pfx) ? new X509Certificate2(Convert.FromBase64String(pfx)) : null;
+        }
+        
+        private async Task<X509Certificate2> CreateNewCertificate()
+        {
+            byte[] pfx = await letsEncryptClient.GetCertificate();
+
+            if (pfx != null)
             {
-                await certificateDataService.SaveAsync(certificate);
+                await dbConfiguration.Save<WebConfiguration>(x => x.Certificate, Convert.ToBase64String(pfx));
+
+                return new X509Certificate2(pfx);
             }
 
-            return certificate;
+            return null;
         }
+
+        private static bool CertificateIsInvalid(X509Certificate2 certificate)
+        {
+            return certificate == null || certificate.NotAfter <= DateTime.Now;
+        }
+
     }
 }

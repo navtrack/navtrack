@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
+using static System.String;
 
 namespace Navtrack.Common.Services
 {
@@ -31,9 +32,9 @@ namespace Navtrack.Common.Services
 
             if (configuration == null)
             {
-                await Save(expression, String.Empty);
+                await Save(expression, Empty);
                 
-                return String.Empty;
+                return Empty;
             }
 
             return configuration.Value;

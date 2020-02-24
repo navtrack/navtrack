@@ -5,6 +5,6 @@ namespace Navtrack.Web.Services.LetsEncrypt
 {
     internal interface ILetsEncryptClient
     {
-        Task<X509Certificate2> GetCertificate();
+        Task<byte[]> GetCertificate();
     }
 }

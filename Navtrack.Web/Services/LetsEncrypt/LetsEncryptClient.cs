@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Certes;
 using Certes.Acme;
@@ -34,17 +33,17 @@ namespace Navtrack.Web.Services.LetsEncrypt
             
             AcmeContext = new AcmeContext(hostEnvironment.IsDevelopment()
                 ? WellKnownServers.LetsEncryptStagingV2
-                : WellKnownServers.LetsEncryptStagingV2);
+                : WellKnownServers.LetsEncryptV2);
         }
 
-        public async Task<X509Certificate2> GetCertificate()
+        public async Task<byte[]> GetCertificate()
         {
             Email = await dbConfiguration.Get<WebConfiguration>(x => x.EmailAddress);
             Hostname = await dbConfiguration.Get<WebConfiguration>(x => x.Hostname);
 
             if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Hostname))
             {
-                X509Certificate2 certificate = await RequestNewCertificate();
+                byte[] certificate = await RequestNewCertificate();
                 
                 return certificate;
             }
@@ -54,7 +53,7 @@ namespace Navtrack.Web.Services.LetsEncrypt
             return null;
         }
 
-        private async Task<X509Certificate2> RequestNewCertificate()
+        private async Task<byte[]> RequestNewCertificate()
         {
             await AcmeContext.NewAccount(Email, termsOfServiceAgreed: true);
             
@@ -64,7 +63,7 @@ namespace Navtrack.Web.Services.LetsEncrypt
 
             await Task.WhenAll(authorizations.Select(Validate));
       
-            X509Certificate2 certificate = await CreateCertificate(order);
+            byte[] certificate = await CreateCertificate(order);
 
             return certificate;
         }
@@ -90,7 +89,7 @@ namespace Navtrack.Web.Services.LetsEncrypt
             }
         }
 
-        private async Task<X509Certificate2> CreateCertificate(IOrderContext order)
+        private async Task<byte[]> CreateCertificate(IOrderContext order)
         {
             IKey privateKey = KeyFactory.NewKey(KeyAlgorithm.ES256);
 
@@ -100,9 +99,10 @@ namespace Navtrack.Web.Services.LetsEncrypt
             }, privateKey);
 
             PfxBuilder pfxBuilder = certificateChain.ToPfx(privateKey);
-            byte[] pfx = pfxBuilder.Build(Hostname, string.Empty);
             
-            return new X509Certificate2(pfx, string.Empty, X509KeyStorageFlags.Exportable);
+            byte[] pfx = pfxBuilder.Build(Hostname, string.Empty);
+
+            return pfx;
         }
     }
 }
