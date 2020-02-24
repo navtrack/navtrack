@@ -34,7 +34,7 @@ namespace Navtrack.Web.Services.LetsEncrypt
             
             AcmeContext = new AcmeContext(hostEnvironment.IsDevelopment()
                 ? WellKnownServers.LetsEncryptStagingV2
-                : WellKnownServers.LetsEncryptV2);
+                : WellKnownServers.LetsEncryptStagingV2);
         }
 
         public async Task<X509Certificate2> GetCertificate()
