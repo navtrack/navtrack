@@ -25,13 +25,39 @@ jobs:
           docker build . --file Navtrack.Web/Dockerfile --tag $IMAGE_NAME_WEB
           docker build . --file Navtrack.Listener/Dockerfile --tag $IMAGE_NAME_LISTENER
 
-      - name: Log into registry
+      - name: Log into GitHub registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
-      - name: Push images
+      - name: Log into Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_USER }}" | docker login -u ${{ secrets.DOCKER_HUB_TOKEN }} --password-stdin
+
+      - name: Push images to GitHub
         run: |
           IMAGE_ID_WEB=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_WEB
           IMAGE_ID_LISTENER=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_LISTENER
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo IMAGE_ID_WEB=$IMAGE_ID_WEB
+          echo IMAGE_ID_LISTENER=$IMAGE_ID_LISTENER
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME_WEB $IMAGE_ID_WEB:$VERSION
+          docker tag $IMAGE_NAME_LISTENER $IMAGE_ID_LISTENER:$VERSION
+          docker push $IMAGE_ID_WEB:$VERSION
+          docker push $IMAGE_ID_LISTENER:$VERSION
+
+      - name: Push images to Docker Hub
+        run: |
+          IMAGE_ID_WEB=navtrack/$IMAGE_NAME_WEB
+          IMAGE_ID_LISTENER=navtrack/$IMAGE_NAME_LISTENER
 
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
