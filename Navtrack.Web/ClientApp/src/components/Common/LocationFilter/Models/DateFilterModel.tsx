@@ -18,7 +18,7 @@ export const DefaultDateFilterModel: DateFilterModel = {
   intervalStartDate: moment(),
   intervalEndDate: moment(),
   dateFilterType: DateFilterType.Last7Days,
-  numberFilterType: NumberFilterType.Single,
+  numberFilterType: NumberFilterType.Interval,
   startDate: moment().subtract(6, "days"),
   endDate: moment()
 };
