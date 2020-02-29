@@ -91,7 +91,7 @@ namespace Navtrack.Web.Services.LetsEncrypt
 
         private async Task<byte[]> CreateCertificate(IOrderContext order)
         {
-            IKey privateKey = KeyFactory.NewKey(KeyAlgorithm.ES256);
+            IKey privateKey = KeyFactory.NewKey(KeyAlgorithm.RS256);
 
             CertificateChain certificateChain = await order.Generate(new CsrInfo
             {
