@@ -1,15 +1,16 @@
 import React from "react";
 import { UserModel } from "services/Api/Model/UserModel";
 import { AssetModel } from "services/Api/Model/AssetModel";
+import { AuthenticationInfo, DefaultAuthenticationInfo } from "services/Authentication/AuthenticationInfo";
 
 export type AppContext = {
   user?: UserModel;
   assets?: AssetModel[];
-  authenticated: boolean;
+  authenticationInfo: AuthenticationInfo;
 };
 
 const DefaultAppContext: AppContext = {
-  authenticated: false
+  authenticationInfo: DefaultAuthenticationInfo
 };
 
 type AppContextWrapper = {
@@ -39,7 +40,7 @@ export default AppContext;
 const appContextKey = "navtrack.appContext";
 
 export type LocalStorageAppContext = {
-  authenticated: boolean;
+  authenticationInfo: AuthenticationInfo;
 };
 
 export function SaveToLocalStorage(appContext: AppContext) {
@@ -60,10 +61,10 @@ function GetFromLocalStorage(): LocalStorageAppContext | null {
 
 function MapToLocalStorage(source: AppContext): LocalStorageAppContext {
   return {
-    authenticated: source.authenticated
+    authenticationInfo: source.authenticationInfo
   };
 }
 
 function MapFromLocalStorage(source: LocalStorageAppContext, destination: AppContext) {
-  destination.authenticated = source.authenticated;
+  destination.authenticationInfo = source.authenticationInfo;
 }

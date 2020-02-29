@@ -15,8 +15,11 @@ namespace Navtrack.Web.Services.Generic
     public class GenericService<TEntity, TModel> : IGenericService<TEntity, TModel>
         where TEntity : class, IEntity where TModel : class, IModel
     {
+        // ReSharper disable once InconsistentNaming
         protected readonly IRepository repository;
+        // ReSharper disable once InconsistentNaming
         protected readonly IMapper mapper;
+        // ReSharper disable once InconsistentNaming
         protected readonly IHttpContextAccessor httpContextAccessor;
 
         protected GenericService(IRepository repository, IMapper mapper, IHttpContextAccessor httpContextAccessor)

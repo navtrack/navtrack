@@ -23,20 +23,23 @@ export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
   AppContextAccessor.setAppContextSetter(setAppContext);
   AppContextAccessor.setAppContextGetter(() => appContext);
-  const appContextWrapper = useMemo(() => ({ appContext, setAppContext }), [appContext, setAppContext]);
+  const appContextWrapper = useMemo(() => ({ appContext, setAppContext }), [
+    appContext,
+    setAppContext
+  ]);
 
   useEffect(() => {
     SaveToLocalStorage(appContext);
   }, [appContext]);
 
   useEffect(() => {
-    if (appContext.authenticated) {
+    if (appContext.authenticationInfo.authenticated) {
       LocationService.init();
       AccountService.getUserInfo();
     } else {
       LocationService.clear();
     }
-  }, [appContext.authenticated]);
+  }, [appContext.authenticationInfo]);
 
   return (
     <AppContext.Provider value={appContextWrapper}>
@@ -54,14 +57,18 @@ export default function App() {
         <PrivateRoute path="/devices/add">
           <DeviceEdit />
         </PrivateRoute>
-        <Route path="/devices/:id(\d+)" render={props => <DeviceEdit id={props.match.params.id} />}></Route>
+        <Route
+          path="/devices/:id(\d+)"
+          render={props => <DeviceEdit id={props.match.params.id} />}></Route>
         <PrivateRoute exact path="/assets">
           <AssetList />
         </PrivateRoute>
         <PrivateRoute path="/assets/add">
           <AssetEdit />
         </PrivateRoute>
-        <Route path="/assets/:id" render={props => <AssetEdit id={props.match.params.id} />}></Route>
+        <Route
+          path="/assets/:id"
+          render={props => <AssetEdit id={props.match.params.id} />}></Route>
         <PrivateRoute exact path="/users">
           <UserList />
         </PrivateRoute>

@@ -15,16 +15,21 @@ namespace Navtrack.Web.Services.LetsEncrypt
 
         public void Add(X509Certificate2 certificate)
         {
-            string commonName = certificate.GetNameInfo(X509NameType.SimpleName, false);
+            string hostName = certificate.GetNameInfo(X509NameType.SimpleName, false);
 
-            certificates.AddOrUpdate(commonName, certificate, (x, y) => certificate);
+            certificates.AddOrUpdate(hostName, certificate, (x, y) => certificate);
         }
 
-        public X509Certificate2 Select(ConnectionContext features, string domainName)
+        public X509Certificate2 Select(ConnectionContext features, string hostName)
         {
-            certificates.TryGetValue(domainName, out X509Certificate2 certificate);
+            if (!string.IsNullOrEmpty(hostName))
+            {
+                certificates.TryGetValue(hostName, out X509Certificate2 certificate);
 
-            return certificate;
+                return certificate;
+            }
+
+            return null;
         }
     }
 }

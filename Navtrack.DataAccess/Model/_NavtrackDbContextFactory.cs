@@ -6,6 +6,7 @@ using Navtrack.Library.DI;
 namespace Navtrack.DataAccess.Model
 {
     [Service(typeof(IDbContextFactory))]
+    // ReSharper disable once InconsistentNaming
     public class _NavtrackDbContextFactory : IDbContextFactory
     {
         private readonly IConfiguration configuration;

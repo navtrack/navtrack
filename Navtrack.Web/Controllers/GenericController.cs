@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.DataAccess.Model.Custom;
@@ -10,7 +11,7 @@ namespace Navtrack.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class GenericController<TEntity, TModel> : ControllerBase 
         where TEntity : class
         where TModel : IModel

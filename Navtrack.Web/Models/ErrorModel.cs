@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Navtrack.Web.Services.Authentication;
 using Navtrack.Web.Services.Generic;
 
 namespace Navtrack.Web.Models

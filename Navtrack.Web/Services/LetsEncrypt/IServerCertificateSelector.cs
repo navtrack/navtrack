@@ -6,6 +6,6 @@ namespace Navtrack.Web.Services.LetsEncrypt
     internal interface IServerCertificateSelector
     {
         void Add(X509Certificate2 certificate);
-        X509Certificate2 Select(ConnectionContext features, string domainName);
+        X509Certificate2 Select(ConnectionContext features, string hostName);
     }
 }

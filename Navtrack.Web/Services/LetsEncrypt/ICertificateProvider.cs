@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Navtrack.Web.Services.LetsEncrypt
 {
-    internal interface ICertificateProvider
+    public interface ICertificateProvider
     {
-        Task<IEnumerable<X509Certificate2>> GetCertificatesAsync(CancellationToken cancellationToken);
+        Task<X509Certificate2> GetCertificate();
     }
 }

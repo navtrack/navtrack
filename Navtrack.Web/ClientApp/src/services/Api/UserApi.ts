@@ -1,25 +1,26 @@
 import { HttpClient } from "../HttpClient/HttpClient";
 import { UserModel } from "./Model/UserModel";
 import { ResponseModel } from "./Model/ResponseModel";
+import { apiUrl } from "services/HttpClient/HttpClientUtil";
 
 export const UserApi = {
-  get: function (id: number): Promise<UserModel> {
-    return HttpClient.get<UserModel>("users/" + id);
+  get: function(id: number): Promise<UserModel> {
+    return HttpClient.get<UserModel>(apiUrl(`users/${id}`));
   },
 
-  getAll: function (): Promise<UserModel[]> {
+  getAll: function(): Promise<UserModel[]> {
     return HttpClient.get<UserModel[]>("users");
   },
 
-  delete: function (id: number): Promise<ResponseModel> {
-    return HttpClient.delete("users/" + id);
+  delete: function(id: number): Promise<ResponseModel> {
+    return HttpClient.delete(apiUrl(`users/${id}`));
   },
 
-  update: function (asset: UserModel): Promise<ResponseModel> {
-    return HttpClient.put("users/" + asset.id, asset);
+  update: function(asset: UserModel): Promise<ResponseModel> {
+    return HttpClient.put(apiUrl(`users/${asset.id}`), asset);
   },
 
-  add: function (asset: UserModel): Promise<ResponseModel> {
-    return HttpClient.post("users", asset);
+  add: function(asset: UserModel): Promise<ResponseModel> {
+    return HttpClient.post(apiUrl("users"), asset);
   }
-}
+};

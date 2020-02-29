@@ -1,11 +1,10 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Library.DI;
+using Navtrack.Web.Services.IdentityServer;
 using Navtrack.Web.Services.LetsEncrypt;
 
 namespace Navtrack.Web
@@ -21,7 +20,6 @@ namespace Navtrack.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             Bootstrapper.ConfigureServices(services);
@@ -39,33 +37,49 @@ namespace Navtrack.Web
 
             services.AddControllersWithViews()
                 .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
+            
             services.AddHttpContextAccessor();
+            
+            
+            
+            
+            
+            
+            
+            
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Events = new CookieAuthenticationEvents
-                    {
-                        OnRedirectToLogin = ctx =>
-                        {
-                            if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
-                            {
-                                ctx.Response.StatusCode = 401;
-                            }
+            // services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //     .AddCookie(options =>
+            //     {
+            //         options.Events = new CookieAuthenticationEvents
+            //         {
+            //             OnRedirectToLogin = ctx =>
+            //             {
+            //                 if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+            //                 {
+            //                     ctx.Response.StatusCode = 401;
+            //                 }
+            //
+            //                 return Task.CompletedTask;
+            //             },
+            //             OnRedirectToAccessDenied = ctx =>
+            //             {
+            //                 if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+            //                 {
+            //                     ctx.Response.StatusCode = 403;
+            //                 }
+            //
+            //                 return Task.CompletedTask;
+            //             }
+            //         };
+            //     });
 
-                            return Task.CompletedTask;
-                        },
-                        OnRedirectToAccessDenied = ctx =>
-                        {
-                            if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
-                            {
-                                ctx.Response.StatusCode = 403;
-                            }
-
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+            services.AddIdentityServer()
+                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                .AddInMemoryClients(IdentityServerConfig.GetClients())
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources());
+            
+            services.AddLocalApiAuthentication();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
@@ -94,8 +108,9 @@ namespace Navtrack.Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-            
-            app.UseAuthentication();
+
+            app.UseIdentityServer();
+            // app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -105,10 +120,10 @@ namespace Navtrack.Web
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-            });
+            // app.UseSpa(spa =>
+            // {
+            //     spa.Options.SourcePath = "ClientApp";
+            // });
         }
     }
 }
