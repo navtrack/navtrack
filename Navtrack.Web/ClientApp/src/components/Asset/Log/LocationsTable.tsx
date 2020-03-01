@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { LocationModel } from "services/Api/Model/LocationModel";
 import classNames from "classnames";
 import Icon from "components/Framework/Util/Icon";
-import { useOnArrowDown, useOnArrowUp } from "../useOnKeyDown";
+import { useOnArrowUp, useOnArrowDown } from "components/hooks/useOnKeyDown";
 
 type Props = {
   loading: boolean;
@@ -30,9 +30,14 @@ export default function LocationsTable(props: Props) {
   });
 
   return (
-    <div className="bg-white mb-3 overflow-scroll rounded shadow" style={{ height: "185px" }} id="locationsTable">
+    <div
+      className="bg-white mb-3 overflow-scroll rounded shadow"
+      style={{ height: "185px" }}
+      id="locationsTable">
       <table className="w-full text-left">
-        <thead className="text-xs text-gray-700 uppercase font-medium sticky" style={{ height: "35px" }}>
+        <thead
+          className="text-xs text-gray-700 uppercase font-medium sticky"
+          style={{ height: "35px" }}>
           <tr>
             <Th text="Date" />
             <Th text="Latitude" />

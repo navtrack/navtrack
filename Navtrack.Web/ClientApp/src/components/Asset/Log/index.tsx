@@ -3,15 +3,15 @@ import "leaflet/dist/leaflet.css";
 import AssetLayout from "components/Framework/Layouts/Asset/AssetLayout";
 import { LocationModel } from "services/Api/Model/LocationModel";
 import { LocationApi } from "services/Api/LocationApi";
-import LocationFilter from "../../Common/LocationFilter/LocationFilter";
 import MapC from "components/Map";
-import useAssetId from "../useAssetId";
 import { MapToLocationHistoryRequestModel } from "components/Common/LocationFilter/LocationFilterUtil";
 import LocationsTable from "./LocationsTable";
 import {
   DefaultLocationFilterModel,
   LocationFilterModel
 } from "components/Common/LocationFilter/types/LocationFilterModel";
+import useAssetId from "components/hooks/useAssetId";
+import LocationFilter from "components/Common/LocationFilter/LocationFilter";
 
 export default function AssetLog() {
   const [locationFilter, setLocationFilter] = useState(DefaultLocationFilterModel);
