@@ -2,12 +2,10 @@ using System.Threading.Tasks;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services.Generic;
 
-namespace Navtrack.Web.Services.Authentication
+namespace Navtrack.Web.Services
 {
-    public interface IAuthenticationService
+    public interface IAccountService
     {
-        Task<ValidationResult> Login(LoginModel loginModel);
-        Task Logout();
         Task<ValidationResult> Register(RegisterModel registerModel);
     }
 }

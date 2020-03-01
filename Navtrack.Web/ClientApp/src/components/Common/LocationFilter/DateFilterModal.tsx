@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Modal from "components/Framework/Elements/Modal";
 import DatePicker from "components/Framework/Elements/Calendar";
-import useClickOutside from "components/Framework/Layouts/Admin/useClickOutside";
+import useClickOutside from "components/hooks/useClickOutside";
 import moment, { Moment } from "moment";
-import { DateFilterModel } from "components/Common/LocationFilter/Models/DateFilterModel";
-import { DateFilterType } from "./Models/DateFilterType";
+import { DateFilterModel } from "./types/DateFilterModel";
+import { DateFilterType } from "./types/DateFilterType";
 import Configuration from "components/Framework/Util/Configuration";
 import Checkbox from "components/Framework/Elements/Checkbox";
 import Button from "components/Framework/Elements/Button";
 import Icon from "components/Framework/Util/Icon";
-import { NumberFilterType } from "./Models/NumberFilterType";
+import { NumberFilterType } from "./types/NumberFilterType";
 
 type Props = {
   dateFilter: DateFilterModel;
@@ -20,7 +20,11 @@ type Props = {
 export default function DateFilterModal(props: Props) {
   const [filter, setFilter] = useState(props.dateFilter);
 
-  const [sngleDatePickerVisible, showSingleDateDatePicker, hideSingleDateDatePicker] = useClickOutside();
+  const [
+    sngleDatePickerVisible,
+    showSingleDateDatePicker,
+    hideSingleDateDatePicker
+  ] = useClickOutside();
   const [startDatePickerVisible, showStartDatePicker, hideStartDatePicker] = useClickOutside();
   const [endDatePickerVisible, showEndDatePicker, hideEndDatePicker] = useClickOutside();
 
@@ -190,7 +194,11 @@ export default function DateFilterModal(props: Props) {
                 readOnly></input>
               {startDatePickerVisible && (
                 <div className="absolute bottom-0 mb-10 fadeIn animated faster">
-                  <DatePicker date={filter.intervalStartDate} setDate={setRangeStartDate} hide={hideStartDatePicker} />
+                  <DatePicker
+                    date={filter.intervalStartDate}
+                    setDate={setRangeStartDate}
+                    hide={hideStartDatePicker}
+                  />
                 </div>
               )}
             </div>
@@ -210,7 +218,11 @@ export default function DateFilterModal(props: Props) {
                 readOnly></input>
               {endDatePickerVisible && (
                 <div className="absolute bottom-0 mb-10 fadeIn animated faster">
-                  <DatePicker date={filter.intervalEndDate} setDate={setRangeEndDate} hide={hideEndDatePicker} />
+                  <DatePicker
+                    date={filter.intervalEndDate}
+                    setDate={setRangeEndDate}
+                    hide={hideEndDatePicker}
+                  />
                 </div>
               )}
             </div>

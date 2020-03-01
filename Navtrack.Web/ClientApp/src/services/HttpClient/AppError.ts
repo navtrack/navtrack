@@ -1,4 +1,4 @@
-import {ValidationResult} from "components/Common/ValidatonResult";
+import { ValidationResult } from "components/Common/ValidatonResult";
 export class AppError {
   validationResult: ValidationResult;
   message: string;

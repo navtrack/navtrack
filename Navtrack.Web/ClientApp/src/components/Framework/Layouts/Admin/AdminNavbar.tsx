@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import AppContext from "services/AppContext";
 import Icon from "components/Framework/Util/Icon";
-import useClickOutside from "./useClickOutside";
+import useClickOutside from "../../../hooks/useClickOutside";
 import { AuthenticationService } from "services/Authentication/AuthenticationService";
 
 export default function AdminNavbar() {
@@ -23,7 +23,9 @@ export default function AdminNavbar() {
         <div className="mx-2 cursor-pointer">
           <div className="relative inline-block" onClick={e => showMenu(e)}>
             <i className="fa fa-user mr-1" />
-            <span className="font-medium text-sm">{appContext.user && appContext.user.email}</span>
+            <span className="font-medium text-sm">
+              {appContext.authenticationInfo && appContext.authenticationInfo.email}
+            </span>
             {menuIsVisible && (
               <div className="mt-2 absolute right-0 fadeIn animated faster text-sm">
                 <div className="w-48 bg-white rounded-lg shadow-lg overflow-hidden">

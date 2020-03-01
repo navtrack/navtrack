@@ -1,78 +1,63 @@
 import { ResponseModel } from "../Api/Model/ResponseModel";
 import { ValidationResult } from "components/Common/ValidatonResult";
 import { AppError } from "./AppError";
-import queryString from "query-string";
 import { AppContextAccessor } from "services/AppContext/AppContextAccessor";
-import { apiUrl, identityUrl } from "./HttpClientUtil";
+import queryString from "query-string";
 
 export const HttpClient = {
-  get: <T>(url: string, requestObject?: any) =>
-    fetch(formatUrl(url, requestObject), getRequestInit("GET")).then(response =>
-      handleResponse<T>(response)
-    ),
+  get: <T>(url: string, body?: any) =>
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders()
+    }).then(response => handleResponse<T>(response)),
 
-  post: (url: string, bodyObject: any): Promise<ResponseModel> =>
-    fetch(apiUrl(url), {
+  post: <T>(
+    url: string,
+    body: any,
+    contentType?: "application/x-www-form-urlencoded" | undefined
+  ): Promise<T> =>
+    fetch(url, {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json-patch+json"
-      },
-      body: JSON.stringify(bodyObject)
-    }).then(x => handleResponse<ResponseModel>(x)),
-
-  post2: <T>(url: string, body: any): Promise<T> =>
-    fetch(identityUrl(url), {
-      method: "POST",
-      //credentials: "include",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: body
-    }).then(x => handleResponse<T>(x)),
+      headers: getHeaders(contentType),
+      body: getBody(body, contentType)
+    }).then(response => handleResponse<T>(response)),
 
   delete: (url: string): Promise<ResponseModel> =>
-    fetch(apiUrl(url), {
+    fetch(url, {
       method: "DELETE",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json-patch+json"
-      }
+      headers: getHeaders()
     }).then(x => handleResponse<ResponseModel>(x)),
 
-  put: (url: string, bodyObject: any): Promise<ResponseModel> =>
-    fetch(apiUrl(url), {
+  put: (url: string, body: any): Promise<ResponseModel> =>
+    fetch(url, {
       method: "PUT",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bodyObject)
+      headers: getHeaders(),
+      body: getBody(body)
     }).then(x => handleResponse<ResponseModel>(x))
 };
 
-function getRequestInit(method: string): RequestInit {
-  return {
-    method: method,
-    credentials: "include",
-    headers: getHeaders()
-  };
+function getBody(body: any, contentType?: "application/x-www-form-urlencoded" | undefined) {
+  if (contentType === "application/x-www-form-urlencoded") {
+    return queryString.stringify(body);
+  }
+
+  return JSON.stringify(body);
 }
 
-function getHeaders(): Record<string, string> {
+function getHeaders(contentType?: string | undefined): Record<string, string> {
   let headers: Record<string, string> = {};
   let appContext = AppContextAccessor.getAppContext();
 
-  if (appContext.authenticationInfo.authenticated) {
+  if (appContext.authenticationInfo.authenticated && appContext.authenticationInfo.access_token) {
     headers["Authorization"] = `Bearer ${appContext.authenticationInfo.access_token}`;
   }
-  headers["Content-Type"] = "application/json";
+  headers["Content-Type"] = contentType ? contentType : "application/json";
 
   return headers;
-}
-
-function formatUrl(url: string, bodyObject?: any): string {
-  return queryString.stringifyUrl({ url: url, query: bodyObject });
 }
 
 // TODO rewrite this

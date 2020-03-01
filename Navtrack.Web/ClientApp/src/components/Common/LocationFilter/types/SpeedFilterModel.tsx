@@ -1,29 +1,25 @@
 import { NumberFilterType } from "./NumberFilterType";
 import { ComparisonType } from "./ComparisonType";
 
-export type AltitudeFilterModel = {
+export type SpeedFilterModel = {
   single: number;
   min: number;
   max: number;
   numberFilterType: NumberFilterType;
-  enabled: boolean;
   comparisonType: ComparisonType;
-  startAltitude: number | undefined;
-  endAltitude: number | undefined;
+  enabled: boolean;
 };
 
-export const DefaultAltitudeFilterModel: AltitudeFilterModel = {
+export const DefaultSpeedFilterModel: SpeedFilterModel = {
   single: 50,
   min: 50,
   max: 130,
   numberFilterType: NumberFilterType.Single,
-  enabled: false,
   comparisonType: ComparisonType.GreaterThan,
-  startAltitude: undefined,
-  endAltitude: undefined
+  enabled: false
 };
 
-export const altitudeFilterToString = (filter: AltitudeFilterModel) => {
+export const speedFilterToString = (filter: SpeedFilterModel) => {
   const comparisonText = {
     [ComparisonType.GreaterThan]: ">",
     [ComparisonType.Equals]: "=",
@@ -31,8 +27,8 @@ export const altitudeFilterToString = (filter: AltitudeFilterModel) => {
   };
 
   if (filter.numberFilterType === NumberFilterType.Single) {
-    return `${comparisonText[filter.comparisonType]} ${filter.min} m`;
+    return `${comparisonText[filter.comparisonType]} ${filter.single} km/h`;
   } else {
-    return `${filter.min} m - ${filter.max} m`;
+    return `${filter.min} km/h - ${filter.max} km/h`;
   }
 };

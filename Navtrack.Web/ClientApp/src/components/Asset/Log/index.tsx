@@ -4,14 +4,14 @@ import AssetLayout from "components/Framework/Layouts/Asset/AssetLayout";
 import { LocationModel } from "services/Api/Model/LocationModel";
 import { LocationApi } from "services/Api/LocationApi";
 import LocationFilter from "../../Common/LocationFilter/LocationFilter";
-import {
-  DefaultLocationFilterModel,
-  LocationFilterModel
-} from "components/Common/LocationFilter/Models/LocationFilterModel";
 import MapC from "components/Map";
 import useAssetId from "../useAssetId";
 import { MapToLocationHistoryRequestModel } from "components/Common/LocationFilter/LocationFilterUtil";
 import LocationsTable from "./LocationsTable";
+import {
+  DefaultLocationFilterModel,
+  LocationFilterModel
+} from "components/Common/LocationFilter/types/LocationFilterModel";
 
 export default function AssetLog() {
   const [locationFilter, setLocationFilter] = useState(DefaultLocationFilterModel);

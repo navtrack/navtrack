@@ -1,9 +1,12 @@
-import { LocationFilterModel } from "./Models/LocationFilterModel";
-import { NumberFilterType } from "./Models/NumberFilterType";
-import { ComparisonType } from "./Models/ComparisonType";
+import { LocationFilterModel } from "./types/LocationFilterModel";
+import { NumberFilterType } from "./types/NumberFilterType";
+import { ComparisonType } from "./types/ComparisonType";
 import { LocationHistoryRequestModel } from "services/Api/Model/LocationHistoryRequestModel";
 
-export function MapToLocationHistoryRequestModel(locationFilter: LocationFilterModel, assetId: number) {
+export function MapToLocationHistoryRequestModel(
+  locationFilter: LocationFilterModel,
+  assetId: number
+) {
   let filter: LocationHistoryRequestModel = {
     assetId: assetId,
     startDate: locationFilter.date.startDate.toISOString(),
@@ -11,7 +14,7 @@ export function MapToLocationHistoryRequestModel(locationFilter: LocationFilterM
     startAltitude: getStart({ ...locationFilter.altitude }),
     endAltitude: getEnd({ ...locationFilter.altitude }),
     startSpeed: getStart({ ...locationFilter.speed }),
-    endSpeed: getEnd({ ...locationFilter.altitude })
+    endSpeed: getEnd({ ...locationFilter.speed })
   };
 
   return filter;
@@ -26,7 +29,10 @@ const getStart = (props: {
 }) => {
   if (props.enabled) {
     if (props.numberFilterType === NumberFilterType.Single) {
-      if (props.comparisonType === ComparisonType.GreaterThan || props.comparisonType === ComparisonType.Equals) {
+      if (
+        props.comparisonType === ComparisonType.GreaterThan ||
+        props.comparisonType === ComparisonType.Equals
+      ) {
         return props.single;
       }
     } else {
@@ -46,7 +52,10 @@ const getEnd = (props: {
 }) => {
   if (props.enabled) {
     if (props.numberFilterType === NumberFilterType.Single) {
-      if (props.comparisonType === ComparisonType.Equals || props.comparisonType === ComparisonType.LessThan) {
+      if (
+        props.comparisonType === ComparisonType.Equals ||
+        props.comparisonType === ComparisonType.LessThan
+      ) {
         return props.single;
       }
     } else {

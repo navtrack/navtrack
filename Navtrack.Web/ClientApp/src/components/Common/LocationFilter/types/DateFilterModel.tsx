@@ -1,7 +1,7 @@
 import moment, { Moment } from "moment";
-import { DateFilterType } from "components/Common/LocationFilter/Models/DateFilterType";
-import Configuration from "components/Framework/Util/Configuration";
+import { DateFilterType } from "./DateFilterType";
 import { NumberFilterType } from "./NumberFilterType";
+import Configuration from "components/Framework/Util/Configuration";
 
 export type DateFilterModel = {
   singleDate: Moment;
@@ -31,8 +31,8 @@ export const dateFilterToString = (dateFilter: DateFilterModel) => {
       return dateFilter.startDate.format(Configuration.dateFormatAlt);
     }
 
-    return `${dateFilter.startDate.format(Configuration.dateFormatAlt)} - ${dateFilter.endDate.format(
+    return `${dateFilter.startDate.format(
       Configuration.dateFormatAlt
-    )}`;
+    )} - ${dateFilter.endDate.format(Configuration.dateFormatAlt)}`;
   }
 };

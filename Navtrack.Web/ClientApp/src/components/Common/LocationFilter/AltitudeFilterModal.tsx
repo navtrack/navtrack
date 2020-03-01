@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Modal from "components/Framework/Elements/Modal";
 import Checkbox from "components/Framework/Elements/Checkbox";
 import Button from "components/Framework/Elements/Button";
-import { NumberFilterType } from "./Models/NumberFilterType";
-import { ComparisonType } from "./Models/ComparisonType";
-import { AltitudeFilterModel } from "./Models/AltitudeFilterModel";
+import { NumberFilterType } from "./types/NumberFilterType";
+import { ComparisonType } from "./types/ComparisonType";
+import { AltitudeFilterModel } from "./types/AltitudeFilterModel";
 import Icon from "components/Framework/Util/Icon";
 
 type Props = {
@@ -98,7 +98,9 @@ export default function AltitudeFilterModal(props: Props) {
               <input
                 type="number"
                 className="w-12 mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-                onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })}
+                onClick={() =>
+                  setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })
+                }
                 value={filter.min}
                 onChange={e => setMin(e.target.value)}
               />
@@ -111,7 +113,9 @@ export default function AltitudeFilterModal(props: Props) {
               <input
                 type="number"
                 className="w-12 mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-                onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })}
+                onClick={() =>
+                  setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })
+                }
                 value={filter.max}
                 onChange={e => setMax(e.target.value)}
               />

@@ -15,11 +15,8 @@ export default function LiveTracking() {
           <div className="bg-white shadow p-3 rounded mb-3 flex">
             {asset.location ? (
               <>
-                <LocationInfo title="Location" hideMargin={true}>
-                  {asset.location.dateTime?.toString()}
-                </LocationInfo>
                 <LocationInfo title="Date" hideMargin={true}>
-                  {asset.location.dateTime?.toString()}
+                  {asset.location.dateTime}
                 </LocationInfo>
                 <LocationInfo title="Latitude">{asset.location.latitude}</LocationInfo>
                 <LocationInfo title="Longitude">{asset.location.longitude}</LocationInfo>
