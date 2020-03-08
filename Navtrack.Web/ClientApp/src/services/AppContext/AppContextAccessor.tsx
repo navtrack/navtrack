@@ -1,7 +1,7 @@
 import AppContext from ".";
 
 let _getAppContext: (() => AppContext) | undefined;
-let _setAppContext: ((newAppContext: AppContext) => unknown) | undefined;
+let _setAppContext: ((value: React.SetStateAction<AppContext>) => unknown) | undefined;
 
 export const AppContextAccessor = {
   getAppContext: (): AppContext => {
@@ -16,16 +16,15 @@ export const AppContextAccessor = {
     _getAppContext = getAppContext;
   },
 
-  setAppContext: (newAppContext: AppContext) => {
+  setAppContext: (value: React.SetStateAction<AppContext>) => {
     if (_setAppContext) {
-      _setAppContext(newAppContext);
-    }
-    else {
+      _setAppContext(value);
+    } else {
       throw new Error("AppContext setter not set");
     }
   },
 
-  setAppContextSetter: (setAppContext: (newAppContext: AppContext) => unknown) => {
+  setAppContextSetter: (setAppContext: React.Dispatch<React.SetStateAction<AppContext>>) => {
     _setAppContext = setAppContext;
   }
 };

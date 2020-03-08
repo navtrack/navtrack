@@ -2,8 +2,8 @@ import React from "react";
 import "leaflet/dist/leaflet.css";
 import { LocationInfo } from "./LocationInfo";
 import MapC from "components/Map";
-import AssetLayout from "components/Framework/Layouts/Asset/AssetLayout";
 import useAsset from "../../hooks/useAsset";
+import AssetLayout from "components/framework/Layouts/Asset/AssetLayout";
 
 export default function LiveTracking() {
   const asset = useAsset();

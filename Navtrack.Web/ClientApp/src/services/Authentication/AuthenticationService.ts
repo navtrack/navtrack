@@ -1,16 +1,18 @@
 import { AppContextAccessor } from "services/AppContext/AppContextAccessor";
-
 import { DefaultAuthenticationInfo, AuthenticationInfo } from "./AuthenticationInfo";
 import { TokenResponse } from "services/Api/types/identity/TokenResponse";
 import { IdentityApi } from "services/Api/IdentityApi";
 
 export const AuthenticationService = {
-  clearAuthenticationInfo: () => {
-    const appContext = AppContextAccessor.getAppContext();
-
-    AppContextAccessor.setAppContext({
-      ...appContext,
-      authenticationInfo: DefaultAuthenticationInfo
+  clearAuthenticationInfo: (sessionExpired?: boolean) => {
+    AppContextAccessor.setAppContext(appContext => {
+      return {
+        ...appContext,
+        authenticationInfo: {
+          ...DefaultAuthenticationInfo,
+          session_expired: sessionExpired ? true : false
+        }
+      };
     });
   },
 
@@ -20,45 +22,48 @@ export const AuthenticationService = {
     if (tokenResponse.error) {
       return false;
     } else {
-      const appContext = AppContextAccessor.getAppContext();
-
-      AppContextAccessor.setAppContext({
-        ...appContext,
-        authenticationInfo: getNewAuthenticationInfo(email, tokenResponse)
+      AppContextAccessor.setAppContext(appContext => {
+        return {
+          ...appContext,
+          authenticationInfo: getNewAuthenticationInfo(email, tokenResponse)
+        };
       });
 
       return true;
     }
+  },
+
+  checkAndRenewAccessToken: async (): Promise<boolean> => {
+    let appContext = AppContextAccessor.getAppContext();
+
+    if (appContext.authenticationInfo.authenticated) {
+      if (accessTokenIsExpired(appContext.authenticationInfo.expiry_date)) {
+        const tokenResponse = await IdentityApi.refreshToken(
+          appContext.authenticationInfo.refresh_token
+        );
+
+        if (renewFailed(tokenResponse)) {
+          AuthenticationService.clearAuthenticationInfo(true);
+
+          return false;
+        }
+
+        AppContextAccessor.setAppContext(appContext => {
+          return {
+            ...appContext,
+            authenticationInfo: getNewAuthenticationInfo(
+              appContext.authenticationInfo.email,
+              tokenResponse
+            )
+          };
+        });
+      }
+
+      return true;
+    }
+
+    return false;
   }
-
-  // checkAndRenewAccessToken: async (): Promise<boolean> => {
-  //   if (AppContextAccessor.getAppContext().localStorageInfo.authenticationInfo.authenticated) {
-  //     if (accessTokenIsExpired()) {
-  //       const identityResponse: IdentityResponse = await IdentityApi.refreshAccessToken();
-
-  //       if (renewFailed(identityResponse)) {
-  //         IdentityService.clearAuthenticationInfo(true);
-
-  //         return false;
-  //       }
-
-  //       const appContext = AppContextAccessor.getAppContext();
-  //       const authenticationInfo = getNewAuthenticationInfo(
-  //         identityResponse,
-  //         appContext.localStorageInfo.authenticationInfo
-  //       );
-
-  //       AppContextAccessor.setAppContext({
-  //         ...appContext,
-  //         localStorageInfo: { ...appContext.localStorageInfo, authenticationInfo: authenticationInfo }
-  //       });
-  //     }
-
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
 };
 
 const getNewAuthenticationInfo = (
@@ -70,8 +75,22 @@ const getNewAuthenticationInfo = (
     authenticated: true,
     access_token: tokenResponse.access_token,
     refresh_token: tokenResponse.refresh_token,
-    expiry_date: new Date(new Date().getTime() + tokenResponse.expires_in * 1000).toString()
+    expiry_date: new Date(new Date().getTime() + tokenResponse.expires_in * 1000).toString(),
+    session_expired: false
   };
 
   return newAuthenticationInfo;
 };
+
+const accessTokenIsExpired = (expiry: string): boolean => {
+  const date = new Date();
+  const expiryDate = new Date(expiry);
+
+  return date > expiryDate;
+};
+
+const renewFailed = (tokenResponse: TokenResponse) =>
+  !tokenResponse ||
+  tokenResponse.error ||
+  !tokenResponse.access_token ||
+  !tokenResponse.refresh_token;

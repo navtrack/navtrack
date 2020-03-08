@@ -12,5 +12,7 @@ namespace Navtrack.Web.Models
         public string Password { get; set; }
         
         public string ConfirmPassword { get; set; }
+        
+        public UserRole? Role { get; set; }
     }
 }

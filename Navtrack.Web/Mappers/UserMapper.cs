@@ -1,3 +1,4 @@
+using System;
 using Navtrack.Common.Services;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
@@ -21,6 +22,7 @@ namespace Navtrack.Web.Mappers
         {
             destination.Id = source.Id;
             destination.Email = source.Email;
+            destination.Role = (UserRole) source.Role;
 
             return destination;
         }
@@ -36,6 +38,11 @@ namespace Navtrack.Web.Mappers
 
                 destination.Hash = key;
                 destination.Salt = salt;
+            }
+
+            if (source.Role.HasValue && Enum.TryParse($"{source.Role}", out UserRole role))
+            {
+                destination.Role = (int) role;
             }
 
             return destination;

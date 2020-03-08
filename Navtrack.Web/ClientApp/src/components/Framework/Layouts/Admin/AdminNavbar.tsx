@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import AppContext from "services/AppContext";
-import Icon from "components/Framework/Util/Icon";
+import Icon from "components/framework/Util/Icon";
 import useClickOutside from "../../../hooks/useClickOutside";
 import { AuthenticationService } from "services/Authentication/AuthenticationService";
 

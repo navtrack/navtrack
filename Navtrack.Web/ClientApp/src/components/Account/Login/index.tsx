@@ -3,8 +3,8 @@ import { Link, useHistory } from "react-router-dom";
 import { LoginModel, DefaultLoginModel } from "./LoginModel";
 import { AppError } from "services/HttpClient/AppError";
 import InputError, { HasErrors, AddError } from "components/Common/InputError";
-import LoginLayout from "components/Framework/Layouts/Login/LoginLayout";
-import Icon from "components/Framework/Util/Icon";
+import LoginLayout from "components/framework/Layouts/Login/LoginLayout";
+import Icon from "components/framework/Util/Icon";
 import { ValidationResult } from "components/Common/ValidatonResult";
 import { AuthenticationService } from "services/Authentication/AuthenticationService";
 

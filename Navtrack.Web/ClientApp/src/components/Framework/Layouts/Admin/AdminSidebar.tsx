@@ -1,13 +1,17 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AppContext from "services/AppContext";
-import Icon from "components/Framework/Util/Icon";
+import Icon from "components/framework/Util/Icon";
+import Authorize from "components/framework/authorization/Authorize";
+import { UserRole } from "services/Api/Model/UserRole";
 
 export default function AdminSidebar() {
   const { appContext } = useContext(AppContext);
 
   return (
-    <nav className="p-3 bg-white w-48 text-sm shadow z-10" style={{ width: "170px", minWidth: "170px" }}>
+    <nav
+      className="p-3 bg-white w-48 text-sm shadow z-10"
+      style={{ width: "170px", minWidth: "170px" }}>
       <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Assets</h5>
       {appContext.assets ? (
         appContext.assets.length > 0 ? (
@@ -40,14 +44,16 @@ export default function AdminSidebar() {
           </Link>
         </li>
       </ul>
-      {/* <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Admin</h5>
-      <ul>
-        <li className="mb-2">
-          <Link className="text-gray-600 hover:text-gray-900" to="/users">
-            <Icon className="fa-user w-4" margin={1} /> Users
-                    </Link>
-        </li>
-      </ul> */}
+      <Authorize userRole={UserRole.Admin}>
+        <h5 className="mb-2 text-gray-500 uppercase tracking-wide font-semibold text-xs">Admin</h5>
+        <ul>
+          <li className="mb-2">
+            <Link className="text-gray-600 hover:text-gray-900" to="/admin/users">
+              <Icon className="fa-user w-4" margin={1} /> Users
+            </Link>
+          </li>
+        </ul>
+      </Authorize>
     </nav>
   );
 }

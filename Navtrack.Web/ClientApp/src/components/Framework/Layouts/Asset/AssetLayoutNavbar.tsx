@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import AppContext from "services/AppContext";
-import Icon from "components/Framework/Util/Icon";
 import classNames from "classnames";
+import Icon from "components/framework/Util/Icon";
 
 export default function AssetLayoutNavbar() {
   const { appContext } = useContext(AppContext);
@@ -41,7 +41,10 @@ function LinkItem(props: Props) {
   const isHighlighted = location.pathname.includes(props.url);
 
   return (
-    <li className={classNames("text-gray-600 hover:text-gray-900 mr-4", { "text-gray-900": isHighlighted })}>
+    <li
+      className={classNames("text-gray-600 hover:text-gray-900 mr-4", {
+        "text-gray-900": isHighlighted
+      })}>
       <Link to={props.url}>
         <Icon className={props.icon} margin={1} /> {props.text}
       </Link>

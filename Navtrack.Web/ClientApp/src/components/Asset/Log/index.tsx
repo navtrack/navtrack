@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
-import AssetLayout from "components/Framework/Layouts/Asset/AssetLayout";
 import { LocationModel } from "services/Api/Model/LocationModel";
 import { LocationApi } from "services/Api/LocationApi";
-import MapC from "components/Map";
-import { MapToLocationHistoryRequestModel } from "components/Common/LocationFilter/LocationFilterUtil";
-import LocationsTable from "./LocationsTable";
 import {
   DefaultLocationFilterModel,
   LocationFilterModel
 } from "components/Common/LocationFilter/types/LocationFilterModel";
 import useAssetId from "components/hooks/useAssetId";
+import { MapToLocationHistoryRequestModel } from "components/Common/LocationFilter/LocationFilterUtil";
+import AssetLayout from "components/framework/Layouts/Asset/AssetLayout";
 import LocationFilter from "components/Common/LocationFilter/LocationFilter";
+import LocationsTable from "./LocationsTable";
+import MapC from "components/Map";
 
 export default function AssetLog() {
   const [locationFilter, setLocationFilter] = useState(DefaultLocationFilterModel);

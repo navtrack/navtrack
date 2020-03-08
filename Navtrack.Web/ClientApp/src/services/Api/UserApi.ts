@@ -9,7 +9,7 @@ export const UserApi = {
   },
 
   getAll: function(): Promise<UserModel[]> {
-    return HttpClient.get<UserModel[]>("users");
+    return HttpClient.get<UserModel[]>(apiUrl("users"));
   },
 
   delete: function(id: number): Promise<ResponseModel> {

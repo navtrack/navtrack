@@ -86,7 +86,7 @@ namespace Navtrack.Web.Services
             entity.Users.Add(new UserAsset
             {
                 UserId = httpContextAccessor.HttpContext.User.GetId(),
-                RoleId = (int) Role.Owner
+                RoleId = (int) EntityRole.Owner
             });
 
             return Task.CompletedTask;

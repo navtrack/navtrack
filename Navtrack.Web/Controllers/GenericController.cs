@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.DataAccess.Model.Custom;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services.Generic;
 
@@ -28,7 +27,7 @@ namespace Navtrack.Web.Controllers
         {
             if (await genericService.Exists(id))
             {
-                if (await genericService.Authorize(id, Role.Viewer))
+                if (await genericService.Authorize(id, EntityRole.Viewer))
                 {
                     TModel model = await genericService.Get(id);
 
@@ -74,7 +73,7 @@ namespace Navtrack.Web.Controllers
             {
                 if (await genericService.Exists(model.Id))
                 {
-                    if (await genericService.Authorize(model.Id, Role.Owner))
+                    if (await genericService.Authorize(model.Id, EntityRole.Owner))
                     {
                         ValidationResult validationResult = await genericService.ValidateSave(model);
 
@@ -102,7 +101,7 @@ namespace Navtrack.Web.Controllers
         {
             if (await genericService.Exists(id))
             {
-                if (await genericService.Authorize(id, Role.Owner))
+                if (await genericService.Authorize(id, EntityRole.Owner))
                 {
                     ValidationResult validationResult = await genericService.ValidateDelete(id);
 

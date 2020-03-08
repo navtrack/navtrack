@@ -1,15 +1,16 @@
 import React, { ReactNode } from "react";
 
 type Props = {
-  value: string | number | string[],
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void,
-  children: ReactNode
-}
+  value: string | number | string[];
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  children: ReactNode;
+};
 
 export default function Dropdown(props: Props) {
   return (
     <div className="relative shadow rounded w-full">
-      <select className="block appearance-none bg-white px-3 py-2 cursor-pointer focus:outline-none bg-gray-200 w-full"
+      <select
+        className="block appearance-none bg-white px-3 py-2 cursor-pointer focus:outline-none bg-gray-200 w-full"
         value={props.value}
         onChange={props.onChange}>
         {props.children}
@@ -19,4 +20,4 @@ export default function Dropdown(props: Props) {
       </div>
     </div>
   );
-};
+}

@@ -48,7 +48,7 @@ namespace Navtrack.Web.Services
                 validationResult.AddError(nameof(UserModel.ConfirmPassword), "Confirm password is required when adding a new user.");
             }
             if (!string.IsNullOrEmpty(model.Password) && !string.IsNullOrEmpty(model.ConfirmPassword) &&
-                model.Password == model.ConfirmPassword)
+                model.Password != model.ConfirmPassword)
             {
                 validationResult.AddError(nameof(UserModel.ConfirmPassword), "Passwords do no match.");
             }

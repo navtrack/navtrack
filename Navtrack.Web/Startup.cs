@@ -82,14 +82,16 @@ namespace Navtrack.Web
             services.AddLocalApiAuthentication();
 
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
             services.AddLetsEncrypt();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -108,10 +110,9 @@ namespace Navtrack.Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-
-            app.UseIdentityServer();
-            // app.UseAuthentication();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {
@@ -119,7 +120,6 @@ namespace Navtrack.Web
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";

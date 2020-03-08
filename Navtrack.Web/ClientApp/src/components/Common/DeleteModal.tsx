@@ -1,7 +1,7 @@
 import React from "react";
-import Modal from "components/Framework/Elements/Modal";
-import Icon from "components/Framework/Util/Icon";
-import Button from "components/Framework/Elements/Button";
+import Modal from "components/framework/Elements/Modal";
+import Icon from "components/framework/Util/Icon";
+import Button from "components/framework/Elements/Button";
 
 type Props = {
   deleteHandler: () => void;

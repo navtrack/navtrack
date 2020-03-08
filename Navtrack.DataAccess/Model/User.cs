@@ -13,6 +13,7 @@ namespace Navtrack.DataAccess.Model
         public string Email { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
+        public int Role { get; set;  }
         public ICollection<UserAsset> Assets { get; set; }
         public ICollection<UserDevice> Devices { get; set; }
     }

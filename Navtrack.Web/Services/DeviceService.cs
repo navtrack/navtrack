@@ -100,7 +100,7 @@ namespace Navtrack.Web.Services
             entity.Users.Add(new UserDevice
             {
                 UserId = httpContextAccessor.HttpContext.User.GetId(),
-                RoleId = (int) Role.Owner
+                RoleId = (int) EntityRole.Owner
             });
 
             return Task.CompletedTask;

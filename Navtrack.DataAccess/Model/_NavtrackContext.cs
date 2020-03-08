@@ -109,6 +109,7 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.Email).HasMaxLength(254).IsRequired();
                 entity.Property(x => x.Salt).HasMaxLength(44).IsRequired();
                 entity.Property(x => x.Hash).HasMaxLength(88).IsRequired();
+                entity.Property(x => x.Role).IsRequired();
             });
 
             modelBuilder.Entity<UserAsset>()

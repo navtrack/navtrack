@@ -4,6 +4,7 @@ export type AuthenticationInfo = {
   access_token: string;
   refresh_token: string;
   expiry_date: string;
+  session_expired: boolean;
 };
 
 export const DefaultAuthenticationInfo: AuthenticationInfo = {
@@ -11,5 +12,6 @@ export const DefaultAuthenticationInfo: AuthenticationInfo = {
   email: "",
   access_token: "",
   refresh_token: "",
-  expiry_date: ""
+  expiry_date: "",
+  session_expired: false
 };

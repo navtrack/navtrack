@@ -31,8 +31,13 @@ namespace Navtrack.Web.Services.IdentityServer
                 {
                     ClientId = "navtrack.web",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    AllowedScopes = { IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.OpenId  },
-                    RequireClientSecret = false
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        IdentityServerConstants.StandardScopes.OpenId
+                    },
+                    RequireClientSecret = false,
+                    AllowOfflineAccess = true
                 }
             };
         }

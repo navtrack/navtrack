@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Web.Models;
 using Navtrack.Web.Services;
@@ -8,6 +10,7 @@ using Navtrack.Web.Services.Generic;
 namespace Navtrack.Web.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
@@ -25,6 +28,7 @@ namespace Navtrack.Web.Controllers
             return userService.Get(User.GetId());
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
         {

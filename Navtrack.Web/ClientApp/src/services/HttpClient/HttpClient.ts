@@ -3,41 +3,57 @@ import { ValidationResult } from "components/Common/ValidatonResult";
 import { AppError } from "./AppError";
 import { AppContextAccessor } from "services/AppContext/AppContextAccessor";
 import queryString from "query-string";
+import { AuthenticationService } from "services/Authentication/AuthenticationService";
 
 export const HttpClient = {
-  get: <T>(url: string, body?: any) =>
-    fetch(url, {
+  get: async <T>(url: string, body?: any) => {
+    await AuthenticationService.checkAndRenewAccessToken();
+
+    return fetch(url, {
       method: "GET",
       credentials: "include",
       headers: getHeaders()
-    }).then(response => handleResponse<T>(response)),
+    }).then(response => handleResponse<T>(response));
+  },
 
-  post: <T>(
+  post: async <T>(
     url: string,
     body: any,
-    contentType?: "application/x-www-form-urlencoded" | undefined
-  ): Promise<T> =>
-    fetch(url, {
+    contentType?: "application/x-www-form-urlencoded" | undefined,
+    skipAccessTokenCheck?: boolean
+  ): Promise<T> => {
+    if (!skipAccessTokenCheck) {
+      await AuthenticationService.checkAndRenewAccessToken();
+    }
+
+    return fetch(url, {
       method: "POST",
       credentials: "include",
       headers: getHeaders(contentType),
       body: getBody(body, contentType)
-    }).then(response => handleResponse<T>(response)),
+    }).then(response => handleResponse<T>(response));
+  },
 
-  delete: (url: string): Promise<ResponseModel> =>
-    fetch(url, {
+  delete: async (url: string): Promise<ResponseModel> => {
+    await AuthenticationService.checkAndRenewAccessToken();
+
+    return fetch(url, {
       method: "DELETE",
       credentials: "include",
       headers: getHeaders()
-    }).then(x => handleResponse<ResponseModel>(x)),
+    }).then(x => handleResponse<ResponseModel>(x));
+  },
 
-  put: (url: string, body: any): Promise<ResponseModel> =>
-    fetch(url, {
+  put: async (url: string, body: any): Promise<ResponseModel> => {
+    await AuthenticationService.checkAndRenewAccessToken();
+
+    return fetch(url, {
       method: "PUT",
       credentials: "include",
       headers: getHeaders(),
       body: getBody(body)
-    }).then(x => handleResponse<ResponseModel>(x))
+    }).then(x => handleResponse<ResponseModel>(x));
+  }
 };
 
 function getBody(body: any, contentType?: "application/x-www-form-urlencoded" | undefined) {

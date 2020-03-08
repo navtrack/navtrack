@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
+import AdminLayout from "components/framework/Layouts/Admin/AdminLayout";
 import { AssetModel } from "services/Api/Model/AssetModel";
 import { useHistory } from "react-router";
 import { AssetApi } from "services/Api/AssetApi";
@@ -7,7 +7,7 @@ import { addNotification } from "components/Notifications";
 import { AppError } from "services/HttpClient/AppError";
 import DeleteModal from "components/Common/DeleteModal";
 import ReactTable from "components/Table/ReactTable";
-import Button from "components/Framework/Elements/Button";
+import Button from "components/framework/Elements/Button";
 import { NotificationType } from "components/Notifications/NotificationType";
 
 export default function AssetList() {

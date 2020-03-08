@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router";
-import Home from "./components/Home";
 import Notifications from "./components/Notifications";
 import { CreateAppContext, SaveToLocalStorage } from "./services/AppContext";
 import { AppContext } from "./services/AppContext";
@@ -15,9 +14,11 @@ import DeviceList from "components/Settings/Devices/DeviceList";
 import DeviceEdit from "components/Settings/Devices/DeviceEdit";
 import AssetList from "components/Settings/Assets/AssetList";
 import AssetEdit from "components/Settings/Assets/AssetEdit";
-import UserList from "components/Settings/Users/UserList";
-import UserEdit from "components/Settings/Users/UserEdit";
+import UserList from "components/admin/users/UserList";
+import UserEdit from "components/admin/users/UserEdit";
 import AssetLog from "components/Asset/Log";
+import Dashboard from "components/home/Dashboard";
+import { AuthenticationService } from "services/Authentication/AuthenticationService";
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
@@ -31,6 +32,12 @@ export default function App() {
   useEffect(() => {
     SaveToLocalStorage(appContext);
   }, [appContext]);
+
+  useEffect(() => {
+    (async () => {
+      await AuthenticationService.checkAndRenewAccessToken();
+    })();
+  }, []);
 
   useEffect(() => {
     if (appContext.authenticationInfo.authenticated) {
@@ -69,13 +76,15 @@ export default function App() {
         <Route
           path="/assets/:id"
           render={props => <AssetEdit id={props.match.params.id} />}></Route>
-        <PrivateRoute exact path="/users">
+        <PrivateRoute exact path="/admin/users">
           <UserList />
         </PrivateRoute>
-        <PrivateRoute path="/users/add">
+        <PrivateRoute path="/admin/users/add">
           <UserEdit />
         </PrivateRoute>
-        <Route path="/users/:id" render={props => <UserEdit id={props.match.params.id} />}></Route>
+        <Route
+          path="/admin/users/:id"
+          render={props => <UserEdit id={props.match.params.id} />}></Route>
         <Route path="/login">
           <Login />
         </Route>
@@ -83,7 +92,7 @@ export default function App() {
           <Register />
         </Route>
         <PrivateRoute path="/">
-          <Home />
+          <Dashboard />
         </PrivateRoute>
         <Redirect from="*" to="/" />
       </Switch>

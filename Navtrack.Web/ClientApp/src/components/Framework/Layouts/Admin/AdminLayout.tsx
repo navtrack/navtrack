@@ -4,7 +4,7 @@ import AdminNavbar from "./AdminNavbar";
 import AdminFooter from "./AdminFooter";
 import classNames from "classnames";
 import { AppError } from "services/HttpClient/AppError";
-import Error from "components/Framework/Error";
+import Error from "components/framework/error/Error";
 
 type Props = {
   children: React.ReactNode;

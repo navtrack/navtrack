@@ -25,6 +25,10 @@ namespace Navtrack.Web.Services.IdentityServer
             UserModel user = await userService.Get(userId);
             
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email));
+            if (user.Role != null)
+            {
+                context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, ((UserRole) user.Role).ToString()));
+            }
         }
 
         public Task IsActiveAsync(IsActiveContext context)

@@ -9,18 +9,35 @@ export const IdentityApi = {
       grant_type: "password",
       username: username,
       password: password,
-      scope: "IdentityServerApi openid",
+      scope: "offline_access IdentityServerApi openid",
       client_id: "navtrack.web"
     };
 
     return HttpClient.post<TokenResponse>(
       formatUrl(identityUrl("connect/token")),
       body,
-      "application/x-www-form-urlencoded"
+      "application/x-www-form-urlencoded",
+      true
     );
   },
 
   getUserInfo: async (): Promise<UserInfo> => {
     return HttpClient.get<UserInfo>(identityUrl("connect/userinfo"));
+  },
+
+  refreshToken: (refreshToken: string): Promise<TokenResponse> => {
+    let body = {
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      scope: "IdentityServerApi",
+      client_id: "navtrack.web"
+    };
+
+    return HttpClient.post<TokenResponse>(
+      formatUrl(identityUrl("connect/token")),
+      body,
+      "application/x-www-form-urlencoded",
+      true
+    );
   }
 };

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.DataAccess.Model;
-using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.Services;
 using Navtrack.Web.Models;
@@ -122,19 +121,19 @@ namespace Navtrack.Web.Services.Generic
             return repository.GetEntities<TEntity>();
         }
 
-        public async Task<bool> Authorize(int id, Role role)
+        public async Task<bool> Authorize(int id, EntityRole entityRole)
         {
             IUserRelation userRelation = await GetUserRelation(id);
 
             return userRelation == null ||
                    userRelation.UserId == httpContextAccessor.HttpContext.User.GetId() &&
-                   userRelation.RoleId == (int) role ||
-                   role == Role.Viewer && userRelation.RoleId == (int) Role.Owner; // TODO change this
+                   userRelation.RoleId == (int) entityRole ||
+                   entityRole == EntityRole.Viewer && userRelation.RoleId == (int) EntityRole.Owner; // TODO change this
         }
 
         protected virtual Task<IUserRelation> GetUserRelation(int id)
         {
-            return null;
+            return Task.FromResult<IUserRelation>(null);
         }
 
         protected TModel MapToModel(TEntity entity)

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Icon from "components/Framework/Util/Icon";
+import Icon from "components/framework/Util/Icon";
 import useClickOutside from "components/hooks/useClickOutside";
 import { LocationFilterModel } from "./types/LocationFilterModel";
 import DateFilterModal from "./DateFilterModal";

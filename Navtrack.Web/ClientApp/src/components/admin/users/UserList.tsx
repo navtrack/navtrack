@@ -4,11 +4,10 @@ import { useHistory } from "react-router";
 import { UserApi } from "services/Api/UserApi";
 import { addNotification } from "components/Notifications";
 import { AppError } from "services/HttpClient/AppError";
-import { Link } from "react-router-dom";
-import AdminLayout from "components/Framework/Layouts/Admin/AdminLayout";
+import AdminLayout from "components/framework/Layouts/Admin/AdminLayout";
 import DeleteModal from "components/Common/DeleteModal";
 import ReactTable from "components/Table/ReactTable";
-import Button from "components/Framework/Elements/Button";
+import Button from "components/framework/Elements/Button";
 
 export default function UserList() {
   const [users, setUsers] = useState<UserModel[]>([]);
@@ -49,19 +48,21 @@ export default function UserList() {
         Header: "Actions",
         accessor: "id",
         Cell: (cell: any) => (
-          <div>
-            <Link to={"/users/" + cell.cell.value} className="mx-2">
-              <i className="fas fa-edit" />
-            </Link>
-            <span className="btn-link" onClick={() => handleDeleteClick(cell.cell.value)}>
-              <i className="fas fa-trash" />
-            </span>
-          </div>
+          <>
+            <i
+              className="fas fa-edit mr-3 hover:text-gray-700 cursor-pointer"
+              onClick={() => history.push(`/admin/users/${cell.cell.value}`)}
+            />
+            <i
+              className="fas fa-trash hover:text-gray-700 cursor-pointer"
+              onClick={() => handleDeleteClick(cell.cell.value)}
+            />
+          </>
         ),
         disableSortBy: true
       }
     ],
-    [handleDeleteClick]
+    [handleDeleteClick, history]
   );
 
   return (
@@ -73,7 +74,7 @@ export default function UserList() {
         <div className="p-3 flex">
           <div className="flex-grow font-medium text-lg">Users</div>
           <div className="flex-grow flex justify-end">
-            <Button color="primary" onClick={() => history.push("/users/add")}>
+            <Button color="primary" onClick={() => history.push("/admin/users/add")}>
               Add user
             </Button>
           </div>
