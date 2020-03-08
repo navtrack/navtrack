@@ -1,5 +1,5 @@
 import React from "react";
-import { AppError } from "services/HttpClient/AppError";
+import { AppError } from "services/httpClient/AppError";
 
 type Props = {
   error?: AppError;

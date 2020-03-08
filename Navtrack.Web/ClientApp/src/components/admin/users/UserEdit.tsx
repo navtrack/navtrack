@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { UserModel, DefaultUserModel } from "services/Api/Model/UserModel";
-import { AppError } from "services/HttpClient/AppError";
+import { UserModel, DefaultUserModel } from "services/api/types/user/UserModel";
+import { AppError } from "services/httpClient/AppError";
 import { useHistory } from "react-router";
-import { UserApi } from "services/Api/UserApi";
-import InputError, { HasErrors, AddError, ClearError } from "components/Common/InputError";
-import { addNotification } from "components/Notifications";
-import AdminLayout from "components/framework/Layouts/Admin/AdminLayout";
-import { ValidationResult } from "components/Common/ValidatonResult";
+import { UserApi } from "services/api/UserApi";
+import InputError, { HasErrors, ClearError, AddError } from "components/common/InputError";
+import { addNotification } from "components/framework/notifications/Notifications";
+import AdminLayout from "components/framework/layouts/admin/AdminLayout";
+import { ValidationResult } from "components/common/ValidatonResult";
 
 type Props = {
   id?: number;

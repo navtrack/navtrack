@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useParams } from "react-router";
-import AppContext from "services/AppContext";
-import { AssetModel } from "services/Api/Model/AssetModel";
+import AppContext from "services/appContext/AppContext";
+import { AssetModel } from "services/api/types/asset/AssetModel";
 
 const useAsset = (): AssetModel | undefined => {
   const { appContext } = useContext(AppContext);

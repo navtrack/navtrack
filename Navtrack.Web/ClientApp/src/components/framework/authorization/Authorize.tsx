@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
-import { UserRole } from "services/Api/Model/UserRole";
-import { AuthorizationService } from "services/Authentication/AuthorizationService";
+import { AuthorizationService } from "services/authentication/AuthorizationService";
+import { UserRole } from "services/api/types/user/UserRole";
 
 type Props = {
   children: ReactNode;

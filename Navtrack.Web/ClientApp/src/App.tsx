@@ -1,24 +1,23 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router";
-import Notifications from "./components/Notifications";
-import { CreateAppContext, SaveToLocalStorage } from "./services/AppContext";
-import { AppContext } from "./services/AppContext";
-import PrivateRoute from "./components/Routing/PrivateRoute";
-import { AppContextAccessor } from "./services/AppContext/AppContextAccessor";
+import { AppContextAccessor } from "services/appContext/AppContextAccessor";
+import { AuthenticationService } from "services/authentication/AuthenticationService";
 import { LocationService } from "services/LocationService";
 import { AccountService } from "services/AccountService";
-import LiveTracking from "components/Asset/LiveTracking";
-import Login from "components/Account/Login";
-import Register from "components/Account/Register";
-import DeviceList from "components/Settings/Devices/DeviceList";
-import DeviceEdit from "components/Settings/Devices/DeviceEdit";
-import AssetList from "components/Settings/Assets/AssetList";
-import AssetEdit from "components/Settings/Assets/AssetEdit";
+import DeviceList from "components/settings/devices/DeviceList";
+import DeviceEdit from "components/settings/devices/DeviceEdit";
+import AssetList from "components/settings/assets/AssetList";
+import AssetEdit from "components/settings/assets/AssetEdit";
 import UserList from "components/admin/users/UserList";
 import UserEdit from "components/admin/users/UserEdit";
-import AssetLog from "components/Asset/Log";
 import Dashboard from "components/home/Dashboard";
-import { AuthenticationService } from "services/Authentication/AuthenticationService";
+import Notifications from "components/framework/notifications/Notifications";
+import PrivateRoute from "components/framework/routing/PrivateRoute";
+import LiveTracking from "components/asset/liveTracking/LiveTracking";
+import Login from "components/account/login/Login";
+import Register from "components/account/register/Register";
+import AssetLog from "components/asset/log/Log";
+import AppContext, { CreateAppContext, SaveToLocalStorage } from "services/appContext/AppContext";
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
