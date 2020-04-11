@@ -28,13 +28,20 @@ namespace Navtrack.Library.DI
 
         private static IEnumerable<Assembly> GetAssemblies()
         {
-            List<Assembly> assemblies =
-                Assembly.GetEntryAssembly()?.GetReferencedAssemblies().Select(Assembly.Load).ToList() ??
-                new List<Assembly>();
-
-            assemblies.Add(Assembly.GetEntryAssembly());
+            List<Assembly> assemblies = GetAssemblies(Assembly.GetEntryAssembly()).Distinct().ToList();
 
             return assemblies;
+        }
+
+        private static IEnumerable<Assembly> GetAssemblies(Assembly assembly)
+        {
+            foreach (Assembly referencedAssembly in assembly.GetReferencedAssemblies()
+                .Where(x => x.Name.StartsWith("Navtrack")).Select(Assembly.Load).SelectMany(GetAssemblies))
+            {
+                yield return referencedAssembly;
+            }
+
+            yield return assembly;
         }
     }
 }

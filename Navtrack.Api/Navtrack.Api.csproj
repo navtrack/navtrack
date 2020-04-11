@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Navtrack.Common\Navtrack.Common.csproj" />
+        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
+        <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Certes" Version="2.3.3" />
+        <PackageReference Include="IdentityServer4" Version="3.1.2" />
+    </ItemGroup>
+
+</Project>

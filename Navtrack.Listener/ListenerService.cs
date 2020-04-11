@@ -4,27 +4,26 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols;
+using Navtrack.Listener.Services;
 using ILogger = Navtrack.Listener.Services.Logging.ILogger;
 
 // ReSharper disable AssignmentIsFullyDiscarded
 
-namespace Navtrack.Listener.Services
+namespace Navtrack.Listener
 {
-    //[Service(typeof(IHostedService), ServiceLifetime.Singleton)]
-    public class ListenerHostedService : BackgroundService
+    [Service(typeof(IListenerService))]
+    public class ListenerService : IListenerService
     {
         private readonly ILogger<ListenerHostedService> logger;
         private readonly IEnumerable<IProtocol> protocols;
         private readonly IConnectionService connectionService;
         private readonly ILogger logger2;
 
-        public ListenerHostedService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols,
+        public ListenerService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols,
             IConnectionService connectionService, ILogger logger2)
         {
             this.logger = logger;
@@ -33,7 +32,7 @@ namespace Navtrack.Listener.Services
             this.logger2 = logger2;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await logger2.Log("test");
             

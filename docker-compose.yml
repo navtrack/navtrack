@@ -1,18 +1,11 @@
-version: '3.4'
+version: "3.4"
 
 services:
   web:
-    image: navtrack/web
+    image: navtrack/core
     ports:
       - 80:80
       - 443:443
-    restart: always
-    env_file:
-      - .env_navtrack
-
-  listener:
-    image: navtrack/listener
-    ports:
       - 6801:6801
       - 6802:6802
     restart: always

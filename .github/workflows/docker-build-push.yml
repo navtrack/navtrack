@@ -9,8 +9,7 @@ on:
       - v*
 
 env:
-  IMAGE_NAME_WEB: web
-  IMAGE_NAME_LISTENER: listener
+  IMAGE_NAME_CORE: core
 
 jobs:
   build-push:
@@ -22,8 +21,7 @@ jobs:
 
       - name: Build images
         run: |
-          docker build . --file Navtrack.Web/Dockerfile --tag $IMAGE_NAME_WEB
-          docker build . --file Navtrack.Listener/Dockerfile --tag $IMAGE_NAME_LISTENER
+          docker build . --file Navtrack.Core/Dockerfile --tag $IMAGE_NAME_CORE
 
       - name: Log into GitHub registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -33,8 +31,7 @@ jobs:
 
       - name: Push images to GitHub
         run: |
-          IMAGE_ID_WEB=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_WEB
-          IMAGE_ID_LISTENER=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_LISTENER
+          IMAGE_ID_CORE=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_CORE
 
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
@@ -45,19 +42,15 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          echo IMAGE_ID_WEB=$IMAGE_ID_WEB
-          echo IMAGE_ID_LISTENER=$IMAGE_ID_LISTENER
+          echo IMAGE_ID_CORE=$IMAGE_ID_CORE
           echo VERSION=$VERSION
 
-          docker tag $IMAGE_NAME_WEB $IMAGE_ID_WEB:$VERSION
-          docker tag $IMAGE_NAME_LISTENER $IMAGE_ID_LISTENER:$VERSION
-          docker push $IMAGE_ID_WEB:$VERSION
-          docker push $IMAGE_ID_LISTENER:$VERSION
+          docker tag $IMAGE_NAME_CORE $IMAGE_ID_CORE:$VERSION
+          docker push $IMAGE_ID_CORE:$VERSION
 
       - name: Push images to Docker Hub
         run: |
-          IMAGE_ID_WEB=navtrack/$IMAGE_NAME_WEB
-          IMAGE_ID_LISTENER=navtrack/$IMAGE_NAME_LISTENER
+          IMAGE_ID_CORE=navtrack/$IMAGE_NAME_CORE
 
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
@@ -68,11 +61,8 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          echo IMAGE_ID_WEB=$IMAGE_ID_WEB
-          echo IMAGE_ID_LISTENER=$IMAGE_ID_LISTENER
+          echo IMAGE_ID_CORE=$IMAGE_ID_CORE
           echo VERSION=$VERSION
 
-          docker tag $IMAGE_NAME_WEB $IMAGE_ID_WEB:$VERSION
-          docker tag $IMAGE_NAME_LISTENER $IMAGE_ID_LISTENER:$VERSION
-          docker push $IMAGE_ID_WEB:$VERSION
-          docker push $IMAGE_ID_LISTENER:$VERSION
+          docker tag $IMAGE_NAME_CORE $IMAGE_ID_CORE:$VERSION
+          docker push $IMAGE_ID_CORE:$VERSION
