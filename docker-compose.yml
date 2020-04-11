@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  web:
+  core:
     image: navtrack/core
     ports:
       - 80:80
