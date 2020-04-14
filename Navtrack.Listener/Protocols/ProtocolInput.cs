@@ -6,6 +6,6 @@ namespace Navtrack.Listener.Protocols
     public class ProtocolInput
     {
         public NetworkStream NetworkStream { get; set; }
-        public CancellationToken StoppingToken { get; set; }
+        public CancellationToken CancellationToken { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace Navtrack.Listener.Services
                     ProtocolInput protocolInput = new ProtocolInput
                     {
                         NetworkStream = networkStream,
-                        StoppingToken = stoppingToken
+                        CancellationToken = stoppingToken
                     };
 
                     await protocol.HandleStream(protocolInput);

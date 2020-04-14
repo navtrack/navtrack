@@ -16,7 +16,7 @@ namespace Navtrack.Listener.DataServices
             this.repository = repository;
         }
 
-        public Task<Asset> GetObjectByIMEI(string imei)
+        public Task<Asset> GetAssetByIMEI(string imei)
         {
             return repository.GetEntities<Asset>()
                 .Include(x => x.Device)

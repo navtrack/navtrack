@@ -29,7 +29,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
                 string imei = string.Empty;
 
-                while (binaryReader.Read() != -1 || !protocolInput.StoppingToken.IsCancellationRequested)
+                while (binaryReader.Read() != -1 || !protocolInput.CancellationToken.IsCancellationRequested)
                 {
                     binaryReader.Read(data, 0, data.Length);
 

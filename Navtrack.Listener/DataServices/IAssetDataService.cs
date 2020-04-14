@@ -5,6 +5,6 @@ namespace Navtrack.Listener.DataServices
 {
     public interface IAssetDataService
     {
-        Task<Asset> GetObjectByIMEI(string imei);
+        Task<Asset> GetAssetByIMEI(string imei);
     }
 }

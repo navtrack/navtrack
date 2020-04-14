@@ -26,7 +26,7 @@ namespace Navtrack.Listener.Services
 
         public async Task Add(Location location)
         {
-            Asset asset = await assetDataService.GetObjectByIMEI(location.Device.IMEI);
+            Asset asset = await assetDataService.GetAssetByIMEI(location.Device.IMEI);
 
             if (asset != null)
             {
@@ -43,7 +43,7 @@ namespace Navtrack.Listener.Services
             {
                 string imei = locations.First().Device.IMEI;
 
-                Asset asset = await assetDataService.GetObjectByIMEI(imei);
+                Asset asset = await assetDataService.GetAssetByIMEI(imei);
 
                 if (asset != null)
                 {
