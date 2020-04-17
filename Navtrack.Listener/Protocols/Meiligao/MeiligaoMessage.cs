@@ -1,43 +1,39 @@
 using System;
 using Navtrack.Listener.Extensions;
 using Navtrack.Listener.Helpers;
+using static System.String;
 
 namespace Navtrack.Listener.Protocols.Meiligao
 {
     public class MeiligaoMessage
     {
-        private readonly string message;
-        private readonly string[] hexArray;
-        private readonly byte[] byteArray;
+        public readonly string[] Hex;
+        public readonly int[] Bytes;
 
-        public MeiligaoMessage(string message)
+        public MeiligaoMessage(int[] frame)
         {
-            this.message = message;
-            byteArray = StringUtil.ConvertStringToByteArray(message);
-            hexArray = HexUtil.ConvertByteArrayToHexArray(byteArray);
+            Bytes = frame;
+            Hex = HexUtil.ConvertIntArrayToHexStringArray(Bytes);
         }
 
-        public bool HasValidChecksum => !string.IsNullOrEmpty(message) && Checksum == ComputedChecksum;
-        public string DataMessage =>
-            StringUtil.ConvertByteArrayToString(byteArray[new Range(DataStartIndex, DataEndIndex)]);
+        private bool ContainsNewLine => Bytes[^2] == 0x0D && Bytes[^1] == 0x0A;
+        
+        private string Checksum => ContainsNewLine ? Hex[^4] + Hex[^3] : Hex[^2] + Hex[^1];
+        private string ChecksumComputed =>
+            Crc16.Ccitt(Bytes[new Range(0, ContainsNewLine ? Hex.Length - 4 : Hex.Length - 2)]).ToString("X4");
+        public bool ChecksumValid => Checksum == ChecksumComputed;
 
-        private const int DataStartIndex = 13;
-        private int DataEndIndex => ContainsEndingCharacters ? byteArray.Length - 5 : byteArray.Length - 3;
-        private bool ContainsEndingCharacters => hexArray[^2] == "0D" && hexArray[^1] == "0A";
-        private string Checksum =>
-            ContainsEndingCharacters ? hexArray[^4] + hexArray[^3] : hexArray[^2] + hexArray[^1];
-        private string ComputedChecksum
-        {
-            get
-            {
-                int endIndex = ContainsEndingCharacters ? hexArray.Length - 4 : hexArray.Length - 2;
-                byte[] bytes = HexUtil.ConvertHexArrayToByteArray(hexArray[new Range(0, endIndex)]);
-                ulong checksum = Crc16.Ccitt(bytes);
+        private int DataStartIndex = 13;
+        private int DataEndIndex => ContainsNewLine ? Bytes.Length - 5 : Bytes.Length - 3;
+        private bool HasData => DataEndIndex > DataStartIndex;
+        private string[] DataHex => HasData ? Hex[DataStartIndex..DataEndIndex] : null;
+        private int[] DataBytes => HasData ? Bytes[DataStartIndex..DataEndIndex] : null;
+        public MeiligaoDataMessage DataMessage =>
+            HasData ? new MeiligaoDataMessage(DataBytes) : null;
+        
+        public string[] DeviceIdHex => Hex[4..11];
+        public string DeviceIdTrimmed => Join(Empty, DeviceIdHex).TrimEnd('F');
 
-                string hexChecksum = checksum.ToString("X2");
-
-                return hexChecksum;
-            }
-        }
+        public MeiligaoCommands Command => (MeiligaoCommands) ((Bytes[11] << 8) | Bytes[12]);
     }
 }

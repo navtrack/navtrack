@@ -12,7 +12,6 @@ using Navtrack.Listener.Services;
 using ILogger = Navtrack.Listener.Services.Logging.ILogger;
 
 // ReSharper disable AssignmentIsFullyDiscarded
-
 namespace Navtrack.Listener
 {
     [Service(typeof(IListenerService))]
@@ -39,16 +38,21 @@ namespace Navtrack.Listener
             foreach (IProtocol protocol in protocols)
             {
                 _ = HandleProtocol(protocol, stoppingToken);
+
+                foreach (int port in protocol.AdditionalPorts)
+                {
+                    _ = HandleProtocol(protocol, stoppingToken, port);
+                }
             }
         }
 
-        private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken)
+        private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken, int? port = null)
         {
             TcpListener listener = null;
 
             try
             {
-                listener = new TcpListener(IPAddress.Any, protocol.Port);
+                listener = new TcpListener(IPAddress.Any, port ?? protocol.Port);
 
                 listener.Start();
 

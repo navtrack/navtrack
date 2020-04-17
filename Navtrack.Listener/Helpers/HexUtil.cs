@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Navtrack.Listener.Helpers
@@ -13,20 +14,20 @@ namespace Navtrack.Listener.Helpers
                 .ToArray();
         }
         
-        public static byte[] ConvertHexArrayToByteArray(string[] hexArray)
+        public static byte[] ConvertHexStringArrayToByteArray(string[] hexArray)
         {
             return hexArray.Select(x => Convert.ToByte(x, 16)).ToArray();
         }
         
-        public static byte[] ConvertHexToByteArray(string hexString)
+        public static byte[] ConvertHexStringToByteArray(string hexString)
         {
-            return ConvertHexArrayToByteArray(ConvertHexToHexArray(hexString))
+            return ConvertHexStringArrayToByteArray(ConvertHexToHexArray(hexString))
                 .ToArray();
         }
         
         public static char[] ConvertHexToCharArray(string hexString)
         {
-            return ConvertHexToByteArray(hexString).Select(Convert.ToChar).ToArray();
+            return ConvertHexStringToByteArray(hexString).Select(Convert.ToChar).ToArray();
         }
         
         public static string ConvertHexStringToString(string hexString)
@@ -34,9 +35,30 @@ namespace Navtrack.Listener.Helpers
             return new string(ConvertHexToCharArray(hexString));
         }
         
-        public static string[] ConvertByteArrayToHexArray(byte[] byteArray)
+        public static string[] ConvertByteArrayToHexStringArray(IEnumerable<byte> byteArray)
         {
             return byteArray.Select(x => x.ToString("X2")).ToArray();
+        }
+
+        public static string[] ConvertIntArrayToHexStringArray(IEnumerable<int> byteArray)
+        {
+            return byteArray.Select(x => x.ToString("X2")).ToArray();
+        }
+
+        public static int[] ConvertHexStringToIntArray(string hex)
+        {
+            return ConvertHexStringArrayToIntArray(ConvertHexToHexArray(hex))
+                .ToArray();
+        }
+
+        private static int[] ConvertHexStringArrayToIntArray(string[] hexArray)
+        {
+            return hexArray.Select(x => Convert.ToInt32(x, 16)).ToArray();
+        }
+
+        public static string ConvertHexStringArrayToHexString(string[] hex)
+        {
+            return String.Join("", hex);
         }
     }
 }

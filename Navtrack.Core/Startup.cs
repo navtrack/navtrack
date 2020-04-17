@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
@@ -120,15 +121,19 @@ namespace Navtrack.Core
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-            app.UseSpa(spa =>
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DISABLE_WEB")))
             {
-                spa.Options.SourcePath = "ClientApp";
-                
-                if (env.IsDevelopment())
+                app.UseSpa(spa =>
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
-            });
+                    spa.Options.SourcePath = "ClientApp";
+                
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseReactDevelopmentServer(npmScript: "start");
+                    }
+                });
+            }
         }
     }
 }

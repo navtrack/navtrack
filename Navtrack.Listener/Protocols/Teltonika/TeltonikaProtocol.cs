@@ -65,5 +65,6 @@ namespace Navtrack.Listener.Protocols.Teltonika
         }
 
         public int Port => 6802;
+        public int[] AdditionalPorts => new[] {7002};
     }
 }

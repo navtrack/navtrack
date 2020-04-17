@@ -19,7 +19,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
         }
 
         public int Port => 6801;
-        
+        public int[] AdditionalPorts => new[] {7001};
+
         public async Task HandleStream(ProtocolInput protocolInput)
         {
             using StreamReader streamReader = new StreamReader(protocolInput.NetworkStream);

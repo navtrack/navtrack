@@ -4,11 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Navtrack.DataAccess.Model;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols;
 using ILogger = Navtrack.Listener.Services.Logging.ILogger;
 
@@ -40,16 +38,21 @@ namespace Navtrack.Listener.Services
             foreach (IProtocol protocol in protocols)
             {
                 _ = HandleProtocol(protocol, stoppingToken);
+
+                foreach (int port in protocol.AdditionalPorts)
+                {
+                    _ = HandleProtocol(protocol, stoppingToken, port);
+                }
             }
         }
 
-        private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken)
+        private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken, int? port = null)
         {
             TcpListener listener = null;
 
             try
             {
-                listener = new TcpListener(IPAddress.Any, protocol.Port);
+                listener = new TcpListener(IPAddress.Any, port ?? protocol.Port);
 
                 listener.Start();
 

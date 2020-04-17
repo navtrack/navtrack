@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Navtrack.Listener.Extensions
 {
     public static class Crc16
     {
         private const int HashSize = 16;
-        private const ulong Init = 0xFFFF;
-        private const ulong Mask = ulong.MaxValue >> (64 - 16);
-        private const ulong Poly = 0x1021;
+        private const int Init = 0xFFFF;
+        private const int Mask = 0xFFFF;
+        private const int Poly = 0x1021;
     
         // ReSharper disable once IdentifierTypo
-        public static ulong Ccitt(IEnumerable<byte> bytes)
+        public static int Ccitt(int[] bytes)
         {
-            ulong crc = Init;
-            ulong[] table = Enumerable.Range(0, 256).Select(CreateTableEntry).ToArray();
+            int crc = Init;
+            int[] table = Enumerable.Range(0, 256).Select(CreateTableEntry).ToArray();
 
             int toRight = HashSize - 8;
             toRight = toRight < 0 ? 0 : toRight;
             
-            foreach (byte t in bytes)
+            foreach (int t in bytes)
             {
                 crc = table[((crc >> toRight) ^ t) & 0xFF] ^ (crc << 8);
                 crc &= Mask;
@@ -28,12 +27,12 @@ namespace Navtrack.Listener.Extensions
             return crc;
         }
 
-        private static ulong CreateTableEntry(int index)
+        private static int CreateTableEntry(int index)
         {
-            ulong r = (ulong) index;
+            int r = index;
             r <<= HashSize - 8;
 
-            const ulong lastBit = 1ul << (HashSize - 1);
+            const int lastBit = 1 << (HashSize - 1);
 
             for (int i = 0; i < 8; i++)
             {

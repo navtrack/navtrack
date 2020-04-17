@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using static System.String;
 
 namespace Navtrack.Listener.Helpers
 {
@@ -18,6 +19,13 @@ namespace Navtrack.Listener.Helpers
         }
 
         public static string ConvertByteArrayToString(byte[] bytes)
+        {
+            return new string(bytes.Select(x => (char)x).ToArray());
+        }
+
+        public static string Join(string[] array) => string.Join(Empty, array);
+
+        public static string ConvertByteArrayToString(int[] bytes)
         {
             return new string(bytes.Select(x => (char)x).ToArray());
         }
