@@ -7,7 +7,7 @@ namespace Navtrack.Listener.Tests.Protocols.Meitrack
     public class MeitrackLocationParserTests
     {
         private MeitrackLocationParser meitrackLocationParser;
-        private const string Message = "$$W129,353358017784062,AAA,35,22.540113,114.076141,100313094354,A,5,22,1,174,4,129,0,435,0|0|10133|4110,0000,166|224|193|2704|916,*BE\r\n";
+        private const string Message = "$$F142,123456789012345,AAA,35,48.858837,2.277019,160221001509,A,5,30,0,147,2.5,475,56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*7E";
         private Location<MeitrackData> result;
         
         [SetUp]
