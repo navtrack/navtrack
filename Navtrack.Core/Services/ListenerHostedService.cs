@@ -23,7 +23,7 @@ namespace Navtrack.Core.Services
             IServiceScope serviceScope = serviceProvider.CreateScope();
             IListenerService listenerService = serviceScope.ServiceProvider.GetService<IListenerService>();
             
-            await listenerService.ExecuteAsync(cancellationToken);
+            await listenerService.Execute(cancellationToken);
         }
     }
 }

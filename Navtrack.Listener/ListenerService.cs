@@ -1,113 +1,38 @@
-using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
-using Navtrack.Listener.Protocols;
-using Navtrack.Listener.Services;
-using ILogger = Navtrack.Listener.Services.Logging.ILogger;
+using Navtrack.Listener.Server;
 
-// ReSharper disable AssignmentIsFullyDiscarded
 namespace Navtrack.Listener
 {
     [Service(typeof(IListenerService))]
     public class ListenerService : IListenerService
     {
-        private readonly ILogger<ListenerHostedService> logger;
         private readonly IEnumerable<IProtocol> protocols;
-        private readonly IConnectionService connectionService;
-        private readonly ILogger logger2;
+        private readonly IProtocolHandler protocolHandler;
 
-        public ListenerService(ILogger<ListenerHostedService> logger, IEnumerable<IProtocol> protocols,
-            IConnectionService connectionService, ILogger logger2)
+        public ListenerService(IEnumerable<IProtocol> protocols, IProtocolHandler protocolHandler)
         {
-            this.logger = logger;
             this.protocols = protocols;
-            this.connectionService = connectionService;
-            this.logger2 = logger2;
+            this.protocolHandler = protocolHandler;
         }
 
-        public async Task ExecuteAsync(CancellationToken stoppingToken)
+        [SuppressMessage("ReSharper", "AssignmentIsFullyDiscarded")]
+        public async Task Execute(CancellationToken cancellationToken)
         {
-            await logger2.Log("test");
-            
             foreach (IProtocol protocol in protocols)
             {
-                _ = HandleProtocol(protocol, stoppingToken);
+                _ = protocolHandler.HandleProtocol(cancellationToken, protocol, protocol.Port);
 
-                foreach (int port in protocol.AdditionalPorts)
+                foreach (int additionalPort in protocol.AdditionalPorts)
                 {
-                    _ = HandleProtocol(protocol, stoppingToken, port);
+                    _ = protocolHandler.HandleProtocol(cancellationToken, protocol, additionalPort);
                 }
             }
-        }
 
-        private async Task HandleProtocol(IProtocol protocol, CancellationToken stoppingToken, int? port = null)
-        {
-            TcpListener listener = null;
-
-            try
-            {
-                listener = new TcpListener(IPAddress.Any, port ?? protocol.Port);
-
-                listener.Start();
-
-                while (true)
-                {
-                    TcpClient client = await listener.AcceptTcpClientAsync();
-
-                    _ = HandleClient(client, protocol, stoppingToken);
-                }
-            }
-            catch (Exception exception)
-            {
-                logger.Log(LogLevel.Critical, exception, $"{nameof(ListenerHostedService)}");
-            }
-            finally
-            {
-                listener?.Stop();
-            }
-        }
-
-        private async Task HandleClient(TcpClient tcpClient, IProtocol protocol, CancellationToken stoppingToken)
-        {
-            Connection connection = null;
-
-            try
-            {
-                connection = await connectionService.NewConnection((IPEndPoint) tcpClient.Client.RemoteEndPoint);
-
-                await using (NetworkStream networkStream = tcpClient.GetStream())
-                {
-                    ProtocolInput protocolInput = new ProtocolInput
-                    {
-                        NetworkStream = networkStream,
-                        CancellationToken = stoppingToken
-                    };
-
-                    await protocol.HandleStream(protocolInput);
-
-                    networkStream.Close();
-                }
-
-                tcpClient.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            finally
-            {
-                if (connection != null)
-                {
-                    await connectionService.MarkConnectionAsClosed(connection);
-                }
-            }
+            await Task.Delay(Timeout.Infinite, cancellationToken);
         }
     }
 }

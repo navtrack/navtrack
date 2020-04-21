@@ -1,35 +1,33 @@
-using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Protocols.Meiligao;
 using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Meiligao
 {
-    public class MeiligaoMessageTests
+    public class MeiligaoProtocolTests
     {
-        private const string LoginMessageHex = "2424001113612345678fff500005d80d0a";
-        private const string LocationMessageHex =
-            "24 24 00 60 12 34 56 FF FF FF FF 99 55 30 33 35 36 34 34 2E 30 30 30 2C 41 2C 32 32 33 32 2E 36 30 38 33 2C 4E 2C 31 31 34 30 34 2E 38 31 33 37 2C 45 2C 30 2E 30 30 2C 2C 30 31 30 38 30 39 2C 2C 2A 31 43 7C 31 31 2E 35 7C 31 39 34 7C 30 30 30 30 7C 30 30 30 30 2C 30 30 30 30 69 62 0D 0A";
-        
-        private MeiligaoMessage loginMessage;
-        private MeiligaoMessage locationMessage;
-        
+        private IProtocolTester protocolTester;
+
         [SetUp]
         public void Setup()
         {
-            loginMessage = new MeiligaoMessage(HexUtil.ConvertHexStringToIntArray(LoginMessageHex));
-            locationMessage = new MeiligaoMessage(HexUtil.ConvertHexStringToIntArray(LocationMessageHex.Replace(" ", "")));
+            protocolTester = new ProtocolTester(new MeiligaoProtocol(), new MeiligaoMessageHandler());
         }
 
         [Test]
-        public void LoginMessageHasValidChecksum()
+        public void DeviceSendsLoginCommand_ServerRespondsWithLoginConfirmation()
         {
-            Assert.IsTrue(loginMessage.ChecksumValid);
+            protocolTester.SendHexFromDevice("24240011123456FFFFFFFF50008B9B0D0A");
+
+            Assert.AreEqual("40400012123456FFFFFFFF400001A99B0D0A", protocolTester.ReceiveInDevice());
         }
-        
+
         [Test]
-        public void LocationMessageHasValidChecksum()
+        public void DeviceSends18Locations_ServerConfirmsDataReceived()
         {
-            Assert.IsTrue(locationMessage.ChecksumValid);
+            protocolTester.SendHexFromDevice(
+                "24240060123456FFFFFFFF99553033353634342E3030302C412C323233322E363038332C4E2C31313430342E383133372C452C302E30302C2C3031303830392C2C2A31437C31312E357C3139347C303030307C303030302C3030303069620D0A");
+
+            Assert.IsNotNull(protocolTester.ParsedLocation);
         }
     }
 }

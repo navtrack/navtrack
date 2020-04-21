@@ -1,33 +1,31 @@
 using Navtrack.Listener.Helpers;
+using static System.String;
 
 namespace Navtrack.Listener.Protocols.Meiligao
 {
     public class MeiligaoCommand
     {
         private readonly MeiligaoCommands command;
-        private readonly string[] HexDeviceId;
+        private readonly string[] hexDeviceId;
         private readonly string data;
 
+        private const string PacketHeaderHex = "4040";
+        private const string PacketEndHex = "0D0A";
+        
         public MeiligaoCommand(MeiligaoCommands command, string[] hexDeviceId, string data)
         {
             this.command = command;
-            this.HexDeviceId = hexDeviceId;
+            this.hexDeviceId = hexDeviceId;
             this.data = data;
         }
 
-        public string[] HexHeader = {"40", "40"};
-        public string[] HexEnd = {"0D", "0A"};
+        public string PacketBody => $"{PacketHeaderHex}{PacketLength:X4}{Join(Empty, hexDeviceId)}{(int) command:X2}{data}";
 
-        public string Reply =>
-            $"{StringUtil.Join(HexHeader)}{StringUtil.Join(HexLength)}{StringUtil.Join(HexDeviceId)}{(int) command:X2}{data}";
-        
-        public string FullReply => $"{Reply}{Checksum}{StringUtil.Join(HexEnd)}";
+        public string PacketBodyWithChecksum => $"{PacketBody}{Checksum}{PacketEndHex}";
 
-        // 2 (start) + 2 (length) + 7 (device id) + 2 (command) + X (data) + 2 (checksum) + 2 (end)
-        public int Length => 2 + 2 + 7 + 2 + data.Length / 2 + 2 + 2;
+        // 2 (header) + 2 (length) + 7 (device id) + 2 (command) + X (data) + 2 (checksum) + 2 (footer)
+        public int PacketLength => 2 + 2 + 7 + 2 + data.Length / 2 + 2 + 2;
 
-        public string[] HexLength => new[] {"00", $"{Length:X2}"};
-
-        public string Checksum => ""; // MeiligaoUtil.ComputeChecksum(HexUtil.ConvertHexToHexArray(Reply));
+        public string Checksum => Crc16Util.Ccitt(HexUtil.ConvertHexStringToByteArray(PacketBody)).ToString("X4");
     }
 }

@@ -7,7 +7,7 @@ namespace Navtrack.Api.Mappers
 {
     [Service(typeof(IMapper<Device, DeviceModel>))]
     [Service(typeof(IMapper<DeviceModel, Device>))]
-    public class DeviceMapper : IMapper<Device, Models.DeviceModel>, IMapper<Models.DeviceModel, Device>
+    public class DeviceMapper : IMapper<Device, DeviceModel>, IMapper<DeviceModel, Device>
     {
         public DeviceModel Map(Device source, DeviceModel destination)
         {

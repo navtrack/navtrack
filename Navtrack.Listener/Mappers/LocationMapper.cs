@@ -14,14 +14,13 @@ namespace Navtrack.Listener.Mappers
             destination.Latitude = source1.Latitude;
             destination.Longitude = source1.Longitude;
             destination.DateTime = source1.DateTime;
-            destination.Speed = source1.Speed;
-            destination.Heading = source1.Heading;
+            destination.Speed = (int) source1.Speed; // TODO
+            destination.Heading = (int) source1.Heading; // TODO
             destination.Altitude = source1.Altitude;
             destination.DeviceId = source2.DeviceId;
             destination.AssetId = source2.Id;
             destination.Satellites = source1.Satellites;
             destination.HDOP = source1.HDOP;
-            destination.ProtocolData = source1.ProtocolData;
             destination.CreatedAt = DateTime.UtcNow;
 
             return destination;

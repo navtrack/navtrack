@@ -1,39 +1,37 @@
 using System;
-using Navtrack.Listener.Extensions;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Server;
 using static System.String;
 
 namespace Navtrack.Listener.Protocols.Meiligao
 {
     public class MeiligaoMessage
     {
-        public readonly string[] Hex;
-        public readonly int[] Bytes;
+        public readonly MessageData MessageData;
 
-        public MeiligaoMessage(int[] frame)
+        public MeiligaoMessage(MessageData frame)
         {
-            Bytes = frame;
-            Hex = HexUtil.ConvertIntArrayToHexStringArray(Bytes);
+            MessageData = frame;
         }
 
-        private bool ContainsNewLine => Bytes[^2] == 0x0D && Bytes[^1] == 0x0A;
+        private bool ContainsNewLine => MessageData.Bytes[^2] == 0x0D && MessageData.Bytes[^1] == 0x0A;
         
-        private string Checksum => ContainsNewLine ? Hex[^4] + Hex[^3] : Hex[^2] + Hex[^1];
+        private string Checksum => ContainsNewLine ? MessageData.Hex[^4] + MessageData.Hex[^3] : MessageData.Hex[^2] + MessageData.Hex[^1];
         private string ChecksumComputed =>
-            Crc16.Ccitt(Bytes[new Range(0, ContainsNewLine ? Hex.Length - 4 : Hex.Length - 2)]).ToString("X4");
+            Crc16Util.Ccitt(MessageData.Bytes[new Range(0, ContainsNewLine ? MessageData.Bytes.Length - 4 : MessageData.Bytes.Length - 2)]).ToString("X4");
         public bool ChecksumValid => Checksum == ChecksumComputed;
 
-        private int DataStartIndex = 13;
-        private int DataEndIndex => ContainsNewLine ? Bytes.Length - 5 : Bytes.Length - 3;
+        private const int DataStartIndex = 13;
+        private int DataEndIndex => ContainsNewLine ? MessageData.Bytes.Length - 5 : MessageData.Bytes.Length - 3;
         private bool HasData => DataEndIndex > DataStartIndex;
-        private string[] DataHex => HasData ? Hex[DataStartIndex..DataEndIndex] : null;
-        private int[] DataBytes => HasData ? Bytes[DataStartIndex..DataEndIndex] : null;
-        public MeiligaoDataMessage DataMessage =>
+        private string[] DataHex => HasData ? MessageData.Hex[DataStartIndex..DataEndIndex] : null;
+        private byte[] DataBytes => HasData ? MessageData.Bytes[DataStartIndex..DataEndIndex] : null;
+        public MeiligaoDataMessage MeiligaoDataMessage =>
             HasData ? new MeiligaoDataMessage(DataBytes) : null;
         
-        public string[] DeviceIdHex => Hex[4..11];
+        public string[] DeviceIdHex => MessageData.Hex[4..11];
         public string DeviceIdTrimmed => Join(Empty, DeviceIdHex).TrimEnd('F');
 
-        public MeiligaoCommands Command => (MeiligaoCommands) ((Bytes[11] << 8) | Bytes[12]);
+        public MeiligaoCommands Command => (MeiligaoCommands) ((MessageData.Bytes[11] << 8) | MessageData.Bytes[12]);
     }
 }

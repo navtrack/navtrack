@@ -5,6 +5,6 @@ namespace Navtrack.Listener
 {
     public interface IListenerService
     {
-        Task ExecuteAsync(CancellationToken cancellationToken);
+        Task Execute(CancellationToken cancellationToken);
     }
 }
