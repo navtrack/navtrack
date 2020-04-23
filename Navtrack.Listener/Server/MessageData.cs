@@ -9,6 +9,7 @@ namespace Navtrack.Listener.Server
         {
             Bytes = bytes;
             Hex = HexUtil.ConvertByteArrayToHexStringArray(Bytes);
+            HexString = string.Join("", Hex);
             String = Encoding.ASCII.GetString(Bytes);
             StringSplit = String.Split(",");
             Reader = new MessageReader(String);
@@ -16,6 +17,7 @@ namespace Navtrack.Listener.Server
 
         public byte[] Bytes { get; }
         public string[] Hex { get; }
+        public string HexString { get; set; }
         public string String { get; }
         public string[] StringSplit { get; }
         public MessageReader Reader { get; }

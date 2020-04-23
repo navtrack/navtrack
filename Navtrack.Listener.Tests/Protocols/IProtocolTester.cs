@@ -11,7 +11,8 @@ namespace Navtrack.Listener.Tests.Protocols
         void SendStringFromDevice(string value);
         string ReceiveInDevice();
         Client Client { get; }
-        IEnumerable<Location> ParsedLocations { get; }
-        Location ParsedLocation { get; }
+        List<Location> TotalParsedLocations { get; }
+        List<Location> LastParsedLocations { get; }
+        Location LastParsedLocation { get; }
     }
 }

@@ -22,12 +22,14 @@ namespace Navtrack.Listener.Tests.Protocols
         private Mock<ILocationService> locationServiceMock;
         public Client Client { get; }
         
-        public IEnumerable<Location> ParsedLocations { get; private set; }
-        public Location ParsedLocation => ParsedLocations.FirstOrDefault();
+        public List<Location> LastParsedLocations { get; private set; }
+        public List<Location> TotalParsedLocations { get; }
+        public Location LastParsedLocation => LastParsedLocations.FirstOrDefault();
 
         public ProtocolTester(IProtocol protocol, ICustomMessageHandler customMessageHandler)
         {
             cancellationTokenSource = new CancellationTokenSource();
+            TotalParsedLocations = new List<Location>();
             
             Client = new Client
             {
@@ -75,7 +77,11 @@ namespace Navtrack.Listener.Tests.Protocols
             locationServiceMock = new Mock<ILocationService>();
 
             locationServiceMock.Setup(x => x.AddRange(It.IsAny<List<Location>>()))
-                .Callback<List<Location>>(x => ParsedLocations = x);
+                .Callback<List<Location>>(x =>
+                {
+                    LastParsedLocations = x;
+                    TotalParsedLocations.AddRange(x);
+                });
         }
 
         private void SetupStreamHandler(ICustomMessageHandler customMessageHandler)
