@@ -4,8 +4,8 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.Megastek
 {
     [Service(typeof(IProtocol))]
-    public class MegastekProtocol : IProtocol
+    public class MegastekProtocol : BaseProtocol
     {
-        public int Port => 7004;
+        public override int Port => 7004;
     }
 }

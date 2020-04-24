@@ -4,9 +4,9 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.Teltonika
 {
     [Service(typeof(IProtocol))]
-    public class TeltonikaProtocol : IProtocol
+    public class TeltonikaProtocol : BaseProtocol
     {
-        public int Port => 7002;
-        public int[] AdditionalPorts => new[] {6802};
+        public override int Port => 7002;
+        public override int[] AdditionalPorts => new[] {6802};
     }
 }
