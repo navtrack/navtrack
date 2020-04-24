@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -38,22 +39,44 @@ namespace Navtrack.Listener.Server
             } while (!cancellationToken.IsCancellationRequested && length > 0 && networkStream.CanRead);
         }
 
-        private int GetStartIndex(byte[] buffer, in int length, IProtocol clientProtocol)
+        private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
+            CancellationToken cancellationToken)
         {
-            if (clientProtocol.MessageStart.Length > 0)
+            if (protocol.MessageEnd.Length > 0)
             {
-                for (int i = 0; i < length - clientProtocol.MessageStart.Length + 1; i++)
-                {
-                    bool equal = true;
-                    for (int j = 0; j < clientProtocol.MessageStart.Length; j++)
-                    {
-                        if (buffer[i + j] != clientProtocol.MessageStart[j])
-                        {
-                            equal = false;
-                        }
-                    }
+                int bytesReadCount = 0;
+                byte[] oneByteBuffer = new byte[1];
+                int length;
 
-                    if (equal)
+                do
+                {
+                    length = networkStream.Read(oneByteBuffer, 0, 1);
+                    
+                    if (length > 0)
+                    {
+                        buffer[bytesReadCount++] = oneByteBuffer[0];
+                    }
+                } while (!cancellationToken.IsCancellationRequested &&
+                         length > 0 &&
+                         networkStream.CanRead && 
+                         !ReachedEnd(buffer, bytesReadCount, protocol) &&
+                         bytesReadCount < 2048);
+
+                return bytesReadCount;
+            }
+
+            return networkStream.Read(buffer, 0, 2048);
+        }
+
+        private static int GetStartIndex(byte[] buffer, in int length, IProtocol protocol)
+        {
+            if (protocol.MessageStart.Length > 0)
+            {
+                for (int i = length - protocol.MessageStart.Length; i >= 0; i--)
+                {
+                    int endIndex = i + protocol.MessageStart.Length;
+                    
+                    if (ArraysEqual(protocol.MessageStart, buffer[i..endIndex]))
                     {
                         return i;
                     }
@@ -63,46 +86,16 @@ namespace Navtrack.Listener.Server
             return 0;
         }
 
-        private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
-            CancellationToken cancellationToken)
-        {
-            if (protocol.DetectNewLine)
-            {
-                int bytesReadCount = 0;
-                byte[] oneByteBuffer = new byte[1];
-                int length;
-
-                do
-                {
-                    length = networkStream.Read(oneByteBuffer, 0, 1);
-                    if (length > 0)
-                    {
-                        buffer[bytesReadCount++] = oneByteBuffer[0];
-                    }
-                } while (!cancellationToken.IsCancellationRequested &&
-                         length > 0 &&
-                         networkStream.CanRead && !ReachedEnd(buffer, bytesReadCount, protocol) &&
-                         bytesReadCount < 2048);
-
-                return bytesReadCount;
-            }
-
-            return networkStream.Read(buffer, 0, 2048);
-        }
-
         private static bool ReachedEnd(byte[] buffer, int bytesReadCount, IProtocol protocol)
         {
-            for (int i = 0; i < protocol.MessageEnd.Length; i++)
-            {
-                int bufferIndex = bytesReadCount - protocol.MessageEnd.Length + i;
+            int startIndex = bytesReadCount - protocol.MessageEnd.Length;
+       
+            return startIndex >= 0 && ArraysEqual(protocol.MessageEnd, buffer[startIndex..bytesReadCount]);
+        }
 
-                if (buffer[bufferIndex] != protocol.MessageEnd[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
+        private static bool ArraysEqual(byte[] array1, byte[] array2)
+        {
+            return !array1.Where((t, i) => t != array2[i]).Any();
         }
     }
 }
