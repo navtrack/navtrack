@@ -6,6 +6,6 @@ namespace Navtrack.Listener.Protocols.Totem
     [Service(typeof(IProtocol))]
     public class TotemProtocol : IProtocol
     {
-        public int Port => 7006;
+        public int Port => 7005;
     }
 }

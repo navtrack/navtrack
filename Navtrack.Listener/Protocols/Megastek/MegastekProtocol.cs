@@ -6,6 +6,6 @@ namespace Navtrack.Listener.Protocols.Megastek
     [Service(typeof(IProtocol))]
     public class MegastekProtocol : IProtocol
     {
-        public int Port => 7005;
+        public int Port => 7004;
     }
 }
