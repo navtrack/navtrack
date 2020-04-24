@@ -8,7 +8,6 @@ namespace Navtrack.DataAccess.Model
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public DateTime DateTime { get; set; }
-        public int Heading { get; set; }
         public double Speed { get; set; }
         public float Heading { get; set; }
         public double Altitude { get; set; }
