@@ -19,6 +19,9 @@ namespace Navtrack.Api.Mappers
             destination.Altitude = source.Altitude;
             destination.Satellites = source.Satellites;
             destination.HDOP = source.HDOP;
+            destination.PositionStatus = source.PositionStatus;
+            destination.GsmSignal = source.GsmSignal;
+            destination.Odometer = source.Odometer;
             
             return destination;
         }

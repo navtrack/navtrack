@@ -8,9 +8,10 @@ namespace Navtrack.DataAccess.Model
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public DateTime DateTime { get; set; }
-        public int Speed { get; set; }
         public int Heading { get; set; }
-        public int Altitude { get; set; }
+        public double Speed { get; set; }
+        public float Heading { get; set; }
+        public double Altitude { get; set; }
         public Device Device { get; set; }
         public int DeviceId { get; set; }
         public Asset Asset { get; set; }
@@ -18,5 +19,8 @@ namespace Navtrack.DataAccess.Model
         public short Satellites { get; set; }
         public double HDOP { get; set; }
         public string ProtocolData { get; set; }
+        public bool PositionStatus { get; set; }
+        public short? GsmSignal { get; set; }
+        public uint? Odometer { get; set; }
     }
 }

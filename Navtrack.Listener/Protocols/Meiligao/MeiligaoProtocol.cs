@@ -7,6 +7,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
     public class MeiligaoProtocol : IProtocol
     {
         public int Port => 7003;
-        public bool DetectNewLine => true;
+        public byte[] MessageStart => new byte[] {0x24, 0x24};
+        public byte[] MessageEnd => new byte[] {0x0D, 0x0A};
     }
 }

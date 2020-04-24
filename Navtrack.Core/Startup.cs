@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Services.IdentityServer;
 using Navtrack.Api.Services.LetsEncrypt;
-using Navtrack.Library.DI;
 
 namespace Navtrack.Core
 {
@@ -26,8 +24,6 @@ namespace Navtrack.Core
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Bootstrapper.ConfigureServices(services);
-
             services.AddCors(options =>
             {
                 options.AddPolicy(DefaultCorsPolicy, builder =>

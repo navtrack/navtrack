@@ -3,7 +3,7 @@ using static System.String;
 
 namespace Navtrack.Listener.Protocols.Meiligao
 {
-    public class MeiligaoCommand
+    public class MeiligaoOutputMessage
     {
         private readonly MeiligaoCommands command;
         private readonly string[] hexDeviceId;
@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
         private const string PacketHeaderHex = "4040";
         private const string PacketEndHex = "0D0A";
         
-        public MeiligaoCommand(MeiligaoCommands command, string[] hexDeviceId, string data)
+        public MeiligaoOutputMessage(MeiligaoCommands command, string[] hexDeviceId, string data)
         {
             this.command = command;
             this.hexDeviceId = hexDeviceId;
