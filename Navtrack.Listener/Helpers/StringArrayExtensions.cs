@@ -6,7 +6,18 @@ namespace Navtrack.Listener.Helpers
     {
         public static T Get<T>(this string[] array, int index)
         {
-            return array.Length > index ? (T) Convert.ChangeType(array[index], typeof(T)) : default;
+            try
+            {
+                if (array.Length > index)
+                {
+                    return (T) Convert.ChangeType(array[index], typeof(T));
+                }
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            return default;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Navtrack.Api.Models
         public decimal Longitude { get; set; }
         public DateTime DateTime { get; set; }
         public double Speed { get; set; }
-        public float Heading { get; set; }
+        public float? Heading { get; set; }
         public double Altitude { get; set; }
         public short Satellites { get; set; }
         public double HDOP { get; set; }

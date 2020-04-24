@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Models
         public DateTime DateTime { get; set; }
         public bool PositionStatus { get; set; }
         public double Speed { get; set; }
-        public float Heading { get; set; }
+        public float? Heading { get; set; }
         public double Altitude { get; set; }
         public short Satellites { get; set; }
         public float HDOP { get; set; }

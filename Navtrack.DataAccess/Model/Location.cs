@@ -9,7 +9,7 @@ namespace Navtrack.DataAccess.Model
         public decimal Longitude { get; set; }
         public DateTime DateTime { get; set; }
         public double Speed { get; set; }
-        public float Heading { get; set; }
+        public float? Heading { get; set; }
         public double Altitude { get; set; }
         public Device Device { get; set; }
         public int DeviceId { get; set; }
