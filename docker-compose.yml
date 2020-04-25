@@ -6,8 +6,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 6801:6801
-      - 6802:6802
       - "7001-7100:7001-7100"
     restart: always
     env_file:
