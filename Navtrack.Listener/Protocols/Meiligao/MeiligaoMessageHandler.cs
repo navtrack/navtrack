@@ -35,7 +35,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
                     inputMessage.MeiligaoDataMessage.GPRMCArray[8]);
                 location.Speed = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<double>(6) * 1.852;
                 location.Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7);
-                location.HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<float>(1);
+                location.HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(1);
                 location.Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(2);
                 location.Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7);
 

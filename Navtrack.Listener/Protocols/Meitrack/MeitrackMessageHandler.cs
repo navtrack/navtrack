@@ -25,7 +25,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 GsmSignal = input.MessageData.StringSplit.Get<short>(9),
                 Speed = input.MessageData.StringSplit.Get<float>(10),
                 Heading = input.MessageData.StringSplit.Get<float>(11),
-                HDOP = input.MessageData.StringSplit.Get<float>(12),
+                HDOP = input.MessageData.StringSplit.Get<double>(12),
                 Altitude = input.MessageData.StringSplit.Get<int>(13),
                 Odometer = input.MessageData.StringSplit.Get<uint>(14)
             };

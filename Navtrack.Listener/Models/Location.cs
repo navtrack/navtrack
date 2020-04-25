@@ -11,10 +11,10 @@ namespace Navtrack.Listener.Models
         public bool PositionStatus { get; set; }
         public double Speed { get; set; }
         public float? Heading { get; set; }
-        public double Altitude { get; set; }
+        public double? Altitude { get; set; }
         public short Satellites { get; set; }
-        public float HDOP { get; set; }
+        public double HDOP { get; set; }
         public short? GsmSignal { get; set; }
-        public uint? Odometer { get; set; }
+        public double? Odometer { get; set; }
     }
 }

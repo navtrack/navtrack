@@ -22,7 +22,7 @@ namespace Navtrack.Listener.Protocols.Megastek
                 Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
                     input.MessageData.StringSplit[9], input.MessageData.StringSplit[10]),
                 DateTime = GetDate(input.MessageData.StringSplit[4], input.MessageData.StringSplit[5]),
-                HDOP = input.MessageData.StringSplit.Get<float>(14),
+                HDOP = input.MessageData.StringSplit.Get<double>(14),
                 Speed = (int) (Convert.ToDouble(input.MessageData.StringSplit[15])*1.852),
                 Heading = (int) Convert.ToDouble(input.MessageData.StringSplit[16]),
                 Altitude =  (int) Convert.ToDouble(input.MessageData.StringSplit[17])

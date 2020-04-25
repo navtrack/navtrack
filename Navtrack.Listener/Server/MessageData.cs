@@ -12,14 +12,16 @@ namespace Navtrack.Listener.Server
             HexString = string.Join("", Hex);
             String = Encoding.ASCII.GetString(Bytes);
             StringSplit = String.Split(",");
+            StringBarSplit = String.Split("|");
             Reader = new MessageReader(String);
         }
 
         public byte[] Bytes { get; }
         public string[] Hex { get; }
-        public string HexString { get; set; }
+        public string HexString { get; }
         public string String { get; }
         public string[] StringSplit { get; }
+        public string[] StringBarSplit { get; }
         public MessageReader Reader { get; }
     }
 }
