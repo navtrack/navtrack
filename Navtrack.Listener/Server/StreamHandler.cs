@@ -1,8 +1,8 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Helpers;
 
 namespace Navtrack.Listener.Server
 {
@@ -21,7 +21,7 @@ namespace Navtrack.Listener.Server
         public async Task HandleStream(CancellationToken cancellationToken, Client client,
             INetworkStreamWrapper networkStream)
         {
-            byte[] buffer = new byte[2048];
+            byte[] buffer = new byte[ServerVariables.BufferLength];
             int length;
 
             do
@@ -42,30 +42,30 @@ namespace Navtrack.Listener.Server
         private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
             CancellationToken cancellationToken)
         {
-            if (protocol.MessageEnd.Length > 0)
+            int bytesReadCount = 0;
+            byte[] oneByteBuffer = new byte[1];
+            int length;
+
+            int? messageLength = null;
+
+            do
             {
-                int bytesReadCount = 0;
-                byte[] oneByteBuffer = new byte[1];
-                int length;
+                length = networkStream.Read(oneByteBuffer, 0, 1);
 
-                do
+                if (length > 0)
                 {
-                    length = networkStream.Read(oneByteBuffer, 0, 1);
-                    
-                    if (length > 0)
-                    {
-                        buffer[bytesReadCount++] = oneByteBuffer[0];
-                    }
-                } while (!cancellationToken.IsCancellationRequested &&
-                         length > 0 &&
-                         networkStream.CanRead && 
-                         !ReachedEnd(buffer, bytesReadCount, protocol) &&
-                         bytesReadCount < 2048);
+                    buffer[bytesReadCount++] = oneByteBuffer[0];
 
-                return bytesReadCount;
-            }
+                    messageLength = protocol.GetMessageLength(buffer[..bytesReadCount]);
+                }
+            } while (!cancellationToken.IsCancellationRequested &&
+                     networkStream.CanRead &&
+                     length > 0 &&
+                     bytesReadCount < ServerVariables.BufferLength &&
+                     (!messageLength.HasValue || bytesReadCount < messageLength) &&
+                     !ReachedEnd(buffer, bytesReadCount, protocol));
 
-            return networkStream.Read(buffer, 0, 2048);
+            return bytesReadCount;
         }
 
         private static int GetStartIndex(byte[] buffer, in int length, IProtocol protocol)
@@ -75,8 +75,8 @@ namespace Navtrack.Listener.Server
                 for (int i = length - protocol.MessageStart.Length; i >= 0; i--)
                 {
                     int endIndex = i + protocol.MessageStart.Length;
-                    
-                    if (ArraysEqual(protocol.MessageStart, buffer[i..endIndex]))
+
+                    if (protocol.MessageStart.IsEqual(buffer[i..endIndex]))
                     {
                         return i;
                     }
@@ -88,14 +88,14 @@ namespace Navtrack.Listener.Server
 
         private static bool ReachedEnd(byte[] buffer, int bytesReadCount, IProtocol protocol)
         {
-            int startIndex = bytesReadCount - protocol.MessageEnd.Length;
-       
-            return startIndex >= 0 && ArraysEqual(protocol.MessageEnd, buffer[startIndex..bytesReadCount]);
-        }
+            if (protocol.MessageEnd.Length > 0)
+            {
+                int startIndex = bytesReadCount - protocol.MessageEnd.Length;
 
-        private static bool ArraysEqual(byte[] array1, byte[] array2)
-        {
-            return !array1.Where((t, i) => t != array2[i]).Any();
+                return startIndex >= 0 && protocol.MessageEnd.IsEqual(buffer[startIndex..bytesReadCount]);
+            }
+
+            return false;
         }
     }
 }

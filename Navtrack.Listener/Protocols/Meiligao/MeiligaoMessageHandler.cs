@@ -25,7 +25,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
                         IMEI = inputMessage.DeviceIdTrimmed
                     }
                 };
-                
+
                 location.PositionStatus = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A";
                 location.Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
                     inputMessage.MeiligaoDataMessage.GPRMCArray[2], inputMessage.MeiligaoDataMessage.GPRMCArray[3]);
@@ -38,33 +38,32 @@ namespace Navtrack.Listener.Protocols.Meiligao
                 location.HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<float>(1);
                 location.Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(2);
                 location.Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7);
-                
+
                 return location;
             }
 
-        return null;
+            return null;
+        }
+
+        private static void HandleMessage(MessageInput input, MeiligaoInputMessage inputMessage)
+        {
+            if (inputMessage.Command == MeiligaoCommands.Login)
+            {
+                MeiligaoOutputMessage reply =
+                    new MeiligaoOutputMessage(MeiligaoCommands.LoginConfirmation, inputMessage.DeviceIdHex, "01");
+
+                input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(reply.PacketBodyWithChecksum));
+            }
+        }
+
+        private static DateTime GetDateTime(string timeString, string dateString)
+        {
+            GroupCollection time = new Regex(@"(\d{2})(\d{2})(\d{2}).(\d{2})").Matches(timeString)[0].Groups;
+
+            GroupCollection date = new Regex(@"(\d{2})(\d{2})(\d{2})").Matches(dateString)[0].Groups;
+            return DateTimeUtil.New(date[3].Value, date[2].Value, date[1].Value,
+                time[1].Value, time[2].Value, time[3].Value,
+                time[4].Value);
+        }
     }
-
-    private static void HandleMessage(MessageInput input, MeiligaoInputMessage inputMessage)
-    {
-    if (inputMessage.Command == MeiligaoCommands.Login)
-    {
-        MeiligaoOutputMessage reply =
-            new MeiligaoOutputMessage(MeiligaoCommands.LoginConfirmation, inputMessage.DeviceIdHex, "01");
-
-        input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(reply.PacketBodyWithChecksum));
-    }
-    }
-
-    public static DateTime GetDateTime( string timeString, string dateString)
-    {
-    GroupCollection time = new Regex(@"(\d{2})(\d{2})(\d{2}).(\d{2})").Matches(timeString)[0].Groups;
-
-    GroupCollection date = new Regex(@"(\d{2})(\d{2})(\d{2})").Matches(dateString)[0].Groups;
-        return DateTimeUtil.New(date[3].Value, date[2].Value, date[1].Value,
-    time[1].Value, time[2].Value, time[3].Value,
-    time[4].Value);
-    }
-}
-
 }

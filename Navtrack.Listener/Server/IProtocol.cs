@@ -6,7 +6,6 @@ namespace Navtrack.Listener.Server
         int[] AdditionalPorts { get; }
         byte[] MessageStart { get; }
         byte[] MessageEnd { get; }
-        bool DetectNewLine { get; }
-        int? GetLength();
+        int? GetMessageLength(byte[] bytes);
     }
 }

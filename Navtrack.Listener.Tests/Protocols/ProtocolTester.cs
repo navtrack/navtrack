@@ -60,9 +60,9 @@ namespace Navtrack.Listener.Tests.Protocols
 
         public string ReceiveInDevice()
         {
-            byte[] buffer = new byte[2048];
+            byte[] buffer = new byte[ServerVariables.BufferLength];
 
-            int length = receiveStream.Read(buffer, 0, 2048);
+            int length = receiveStream.Read(buffer, 0, ServerVariables.BufferLength);
 
             return HexUtil.ConvertHexStringArrayToHexString(HexUtil.ConvertByteArrayToHexStringArray(buffer[..length]));
         }
