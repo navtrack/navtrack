@@ -114,6 +114,7 @@ namespace Navtrack.Listener.Tests.Protocols
                 .Setup(x => x.WriteByte(It.IsAny<byte>()))
                 .Callback<byte>(x => { receiveStream = new MemoryStream(new[] {x}); });
             networkStreamWrapperMock.Setup(x => x.CanRead).Returns(true);
+            networkStreamWrapperMock.Setup(x => x.DataAvailable).Returns(true);
         }
     }
 }

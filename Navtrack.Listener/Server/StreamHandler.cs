@@ -60,6 +60,7 @@ namespace Navtrack.Listener.Server
                 }
             } while (!cancellationToken.IsCancellationRequested &&
                      networkStream.CanRead &&
+                     networkStream.DataAvailable &&
                      length > 0 &&
                      bytesReadCount < ServerVariables.BufferLength &&
                      (!messageLength.HasValue || bytesReadCount < messageLength) &&

@@ -1,4 +1,5 @@
 using System.IO;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Navtrack.Listener.Server
@@ -6,10 +7,12 @@ namespace Navtrack.Listener.Server
     public class NetworkStreamWrapper : INetworkStreamWrapper
     {
         private readonly Stream baseStream;
+        private readonly NetworkStream networkStream;
 
         public NetworkStreamWrapper(Stream baseStream)
         {
             this.baseStream = baseStream;
+            networkStream = baseStream as NetworkStream;
         }
 
         public ValueTask DisposeAsync()
@@ -23,7 +26,8 @@ namespace Navtrack.Listener.Server
         }
 
         public bool CanRead => baseStream.CanRead;
-        
+        public bool DataAvailable => networkStream != null && networkStream.DataAvailable;
+
         public int Read(byte[] buffer, int offset, int size)
         {
             return baseStream.Read(buffer, offset, size);
