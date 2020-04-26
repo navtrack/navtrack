@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
@@ -12,32 +11,10 @@ namespace Navtrack.Listener.Protocols.Totem
     {
         public override Location Parse(MessageInput input)
         {
-            List<Func<MessageInput, Location>> funcs = new List<Func<MessageInput, Location>>
-            {
-                ParseLocation_AT07, ParseLocation_AT09
-            };
-
-            foreach (Func<MessageInput,Location> func in funcs)
-            {
-                try
-                {
-                    input.MessageData.Reader.Reset();
-                    Location location = func(input);
-
-                    if (location != null)
-                    {
-                        return location;
-                    }
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
-
-            return null;
+            Location location = Parse(input, ParseLocation_AT07, ParseLocation_AT09);
+     
+            return location;
         }
-
 
         private static Location ParseLocation_AT07(MessageInput input)
         {
@@ -49,7 +26,7 @@ namespace Navtrack.Listener.Protocols.Totem
                 },
                 DateTime = ConvertDate(input.MessageData.Reader.Skip(8).Get(12)),
                 Satellites = Convert.ToInt16(input.MessageData.Reader.Skip(16).Get(2)),
-                GsmSignal = Convert.ToInt16(input.MessageData.Reader.Get(2)),
+                GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.MessageData.Reader.Get(2))),
                 Heading = Convert.ToInt32(input.MessageData.Reader.Get(3)),
                 Speed = Convert.ToInt32(input.MessageData.Reader.Get(3)),
                 HDOP = double.Parse(input.MessageData.Reader.Get(4)),
@@ -71,7 +48,7 @@ namespace Navtrack.Listener.Protocols.Totem
                 },
                 DateTime = ConvertDate(input.MessageData.Reader.Skip(8).Get(12)),
                 Satellites = Convert.ToInt16(input.MessageData.Reader.Skip(36).Get(2)),
-                GsmSignal = Convert.ToInt16(input.MessageData.Reader.Get(2)),
+                GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.MessageData.Reader.Get(2))),
                 Heading = Convert.ToInt32(input.MessageData.Reader.Get(3)),
                 Speed = Convert.ToInt32(input.MessageData.Reader.Get(3)),
                 HDOP = double.Parse(input.MessageData.Reader.Get(4)),

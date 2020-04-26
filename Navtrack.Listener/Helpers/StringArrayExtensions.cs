@@ -10,16 +10,21 @@ namespace Navtrack.Listener.Helpers
             {
                 if (array.Length > index)
                 {
-                    return (T) Convert.ChangeType(array[index], typeof(T));
+                    Type underlyingType = Nullable.GetUnderlyingType(typeof(T));
+
+                    return (T) Convert.ChangeType(array[index], underlyingType ?? typeof(T));
                 }
             }
             catch (InvalidCastException)
             {
             }
+            catch (FormatException)
+            {
+            }
 
             return default;
         }
-        
+
         public static double? GetDouble(this string[] array, int index, int? round = null)
         {
             if (array.Length > index && double.TryParse(array[index], out double value))

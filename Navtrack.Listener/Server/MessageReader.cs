@@ -33,9 +33,14 @@ namespace Navtrack.Listener.Server
             return this;
         }
 
-        public string GetUntil(char c)
+        public string GetUntil(char c, int? extra = null)
         {
             int newIndex = message.Substring(index).IndexOf(c);
+
+            if (extra.HasValue)
+            {
+                newIndex += extra.Value;
+            }
             
             return GetNext(newIndex, true);
         }

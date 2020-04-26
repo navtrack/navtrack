@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -89,14 +90,12 @@ namespace Navtrack.Listener.Server
 
         private static bool ReachedEnd(byte[] buffer, int bytesReadCount, IProtocol protocol)
         {
-            if (protocol.MessageEnd.Length > 0)
+            return protocol.MessageEnd.Where(x => x.Length > 0).Any(bytes =>
             {
-                int startIndex = bytesReadCount - protocol.MessageEnd.Length;
+                int startIndex = bytesReadCount - bytes.Length;
 
-                return startIndex >= 0 && protocol.MessageEnd.IsEqual(buffer[startIndex..bytesReadCount]);
-            }
-
-            return false;
+                return startIndex >= 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
+            });
         }
     }
 }

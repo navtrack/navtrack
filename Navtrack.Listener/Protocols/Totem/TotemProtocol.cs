@@ -1,4 +1,3 @@
-using System;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;

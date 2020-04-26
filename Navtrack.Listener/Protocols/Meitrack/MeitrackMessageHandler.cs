@@ -22,7 +22,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 DateTime = ConvertDate(input.MessageData.StringSplit[6]),
                 PositionStatus = input.MessageData.StringSplit.Get<string>(7) == "A",
                 Satellites = input.MessageData.StringSplit.Get<short>(8),
-                GsmSignal = input.MessageData.StringSplit.Get<short>(9),
+                GsmSignal = GsmUtil.ConvertSignal(input.MessageData.StringSplit.Get<short>(9)),
                 Speed = input.MessageData.StringSplit.Get<float>(10),
                 Heading = input.MessageData.StringSplit.Get<float>(11),
                 HDOP = input.MessageData.StringSplit.Get<double>(12),
