@@ -7,6 +7,5 @@ namespace Navtrack.Listener.Protocols.Teltonika
     public class TeltonikaProtocol : BaseProtocol
     {
         public override int Port => 7002;
-        public override int[] AdditionalPorts => new[] {6802};
     }
 }

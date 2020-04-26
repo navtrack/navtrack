@@ -24,12 +24,7 @@ namespace Navtrack.Listener
         {
             foreach (IProtocol protocol in protocols)
             {
-                _ = protocolHandler.HandleProtocol(cancellationToken, protocol, protocol.Port);
-
-                foreach (int additionalPort in protocol.AdditionalPorts)
-                {
-                    _ = protocolHandler.HandleProtocol(cancellationToken, protocol, additionalPort);
-                }
+                _ = protocolHandler.HandleProtocol(cancellationToken, protocol);
             }
 
             await Task.Delay(Timeout.Infinite, cancellationToken);

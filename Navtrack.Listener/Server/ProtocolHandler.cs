@@ -22,15 +22,15 @@ namespace Navtrack.Listener.Server
         }
 
         [SuppressMessage("ReSharper", "AssignmentIsFullyDiscarded")]
-        public async Task HandleProtocol(CancellationToken cancellationToken, IProtocol protocol, int port)
+        public async Task HandleProtocol(CancellationToken cancellationToken, IProtocol protocol)
         {
             TcpListener listener = null;
 
             try
             {
-                listener = new TcpListener(IPAddress.Any, port);
+                listener = new TcpListener(IPAddress.Any, protocol.Port);
                 listener.Start();
-                logger.LogDebug($"{protocol}: listening on {port}");
+                logger.LogDebug($"{protocol}: listening on {protocol.Port}");
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
