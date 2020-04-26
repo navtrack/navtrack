@@ -1,4 +1,3 @@
-using System;
 using Navtrack.Listener.Protocols.Tzone;
 using NUnit.Framework;
 

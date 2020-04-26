@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Teltonika
 {
-    public class TeltonikaProtocolTests
+    public class TeltonikaProtocolCodec8Tests
     {
         private IProtocolTester protocolTester;
 
@@ -14,15 +14,68 @@ namespace Navtrack.Listener.Tests.Protocols.Teltonika
         }
 
         [Test]
-        public void DeviceSendsImei_ServerReturnsAcknowledge()
+        public void Codec8_DeviceSendImeiV1_ServerReturnsAcknowledge()
         {
-            protocolTester.SendHexFromDevice("000F333532383438303236333839393631");
+            protocolTester.SendHexFromDevice("000F333536333037303432343431303133");
 
             Assert.AreEqual("01", protocolTester.ReceiveInDevice());
         }
 
         [Test]
-        public void DeviceSends18Locations_ServerConfirmsDataReceived()
+        public void Codec8_DeviceSendImeiV2_ServerReturnsAcknowledge()
+        {
+            protocolTester.SendHexFromDevice("000F333532383438303236333839393631");
+
+            Assert.AreEqual("01", protocolTester.ReceiveInDevice());
+        }
+        
+        [Test]
+        public void Codec8_DeviceSendsLocationV1_ServerConfirmsDataReceived()
+        {
+            protocolTester.SendHexFromDevice("000F333536333037303432343431303133");
+
+            Assert.AreEqual("01", protocolTester.ReceiveInDevice());
+            Assert.IsNotNull(protocolTester.Client.Device);
+
+            protocolTester.SendHexFromDevice(
+                "000000000000003608010000016B40D8EA30010000000000000000000000000000000105021503010101425E0F01F10000601A014E0000000000000000010000C7CF");
+
+            Assert.AreEqual("00000001", protocolTester.ReceiveInDevice());
+            Assert.AreEqual(1, protocolTester.LastParsedLocations.Count);
+        }
+        
+        [Test]
+        public void Codec8_DeviceSendsLocationV2_ServerConfirmsDataReceived()
+        {
+            protocolTester.SendHexFromDevice("000F333536333037303432343431303133");
+
+            Assert.AreEqual("01", protocolTester.ReceiveInDevice());
+            Assert.IsNotNull(protocolTester.Client.Device);
+
+            protocolTester.SendHexFromDevice(
+                "000000000000002808010000016B40D9AD80010000000000000000000000000000000103021503010101425E100000010000F22A");
+
+            Assert.AreEqual("00000001", protocolTester.ReceiveInDevice());
+            Assert.AreEqual(1, protocolTester.LastParsedLocations.Count);
+        }
+
+        [Test]
+        public void Codec8_DeviceSendsLocationV3_ServerConfirmsDataReceived()
+        {
+            protocolTester.SendHexFromDevice("000F333536333037303432343431303133");
+
+            Assert.AreEqual("01", protocolTester.ReceiveInDevice());
+            Assert.IsNotNull(protocolTester.Client.Device);
+
+            protocolTester.SendHexFromDevice(
+                "000000000000004308020000016B40D57B480100000000000000000000000000000001010101000000000000016B40D5C198010000000000000000000000000000000101010101000000020000252C");
+
+            Assert.AreEqual("00000002", protocolTester.ReceiveInDevice());
+            Assert.AreEqual(2, protocolTester.LastParsedLocations.Count);
+        }
+        
+        [Test]
+        public void Codec8_DeviceSendsLocationV4_ServerConfirmsDataReceived()
         {
             protocolTester.SendHexFromDevice("000F333532383438303236333839393631");
 

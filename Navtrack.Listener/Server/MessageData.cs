@@ -14,6 +14,7 @@ namespace Navtrack.Listener.Server
             StringSplit = String.Split(",");
             StringBarSplit = String.Split("|");
             Reader = new MessageReader(String);
+            ByteReader = new ByteReader(bytes);
         }
 
         public byte[] Bytes { get; }
@@ -23,5 +24,6 @@ namespace Navtrack.Listener.Server
         public string[] StringSplit { get; }
         public string[] StringBarSplit { get; }
         public MessageReader Reader { get; }
+        public ByteReader ByteReader { get; }
     }
 }

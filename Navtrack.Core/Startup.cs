@@ -39,7 +39,7 @@ namespace Navtrack.Core
             
             services.AddControllers()
                 .AddApplicationPart(assembly)
-                .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);;
+                .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
             
             services.AddHttpContextAccessor();
             

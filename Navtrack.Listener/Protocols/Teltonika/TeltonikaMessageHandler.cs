@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Navtrack.Library.DI;
@@ -32,31 +32,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
                 return null;
             }
 
-            List<Location> locations = new List<Location>();
-
-            int? locationsIndex = GetLocationsReceivedIndex(input.MessageData.Bytes);
-
-            try
-            {
-                if (locationsIndex.HasValue)
-                {
-                    int locationsReceived = input.MessageData.Bytes[locationsIndex.Value];
-
-                    int lastIndex = locationsIndex.Value + 1;
-
-                    for (int i = 0; i < locationsReceived; i++)
-                    {
-                        Location location = GetLocation(input.MessageData.Bytes, input.Client.Device.IMEI,
-                            ref lastIndex);
-
-                        locations.Add(location);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            List<Location> locations = GetLocations(input);
 
             if (locations.Any())
             {
@@ -68,134 +44,69 @@ namespace Navtrack.Listener.Protocols.Teltonika
             return locations;
         }
 
-        private static int? GetLocationsReceivedIndex(byte[] input)
+        private static List<Location> GetLocations(MessageInput input)
         {
-            for (int index = 0; index + 8 < input.Length; index++)
+            List<Location> locations = new List<Location>();
+
+            Codec codec = (Codec) input.MessageData.ByteReader.Skip(8).GetOne();
+            CodecConfiguration codecConfiguration = CodecConfiguration.Dictionary[codec];
+
+            int noOfLocations = input.MessageData.ByteReader.GetOne();
+
+            for (int i = 0; i < noOfLocations; i++)
             {
-                if (input[index] == 0 &&
-                    input[index + 1] == 0 &&
-                    input[index + 2] == 0 &&
-                    input[index + 3] == 0 &&
-                    input[index + 7] == 8) return index + 8;
+                Location location = GetLocation(input, codec, codecConfiguration);
+
+                locations.Add(location);
             }
 
-            return null;
+            return locations;
         }
 
-        private static Location GetLocation(byte[] input, string imei, ref int lastIndex)
+        private static Location GetLocation(MessageInput input, Codec codec, CodecConfiguration codecConfiguration)
         {
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = imei
-                }
+                Device = input.Client.Device
             };
 
-            // TIME
-            string tmp = TeltonikaUtil.GetNextBytes(input, ref lastIndex, 8);
-            location.DateTime = TeltonikaUtil.UnixTimeStampToDateTime(long.Parse(tmp, NumberStyles.HexNumber));
+            location.DateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0)
+                .AddMilliseconds(BitConverter.ToInt64(input.MessageData.ByteReader.Get(8).Reverse().ToArray()));
 
-            // PRIORITY
-            lastIndex++; // skip priority
+            byte priority = input.MessageData.ByteReader.GetOne();
 
-            // LONGITUDE
-            tmp = TeltonikaUtil.GetNextBytes(input, ref lastIndex, 4);
-            location.Longitude = GetCoordinate(tmp);
+            location.Longitude = GetCoordinate(input.MessageData.ByteReader.Get(4));
+            location.Latitude = GetCoordinate(input.MessageData.ByteReader.Get(4));
+            location.Altitude = BitConverter.ToInt16(input.MessageData.ByteReader.Get(2).Reverse().ToArray());
+            location.Heading = BitConverter.ToInt16(input.MessageData.ByteReader.Get(2).Reverse().ToArray());
+            location.Satellites = input.MessageData.ByteReader.GetOne();
+            location.Speed = BitConverter.ToInt16(input.MessageData.ByteReader.Get(2).Reverse().ToArray());
 
-            // LATITUDE
-            tmp = TeltonikaUtil.GetNextBytes(input, ref lastIndex, 4);
-            location.Latitude = GetCoordinate(tmp);
+            byte[] eventId = input.MessageData.ByteReader.Get(codecConfiguration.MainEventIdLength);
+            if (codecConfiguration.GenerationType)
+            {
+                byte generationType = input.MessageData.ByteReader.GetOne();
+            }
 
-            // ALTITUDE
-            tmp = TeltonikaUtil.GetNextBytes(input, ref lastIndex, 2);
-            location.Altitude = int.Parse(tmp, NumberStyles.HexNumber);
-
-            // ANGLE
-            tmp = TeltonikaUtil.GetNextBytes(input, ref lastIndex, 2);
-            location.Heading = int.Parse(tmp, NumberStyles.HexNumber);
-
-            // SATELLITES
-            tmp = input[lastIndex++].ToString("X2");
-            location.Satellites = short.Parse(tmp, NumberStyles.HexNumber);
-
-            // SPEED
-            tmp = TeltonikaUtil.GetNextBytes(input, ref lastIndex, 2);
-            location.Speed = int.Parse(tmp, NumberStyles.HexNumber);
-
-            // EVENT ID
-            lastIndex++; // skip event id
-
-            // NUMBER of events
-            lastIndex++; // skip over the number of events
+            byte[] totalEvents = input.MessageData.ByteReader.Get(codecConfiguration.TotalEventsLength);
 
             List<Event> events = new List<Event>();
 
-            // 1 BYTE VALUE EVENTS
-            events.AddRange(GetEvents(input, ref lastIndex, 1)); // skip 1 byte events
-
-            // 2 BYTES VALUE EVENTS
-            GetEvents(input, ref lastIndex, 2); // skip 2 byte events
-
-            // 4 BYTES VALUE EVENTS
-            GetEvents(input, ref lastIndex, 4); // skip 4 byte events
-
-            // 8 BYTES VALUE EVENTS
-            GetEvents(input, ref lastIndex, 8); // skip 8 byte events
+            events.AddRange(GetEvents(input.MessageData.ByteReader, 1, codecConfiguration)); // 1 byte events
+            events.AddRange(GetEvents(input.MessageData.ByteReader, 2, codecConfiguration)); // 2 bytes events
+            events.AddRange(GetEvents(input.MessageData.ByteReader, 4, codecConfiguration)); // 4 bytes events
+            events.AddRange(GetEvents(input.MessageData.ByteReader, 8, codecConfiguration)); // 8 bytes events
+            events.AddRange(GetEvents(input.MessageData.ByteReader, codecConfiguration)); // variable bytes events
 
             return location;
         }
 
-        private static int GetOperatorCode(IEnumerable<Event> events)
+        private static decimal GetCoordinate(byte[] coordinate)
         {
-            Event operatorCodeEvent = events.FirstOrDefault(x => x.Id == 241);
+            decimal convertedCoordinate = BitConverter.ToInt32(coordinate);
+            BitArray binaryCoordinate = new BitArray(coordinate);
 
-            return operatorCodeEvent?.Value ?? 0;
-        }
-
-        private static int GetGsmSignal(IEnumerable<Event> events)
-        {
-            Event gsmSignalEvent = events.FirstOrDefault(x => x.Id == 21);
-
-            return gsmSignalEvent?.Value * 20 ?? 0;
-        }
-
-        private static string GetCurrentProfile(IEnumerable<Event> events)
-        {
-            Event currentProfileEvent = events.FirstOrDefault(x => x.Id == 22);
-
-            return currentProfileEvent != null
-                ? currentProfileEvent.Value.ToString(CultureInfo.InvariantCulture)
-                : string.Empty;
-        }
-
-        private static bool GetMovement(IEnumerable<Event> events)
-        {
-            Event movementEvent = events.FirstOrDefault(x => x.Id == 240);
-
-            return movementEvent?.Value == 1;
-        }
-
-        private static double GetVoltage(IEnumerable<Event> events)
-        {
-            Event voltageEvent = events.FirstOrDefault(x => x.Id == 66);
-
-            return voltageEvent != null ? (double) voltageEvent.Value / 1000 : 0;
-        }
-
-        private static int GetOdometer(IEnumerable<Event> events)
-        {
-            Event odometerEvent = events.FirstOrDefault(x => x.Id == 199);
-
-            return odometerEvent?.Value ?? 0;
-        }
-
-        private static decimal GetCoordinate(string coordinate)
-        {
-            decimal convertedCoordinate = long.Parse(coordinate, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-            string binaryCoordinate = Convert.ToString(Convert.ToInt32(coordinate, 16), 2);
-
-            bool isNegative = binaryCoordinate[0] == 1;
+            bool isNegative = binaryCoordinate[0];
 
             if (isNegative)
             {
@@ -205,37 +116,48 @@ namespace Navtrack.Listener.Protocols.Teltonika
             return convertedCoordinate / 10000000;
         }
 
-        private static IEnumerable<Event> GetEvents(byte[] input, ref int position, int eventBytes)
+        private static IEnumerable<Event> GetEvents(ByteReader input, int eventBytes,
+            CodecConfiguration codecConfiguration)
         {
             List<Event> events = new List<Event>();
 
-            int numberOfEvents = input[position++];
+            short numberOfEvents = codecConfiguration.EventsLength == 1
+                ? input.GetOne()
+                : BitConverter.ToInt16(input.Get(2).Reverse().ToArray());
 
             for (int i = 0; i < numberOfEvents; i++)
             {
-                string eventId = input[position++].ToString("X2");
-                string value = TeltonikaUtil.GetNextBytes(input, ref position, eventBytes);
-
                 events.Add(new Event
                 {
-                    Id = int.Parse(eventId, NumberStyles.HexNumber),
-                    Value = int.Parse(value, NumberStyles.HexNumber)
+                    Id = codecConfiguration.EventIdLength == 1
+                        ? input.GetOne()
+                        : BitConverter.ToInt16(input.Get(2).Reverse().ToArray()),
+                    Value = input.Get(eventBytes)
                 });
             }
 
             return events;
         }
-
-        public string GetIMEI(byte[] bytes)
+        
+        private static IEnumerable<Event> GetEvents(ByteReader input, CodecConfiguration codecConfiguration)
         {
-            string imei = String.Empty;
+            List<Event> events = new List<Event>();
 
-            for (int i = 1; i <= 15; i++)
+            if (codecConfiguration.HasVariableSizeElements)
             {
-                imei += (char) bytes[i];
+                short numberOfEvents = BitConverter.ToInt16(input.Get(2).Reverse().ToArray());
+                
+                for (int i = 0; i < numberOfEvents; i++)
+                {
+                    events.Add(new Event
+                    {
+                        Id = BitConverter.ToInt16(input.Get(2).Reverse().ToArray()),
+                        Value = input.Get(BitConverter.ToInt16(input.Get(2).Reverse().ToArray()))
+                    });
+                }
             }
-
-            return imei;
+            
+            return events;
         }
     }
 }
