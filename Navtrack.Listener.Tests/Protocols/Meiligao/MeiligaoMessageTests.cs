@@ -18,7 +18,7 @@ namespace Navtrack.Listener.Tests.Protocols.Meiligao
         {
             protocolTester.SendHexFromDevice("24240011123456FFFFFFFF50008B9B0D0A");
 
-            Assert.AreEqual("40400012123456FFFFFFFF400001A99B0D0A", protocolTester.ReceiveInDevice());
+            Assert.AreEqual("40400012123456FFFFFFFF400001A99B0D0A", protocolTester.ReceiveHexInDevice());
         }
 
         [Test]

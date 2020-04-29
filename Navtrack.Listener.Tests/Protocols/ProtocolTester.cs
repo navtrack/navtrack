@@ -20,6 +20,7 @@ namespace Navtrack.Listener.Tests.Protocols
         private readonly CancellationTokenSource cancellationTokenSource;
         private Mock<INetworkStreamWrapper> networkStreamWrapperMock;
         private Mock<ILocationService> locationServiceMock;
+     
         public Client Client { get; }
         
         public List<Location> LastParsedLocations { get; private set; }
@@ -58,13 +59,22 @@ namespace Navtrack.Listener.Tests.Protocols
             SendBytesFromDevice(HexUtil.ConvertHexStringToByteArray(value.Replace(" ", "")));
         }
 
-        public string ReceiveInDevice()
+        public string ReceiveHexInDevice()
         {
             byte[] buffer = new byte[ServerVariables.BufferLength];
 
             int length = receiveStream.Read(buffer, 0, ServerVariables.BufferLength);
 
             return HexUtil.ConvertHexStringArrayToHexString(HexUtil.ConvertByteArrayToHexStringArray(buffer[..length]));
+        }  
+        
+        public string ReceiveStringInDevice()
+        {
+            byte[] buffer = new byte[ServerVariables.BufferLength];
+
+            int length = receiveStream.Read(buffer, 0, ServerVariables.BufferLength);
+
+            return StringUtil.ConvertByteArrayToString(buffer[..length]);
         }
 
         private void CallStreamHandler()

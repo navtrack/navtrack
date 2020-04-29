@@ -14,5 +14,10 @@ namespace Navtrack.Listener.Helpers
         {
             return new string(bytes.Select(x => (char)x).ToArray());
         }
+        
+        public static bool IsDigitsOnly(string value)
+        {
+            return value.All(c => c >= '0' && c <= '9');
+        }
     }
 }
