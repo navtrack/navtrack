@@ -19,16 +19,16 @@ namespace Navtrack.Listener.Protocols.Megastek
 
         private static Location Parse_V1(MessageInput input)
         {
-            GPRMC gprmc = new GPRMC(string.Join(",", input.MessageData.StringSplit.Skip(2).Take(13)));
+            GPRMC gprmc = new GPRMC(string.Join(",", input.DataMessage.CommaSplit.Skip(2).Take(13)));
 
             Location location = new Location(gprmc)
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.StringSplit[17].Replace("imei:", string.Empty)
+                    IMEI = input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty)
                 },
-                Satellites = input.MessageData.StringSplit.Get<short>(18),
-                Altitude = input.MessageData.StringSplit.Get<double>(19)
+                Satellites = input.DataMessage.CommaSplit.Get<short>(18),
+                Altitude = input.DataMessage.CommaSplit.Get<double>(19)
             };
 
             return location;
@@ -36,9 +36,9 @@ namespace Navtrack.Listener.Protocols.Megastek
 
         private static Location Parse_V2(MessageInput input)
         {
-            string imei = input.MessageData.Reader.Skip(3).Get(16).Replace(" ", string.Empty);
+            string imei = input.DataMessage.Reader.Skip(3).Get(16).Replace(" ", string.Empty);
 
-            GPRMC gprmc = new GPRMC(input.MessageData.Reader.Skip(2).GetUntil('*', 3));
+            GPRMC gprmc = new GPRMC(input.DataMessage.Reader.Skip(2).GetUntil('*', 3));
 
             Location location = new Location(gprmc)
             {
@@ -46,7 +46,7 @@ namespace Navtrack.Listener.Protocols.Megastek
                 {
                     IMEI = imei
                 },
-                GsmSignal = input.MessageData.StringSplit.Get<short?>(17)
+                GsmSignal = input.DataMessage.CommaSplit.Get<short?>(17)
             };
 
             return location;
@@ -58,20 +58,20 @@ namespace Navtrack.Listener.Protocols.Megastek
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.StringSplit[1]
+                    IMEI = input.DataMessage.CommaSplit[1]
                 },
                 Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.MessageData.StringSplit[7], input.MessageData.StringSplit[8]),
+                    input.DataMessage.CommaSplit[7], input.DataMessage.CommaSplit[8]),
                 Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.MessageData.StringSplit[9], input.MessageData.StringSplit[10]),
-                DateTime = GetDate(input.MessageData.StringSplit[4], input.MessageData.StringSplit[5]),
-                Satellites = input.MessageData.StringSplit.Get<short?>(12),
-                HDOP = input.MessageData.StringSplit.Get<double>(14),
-                Speed = input.MessageData.StringSplit.Get<double>(15) * 1.852,
-                Heading = input.MessageData.StringSplit.Get<float?>(16),
-                Altitude = input.MessageData.StringSplit.Get<double?>(17),
-                Odometer = input.MessageData.StringSplit.Get<double?>(18)*1000,
-                GsmSignal =  input.MessageData.StringSplit.Get<short?>(23)
+                    input.DataMessage.CommaSplit[9], input.DataMessage.CommaSplit[10]),
+                DateTime = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
+                Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
+                HDOP = input.DataMessage.CommaSplit.Get<double>(14),
+                Speed = input.DataMessage.CommaSplit.Get<double>(15) * 1.852,
+                Heading = input.DataMessage.CommaSplit.Get<float?>(16),
+                Altitude = input.DataMessage.CommaSplit.Get<double?>(17),
+                Odometer = input.DataMessage.CommaSplit.Get<double?>(18)*1000,
+                GsmSignal =  input.DataMessage.CommaSplit.Get<short?>(23)
             };
 
             return location;

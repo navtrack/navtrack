@@ -22,7 +22,7 @@ namespace Navtrack.Listener.Protocols.Coban
         {
             try
             {
-                GroupCollection groups = new Regex(@"##,imei:(.*),A;").Matches(input.MessageData.String)[0].Groups;
+                GroupCollection groups = new Regex(@"##,imei:(.*),A;").Matches(input.DataMessage.String)[0].Groups;
 
                 string imei = groups[1].Value;
 
@@ -47,7 +47,7 @@ namespace Navtrack.Listener.Protocols.Coban
 
         private static Location Heartbeat(MessageInput input)
         {
-            if (StringUtil.IsDigitsOnly(input.MessageData.String))
+            if (StringUtil.IsDigitsOnly(input.DataMessage.String))
             {
                 input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("ON"));
             }
@@ -61,19 +61,19 @@ namespace Navtrack.Listener.Protocols.Coban
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.StringSplit.Get<string>(0).Replace("imei:", Empty)
+                    IMEI = input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty)
                 },
-                DateTime = GetDate(input.MessageData.StringSplit.Get<string>(2)),
-                PositionStatus = input.MessageData.StringSplit.Get<string>(4) == "F",
+                DateTime = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
+                PositionStatus = input.DataMessage.CommaSplit.Get<string>(4) == "F",
                 Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.MessageData.StringSplit[7], input.MessageData.StringSplit[8]),
+                    input.DataMessage.CommaSplit[7], input.DataMessage.CommaSplit[8]),
                 Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.MessageData.StringSplit[9], input.MessageData.StringSplit[10]),
-                Speed = input.MessageData.StringSplit.Get<double>(11),
-                Heading = input.MessageData.StringSplit.Get<string>(12) != "1"
-                    ? input.MessageData.StringSplit.Get<float?>(12)
+                    input.DataMessage.CommaSplit[9], input.DataMessage.CommaSplit[10]),
+                Speed = input.DataMessage.CommaSplit.Get<double>(11),
+                Heading = input.DataMessage.CommaSplit.Get<string>(12) != "1"
+                    ? input.DataMessage.CommaSplit.Get<float?>(12)
                     : null,
-                Altitude = input.MessageData.StringSplit.Get<double?>(13),
+                Altitude = input.DataMessage.CommaSplit.Get<double?>(13),
             };
 
             return location;

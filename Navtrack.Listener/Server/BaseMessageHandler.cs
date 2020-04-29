@@ -24,7 +24,7 @@ namespace Navtrack.Listener.Server
             {
                 try
                 {
-                    input.MessageData.Reader.Reset();
+                    input.DataMessage.Reader.Reset();
                     Location location = parse(input);
 
                     if (location != null)

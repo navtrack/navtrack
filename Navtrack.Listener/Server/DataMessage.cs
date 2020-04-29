@@ -3,16 +3,16 @@ using Navtrack.Listener.Helpers;
 
 namespace Navtrack.Listener.Server
 {
-    public class MessageData
+    public class DataMessage
     {
-        public MessageData(byte[] bytes)
+        public DataMessage(byte[] bytes)
         {
             Bytes = bytes;
             Hex = HexUtil.ConvertByteArrayToHexStringArray(Bytes);
             HexString = string.Join("", Hex);
             String = Encoding.ASCII.GetString(Bytes);
-            StringSplit = String.Split(",");
-            StringBarSplit = String.Split("|");
+            CommaSplit = String.Split(",");
+            BarSplit = String.Split("|");
             Reader = new MessageReader(String);
             ByteReader = new ByteReader(bytes);
         }
@@ -21,8 +21,8 @@ namespace Navtrack.Listener.Server
         public string[] Hex { get; }
         public string HexString { get; }
         public string String { get; }
-        public string[] StringSplit { get; }
-        public string[] StringBarSplit { get; }
+        public string[] CommaSplit { get; }
+        public string[] BarSplit { get; }
         public MessageReader Reader { get; }
         public ByteReader ByteReader { get; }
     }

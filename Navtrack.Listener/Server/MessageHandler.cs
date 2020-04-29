@@ -33,11 +33,11 @@ namespace Navtrack.Listener.Server
             {
                 Client = client,
                 NetworkStream = networkStream,
-                MessageData = new MessageData(bytes)
+                DataMessage = new DataMessage(bytes)
             };
 
             logger.LogTrace(
-                $"{client.Protocol}: received {HexUtil.ConvertHexStringArrayToHexString(messageInput.MessageData.Hex)}");
+                $"{client.Protocol}: received {HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex)}");
 
             try
             {
@@ -51,7 +51,7 @@ namespace Navtrack.Listener.Server
             catch (Exception e)
             {
                 logger.LogCritical(e,
-                    $"{customMessageHandler.GetType()}: Error parsing {messageInput.MessageData.Hex} ");
+                    $"{customMessageHandler.GetType()}: Error parsing {messageInput.DataMessage.Hex} ");
             }
         }
 

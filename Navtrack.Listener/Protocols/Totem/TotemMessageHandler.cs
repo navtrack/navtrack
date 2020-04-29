@@ -22,19 +22,19 @@ namespace Navtrack.Listener.Protocols.Totem
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.Reader.Skip(8).GetUntil('|')
+                    IMEI = input.DataMessage.Reader.Skip(8).GetUntil('|')
                 },
-                DateTime = ConvertDate(input.MessageData.Reader.Skip(8).Get(12)),
-                Satellites = Convert.ToInt16(input.MessageData.Reader.Skip(16).Get(2)),
-                GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.MessageData.Reader.Get(2))),
-                Heading = Convert.ToInt32(input.MessageData.Reader.Get(3)),
-                Speed = Convert.ToInt32(input.MessageData.Reader.Get(3)),
-                HDOP = double.Parse(input.MessageData.Reader.Get(4)),
-                Odometer = uint.Parse(input.MessageData.Reader.Get(7)),
+                DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
+                Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(16).Get(2)),
+                GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),
+                Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
+                Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
+                HDOP = double.Parse(input.DataMessage.Reader.Get(4)),
+                Odometer = uint.Parse(input.DataMessage.Reader.Get(7)),
                 Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.MessageData.Reader.Get(9), input.MessageData.Reader.Get(1)),
+                    input.DataMessage.Reader.Get(9), input.DataMessage.Reader.Get(1)),
                 Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.MessageData.Reader.Get(10), input.MessageData.Reader.Get(1))
+                    input.DataMessage.Reader.Get(10), input.DataMessage.Reader.Get(1))
             };
         }
         
@@ -44,19 +44,19 @@ namespace Navtrack.Listener.Protocols.Totem
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.Reader.Skip(8).GetUntil('|')
+                    IMEI = input.DataMessage.Reader.Skip(8).GetUntil('|')
                 },
-                DateTime = ConvertDate(input.MessageData.Reader.Skip(8).Get(12)),
-                Satellites = Convert.ToInt16(input.MessageData.Reader.Skip(36).Get(2)),
-                GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.MessageData.Reader.Get(2))),
-                Heading = Convert.ToInt32(input.MessageData.Reader.Get(3)),
-                Speed = Convert.ToInt32(input.MessageData.Reader.Get(3)),
-                HDOP = double.Parse(input.MessageData.Reader.Get(4)),
-                Odometer = uint.Parse(input.MessageData.Reader.Get(7)),
+                DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
+                Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(36).Get(2)),
+                GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),
+                Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
+                Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
+                HDOP = double.Parse(input.DataMessage.Reader.Get(4)),
+                Odometer = uint.Parse(input.DataMessage.Reader.Get(7)),
                 Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.MessageData.Reader.Get(9), input.MessageData.Reader.Get(1)),
+                    input.DataMessage.Reader.Get(9), input.DataMessage.Reader.Get(1)),
                 Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.MessageData.Reader.Get(10), input.MessageData.Reader.Get(1))
+                    input.DataMessage.Reader.Get(10), input.DataMessage.Reader.Get(1))
             };
         }
 

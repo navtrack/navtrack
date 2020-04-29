@@ -4,6 +4,6 @@ namespace Navtrack.Listener.Server
     {
         public Client Client { get; set; }
         public INetworkStreamWrapper NetworkStream { get; set; }
-        public MessageData MessageData { get; set; }
+        public DataMessage DataMessage { get; set; }
     }
 }

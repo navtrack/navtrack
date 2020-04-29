@@ -10,16 +10,16 @@ namespace Navtrack.Listener.Protocols.Tzone
     {
         public override Location Parse(MessageInput input)
         {
-            GPRMC gprmc = new GPRMC(input.MessageData.StringBarSplit[1].Substring(2));
+            GPRMC gprmc = new GPRMC(input.DataMessage.BarSplit[1].Substring(2));
 
             Location location = new Location(gprmc)
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.StringBarSplit[0].Substring(4)
+                    IMEI = input.DataMessage.BarSplit[0].Substring(4)
                 },
-                HDOP = input.MessageData.StringBarSplit.Get<double>(3),
-                Odometer = input.MessageData.StringBarSplit.GetDouble(11, 4)
+                HDOP = input.DataMessage.BarSplit.Get<double>(3),
+                Odometer = input.DataMessage.BarSplit.GetDouble(11, 4)
             };
 
             return location;

@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
     {
         public override Location Parse(MessageInput input)
         {
-            MeiligaoInputMessage inputMessage = new MeiligaoInputMessage(input.MessageData);
+            MeiligaoInputMessage inputMessage = new MeiligaoInputMessage(input.DataMessage);
 
             HandleMessage(input, inputMessage);
 

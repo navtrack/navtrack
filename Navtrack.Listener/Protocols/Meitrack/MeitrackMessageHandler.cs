@@ -15,19 +15,19 @@ namespace Navtrack.Listener.Protocols.Meitrack
             {
                 Device = new Device
                 {
-                    IMEI = input.MessageData.StringSplit[1]
+                    IMEI = input.DataMessage.CommaSplit[1]
                 },
-                Latitude = input.MessageData.StringSplit.Get<decimal>(4),
-                Longitude = input.MessageData.StringSplit.Get<decimal>(5),
-                DateTime = ConvertDate(input.MessageData.StringSplit[6]),
-                PositionStatus = input.MessageData.StringSplit.Get<string>(7) == "A",
-                Satellites = input.MessageData.StringSplit.Get<short>(8),
-                GsmSignal = GsmUtil.ConvertSignal(input.MessageData.StringSplit.Get<short>(9)),
-                Speed = input.MessageData.StringSplit.Get<float>(10),
-                Heading = input.MessageData.StringSplit.Get<float>(11),
-                HDOP = input.MessageData.StringSplit.Get<double>(12),
-                Altitude = input.MessageData.StringSplit.Get<int>(13),
-                Odometer = input.MessageData.StringSplit.Get<uint>(14)
+                Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),
+                Longitude = input.DataMessage.CommaSplit.Get<decimal>(5),
+                DateTime = ConvertDate(input.DataMessage.CommaSplit[6]),
+                PositionStatus = input.DataMessage.CommaSplit.Get<string>(7) == "A",
+                Satellites = input.DataMessage.CommaSplit.Get<short>(8),
+                GsmSignal = GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9)),
+                Speed = input.DataMessage.CommaSplit.Get<float>(10),
+                Heading = input.DataMessage.CommaSplit.Get<float>(11),
+                HDOP = input.DataMessage.CommaSplit.Get<double>(12),
+                Altitude = input.DataMessage.CommaSplit.Get<int>(13),
+                Odometer = input.DataMessage.CommaSplit.Get<uint>(14)
             };
 
             return location;
