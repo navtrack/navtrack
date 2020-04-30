@@ -22,15 +22,15 @@ namespace Navtrack.Listener.Protocols.Queclink
                         IMEI = input.DataMessage.CommaSplit.Get<string>(2)
                     },
                     HDOP = input.DataMessage.CommaSplit.Get<double>(index.Value),
-                    Speed = input.DataMessage.CommaSplit.Get<double>(index.Value+1),
-                    Heading = input.DataMessage.CommaSplit.Get<float?>(index.Value+2),
-                    Altitude = input.DataMessage.CommaSplit.Get<double?>(index.Value+3),
-                    Longitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value+4),
-                    Latitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value+5),
-                    DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(index.Value+6))
+                    Speed = input.DataMessage.CommaSplit.Get<double>(index.Value + 1),
+                    Heading = input.DataMessage.CommaSplit.Get<float?>(index.Value + 2),
+                    Altitude = input.DataMessage.CommaSplit.Get<double?>(index.Value + 3),
+                    Longitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value + 4),
+                    Latitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value + 5),
+                    DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(index.Value + 6))
                 };
                 location.PositionStatus = location.HDOP > 0;
-                
+
                 return location;
             }
 
@@ -51,6 +51,6 @@ namespace Navtrack.Listener.Protocols.Queclink
         }
 
         private static DateTime ConvertDate(string date) => DateTimeUtil.New(date[..4], date[4..6], date[6..8],
-            date[8..10], date[10..12], date[12..14]);
+            date[8..10], date[10..12], date[12..14], add2000Year: false);
     }
 }

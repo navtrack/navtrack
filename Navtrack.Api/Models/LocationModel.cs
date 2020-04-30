@@ -12,7 +12,7 @@ namespace Navtrack.Api.Models
         public float? Heading { get; set; }
         public double? Altitude { get; set; }
         public short? Satellites { get; set; }
-        public double HDOP { get; set; }
+        public double? HDOP { get; set; }
         public bool PositionStatus { get; set; }
         public short? GsmSignal { get; set; }
         public double? Odometer { get; set; }

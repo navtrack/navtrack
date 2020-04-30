@@ -16,7 +16,7 @@ namespace Navtrack.DataAccess.Model
         public Asset Asset { get; set; }
         public int AssetId { get; set; }
         public short? Satellites { get; set; }
-        public double HDOP { get; set; }
+        public double? HDOP { get; set; }
         public string ProtocolData { get; set; }
         public bool PositionStatus { get; set; }
         public short? GsmSignal { get; set; }

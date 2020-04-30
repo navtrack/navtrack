@@ -33,7 +33,7 @@ namespace Navtrack.Listener.Server
             {
                 Client = client,
                 NetworkStream = networkStream,
-                DataMessage = new DataMessage(bytes)
+                DataMessage = new DataMessage(bytes, client.Protocol.SplitMessageBy)
             };
 
             logger.LogTrace(

@@ -5,7 +5,7 @@ namespace Navtrack.Listener.Server
 {
     public class DataMessage
     {
-        public DataMessage(byte[] bytes)
+        public DataMessage(byte[] bytes, string splitMessageBy)
         {
             Bytes = bytes;
             Hex = HexUtil.ConvertByteArrayToHexStringArray(Bytes);
@@ -15,6 +15,7 @@ namespace Navtrack.Listener.Server
             BarSplit = String.Split("|");
             Reader = new MessageReader(String);
             ByteReader = new ByteReader(bytes);
+            Split = string.IsNullOrEmpty(splitMessageBy) ? CommaSplit : String.Split(splitMessageBy);
         }
 
         public byte[] Bytes { get; }
@@ -25,5 +26,6 @@ namespace Navtrack.Listener.Server
         public string[] BarSplit { get; }
         public MessageReader Reader { get; }
         public ByteReader ByteReader { get; }
+        public string[] Split { get; set; }
     }
 }
