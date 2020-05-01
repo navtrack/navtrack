@@ -17,7 +17,7 @@ WORKDIR /src/Navtrack.Core
 RUN dotnet build "Navtrack.Core.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
 RUN dotnet publish "Navtrack.Core.csproj" -c Release -o /app
 
