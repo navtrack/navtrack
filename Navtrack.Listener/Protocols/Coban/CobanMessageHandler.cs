@@ -65,10 +65,10 @@ namespace Navtrack.Listener.Protocols.Coban
                 },
                 DateTime = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(4) == "F",
-                Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.DataMessage.CommaSplit[7], input.DataMessage.CommaSplit[8]),
-                Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.DataMessage.CommaSplit[9], input.DataMessage.CommaSplit[10]),
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
+                    input.DataMessage.CommaSplit[8]),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
+                    input.DataMessage.CommaSplit[10]),
                 Speed = input.DataMessage.CommaSplit.Get<double>(11),
                 Heading = input.DataMessage.CommaSplit.Get<string>(12) != "1"
                     ? input.DataMessage.CommaSplit.Get<float?>(12)

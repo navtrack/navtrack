@@ -60,18 +60,18 @@ namespace Navtrack.Listener.Protocols.Megastek
                 {
                     IMEI = input.DataMessage.CommaSplit[1]
                 },
-                Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.DataMessage.CommaSplit[7], input.DataMessage.CommaSplit[8]),
-                Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.DataMessage.CommaSplit[9], input.DataMessage.CommaSplit[10]),
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
+                    input.DataMessage.CommaSplit[8]),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
+                    input.DataMessage.CommaSplit[10]),
                 DateTime = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
                 Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
                 HDOP = input.DataMessage.CommaSplit.Get<double>(14),
                 Speed = input.DataMessage.CommaSplit.Get<double>(15) * 1.852,
                 Heading = input.DataMessage.CommaSplit.Get<float?>(16),
                 Altitude = input.DataMessage.CommaSplit.Get<double?>(17),
-                Odometer = input.DataMessage.CommaSplit.Get<double?>(18)*1000,
-                GsmSignal =  input.DataMessage.CommaSplit.Get<short?>(23)
+                Odometer = input.DataMessage.CommaSplit.Get<double?>(18) * 1000,
+                GsmSignal = input.DataMessage.CommaSplit.Get<short?>(23)
             };
 
             return location;

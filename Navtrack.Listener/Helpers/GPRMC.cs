@@ -19,8 +19,8 @@ namespace Navtrack.Listener.Helpers
             string[] split = input.Split(",");
 
             DateTime = GetDateTime(split[0], split[8]);
-            Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})", split[2], split[3]);
-            Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})", split[4], split[5]);
+            Latitude = GpsUtil.ConvertDmmToDecimal(@"(\d{2})(\d{2}.\d{4})", split[2], split[3]);
+            Longitude = GpsUtil.ConvertDmmToDecimal(@"(\d{3})(\d{2}.\d{4})", split[4], split[5]);
             PositionStatus = split[1] == "A";
             Speed = split.Get<double>(6) * 1.852;
             Heading = split.Get<float?>(7);

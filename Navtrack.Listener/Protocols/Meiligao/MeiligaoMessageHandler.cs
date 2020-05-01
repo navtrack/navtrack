@@ -20,24 +20,20 @@ namespace Navtrack.Listener.Protocols.Meiligao
             {
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = inputMessage.DeviceIdTrimmed
-                    }
+                    Device = new Device {IMEI = inputMessage.DeviceIdTrimmed},
+                    PositionStatus = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[2],
+                        inputMessage.MeiligaoDataMessage.GPRMCArray[3]),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[4],
+                        inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
+                    DateTime = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
+                        inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
+                    Speed = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<double>(6) * 1.852,
+                    Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7),
+                    HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(1),
+                    Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(2),
+                    Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7)
                 };
-
-                location.PositionStatus = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A";
-                location.Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    inputMessage.MeiligaoDataMessage.GPRMCArray[2], inputMessage.MeiligaoDataMessage.GPRMCArray[3]);
-                location.Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    inputMessage.MeiligaoDataMessage.GPRMCArray[4], inputMessage.MeiligaoDataMessage.GPRMCArray[5]);
-                location.DateTime = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
-                    inputMessage.MeiligaoDataMessage.GPRMCArray[8]);
-                location.Speed = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<double>(6) * 1.852;
-                location.Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7);
-                location.HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(1);
-                location.Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(2);
-                location.Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7);
 
                 return location;
             }

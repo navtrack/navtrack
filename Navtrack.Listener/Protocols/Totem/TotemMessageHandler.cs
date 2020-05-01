@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Totem
         public override Location Parse(MessageInput input)
         {
             Location location = Parse(input, ParseLocation_AT07, ParseLocation_AT09);
-     
+
             return location;
         }
 
@@ -31,13 +31,13 @@ namespace Navtrack.Listener.Protocols.Totem
                 Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
                 HDOP = double.Parse(input.DataMessage.Reader.Get(4)),
                 Odometer = uint.Parse(input.DataMessage.Reader.Get(7)),
-                Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
+                Latitude = GpsUtil.ConvertDmmToDecimal(@"(\d{2})(\d{2}.\d{4})",
                     input.DataMessage.Reader.Get(9), input.DataMessage.Reader.Get(1)),
-                Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
+                Longitude = GpsUtil.ConvertDmmToDecimal(@"(\d{3})(\d{2}.\d{4})",
                     input.DataMessage.Reader.Get(10), input.DataMessage.Reader.Get(1))
             };
         }
-        
+
         private static Location ParseLocation_AT09(MessageInput input)
         {
             return new Location
@@ -53,10 +53,10 @@ namespace Navtrack.Listener.Protocols.Totem
                 Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
                 HDOP = double.Parse(input.DataMessage.Reader.Get(4)),
                 Odometer = uint.Parse(input.DataMessage.Reader.Get(7)),
-                Latitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{2})(\d{2}).(\d{4})",
-                    input.DataMessage.Reader.Get(9), input.DataMessage.Reader.Get(1)),
-                Longitude = GpsUtil.ConvertDegreeAngleToDouble(@"(\d{3})(\d{2}).(\d{4})",
-                    input.DataMessage.Reader.Get(10), input.DataMessage.Reader.Get(1))
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.Reader.Get(9),
+                    input.DataMessage.Reader.Get(1)),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.Reader.Get(10),
+                    input.DataMessage.Reader.Get(1))
             };
         }
 
