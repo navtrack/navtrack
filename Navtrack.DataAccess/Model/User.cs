@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class User : IEntity
+    public class User : EntityAudit, IEntity
     {
         public User()
         {

@@ -24,7 +24,6 @@ namespace Navtrack.Listener.Mappers
             destination.HDOP = source1.HDOP;
             destination.GsmSignal = source1.GsmSignal;
             destination.Odometer = source1.Odometer;
-            destination.CreatedAt = DateTime.UtcNow;
 
             return destination;
         }
