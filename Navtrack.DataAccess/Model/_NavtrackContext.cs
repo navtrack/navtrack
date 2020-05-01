@@ -25,9 +25,10 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.Latitude).HasColumnType("decimal(9, 6)").IsRequired();
                 entity.Property(x => x.Longitude).HasColumnType("decimal(9, 6)").IsRequired();
                 entity.Property(x => x.DateTime).IsRequired();
-                entity.Property(x => x.Speed).IsRequired();
-                entity.Property(x => x.Heading).IsRequired();
-                entity.Property(x => x.Altitude).IsRequired();
+                entity.Property(x => x.Speed).HasColumnType("decimal(6, 2)");
+                entity.Property(x => x.Heading).HasColumnType("decimal(5, 2)");
+                entity.Property(x => x.Altitude).HasColumnType("decimal(7, 2)");
+                entity.Property(x => x.HDOP).HasColumnType("decimal(4, 2)");
                 entity.Property(x => x.DeviceId).IsRequired();
 
                 entity.HasOne(x => x.Device)

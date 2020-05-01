@@ -28,10 +28,10 @@ namespace Navtrack.Listener.Protocols.Meiligao
                         inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
                     DateTime = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
                         inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
-                    Speed = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<double>(6) * 1.852,
-                    Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7),
-                    HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(1),
-                    Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<double>(2),
+                    Speed = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal?>(6) * (decimal)1.852,
+                    Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal?>(7),
+                    HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<decimal?>(1),
+                    Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<decimal?>(2),
                     Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7)
                 };
 

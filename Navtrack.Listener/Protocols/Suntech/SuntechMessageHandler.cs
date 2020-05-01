@@ -21,8 +21,8 @@ namespace Navtrack.Listener.Protocols.Suntech
                     input.DataMessage.Split.Get<string>(4)),
                 Latitude = input.DataMessage.Split.Get<decimal>(6),
                 Longitude = input.DataMessage.Split.Get<decimal>(7),
-                Speed = input.DataMessage.Split.Get<double>(8),
-                Heading = input.DataMessage.Split.Get<float?>(9),
+                Speed = input.DataMessage.Split.Get<decimal?>(8),
+                Heading = input.DataMessage.Split.Get<decimal?>(9),
                 Satellites = input.DataMessage.Split.Get<short?>(10),
                 PositionStatus = input.DataMessage.Split.Get<string>(11) == "1",
                 Odometer = input.DataMessage.Split.Get<double?>(12)

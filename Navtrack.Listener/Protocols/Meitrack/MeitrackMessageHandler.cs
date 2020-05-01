@@ -23,9 +23,9 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(7) == "A",
                 Satellites = input.DataMessage.CommaSplit.Get<short>(8),
                 GsmSignal = GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9)),
-                Speed = input.DataMessage.CommaSplit.Get<float>(10),
-                Heading = input.DataMessage.CommaSplit.Get<float>(11),
-                HDOP = input.DataMessage.CommaSplit.Get<double>(12),
+                Speed = input.DataMessage.CommaSplit.Get<decimal?>(10),
+                Heading = input.DataMessage.CommaSplit.Get<decimal?>(11),
+                HDOP = input.DataMessage.CommaSplit.Get<decimal?>(12),
                 Altitude = input.DataMessage.CommaSplit.Get<int>(13),
                 Odometer = input.DataMessage.CommaSplit.Get<uint>(14)
             };

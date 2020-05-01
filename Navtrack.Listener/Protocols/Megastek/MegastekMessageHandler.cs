@@ -28,7 +28,7 @@ namespace Navtrack.Listener.Protocols.Megastek
                     IMEI = input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty)
                 },
                 Satellites = input.DataMessage.CommaSplit.Get<short>(18),
-                Altitude = input.DataMessage.CommaSplit.Get<double>(19)
+                Altitude = input.DataMessage.CommaSplit.Get<decimal?>(19)
             };
 
             return location;
@@ -66,10 +66,10 @@ namespace Navtrack.Listener.Protocols.Megastek
                     input.DataMessage.CommaSplit[10]),
                 DateTime = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
                 Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
-                HDOP = input.DataMessage.CommaSplit.Get<double>(14),
-                Speed = input.DataMessage.CommaSplit.Get<double>(15) * 1.852,
-                Heading = input.DataMessage.CommaSplit.Get<float?>(16),
-                Altitude = input.DataMessage.CommaSplit.Get<double?>(17),
+                HDOP = input.DataMessage.CommaSplit.Get<decimal?>(14),
+                Speed = input.DataMessage.CommaSplit.Get<decimal?>(15) * (decimal)1.852,
+                Heading = input.DataMessage.CommaSplit.Get<decimal?>(16),
+                Altitude = input.DataMessage.CommaSplit.Get<decimal?>(17),
                 Odometer = input.DataMessage.CommaSplit.Get<double?>(18) * 1000,
                 GsmSignal = input.DataMessage.CommaSplit.Get<short?>(23)
             };

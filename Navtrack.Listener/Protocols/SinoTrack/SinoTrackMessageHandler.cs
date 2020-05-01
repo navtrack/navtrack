@@ -24,8 +24,8 @@ namespace Navtrack.Listener.Protocols.SinoTrack
                     input.DataMessage.CommaSplit[6]),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[7],
                     input.DataMessage.CommaSplit[8]),
-                Speed = input.DataMessage.CommaSplit.Get<double>(9) * 1.852,
-                Heading = input.DataMessage.CommaSplit.Get<float>(10),
+                Speed = input.DataMessage.CommaSplit.Get<decimal?>(9) * (decimal) 1.852,
+                Heading = input.DataMessage.CommaSplit.Get<decimal?>(10),
                 Altitude = 0
             };
 

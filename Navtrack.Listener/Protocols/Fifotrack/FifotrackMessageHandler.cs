@@ -21,9 +21,9 @@ namespace Navtrack.Listener.Protocols.Fifotrack
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(6) == "A",
                 Latitude = input.DataMessage.CommaSplit.Get<decimal>(7),
                 Longitude = input.DataMessage.CommaSplit.Get<decimal>(8),
-                Speed = input.DataMessage.CommaSplit.Get<double>(9),
-                Heading = input.DataMessage.CommaSplit.Get<float?>(10),
-                Altitude = input.DataMessage.CommaSplit.Get<double?>(11),
+                Speed = input.DataMessage.CommaSplit.Get<decimal?>(9),
+                Heading = input.DataMessage.CommaSplit.Get<decimal?>(10),
+                Altitude = input.DataMessage.CommaSplit.Get<decimal?>(11),
                 Odometer = input.DataMessage.CommaSplit.Get<double?>(12),
             };
 

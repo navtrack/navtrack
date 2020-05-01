@@ -29,12 +29,12 @@ namespace Navtrack.Listener.Protocols.Totem
                 GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),
                 Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
                 Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
-                HDOP = double.Parse(input.DataMessage.Reader.Get(4)),
+                HDOP = decimal.Parse(input.DataMessage.Reader.Get(4)),
                 Odometer = uint.Parse(input.DataMessage.Reader.Get(7)),
-                Latitude = GpsUtil.ConvertDmmToDecimal(@"(\d{2})(\d{2}.\d{4})",
-                    input.DataMessage.Reader.Get(9), input.DataMessage.Reader.Get(1)),
-                Longitude = GpsUtil.ConvertDmmToDecimal(@"(\d{3})(\d{2}.\d{4})",
-                    input.DataMessage.Reader.Get(10), input.DataMessage.Reader.Get(1))
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.Reader.Get(9),
+                    input.DataMessage.Reader.Get(1)),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.Reader.Get(10),
+                    input.DataMessage.Reader.Get(1))
             };
         }
 
@@ -51,7 +51,7 @@ namespace Navtrack.Listener.Protocols.Totem
                 GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),
                 Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
                 Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
-                HDOP = double.Parse(input.DataMessage.Reader.Get(4)),
+                HDOP = decimal.Parse(input.DataMessage.Reader.Get(4)),
                 Odometer = uint.Parse(input.DataMessage.Reader.Get(7)),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.Reader.Get(9),
                     input.DataMessage.Reader.Get(1)),

@@ -21,10 +21,10 @@ namespace Navtrack.Listener.Protocols.Queclink
                     {
                         IMEI = input.DataMessage.CommaSplit.Get<string>(2)
                     },
-                    HDOP = input.DataMessage.CommaSplit.Get<double>(index.Value),
-                    Speed = input.DataMessage.CommaSplit.Get<double>(index.Value + 1),
-                    Heading = input.DataMessage.CommaSplit.Get<float?>(index.Value + 2),
-                    Altitude = input.DataMessage.CommaSplit.Get<double?>(index.Value + 3),
+                    HDOP = input.DataMessage.CommaSplit.Get<decimal?>(index.Value),
+                    Speed = input.DataMessage.CommaSplit.Get<decimal?>(index.Value + 1),
+                    Heading = input.DataMessage.CommaSplit.Get<decimal?>(index.Value + 2),
+                    Altitude = input.DataMessage.CommaSplit.Get<decimal?>(index.Value + 3),
                     Longitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value + 4),
                     Latitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value + 5),
                     DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(index.Value + 6))
