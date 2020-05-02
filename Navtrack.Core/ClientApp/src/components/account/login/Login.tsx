@@ -46,7 +46,7 @@ export default function Login() {
         </div>
         <div className="shadow-xl bg-white rounded px-8 w-full bg-gray-100">
           <div className="text-center my-6">Sign in to Navtrack</div>
-          <form onSubmit={e => signIn(e)}>
+          <form onSubmit={(e) => signIn(e)}>
             <div className="mb-4">
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
@@ -54,7 +54,7 @@ export default function Login() {
                 type="email"
                 placeholder="Email"
                 value={login.email}
-                onChange={e => setLogin({ ...login, email: e.target.value })}
+                onChange={(e) => setLogin({ ...login, email: e.target.value })}
               />
               <InputError name="email" error={error} />
             </div>
@@ -65,7 +65,7 @@ export default function Login() {
                 type="password"
                 placeholder="Password"
                 value={login.password}
-                onChange={e => setLogin({ ...login, password: e.target.value })}
+                onChange={(e) => setLogin({ ...login, password: e.target.value })}
               />
               <InputError name="password" error={error} />
             </div>
@@ -80,9 +80,9 @@ export default function Login() {
         </div>
         <div className="h-20 flex w-full">
           <div className="flex-grow">
-            <Link to="/register" className="text-white text-xs">
+            {/* <Link to="/register" className="text-white text-xs">
               Create new account
-            </Link>
+            </Link> */}
           </div>
           <div className="flex-grow text-right">
             {/* <Link to="/forgotpassword" className="text-white text-xs">Forgot password?</Link> */}
