@@ -23,7 +23,7 @@ namespace Navtrack.Listener.Services
             
             Connection connection = new Connection
             {
-                OpenedAt = DateTime.Now,
+                OpenedAt = DateTime.UtcNow,
                 RemoteEndPoint = ipEndPoint.ToString()
             };
 
@@ -38,7 +38,7 @@ namespace Navtrack.Listener.Services
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            connection.ClosedAt = DateTime.Now;
+            connection.ClosedAt = DateTime.UtcNow;
 
             unitOfWork.Update(connection);
 

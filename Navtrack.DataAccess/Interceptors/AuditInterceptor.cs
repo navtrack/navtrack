@@ -12,7 +12,7 @@ namespace Navtrack.DataAccess.Interceptors
         {
             if (entity is EntityAudit entityAudit)
             {
-                entityAudit.CreatedAt = DateTime.Now;
+                entityAudit.CreatedAt = DateTime.UtcNow;
             }
         }
     }
