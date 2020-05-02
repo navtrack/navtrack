@@ -1,4 +1,3 @@
-using System;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
@@ -24,6 +23,10 @@ namespace Navtrack.Listener.Mappers
             destination.HDOP = source1.HDOP;
             destination.GsmSignal = source1.GsmSignal;
             destination.Odometer = source1.Odometer;
+            destination.MobileCountryCode = source1.MobileCountryCode;
+            destination.MobileNetworkCode = source1.MobileNetworkCode;
+            destination.LocationAreaCode = source1.LocationAreaCode;
+            destination.CellId = source1.CellId;
 
             return destination;
         }

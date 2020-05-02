@@ -26,6 +26,6 @@ namespace Navtrack.Listener.Protocols.Meiligao
         // 2 (header) + 2 (length) + 7 (device id) + 2 (command) + X (data) + 2 (checksum) + 2 (footer)
         public int PacketLength => 2 + 2 + 7 + 2 + data.Length / 2 + 2 + 2;
 
-        public string Checksum => Crc16Util.Ccitt(HexUtil.ConvertHexStringToByteArray(PacketBody)).ToString("X4");
+        public string Checksum => $"{Crc16Util.Ccitt(HexUtil.ConvertHexStringToByteArray(PacketBody)):X4}";
     }
 }

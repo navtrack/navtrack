@@ -31,5 +31,10 @@ namespace Navtrack.Listener.Models
         public decimal? HDOP { get; set; }
         public short? GsmSignal { get; set; }
         public double? Odometer { get; set; }
+        
+        public int? MobileCountryCode { get; set; }
+        public int? MobileNetworkCode { get; set; }
+        public int? LocationAreaCode { get; set; }
+        public int? CellId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Helpers
 {
@@ -10,10 +11,10 @@ namespace Navtrack.Listener.Helpers
         public static bool IsValidLongitude(decimal longitude) => longitude >= -180 && longitude <= 180;
 
         public static decimal ConvertDmmLatToDecimal(string point, string cardinalDirection) =>
-            GpsUtil.ConvertDmmToDecimal(@"(\d{2})(\d{2}.\d{4})", point, cardinalDirection);
+            ConvertDmmToDecimal(@"(\d{2})(\d{2}.\d{4})", point, cardinalDirection);
         
         public static decimal ConvertDmmLongToDecimal(string point, string cardinalDirection) =>
-            GpsUtil.ConvertDmmToDecimal(@"(\d{3})(\d{2}.\d{4})", point, cardinalDirection);
+            ConvertDmmToDecimal(@"(\d{3})(\d{2}.\d{4})", point, cardinalDirection);
 
         public static decimal ConvertDmsToDecimal(string regExPattern, string point, string cardinalDirection)
         {
@@ -35,6 +36,13 @@ namespace Navtrack.Listener.Helpers
             decimal degrees = decimal.Parse(matchCollection[0].Groups[1].Value);
             decimal minutes = decimal.Parse(matchCollection[0].Groups[2].Value) / 60;
 
+            return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
+        }
+
+        public static decimal ConvertDmmToDecimal(decimal degrees, decimal minutes, CardinalPoint cardinalPoint)
+        {
+            int multiplier = cardinalPoint == CardinalPoint.South || cardinalPoint == CardinalPoint.West ? -1 : 1;
+          
             return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
         }
     }
