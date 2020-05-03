@@ -47,9 +47,9 @@ namespace Navtrack.Listener.Protocols.Concox
                 Speed = input.DataMessage.Bytes[19],
                 PositionStatus = courseAndStatus[3] == '1',
                 Heading = Convert.ToInt32(courseAndStatus.Substring(6), 2),
-                MobileCountryCode = ushort.Parse(Join(Empty, input.DataMessage.Hex[22..24]), NumberStyles.HexNumber),
+                MobileCountryCode = int.Parse(Join(Empty, input.DataMessage.Hex[22..24]), NumberStyles.HexNumber),
                 MobileNetworkCode = input.DataMessage.Bytes[24],
-                LocationAreaCode = ushort.Parse(Join(Empty, input.DataMessage.Hex[25..27]), NumberStyles.HexNumber),
+                LocationAreaCode = int.Parse(Join(Empty, input.DataMessage.Hex[25..27]), NumberStyles.HexNumber),
                 CellId = int.Parse(Join(Empty, input.DataMessage.Hex[27..30]), NumberStyles.HexNumber)
             };
 
