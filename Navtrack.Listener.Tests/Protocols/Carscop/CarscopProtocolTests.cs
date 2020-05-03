@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Carscop
 {
+    // CC828, CC830, CC630 GPS Communication Protocol
     public class CarscopProtocolTests
     {
         private IProtocolTester protocolTester;
