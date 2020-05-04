@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Navtrack.Library.DI;
@@ -15,7 +16,7 @@ namespace Navtrack.Listener
 
         public ListenerService(IEnumerable<IProtocol> protocols, IProtocolHandler protocolHandler)
         {
-            this.protocols = protocols;
+            this.protocols = protocols.OrderBy(x => x.Port);
             this.protocolHandler = protocolHandler;
         }
 
