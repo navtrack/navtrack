@@ -20,5 +20,13 @@ namespace Navtrack.Listener.Tests.Protocols.Xexun
 
             Assert.IsNotNull(protocolTester.LastParsedLocation);
         }
+        
+        [Test]
+        public void DeviceSendsLocationV2_LocationIsParsed()
+        {
+            protocolTester.SendStringFromDevice("0711011832,+8613145826126,GPRMC,103226.000,A,2234.0239,N,11403.0765,E,0.00,,011107,,,A*7E,F,imei:352022008228783,101j");
+
+            Assert.IsNotNull(protocolTester.LastParsedLocation);
+        }
     }
 }
