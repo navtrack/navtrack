@@ -12,7 +12,8 @@ namespace Navtrack.Listener.Protocols.Xexun
     {
         public override Location Parse(MessageInput input)
          {
-            GroupCollection lgc =
+             // TODO: join patterns
+             GroupCollection lgc =
                 new Regex(
                         @"GPRMC,(\d{2})(\d{2})(\d{2}).(\d{3}),(A|V),(\d{4}.\d{4}),(N|S),(\d{5}.\d{4}),(E|W),(.*?),(.*?),(\d{2})(\d{2})(\d{2})(.*?\*..,)(\w)(.*?imei:)(\d{15})")
                     .Matches(input.DataMessage.String)[0].Groups;
