@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -103,10 +102,9 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
         private static decimal GetCoordinate(byte[] coordinate)
         {
-            decimal convertedCoordinate = BitConverter.ToInt32(coordinate);
-            BitArray binaryCoordinate = new BitArray(coordinate);
-
-            bool isNegative = binaryCoordinate[0];
+            decimal convertedCoordinate = BitConverter.ToInt32(coordinate.Reverse().ToArray());
+            string binary = Convert.ToString(coordinate[0], 2).PadLeft(8, '0');
+            bool isNegative = binary[0] == 1;
 
             if (isNegative)
             {
