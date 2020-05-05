@@ -11,18 +11,18 @@ namespace Navtrack.Library.DI
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             IEnumerable<Assembly> assemblies = GetAssemblies();
-            
+
             List<KeyValuePair<Type, ServiceAttribute>> serviceAttributes = assemblies
                 .SelectMany(x => x.DefinedTypes)
                 .SelectMany(x =>
-                    x.GetCustomAttributes<ServiceAttribute>()
+                    x.GetCustomAttributes<ServiceAttribute>(false)
                         .Select(y => new KeyValuePair<Type, ServiceAttribute>(x, y)))
                 .ToList();
 
-            foreach (KeyValuePair<Type, ServiceAttribute> serviceAttribute in serviceAttributes)
+            foreach ((Type type, ServiceAttribute serviceAttribute) in serviceAttributes)
             {
-                serviceCollection.Add(new ServiceDescriptor(serviceAttribute.Value.Type, serviceAttribute.Key,
-                    serviceAttribute.Value.ServiceLifetime));
+                serviceCollection.Add(new ServiceDescriptor(serviceAttribute.Type, type,
+                    serviceAttribute.ServiceLifetime));
             }
         }
 
@@ -36,7 +36,8 @@ namespace Navtrack.Library.DI
         private static IEnumerable<Assembly> GetAssemblies(Assembly assembly)
         {
             foreach (Assembly referencedAssembly in assembly.GetReferencedAssemblies()
-                .Where(x => x.Name.StartsWith("Navtrack")).Select(Assembly.Load).SelectMany(GetAssemblies))
+                .Where(x => x.Name != null && x.Name.StartsWith("Navtrack")).Select(Assembly.Load)
+                .SelectMany(GetAssemblies))
             {
                 yield return referencedAssembly;
             }
