@@ -1,4 +1,3 @@
-using System;
 using Navtrack.Listener.Protocols.Teltonika;
 using NUnit.Framework;
 

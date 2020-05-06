@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.TkStar
 {
-    public class SinoTrackProtocolTests
+    public class TkStarProtocolTests
     {
         private IProtocolTester protocolTester;
 

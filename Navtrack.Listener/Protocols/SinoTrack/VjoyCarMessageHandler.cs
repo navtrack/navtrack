@@ -7,7 +7,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.SinoTrack
 {
     [Service(typeof(ICustomMessageHandler<SinoTrackProtocol>))]
-    public class SinoTrackMessageHandler : BaseMessageHandler<SinoTrackProtocol>
+    public class VjoyCarMessageHandler : BaseMessageHandler<SinoTrackProtocol>
     {
         public override Location Parse(MessageInput input)
         {

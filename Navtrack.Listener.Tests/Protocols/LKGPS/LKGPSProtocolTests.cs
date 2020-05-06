@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.LKGPS
 {
-    public class SinoTrackProtocolTests
+    public class LKGPSProtocolTests
     {
         private IProtocolTester protocolTester;
 

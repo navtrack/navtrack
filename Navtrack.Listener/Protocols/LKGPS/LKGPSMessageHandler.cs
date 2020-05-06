@@ -5,7 +5,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.LKGPS
 {
     [Service(typeof(ICustomMessageHandler<LKGPSProtocol>))]
-    public class LKGPSMessageHandler : SinoTrackMessageHandler
+    public class LKGPSMessageHandler : VjoyCarMessageHandler
     {
     }
 }

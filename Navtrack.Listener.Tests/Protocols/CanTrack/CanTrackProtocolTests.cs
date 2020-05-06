@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.CanTrack
 {
-    public class SinoTrackProtocolTests
+    public class CanTrackProtocolTests
     {
         private IProtocolTester protocolTester;
 

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Suntech
 {
-    public class FifotrackProtocolTests
+    public class SuntechProtocolTests
     {
         private IProtocolTester protocolTester;
 

@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Concox
 {
-    public class MeiligaoProtocolTests
+    public class ConcoxProtocolTests
     {
         private IProtocolTester protocolTester;
 

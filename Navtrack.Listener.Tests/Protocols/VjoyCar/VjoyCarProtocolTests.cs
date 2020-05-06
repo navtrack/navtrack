@@ -1,16 +1,16 @@
-using Navtrack.Listener.Protocols.Smartrack;
+using Navtrack.Listener.Protocols.VjoyCar;
 using NUnit.Framework;
 
-namespace Navtrack.Listener.Tests.Protocols.Smartrack
+namespace Navtrack.Listener.Tests.Protocols.VjoyCar
 {
-    public class MeiligaoProtocolTests
+    public class VjoyCarProtocolTests
     {
         private IProtocolTester protocolTester;
 
         [SetUp]
         public void Setup()
         {
-            protocolTester = new ProtocolTester(new SmartrackProtocol(), new SmartrackMessageHandler());
+            protocolTester = new ProtocolTester(new VjoyCarProtocol(), new SmartrackMessageHandler());
         }
 
         [Test]
