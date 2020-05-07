@@ -1,4 +1,5 @@
 using System;
+using static System.String;
 
 namespace Navtrack.Listener.Helpers
 {
@@ -33,6 +34,11 @@ namespace Navtrack.Listener.Helpers
             }
 
             return default;
+        }
+        
+        public static string StringJoin(this string[] array)
+        {
+            return Join(Empty, array);
         }
     }
 }

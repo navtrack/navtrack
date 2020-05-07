@@ -5,7 +5,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.TkStar
 {
     [Service(typeof(ICustomMessageHandler<TkStarProtocol>))]
-    public class TkStarMessageHandler : VjoyCarMessageHandler
+    public class TkStarMessageHandler : SinoTrackMessageHandler
     {
     }
 }

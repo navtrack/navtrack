@@ -8,7 +8,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.Carscop
 {
     [Service(typeof(ICustomMessageHandler<CarscopProtocol>))]
-    public class CarscopMessageHandler : VjoyCarMessageHandler
+    public class CarscopMessageHandler : SinoTrackMessageHandler
     {
         public override Location Parse(MessageInput input)
         {

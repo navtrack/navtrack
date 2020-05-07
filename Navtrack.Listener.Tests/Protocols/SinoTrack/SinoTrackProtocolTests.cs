@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Tests.Protocols.SinoTrack
         [SetUp]
         public void Setup()
         {
-            protocolTester = new ProtocolTester(new SinoTrackProtocol(), new VjoyCarMessageHandler());
+            protocolTester = new ProtocolTester(new SinoTrackProtocol(), new SinoTrackMessageHandler());
         }
 
         [Test]

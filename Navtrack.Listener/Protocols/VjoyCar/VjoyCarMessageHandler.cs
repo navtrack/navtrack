@@ -4,13 +4,12 @@ using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
-using Navtrack.Listener.Protocols.SinoTrack;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.VjoyCar
 {
     [Service(typeof(ICustomMessageHandler<VjoyCarProtocol>))]
-    public class SmartrackMessageHandler : VjoyCarMessageHandler
+    public class VjoyCarMessageHandler : BaseMessageHandler<VjoyCarProtocol>
     {
         public override Location Parse(MessageInput input)
         {

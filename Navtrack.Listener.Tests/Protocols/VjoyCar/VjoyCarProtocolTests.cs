@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Tests.Protocols.VjoyCar
         [SetUp]
         public void Setup()
         {
-            protocolTester = new ProtocolTester(new VjoyCarProtocol(), new SmartrackMessageHandler());
+            protocolTester = new ProtocolTester(new VjoyCarProtocol(), new VjoyCarMessageHandler());
         }
 
         [Test]

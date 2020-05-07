@@ -5,7 +5,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.CanTrack
 {
     [Service(typeof(ICustomMessageHandler<CanTrackProtocol>))]
-    public class CanTrackMessageHandler : VjoyCarMessageHandler
+    public class CanTrackMessageHandler : SinoTrackMessageHandler
     {
     }
 }
