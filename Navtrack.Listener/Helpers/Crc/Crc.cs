@@ -22,7 +22,7 @@ namespace Navtrack.Listener.Helpers.Crc
         private readonly ulong[] table = new ulong[256];
         private ulong currentValue;
 
-        public Crc(Parameters parameters)
+        private Crc(Parameters parameters)
         {
             Parameters = parameters ?? throw new ArgumentNullException("parameters");
 
@@ -156,8 +156,8 @@ namespace Navtrack.Listener.Helpers.Crc
 
             public ulong[] Table { get; set; }
         }
-        
-        internal static ulong ReverseBits(ulong ul, int valueLength)
+
+        private static ulong ReverseBits(ulong ul, int valueLength)
         {
             ulong newValue = 0;
 
