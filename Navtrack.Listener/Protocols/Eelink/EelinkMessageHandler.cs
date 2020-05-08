@@ -95,62 +95,57 @@ namespace Navtrack.Listener.Protocols.Eelink
             };
 
             input.DataMessage.ByteReader.Skip(startIndex);
-            location.DateTime = DateTime.UnixEpoch.AddSeconds(
-                BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()));
-            location.Latitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) /
-                                1800000.0m;
-            location.Longitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) /
-                                 1800000.0m;
-            location.Speed = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-            location.Heading = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-            byte[] mcc = input.DataMessage.ByteReader.Get(2);
-            location.MobileCountryCode = BitConverter.ToInt16(mcc);
-            location.MobileNetworkCode = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2));
-            location.LocationAreaCode = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2));
-            List<byte> cellId = input.DataMessage.ByteReader.Get(3).ToList();
-            cellId.Insert(0, 0x00);
-            location.CellId = BitConverter.ToInt32(cellId.ToArray());
+            location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
+            location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
+            location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
+            location.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
+            location.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();
+            location.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+            location.MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+            location.LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+            location.CellId = GetCellId(input.DataMessage.ByteReader);
             string status = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
             location.PositionStatus = status[^1] == '1';
 
             return location;
         }
 
+        private static int GetCellId(ByteReader dataMessageByteReader)
+        {
+            byte[] array = { 0x00,dataMessageByteReader.GetOne(),dataMessageByteReader.GetOne(),dataMessageByteReader.GetOne()};
+
+            return array.ToInt32();
+        }
+
         private static Location GetLocationV20(MessageInput input)
         {
             const int locationStartIndex = 7;
-            
+
             Location location = new Location
             {
                 Device = input.Client.Device,
             };
 
             input.DataMessage.ByteReader.Skip(locationStartIndex);
-            location.DateTime = DateTime.UnixEpoch.AddSeconds(
-                BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()));
+            location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
             string mask = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
 
             if (mask[^1] == '1')
             {
-                location.Latitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) /
-                                    1800000.0m;
-                location.Longitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) /
-                                     1800000.0m;
-                location.Altitude = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-                location.Speed = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-                location.Heading = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
+                location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
+                location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
+                location.Altitude = input.DataMessage.ByteReader.Get(2).ToInt16();
+                location.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
+                location.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();
                 location.Satellites = Convert.ToInt16(input.DataMessage.ByteReader.GetOne());
             }
 
             if (mask[^2] == '1')
             {
-                location.MobileCountryCode =
-                    BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-                location.MobileNetworkCode =
-                    BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-                location.LocationAreaCode =
-                    BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-                location.CellId = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray());
+                location.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+                location.MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+                location.LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+                location.CellId = input.DataMessage.ByteReader.Get(4).ToInt32();
                 location.GsmSignal = input.DataMessage.ByteReader.GetOne();
             }
 

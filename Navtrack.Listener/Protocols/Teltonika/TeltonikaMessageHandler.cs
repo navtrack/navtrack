@@ -70,16 +70,16 @@ namespace Navtrack.Listener.Protocols.Teltonika
             };
 
             location.DateTime = DateTime.UnixEpoch
-                .AddMilliseconds(BitConverter.ToInt64(input.DataMessage.ByteReader.Get(8).Reverse().ToArray()));
+                .AddMilliseconds(input.DataMessage.ByteReader.Get(8).ToInt64());
 
             byte priority = input.DataMessage.ByteReader.GetOne();
 
             location.Longitude = GetCoordinate(input.DataMessage.ByteReader.Get(4));
             location.Latitude = GetCoordinate(input.DataMessage.ByteReader.Get(4));
-            location.Altitude = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
-            location.Heading = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
+            location.Altitude = input.DataMessage.ByteReader.Get(2).ToInt16();
+            location.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();
             location.Satellites = input.DataMessage.ByteReader.GetOne();
-            location.Speed = BitConverter.ToInt16(input.DataMessage.ByteReader.Get(2).Reverse().ToArray());
+            location.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
 
             byte[] eventId = input.DataMessage.ByteReader.Get(codecConfiguration.MainEventIdLength);
             if (codecConfiguration.GenerationType)
@@ -102,7 +102,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
         private static decimal GetCoordinate(byte[] coordinate)
         {
-            decimal convertedCoordinate = BitConverter.ToInt32(coordinate.Reverse().ToArray());
+            decimal convertedCoordinate = coordinate.ToInt32();
             string binary = Convert.ToString(coordinate[0], 2).PadLeft(8, '0');
             bool isNegative = binary[0] == 1;
 
@@ -121,7 +121,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
             short numberOfEvents = codecConfiguration.EventsLength == 1
                 ? input.GetOne()
-                : BitConverter.ToInt16(input.Get(2).Reverse().ToArray());
+                : input.Get(2).ToInt16();
 
             for (int i = 0; i < numberOfEvents; i++)
             {
@@ -129,7 +129,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
                 {
                     Id = codecConfiguration.EventIdLength == 1
                         ? input.GetOne()
-                        : BitConverter.ToInt16(input.Get(2).Reverse().ToArray()),
+                        : input.Get(2).ToInt16(),
                     Value = input.Get(eventBytes)
                 });
             }
@@ -143,14 +143,14 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
             if (codecConfiguration.HasVariableSizeElements)
             {
-                short numberOfEvents = BitConverter.ToInt16(input.Get(2).Reverse().ToArray());
+                short numberOfEvents = input.Get(2).ToInt16();
 
                 for (int i = 0; i < numberOfEvents; i++)
                 {
                     events.Add(new Event
                     {
-                        Id = BitConverter.ToInt16(input.Get(2).Reverse().ToArray()),
-                        Value = input.Get(BitConverter.ToInt16(input.Get(2).Reverse().ToArray()))
+                        Id = input.Get(2).ToInt16(),
+                        Value = input.Get(input.Get(2).ToInt16())
                     });
                 }
             }
