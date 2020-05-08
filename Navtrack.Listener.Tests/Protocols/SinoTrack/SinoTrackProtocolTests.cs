@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.SinoTrack
 {
-    public class SinoTrackProtocolTests
+    public class SinoTrackProtocolTests : BaseProtocolTests<SinoTrackProtocol, SinoTrackMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new SinoTrackProtocol(), new SinoTrackMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

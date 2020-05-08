@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.CanTrack
 {
-    public class CanTrackProtocolTests
+    public class CanTrackProtocolTests : BaseProtocolTests<CanTrackProtocol, CanTrackMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new CanTrackProtocol(), new CanTrackMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

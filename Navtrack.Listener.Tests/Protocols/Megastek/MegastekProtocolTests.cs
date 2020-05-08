@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Megastek
 {
-    public class MegastekProtocolTests
+    public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, MegastekMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new MegastekProtocol(), new MegastekMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_ParsedLocationIsNotNull()
         {

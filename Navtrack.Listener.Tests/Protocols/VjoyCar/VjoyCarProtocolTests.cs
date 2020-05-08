@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.VjoyCar
 {
-    public class VjoyCarProtocolTests
+    public class VjoyCarProtocolTests : BaseProtocolTests<VjoyCarProtocol, VjoyCarMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new VjoyCarProtocol(), new VjoyCarMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLoginV1_ServerRespondsWithLoginConfirmation()
         {

@@ -4,16 +4,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Meitrack
 {
-    public class MeitrackProtocolTests
+    public class MeitrackProtocolTests : BaseProtocolTests<MeitrackProtocol, MeitrackMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new MeitrackProtocol(), new MeitrackMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

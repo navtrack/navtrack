@@ -4,16 +4,8 @@ using NUnit.Framework;
 namespace Navtrack.Listener.Tests.Protocols.Carscop
 {
     // CC828, CC830, CC630 GPS Communication Protocol
-    public class CarscopProtocolTests
+    public class CarscopProtocolTests : BaseProtocolTests<CarscopProtocol, CarscopMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new CarscopProtocol(), new CarscopMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

@@ -4,16 +4,8 @@ using NUnit.Framework;
 namespace Navtrack.Listener.Tests.Protocols.Carscop
 {
     // ReSharper disable once InconsistentNaming
-    public class CarscopCC800ProtocolTests
+    public class CarscopCC800ProtocolTests : BaseProtocolTests<CarscopProtocol, CarscopMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new CarscopProtocol(), new CarscopMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationLoginMessage_LocationIsParsed()
         {

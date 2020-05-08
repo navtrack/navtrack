@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.TkStar
 {
-    public class TkStarProtocolTests
+    public class TkStarProtocolTests : BaseProtocolTests<TkStarProtocol, TkStarMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new TkStarProtocol(), new TkStarMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

@@ -33,7 +33,5 @@ namespace Navtrack.Listener.Helpers
 
             return new DateTime(add2000Year ? year + 2000 : year, month, day, hour, minute, second, millisecond);
         }
-        
-        public static DateTime UnixEpoch() => new DateTime(1970, 1, 1);
     }
 }

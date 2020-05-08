@@ -15,5 +15,6 @@ namespace Navtrack.Listener.Tests.Protocols
         List<Location> TotalParsedLocations { get; }
         List<Location> LastParsedLocations { get; }
         Location LastParsedLocation { get; }
+        void CheckLocations();
     }
 }

@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Suntech
 {
-    public class SuntechProtocolTests
+    public class SuntechProtocolTests : BaseProtocolTests<SuntechProtocol, SuntechMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new SuntechProtocol(), new SuntechMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

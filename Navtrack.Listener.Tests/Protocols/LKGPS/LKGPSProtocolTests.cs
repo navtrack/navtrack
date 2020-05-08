@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.LKGPS
 {
-    public class LKGPSProtocolTests
+    public class LKGPSProtocolTests : BaseProtocolTests<LKGPSProtocol, LKGPSMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new LKGPSProtocol(), new LKGPSMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

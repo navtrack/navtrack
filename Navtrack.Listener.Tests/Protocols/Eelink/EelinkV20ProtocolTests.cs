@@ -1,18 +1,11 @@
+using System;
 using Navtrack.Listener.Protocols.Eelink;
 using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Eelink
 {
-    public class EelinkV20ProtocolTests
+    public class EelinkV20ProtocolTests : BaseProtocolTests<EelinkProtocol, EelinkMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new EelinkProtocol(), new EelinkMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLoginPackage_ServerAcknowledges()
         {

@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Meiligao
 {
-    public class MeiligaoProtocolTests
+    public class MeiligaoProtocolTests : BaseProtocolTests<MeiligaoProtocol, MeiligaoMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new MeiligaoProtocol(), new MeiligaoMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLoginCommand_ServerRespondsWithLoginConfirmation()
         {

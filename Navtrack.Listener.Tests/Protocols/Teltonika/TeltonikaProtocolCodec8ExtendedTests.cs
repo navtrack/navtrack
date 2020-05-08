@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Teltonika
 {
-    public class TeltonikaProtocolCodec8ExtendedTests
+    public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaProtocol, TeltonikaMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new TeltonikaProtocol(), new TeltonikaMessageHandler());
-        }
-
         [Test]
         public void Codec8Extended_DeviceSendImei_ServerReturnsAcknowledge()
         {

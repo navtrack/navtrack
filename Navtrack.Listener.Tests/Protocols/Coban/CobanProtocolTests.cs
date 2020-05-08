@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Coban
 {
-    public class CobanProtocolTests
+    public class CobanProtocolTests : BaseProtocolTests<CobanProtocol, CobanMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new CobanProtocol(), new CobanMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsIMEI_ServerRepliesWithAcknowledge()
         {

@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Tzone
 {
-    public class TzoneProtocolTests
+    public class TzoneProtocolTests : BaseProtocolTests<TzoneProtocol, TzoneMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new TzoneProtocol(), new TzoneMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_ParsedLocationIsNotNull()
         {

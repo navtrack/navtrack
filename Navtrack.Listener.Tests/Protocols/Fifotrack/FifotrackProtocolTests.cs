@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Fifotrack
 {
-    public class FifotrackProtocolTests
+    public class FifotrackProtocolTests : BaseProtocolTests<FifotrackProtocol, FifotrackMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new FifotrackProtocol(), new FifotrackMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

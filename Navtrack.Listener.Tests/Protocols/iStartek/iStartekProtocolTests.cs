@@ -4,16 +4,8 @@ using NUnit.Framework;
 namespace Navtrack.Listener.Tests.Protocols.iStartek
 {
     // ReSharper disable once InconsistentNaming
-    public class iStartekProtocolTests
+    public class iStartekProtocolTests : BaseProtocolTests<iStartekProtocol, iStartekMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new iStartekProtocol(), new iStartekMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

@@ -33,13 +33,13 @@ namespace Navtrack.Listener.Protocols.Eelink
                         return null;
                     }
                 },
-                {PackageIdentifier.Location, () => HandleLocationForV20(input, 7)},
-                {PackageIdentifier.Warning, () => HandleLocationForV20(input, 4)},
-                {PackageIdentifier.Report, () => HandleLocationForV20(input, 7)},
+                {PackageIdentifier.Location, () => HandleLocationForV20(input)},
+                {PackageIdentifier.Warning, () => HandleLocationForV20(input)},
+                {PackageIdentifier.Report, () => HandleLocationForV20(input)},
                 {
                     PackageIdentifier.Message, () =>
                     {
-                        Location location = GetLocationV20(input, 7);
+                        Location location = GetLocationV20(input);
 
                         string number =
                             HexUtil.ConvertHexStringArrayToHexString(
@@ -66,9 +66,9 @@ namespace Navtrack.Listener.Protocols.Eelink
             return dictionary.ContainsKey(packageIdentifier) ? dictionary[packageIdentifier].Invoke() : null;
         }
 
-        private static Location HandleLocationForV20(MessageInput input, int locationStartIndex)
+        private static Location HandleLocationForV20(MessageInput input)
         {
-            Location location = GetLocationV20(input, locationStartIndex);
+            Location location = GetLocationV20(input);
 
             SendAcknowledge(input);
 
@@ -95,7 +95,7 @@ namespace Navtrack.Listener.Protocols.Eelink
             };
 
             input.DataMessage.ByteReader.Skip(startIndex);
-            location.DateTime = DateTimeUtil.UnixEpoch().AddSeconds(
+            location.DateTime = DateTime.UnixEpoch.AddSeconds(
                 BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()));
             location.Latitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) /
                                 1800000.0m;
@@ -116,16 +116,18 @@ namespace Navtrack.Listener.Protocols.Eelink
             return location;
         }
 
-        private static Location GetLocationV20(MessageInput input, int startIndex)
+        private static Location GetLocationV20(MessageInput input)
         {
+            const int locationStartIndex = 7;
+            
             Location location = new Location
             {
                 Device = input.Client.Device,
             };
 
-            input.DataMessage.ByteReader.Skip(startIndex);
-            location.DateTime = DateTimeUtil.UnixEpoch().AddSeconds(
-                BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4)));
+            input.DataMessage.ByteReader.Skip(locationStartIndex);
+            location.DateTime = DateTime.UnixEpoch.AddSeconds(
+                BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()));
             string mask = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
 
             if (mask[^1] == '1')
@@ -164,7 +166,7 @@ namespace Navtrack.Listener.Protocols.Eelink
             {
                 const int version = 1;
                 const string paramSetAction = "03";
-                int time = (int) (DateTime.UtcNow - DateTimeUtil.UnixEpoch()).TotalSeconds;
+                int time = (int) (DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
 
                 extra = $"{time:X4}{version:X4}{paramSetAction}";
             }

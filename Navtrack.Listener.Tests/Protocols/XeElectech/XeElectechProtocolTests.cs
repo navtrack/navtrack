@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.XeElectech
 {
-    public class XeElectechProtocolTests
+    public class XeElectechProtocolTests : BaseProtocolTests<XeElectechProtocol, XeElectechMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new XeElectechProtocol(), new XeElectechMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {

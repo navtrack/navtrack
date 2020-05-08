@@ -1,20 +1,10 @@
-using System;
-using Navtrack.Listener.Helpers.Crc;
 using Navtrack.Listener.Protocols.Concox;
 using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Concox
 {
-    public class ConcoxProtocolTests
+    public class ConcoxProtocolTests : BaseProtocolTests<ConcoxProtocol, ConcoxMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new ConcoxProtocol(), new ConcoxMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLogin_ServerRespondsWithLoginConfirmation()
         {

@@ -9,6 +9,7 @@ using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Listener.Services;
+using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols
 {
@@ -26,7 +27,21 @@ namespace Navtrack.Listener.Tests.Protocols
         public List<Location> LastParsedLocations { get; private set; }
         public List<Location> TotalParsedLocations { get; }
         public Location LastParsedLocation => LastParsedLocations.FirstOrDefault();
+        
+        [TearDown]
+        public void CheckLocations()
+        {
+            foreach (Location location in TotalParsedLocations)
+            {
+                LocationIsValid(location);
+            }
+        }
 
+        private void LocationIsValid(Location location)
+        {
+            Assert.IsTrue(!location.Heading.HasValue || location.Heading.Value >= 0 && location.Heading.Value <= 360);
+        }
+        
         public ProtocolTester(IProtocol protocol, ICustomMessageHandler customMessageHandler)
         {
             cancellationTokenSource = new CancellationTokenSource();

@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Queclink
 {
-    public class QueclinkProtocolTests
+    public class QueclinkProtocolTests : BaseProtocolTests<QueclinkProtocol, QueclinkMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new QueclinkProtocol(), new QueclinkMessageHandler());
-        }
-
         [Test]
         public void DeviceSendsLocationV1_ParsedLocationIsNotNull()
         {

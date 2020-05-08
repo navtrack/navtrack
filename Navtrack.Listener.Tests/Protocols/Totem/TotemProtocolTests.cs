@@ -3,16 +3,8 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Totem
 {
-    public class TotemProtocolTests
+    public class TotemProtocolTests : BaseProtocolTests<TotemProtocol, TotemMessageHandler>
     {
-        private IProtocolTester protocolTester;
-
-        [SetUp]
-        public void Setup()
-        {
-            protocolTester = new ProtocolTester(new TotemProtocol(), new TotemMessageHandler());
-        }
-
         [Test]
         public void AT07_DeviceSendsLocation_ParsedLocationIsNotNull()
         {

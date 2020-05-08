@@ -69,7 +69,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
                 Device = input.Client.Device
             };
 
-            location.DateTime = DateTimeUtil.UnixEpoch()
+            location.DateTime = DateTime.UnixEpoch
                 .AddMilliseconds(BitConverter.ToInt64(input.DataMessage.ByteReader.Get(8).Reverse().ToArray()));
 
             byte priority = input.DataMessage.ByteReader.GetOne();
