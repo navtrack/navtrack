@@ -161,7 +161,7 @@ namespace Navtrack.Listener.Protocols.Eelink
         {
             string extra = Empty;
 
-            // new protocol extra information
+            // protocol V2.0 extra information
             if (input.DataMessage.Bytes.Length > 17)
             {
                 const int version = 1;
