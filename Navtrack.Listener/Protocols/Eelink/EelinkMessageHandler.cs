@@ -238,31 +238,6 @@ namespace Navtrack.Listener.Protocols.Eelink
                 location.GsmSignal = input.DataMessage.ByteReader.GetOne();
             }
 
-            if (mask[^3] == '1')
-            {
-                input.DataMessage.ByteReader.Skip(7);
-            }
-
-            if (mask[^4] == '1')
-            {
-                input.DataMessage.ByteReader.Skip(7);
-            }
-
-            if (mask[^5] == '1')
-            {
-                input.DataMessage.ByteReader.Skip(7);
-            }
-
-            if (mask[^6] == '1')
-            {
-                input.DataMessage.ByteReader.Skip(7);
-            }
-
-            if (mask[^7] == '1')
-            {
-                input.DataMessage.ByteReader.Skip(7);
-            }
-
             return location;
         }
 
