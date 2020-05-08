@@ -187,7 +187,7 @@ namespace Navtrack.Listener.Protocols.Eelink
             };
 
             input.DataMessage.ByteReader.Skip(startIndex);
-            location.DateTime = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(
+            location.DateTime = DateTimeUtil.UnixEpoch().AddSeconds(
                 BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()));
             location.Latitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) / 1800000.0m;
             location.Longitude = BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4).Reverse().ToArray()) / 1800000.0m;
@@ -215,7 +215,7 @@ namespace Navtrack.Listener.Protocols.Eelink
             };
 
             input.DataMessage.ByteReader.Skip(startIndex);
-            location.DateTime = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(
+            location.DateTime = DateTimeUtil.UnixEpoch().AddSeconds(
                 BitConverter.ToInt32(input.DataMessage.ByteReader.Get(4)));
             string mask = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
 
@@ -249,7 +249,7 @@ namespace Navtrack.Listener.Protocols.Eelink
             string sequence = input.DataMessage.Hex[5..7].StringJoin();
             const int version = 1;
             const string paramSetAction = "03";
-            int time = (int) (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds;
+            int time = (int) (DateTime.UtcNow - DateTimeUtil.UnixEpoch()).TotalSeconds;
 
             string reply;
             

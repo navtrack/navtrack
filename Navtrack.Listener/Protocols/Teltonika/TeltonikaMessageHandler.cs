@@ -69,7 +69,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
                 Device = input.Client.Device
             };
 
-            location.DateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0)
+            location.DateTime = DateTimeUtil.UnixEpoch()
                 .AddMilliseconds(BitConverter.ToInt64(input.DataMessage.ByteReader.Get(8).Reverse().ToArray()));
 
             byte priority = input.DataMessage.ByteReader.GetOne();
@@ -136,7 +136,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
             return events;
         }
-        
+
         private static IEnumerable<Event> GetEvents(ByteReader input, CodecConfiguration codecConfiguration)
         {
             List<Event> events = new List<Event>();
@@ -144,7 +144,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
             if (codecConfiguration.HasVariableSizeElements)
             {
                 short numberOfEvents = BitConverter.ToInt16(input.Get(2).Reverse().ToArray());
-                
+
                 for (int i = 0; i < numberOfEvents; i++)
                 {
                     events.Add(new Event
@@ -154,7 +154,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
                     });
                 }
             }
-            
+
             return events;
         }
     }

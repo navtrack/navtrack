@@ -6,7 +6,7 @@ namespace Navtrack.Listener.Helpers
     public static class DateTimeUtil
     {
         public static DateTime New(string year, string month, string day, string hour, string minute, string second,
-            string millisecond = null, bool add2000Year = true, bool isHexString = false)
+            string millisecond = null, bool add2000Year = true)
         {
             return new DateTime(add2000Year ? Convert.ToInt32(year) + 2000 : Convert.ToInt32(year),
                 Convert.ToInt32(month),
@@ -33,5 +33,7 @@ namespace Navtrack.Listener.Helpers
 
             return new DateTime(add2000Year ? year + 2000 : year, month, day, hour, minute, second, millisecond);
         }
+        
+        public static DateTime UnixEpoch() => new DateTime(1970, 1, 1);
     }
 }
