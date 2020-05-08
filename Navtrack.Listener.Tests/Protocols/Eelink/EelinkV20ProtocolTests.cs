@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.Eelink
 {
-    public class EelinkProtocolTests
+    public class EelinkV20ProtocolTests
     {
         private IProtocolTester protocolTester;
 

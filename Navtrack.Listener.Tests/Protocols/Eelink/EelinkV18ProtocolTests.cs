@@ -53,21 +53,5 @@ namespace Navtrack.Listener.Tests.Protocols.Eelink
         
             Assert.AreEqual("676705000202B4", protocolTester.ReceiveHexInDevice());
         }
-        
-        // [Test]
-        // public void DeviceSendsMessagePackage_ServerAcknowledges()
-        // {
-        //     protocolTester.SendHexFromDevice("6767160039000D590BD5AF03026B940D0C3952AD0021000000000501CC0001A53F0170F0AB17323031383536363232313235300000000000000000313233");
-        //
-        //     Assert.AreEqual("6767160017000D323031383536363232313235300000000000000000", protocolTester.ReceiveHexInDevice());
-        // }
-        //
-        // [Test]
-        // public void DeviceSendsParamSetPackage_ServerAcknowledges()
-        // {
-        //     protocolTester.SendHexFromDevice("67671B009E000500010432009266DF000008053FC0A20341303EFE8110D414404C0680185610CEF3A23C8C18154005AB64300BD0AAA845755C0CE331CF0C1B036478B843D0EA288988320B42D068956405053C11A4588FA38803FD599EC6EF4B7383D0FC3FB7333919EA637F3D8EFB1D79F9D27B8D7782191146AE344DC0766F01599EE898BBE5ED3217444DBECA0AB4BADA4B08224A48F235D59759EDEB2A24EE9C20");
-        //
-        //     Assert.AreEqual("67671B0003000500", protocolTester.ReceiveHexInDevice());
-        // }
     }
 }
