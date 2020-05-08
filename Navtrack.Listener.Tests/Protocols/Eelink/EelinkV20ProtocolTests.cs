@@ -1,4 +1,3 @@
-using System;
 using Navtrack.Listener.Protocols.Eelink;
 using NUnit.Framework;
 
