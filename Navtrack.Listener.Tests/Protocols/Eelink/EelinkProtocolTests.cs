@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Navtrack.Listener.Protocols.Eelink;
 using NUnit.Framework;
 
@@ -22,10 +20,10 @@ namespace Navtrack.Listener.Tests.Protocols.Eelink
 
             string hex = protocolTester.ReceiveHexInDevice();
             
-            Assert.IsTrue(hex.Contains("67670100090005"));
-            Assert.IsTrue(hex.Contains("000103"));
+            Assert.IsTrue(hex.StartsWith("67670100090005"));
+            Assert.IsTrue(hex.EndsWith("000103"));
         }
-
+        
         [Test]
         public void DeviceSendsHeartbeatPackage_ServerAcknowledges()
         {

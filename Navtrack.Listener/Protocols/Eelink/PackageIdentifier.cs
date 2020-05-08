@@ -14,6 +14,15 @@ namespace Navtrack.Listener.Protocols.Eelink
         Pedometer = 0x1A,
         ParamSet = 0x1B,
         Instruction = 0x80,
-        Broadcast = 0x81
+        Broadcast = 0x81,
+        // Protocol 1.8
+        GPSOld = 0x02,
+        AlarmOld = 0x04,
+        TerminalStateOld = 0x05,
+        SMSCommandsUploadOld = 0x06,
+        OBDDataOld = 0x07,
+        OBDFaultOld = 0x09,
+        PhotoInformationOld = 0x0E,
+        PhotoContentOld = 0x0F
     }
 }
