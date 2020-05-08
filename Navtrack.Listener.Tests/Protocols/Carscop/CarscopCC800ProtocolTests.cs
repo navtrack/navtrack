@@ -9,19 +9,19 @@ namespace Navtrack.Listener.Tests.Protocols.Carscop
         [Test]
         public void DeviceSendsLocationLoginMessage_LocationIsParsed()
         {
-            protocolTester.SendStringFromDevice(
+            ProtocolTester.SendStringFromDevice(
                 "*040331141830UB05CW0800C12345678013255A2240.8419N11408.8178E000.104033129.2011111111L000023^");
 
-            Assert.AreEqual("*040331141830DX061^", protocolTester.ReceiveStringInDevice());
+            Assert.AreEqual("*040331141830DX061^", ProtocolTester.ReceiveStringInDevice());
         }
 
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
         {
-            protocolTester.SendStringFromDevice(
+            ProtocolTester.SendStringFromDevice(
                 "*040331141830UD04013255A2267.6805N11415.1885E000.104033129.2011111111L000023^");
 
-            Assert.IsNotNull(protocolTester.LastParsedLocation);
+            Assert.IsNotNull(ProtocolTester.LastParsedLocation);
         }
     }
 }

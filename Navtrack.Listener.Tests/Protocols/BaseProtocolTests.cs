@@ -9,18 +9,18 @@ namespace Navtrack.Listener.Tests.Protocols
     public class BaseProtocolTests<TProtocol, TMessageHandler> where TProtocol : IProtocol, new()
         where TMessageHandler : ICustomMessageHandler, new()
     {
-        private protected IProtocolTester protocolTester;
+        private protected IProtocolTester ProtocolTester;
 
         [SetUp]
         public void Setup()
         {
-            protocolTester = new ProtocolTester(new TProtocol(), new TMessageHandler());
+            ProtocolTester = new ProtocolTester(new TProtocol(), new TMessageHandler());
         }
 
         [TearDown]
         public void LocationsAreValid()
         {
-            foreach (Location location in protocolTester.TotalParsedLocations)
+            foreach (Location location in ProtocolTester.TotalParsedLocations)
             {
                 LocationIsValid(location);
             }
