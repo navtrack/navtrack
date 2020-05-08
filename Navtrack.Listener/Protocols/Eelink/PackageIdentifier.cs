@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Eelink
         ParamSet = 0x1B,
         Instruction = 0x80,
         Broadcast = 0x81,
-        // Protocol 1.8
+        // Protocol V1.8
         GPSOld = 0x02,
         AlarmOld = 0x04,
         TerminalStateOld = 0x05,
