@@ -2,13 +2,13 @@ using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
-using Navtrack.Listener.Protocols.SinoTrack;
+using Navtrack.Listener.Protocols.TkStar;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.Carscop
 {
     [Service(typeof(ICustomMessageHandler<CarscopProtocol>))]
-    public class CarscopMessageHandler : SinoTrackMessageHandler
+    public class CarscopMessageHandler : TkStarMessageHandler
     {
         public override Location Parse(MessageInput input)
         {
