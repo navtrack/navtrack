@@ -25,7 +25,7 @@ namespace Navtrack.Listener.Tests.Protocols
         
         public List<Location> LastParsedLocations { get; private set; }
         public List<Location> TotalParsedLocations { get; }
-        public Location LastParsedLocation => LastParsedLocations.FirstOrDefault();
+        public Location LastParsedLocation => LastParsedLocations?.FirstOrDefault();
         
         public ProtocolTester(IProtocol protocol, ICustomMessageHandler customMessageHandler)
         {

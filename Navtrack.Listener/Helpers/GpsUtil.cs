@@ -45,5 +45,14 @@ namespace Navtrack.Listener.Helpers
           
             return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
         }
+
+        public static decimal ConvertStringToDecimal(string value, string cardinalDirection)
+        {
+            int multiplier = cardinalDirection == "S" || cardinalDirection == "W" ? -1 : 1;
+
+            decimal result = decimal.Parse(value) * multiplier;
+
+            return result;
+        }
     }
 }
