@@ -1,9 +1,10 @@
-using Navtrack.Listener.Protocols.ReachFar;
+using Navtrack.Listener.Protocols.iCarGPS;
 using NUnit.Framework;
 
-namespace Navtrack.Listener.Tests.Protocols.ReachFar
+namespace Navtrack.Listener.Tests.Protocols.iCarGPS
 {
-    public class ReachFarProtocolTests : BaseProtocolTests<ReachFarProtocol, ReachFarMessageHandler>
+    // ReSharper disable once InconsistentNaming
+    public class iCarGPSProtocolTests : BaseProtocolTests<iCarGPSProtocol, iCarGPSMessageHandler>
     {
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
