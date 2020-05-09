@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
@@ -11,46 +13,41 @@ namespace Navtrack.Listener.Protocols.Queclink
     {
         public override Location Parse(MessageInput input)
         {
-            int? index = GetHDOPIndex(input.DataMessage.CommaSplit);
+            Match imeiMatch = new Regex(@",(\d{15}),").Match(input.DataMessage.String);
 
-            if (index.HasValue)
+            Match locationMatch =
+                new Regex(
+                        @"(.*),(.*),(.*),(.*),(.*),(-?.*),(-?.*),(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}),(.*?),(.*?),(.*?),(.*?),00,")
+                    .Match(input.DataMessage.String);
+
+            if (imeiMatch.Groups.Count == 2 && locationMatch.Groups.Count == 18)
             {
                 Location location = new Location
                 {
                     Device = new Device
                     {
-                        IMEI = input.DataMessage.CommaSplit.Get<string>(2)
+                        IMEI = imeiMatch.Groups[1].Value
                     },
-                    HDOP = input.DataMessage.CommaSplit.Get<decimal?>(index.Value),
-                    Speed = input.DataMessage.CommaSplit.Get<decimal?>(index.Value + 1),
-                    Heading = input.DataMessage.CommaSplit.Get<decimal?>(index.Value + 2),
-                    Altitude = input.DataMessage.CommaSplit.Get<decimal?>(index.Value + 3),
-                    Longitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value + 4),
-                    Latitude = input.DataMessage.CommaSplit.Get<decimal>(index.Value + 5),
-                    DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(index.Value + 6))
+                    HDOP = locationMatch.Groups[2].Get<decimal?>(),
+                    Speed = locationMatch.Groups[3].Get<decimal?>(),
+                    Heading = locationMatch.Groups[4].Get<decimal?>(),
+                    Altitude = locationMatch.Groups[5].Get<decimal?>(),
+                    Longitude = locationMatch.Groups[6].Get<decimal>(),
+                    Latitude = locationMatch.Groups[7].Get<decimal>(),
+                    DateTime = DateTimeUtil.New(locationMatch.Groups[8].Value, locationMatch.Groups[9].Value,
+                        locationMatch.Groups[10].Value,
+                        locationMatch.Groups[11].Value, locationMatch.Groups[12].Value, locationMatch.Groups[13].Value,
+                        add2000Year: false),
+                    MobileCountryCode = locationMatch.Groups[14].Get<int?>(),
+                    MobileNetworkCode = locationMatch.Groups[15].Get<int?>(),
+                    LocationAreaCode = int.Parse(locationMatch.Groups[16].Value, NumberStyles.HexNumber),
+                    CellId = int.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber)
                 };
-                location.PositionStatus = location.HDOP > 0;
 
                 return location;
             }
 
             return null;
         }
-
-        private static int? GetHDOPIndex(string[] message)
-        {
-            for (int i = 0; i < message.Length - 2; i++)
-            {
-                if (message[i].Contains(".") && message[i + 1].Contains(".") && message[i + 2].Length == 14)
-                {
-                    return i - 4;
-                }
-            }
-
-            return null;
-        }
-
-        private static DateTime ConvertDate(string date) => DateTimeUtil.New(date[..4], date[4..6], date[6..8],
-            date[8..10], date[10..12], date[12..14], add2000Year: false);
     }
 }
