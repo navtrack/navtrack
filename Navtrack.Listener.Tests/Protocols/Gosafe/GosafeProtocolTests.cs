@@ -202,10 +202,5 @@ namespace Navtrack.Listener.Tests.Protocols.Gosafe
 
             Assert.IsNotNull(ProtocolTester.LastParsedLocation);
         }
-
-        
-       
-        
-        
     }
 }
