@@ -12,8 +12,21 @@ namespace Navtrack.Listener.Protocols.Alematics
         public override Location Parse(MessageInput input)
         {
             Match locationMatch =
-                new Regex(
-                        @"(\d{15}),(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}),(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(\d+)")
+                new Regex("(\\d{15})," + // IMEI
+                                  "(\\d{4})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})," + // GPS date
+                                  "(\\d{4})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})," + // Device date
+                                  "(.*?)," + // Latitude
+                                  "(.*?)," + // Longitude
+                                  "(.*?)," + // Speed
+                                  "(.*?)," + // Heading
+                                  "(.*?)," + // Altitude
+                                  "(.*?)," + // HDOP
+                                  "(.*?)," + // Satellites
+                                  "(.*?)," + // Input
+                                  "(.*?)," + // Output
+                                  "(.*?)," + // ADC
+                                  "(.*?)," + // Power
+                                  "(\\d+)") // Odometer
                     .Match(input.DataMessage.String);
 
             if (locationMatch.Groups.Count == 26)
