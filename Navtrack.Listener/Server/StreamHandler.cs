@@ -74,7 +74,7 @@ namespace Navtrack.Listener.Server
         {
             if (protocol.MessageStart.Length > 0)
             {
-                for (int i = length - protocol.MessageStart.Length; i >= 0; i--)
+                for (int i = 0; i < length-protocol.MessageStart.Length; i ++)
                 {
                     int endIndex = i + protocol.MessageStart.Length;
 
