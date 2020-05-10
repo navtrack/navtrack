@@ -1,6 +1,6 @@
 ﻿namespace Navtrack.Listener.Helpers
 {
-    public static class BitUtl
+    public static class BitUtil
     {
         public static bool IsTrue(int value, int index)
         {

@@ -46,6 +46,13 @@ namespace Navtrack.Listener.Helpers
             return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
         }
 
+        public static decimal ConvertDdmToDecimal(decimal degrees, decimal minutes, CardinalPoint cardinalPoint)
+        {
+            int multiplier = cardinalPoint == CardinalPoint.South || cardinalPoint == CardinalPoint.West ? -1 : 1;
+          
+            return Math.Round((degrees + minutes/60) * multiplier, 6, MidpointRounding.ToZero);
+        }
+
         public static decimal ConvertStringToDecimal(string value, string cardinalDirection)
         {
             int multiplier = cardinalDirection == "S" || cardinalDirection == "W" ? -1 : 1;

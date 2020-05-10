@@ -59,7 +59,7 @@ namespace Navtrack.Listener.Protocols.Haicom
             decimal coordinate = locationMatch.Groups[degreesIndex].Get<decimal>() +
                                  locationMatch.Groups[minutesIndex].Get<decimal>() / 60000;
 
-            return !BitUtl.IsTrue(flags, i2) ? -coordinate : coordinate;
+            return !BitUtil.IsTrue(flags, i2) ? -coordinate : coordinate;
         }
     }
 }
