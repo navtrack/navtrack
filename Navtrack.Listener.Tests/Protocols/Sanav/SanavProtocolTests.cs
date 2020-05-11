@@ -31,7 +31,7 @@ namespace Navtrack.Listener.Tests.Protocols.Sanav
 
             Assert.IsNotNull(ProtocolTester.LastParsedLocation);
         }
-        
+
         [Test]
         public void DeviceSendsLocationV4_LocationIsParsed()
         {
@@ -39,9 +39,8 @@ namespace Navtrack.Listener.Tests.Protocols.Sanav
                 "imei:352024028980000rmc:$GPRMC,093604.354,A,4735.0862,N,01905.2146,E,0.00,0.00,171013,,*09,AUTO-4103mv");
 
             Assert.IsNotNull(ProtocolTester.LastParsedLocation);
-        }   
-        
-        
+        }
+
         [Test]
         public void DeviceSendsLocationV5_LocationIsParsed()
         {
@@ -49,7 +48,7 @@ namespace Navtrack.Listener.Tests.Protocols.Sanav
                 "imei:352024027800000rmc:$GPRMC,000025.000,A,4735.0349,N,01905.2899,E,0.00,202.97,171013,,*03,3950mV,AUTO");
 
             Assert.IsNotNull(ProtocolTester.LastParsedLocation);
-        }   
+        }
 
         [Test]
         public void DeviceSendsLocationV6_LocationIsParsed()
@@ -58,7 +57,7 @@ namespace Navtrack.Listener.Tests.Protocols.Sanav
                 "imei:352024020976845rmc:$GPRMC,000201.000,A,4655.7043,N,01941.3796,E,0.54,159.14,171013,,,A*65,AUTO");
 
             Assert.IsNotNull(ProtocolTester.LastParsedLocation);
-        }   
+        }
 
         [Test]
         public void DeviceSendsLocationV7_LocationIsParsed()
