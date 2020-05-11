@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -67,7 +68,7 @@ namespace Navtrack.Listener.Protocols.Megastek
                 DateTime = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
                 Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
                 HDOP = input.DataMessage.CommaSplit.Get<decimal?>(14),
-                Speed = input.DataMessage.CommaSplit.Get<decimal?>(15) * (decimal)1.852,
+                Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<decimal>(15)),
                 Heading = input.DataMessage.CommaSplit.Get<decimal?>(16),
                 Altitude = input.DataMessage.CommaSplit.Get<decimal?>(17),
                 Odometer = input.DataMessage.CommaSplit.Get<double?>(18) * 1000,

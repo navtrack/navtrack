@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Protocols.TkStar;
 using Navtrack.Listener.Server;
@@ -40,7 +41,7 @@ namespace Navtrack.Listener.Protocols.Carscop
                     PositionStatus = lgc[2].Value == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
                     Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
-                    Speed = decimal.Parse(lgc[9].Value) * (decimal) 1.852,
+                    Speed = SpeedUtil.KnotsToKph(lgc[9].Get<decimal>()),
                     Heading = decimal.Parse(lgc[13].Value),
                     Odometer = double.Parse(lgc[16].Value)
                 };

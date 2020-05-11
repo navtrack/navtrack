@@ -2,6 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -28,7 +29,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
                         inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
                     DateTime = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
                         inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
-                    Speed = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal?>(6) * (decimal)1.852,
+                    Speed = SpeedUtil.KnotsToKph(inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal>(6)),
                     Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal?>(7),
                     HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<decimal?>(1),
                     Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<decimal?>(2),

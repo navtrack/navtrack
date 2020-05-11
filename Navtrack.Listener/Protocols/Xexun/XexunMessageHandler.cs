@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -32,8 +33,8 @@ namespace Navtrack.Listener.Protocols.Xexun
                     PositionStatus = lgc[16].Value == "F",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[6].Value, lgc[7].Value),
                     Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[8].Value, lgc[9].Value),
-                    Speed = decimal.Parse(lgc[10].Value) * (decimal) 1.852,
-                    Heading = string.IsNullOrEmpty(lgc[11].Value) ? default(decimal?) : decimal.Parse(lgc[11].Value),
+                    Speed = SpeedUtil.KnotsToKph(lgc[10].Get<decimal>()),
+                    Heading = string.IsNullOrEmpty(lgc[11].Value) ? default(decimal?) : decimal.Parse(lgc[11].Value)
                 };
 
                 MatchCollection extra =

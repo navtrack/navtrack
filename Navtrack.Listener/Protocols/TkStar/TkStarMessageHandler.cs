@@ -1,6 +1,7 @@
 using System;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -26,7 +27,7 @@ namespace Navtrack.Listener.Protocols.TkStar
                     input.DataMessage.CommaSplit[timeIndex + 3]),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[timeIndex + 4],
                     input.DataMessage.CommaSplit[timeIndex + 5]),
-                Speed = input.DataMessage.CommaSplit.Get<decimal?>(timeIndex + 6) * (decimal) 1.852,
+                Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<decimal>(timeIndex + 6)),
                 Heading = input.DataMessage.CommaSplit.Get<decimal?>(timeIndex + 7)
             };
 
