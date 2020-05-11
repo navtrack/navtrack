@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -38,7 +39,7 @@ namespace Navtrack.Listener.Protocols.Arknav
                         locationMatch.Groups[7].Value),
                     Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[8].Value,
                         locationMatch.Groups[9].Value),
-                    Speed = locationMatch.Groups[10].Get<decimal?>(),
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[10].Get<decimal>()),
                     Heading = locationMatch.Groups[11].Get<decimal?>(),
                     HDOP = locationMatch.Groups[12].Get<decimal?>(),
                     DateTime = DateTimeUtil.New(locationMatch.Groups[18].Value, locationMatch.Groups[17].Value,

@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -43,7 +44,7 @@ namespace Navtrack.Listener.Protocols.Sanav
                     PositionStatus = locationMatch.Groups[8].Value == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
                     Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[12].Value),
-                    Speed = locationMatch.Groups[14].Get<decimal?>(),
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<decimal>()),
                     Heading = locationMatch.Groups[15].Get<decimal?>()
                 };
 

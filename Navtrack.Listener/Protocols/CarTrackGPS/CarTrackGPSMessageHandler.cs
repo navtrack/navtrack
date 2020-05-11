@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -52,7 +53,7 @@ namespace Navtrack.Listener.Protocols.CarTrackGPS
                     PositionStatus = locationMatch.Groups[8].Value == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
                     Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[12].Value),
-                    Speed = locationMatch.Groups[13].Get<decimal?>() / 10,
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[13].Get<decimal>()),
                     Heading = locationMatch.Groups[14].Get<decimal?>() / 10,
                     HDOP = locationMatch.Groups[20].Get<decimal?>() / 10,
                     Odometer = GetOdometer(locationMatch.Groups[22].Value)

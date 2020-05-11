@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using Navtrack.Listener.Helpers.New;
 
 namespace Navtrack.Listener.Helpers
 {
@@ -22,7 +23,7 @@ namespace Navtrack.Listener.Helpers
             Latitude = GpsUtil.ConvertDmmLatToDecimal(split[2], split[3]);
             Longitude = GpsUtil.ConvertDmmLongToDecimal(split[4], split[5]);
             PositionStatus = split[1] == "A";
-            Speed = split.Get<decimal?>(6) * (decimal) 1.852;
+            Speed = SpeedUtil.KnotsToKph(split.Get<decimal>(6));
             Heading = split.Get<decimal?>(7);
         }
 

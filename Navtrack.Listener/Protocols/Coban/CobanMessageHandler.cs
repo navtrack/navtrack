@@ -2,6 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using static System.String;
@@ -69,7 +70,7 @@ namespace Navtrack.Listener.Protocols.Coban
                     input.DataMessage.CommaSplit[8]),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
                     input.DataMessage.CommaSplit[10]),
-                Speed = input.DataMessage.CommaSplit.Get<decimal?>(11),
+                Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<decimal>(11)),
                 Heading = input.DataMessage.CommaSplit.Get<string>(12) != "1"
                     ? input.DataMessage.CommaSplit.Get<decimal?>(12)
                     : null,

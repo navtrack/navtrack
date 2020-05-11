@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
@@ -44,7 +45,7 @@ namespace Navtrack.Listener.Protocols.Haicom
                         locationMatch.Groups[8].Value),
                     Latitude = GetCoordinate(locationMatch, 10, 11, flags, 2),
                     Longitude = GetCoordinate(locationMatch, 12, 13, flags, 1),
-                    Speed = locationMatch.Groups[14].Get<decimal?>() / 10,
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<decimal>() / 10),
                     Heading = locationMatch.Groups[15].Get<decimal?>() / 10
                 };
            
