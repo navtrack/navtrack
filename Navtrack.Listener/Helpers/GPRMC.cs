@@ -19,10 +19,10 @@ namespace Navtrack.Listener.Helpers
             input = input.Replace("$GPRMC,", String.Empty);
             string[] split = input.Split(",");
 
+            PositionStatus = split[1] == "A";
             DateTime = GetDateTime(split[0], split[8]);
             Latitude = GpsUtil.ConvertDmmLatToDecimal(split[2], split[3]);
             Longitude = GpsUtil.ConvertDmmLongToDecimal(split[4], split[5]);
-            PositionStatus = split[1] == "A";
             Speed = SpeedUtil.KnotsToKph(split.Get<decimal>(6));
             Heading = split.Get<decimal?>(7);
         }
