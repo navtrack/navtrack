@@ -7,16 +7,16 @@ namespace Navtrack.DataAccess.Repository
     [Service(typeof(IRepository))]
     public class Repository : IRepository
     {
-        private readonly IDbContextFactory dbContextFactory;
+        private readonly ICustomDbContextFactory customDbContextFactory;
         private readonly DbContext dbContext;
         private readonly IInterceptorService interceptorService;
 
-        public Repository(IDbContextFactory dbContextFactory, IInterceptorService interceptorService)
+        public Repository(ICustomDbContextFactory customDbContextFactory, IInterceptorService interceptorService)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.customDbContextFactory = customDbContextFactory;
             this.interceptorService = interceptorService;
 
-            dbContext = dbContextFactory.CreateDbContext();
+            dbContext = customDbContextFactory.CreateDbContext();
         }
 
         public IQueryable<T> GetEntities<T>() where T : class
@@ -26,7 +26,7 @@ namespace Navtrack.DataAccess.Repository
 
         public IUnitOfWork CreateUnitOfWork()
         {
-            return new UnitOfWork(dbContextFactory.CreateDbContext(), interceptorService);
+            return new UnitOfWork(customDbContextFactory.CreateDbContext(), interceptorService);
         }
     }
 }
