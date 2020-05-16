@@ -1,6 +1,6 @@
 namespace Navtrack.DataAccess.Model
 {
-    public class UserAsset : IUserRelation
+    public class UserAsset : EntityAudit, IUserRelation
     {
         public int UserId { get; set; }
         public User User { get; set; }

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Navtrack.DataAccess.Repository
 {
-    public interface ICustomDbContextFactory
+    public interface IDbContextFactory
     {
         DbContext CreateDbContext();
     }

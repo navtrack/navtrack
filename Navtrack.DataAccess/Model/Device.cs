@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class Device : IEntity
+    public class Device : EntityAudit, IEntity
     {
         public Device()
         {
@@ -15,7 +15,6 @@ namespace Navtrack.DataAccess.Model
         public string Name { get; set; }
         public Asset Asset { get; set; }
         public int DeviceTypeId { get; set; }
-        public DeviceType DeviceType { get; set; }
         public ICollection<Location> Locations { get; set; }
         public ICollection<UserDevice> Users { get; set; }
     }

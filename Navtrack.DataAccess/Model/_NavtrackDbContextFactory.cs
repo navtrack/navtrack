@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
@@ -9,11 +8,11 @@ namespace Navtrack.DataAccess.Model
     // ReSharper disable once InconsistentNaming
     public class _NavtrackDbContextFactory : IDbContextFactory
     {
-        private readonly IConfiguration configuration;
+        private readonly IConnectionStringProvider connectionStringProvider;
 
-        public _NavtrackDbContextFactory(IConfiguration configuration)
+        public _NavtrackDbContextFactory(IConnectionStringProvider connectionStringProvider)
         {
-            this.configuration = configuration;
+            this.connectionStringProvider = connectionStringProvider;
         }
 
         public DbContext CreateDbContext()
@@ -21,9 +20,7 @@ namespace Navtrack.DataAccess.Model
             DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
                 new DbContextOptionsBuilder<NavtrackContext>();
 
-            string connectionString = configuration.GetConnectionString("navtrack");
-            
-            optionsBuilder.UseSqlServer(connectionString);
+            connectionStringProvider.ApplyConnectionString(optionsBuilder);
 
             return new NavtrackContext(optionsBuilder.Options);
         }
