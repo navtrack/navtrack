@@ -15,7 +15,7 @@ namespace Navtrack.Api.Mappers
             destination.IMEI = source.IMEI;
             destination.Name = source.Name;
             destination.DeviceTypeId = source.DeviceTypeId;
-            destination.Type = $"{source.DeviceType.Brand} {source.DeviceType.Model}";
+            // destination.Type = $"{source.DeviceType.Brand} {source.DeviceType.Model}";
 
             return destination;
         }

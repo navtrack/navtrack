@@ -2,37 +2,41 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.DataAccess.Model;
 
-namespace Navtrack.DataAccess.Migrations
+namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
 {
     [DbContext(typeof(NavtrackContext))]
-    partial class NavtrackContextModelSnapshot : ModelSnapshot
+    [Migration("20200516194003_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "3.1.3");
 
             modelBuilder.Entity("Navtrack.DataAccess.Model.Asset", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("DeviceId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(200);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -46,20 +50,22 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(500);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -70,22 +76,24 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("OpenedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RemoteEndPoint")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(64);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -96,81 +104,58 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("DeviceTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("IMEI")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(15);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(200);
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("DeviceTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Devices");
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<int>("ProtocolId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeviceTypes");
                 });
 
             modelBuilder.Entity("Navtrack.DataAccess.Model.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("Altitude")
                         .HasColumnType("decimal(7, 2)");
 
                     b.Property<int>("AssetId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("CellId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("DeviceId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<short?>("GsmSignal")
-                        .HasColumnType("smallint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("HDOP")
                         .HasColumnType("decimal(4, 2)");
@@ -182,28 +167,31 @@ namespace Navtrack.DataAccess.Migrations
                         .HasColumnType("decimal(9, 6)");
 
                     b.Property<int?>("LocationAreaCode")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Longitude")
                         .HasColumnType("decimal(9, 6)");
 
                     b.Property<int?>("MobileCountryCode")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("MobileNetworkCode")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<double?>("Odometer")
-                        .HasColumnType("float");
+                        .HasColumnType("REAL");
 
                     b.Property<bool?>("PositionStatus")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<short?>("Satellites")
-                        .HasColumnType("smallint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("Speed")
                         .HasColumnType("decimal(6, 2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -218,14 +206,16 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Data")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -236,29 +226,31 @@ namespace Navtrack.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(254)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(254);
 
                     b.Property<string>("Hash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(88)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(88);
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("nvarchar(44)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(44);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -268,13 +260,19 @@ namespace Navtrack.DataAccess.Migrations
             modelBuilder.Entity("Navtrack.DataAccess.Model.UserAsset", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AssetId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "AssetId");
 
@@ -286,13 +284,19 @@ namespace Navtrack.DataAccess.Migrations
             modelBuilder.Entity("Navtrack.DataAccess.Model.UserDevice", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("DeviceId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "DeviceId");
 
@@ -306,15 +310,6 @@ namespace Navtrack.DataAccess.Migrations
                     b.HasOne("Navtrack.DataAccess.Model.Device", "Device")
                         .WithOne("Asset")
                         .HasForeignKey("Navtrack.DataAccess.Model.Asset", "DeviceId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Device", b =>
-                {
-                    b.HasOne("Navtrack.DataAccess.Model.DeviceType", "DeviceType")
-                        .WithMany("Devices")
-                        .HasForeignKey("DeviceTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

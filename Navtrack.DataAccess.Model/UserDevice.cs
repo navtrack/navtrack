@@ -1,3 +1,5 @@
+using Navtrack.DataAccess.Model.Common;
+
 namespace Navtrack.DataAccess.Model
 {
     public class UserDevice : EntityAudit, IUserRelation

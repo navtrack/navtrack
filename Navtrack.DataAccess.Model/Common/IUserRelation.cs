@@ -1,4 +1,4 @@
-namespace Navtrack.DataAccess.Model
+namespace Navtrack.DataAccess.Model.Common
 {
     public interface IUserRelation
     {

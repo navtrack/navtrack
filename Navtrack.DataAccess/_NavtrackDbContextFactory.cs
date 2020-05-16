@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
-namespace Navtrack.DataAccess.Model
+namespace Navtrack.DataAccess
 {
     [Service(typeof(IDbContextFactory))]
     // ReSharper disable once InconsistentNaming

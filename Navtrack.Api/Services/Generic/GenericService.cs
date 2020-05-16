@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.Api.Models;
 using Navtrack.Api.Services.Extensions;
-using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.Services;
 

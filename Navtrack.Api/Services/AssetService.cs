@@ -7,6 +7,7 @@ using Navtrack.Api.Models;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Generic;
 using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
@@ -48,7 +49,6 @@ namespace Navtrack.Api.Services
         {
             return base.GetQueryable()
                 .Include(x => x.Device)
-                .ThenInclude(x => x.DeviceType)
                 .Where(x => x.Users.Any(y => y.UserId == httpContextAccessor.HttpContext.User.GetId()));
         }
 

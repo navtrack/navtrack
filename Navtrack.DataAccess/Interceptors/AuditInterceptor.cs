@@ -1,5 +1,6 @@
 using System;
 using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 

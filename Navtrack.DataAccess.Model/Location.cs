@@ -1,4 +1,5 @@
 using System;
+using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.DataAccess.Model
 {

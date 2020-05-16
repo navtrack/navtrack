@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Navtrack.DataAccess.Model;
 
-namespace Navtrack.DataAccess.Migrations
+namespace Navtrack.DataAccess.Migrations.SqlServer
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
+    public class SqlServerDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
     {
         public NavtrackContext CreateDbContext(string[] args)
         {
@@ -12,7 +12,8 @@ namespace Navtrack.DataAccess.Migrations
                 new DbContextOptionsBuilder<NavtrackContext>();
 
             optionsBuilder.UseSqlServer(
-                "data source=localhost;initial catalog=navtrack;user id=navtrack;password=navtrack;");
+                "data source=localhost;initial catalog=navtrack;user id=navtrack;password=navtrack;",
+                b => b.MigrationsAssembly(GetType().Assembly.FullName));
 
             return new NavtrackContext(optionsBuilder.Options);
         }

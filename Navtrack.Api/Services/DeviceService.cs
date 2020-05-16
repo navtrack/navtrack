@@ -8,7 +8,7 @@ using Navtrack.Api.Models;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Generic;
 using Navtrack.DataAccess.Model;
-using Navtrack.DataAccess.Model.Custom;
+using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
@@ -27,30 +27,31 @@ namespace Navtrack.Api.Services
         protected override IQueryable<Device> GetQueryable()
         {
             return base.GetQueryable()
-                .Include(x => x.DeviceType)
                 .Where(x => x.Users.Any(y => y.UserId == httpContextAccessor.HttpContext.User.GetId()));
         }
 
         public IEnumerable<ProtocolModel> GetProtocols()
         {
-            return Enum.GetValues(typeof(Protocol)).Cast<Protocol>()
-                .Select(mapper.Map<Protocol, ProtocolModel>)
-                .OrderBy(x => x.Name)
-                .ToList();
+            return Enumerable.Empty<ProtocolModel>();
+                
+                // Enum.GetValues(typeof(Protocol)).Cast<Protocol>()
+                // .Select(mapper.Map<Protocol, ProtocolModel>)
+                // .OrderBy(x => x.Name)
+                // .ToList();
         }
 
         public async Task<List<DeviceTypeModel>> GetTypes()
         {
-            List<DeviceType> devices =
-                await repository.GetEntities<DeviceType>()
-                    .OrderBy(x => x.Brand)
-                    .ThenBy(x => x.Model)
-                    .ToListAsync();
+            // List<DeviceType> devices =
+            //     await repository.GetEntities<DeviceType>()
+            //         .OrderBy(x => x.Brand)
+            //         .ThenBy(x => x.Model)
+            //         .ToListAsync();
+            //
+            // List<DeviceTypeModel> mapped = devices.Select(mapper.Map<DeviceType, DeviceTypeModel>)
+            //     .ToList();
 
-            List<DeviceTypeModel> mapped = devices.Select(mapper.Map<DeviceType, DeviceTypeModel>)
-                .ToList();
-
-            return mapped;
+            return null;
         }
 
         protected override async Task ValidateSave(DeviceModel device, ValidationResult validationResult)
@@ -68,17 +69,16 @@ namespace Navtrack.Api.Services
                 validationResult.AddError(nameof(DeviceModel.IMEI), "The IMEI already exists in the database.");
             }
 
-            if (await repository.GetEntities<DeviceType>().AllAsync(x => x.Id != device.DeviceTypeId))
-            {
-                validationResult.AddError(nameof(DeviceModel.IMEI), "No such device type.");
-            }
+            // if (await repository.GetEntities<DeviceType>().AllAsync(x => x.Id != device.DeviceTypeId))
+            // {
+            //     validationResult.AddError(nameof(DeviceModel.IMEI), "No such device type.");
+            // }
         }
 
         public async Task<List<DeviceModel>> GetAllAvailableForAsset(int? assetId)
         {
             List<Device> devices =
                 await repository.GetEntities<Device>()
-                    .Include(x => x.DeviceType)
                     .Where(x => (x.Asset == null || assetId.HasValue && x.Asset.Id == assetId) &&
                                 x.Users.Any(y => y.UserId == httpContextAccessor.HttpContext.User.GetId()))
                     .ToListAsync();

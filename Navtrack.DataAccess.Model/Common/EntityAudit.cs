@@ -1,6 +1,6 @@
 using System;
 
-namespace Navtrack.DataAccess.Model
+namespace Navtrack.DataAccess.Model.Common
 {
     public abstract class EntityAudit
     {
