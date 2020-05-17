@@ -46,7 +46,7 @@ export default function DeviceList() {
       },
       {
         Header: "Model",
-        accessor: (row: any) => row.model.displayName
+        accessor: (row: any) => row.deviceModel.displayName
       },
       {
         Header: "ID",

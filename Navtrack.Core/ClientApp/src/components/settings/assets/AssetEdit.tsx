@@ -93,7 +93,7 @@ export default function AssetEdit(props: Props) {
               </option>
               {devices.map((x) => (
                 <option value={x.id} key={x.id}>
-                  {x.name} (ID: {x.deviceId}, Model: {x.model?.displayName})
+                  {x.name} (ID: {x.deviceId}, Model: {x.deviceModel?.displayName})
                 </option>
               ))}
             </DropdownInput>

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Navtrack.Api.Models
 {
@@ -13,6 +14,8 @@ namespace Navtrack.Api.Models
         public string DeviceId { get; set; }
         
         public int DeviceModelId { get; set; }
+        
+        [JsonPropertyName("deviceModel")]
         public DeviceModelModel Model { get; set; }
     }
 }

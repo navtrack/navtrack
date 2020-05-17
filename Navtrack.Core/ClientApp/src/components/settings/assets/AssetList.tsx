@@ -47,7 +47,7 @@ export default function AssetList() {
       },
       {
         Header: "Device Model",
-        accessor: (row: any) => row.device.model.displayName
+        accessor: (row: any) => row.device.deviceModel.displayName
       },
       {
         Header: "Actions",

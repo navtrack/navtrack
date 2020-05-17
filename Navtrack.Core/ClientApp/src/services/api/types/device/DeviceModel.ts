@@ -5,7 +5,7 @@ export type DeviceModel = {
   deviceId: string;
   name: string;
   deviceModelId: number;
-  model?: DeviceModelModel;
+  deviceModel?: DeviceModelModel;
 };
 
 export const DefaultDeviceModel: DeviceModel = {
