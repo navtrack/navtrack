@@ -10,7 +10,7 @@ deploy:
   stage: deploy
   when: manual
   before_script:
-    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - "which ssh-agent || ( apk update && apk add openssh-client )"
   script:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
@@ -18,6 +18,6 @@ deploy:
     - chmod 644 ~/.ssh/known_hosts
     - eval $(ssh-agent -s)
     - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null 2>&1
-    - echo "SQLCONNSTR_NAVTRACK=${SQLCONNSTR_NAVTRACK}" > .env_navtrack
+    - echo "SQLCONNSTR_POSTGRESQL=${SQLCONNSTR_POSTGRESQL}" > .env_navtrack
     - scp .env_navtrack $DEPLOY_SSH_USER@$DEPLOY_HOST:$DEPLOY_FOLDER
     - ssh $DEPLOY_SSH_USER@$DEPLOY_HOST "cd $DEPLOY_FOLDER && wget https://raw.githubusercontent.com/navtrack/navtrack/master/docker-compose.yml -O docker-compose.yml && docker-compose pull && docker-compose up -d"
