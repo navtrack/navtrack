@@ -65,7 +65,7 @@ export default function App() {
         </PrivateRoute>
         <Route
           path="/devices/:id(\d+)"
-          render={props => <DeviceEdit id={props.match.params.id} />}></Route>
+          render={(props) => <DeviceEdit id={props.match.params.id} />}></Route>
         <PrivateRoute exact path="/assets">
           <AssetList />
         </PrivateRoute>
@@ -74,7 +74,7 @@ export default function App() {
         </PrivateRoute>
         <Route
           path="/assets/:id"
-          render={props => <AssetEdit id={props.match.params.id} />}></Route>
+          render={(props) => <AssetEdit id={props.match.params.id} />}></Route>
         <PrivateRoute exact path="/admin/users">
           <UserList />
         </PrivateRoute>
@@ -83,12 +83,12 @@ export default function App() {
         </PrivateRoute>
         <Route
           path="/admin/users/:id"
-          render={props => <UserEdit id={props.match.params.id} />}></Route>
+          render={(props) => <UserEdit id={props.match.params.id} />}></Route>
         <Route path="/login">
           <Login />
         </Route>
         <Route path="/register">
-          <Login />
+          <Register />
         </Route>
         <PrivateRoute path="/">
           <Dashboard />

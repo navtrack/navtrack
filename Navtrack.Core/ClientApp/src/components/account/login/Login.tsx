@@ -80,9 +80,9 @@ export default function Login() {
         </div>
         <div className="h-20 flex w-full">
           <div className="flex-grow">
-            {/* <Link to="/register" className="text-white text-xs">
+            <Link to="/register" className="text-white text-xs">
               Create new account
-            </Link> */}
+            </Link>
           </div>
           <div className="flex-grow text-right">
             {/* <Link to="/forgotpassword" className="text-white text-xs">Forgot password?</Link> */}
