@@ -33,7 +33,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(200);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -58,7 +58,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(500);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
@@ -90,7 +90,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -120,7 +120,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(200);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -188,7 +188,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                     b.Property<decimal?>("Speed")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -212,7 +212,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                     b.Property<string>("Data")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -247,7 +247,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(44);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -269,7 +269,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "AssetId");
@@ -293,7 +293,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "DeviceId");

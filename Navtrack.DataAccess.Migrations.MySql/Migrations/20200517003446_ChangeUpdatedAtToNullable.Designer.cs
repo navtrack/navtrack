@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.MySql.Migrations
 {
     [DbContext(typeof(NavtrackContext))]
-    partial class NavtrackContextModelSnapshot : ModelSnapshot
+    [Migration("20200517003446_ChangeUpdatedAtToNullable")]
+    partial class ChangeUpdatedAtToNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

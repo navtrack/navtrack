@@ -37,7 +37,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasColumnType("character varying(200)")
                         .HasMaxLength(200);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -63,7 +63,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasColumnType("character varying(500)")
                         .HasMaxLength(500);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Value")
@@ -96,7 +96,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasColumnType("character varying(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -127,7 +127,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasColumnType("character varying(200)")
                         .HasMaxLength(200);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -196,7 +196,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<decimal?>("Speed")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -221,7 +221,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<string>("Data")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -257,7 +257,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasColumnType("character varying(44)")
                         .HasMaxLength(44);
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -279,7 +279,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("UserId", "AssetId");
@@ -303,7 +303,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("UserId", "DeviceId");
