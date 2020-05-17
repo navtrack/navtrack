@@ -48,7 +48,6 @@ namespace Navtrack.DataAccess.Model
                 entity.ToTable("Devices");
 
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
 
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Device)

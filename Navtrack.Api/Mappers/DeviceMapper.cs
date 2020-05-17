@@ -23,7 +23,6 @@ namespace Navtrack.Api.Mappers
         {
             destination.Id = source.Id;
             destination.DeviceId = source.DeviceId;
-            destination.Name = source.Name;
             destination.DeviceModelId = source.DeviceModelId;
             
             DeviceData.Model.DeviceModel deviceModel = deviceModelDataService.GetById(source.DeviceModelId);
@@ -38,7 +37,6 @@ namespace Navtrack.Api.Mappers
         {
             destination.Id = source.Id;
             destination.DeviceId = source.DeviceId;
-            destination.Name = source.Name;
             destination.DeviceModelId = source.DeviceModelId;
 
             return destination;

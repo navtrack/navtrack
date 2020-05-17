@@ -13,7 +13,6 @@ namespace Navtrack.DataAccess.Model
         
         public int Id { get; set; }
         public string DeviceId { get; set; }
-        public string Name { get; set; }
         public AssetEntity Asset { get; set; }
         public int DeviceModelId { get; set; }
         public ICollection<LocationEntity> Locations { get; set; }

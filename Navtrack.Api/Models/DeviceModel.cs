@@ -8,9 +8,6 @@ namespace Navtrack.Api.Models
         public int Id { get; set; }
         
         [Required]
-        public string Name { get; set; }
-        
-        [Required]
         public string DeviceId { get; set; }
         
         public int DeviceModelId { get; set; }

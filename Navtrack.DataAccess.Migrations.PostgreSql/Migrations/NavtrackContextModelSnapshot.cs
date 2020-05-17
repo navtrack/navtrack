@@ -19,7 +19,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Asset", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.AssetEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Assets");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Configuration", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.ConfigurationEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +75,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Configurations");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Connection", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.ConnectionEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +104,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Connections");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Device", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,11 +120,6 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<int>("DeviceModelId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -133,7 +128,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Location", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.LocationEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -206,7 +201,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Log", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.LogEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,7 +222,55 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.User", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.UserAssetEntity", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("UserId", "AssetId");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("UserAsset");
+                });
+
+            modelBuilder.Entity("Navtrack.DataAccess.Model.UserDeviceEntity", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("UserId", "DeviceId");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("UserDevice");
+                });
+
+            modelBuilder.Entity("Navtrack.DataAccess.Model.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,102 +306,54 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.UserAsset", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.AssetEntity", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("UserId", "AssetId");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("UserAsset");
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.UserDevice", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("UserId", "DeviceId");
-
-                    b.HasIndex("DeviceId");
-
-                    b.ToTable("UserDevice");
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Asset", b =>
-                {
-                    b.HasOne("Navtrack.DataAccess.Model.Device", "Device")
+                    b.HasOne("Navtrack.DataAccess.Model.DeviceEntity", "Device")
                         .WithOne("Asset")
-                        .HasForeignKey("Navtrack.DataAccess.Model.Asset", "DeviceId")
+                        .HasForeignKey("Navtrack.DataAccess.Model.AssetEntity", "DeviceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.Location", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.LocationEntity", b =>
                 {
-                    b.HasOne("Navtrack.DataAccess.Model.Asset", "Asset")
+                    b.HasOne("Navtrack.DataAccess.Model.AssetEntity", "Asset")
                         .WithMany("Locations")
                         .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Navtrack.DataAccess.Model.Device", "Device")
+                    b.HasOne("Navtrack.DataAccess.Model.DeviceEntity", "Device")
                         .WithMany("Locations")
                         .HasForeignKey("DeviceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.UserAsset", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.UserAssetEntity", b =>
                 {
-                    b.HasOne("Navtrack.DataAccess.Model.Asset", "Asset")
+                    b.HasOne("Navtrack.DataAccess.Model.AssetEntity", "Asset")
                         .WithMany("Users")
                         .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Navtrack.DataAccess.Model.User", "User")
+                    b.HasOne("Navtrack.DataAccess.Model.UserEntity", "User")
                         .WithMany("Assets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.UserDevice", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.UserDeviceEntity", b =>
                 {
-                    b.HasOne("Navtrack.DataAccess.Model.Device", "Device")
+                    b.HasOne("Navtrack.DataAccess.Model.DeviceEntity", "Device")
                         .WithMany("Users")
                         .HasForeignKey("DeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Navtrack.DataAccess.Model.User", "User")
+                    b.HasOne("Navtrack.DataAccess.Model.UserEntity", "User")
                         .WithMany("Devices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

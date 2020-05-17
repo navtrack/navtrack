@@ -83,17 +83,6 @@ export default function DeviceEdit(props: Props) {
                 setError((x) => ClearError<DeviceModel>(x, "deviceId"));
               }}
             />
-            <TextInput
-              name="Name"
-              value={device.name}
-              errorKey="name"
-              error={error}
-              className="mb-3"
-              onChange={(e) => {
-                setDevice({ ...device, name: e.target.value });
-                setError((x) => ClearError<DeviceModel>(x, "name"));
-              }}
-            />
             <DropdownInput
               name="Model"
               value={device.deviceModelId}
@@ -127,9 +116,6 @@ export default function DeviceEdit(props: Props) {
 const validateModel = (device: DeviceModel): ValidationResult => {
   const validationResult: ValidationResult = {};
 
-  if (device.name.length === 0) {
-    AddError<DeviceModel>(validationResult, "name", "The name is required.");
-  }
   if (device.deviceId.length === 0) {
     AddError<DeviceModel>(validationResult, "deviceId", "The Device ID is required.");
   }

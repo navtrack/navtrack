@@ -41,16 +41,12 @@ export default function DeviceList() {
   const columns = useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: "name"
+        Header: "ID",
+        accessor: "deviceId"
       },
       {
         Header: "Model",
         accessor: (row: any) => row.deviceModel.displayName
-      },
-      {
-        Header: "ID",
-        accessor: "deviceId"
       },
       {
         Header: "Actions",
