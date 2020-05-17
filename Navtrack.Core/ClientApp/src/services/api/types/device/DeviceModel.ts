@@ -1,15 +1,16 @@
+import { DeviceModelModel } from "./DeviceModelModel";
+
 export type DeviceModel = {
-  id: number,
-  imei: string,
-  name: string,
-  type: string,
-  deviceTypeId: number
+  id: number;
+  deviceId: string;
+  name: string;
+  deviceModelId: number;
+  model?: DeviceModelModel;
 };
 
-export const DefaultDeviceModel : DeviceModel = {
+export const DefaultDeviceModel: DeviceModel = {
   id: 0,
-  imei: "",
+  deviceId: "",
   name: "",
-  type: "",
-  deviceTypeId: 0
+  deviceModelId: 0
 };

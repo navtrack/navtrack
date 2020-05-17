@@ -7,9 +7,9 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Mappers
 {
-    [Service(typeof(IMapper<User, UserModel>))]
-    [Service(typeof(IMapper<UserModel, User>))]
-    public class UserMapper : IMapper<User, UserModel>, IMapper<UserModel, User>
+    [Service(typeof(IMapper<UserEntity, UserModel>))]
+    [Service(typeof(IMapper<UserModel, UserEntity>))]
+    public class UserMapper : IMapper<UserEntity, UserModel>, IMapper<UserModel, UserEntity>
     {
         private readonly IPasswordHasher passwordHasher;
 
@@ -18,7 +18,7 @@ namespace Navtrack.Api.Mappers
             this.passwordHasher = passwordHasher;
         }
 
-        public UserModel Map(User source, UserModel destination)
+        public UserModel Map(UserEntity source, UserModel destination)
         {
             destination.Id = source.Id;
             destination.Email = source.Email;
@@ -27,7 +27,7 @@ namespace Navtrack.Api.Mappers
             return destination;
         }
 
-        public User Map(UserModel source, User destination)
+        public UserEntity Map(UserModel source, UserEntity destination)
         {
             destination.Id = source.Id;
             destination.Email = source.Email;

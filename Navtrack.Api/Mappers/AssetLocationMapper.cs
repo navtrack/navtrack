@@ -5,8 +5,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Mappers
 {
-    [Service(typeof(IMapper<Asset, Location, AssetModel>))]
-    public class AssetLocationMapper : IMapper<Asset, Location, AssetModel>
+    [Service(typeof(IMapper<AssetEntity, LocationEntity, AssetModel>))]
+    public class AssetLocationMapper : IMapper<AssetEntity, LocationEntity, AssetModel>
     {
         private readonly IMapper mapper;
 
@@ -15,13 +15,13 @@ namespace Navtrack.Api.Mappers
             this.mapper = mapper;
         }
 
-        public AssetModel Map(Asset source1, Location source2, AssetModel destination)
+        public AssetModel Map(AssetEntity source1, LocationEntity source2, AssetModel destination)
         {
             mapper.Map(source1, destination);
 
             if (source2 != null)
             {
-                destination.Location = mapper.Map<Location, LocationModel>(source2);
+                destination.Location = mapper.Map<LocationEntity, LocationModel>(source2);
             }
             
             return destination;

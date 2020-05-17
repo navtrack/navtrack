@@ -16,7 +16,7 @@ namespace Navtrack.Listener.DataServices
             this.repository = repository;
         }
 
-        public async Task Add(Location location)
+        public async Task Add(LocationEntity location)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             
@@ -25,7 +25,7 @@ namespace Navtrack.Listener.DataServices
             await unitOfWork.SaveChanges();
         }
 
-        public async Task AddRange(IEnumerable<Location> locations)
+        public async Task AddRange(IEnumerable<LocationEntity> locations)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             

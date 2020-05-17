@@ -16,7 +16,7 @@ export default function DeviceList() {
   const [deleteHandler, setHandleDelete] = useState(() => () => {});
 
   useEffect(() => {
-    DeviceApi.getAll().then(x => setDevices(x));
+    DeviceApi.getAll().then((x) => setDevices(x));
   }, []);
 
   const handleDeleteClick = useCallback(
@@ -31,7 +31,7 @@ export default function DeviceList() {
     DeviceApi.delete(id)
       .then(() => {
         addNotification("Device deleted successfully.");
-        setDevices(devices.filter(x => x.id !== id));
+        setDevices(devices.filter((x) => x.id !== id));
       })
       .catch((error: AppError) => {
         addNotification(`${error.message}`);
@@ -45,12 +45,12 @@ export default function DeviceList() {
         accessor: "name"
       },
       {
-        Header: "Type",
-        accessor: "type"
+        Header: "Model",
+        accessor: (row: any) => row.model.displayName
       },
       {
-        Header: "IMEI",
-        accessor: "imei"
+        Header: "ID",
+        accessor: "deviceId"
       },
       {
         Header: "Actions",

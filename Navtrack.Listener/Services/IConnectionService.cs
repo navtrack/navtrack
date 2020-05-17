@@ -6,7 +6,7 @@ namespace Navtrack.Listener.Services
 {
     public interface IConnectionService
     {
-        Task<Connection> NewConnection(IPEndPoint ipEndPoint);
-        Task MarkConnectionAsClosed(Connection connection);
+        Task<ConnectionEntity> NewConnection(IPEndPoint ipEndPoint);
+        Task MarkConnectionAsClosed(ConnectionEntity connection);
     }
 }

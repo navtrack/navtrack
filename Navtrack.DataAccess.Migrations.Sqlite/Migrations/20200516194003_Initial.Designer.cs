@@ -8,7 +8,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     [Migration("20200516194003_Initial")]
     partial class Initial
     {

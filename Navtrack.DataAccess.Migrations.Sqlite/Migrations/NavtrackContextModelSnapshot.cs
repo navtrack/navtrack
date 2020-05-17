@@ -7,7 +7,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     partial class NavtrackContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -107,13 +107,11 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DeviceTypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("DeviceId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("IMEI")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(15);
+                    b.Property<int>("DeviceModelId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()

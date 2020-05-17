@@ -3,7 +3,7 @@ using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class Connection : EntityAudit, IEntity
+    public class ConnectionEntity : EntityAudit, IEntity
     {
         public int Id { get; set; }
         public DateTime OpenedAt { get; set; }

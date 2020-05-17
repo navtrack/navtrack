@@ -6,10 +6,8 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.Api.Services
 {
-    public interface IDeviceService : IGenericService<Device, DeviceModel>
+    public interface IDeviceService : IGenericService<DeviceEntity, DeviceModel>
     {
-        IEnumerable<ProtocolModel> GetProtocols();
-        Task<List<DeviceTypeModel>> GetTypes();
         Task<List<DeviceModel>> GetAllAvailableForAsset(int? assetId);
     }
 }

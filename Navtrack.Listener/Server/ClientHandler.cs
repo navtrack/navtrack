@@ -26,7 +26,7 @@ namespace Navtrack.Listener.Server
 
         public async Task HandleClient(CancellationToken cancellationToken, Client client)
         {
-            Connection connection = await connectionService.NewConnection((IPEndPoint) client.TcpClient.Client.RemoteEndPoint);
+            ConnectionEntity connection = await connectionService.NewConnection((IPEndPoint) client.TcpClient.Client.RemoteEndPoint);
 
             try
             {

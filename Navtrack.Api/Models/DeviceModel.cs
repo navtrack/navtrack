@@ -10,11 +10,9 @@ namespace Navtrack.Api.Models
         public string Name { get; set; }
         
         [Required]
-        [MinLength(15)]
-        public string IMEI { get; set; }
-
-        public string Type { get; set; }
+        public string DeviceId { get; set; }
         
-        public int DeviceTypeId { get; set; }
+        public int DeviceModelId { get; set; }
+        public DeviceModelModel Model { get; set; }
     }
 }

@@ -18,12 +18,12 @@ namespace Navtrack.DataAccess
 
         public DbContext CreateDbContext()
         {
-            DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
+                new DbContextOptionsBuilder<NavtrackDbContext>();
 
             connectionStringProvider.ApplyConnectionString(optionsBuilder);
 
-            return new NavtrackContext(optionsBuilder.Options);
+            return new NavtrackDbContext(optionsBuilder.Options);
         }
     }
 }

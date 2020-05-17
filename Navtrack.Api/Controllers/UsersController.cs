@@ -6,7 +6,7 @@ using Navtrack.DataAccess.Model;
 namespace Navtrack.Api.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class UsersController : GenericController<User, UserModel>
+    public class UsersController : GenericController<UserEntity, UserModel>
     {
         public UsersController(IUserService userService) : base(userService)
         {

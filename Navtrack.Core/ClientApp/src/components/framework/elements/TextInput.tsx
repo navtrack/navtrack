@@ -10,6 +10,7 @@ type Props = {
   errorKey: string;
   error: AppError | undefined;
   className?: string;
+  placeHolder?: string;
 };
 
 export default function TextInput(props: Props) {
@@ -23,7 +24,7 @@ export default function TextInput(props: Props) {
           className="shadow bg-gray-200 appearance-none rounded py-2 px-3 text-gray-700 focus:outline-none focus:border focus:border-gray-900 w-full"
           value={props.value}
           onChange={props.onChange}
-          placeholder={props.name}
+          placeholder={props.placeHolder || props.name}
         />
         <InputError name={props.errorKey} error={props.error} />
       </div>

@@ -5,9 +5,9 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.Api.Services
 {
-    public interface IUserService : IGenericService<User, UserModel>
+    public interface IUserService : IGenericService<UserEntity, UserModel>
     {
-        Task<User> GetUserByEmail(string email);
+        Task<UserEntity> GetUserByEmail(string email);
         Task<bool> EmailIsUsed(string email);
     }
 }

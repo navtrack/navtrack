@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     [Migration("20200516194018_Initial")]
     partial class Initial
     {

@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Migrati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Migrations.MySql", "Navtrack.DataAccess.Migrations.MySql\Navtrack.DataAccess.Migrations.MySql.csproj", "{744DC09C-9ABF-4CB2-82E5-A8AECFEF5A35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DeviceData", "Navtrack.DeviceData\Navtrack.DeviceData.csproj", "{37225B5F-E5BB-4A6F-8095-0ECD861AECD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{744DC09C-9ABF-4CB2-82E5-A8AECFEF5A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744DC09C-9ABF-4CB2-82E5-A8AECFEF5A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744DC09C-9ABF-4CB2-82E5-A8AECFEF5A35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37225B5F-E5BB-4A6F-8095-0ECD861AECD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37225B5F-E5BB-4A6F-8095-0ECD861AECD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37225B5F-E5BB-4A6F-8095-0ECD861AECD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37225B5F-E5BB-4A6F-8095-0ECD861AECD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

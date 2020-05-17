@@ -1,5 +1,4 @@
 using System;
-using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
@@ -14,6 +13,14 @@ namespace Navtrack.DataAccess.Interceptors
             if (entity is EntityAudit entityAudit)
             {
                 entityAudit.CreatedAt = DateTime.UtcNow;
+            }
+        }
+
+        public override void OnUpdate<T>(T entity)
+        {
+            if (entity is EntityAudit entityAudit)
+            {
+                entityAudit.UpdatedAt = DateTime.UtcNow;
             }
         }
     }

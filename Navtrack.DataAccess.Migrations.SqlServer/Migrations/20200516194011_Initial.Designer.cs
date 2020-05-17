@@ -9,7 +9,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     [Migration("20200516194011_Initial")]
     partial class Initial
     {

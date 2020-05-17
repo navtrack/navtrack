@@ -27,8 +27,8 @@ namespace Navtrack.Common.Services
 
             string key = GetKey(expression);
 
-            Configuration configuration =
-                await repository.GetEntities<Configuration>().FirstOrDefaultAsync(x => x.Key == key);
+            ConfigurationEntity configuration =
+                await repository.GetEntities<ConfigurationEntity>().FirstOrDefaultAsync(x => x.Key == key);
 
             if (configuration == null)
             {
@@ -47,8 +47,8 @@ namespace Navtrack.Common.Services
             IRepository repository = serviceScope.ServiceProvider.GetService<IRepository>();
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            Configuration configuration =
-                await unitOfWork.GetEntities<Configuration>().FirstOrDefaultAsync(x => x.Key == key);
+            ConfigurationEntity configuration =
+                await unitOfWork.GetEntities<ConfigurationEntity>().FirstOrDefaultAsync(x => x.Key == key);
 
             if (configuration != null && configuration.Value != value)
             {
@@ -60,7 +60,7 @@ namespace Navtrack.Common.Services
             }
             else if (configuration == null)
             {
-                unitOfWork.Add(new Configuration
+                unitOfWork.Add(new ConfigurationEntity
                 {
                     Key = key,
                     Value = value

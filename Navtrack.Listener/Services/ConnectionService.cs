@@ -17,11 +17,11 @@ namespace Navtrack.Listener.Services
             this.repository = repository;
         }
 
-        public async Task<Connection> NewConnection(IPEndPoint ipEndPoint)
+        public async Task<ConnectionEntity> NewConnection(IPEndPoint ipEndPoint)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             
-            Connection connection = new Connection
+            ConnectionEntity connection = new ConnectionEntity
             {
                 OpenedAt = DateTime.UtcNow,
                 RemoteEndPoint = ipEndPoint.ToString()
@@ -34,7 +34,7 @@ namespace Navtrack.Listener.Services
             return connection;
         }
 
-        public async Task MarkConnectionAsClosed(Connection connection)
+        public async Task MarkConnectionAsClosed(ConnectionEntity connection)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 

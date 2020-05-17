@@ -16,11 +16,11 @@ namespace Navtrack.Listener.DataServices
             this.repository = repository;
         }
 
-        public Task<Asset> GetAssetByIMEI(string imei)
+        public Task<AssetEntity> GetAssetByIMEI(string imei)
         {
-            return repository.GetEntities<Asset>()
+            return repository.GetEntities<AssetEntity>()
                 .Include(x => x.Device)
-                .FirstOrDefaultAsync(x => x.Device.IMEI == imei);
+                .FirstOrDefaultAsync(x => x.Device.DeviceId == imei);
         }
     }
 }

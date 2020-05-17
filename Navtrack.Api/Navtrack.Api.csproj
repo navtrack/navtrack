@@ -7,6 +7,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Navtrack.Common\Navtrack.Common.csproj" />
         <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
+        <ProjectReference Include="..\Navtrack.DeviceData\Navtrack.DeviceData.csproj" />
         <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
     </ItemGroup>
 

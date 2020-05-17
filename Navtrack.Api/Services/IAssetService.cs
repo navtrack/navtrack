@@ -4,7 +4,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.Api.Services
 {
-    public interface IAssetService : IGenericService<Asset, AssetModel>
+    public interface IAssetService : IGenericService<AssetEntity, AssetModel>
     {
     }
 }

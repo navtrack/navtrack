@@ -8,7 +8,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     partial class NavtrackContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -114,13 +114,11 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DeviceTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IMEI")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                    b.Property<int>("DeviceModelId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

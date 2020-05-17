@@ -23,7 +23,7 @@ namespace Navtrack.Api.Services.IdentityServer
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            User user = await userService.GetUserByEmail(context.UserName);
+            UserEntity user = await userService.GetUserByEmail(context.UserName);
 
             if (user != null && passwordHasher.CheckPassword(context.Password, user.Hash, user.Salt))
             {

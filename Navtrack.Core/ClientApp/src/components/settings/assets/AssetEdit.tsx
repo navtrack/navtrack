@@ -25,11 +25,11 @@ export default function AssetEdit(props: Props) {
   const history = useHistory();
 
   useEffect(() => {
-    DeviceApi.getAvailableDevices(props.id).then(devices => setDevices(devices));
+    DeviceApi.getAvailableDevices(props.id).then((devices) => setDevices(devices));
 
     if (props.id) {
       AssetApi.get(props.id)
-        .then(x => {
+        .then((x) => {
           setAsset(x);
           setShow(true);
         })
@@ -75,9 +75,9 @@ export default function AssetEdit(props: Props) {
               errorKey="name"
               error={error}
               className="mb-3"
-              onChange={e => {
+              onChange={(e) => {
                 setAsset({ ...asset, name: e.target.value });
-                setError(x => ClearError<AssetModel>(x, "name"));
+                setError((x) => ClearError<AssetModel>(x, "name"));
               }}
             />
             <DropdownInput
@@ -87,13 +87,13 @@ export default function AssetEdit(props: Props) {
               error={error}
               className="mb-3"
               tip="Showing unassigned devices."
-              onChange={e => setAsset({ ...asset, deviceId: parseInt(e.target.value) })}>
+              onChange={(e) => setAsset({ ...asset, deviceId: parseInt(e.target.value) })}>
               <option value={0} key={0}>
                 None
               </option>
-              {devices.map(x => (
+              {devices.map((x) => (
                 <option value={x.id} key={x.id}>
-                  {x.type} (IMEI: {x.imei})
+                  {x.name} (ID: {x.deviceId}, Model: {x.model?.displayName})
                 </option>
               ))}
             </DropdownInput>

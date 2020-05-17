@@ -5,18 +5,18 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.MySql
 {
-    public class MySqlDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
+    public class MySqlDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackDbContext>
     {
-        public NavtrackContext CreateDbContext(string[] args)
+        public NavtrackDbContext CreateDbContext(string[] args)
         {
-            DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
+                new DbContextOptionsBuilder<NavtrackDbContext>();
 
             optionsBuilder.UseMySQL(
                 "data source=localhost;initial catalog=navtrack;user id=navtrack;password=navtrack;",
                 b => b.MigrationsAssembly(GetType().Assembly.FullName));
 
-            return new NavtrackContext(optionsBuilder.Options);
+            return new NavtrackDbContext(optionsBuilder.Options);
         }
     }
 }

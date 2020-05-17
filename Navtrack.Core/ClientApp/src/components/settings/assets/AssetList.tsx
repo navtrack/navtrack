@@ -17,7 +17,7 @@ export default function AssetList() {
   const [deleteHandler, setHandleDelete] = useState(() => () => {});
 
   useEffect(() => {
-    AssetApi.getAll().then(x => setAssets(x));
+    AssetApi.getAll().then((x) => setAssets(x));
   }, []);
 
   const handleDeleteClick = useCallback(
@@ -32,7 +32,7 @@ export default function AssetList() {
     AssetApi.delete(id)
       .then(() => {
         addNotification("Asset deleted successfully.");
-        setAssets(devices.filter(x => x.id !== id));
+        setAssets(devices.filter((x) => x.id !== id));
       })
       .catch((error: AppError) => {
         addNotification(`${error.message}`, NotificationType.Error);
@@ -46,8 +46,8 @@ export default function AssetList() {
         accessor: "name"
       },
       {
-        Header: "Device Type",
-        accessor: "deviceType"
+        Header: "Device Model",
+        accessor: (row: any) => row.device.model.displayName
       },
       {
         Header: "Actions",

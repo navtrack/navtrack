@@ -5,21 +5,28 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Mappers
 {
-    [Service(typeof(IMapper<Asset, AssetModel>))]
-    [Service(typeof(IMapper<AssetModel, Asset>))]
-    public class AssetMapper : IMapper<Asset, AssetModel>, IMapper<AssetModel, Asset>
+    [Service(typeof(IMapper<AssetEntity, AssetModel>))]
+    [Service(typeof(IMapper<AssetModel, AssetEntity>))]
+    public class AssetMapper : IMapper<AssetEntity, AssetModel>, IMapper<AssetModel, AssetEntity>
     {
-        public AssetModel Map(Asset source, AssetModel destination)
+        private readonly IMapper mapper;
+
+        public AssetMapper(IMapper mapper)
+        {
+            this.mapper = mapper;
+        }
+
+        public AssetModel Map(AssetEntity source, AssetModel destination)
         {
             destination.Id = source.Id;
             destination.Name = source.Name;
             destination.DeviceId = source.DeviceId;
-            // destination.DeviceType = $"{source.Device?.DeviceType?.Brand} {source.Device?.DeviceType?.Model}";
+            destination.Device = mapper.Map<DeviceEntity, DeviceModel>(source.Device);
 
             return destination;
         }
 
-        public Asset Map(AssetModel source, Asset destination)
+        public AssetEntity Map(AssetModel source, AssetEntity destination)
         {
             destination.Id = source.Id;
             destination.Name = source.Name;

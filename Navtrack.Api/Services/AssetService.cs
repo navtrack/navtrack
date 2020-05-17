@@ -15,8 +15,8 @@ using Navtrack.Library.Services;
 namespace Navtrack.Api.Services
 {
     [Service(typeof(IAssetService))]
-    [Service(typeof(IGenericService<Asset, AssetModel>))]
-    public class AssetService : GenericService<Asset, AssetModel>, IAssetService
+    [Service(typeof(IGenericService<AssetEntity, AssetModel>))]
+    public class AssetService : GenericService<AssetEntity, AssetModel>, IAssetService
     {
         public AssetService(IRepository repository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
             : base(repository, mapper, httpContextAccessor)
@@ -26,12 +26,12 @@ namespace Navtrack.Api.Services
         public override async Task<List<AssetModel>> GetAll()
         {
             var entities = await (from asset in GetQueryable()
-                    join latestLocation in repository.GetEntities<Location>()
+                    join latestLocation in repository.GetEntities<LocationEntity>()
                             .GroupBy(x => x.AssetId)
                             .Select(x => new {AssetId = x.Key, LatestDateTime = x.Max(y => y.DateTime)})
                         on asset.Id equals latestLocation.AssetId into latestLocations
                     from latestLocation in latestLocations.DefaultIfEmpty()
-                    join location in repository.GetEntities<Location>()
+                    join location in repository.GetEntities<LocationEntity>()
                         on new {AssetId = asset.Id, DateTime = latestLocation.LatestDateTime} equals new
                             {location.AssetId, location.DateTime}
                         into locations
@@ -39,13 +39,13 @@ namespace Navtrack.Api.Services
                     select new {asset, location})
                 .ToListAsync();
 
-            List<AssetModel> models = entities.Select(x => mapper.Map<Asset, Location, AssetModel>(x.asset, x.location))
+            List<AssetModel> models = entities.Select(x => mapper.Map<AssetEntity, LocationEntity, AssetModel>(x.asset, x.location))
                 .ToList();
 
             return models;
         }
 
-        protected override IQueryable<Asset> GetQueryable()
+        protected override IQueryable<AssetEntity> GetQueryable()
         {
             return base.GetQueryable()
                 .Include(x => x.Device)
@@ -59,12 +59,12 @@ namespace Navtrack.Api.Services
                 validationResult.AddError(nameof(AssetModel.DeviceId),
                     "A device is required, if none is available you must add one first.");
             }
-            else if (await repository.GetEntities<Device>()
+            else if (await repository.GetEntities<DeviceEntity>()
                 .AllAsync(x => x.Id != asset.DeviceId))
             {
                 validationResult.AddError(nameof(AssetModel.DeviceId), "The device is not valid.");
             }
-            else if (!await repository.GetEntities<Device>()
+            else if (!await repository.GetEntities<DeviceEntity>()
                 .AnyAsync(x =>
                     x.Id == asset.DeviceId &&
                     x.Users.Any(y => y.UserId == httpContextAccessor.HttpContext.User.GetId())))
@@ -72,7 +72,7 @@ namespace Navtrack.Api.Services
                 validationResult.AddError(nameof(AssetModel.DeviceId),
                     "You do not have access to the selected device.");
             }
-            else if (await repository.GetEntities<Asset>()
+            else if (await repository.GetEntities<AssetEntity>()
                 .AnyAsync(x => x.Id != asset.Id && x.DeviceId == asset.DeviceId))
             {
                 validationResult.AddError(nameof(AssetModel.DeviceId),
@@ -80,9 +80,9 @@ namespace Navtrack.Api.Services
             }
         }
 
-        protected override Task BeforeAdd(IUnitOfWork unitOfWork, AssetModel model, Asset entity)
+        protected override Task BeforeAdd(IUnitOfWork unitOfWork, AssetModel model, AssetEntity entity)
         {
-            entity.Users.Add(new UserAsset
+            entity.Users.Add(new UserAssetEntity
             {
                 UserId = httpContextAccessor.HttpContext.User.GetId(),
                 RoleId = (int) EntityRole.Owner
@@ -93,7 +93,7 @@ namespace Navtrack.Api.Services
 
         protected override async Task<IUserRelation> GetUserRelation(int id)
         {
-            UserAsset userAsset = await repository.GetEntities<UserAsset>()
+            UserAssetEntity userAsset = await repository.GetEntities<UserAssetEntity>()
                 .FirstOrDefaultAsync(x => x.AssetId == id);
 
             return userAsset;

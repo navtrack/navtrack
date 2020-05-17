@@ -6,7 +6,7 @@ namespace Navtrack.Listener.DataServices
 {
     public interface ILocationDataService
     {
-        Task Add(Location location);
-        Task AddRange(IEnumerable<Location> locations);
+        Task Add(LocationEntity location);
+        Task AddRange(IEnumerable<LocationEntity> locations);
     }
 }

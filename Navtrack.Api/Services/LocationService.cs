@@ -25,14 +25,14 @@ namespace Navtrack.Api.Services
 
         public async Task<LocationModel> GetLatestLocation(int assetId)
         {
-            Location location = await repository.GetEntities<Location>()
+            LocationEntity location = await repository.GetEntities<LocationEntity>()
                 .Where(x => x.AssetId == assetId)
                 .OrderByDescending(x => x.DateTime)
                 .FirstOrDefaultAsync();
 
             if (location != null)
             {
-                LocationModel mapped = mapper.Map<Location, LocationModel>(location);
+                LocationModel mapped = mapper.Map<LocationEntity, LocationModel>(location);
 
                 return mapped;
             }
@@ -42,21 +42,21 @@ namespace Navtrack.Api.Services
 
         public async Task<List<LocationModel>> GetLocations(int assetId)
         {
-            List<Location> locations = await repository.GetEntities<Location>()
+            List<LocationEntity> locations = await repository.GetEntities<LocationEntity>()
                 .Where(x => x.AssetId == assetId)
                 .OrderByDescending(x => x.DateTime)
                 .Take(1000)
                 .ToListAsync();
 
 
-            List<LocationModel> mapped = locations.Select(mapper.Map<Location, LocationModel>).ToList();
+            List<LocationModel> mapped = locations.Select(mapper.Map<LocationEntity, LocationModel>).ToList();
 
             return mapped;
         }
 
         public async Task<List<LocationModel>> GetLocations(LocationHistoryRequestModel model)
         {
-            IQueryable<Location> queryable = repository.GetEntities<Location>();
+            IQueryable<LocationEntity> queryable = repository.GetEntities<LocationEntity>();
 
             queryable = ApplyFiltering(queryable, model);
 
@@ -65,14 +65,14 @@ namespace Navtrack.Api.Services
                 .Take(100000);
 
 
-            List<Location> locations = await queryable.ToListAsync();
+            List<LocationEntity> locations = await queryable.ToListAsync();
 
-            List<LocationModel> mapped = locations.Select(mapper.Map<Location, LocationModel>).ToList();
+            List<LocationModel> mapped = locations.Select(mapper.Map<LocationEntity, LocationModel>).ToList();
 
             return mapped;
         }
 
-        private static IQueryable<Location> ApplyFiltering(IQueryable<Location> queryable,
+        private static IQueryable<LocationEntity> ApplyFiltering(IQueryable<LocationEntity> queryable,
             LocationHistoryRequestModel model)
         {
             queryable = queryable.Where(x => x.AssetId == model.AssetId);

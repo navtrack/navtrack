@@ -4,18 +4,18 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.PostgreSql
 {
-    public class PostgreSqlDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
+    public class PostgreSqlDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackDbContext>
     {
-        public NavtrackContext CreateDbContext(string[] args)
+        public NavtrackDbContext CreateDbContext(string[] args)
         {
-            DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
+                new DbContextOptionsBuilder<NavtrackDbContext>();
 
             optionsBuilder.UseNpgsql(
                 "Host=localhost;Database=navtrack;Username=postgres;Password=postgres",
                 b => b.MigrationsAssembly(GetType().Assembly.FullName));
 
-            return new NavtrackContext(optionsBuilder.Options);
+            return new NavtrackDbContext(optionsBuilder.Options);
         }
     }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DeviceModel, DefaultDeviceModel } from "services/api/types/device/DeviceModel";
-import { DeviceTypeModel } from "services/api/types/device/DeviceTypeModel";
+import { DeviceModelModel } from "services/api/types/device/DeviceModelModel";
 import { AppError } from "services/httpClient/AppError";
 import { useHistory } from "react-router";
 import { DeviceApi } from "services/api/DeviceApi";
@@ -11,6 +11,7 @@ import TextInput from "components/framework/elements/TextInput";
 import DropdownInput from "components/framework/elements/DropdownInput";
 import Button from "components/framework/elements/Button";
 import { ValidationResult } from "components/common/ValidatonResult";
+import { DeviceModelApi } from "services/api/DeviceModelApi";
 
 type Props = {
   id?: number;
@@ -18,17 +19,17 @@ type Props = {
 
 export default function DeviceEdit(props: Props) {
   const [device, setDevice] = useState<DeviceModel>(DefaultDeviceModel);
-  const [deviceTypes, setDeviceTypes] = useState<DeviceTypeModel[]>([]);
+  const [deviceTypes, setDeviceModels] = useState<DeviceModelModel[]>([]);
   const [error, setError] = useState<AppError>();
   const [show, setShow] = useState(!props.id);
   const history = useHistory();
 
   useEffect(() => {
-    DeviceApi.getTypes().then(deviceTypes => setDeviceTypes(deviceTypes));
+    DeviceModelApi.getModels().then((deviceModels) => setDeviceModels(deviceModels));
 
     if (props.id) {
       DeviceApi.get(props.id)
-        .then(x => {
+        .then((x) => {
           setDevice(x);
           setShow(true);
         })
@@ -71,14 +72,15 @@ export default function DeviceEdit(props: Props) {
           </div>
           <div className="p-3">
             <TextInput
-              name="IMEI"
-              value={device.imei}
-              errorKey="imei"
+              name="Device ID"
+              value={device.deviceId}
+              errorKey="deviceId"
+              placeHolder="IMEI / Serial Number / Device ID"
               error={error}
               className="mb-3"
-              onChange={e => {
-                setDevice({ ...device, imei: e.target.value });
-                setError(x => ClearError<DeviceModel>(x, "imei"));
+              onChange={(e) => {
+                setDevice({ ...device, deviceId: e.target.value });
+                setError((x) => ClearError<DeviceModel>(x, "deviceId"));
               }}
             />
             <TextInput
@@ -87,23 +89,23 @@ export default function DeviceEdit(props: Props) {
               errorKey="name"
               error={error}
               className="mb-3"
-              onChange={e => {
+              onChange={(e) => {
                 setDevice({ ...device, name: e.target.value });
-                setError(x => ClearError<DeviceModel>(x, "name"));
+                setError((x) => ClearError<DeviceModel>(x, "name"));
               }}
             />
             <DropdownInput
-              name="Type"
-              value={device.deviceTypeId}
-              errorKey="deviceTypeId"
+              name="Model"
+              value={device.deviceModelId}
+              errorKey="deviceModelId"
               error={error}
-              onChange={e => setDevice({ ...device, deviceTypeId: parseInt(e.target.value) })}>
+              onChange={(e) => setDevice({ ...device, deviceModelId: parseInt(e.target.value) })}>
               <option value={0} key={0}>
-                Select a device type
+                Select a device model
               </option>
-              {deviceTypes.map(x => (
+              {deviceTypes.map((x) => (
                 <option value={x.id} key={x.id}>
-                  {x.name}
+                  {x.displayName}
                 </option>
               ))}
             </DropdownInput>
@@ -128,13 +130,11 @@ const validateModel = (device: DeviceModel): ValidationResult => {
   if (device.name.length === 0) {
     AddError<DeviceModel>(validationResult, "name", "The name is required.");
   }
-  if (device.imei.length === 0) {
-    AddError<DeviceModel>(validationResult, "imei", "The IMEI is required.");
-  } else if (device.imei.length < 15) {
-    AddError<DeviceModel>(validationResult, "imei", "The IMEI must be 15 characters.");
+  if (device.deviceId.length === 0) {
+    AddError<DeviceModel>(validationResult, "deviceId", "The Device ID is required.");
   }
-  if (device.deviceTypeId <= 0) {
-    AddError<DeviceModel>(validationResult, "deviceTypeId", "The device type is required.");
+  if (device.deviceModelId <= 0) {
+    AddError<DeviceModel>(validationResult, "deviceModelId", "The device model is required.");
   }
 
   return validationResult;

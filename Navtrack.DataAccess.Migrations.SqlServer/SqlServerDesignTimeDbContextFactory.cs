@@ -4,18 +4,18 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.SqlServer
 {
-    public class SqlServerDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackContext>
+    public class SqlServerDesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackDbContext>
     {
-        public NavtrackContext CreateDbContext(string[] args)
+        public NavtrackDbContext CreateDbContext(string[] args)
         {
-            DbContextOptionsBuilder<NavtrackContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
+                new DbContextOptionsBuilder<NavtrackDbContext>();
 
             optionsBuilder.UseSqlServer(
                 "data source=localhost;initial catalog=navtrack;user id=navtrack;password=navtrack;",
                 b => b.MigrationsAssembly(GetType().Assembly.FullName));
 
-            return new NavtrackContext(optionsBuilder.Options);
+            return new NavtrackDbContext(optionsBuilder.Options);
         }
     }
 }

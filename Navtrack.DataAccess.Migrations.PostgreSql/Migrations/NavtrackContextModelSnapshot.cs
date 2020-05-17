@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     partial class NavtrackContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -114,13 +114,11 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("DeviceTypeId")
-                        .HasColumnType("integer");
+                    b.Property<string>("DeviceId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("IMEI")
-                        .IsRequired()
-                        .HasColumnType("character varying(15)")
-                        .HasMaxLength(15);
+                    b.Property<int>("DeviceModelId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()

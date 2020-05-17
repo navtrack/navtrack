@@ -40,7 +40,7 @@ namespace Navtrack.Api.Services
             {
                 using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-                User user = mapper.Map<RegisterModel, User>(registerModel);
+                UserEntity user = mapper.Map<RegisterModel, UserEntity>(registerModel);
                 
                 unitOfWork.Add(user);
 

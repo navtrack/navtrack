@@ -8,7 +8,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.MySql.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     [Migration("20200516194027_Initial")]
     partial class Initial
     {

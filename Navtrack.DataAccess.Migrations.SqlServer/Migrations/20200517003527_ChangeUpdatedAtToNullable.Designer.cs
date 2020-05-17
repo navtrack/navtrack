@@ -9,7 +9,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
 {
-    [DbContext(typeof(NavtrackContext))]
+    [DbContext(typeof(NavtrackDbContext))]
     [Migration("20200517003527_ChangeUpdatedAtToNullable")]
     partial class ChangeUpdatedAtToNullable
     {

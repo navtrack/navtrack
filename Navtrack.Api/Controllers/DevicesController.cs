@@ -7,7 +7,7 @@ using Navtrack.DataAccess.Model;
 
 namespace Navtrack.Api.Controllers
 {
-    public class DevicesController : GenericController<Device, DeviceModel>
+    public class DevicesController : GenericController<DeviceEntity, DeviceModel>
     {
         private readonly IDeviceService deviceService;
 
@@ -21,18 +21,6 @@ namespace Navtrack.Api.Controllers
         public Task<List<DeviceModel>> GetAll(int? id)
         {
             return deviceService.GetAllAvailableForAsset(id);
-        }
-
-        [HttpGet("protocols")]
-        public IEnumerable<ProtocolModel> GetProtocols()
-        {
-            return deviceService.GetProtocols();
-        }
-        
-        [HttpGet("types")]
-        public Task<List<DeviceTypeModel>> GetTypes()
-        {
-            return deviceService.GetTypes();
         }
     }
 }
