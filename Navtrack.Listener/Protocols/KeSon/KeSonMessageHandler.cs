@@ -35,7 +35,7 @@ namespace Navtrack.Listener.Protocols.KeSon
                 {
                     Device = new Device
                     {
-                        IMEI = locationMatch.Groups[1].Value
+                        DeviceId = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[16].Value,

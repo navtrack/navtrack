@@ -39,7 +39,7 @@ namespace Navtrack.Listener.Protocols.Jointech
                 {
                     Device = new Device
                     {
-                        IMEI = locationMatch.Groups[1].Value
+                        DeviceId = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[7].Value,

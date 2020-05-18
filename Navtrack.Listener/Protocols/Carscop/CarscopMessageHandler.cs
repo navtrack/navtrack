@@ -63,7 +63,7 @@ namespace Navtrack.Listener.Protocols.Carscop
                 {
                     input.Client.Device = new Device
                     {
-                        IMEI = input.DataMessage.String.Substring(17, 15)
+                        DeviceId = input.DataMessage.String.Substring(17, 15)
                     };
 
                     // ReSharper disable once UnreachableCode

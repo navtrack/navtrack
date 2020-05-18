@@ -26,7 +26,7 @@ namespace Navtrack.Listener.Protocols.Queclink
                 {
                     Device = new Device
                     {
-                        IMEI = imeiMatch.Groups[1].Value
+                        DeviceId = imeiMatch.Groups[1].Value
                     },
                     HDOP = locationMatch.Groups[2].Get<decimal?>(),
                     Speed = locationMatch.Groups[3].Get<decimal?>(),

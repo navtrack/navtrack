@@ -20,7 +20,7 @@ namespace Navtrack.Listener.Tests.Protocols.Totem
             ProtocolTester.SendStringFromDevice(
                 "$$0108AA863835028447675|5004C0001710250234134114057728A058AE112108305100.600000660304.7787N10134.8719E116458");
 
-            Assert.AreEqual("863835028447675", ProtocolTester.LastParsedLocation.Device.IMEI);
+            Assert.AreEqual("863835028447675", ProtocolTester.LastParsedLocation.Device.DeviceId);
         }
         
         

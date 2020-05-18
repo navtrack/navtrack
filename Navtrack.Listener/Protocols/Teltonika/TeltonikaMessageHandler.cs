@@ -22,7 +22,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
 
                     input.Client.Device = new Device
                     {
-                        IMEI = imei
+                        DeviceId = imei
                     };
 
                     input.NetworkStream.WriteByte(1);

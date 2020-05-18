@@ -31,7 +31,7 @@ namespace Navtrack.Listener.Protocols.Coban
                 {
                     input.Client.Device = new Device
                     {
-                        IMEI = imei
+                        DeviceId = imei
                     };
 
                     input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("LOAD"));
@@ -62,7 +62,7 @@ namespace Navtrack.Listener.Protocols.Coban
             {
                 Device = new Device
                 {
-                    IMEI = input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty)
+                    DeviceId = input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty)
                 },
                 DateTime = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(4) == "F",

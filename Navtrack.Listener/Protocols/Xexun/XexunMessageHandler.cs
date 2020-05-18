@@ -26,7 +26,7 @@ namespace Navtrack.Listener.Protocols.Xexun
                 {
                     Device = new Device
                     {
-                        IMEI = lgc[18].Value
+                        DeviceId = lgc[18].Value
                     },
                     DateTime = DateTimeUtil.New(lgc[12].Value, lgc[13].Value, lgc[14].Value, lgc[1].Value, lgc[2].Value,
                         lgc[3].Value, lgc[4].Value),

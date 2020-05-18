@@ -2,6 +2,6 @@ namespace Navtrack.Listener.Models
 {
     public class Device
     {
-        public string IMEI { get; set; }
+        public string DeviceId { get; set; }
     }
 }

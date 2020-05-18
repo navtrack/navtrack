@@ -32,7 +32,7 @@ namespace Navtrack.Listener.Protocols.Arknav
                 {
                     Device = new Device
                     {
-                        IMEI = locationMatch.Groups[1].Value
+                        DeviceId = locationMatch.Groups[1].Value
                     },
                     PositionStatus = locationMatch.Groups[5].Value == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[6].Value,

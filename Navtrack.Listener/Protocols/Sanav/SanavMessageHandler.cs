@@ -31,7 +31,7 @@ namespace Navtrack.Listener.Protocols.Sanav
                 {
                     Device = new Device
                     {
-                        IMEI = locationMatch.Groups[2].Value
+                        DeviceId = locationMatch.Groups[2].Value
                     },
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[17].Value,

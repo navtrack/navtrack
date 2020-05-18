@@ -18,7 +18,7 @@ namespace Navtrack.Listener.Protocols.iStartek
             {
                 Device = new Device
                 {
-                    IMEI = string.Join(string.Empty, input.DataMessage.Hex[4..11]).TrimEnd('F')
+                    DeviceId = string.Join(string.Empty, input.DataMessage.Hex[4..11]).TrimEnd('F')
                 },
                 Heading = input.DataMessage.BarSplit.Get<decimal?>(1),
                 Altitude = input.DataMessage.BarSplit.Get<decimal?>(2)

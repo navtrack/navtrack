@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
             {
                 Device = new Device
                 {
-                    IMEI = input.DataMessage.CommaSplit[1]
+                    DeviceId = input.DataMessage.CommaSplit[1]
                 },
                 Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),
                 Longitude = input.DataMessage.CommaSplit.Get<decimal>(5),

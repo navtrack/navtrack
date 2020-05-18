@@ -77,7 +77,7 @@ namespace Navtrack.Listener.Protocols.Concox
                 {
                     input.Client.Device = new Device
                     {
-                        IMEI = imei
+                        DeviceId = imei
                     };
 
                     ConcoxOutputMessage output = new ConcoxOutputMessage(protocolNumber, serialNumber);

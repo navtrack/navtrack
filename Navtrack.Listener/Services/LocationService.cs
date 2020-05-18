@@ -26,12 +26,12 @@ namespace Navtrack.Listener.Services
 
         public async Task Add(Location location)
         {
-            AssetEntity asset = await assetDataService.GetAssetByIMEI(location.Device.IMEI);
+            AssetEntity asset = await assetDataService.GetAssetByIMEI(location.Device.DeviceId);
 
             if (asset != null)
             {
-                DataAccess.Model.LocationEntity mapped =
-                    mapper.Map<Location, AssetEntity, DataAccess.Model.LocationEntity>(location, asset);
+                LocationEntity mapped =
+                    mapper.Map<Location, AssetEntity, LocationEntity>(location, asset);
 
                 await locationDataService.Add(mapped);
             }
@@ -41,14 +41,14 @@ namespace Navtrack.Listener.Services
         {
             if (locations.Any())
             {
-                string imei = locations.First().Device.IMEI;
+                string deviceId = locations.First().Device.DeviceId;
 
-                AssetEntity asset = await assetDataService.GetAssetByIMEI(imei);
+                AssetEntity asset = await assetDataService.GetAssetByIMEI(deviceId);
 
                 if (asset != null)
                 {
-                    List<DataAccess.Model.LocationEntity> mapped =
-                        locations.Select(x => mapper.Map<Location, AssetEntity, DataAccess.Model.LocationEntity>(x, asset))
+                    List<LocationEntity> mapped =
+                        locations.Select(x => mapper.Map<Location, AssetEntity, LocationEntity>(x, asset))
                             .ToList();
 
                     await locationDataService.AddRange(mapped);
