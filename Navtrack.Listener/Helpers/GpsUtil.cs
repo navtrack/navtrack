@@ -11,10 +11,10 @@ namespace Navtrack.Listener.Helpers
         public static bool IsValidLongitude(decimal longitude) => longitude >= -180 && longitude <= 180;
 
         public static decimal ConvertDmmLatToDecimal(string point, string cardinalDirection) =>
-            ConvertDmmToDecimal(@"(\d{2})(\d{2}.\d+)", point, cardinalDirection);
+            ConvertDmmToDecimal(@"(\d+)(\d\d.\d+)", point, cardinalDirection);
         
         public static decimal ConvertDmmLongToDecimal(string point, string cardinalDirection) =>
-            ConvertDmmToDecimal(@"(\d{3})(\d{2}.\d+)", point, cardinalDirection);
+            ConvertDmmToDecimal(@"(\d+)(\d\d.\d+)", point, cardinalDirection);
 
         public static decimal ConvertDmsToDecimal(string regExPattern, string point, string cardinalDirection)
         {
