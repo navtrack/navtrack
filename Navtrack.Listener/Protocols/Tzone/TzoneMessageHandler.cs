@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Tzone
     {
         public override Location Parse(MessageInput input)
         {
-            GPRMC gprmc = new GPRMC(input.DataMessage.BarSplit[1].Substring(2));
+            GPRMC gprmc = GPRMC.Parse(input.DataMessage.BarSplit[1].Substring(2));
 
             Location location = new Location(gprmc)
             {

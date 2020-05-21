@@ -20,7 +20,7 @@ namespace Navtrack.Listener.Protocols.Megastek
 
         private static Location Parse_V1(MessageInput input)
         {
-            GPRMC gprmc = new GPRMC(string.Join(",", input.DataMessage.CommaSplit.Skip(2).Take(13)));
+            GPRMC gprmc = GPRMC.Parse(string.Join(",", input.DataMessage.CommaSplit.Skip(2).Take(13)));
 
             Location location = new Location(gprmc)
             {
@@ -39,7 +39,7 @@ namespace Navtrack.Listener.Protocols.Megastek
         {
             string imei = input.DataMessage.Reader.Skip(3).Get(16).Replace(" ", string.Empty);
 
-            GPRMC gprmc = new GPRMC(input.DataMessage.Reader.Skip(2).GetUntil('*', 3));
+            GPRMC gprmc = GPRMC.Parse(input.DataMessage.Reader.Skip(2).GetUntil('*', 3));
 
             Location location = new Location(gprmc)
             {

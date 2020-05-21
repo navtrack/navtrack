@@ -6,35 +6,42 @@ namespace Navtrack.Listener.Helpers
 {
     public class GPRMC
     {
-        public DateTime DateTime { get; }
-        public decimal Latitude { get; }
-        public decimal Longitude { get; }
-        public bool PositionStatus { get; }
-        public decimal? Speed { get; }
-        public decimal? Heading { get; }
+        public DateTime DateTime { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        public bool PositionStatus { get; set; }
+        public decimal? Speed { get; set; }
+        public decimal? Heading { get; set; }
 
         // Input example: $GPRMC,102156.000,A,2232.4690,N,11403.6847,E,0.00,,180909,,*15
-        public GPRMC(string input)
+        public static GPRMC Parse(string input)
         {
-            input = input.Replace("$GPRMC,", String.Empty);
-            string[] split = input.Split(",");
+            Match match = new Regex("(\\d{2}\\d{2}\\d{2}.\\d+)," + // dd mm yy
+                                    "(A|V)," + // gps fix
+                                    "(\\d+.\\d+),(N|S)," + // latitude
+                                    "(\\d+.\\d+),(E|W)," + // longitude
+                                    "(.*?)," + // speed
+                                    "(.*?)," + // heading
+                                    "(\\d{2}\\d{2}\\d{2})") // hh mm ss . ss
+                .Match(input);
 
-            PositionStatus = split[1] == "A";
-            DateTime = GetDateTime(split[0], split[8]);
-            Latitude = GpsUtil.ConvertDmmLatToDecimal(split[2], split[3]);
-            Longitude = GpsUtil.ConvertDmmLongToDecimal(split[4], split[5]);
-            Speed = SpeedUtil.KnotsToKph(split.Get<decimal>(6));
-            Heading = split.Get<decimal?>(7);
-        }
+            if (match.Success)
+            {
+                GPRMC gprmc = new GPRMC
+                {
+                    DateTime = NewDateTimeUtil.Convert(DateFormat.HHMMSS_SS_DDMMYY, match.Groups[1].Value,
+                        match.Groups[9].Value),
+                    PositionStatus = match.Groups[2].Value == "A",
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(match.Groups[3].Value, match.Groups[4].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(match.Groups[5].Value, match.Groups[6].Value),
+                    Speed = SpeedUtil.KnotsToKph(match.Groups[7].Get<decimal>()),
+                    Heading = match.Groups[8].Get<decimal?>()
+                };
 
-        private static DateTime GetDateTime(string timeString, string dateString)
-        {
-            GroupCollection time = new Regex(@"(\d{2})(\d{2})(\d{2}).(\d{2})").Matches(timeString)[0].Groups;
-            GroupCollection date = new Regex(@"(\d{2})(\d{2})(\d{2})").Matches(dateString)[0].Groups;
-            
-            return DateTimeUtil.New(date[3].Value, date[2].Value, date[1].Value,
-                time[1].Value, time[2].Value, time[3].Value,
-                time[4].Value);
+                return gprmc;
+            }
+
+            return null;
         }
     }
 }

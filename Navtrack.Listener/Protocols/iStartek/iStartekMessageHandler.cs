@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.iStartek
         public override Location Parse(MessageInput input)
         {
             string data = input.DataMessage.String[13..^4];
-            GPRMC gprmc = new GPRMC(data.Substring(0, data.IndexOf('|')));
+            GPRMC gprmc = GPRMC.Parse(data.Substring(0, data.IndexOf('|')));
             
             Location location = new Location(gprmc)
             {
