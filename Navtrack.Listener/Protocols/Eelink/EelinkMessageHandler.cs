@@ -30,6 +30,7 @@ namespace Navtrack.Listener.Protocols.Eelink
                     PackageIdentifier.Heartbeat, () =>
                     {
                         SendAcknowledge(input);
+                        
                         return null;
                     }
                 },
@@ -123,7 +124,7 @@ namespace Navtrack.Listener.Protocols.Eelink
 
             Location location = new Location
             {
-                Device = input.Client.Device,
+                Device = input.Client.Device
             };
 
             input.DataMessage.ByteReader.Skip(locationStartIndex);
@@ -153,7 +154,12 @@ namespace Navtrack.Listener.Protocols.Eelink
         }
 
         private static void HandleLoginPackage(MessageInput input)
-        {
+        {   
+            input.Client.Device = new Device
+            {
+                DeviceId = input.DataMessage.Hex[7..15].StringJoin().TrimStart('0')
+            };
+            
             string extra = Empty;
 
             // protocol V2.0 extra information

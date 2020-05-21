@@ -36,6 +36,8 @@ namespace Navtrack.Listener.Tests.Protocols
             Assert.IsTrue(!location.Satellites.HasValue || location.Satellites >= 0 && location.Satellites <= 50);
             Assert.IsTrue(!location.HDOP.HasValue || location.HDOP >= 0 && location.HDOP <= 100);
             Assert.IsTrue(!location.Odometer.HasValue || location.Odometer >= 0);
+            Assert.IsNotNull(location.Device);
+            Assert.IsNotEmpty(location.Device.DeviceId);
         }
     }
 }

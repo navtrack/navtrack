@@ -27,6 +27,10 @@ namespace Navtrack.Listener.Tests.Protocols.Eelink
         [Test]
         public void DeviceSendsLocationPackage_ServerAcknowledgesAndLocationIsParsed()
         {
+            // Login
+            ProtocolTester.SendHexFromDevice("67670100180005035254407167747100200205020500010432000088BD");
+
+            // Location
             ProtocolTester.SendHexFromDevice("67671200410022590BD94203026B940D0C3952AD0021000000000001CC0001A53F0170F0AB1301890F08000000000000C2D0001C001600000000000000000000000000000000");
 
             Assert.AreEqual("67671200020022", ProtocolTester.ReceiveHexInDevice());
@@ -36,6 +40,10 @@ namespace Navtrack.Listener.Tests.Protocols.Eelink
         [Test]
         public void DeviceSendsWarningPackage_ServerAcknowledges()
         {
+            // Login
+            ProtocolTester.SendHexFromDevice("67670100180005035254407167747100200205020500010432000088BD");
+
+            // Warning
             ProtocolTester.SendHexFromDevice("6767140024000A590BD54903026B940D0C3952AD0021000400000501CC0001A53F0170F0AB19020789");
 
             Assert.AreEqual("6767140002000A", ProtocolTester.ReceiveHexInDevice());
@@ -45,6 +53,10 @@ namespace Navtrack.Listener.Tests.Protocols.Eelink
         [Test]
         public void DeviceSendsReportPackage_ServerAcknowledges()
         {
+            // Login
+            ProtocolTester.SendHexFromDevice("67670100180005035254407167747100200205020500010432000088BD");
+
+            // Report
             ProtocolTester.SendHexFromDevice("6767150024000B590BD57103026B940D0C3952AD0021000000000501CC0001A53F0170F0AB18020789");
 
             Assert.AreEqual("6767150002000B", ProtocolTester.ReceiveHexInDevice());
@@ -53,6 +65,10 @@ namespace Navtrack.Listener.Tests.Protocols.Eelink
         [Test]
         public void DeviceSendsMessagePackage_ServerAcknowledges()
         {
+            // Login
+            ProtocolTester.SendHexFromDevice("67670100180005035254407167747100200205020500010432000088BD");
+
+            // Message
             ProtocolTester.SendHexFromDevice("6767160039000D590BD5AF03026B940D0C3952AD0021000000000501CC0001A53F0170F0AB17323031383536363232313235300000000000000000313233");
 
             Assert.AreEqual("6767160017000D323031383536363232313235300000000000000000", ProtocolTester.ReceiveHexInDevice());

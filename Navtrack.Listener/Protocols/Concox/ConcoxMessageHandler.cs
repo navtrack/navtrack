@@ -27,7 +27,7 @@ namespace Navtrack.Listener.Protocols.Concox
             return methods.ContainsKey(protocolNumber) ? methods[protocolNumber](input) : null;
         }
 
-        private Location PositioningDataHandler(MessageInput input)
+        private static Location PositioningDataHandler(MessageInput input)
         {
             string courseAndStatus = Convert.ToString(input.DataMessage.Bytes[20], 2).PadLeft(8, '0') +
                                      Convert.ToString(input.DataMessage.Bytes[21], 2).PadLeft(8, '0');

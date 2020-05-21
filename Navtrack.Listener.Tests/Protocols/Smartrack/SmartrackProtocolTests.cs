@@ -25,6 +25,10 @@ namespace Navtrack.Listener.Tests.Protocols.Smartrack
         [Test]
         public void DeviceSendsLocation_LocationIsParsed()
         {
+            // Login
+            ProtocolTester.SendStringFromDevice("(040331141830BP00000013612345678HSO)");
+
+            // Location
             ProtocolTester.SendStringFromDevice(
                 "(080612022828BR00080612A2232.9828N11404.9297E000.0022828000.0000000000L000230AA)");
 

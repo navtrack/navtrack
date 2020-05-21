@@ -36,6 +36,7 @@ namespace Navtrack.Listener.Protocols.Carscop
             {
                 Location location = new Location
                 {
+                    Device = input.Client.Device,
                     DateTime = DateTimeUtil.New(lgc[10].Value, lgc[11].Value, lgc[12].Value, lgc[1].Value, lgc[2].Value,
                         lgc[3].Value),
                     PositionStatus = lgc[2].Value == "A",

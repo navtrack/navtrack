@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
@@ -17,12 +18,13 @@ namespace Navtrack.Listener.Protocols.Amwell
             return GetLocation(input);
         }
 
-        private Location GetLocation(MessageInput input)
+        private static Location GetLocation(MessageInput input)
         {
             input.DataMessage.ByteReader.Skip(9);
 
             Location location = new Location
             {
+                Device = input.Client.Device,
                 DateTime = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
                     int.Parse(input.DataMessage.Hex[10]),
                     int.Parse(input.DataMessage.Hex[11]),
@@ -66,6 +68,11 @@ namespace Navtrack.Listener.Protocols.Amwell
                 string fullReply = $"{reply}{checksum}{end}";
 
                 input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(fullReply));
+                
+                input.Client.Device = new Device
+                {
+                    DeviceId = int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber).ToString()
+                };
             }
         }
 
