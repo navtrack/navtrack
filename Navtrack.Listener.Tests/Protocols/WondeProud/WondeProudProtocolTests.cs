@@ -60,7 +60,7 @@ namespace Navtrack.Listener.Tests.Protocols.WondeProud
         }
 
         [Test]
-        public void DeviceSendsLocationV8_LocationIsParsed()
+        public void DeviceSendsLocationV7_LocationIsParsed()
         {
             ProtocolTester.SendStringFromDevice(
                 "210000001,20070313170040,121.123456,12.654321,0,233,0,9,2,0.0,0,0.00,0.00,0");
@@ -69,7 +69,7 @@ namespace Navtrack.Listener.Tests.Protocols.WondeProud
         }
 
         [Test]
-        public void DeviceSendsLocationV9_LocationIsParsed()
+        public void DeviceSendsLocationV8_LocationIsParsed()
         {
             ProtocolTester.SendStringFromDevice(
                 "1044989601,20130322172647,13.572583,52.401070,22,204,49,0,2");
@@ -78,7 +78,7 @@ namespace Navtrack.Listener.Tests.Protocols.WondeProud
         }
 
         [Test]
-        public void DeviceSendsLocationV10_LocationIsParsed()
+        public void DeviceSendsLocationV9_LocationIsParsed()
         {
             ProtocolTester.SendStringFromDevice(
                 "1044989601,20130322172647,13.572583,52.401070,22,204,-49,0,2");
@@ -87,7 +87,7 @@ namespace Navtrack.Listener.Tests.Protocols.WondeProud
         }
 
         [Test]
-        public void DeviceSendsLocationV11_LocationIsParsed()
+        public void DeviceSendsLocationV10_LocationIsParsed()
         {
             ProtocolTester.SendStringFromDevice(
                 "3997324533,20140326074908,28.797603,47.041635,0,48,0,6,2,3.90V,0");
@@ -96,7 +96,7 @@ namespace Navtrack.Listener.Tests.Protocols.WondeProud
         }
 
         [Test]
-        public void DeviceSendsLocationV12_LocationIsParsed()
+        public void DeviceSendsLocationV11_LocationIsParsed()
         {
             ProtocolTester.SendStringFromDevice(
                 "2000000001,20140529213210,-63.179111,9.781493,0,0,54.0,8,2,0.0,0,0.01,0.01,0,0,0,0");
