@@ -2,11 +2,8 @@
 // ReSharper disable once InconsistentNaming
 namespace Navtrack.Listener.Helpers.New
 {
-    public enum DateFormat
+    public enum GpsFormat
     {
-        HHMMSS_SS_DDMMYY,
-        YYMMDDHHMMSS,
-        YYYYMMDDHHMMSS,
-        DDMMYYHHMMSS
+        DDDMMmmmm
     }
 }

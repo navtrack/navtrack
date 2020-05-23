@@ -12,6 +12,7 @@ namespace Navtrack.Listener.Helpers.New
             {
                 DateFormat.HHMMSS_SS_DDMMYY => Parse_HHMMSS_SS_DDMMYY(input),
                 DateFormat.YYYYMMDDHHMMSS => Parse_YYYYMMDDHHMMSS(input),
+                DateFormat.DDMMYYHHMMSS => Parse_DDMMYYHHMMSS(input),
                 _ => Parse_YYMMDDHHMMSS(input)
             };
         }
@@ -55,6 +56,19 @@ namespace Navtrack.Listener.Helpers.New
                 match.Groups[4].Value,
                 match.Groups[5].Value,
                 match.Groups[6].Value, add2000Year: false);
+        }
+        
+        private static DateTime Parse_DDMMYYHHMMSS(string[] input)
+        {
+            Match match = new Regex("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})").Match(input[0]);
+
+            return DateTimeUtil.New(
+                match.Groups[3].Value,
+                match.Groups[2].Value,
+                match.Groups[1].Value,
+                match.Groups[4].Value,
+                match.Groups[5].Value,
+                match.Groups[6].Value);
         }
     }
 }
