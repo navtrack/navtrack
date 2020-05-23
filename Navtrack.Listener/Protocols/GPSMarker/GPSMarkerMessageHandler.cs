@@ -9,7 +9,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.GPSMarker
 {
     [Service(typeof(ICustomMessageHandler<GPSMarkerProtocol>))]
-    public class GPSMarkerProtocolMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
+    public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
     {
         public override Location Parse(MessageInput input)
         {

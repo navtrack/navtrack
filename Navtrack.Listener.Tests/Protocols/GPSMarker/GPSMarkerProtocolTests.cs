@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Navtrack.Listener.Tests.Protocols.GPSMarker
 {
-    public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMarkerProtocolMessageHandler>
+    public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMarkerMessageHandler>
     {
         [Test]
         public void DeviceSendsLocationV1_LocationIsParsed()
