@@ -26,7 +26,7 @@ namespace Navtrack.Listener.Protocols.Arknav
                           "(\\d{2}):(\\d{2}):(\\d{2}) (\\d{2})-(\\d{2})-(\\d{2}),") // hh:mm:ss dd-mm-yy
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 19)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

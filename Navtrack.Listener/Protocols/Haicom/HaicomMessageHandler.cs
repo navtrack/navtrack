@@ -30,7 +30,7 @@ namespace Navtrack.Listener.Protocols.Haicom
                           "#V(\\d+)") // battery
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 22)
+            if (locationMatch.Success)
             {
                 int flags = locationMatch.Groups[9].Get<int>();
 

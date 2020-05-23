@@ -35,7 +35,7 @@ namespace Navtrack.Listener.Protocols.CarTrackGPS
                           "(#*)") // end
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 27)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

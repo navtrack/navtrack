@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Gosafe
             {
                 Match imeiMatch = new Regex(@"(\*GS\d{2}),(\d{15})").Match(input.DataMessage.String);
 
-                if (imeiMatch.Groups.Count == 3)
+                if (imeiMatch.Success)
                 {
                     input.Client.Device = new Device
                     {
@@ -33,7 +33,7 @@ namespace Navtrack.Listener.Protocols.Gosafe
                     new Regex(@"GPS:(.);(.*?);(N|S)(.*?);(E|W)(.*?);(.*?);(.*?)(;(.*?);(.*?)(\$|#|$|,|;)|,)")
                         .Match(input.DataMessage.String);
 
-                if (dateMatch.Groups.Count == 8 && locationMatch.Groups.Count >= 9)
+                if (dateMatch.Success && locationMatch.Success && locationMatch.Groups.Count >= 9)
                 {
                     Location location = new Location
                     {

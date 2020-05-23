@@ -33,7 +33,7 @@ namespace Navtrack.Listener.Protocols.Jointech
                           "(.{2})") // message serial number
                     .Match(input.DataMessage.HexString);
 
-            if (locationMatch.Groups.Count == 21)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

@@ -32,7 +32,7 @@ namespace Navtrack.Listener.Protocols.Pretrace
                           "\\^(..)") // Checksum
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 25)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

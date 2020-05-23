@@ -29,7 +29,7 @@ namespace Navtrack.Listener.Protocols.KeSon
                           "(\\d{2})(\\d{2})(\\d{2})#") // time hh mm ss
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 20)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

@@ -24,7 +24,7 @@ namespace Navtrack.Listener.Protocols.Gotop
                           "(\\d+)") // heading
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 17)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

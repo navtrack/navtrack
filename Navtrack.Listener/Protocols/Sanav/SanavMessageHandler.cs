@@ -25,7 +25,7 @@ namespace Navtrack.Listener.Protocols.Sanav
                           "(\\d{2})(\\d{2})(\\d{2})") // date dd mm yy
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 18)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

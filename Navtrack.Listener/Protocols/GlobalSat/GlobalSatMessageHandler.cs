@@ -36,7 +36,7 @@ namespace Navtrack.Listener.Protocols.GlobalSat
                           "(.*?)") // hdop
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 19)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {
@@ -84,7 +84,7 @@ namespace Navtrack.Listener.Protocols.GlobalSat
                           "(,(\\d+.\\d+)|)") // hdop
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 20)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

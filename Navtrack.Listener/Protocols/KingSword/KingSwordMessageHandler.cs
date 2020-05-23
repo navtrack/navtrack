@@ -30,7 +30,7 @@ namespace Navtrack.Listener.Protocols.KingSword
                           "(\\d*)") // altitude
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 23)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

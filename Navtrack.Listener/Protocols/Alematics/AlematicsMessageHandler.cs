@@ -29,7 +29,7 @@ namespace Navtrack.Listener.Protocols.Alematics
                                   "(\\d+)") // Odometer
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 26)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {

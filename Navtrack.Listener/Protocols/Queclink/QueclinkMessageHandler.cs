@@ -20,7 +20,7 @@ namespace Navtrack.Listener.Protocols.Queclink
                         @"(.*),(.*),(.*),(.*),(.*),(-?.*),(-?.*),(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}),(.*?),(.*?),(.*?),(.*?),00,")
                     .Match(input.DataMessage.String);
 
-            if (imeiMatch.Groups.Count == 2 && locationMatch.Groups.Count == 18)
+            if (imeiMatch.Success && locationMatch.Success)
             {
                 Location location = new Location
                 {

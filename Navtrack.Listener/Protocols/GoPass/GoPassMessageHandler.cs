@@ -25,7 +25,7 @@ namespace Navtrack.Listener.Protocols.GoPass
             {
                 Match imeiMatch = new Regex("(\\d{15})").Match(input.DataMessage.String);
 
-                if (imeiMatch.Groups.Count == 2)
+                if (imeiMatch.Success)
                 {
                     input.Client.Device = new Device
                     {
@@ -54,7 +54,7 @@ namespace Navtrack.Listener.Protocols.GoPass
                         "(\\d{2})(\\d{2})(\\d{2}),") // dd mm yy
                     .Match(input.DataMessage.String);
 
-            if (locationMatch.Groups.Count == 16)
+            if (locationMatch.Success)
             {
                 Location location = new Location
                 {
