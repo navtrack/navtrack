@@ -13,10 +13,25 @@ namespace Navtrack.Listener.Helpers.New
                 DateFormat.HHMMSS_SS_DDMMYY => Parse_HHMMSS_SS_DDMMYY(input),
                 DateFormat.YYYYMMDDHHMMSS => Parse_YYYYMMDDHHMMSS(input),
                 DateFormat.DDMMYYHHMMSS => Parse_DDMMYYHHMMSS(input),
+                DateFormat.DDMMYY_HHMMSS => Parse_DDMMYY_HHMMSS(input),
                 _ => Parse_YYMMDDHHMMSS(input)
             };
         }
  
+        private static DateTime Parse_DDMMYY_HHMMSS(string[] input)
+        {
+            Match dateMatch = new Regex("(\\d+)\\/(\\d+)\\/(\\d+)").Match(input[0]); // dd/mm/yy
+            Match timeMatch = new Regex("(\\d+):(\\d+):(\\d+)").Match(input[1]); // hh:mm:ss
+
+            return DateTimeUtil.New(
+                dateMatch.Groups[3].Value,
+                dateMatch.Groups[2].Value,
+                dateMatch.Groups[1].Value,
+                timeMatch.Groups[1].Value,
+                timeMatch.Groups[2].Value,
+                timeMatch.Groups[3].Value);
+        }
+
         private static DateTime Parse_HHMMSS_SS_DDMMYY(string[] input)
         {
             Match timeMatch = new Regex("(\\d{2})(\\d{2})(\\d{2}).(\\d+)").Match(input[0]); // hh mm ss . sss

@@ -7,6 +7,7 @@ namespace Navtrack.Listener.Helpers.New
         HHMMSS_SS_DDMMYY,
         YYMMDDHHMMSS,
         YYYYMMDDHHMMSS,
-        DDMMYYHHMMSS
+        DDMMYYHHMMSS,
+        DDMMYY_HHMMSS
     }
 }
