@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
@@ -17,14 +16,14 @@ namespace Navtrack.Listener.Services
             this.repository = repository;
         }
 
-        public async Task<ConnectionEntity> NewConnection(IPEndPoint ipEndPoint)
+        public async Task<ConnectionEntity> NewConnection(string endPoint)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             
             ConnectionEntity connection = new ConnectionEntity
             {
                 OpenedAt = DateTime.UtcNow,
-                RemoteEndPoint = ipEndPoint.ToString()
+                RemoteEndPoint = endPoint
             };
 
             unitOfWork.Add(connection);

@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -26,7 +25,8 @@ namespace Navtrack.Listener.Server
 
         public async Task HandleClient(CancellationToken cancellationToken, Client client)
         {
-            ConnectionEntity connection = await connectionService.NewConnection((IPEndPoint) client.TcpClient.Client.RemoteEndPoint);
+            string endPoint = client.TcpClient.Client.RemoteEndPoint.ToString();
+            ConnectionEntity connection = await connectionService.NewConnection(endPoint);
 
             try
             {
@@ -42,7 +42,7 @@ namespace Navtrack.Listener.Server
             }
             finally
             {
-                logger.LogDebug($"{client.Protocol}: disconnected {client.TcpClient.Client.RemoteEndPoint}");
+                logger.LogDebug($"{client.Protocol}: disconnected {endPoint}");
                 
                 client.TcpClient.Close();
 
