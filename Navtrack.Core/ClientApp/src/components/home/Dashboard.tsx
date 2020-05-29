@@ -10,7 +10,7 @@ export default function Dashboard() {
                     Thank you for registering so early!
                 </div>
                 <div>
-                    Unfortunately Navtrack is not yet officialy and a lot
+                    Navtrack is not yet officialy released and a lot
                     of things are still not working here, please check back later.
                 </div>
             </div>
