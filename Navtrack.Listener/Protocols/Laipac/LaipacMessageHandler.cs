@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
+using Navtrack.Listener.Helpers.New2;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using static System.String;
@@ -86,7 +87,7 @@ namespace Navtrack.Listener.Protocols.Laipac
             if (Char.IsLower(status[0]))
             {
                 string response = $"$EAVACK,{@event},{checksum}";
-                response = $"{response}{ChecksumUtil.NMEA(response)}\r\n";
+                response = $"{response}*{ChecksumUtil.NMEA(response.ToByteArray())}\r\n";
 
                 input.NetworkStream.Write(StringUtil.ConvertStringToByteArray(response));
             }

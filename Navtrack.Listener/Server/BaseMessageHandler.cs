@@ -40,5 +40,29 @@ namespace Navtrack.Listener.Server
 
             return null;
         }
+        
+        protected IEnumerable<Location> ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<Location>>[] parsers)
+        {
+            foreach (Func<MessageInput,IEnumerable<Location>> parse in parsers)
+            {
+                try
+                {
+                    input.DataMessage.Reader.Reset();
+                    input.DataMessage.ByteReader.Reset();
+                    IEnumerable<Location> location = parse(input);
+
+                    if (location != null)
+                    {
+                        return location;
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
+            return null;
+        }
     }
 }
