@@ -6,12 +6,12 @@ namespace Navtrack.Listener.Server
     public class ByteReader
     {
         private byte[] bytes;
-        private int index;
+        public int Index;
 
         public ByteReader(byte[] bytes)
         {
             this.bytes = bytes;
-            index = 0;
+            Index = 0;
         }
 
         public byte GetOne()
@@ -94,11 +94,11 @@ namespace Navtrack.Listener.Server
         
         private byte[] GetNext(int i, bool skipOne)
         {
-            int endIndex = index + i;
+            int endIndex = Index + i;
             
-            byte[] sub = bytes[index..endIndex];
+            byte[] sub = bytes[Index..endIndex];
 
-            index = skipOne ? index + i + 1 : index + i;
+            Index = skipOne ? Index + i + 1 : Index + i;
 
             return sub;
         } 
@@ -107,7 +107,7 @@ namespace Navtrack.Listener.Server
         {
             if (i > 0)
             {
-                index += i;
+                Index += i;
             }
 
             return this;
@@ -115,7 +115,7 @@ namespace Navtrack.Listener.Server
 
         public byte[] GetUntil(byte b, int? extra = null)
         {
-            int newIndex = Array.IndexOf(bytes.Skip(index).ToArray(), b);
+            int newIndex = Array.IndexOf(bytes.Skip(Index).ToArray(), b);
 
             if (extra.HasValue)
             {
@@ -127,7 +127,7 @@ namespace Navtrack.Listener.Server
 
         public void Reset()
         {
-            index = 0;
+            Index = 0;
         }
     }
 }
