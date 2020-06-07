@@ -32,15 +32,13 @@ namespace Navtrack.Listener.Server
             {
                 value = BitConverter.ToInt16(Get(2));
             }
-
             else if (typeof(T) == typeof(int))
             {
                 value = BitConverter.ToInt32(Get(4));
             }
-            
             else if (typeof(T) == typeof(long))
             {
-                value = BitConverter.ToInt32(Get(8));
+                value = BitConverter.ToInt64(Get(8));
             }
             else if (typeof(T) == typeof(double))
             {
@@ -66,15 +64,13 @@ namespace Navtrack.Listener.Server
             {
                 value = BitConverter.ToInt16(Get(2).Reverse().ToArray());
             }
-
             else if (typeof(T) == typeof(int))
             {
                 value = BitConverter.ToInt32(Get(4).Reverse().ToArray());
             }
-            
             else if (typeof(T) == typeof(long))
             {
-                value = BitConverter.ToInt32(Get(8).Reverse().ToArray());
+                value = BitConverter.ToInt64(Get(8).Reverse().ToArray());
             }
             else if (typeof(T) == typeof(double))
             {
