@@ -125,5 +125,7 @@ namespace Navtrack.Listener.Server
         {
             Index = 0;
         }
+
+        public int BytesLeft => bytes.Length - Index;
     }
 }

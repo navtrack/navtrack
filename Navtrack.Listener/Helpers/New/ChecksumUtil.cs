@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Navtrack.Listener.Helpers.New
@@ -37,6 +38,11 @@ namespace Navtrack.Listener.Helpers.New
             }
 
             return crc;
+        }
+        
+        public static int Modulo256(IEnumerable<byte> bytes)
+        {
+            return bytes.Aggregate(0, (current, t) => (current + t) & 0xFF);
         }
     }
 }
