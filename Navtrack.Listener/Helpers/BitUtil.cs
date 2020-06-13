@@ -6,5 +6,9 @@
         {
             return (value & (1 << index)) != 0;
         }
+        
+        public static int ShiftRight(int value, int count) {
+            return value >> count;
+        }
     }
 }

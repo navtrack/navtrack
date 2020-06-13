@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Navtrack.Listener.Server
@@ -86,6 +87,14 @@ namespace Navtrack.Listener.Server
             }
 
             return (T)value;
+        }
+        
+        public int GetMediumIntLe()
+        {
+            List<byte> a = Get(3).Reverse().ToList();
+            a.Add(0);
+
+            return BitConverter.ToInt32(a.ToArray());
         }
         
         private byte[] GetNext(int i, bool skipOne)
