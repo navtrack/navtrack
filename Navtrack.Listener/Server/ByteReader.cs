@@ -20,9 +20,9 @@ namespace Navtrack.Listener.Server
             return GetNext(1, false).First();
         }
 
-        public byte[] Get(int i)
+        public byte[] Get(int i, bool count = true)
         {
-            return GetNext(i, false);
+            return GetNext(i, false, count);
         }
 
         public T Get<T>()
@@ -56,34 +56,34 @@ namespace Navtrack.Listener.Server
 
             return (T)value;
         }
-        
-        public T GetLe<T>()
+
+        public T GetLe<T>(bool count = true)
         {
             object value = null;
             
             if (typeof(T) == typeof(short))
             {
-                value = BitConverter.ToInt16(Get(2).Reverse().ToArray());
+                value = BitConverter.ToInt16(Get(2, count).Reverse().ToArray());
             }
             else if (typeof(T) == typeof(int))
             {
-                value = BitConverter.ToInt32(Get(4).Reverse().ToArray());
+                value = BitConverter.ToInt32(Get(4, count).Reverse().ToArray());
             }
             else if (typeof(T) == typeof(long))
             {
-                value = BitConverter.ToInt64(Get(8).Reverse().ToArray());
+                value = BitConverter.ToInt64(Get(8, count).Reverse().ToArray());
             }
             else if (typeof(T) == typeof(double))
             {
-                value = BitConverter.ToDouble(Get(8).Reverse().ToArray());
+                value = BitConverter.ToDouble(Get(8, count).Reverse().ToArray());
             }
             else if (typeof(T) == typeof(decimal))
             {
-                value = BitConverter.ToDouble(Get(16).Reverse().ToArray());
+                value = BitConverter.ToDouble(Get(16, count).Reverse().ToArray());
             }
             else if (typeof(T) == typeof(float))
             {
-                value = BitConverter.ToSingle(Get(4).Reverse().ToArray());
+                value = BitConverter.ToSingle(Get(4, count).Reverse().ToArray());
             }
 
             return (T)value;
@@ -97,13 +97,16 @@ namespace Navtrack.Listener.Server
             return BitConverter.ToInt32(a.ToArray());
         }
         
-        private byte[] GetNext(int i, bool skipOne)
+        private byte[] GetNext(int i, bool skipOne, bool count = true)
         {
             int endIndex = Index + i;
             
             byte[] sub = bytes[Index..endIndex];
 
-            Index = skipOne ? Index + i + 1 : Index + i;
+            if (count)
+            {
+                Index = skipOne ? Index + i + 1 : Index + i;
+            }
 
             return sub;
         } 

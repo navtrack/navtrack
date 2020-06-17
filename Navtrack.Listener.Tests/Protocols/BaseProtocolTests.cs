@@ -30,7 +30,7 @@ namespace Navtrack.Listener.Tests.Protocols
         {
             Assert.IsTrue(GpsUtil.IsValidLatitude(location.Latitude));
             Assert.IsTrue(GpsUtil.IsValidLongitude(location.Longitude));
-            Assert.IsTrue(location.DateTime > DateTime.UnixEpoch);
+            Assert.IsTrue(location.DateTime >= DateTime.UnixEpoch);
             Assert.IsTrue(!location.Speed.HasValue || location.Speed >= 0 && location.Speed <= 1000);
             Assert.IsTrue(!location.Heading.HasValue || location.Heading.Value >= 0 && location.Heading.Value <= 360);
             Assert.IsTrue(!location.Satellites.HasValue || location.Satellites >= 0 && location.Satellites <= 50);
