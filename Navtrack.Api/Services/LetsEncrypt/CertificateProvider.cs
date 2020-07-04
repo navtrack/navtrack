@@ -80,7 +80,7 @@ namespace Navtrack.Api.Services.LetsEncrypt
 
         private static bool CertificateIsInvalid(X509Certificate2 certificate)
         {
-            return certificate == null || certificate.NotAfter <= DateTime.UtcNow.AddDays(-30);
+            return certificate == null || DateTime.UtcNow >= certificate.NotAfter.AddDays(-30);
         }
     }
 }
