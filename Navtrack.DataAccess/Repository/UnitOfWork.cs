@@ -10,7 +10,6 @@ namespace Navtrack.DataAccess.Repository
     {
         private readonly DbContext dbContext;
         private readonly IInterceptorService interceptorService;
-        private bool disableInterceptors;
         private IDbContextTransaction transaction;
 
         public UnitOfWork(DbContext dbContext, IInterceptorService interceptorService)
@@ -31,10 +30,7 @@ namespace Navtrack.DataAccess.Repository
 
         public async Task SaveChanges()
         {
-            if (!disableInterceptors)
-            {
-                interceptorService.InterceptChanges(dbContext);
-            }
+            interceptorService.InterceptChanges(dbContext);
 
             await dbContext.SaveChangesAsync();
         }
@@ -52,11 +48,6 @@ namespace Navtrack.DataAccess.Repository
         public void Delete<T>(T entity) where T : class
         {
             dbContext.Remove(entity);
-        }
-
-        public void DisableInterceptors()
-        {
-            disableInterceptors = true;
         }
 
         public async Task BeginTransaction()
