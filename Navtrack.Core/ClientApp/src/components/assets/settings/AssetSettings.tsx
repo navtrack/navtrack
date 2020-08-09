@@ -29,7 +29,7 @@ export default function AssetSettings() {
     <AssetLayout>
       {asset && (
         <div className="bg-white shadow p-3 rounded mb-3 flex ">
-          <div className="mr-3 border-r" style={{ width: "150px" }}>
+          <div className="mr-3 border-r" style={{ width: "180px" }}>
             <ul>
               <MenuItem url={`/assets/${assetId}/settings`} icon="a">
                 General
@@ -63,9 +63,9 @@ const MenuItem = (props: { children: string; url: string; icon: string }) => {
     <Link to={props.url}>
       <li
         className={classNames(
-          "text-gray-600 hover:text-gray-900 hover:border-gray-400 px-2 py-1 border-r-2 border-transparent",
+          "font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 py-1 m-1 rounded",
           {
-            "text-gray-900 border-orange-600 hover:border-orange-600": isHighlighted
+            "text-gray-800 bg-gray-200 hover:bg-gray-200": isHighlighted
           }
         )}>
         <Icon className={props.icon} margin={1} /> {props.children}

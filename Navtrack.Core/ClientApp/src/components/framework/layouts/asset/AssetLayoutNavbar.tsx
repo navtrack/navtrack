@@ -54,7 +54,7 @@ function LinkItem(props: Props) {
     <Link to={props.url}>
       <li
         className={classNames(
-          "text-gray-600 hover:text-gray-900 py-2 px-4 hover:border-gray-400 border-b-2 border-transparent",
+          "text-gray-600 hover:text-gray-900 py-2 px-4 hover:border-gray-400 border-b-2 border-transparent font-medium",
           {
             "text-gray-900 border-b-2 border-orange-600 hover:border-orange-600": isHighlighted
           }
