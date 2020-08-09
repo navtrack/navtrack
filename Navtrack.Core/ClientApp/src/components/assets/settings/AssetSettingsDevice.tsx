@@ -12,6 +12,7 @@ import AssetSettingsCard from "./AssetSettingsCard";
 import { ChangeDeviceRequestModel } from "apis/types/asset/ChangeDeviceRequestModel";
 import { DeviceTypeModel } from "apis/types/device/DeviceTypeModel";
 import { AssetApi } from "apis/AssetApi";
+import DeviceConfiguration from "components/devices/DeviceConfiguration";
 
 type Props = {
   asset: AssetModel;
@@ -26,12 +27,19 @@ export default function AssetSettingsDevice(props: Props) {
   const [validate, validationResult, setErrors] = useNewValidation(validateModel);
   const intl = useIntl();
   const [deviceTypes, setDeviceTypes] = useState<DeviceTypeModel[]>();
+  const [selectedDeviceType, setSelectedDeviceType] = useState<DeviceTypeModel>();
 
   useEffect(() => {
     DeviceTypeApi.getDeviceTypes().then((deviceTypes) => {
       setDeviceTypes(deviceTypes);
     });
   }, []);
+
+  useEffect(() => {
+    if (deviceTypes) {
+      setSelectedDeviceType(deviceTypes.find((x) => x.id === model.deviceTypeId));
+    }
+  }, [deviceTypes, model.deviceTypeId]);
 
   const handleSubmit = async () => {
     if (validate(model)) {
@@ -50,13 +58,18 @@ export default function AssetSettingsDevice(props: Props) {
       {deviceTypes && (
         <>
           <AssetSettingsCard title="Device">
-            <div className="w-1/2 flex">
-              <div className="flex-grow">
+            <div className="flex">
+              <div className="flex-grow w-1/2 pr-4">
                 <SelectInput
                   name={intl.formatMessage({ id: "assets.add.deviceTypeId" })}
                   value={model.deviceTypeId}
                   validationResult={validationResult.property.deviceTypeId}
-                  onChange={(e) => setModel({ ...model, deviceTypeId: parseInt(e.target.value) })}>
+                  onChange={(e) => {
+                    setModel({ ...model, deviceTypeId: parseInt(e.target.value) });
+                    setSelectedDeviceType(
+                      deviceTypes.find((x) => x.id === parseInt(e.target.value))
+                    );
+                  }}>
                   <option value={0} key={0}>
                     {intl.formatMessage({ id: "assets.add.deviceTypeId.placeholder" })}
                   </option>
@@ -83,6 +96,7 @@ export default function AssetSettingsDevice(props: Props) {
                   Change device
                 </Button>
               </div>
+              <DeviceConfiguration className="w-1/2 pl-4" deviceType={selectedDeviceType} />
             </div>
           </AssetSettingsCard>
           <AssetSettingsCard title="History" className="mt-4">
@@ -92,26 +106,28 @@ export default function AssetSettingsDevice(props: Props) {
                 been assigned to this asset and have location data.
               </span>
               <table className="w-full text-sm rounded border">
-                <tr className="bg-gray-100 text-xs uppercase text-gray-700 p-2 border rounded-t-md font-medium">
-                  <td className="p-2 rounded-t">Device ID</td>
-                  <td className="p-2">Device Type</td>
-                  <td className="p-2">Locations</td>
-                  <td></td>
-                </tr>
-                {props.asset.devices.map((x) => (
-                  <tr className="border">
-                    <td className="p-2">{x.deviceId}</td>
-                    <td className="p-2">{x.deviceType.displayName}</td>
-                    <td className="p-2">{x.locationsCount}</td>
-                    <td className="p-2 text-right">
-                      {props.asset.activeDevice.id === x.id && (
-                        <div className="text-xs bg-gray-900 text-white inline-block px-4 py-1 rounded-lg font-semibold text-white tracking-wide">
-                          Active
-                        </div>
-                      )}
-                    </td>
+                <tbody>
+                  <tr className="bg-gray-100 text-xs uppercase text-gray-700 p-2 border rounded-t-md font-medium">
+                    <td className="p-2 rounded-t">Device ID</td>
+                    <td className="p-2">Device Type</td>
+                    <td className="p-2">Locations</td>
+                    <td></td>
                   </tr>
-                ))}
+                  {props.asset.devices.map((x) => (
+                    <tr className="border" key={x.deviceId}>
+                      <td className="p-2">{x.deviceId}</td>
+                      <td className="p-2">{x.deviceType.displayName}</td>
+                      <td className="p-2">{x.locationsCount}</td>
+                      <td className="p-2 text-right">
+                        {props.asset.activeDevice.id === x.id && (
+                          <div className="text-xs bg-gray-900 text-white inline-block px-4 py-1 rounded-lg font-semibold text-white tracking-wide">
+                            Active
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           </AssetSettingsCard>

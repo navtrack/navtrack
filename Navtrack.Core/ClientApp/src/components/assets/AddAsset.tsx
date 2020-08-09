@@ -15,24 +15,30 @@ import {
   DefaultAddAssetRequestModel,
   AddAssetRequestModel
 } from "apis/types/asset/AddAssetRequestModel";
+import DeviceConfiguration from "components/devices/DeviceConfiguration";
 
-type Props = {
-  id?: number;
-};
-
-export default function AssetEdit(props: Props) {
+export default function AddAsset() {
   const [asset, setAsset] = useState(DefaultAddAssetRequestModel);
   const [validate, validationResult, setErrors] = useNewValidation(validateAsset);
-  const [show] = useState(!props.id);
   const history = useHistory();
   const intl = useIntl();
   const [deviceTypes, setDeviceTypes] = useState<DeviceTypeModel[]>([]);
+  const [selectedDeviceType, setSelectedDeviceType] = useState<DeviceTypeModel>();
 
   useEffect(() => {
     DeviceTypeApi.getDeviceTypes().then((deviceTypes) => {
       setDeviceTypes(deviceTypes);
     });
-  }, [props.id]);
+  }, []);
+
+  useEffect(() => {
+    if (deviceTypes) {
+      const deviceType = deviceTypes.find((x) => x.id === asset.deviceTypeId);
+
+      setSelectedDeviceType(deviceType);
+      console.log(deviceType);
+    }
+  }, [asset.deviceTypeId, deviceTypes]);
 
   const handleSubmit = async () => {
     if (validate(asset)) {
@@ -46,51 +52,51 @@ export default function AssetEdit(props: Props) {
   };
 
   return (
-    <>
-      {show && (
-        <Form
-          title={intl.formatMessage({ id: "assets.add.title" })}
-          actions={
-            <Button color="primary" onClick={handleSubmit} disabled={validationResult.HasErrors()}>
-              <FormattedMessage id="assets.add.action" />
-            </Button>
-          }>
-          <TextInput
-            name={intl.formatMessage({ id: "assets.add.name" })}
-            value={asset.name}
-            validationResult={validationResult.property.name}
-            className="mb-3"
-            onChange={(e) => {
-              setAsset({ ...asset, name: e.target.value });
-            }}
-          />
-          <SelectInput
-            name={intl.formatMessage({ id: "assets.add.deviceTypeId" })}
-            value={asset.deviceTypeId}
-            validationResult={validationResult.property.deviceTypeId}
-            onChange={(e) => setAsset({ ...asset, deviceTypeId: parseInt(e.target.value) })}>
-            <option value={0} key={0}>
-              {intl.formatMessage({ id: "assets.add.deviceTypeId.placeholder" })}
-            </option>
-            {deviceTypes.map((x) => (
-              <option value={x.id} key={x.id}>
-                {x.displayName}
-              </option>
-            ))}
-          </SelectInput>
-          <TextInput
-            name={intl.formatMessage({ id: "assets.add.deviceId" })}
-            value={asset.deviceId}
-            validationResult={validationResult.property.deviceId}
-            placeholder={intl.formatMessage({ id: "assets.add.deviceId.placeholder" })}
-            className="mb-3"
-            onChange={(e) => {
-              setAsset({ ...asset, deviceId: e.target.value });
-            }}
-          />
-        </Form>
-      )}
-    </>
+    <Form
+      title={intl.formatMessage({ id: "assets.add.title" })}
+      actions={
+        <Button color="primary" onClick={handleSubmit} disabled={validationResult.HasErrors()}>
+          <FormattedMessage id="assets.add.action" />
+        </Button>
+      }
+      rightChildren={<DeviceConfiguration deviceType={selectedDeviceType} />}>
+      <TextInput
+        name={intl.formatMessage({ id: "assets.add.name" })}
+        value={asset.name}
+        validationResult={validationResult.property.name}
+        className="mb-3"
+        onChange={(e) => {
+          setAsset({ ...asset, name: e.target.value });
+        }}
+      />
+      <SelectInput
+        name={intl.formatMessage({ id: "assets.add.deviceTypeId" })}
+        value={asset.deviceTypeId}
+        validationResult={validationResult.property.deviceTypeId}
+        onChange={(e) => {
+          setAsset({ ...asset, deviceTypeId: parseInt(e.target.value) });
+          setSelectedDeviceType(deviceTypes.find((x) => x.id === parseInt(e.target.value)));
+        }}>
+        <option value={0} key={0}>
+          {intl.formatMessage({ id: "assets.add.deviceTypeId.placeholder" })}
+        </option>
+        {deviceTypes.map((x) => (
+          <option value={x.id} key={x.id}>
+            {x.displayName}
+          </option>
+        ))}
+      </SelectInput>
+      <TextInput
+        name={intl.formatMessage({ id: "assets.add.deviceId" })}
+        value={asset.deviceId}
+        validationResult={validationResult.property.deviceId}
+        placeholder={intl.formatMessage({ id: "assets.add.deviceId.placeholder" })}
+        className="mb-3"
+        onChange={(e) => {
+          setAsset({ ...asset, deviceId: e.target.value });
+        }}
+      />
+    </Form>
   );
 }
 

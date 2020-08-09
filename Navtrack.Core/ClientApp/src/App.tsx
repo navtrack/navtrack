@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router";
 import { AppContextAccessor } from "framework/appContext/AppContextAccessor";
 import { AuthenticationService } from "framework/authentication/AuthenticationService";
-import AssetEdit from "components/assets/AddAsset";
+import AddAsset from "components/assets/AddAsset";
 import UserList from "components/admin/users/UserList";
 import UserEdit from "components/admin/users/UserEdit";
 import Dashboard from "components/home/Dashboard";
@@ -57,7 +57,7 @@ export default function App() {
           {/* Assets */}
           <PrivateRoute path="/assets/add">
             <AdminLayout>
-              <AssetEdit />
+              <AddAsset />
             </AdminLayout>
           </PrivateRoute>
           <PrivateRoute path={"/assets/:assetId/live"}>
