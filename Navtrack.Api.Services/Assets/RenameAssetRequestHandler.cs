@@ -25,7 +25,7 @@ namespace Navtrack.Api.Services.Assets
 
         public override async Task Authorize(RenameAssetRequest request)
         {
-            if (!await assetDataService.UserHasRole(request.UserId, request.AssetId, UserRole.Owner))
+            if (!await assetDataService.UserHasRole(request.UserId, request.AssetId, UserAssetRole.Owner))
             {
                 ApiResponse.IsUnauthorised();
             }

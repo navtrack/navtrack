@@ -1,6 +1,6 @@
 namespace Navtrack.DataAccess.Model.Custom
 {
-    public enum UserRole
+    public enum UserAssetRole
     {
         User,
         Owner

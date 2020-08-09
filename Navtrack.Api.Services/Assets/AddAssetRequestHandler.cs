@@ -87,7 +87,7 @@ namespace Navtrack.Api.Services.Assets
             {
                 UserId = request.UserId,
                 Asset = asset,
-                RoleId = (int) UserRole.Owner
+                RoleId = (int) UserAssetRole.Owner
             };
 
             DeviceEntity device = new DeviceEntity

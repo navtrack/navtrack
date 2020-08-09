@@ -5,7 +5,7 @@ namespace Navtrack.DataAccess.Services
 {
     public interface IAssetDataService
     {
-        Task<bool> UserHasRole(int userId, int assetId, UserRole userRole);
+        Task<bool> UserHasRole(int userId, int assetId, UserAssetRole userAssetRole);
         Task<bool> HasActiveDeviceId(int assetId, string deviceId);
     }
 }
