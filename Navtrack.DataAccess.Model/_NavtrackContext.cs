@@ -67,7 +67,6 @@ namespace Navtrack.DataAccess.Model
 
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
-                entity.Property(x => x.DeviceId);
 
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Asset)
@@ -117,20 +116,6 @@ namespace Navtrack.DataAccess.Model
                 entity.HasOne(pt => pt.Asset)
                     .WithMany(t => t.Users)
                     .HasForeignKey(pt => pt.AssetId);
-            });
-
-            modelBuilder.Entity<UserDeviceEntity>(entity =>
-            {
-                entity.ToTable("UserDevice");
-
-                entity.HasKey(t => new {t.UserId, t.DeviceId});
-                entity.HasOne(pt => pt.User)
-                    .WithMany(p => p.Devices)
-                    .HasForeignKey(pt => pt.UserId);
-
-                entity.HasOne(pt => pt.Device)
-                    .WithMany(t => t.Users)
-                    .HasForeignKey(pt => pt.DeviceId);
             });
 
             modelBuilder.Entity<ConfigurationEntity>(entity =>

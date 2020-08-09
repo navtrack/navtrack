@@ -3,7 +3,7 @@ using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class LocationEntity : EntityAudit, IEntity
+    public class LocationEntity : CreatedEntityAudit, IEntity
     {
         public int Id { get; set; }
         public decimal Latitude { get; set; }

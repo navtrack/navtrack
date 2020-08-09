@@ -8,7 +8,6 @@ namespace Navtrack.DataAccess.Model
         public DeviceEntity()
         {
             Locations = new HashSet<LocationEntity>();
-            Users = new HashSet<UserDeviceEntity>();
         }
         
         public int Id { get; set; }
@@ -19,6 +18,5 @@ namespace Navtrack.DataAccess.Model
         public AssetEntity Asset { get; set; }
         public int DeviceModelId { get; set; } // TODO: rename to DeviceTypeId
         public ICollection<LocationEntity> Locations { get; set; }
-        public ICollection<UserDeviceEntity> Users { get; set; }
     }
 }

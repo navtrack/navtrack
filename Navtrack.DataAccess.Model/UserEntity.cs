@@ -8,7 +8,6 @@ namespace Navtrack.DataAccess.Model
         public UserEntity()
         {
             Assets = new HashSet<UserAssetEntity>();
-            Devices = new HashSet<UserDeviceEntity>();
         }
         public int Id { get; set; }
         public string Email { get; set; }
@@ -16,6 +15,5 @@ namespace Navtrack.DataAccess.Model
         public string Hash { get; set; }
         public int Role { get; set;  }
         public ICollection<UserAssetEntity> Assets { get; set; }
-        public ICollection<UserDeviceEntity> Devices { get; set; }
     }
 }
