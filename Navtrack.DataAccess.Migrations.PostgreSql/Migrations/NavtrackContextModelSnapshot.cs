@@ -108,7 +108,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<string>("DeviceId")
                         .HasColumnType("text");
 
-                    b.Property<int>("DeviceModelId")
+                    b.Property<int>("DeviceTypeId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")

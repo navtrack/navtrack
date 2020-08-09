@@ -16,7 +16,7 @@ namespace Navtrack.DataAccess.Model
         public int AssetId { get; set; }
         public bool IsActive { get; set; }
         public AssetEntity Asset { get; set; }
-        public int DeviceModelId { get; set; } // TODO: rename to DeviceTypeId
+        public int DeviceTypeId { get; set; }
         public ICollection<LocationEntity> Locations { get; set; }
     }
 }

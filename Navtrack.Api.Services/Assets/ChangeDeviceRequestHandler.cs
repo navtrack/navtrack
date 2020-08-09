@@ -80,7 +80,7 @@ namespace Navtrack.Api.Services.Assets
             }
             
             DeviceEntity existingDevice = asset.Devices.FirstOrDefault(x =>
-                x.DeviceId == request.Body.DeviceId && x.DeviceModelId == request.Body.DeviceTypeId);
+                x.DeviceId == request.Body.DeviceId && x.DeviceTypeId == request.Body.DeviceTypeId);
 
             if (existingDevice != null)
             {
@@ -93,7 +93,7 @@ namespace Navtrack.Api.Services.Assets
 
                 if (deviceWithNoLocations != null)
                 {
-                    deviceWithNoLocations.DeviceModelId = request.Body.DeviceTypeId;
+                    deviceWithNoLocations.DeviceTypeId = request.Body.DeviceTypeId;
                     deviceWithNoLocations.DeviceId = request.Body.DeviceId;
                     deviceWithNoLocations.IsActive = true;
                     unitOfWork.Update(deviceWithNoLocations);
@@ -116,7 +116,7 @@ namespace Navtrack.Api.Services.Assets
             DeviceEntity deviceEntity = new DeviceEntity
             {
                 DeviceId = request.Body.DeviceId,
-                DeviceModelId = request.Body.DeviceTypeId,
+                DeviceTypeId = request.Body.DeviceTypeId,
                 AssetId = request.AssetId,
                 ProtocolPort = deviceType.Protocol.Port,
                 IsActive = true

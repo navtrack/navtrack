@@ -101,7 +101,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite.Migrations
                     b.Property<string>("DeviceId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DeviceModelId")
+                    b.Property<int>("DeviceTypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsActive")

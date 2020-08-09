@@ -93,7 +93,7 @@ namespace Navtrack.Api.Services.Assets
             DeviceEntity device = new DeviceEntity
             {
                 DeviceId = request.Body.DeviceId,
-                DeviceModelId = request.Body.DeviceTypeId,
+                DeviceTypeId = request.Body.DeviceTypeId,
                 Asset = asset,
                 ProtocolPort = deviceType.Protocol.Port,
                 IsActive = true

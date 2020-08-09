@@ -25,7 +25,7 @@ namespace Navtrack.Api.Services.Mappers
             destination.DeviceId = source.DeviceId;
             destination.IsActive = source.IsActive;
             
-            DeviceData.Model.DeviceType deviceType = deviceTypeDataService.GetById(source.DeviceModelId);
+            DeviceData.Model.DeviceType deviceType = deviceTypeDataService.GetById(source.DeviceTypeId);
             destination.DeviceType = deviceType != null
                 ? mapper.Map<DeviceData.Model.DeviceType, DeviceTypeResponseModel>(deviceType)
                 : null;

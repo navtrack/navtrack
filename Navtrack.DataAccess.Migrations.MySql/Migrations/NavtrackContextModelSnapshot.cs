@@ -102,7 +102,7 @@ namespace Navtrack.DataAccess.Migrations.MySql.Migrations
                     b.Property<string>("DeviceId")
                         .HasColumnType("text");
 
-                    b.Property<int>("DeviceModelId")
+                    b.Property<int>("DeviceTypeId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
