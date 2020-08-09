@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import AppContext from "services/appContext/AppContext";
-import Icon from "components/framework/util/Icon";
-import useClickOutside from "../../../hooks/useClickOutside";
-import { AuthenticationService } from "services/authentication/AuthenticationService";
+import AppContext from "framework/appContext/AppContext";
+import { AuthenticationService } from "framework/authentication/AuthenticationService";
+import { FormattedMessage } from "react-intl";
+import useClickOutside from "framework/hooks/useClickOutside";
+import Button from "components/library/elements/Button";
+import Icon from "components/library/util/Icon";
 
 export default function AdminNavbar() {
   const { appContext } = useContext(AppContext);
@@ -18,10 +20,17 @@ export default function AdminNavbar() {
 
   return (
     <nav className="p-3 flex bg-gray-900 shadow z-20">
-      <h1 className="text-white font-medium">NAVTRACK</h1>
-      <div className="flex-grow flex flex-row text-white justify-end">
+      <h1 className="text-white font-medium">
+        <FormattedMessage id="navbar.title" />
+      </h1>
+      <div className="flex-grow flex flex-row text-white justify-end items-center">
+        <div className="mr-3">
+          <Button color="primary" onClick={() => history.push("/assets/add")} size="xs">
+            <FormattedMessage id="navbar.newAsset" />
+          </Button>
+        </div>
         <div className="mx-2 cursor-pointer">
-          <div className="relative inline-block" onClick={e => showMenu(e)}>
+          <div className="relative inline-block" onClick={(e) => showMenu(e)}>
             <i className="fa fa-user mr-1" />
             <span className="font-medium text-sm">
               {appContext.authenticationInfo && appContext.authenticationInfo.email}
@@ -32,7 +41,7 @@ export default function AdminNavbar() {
                   <div
                     className="block px-6 py-3 leading-tight hover:bg-gray-200 text-gray-600 hover:text-gray-900"
                     onClick={handleLogout}>
-                    <Icon className="fa-sign-out-alt" /> Logout
+                    <Icon className="fa-sign-out-alt" /> <FormattedMessage id="navbar.logout" />
                   </div>
                 </div>
               </div>

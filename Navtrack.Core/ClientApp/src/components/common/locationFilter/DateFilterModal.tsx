@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { NumberFilterType } from "./types/NumberFilterType";
 import { DateFilterModel } from "./types/DateFilterModel";
-import useClickOutside from "components/hooks/useClickOutside";
+import useClickOutside from "framework/hooks/useClickOutside";
 import { DateFilterType } from "./types/DateFilterType";
 import moment, { Moment } from "moment";
-import Modal from "components/framework/elements/Modal";
-import Icon from "components/framework/util/Icon";
-import Checkbox from "components/framework/elements/Checkbox";
-import Configuration from "components/framework/util/Configuration";
-import DatePicker from "components/framework/elements/Calendar";
-import Button from "components/framework/elements/Button";
+import Configuration from "Configuration";
+import Modal from "components/library/elements/Modal";
+import Icon from "components/library/util/Icon";
+import Checkbox from "components/library/elements/Checkbox";
+import DatePicker from "components/library/elements/Calendar";
+import Button from "components/library/elements/Button";
 
 type Props = {
   dateFilter: DateFilterModel;
@@ -39,28 +39,20 @@ export default function DateFilterModal(props: Props) {
       },
       [DateFilterType.Last7Days]: {
         ...filter,
-        startDate: getDate(moment())
-          .startOf("day")
-          .subtract(6, "day"),
+        startDate: getDate(moment()).startOf("day").subtract(6, "day"),
         endDate: getDate(moment()).endOf("day"),
         numberFilterType: NumberFilterType.Interval
       },
       [DateFilterType.Last28Days]: {
         ...filter,
-        startDate: getDate(moment())
-          .subtract(27, "day")
-          .startOf("day"),
+        startDate: getDate(moment()).subtract(27, "day").startOf("day"),
         endDate: getDate(moment()).endOf("day"),
         numberFilterType: NumberFilterType.Interval
       },
       [DateFilterType.CurrentMonth]: {
         ...filter,
-        startDate: getDate(moment())
-          .startOf("month")
-          .startOf("day"),
-        endDate: getDate(moment())
-          .endOf("month")
-          .endOf("day"),
+        startDate: getDate(moment()).startOf("month").startOf("day"),
+        endDate: getDate(moment()).endOf("month").endOf("day"),
         numberFilterType: NumberFilterType.Interval
       },
       [DateFilterType.SingleDay]: {
@@ -150,7 +142,7 @@ export default function DateFilterModal(props: Props) {
               <input
                 type="text"
                 className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer "
-                onClick={e => {
+                onClick={(e) => {
                   setFilter({ ...filter, dateFilterType: DateFilterType.SingleDay });
                   hideAll();
                   showSingleDateDatePicker(e);
@@ -161,7 +153,7 @@ export default function DateFilterModal(props: Props) {
                 <div className="absolute bottom-0 mb-10 fadeIn animated faster">
                   <DatePicker
                     date={filter.singleDate}
-                    setDate={e => setFilter({ ...filter, singleDate: e })}
+                    setDate={(e) => setFilter({ ...filter, singleDate: e })}
                     hide={hideSingleDateDatePicker}
                   />
                 </div>
@@ -185,7 +177,7 @@ export default function DateFilterModal(props: Props) {
               <input
                 type="text"
                 className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-                onClick={e => {
+                onClick={(e) => {
                   setFilter({ ...filter, dateFilterType: DateFilterType.Interval });
                   hideAll();
                   showStartDatePicker(e);
@@ -209,7 +201,7 @@ export default function DateFilterModal(props: Props) {
               <input
                 type="text"
                 className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-                onClick={e => {
+                onClick={(e) => {
                   setFilter({ ...filter, dateFilterType: DateFilterType.Interval });
                   hideAll();
                   showEndDatePicker(e);
@@ -242,9 +234,5 @@ export default function DateFilterModal(props: Props) {
 }
 
 function getDate(date: Moment): Moment {
-  return moment()
-    .utc()
-    .year(date.year())
-    .month(date.month())
-    .date(date.date());
+  return moment().utc().year(date.year()).month(date.month()).date(date.date());
 }

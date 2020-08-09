@@ -1,26 +1,25 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Models;
-using Navtrack.Api.Services;
-using Navtrack.DataAccess.Model;
+using Navtrack.Api.Model.Devices;
+using Navtrack.Api.Services.Devices;
 
 namespace Navtrack.Api.Controllers
 {
-    public class DevicesController : GenericController<DeviceEntity, DeviceModel>
+    public class DevicesController : BaseController
     {
-        private readonly IDeviceService deviceService;
+        private readonly IDeviceTypeService deviceTypeService;
 
-        public DevicesController(IDeviceService deviceService) : base(deviceService)
+        public DevicesController(IDeviceTypeService deviceTypeService, IServiceProvider serviceProvider) : base(
+            serviceProvider)
         {
-            this.deviceService = deviceService;
+            this.deviceTypeService = deviceTypeService;
         }
 
-        [HttpGet("available")]
-        [HttpGet("available/{id}")]
-        public Task<List<DeviceModel>> GetAll(int? id)
+        [HttpGet("types")]
+        public List<DeviceTypeResponseModel> GetTypes()
         {
-            return deviceService.GetAllAvailableForAsset(id);
+            return deviceTypeService.GetDeviceTypes();
         }
     }
 }

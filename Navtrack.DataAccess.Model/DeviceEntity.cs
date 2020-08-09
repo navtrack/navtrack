@@ -13,8 +13,11 @@ namespace Navtrack.DataAccess.Model
         
         public int Id { get; set; }
         public string DeviceId { get; set; }
+        public int ProtocolPort { get; set; }
+        public int AssetId { get; set; }
+        public bool IsActive { get; set; }
         public AssetEntity Asset { get; set; }
-        public int DeviceModelId { get; set; }
+        public int DeviceModelId { get; set; } // TODO: rename to DeviceTypeId
         public ICollection<LocationEntity> Locations { get; set; }
         public ICollection<UserDeviceEntity> Users { get; set; }
     }

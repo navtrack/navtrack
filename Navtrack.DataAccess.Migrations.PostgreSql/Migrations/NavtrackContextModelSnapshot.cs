@@ -16,7 +16,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Navtrack.DataAccess.Model.AssetEntity", b =>
@@ -29,7 +29,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("DeviceId")
+                    b.Property<int?>("DeviceId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -42,8 +42,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeviceId")
-                        .IsUnique();
+                    b.HasIndex("DeviceId");
 
                     b.ToTable("Assets");
                 });
@@ -111,6 +110,9 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -120,10 +122,18 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<int>("DeviceModelId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ProtocolPort")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
 
                     b.ToTable("Devices");
                 });
@@ -309,8 +319,15 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
             modelBuilder.Entity("Navtrack.DataAccess.Model.AssetEntity", b =>
                 {
                     b.HasOne("Navtrack.DataAccess.Model.DeviceEntity", "Device")
-                        .WithOne("Asset")
-                        .HasForeignKey("Navtrack.DataAccess.Model.AssetEntity", "DeviceId")
+                        .WithMany()
+                        .HasForeignKey("DeviceId");
+                });
+
+            modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceEntity", b =>
+                {
+                    b.HasOne("Navtrack.DataAccess.Model.AssetEntity", "Asset")
+                        .WithMany("Devices")
+                        .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

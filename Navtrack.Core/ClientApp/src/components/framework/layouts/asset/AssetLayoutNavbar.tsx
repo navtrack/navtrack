@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
-import AppContext from "services/appContext/AppContext";
+import AppContext from "framework/appContext/AppContext";
 import classNames from "classnames";
-import Icon from "components/framework/util/Icon";
+import Icon from "components/library/util/Icon";
 
 export default function AssetLayoutNavbar() {
   const { appContext } = useContext(AppContext);
   const match = useRouteMatch<{ assetId?: string }>();
   const assetId = match.params.assetId ? parseInt(match.params.assetId) : 0;
-  const asset = appContext.assets && appContext.assets.find(x => x.id === assetId);
+  const asset = appContext.assets && appContext.assets.find((x) => x.id === assetId);
 
   return (
     <>
@@ -17,12 +17,22 @@ export default function AssetLayoutNavbar() {
           <div className="mx-4 py-2 text-center font-semibold">
             <div className="pr-4 border-r">{asset.name}</div>
           </div>
-          <ul className="flex flex-row py-2">
-            <LinkItem url={`/live/${asset.id}`} icon="fa-map-marker-alt" text="Live Tracking" />
-            <LinkItem url={`/log/${asset.id}`} icon="fa-database" text="Log" />
-            <LinkItem url={`/reports/${asset.id}`} icon="fa-table" text="Reports" />
-            <LinkItem url={`/alerts/${asset.id}`} icon="fa-bell" text="Alerts" />
-            <LinkItem url={`/settings/${asset.id}`} icon="fa-cog" text="Settings" />
+          <ul className="flex flex-row">
+            <LinkItem url={`/assets/${asset.id}/live`} icon="fa-map-marker-alt">
+              Live Tracking
+            </LinkItem>
+            <LinkItem url={`/assets/${asset.id}/log`} icon="fa-database">
+              Log
+            </LinkItem>
+            <LinkItem url={`/assets/${asset.id}/reports`} icon="fa-table">
+              Reports
+            </LinkItem>
+            <LinkItem url={`/assets/${asset.id}/alerts`} icon="fa-bell">
+              Alerts
+            </LinkItem>
+            <LinkItem url={`/assets/${asset.id}/settings`} icon="fa-cog">
+              Settings
+            </LinkItem>
           </ul>
         </div>
       )}
@@ -33,7 +43,7 @@ export default function AssetLayoutNavbar() {
 type Props = {
   url: string;
   icon: string;
-  text: string;
+  children: string;
 };
 
 function LinkItem(props: Props) {
@@ -41,13 +51,16 @@ function LinkItem(props: Props) {
   const isHighlighted = location.pathname.includes(props.url);
 
   return (
-    <li
-      className={classNames("text-gray-600 hover:text-gray-900 mr-4", {
-        "text-gray-900": isHighlighted
-      })}>
-      <Link to={props.url}>
-        <Icon className={props.icon} margin={1} /> {props.text}
-      </Link>
-    </li>
+    <Link to={props.url}>
+      <li
+        className={classNames(
+          "text-gray-600 hover:text-gray-900 py-2 px-4 hover:border-gray-400 border-b-2 border-transparent",
+          {
+            "text-gray-900 border-b-2 border-orange-600 hover:border-orange-600": isHighlighted
+          }
+        )}>
+        <Icon className={props.icon} margin={1} /> {props.children}
+      </li>
+    </Link>
   );
 }

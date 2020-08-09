@@ -6,18 +6,17 @@ type Props = {
 };
 
 export default function AdminFooter(props: Props) {
-  const date = new Date();
-  const year = date.getFullYear();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className={classNames("text-sm mt-5", props.className)}>
+    <footer className={classNames("text-xs mt-2 text-right", props.className)}>
       &copy; {year}
       <a
-        href="https://navtrack.io"
+        href="https://codeagency.com"
         className="font-weight-bold ml-1"
         target="_blank"
         rel="noopener noreferrer">
-        Navtrack
+        CodeAgency
       </a>
     </footer>
   );

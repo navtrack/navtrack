@@ -1,5 +1,5 @@
-import { AppContextAccessor } from "./appContext/AppContextAccessor";
-import { AssetApi } from "./api/AssetApi";
+import { AppContextAccessor } from "framework/appContext/AppContextAccessor";
+import { AssetApi } from "apis/AssetApi";
 
 export const AssetService = {
   refreshAssets: async () => {

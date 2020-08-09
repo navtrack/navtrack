@@ -1,7 +1,7 @@
 import { LocationFilterModel } from "./types/LocationFilterModel";
 import { NumberFilterType } from "./types/NumberFilterType";
 import { ComparisonType } from "./types/ComparisonType";
-import { LocationHistoryRequestModel } from "services/api/types/location/LocationHistoryRequestModel";
+import { LocationHistoryRequestModel } from "apis/types/location/LocationHistoryRequestModel";
 
 export function MapToLocationHistoryRequestModel(
   locationFilter: LocationFilterModel,

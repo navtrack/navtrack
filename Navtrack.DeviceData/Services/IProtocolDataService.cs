@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Navtrack.DeviceData.Model;
 
 namespace Navtrack.DeviceData.Services
 {
     public interface IProtocolDataService
     {
-        Protocol[] GetProtocols();
+        IEnumerable<Protocol> GetProtocols();
     }
 }

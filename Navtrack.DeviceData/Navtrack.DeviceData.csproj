@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="DeviceModels.json">
+      <None Update="DeviceTypes.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

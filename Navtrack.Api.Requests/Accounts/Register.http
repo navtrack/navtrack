@@ -1,0 +1,69 @@
+### Empty email
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": "test",
+  "confirmPassword": "test"
+}
+
+### Invalid email
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "test@",
+  "password": "test",
+  "confirmPassword": "test"
+}
+
+### Email used
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "test@navtrack.io",
+  "password": "test",
+  "confirmPassword": "test"
+}
+
+### Empty password
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "test21@navtrack.io",
+  "password": "",
+  "confirmPassword": "test2"
+}
+
+### Empty confirm password
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "test21@navtrack.io",
+  "password": "test1",
+  "confirmPassword": ""
+}
+
+### Different passwords
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "test21@navtrack.io",
+  "password": "test1",
+  "confirmPassword": "test2"
+}
+
+### Valid request
+POST https://localhost:5001/api/account/register
+Content-Type: application/json
+
+{
+  "email": "test123@navtrack.io",
+  "password": "test1",
+  "confirmPassword": "test1"
+}

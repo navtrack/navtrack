@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Navtrack.DeviceData.Model;
@@ -8,25 +9,21 @@ namespace Navtrack.DeviceData.Services
     [Service(typeof(IProtocolDataService), ServiceLifetime.Singleton)]
     public class ProtocolDataService : IProtocolDataService
     {
-        private readonly IDeviceModelDataService deviceModelDataService;
+        private readonly IDeviceTypeDataService deviceTypeDataService;
         private Protocol[] protocols;
 
-        public ProtocolDataService(IDeviceModelDataService deviceModelDataService)
+        public ProtocolDataService(IDeviceTypeDataService deviceTypeDataService)
         {
-            this.deviceModelDataService = deviceModelDataService;
+            this.deviceTypeDataService = deviceTypeDataService;
         }
 
-        public Protocol[] GetProtocols()
+        public IEnumerable<Protocol> GetProtocols()
         {
             if (protocols == null)
             {
-                protocols = deviceModelDataService.GetDeviceModels()
-                    .GroupBy(x => new {x.Protocol, x.Port})
-                    .Select(x => new Protocol
-                    {
-                        Name = x.Key.Protocol,
-                        Port = x.Key.Port
-                    })
+                protocols = deviceTypeDataService.GetDeviceTypes()
+                    .GroupBy(x => x.Protocol)
+                    .Select(x => x.Key)
                     .OrderBy(x => x.Name)
                     .ThenBy(x => x.Port)
                     .ToArray();

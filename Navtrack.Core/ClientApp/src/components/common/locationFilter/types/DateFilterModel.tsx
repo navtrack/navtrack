@@ -1,7 +1,7 @@
 import moment, { Moment } from "moment";
 import { DateFilterType } from "./DateFilterType";
 import { NumberFilterType } from "./NumberFilterType";
-import Configuration from "components/framework/util/Configuration";
+import Configuration from "Configuration";
 
 export type DateFilterModel = {
   singleDate: Moment;

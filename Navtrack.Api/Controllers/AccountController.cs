@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Models;
-using Navtrack.Api.Services;
+using Navtrack.Api.Model.Accounts;
+using Navtrack.Api.Model.Accounts.Requests;
+using Navtrack.Api.Model.Models;
 using Navtrack.Api.Services.Extensions;
-using Navtrack.Api.Services.Generic;
 
 namespace Navtrack.Api.Controllers
 {
@@ -13,28 +14,24 @@ namespace Navtrack.Api.Controllers
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class AccountController : BaseController
     {
-        private readonly IAccountService accountService;
-        private readonly IUserService userService;
-
-        public AccountController(IAccountService accountService, IUserService userService)
+        public AccountController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            this.accountService = accountService;
-            this.userService = userService;
         }
 
         [HttpGet]
-        public Task<UserModel> Get()
+        public Task<ActionResult<AccountInfoResponseModel>> Get()
         {
-            return userService.Get(User.GetId());
+            return HandleRequest<AccountInfoRequest, AccountInfoResponseModel>(new AccountInfoRequest
+            {
+                UserId = User.GetId()
+            });
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
+        public Task<IActionResult> Register([FromBody] RegisterAccountModel model)
         {
-            ValidationResult validationResult = await accountService.Register(registerModel);
-
-            return ValidationResult(validationResult);
+            return HandleRequest(model);
         }
     }
 }

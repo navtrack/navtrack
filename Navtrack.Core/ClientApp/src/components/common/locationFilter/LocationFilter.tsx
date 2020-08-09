@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Icon from "components/framework/util/Icon";
-import useClickOutside from "components/hooks/useClickOutside";
+import useClickOutside from "framework/hooks/useClickOutside";
 import { LocationFilterModel } from "./types/LocationFilterModel";
 import DateFilterModal from "./DateFilterModal";
 import SpeedFilterModal from "./SpeedFilterModal";
@@ -15,6 +14,7 @@ import {
 import { dateFilterToString } from "./types/DateFilterModel";
 import classNames from "classnames";
 import { FilterType } from "./types/FilterType";
+import Icon from "components/library/util/Icon";
 
 type Props = {
   filter: LocationFilterModel;
@@ -50,11 +50,11 @@ export default function LocationFilter(props: Props) {
     event.stopPropagation();
     event.nativeEvent.stopPropagation();
     props.setFilter(filter);
-    setFilterOrders(filterOrders.filter(x => x !== filterType).slice());
+    setFilterOrders(filterOrders.filter((x) => x !== filterType).slice());
   };
 
   const getOrder = (filterType: FilterType): number => {
-    return filterOrders.findIndex(x => x === filterType);
+    return filterOrders.findIndex((x) => x === filterType);
   };
 
   return (
@@ -73,7 +73,7 @@ export default function LocationFilter(props: Props) {
           displayText={speedFilterToString(props.filter.speed)}
           onClick={setShowSpeedFilter}
           order={getOrder(FilterType.Speed)}
-          onClickDelete={e =>
+          onClickDelete={(e) =>
             handleFilterDelete(
               e,
               { ...props.filter, speed: DefaultSpeedFilterModel },
@@ -88,7 +88,7 @@ export default function LocationFilter(props: Props) {
           displayText={coordinatesFilterToString(props.filter.coordinates)}
           onClick={setShowCoordinatesFilter}
           order={getOrder(FilterType.Coordinates)}
-          onClickDelete={e =>
+          onClickDelete={(e) =>
             handleFilterDelete(
               e,
               { ...props.filter, coordinates: DefaultCoordinatesFilterModel },
@@ -103,7 +103,7 @@ export default function LocationFilter(props: Props) {
           displayText={altitudeFilterToString(props.filter.altitude)}
           order={getOrder(FilterType.Altitude)}
           onClick={setShowAltitudeFilter}
-          onClickDelete={e =>
+          onClickDelete={(e) =>
             handleFilterDelete(
               e,
               { ...props.filter, altitude: DefaultAltitudeFilterModel },
@@ -116,14 +116,14 @@ export default function LocationFilter(props: Props) {
         <DateFilterModal
           closeModal={hideDateFilterModal}
           dateFilter={props.filter.date}
-          setDateFilter={date => props.setFilter({ ...props.filter, date: date })}
+          setDateFilter={(date) => props.setFilter({ ...props.filter, date: date })}
         />
       )}
       {showCoordinatesFilter && (
         <CoordinatesFilterModal
           closeModal={hideCoordinatesFilter}
           filter={props.filter.coordinates}
-          setFilter={coordinates =>
+          setFilter={(coordinates) =>
             handleAddFilter({ ...props.filter, coordinates: coordinates }, FilterType.Coordinates)
           }
         />
@@ -132,14 +132,16 @@ export default function LocationFilter(props: Props) {
         <SpeedFilterModal
           closeModal={hideSpeedFilter}
           filter={props.filter.speed}
-          setFilter={speed => handleAddFilter({ ...props.filter, speed: speed }, FilterType.Speed)}
+          setFilter={(speed) =>
+            handleAddFilter({ ...props.filter, speed: speed }, FilterType.Speed)
+          }
         />
       )}
       {showAltitudeFilter && (
         <AltitudeFilterModal
           closeModal={hideAltitudeFilter}
           filter={props.filter.altitude}
-          setFilter={altitude =>
+          setFilter={(altitude) =>
             handleAddFilter({ ...props.filter, altitude: altitude }, FilterType.Altitude)
           }
         />
@@ -151,7 +153,7 @@ export default function LocationFilter(props: Props) {
       ) && (
         <div
           className="relative inline-block cursor-pointer order-last"
-          onClick={e => setShowAddFilterMenu(e)}>
+          onClick={(e) => setShowAddFilterMenu(e)}>
           <div className="hover:bg-gray-200 rounded rounded-lg ml-2 flex items-center px-2 py-1 text-sm">
             <Icon className="fa-plus mr-1" />
             <span>Add filter</span>
@@ -173,7 +175,7 @@ export default function LocationFilter(props: Props) {
                   <MenuItem
                     icon="fa-tachometer-alt"
                     label="Speed"
-                    onClick={e => {
+                    onClick={(e) => {
                       setShowSpeedFilter(e);
                       hideAddFilterMenu();
                     }}
@@ -183,7 +185,7 @@ export default function LocationFilter(props: Props) {
                   <MenuItem
                     icon="fa-mountain"
                     label="Altitude"
-                    onClick={e => {
+                    onClick={(e) => {
                       setShowAltitudeFilter(e);
                       hideAddFilterMenu();
                     }}

@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Navtrack.Api.Models;
+using Navtrack.Api.Model.Models;
 using Navtrack.Api.Services.Extensions;
+using Navtrack.Api.Services.Users;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.IdentityServer

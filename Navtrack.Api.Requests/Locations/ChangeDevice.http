@@ -1,0 +1,9 @@
+### Change device
+PUT https://localhost:5001/api/assets/1/device
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceId": "123f",
+  "deviceTypeId": 718
+}

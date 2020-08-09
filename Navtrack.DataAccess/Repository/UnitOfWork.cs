@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Navtrack.DataAccess.Repository
 {
@@ -9,6 +10,8 @@ namespace Navtrack.DataAccess.Repository
     {
         private readonly DbContext dbContext;
         private readonly IInterceptorService interceptorService;
+        private bool disableInterceptors;
+        private IDbContextTransaction transaction;
 
         public UnitOfWork(DbContext dbContext, IInterceptorService interceptorService)
         {
@@ -26,11 +29,14 @@ namespace Navtrack.DataAccess.Repository
             dbContext.AddRange(entities);
         }
 
-        public Task SaveChanges()
+        public async Task SaveChanges()
         {
-            interceptorService.InterceptChanges(dbContext);
-            
-            return dbContext.SaveChangesAsync();
+            if (!disableInterceptors)
+            {
+                interceptorService.InterceptChanges(dbContext);
+            }
+
+            await dbContext.SaveChangesAsync();
         }
 
         public void Update<T>(T entity) where T : class
@@ -48,9 +54,28 @@ namespace Navtrack.DataAccess.Repository
             dbContext.Remove(entity);
         }
 
+        public void DisableInterceptors()
+        {
+            disableInterceptors = true;
+        }
+
+        public async Task BeginTransaction()
+        {
+            transaction = await dbContext.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransaction()
+        {
+            if (transaction != null)
+            {
+                await transaction.CommitAsync();
+            }
+        }
+
         public void Dispose()
         {
             dbContext?.Dispose();
+            transaction?.Dispose();
         }
     }
 }

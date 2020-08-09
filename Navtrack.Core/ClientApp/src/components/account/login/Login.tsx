@@ -1,107 +1,95 @@
 import React, { FormEvent, useState } from "react";
 import { LoginModel, DefaultLoginModel } from "./LoginModel";
-import { AppError } from "services/httpClient/AppError";
+import { ApiError } from "framework/httpClient/AppError";
 import { useHistory } from "react-router";
-import { AuthenticationService } from "services/authentication/AuthenticationService";
-import Icon from "components/framework/util/Icon";
+import { AuthenticationService } from "framework/authentication/AuthenticationService";
+import { useNewValidation } from "framework/validation/useValidationHook";
+import { useIntl, FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import InputError, { HasErrors, AddError } from "components/common/InputError";
-import LoginLayout from "components/framework/layouts/login/LoginLayout";
-import { ValidationResult } from "components/common/ValidatonResult";
+import TextInput from "components/library/forms/TextInput";
+import Button from "components/library/elements/Button";
+import Icon from "components/library/util/Icon";
+import { Validator } from "framework/validation/Validator";
+import LoginBox from "components/framework/layouts/login/LoginBox";
 
 export default function Login() {
   const [login, setLogin] = useState<LoginModel>(DefaultLoginModel);
+  const [validate, validationResult, setApiError] = useNewValidation(validateLogin);
   const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
-  const [error, setError] = useState<AppError>();
   const history = useHistory();
+  const intl = useIntl();
 
   const signIn = async (e: FormEvent) => {
     e.preventDefault();
 
-    const errors = validateModel(login);
-
-    if (HasErrors(errors)) {
-      setError(new AppError(errors));
-    } else {
+    if (validate(login)) {
       setShowLoadingIndicator(true);
 
       AuthenticationService.login(login.email, login.password)
         .then(() => {
           history.push("/");
         })
-        .catch((error: AppError) => {
-          setError(error);
+        .catch((error: ApiError<LoginModel>) => {
+          setApiError(error);
           setShowLoadingIndicator(false);
         });
     }
   };
 
   return (
-    <LoginLayout>
-      <div className="max-w-xs w-full flex flex-col items-center">
-        <div className="h-16 m-3 ">
-          <a href="https://www.navtrack.io">
-            <img src="/navtrack.png" width="64" className="mb-4" alt="Navtrack" />
-          </a>
-        </div>
-        <div className="shadow-xl bg-white rounded px-8 w-full bg-gray-100">
-          <div className="text-center my-6">Sign in to Navtrack</div>
-          <form onSubmit={(e) => signIn(e)}>
-            <div className="mb-4">
-              <input
-                className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-                id="email"
-                type="email"
-                placeholder="Email"
-                value={login.email}
-                onChange={(e) => setLogin({ ...login, email: e.target.value })}
-              />
-              <InputError name="email" error={error} />
-            </div>
-            <div className="mb-4">
-              <input
-                className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border focus:border-gray-900"
-                id="password"
-                type="password"
-                placeholder="Password"
-                value={login.password}
-                onChange={(e) => setLogin({ ...login, password: e.target.value })}
-              />
-              <InputError name="password" error={error} />
-            </div>
-            <div className="flex justify-center my-6">
-              <button
-                className="shadow-md bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
-                type="submit">
-                <Icon className="fa-spinner fa-spin" show={showLoadingIndicator} /> Sign in
-              </button>
-            </div>
-          </form>
-        </div>
-        <div className="h-20 flex w-full">
-          <div className="flex-grow">
+    <LoginBox
+      links={
+        <>
+          <div>
             <Link to="/register" className="text-white text-xs">
-              Create new account
+              <FormattedMessage id="login.createAccount" />
             </Link>
           </div>
-          <div className="flex-grow text-right">
-            {/* <Link to="/forgotpassword" className="text-white text-xs">Forgot password?</Link> */}
-          </div>
-        </div>
+          {/* <div className="flex-grow text-right">
+            <Link to="/forgotpassword" className="text-white text-xs">
+              <FormattedMessage id="login.forgotPassword" />
+            </Link>
+          </div> */}
+        </>
+      }>
+      <div className="text-center my-6">
+        <FormattedMessage id="login.title" />
       </div>
-    </LoginLayout>
+      <form onSubmit={(e) => signIn(e)}>
+        <div className="mb-4">
+          <TextInput
+            name={intl.formatMessage({ id: "login.email" })}
+            value={login.email}
+            validationResult={validationResult.property.email}
+            className="mb-3"
+            onChange={(e) => setLogin({ ...login, email: e.target.value })}
+          />
+          <TextInput
+            name={intl.formatMessage({ id: "login.password" })}
+            type="password"
+            value={login.password}
+            validationResult={validationResult.property.password}
+            className="mb-3"
+            onChange={(e) => setLogin({ ...login, password: e.target.value })}
+          />
+        </div>
+        <div className="flex justify-center my-6">
+          <Button color="secondary" size="sm" disabled={validationResult.HasErrors()}>
+            <Icon className="fa-spinner fa-spin mr-2" show={showLoadingIndicator} />
+            <FormattedMessage id="login.button" />
+          </Button>
+        </div>
+      </form>
+    </LoginBox>
   );
 }
 
-const validateModel = (login: LoginModel): ValidationResult => {
-  const errors: ValidationResult = {};
-
-  if (login.email.length === 0) {
-    AddError<LoginModel>(errors, "email", "The email is required.");
-  }
-  if (login.password.length === 0) {
-    AddError<LoginModel>(errors, "password", "The password is required.");
+const validateLogin: Validator<LoginModel> = (object, validationResult, intl) => {
+  if (!object.email) {
+    validationResult.AddError("email", intl.formatMessage({ id: "login.email.required" }));
   }
 
-  return errors;
+  if (!object.password) {
+    validationResult.AddError("password", intl.formatMessage({ id: "login.password.required" }));
+  }
 };

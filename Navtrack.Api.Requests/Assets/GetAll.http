@@ -1,0 +1,3 @@
+### Get all assets
+GET https://localhost:5001/api/assets
+Authorization: Bearer {{token}}

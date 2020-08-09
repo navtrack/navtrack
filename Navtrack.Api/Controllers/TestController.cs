@@ -8,7 +8,7 @@ namespace Navtrack.Api.Controllers
         [HttpGet]
         public ContentResult Get()
         {
-            return Content("it works");
+            return Content("Andrei says hi!");
         }
     }
 }

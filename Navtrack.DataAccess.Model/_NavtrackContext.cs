@@ -31,6 +31,7 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.Altitude).HasColumnType("decimal(7, 2)");
                 entity.Property(x => x.HDOP).HasColumnType("decimal(4, 2)");
                 entity.Property(x => x.DeviceId).IsRequired();
+                entity.Property(x => x.AssetId).IsRequired();
 
                 entity.HasOne(x => x.Device)
                     .WithMany(x => x.Locations)
@@ -55,8 +56,8 @@ namespace Navtrack.DataAccess.Model
                     .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne(x => x.Asset)
-                    .WithOne(x => x.Device)
-                    .HasForeignKey<AssetEntity>(x => x.DeviceId)
+                    .WithMany(x => x.Devices)
+                    .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
 
@@ -66,16 +67,16 @@ namespace Navtrack.DataAccess.Model
 
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Name).HasMaxLength(200).IsRequired();
-                entity.Property(x => x.DeviceId).IsRequired();
+                entity.Property(x => x.DeviceId);
 
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Asset)
                     .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
 
-                entity.HasOne(x => x.Device)
+                entity.HasMany(x => x.Devices)
                     .WithOne(x => x.Asset)
-                    .HasForeignKey<AssetEntity>(x => x.DeviceId)
+                    .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
 

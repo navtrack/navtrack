@@ -1,0 +1,26 @@
+### Rename asset
+POST https://localhost:5001/api/assets/1/settings/rename
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "testssdsfsdfs"
+}
+
+### Empty name
+POST https://localhost:5001/api/assets/56/settings/rename
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Nameee"
+}
+
+### Invalid asset id
+POST https://localhost:5001/api/assets/12345/settings/rename
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "testssdsfsdfs"
+}

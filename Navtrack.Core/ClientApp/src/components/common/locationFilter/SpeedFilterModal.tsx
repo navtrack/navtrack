@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Modal from "components/framework/elements/Modal";
-import Checkbox from "components/framework/elements/Checkbox";
-import Button from "components/framework/elements/Button";
 import { SpeedFilterModel } from "./types/SpeedFilterModel";
 import { NumberFilterType } from "./types/NumberFilterType";
 import { ComparisonType } from "./types/ComparisonType";
-import Icon from "components/framework/util/Icon";
+import Modal from "components/library/elements/Modal";
+import Icon from "components/library/util/Icon";
+import Checkbox from "components/library/elements/Checkbox";
+import Button from "components/library/elements/Button";
 
 type Props = {
   filter: SpeedFilterModel;
@@ -52,7 +52,9 @@ export default function SpeedFilterModal(props: Props) {
               <select
                 className="block appearance-none bg-white p-1 cursor-pointer focus:outline-none bg-gray-200 w-full text-gray-700"
                 value={filter.comparisonType}
-                onChange={e => setFilter({ ...filter, comparisonType: parseInt(e.target.value) })}>
+                onChange={(e) =>
+                  setFilter({ ...filter, comparisonType: parseInt(e.target.value) })
+                }>
                 <option value={ComparisonType.GreaterThan} key={0}>
                   Greater Than
                 </option>
@@ -73,7 +75,7 @@ export default function SpeedFilterModal(props: Props) {
             className="ml-3 w-12 mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
             onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })}
             value={filter.single}
-            onChange={e => setFilter({ ...filter, single: parseInt(e.target.value) })}
+            onChange={(e) => setFilter({ ...filter, single: parseInt(e.target.value) })}
           />
           <span className="ml-1">km/h</span>
         </div>
@@ -97,7 +99,7 @@ export default function SpeedFilterModal(props: Props) {
                   setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })
                 }
                 value={filter.min}
-                onChange={e => setMin(e.target.value)}
+                onChange={(e) => setMin(e.target.value)}
               />
               <span className="ml-1">-</span>
             </div>
@@ -112,7 +114,7 @@ export default function SpeedFilterModal(props: Props) {
                   setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })
                 }
                 value={filter.max}
-                onChange={e => setMax(e.target.value)}
+                onChange={(e) => setMax(e.target.value)}
               />
               <span className="ml-1">km/h</span>
             </div>

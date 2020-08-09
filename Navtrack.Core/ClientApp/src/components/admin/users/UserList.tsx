@@ -1,13 +1,12 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { UserModel } from "services/api/types/user/UserModel";
+import { UserModel } from "apis/types/user/UserModel";
 import { useHistory } from "react-router";
-import { UserApi } from "services/api/UserApi";
-import { addNotification } from "components/framework/notifications/Notifications";
-import { AppError } from "services/httpClient/AppError";
-import AdminLayout from "components/framework/layouts/admin/AdminLayout";
-import DeleteModal from "components/common/DeleteModal";
-import Button from "components/framework/elements/Button";
-import ReactTable from "components/framework/table/ReactTable";
+import { UserApi } from "apis/UserApi";
+import DeleteModal from "components/framework/DeleteModal";
+import { addNotification } from "components/library/notifications/Notifications";
+import Button from "components/library/elements/Button";
+import ReactTable from "components/library/table/ReactTable";
+import { ApiError } from "framework/httpClient/AppError";
 
 export default function UserList() {
   const [users, setUsers] = useState<UserModel[]>([]);
@@ -16,7 +15,7 @@ export default function UserList() {
   const [deleteHandler, setHandleDelete] = useState(() => () => {});
 
   useEffect(() => {
-    UserApi.getAll().then(x => setUsers(x));
+    UserApi.getAll().then((x) => setUsers(x));
   }, []);
 
   const handleDeleteClick = useCallback(
@@ -31,9 +30,9 @@ export default function UserList() {
     UserApi.delete(id)
       .then(() => {
         addNotification("User deleted successfully.");
-        setUsers(users.filter(x => x.id !== id));
+        setUsers(users.filter((x) => x.id !== id));
       })
-      .catch((error: AppError) => {
+      .catch((error: ApiError<UserModel>) => {
         addNotification(`${error.message}`);
       });
   };
@@ -66,7 +65,7 @@ export default function UserList() {
   );
 
   return (
-    <AdminLayout>
+    <>
       {showDeleteModal && (
         <DeleteModal closeModal={() => setShowDeleteModal(false)} deleteHandler={deleteHandler} />
       )}
@@ -81,6 +80,6 @@ export default function UserList() {
         </div>
         <ReactTable columns={columns} data={users} />
       </div>
-    </AdminLayout>
+    </>
   );
 }

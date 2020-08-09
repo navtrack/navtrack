@@ -1,0 +1,3 @@
+### Get all protocols
+GET https://localhost:5001/api/protocols
+Authorization: Bearer {{token}}

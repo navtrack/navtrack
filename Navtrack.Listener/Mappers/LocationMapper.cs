@@ -5,13 +5,13 @@ using Location = Navtrack.Listener.Models.Location;
 
 namespace Navtrack.Listener.Mappers
 {
-    [Service(typeof(IMapper<Location, AssetEntity, DataAccess.Model.LocationEntity>))]
-    public class LocationMapper : IMapper<Location, AssetEntity, DataAccess.Model.LocationEntity>
+    [Service(typeof(IMapper<Location, DeviceEntity, LocationEntity>))]
+    public class LocationMapper : IMapper<Location, DeviceEntity, LocationEntity>
     {
-        public DataAccess.Model.LocationEntity Map(Location source1, AssetEntity source2, DataAccess.Model.LocationEntity destination)
+        public LocationEntity Map(Location source1, DeviceEntity source2, LocationEntity destination)
         {
-            destination.DeviceId = source2.DeviceId;
-            destination.AssetId = source2.Id;
+            destination.DeviceId = source2.Id;
+            destination.AssetId = source2.AssetId;
             destination.Latitude = source1.Latitude;
             destination.Longitude = source1.Longitude;
             destination.DateTime = source1.DateTime;

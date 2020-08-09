@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Modal from "components/framework/elements/Modal";
-import Button from "components/framework/elements/Button";
 import { CoordinatesFilterModel } from "./types/CoordinatesFilterModel";
-import Icon from "components/framework/util/Icon";
+import Icon from "components/library/util/Icon";
+import Modal from "components/library/elements/Modal";
+import Button from "components/library/elements/Button";
 
 type Props = {
   filter: CoordinatesFilterModel;
@@ -34,7 +34,7 @@ export default function CoordinatesFilterModal(props: Props) {
                 className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
                 placeholder="Latitude"
                 value={filter.latitude}
-                onChange={e => setFilter({ ...filter, latitude: parseInt(e.target.value) })}
+                onChange={(e) => setFilter({ ...filter, latitude: parseInt(e.target.value) })}
                 style={{ width: "110px" }}
               />
             </div>
@@ -47,7 +47,7 @@ export default function CoordinatesFilterModal(props: Props) {
                 className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
                 placeholder="Longitude"
                 value={filter.longitude}
-                onChange={e => setFilter({ ...filter, longitude: parseInt(e.target.value) })}
+                onChange={(e) => setFilter({ ...filter, longitude: parseInt(e.target.value) })}
                 style={{ width: "110px" }}
               />
             </div>
@@ -62,7 +62,7 @@ export default function CoordinatesFilterModal(props: Props) {
                 className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
                 placeholder="Radius"
                 value={filter.radius}
-                onChange={e => setFilter({ ...filter, radius: parseInt(e.target.value) })}
+                onChange={(e) => setFilter({ ...filter, radius: parseInt(e.target.value) })}
                 style={{ width: "110px" }}
               />
               <span className="ml-1">meters</span>

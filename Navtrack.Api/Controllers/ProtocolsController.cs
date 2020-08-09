@@ -1,23 +1,23 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Models;
-using Navtrack.Api.Services;
+using Navtrack.Api.Model.Protocols;
+using Navtrack.Api.Services.Protocols;
 
 namespace Navtrack.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProtocolsController : ControllerBase
+    public class ProtocolsController : BaseController
     {
         private readonly IProtocolService protocolService;
 
-        public ProtocolsController(IProtocolService protocolService)
+        public ProtocolsController(IProtocolService protocolService, IServiceProvider serviceProvider) : base(
+            serviceProvider)
         {
             this.protocolService = protocolService;
         }
 
         [HttpGet]
-        public List<ProtocolModel> GetProtocols()
+        public List<ProtocolResponseModel> GetProtocols()
         {
             return protocolService.GetProtocols();
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Services;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 using Navtrack.Listener.DataServices;
@@ -13,25 +14,25 @@ namespace Navtrack.Listener.Services
     public class LocationService : ILocationService
     {
         private readonly ILocationDataService locationDataService;
-        private readonly IAssetDataService assetDataService;
+        private readonly IDeviceDataService deviceDataService;
         private readonly IMapper mapper;
 
         public LocationService(ILocationDataService locationDataService, IMapper mapper,
-            IAssetDataService assetDataService)
+            IDeviceDataService deviceDataService)
         {
             this.locationDataService = locationDataService;
             this.mapper = mapper;
-            this.assetDataService = assetDataService;
+            this.deviceDataService = deviceDataService;
         }
 
         public async Task Add(Location location)
         {
-            AssetEntity asset = await assetDataService.GetAssetByIMEI(location.Device.DeviceId);
+            DeviceEntity device = await deviceDataService.GetActiveDeviceByDeviceId(location.Device.DeviceId);
 
-            if (asset != null)
+            if (device != null)
             {
                 LocationEntity mapped =
-                    mapper.Map<Location, AssetEntity, LocationEntity>(location, asset);
+                    mapper.Map<Location, DeviceEntity, LocationEntity>(location, device);
 
                 await locationDataService.Add(mapped);
             }
@@ -43,12 +44,12 @@ namespace Navtrack.Listener.Services
             {
                 string deviceId = locations.First().Device.DeviceId;
 
-                AssetEntity asset = await assetDataService.GetAssetByIMEI(deviceId);
+                DeviceEntity device = await deviceDataService.GetActiveDeviceByDeviceId(deviceId);
 
-                if (asset != null)
+                if (device != null)
                 {
                     List<LocationEntity> mapped =
-                        locations.Select(x => mapper.Map<Location, AssetEntity, LocationEntity>(x, asset))
+                        locations.Select(x => mapper.Map<Location, DeviceEntity, LocationEntity>(x, device))
                             .ToList();
 
                     await locationDataService.AddRange(mapped);
