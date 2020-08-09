@@ -15,7 +15,7 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,9 +29,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
@@ -41,9 +38,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeviceId")
-                        .IsUnique();
 
                     b.ToTable("Assets");
                 });
@@ -85,9 +79,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.Property<DateTime?>("ClosedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("OpenedAt")
                         .HasColumnType("datetime2");
 
@@ -95,9 +86,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -111,6 +99,9 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -120,10 +111,18 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.Property<int>("DeviceModelId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProtocolPort")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
 
                     b.ToTable("Devices");
                 });
@@ -189,9 +188,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.Property<decimal?>("Speed")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AssetId");
@@ -213,9 +209,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
 
                     b.Property<string>("Data")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -244,30 +237,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.HasIndex("AssetId");
 
                     b.ToTable("UserAsset");
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.UserDeviceEntity", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserId", "DeviceId");
-
-                    b.HasIndex("DeviceId");
-
-                    b.ToTable("UserDevice");
                 });
 
             modelBuilder.Entity("Navtrack.DataAccess.Model.UserEntity", b =>
@@ -306,11 +275,11 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Navtrack.DataAccess.Model.AssetEntity", b =>
+            modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceEntity", b =>
                 {
-                    b.HasOne("Navtrack.DataAccess.Model.DeviceEntity", "Device")
-                        .WithOne("Asset")
-                        .HasForeignKey("Navtrack.DataAccess.Model.AssetEntity", "DeviceId")
+                    b.HasOne("Navtrack.DataAccess.Model.AssetEntity", "Asset")
+                        .WithMany("Devices")
+                        .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -340,21 +309,6 @@ namespace Navtrack.DataAccess.Migrations.SqlServer.Migrations
 
                     b.HasOne("Navtrack.DataAccess.Model.UserEntity", "User")
                         .WithMany("Assets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.UserDeviceEntity", b =>
-                {
-                    b.HasOne("Navtrack.DataAccess.Model.DeviceEntity", "Device")
-                        .WithMany("Users")
-                        .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Navtrack.DataAccess.Model.UserEntity", "User")
-                        .WithMany("Devices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
