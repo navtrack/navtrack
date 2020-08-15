@@ -71,12 +71,12 @@ namespace Navtrack.DataAccess.Model
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.Asset)
                     .HasForeignKey(x => x.AssetId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasMany(x => x.Devices)
                     .WithOne(x => x.Asset)
                     .HasForeignKey(x => x.AssetId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<ConnectionEntity>(entity =>

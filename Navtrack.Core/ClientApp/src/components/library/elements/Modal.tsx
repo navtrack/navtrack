@@ -13,7 +13,7 @@ export default function Modal(props: Props) {
       style={{ backgroundColor: "rgba(26, 32, 44, 0.15)" }}
       onClick={props.closeModal}>
       <div
-        className="shadow-md rounded p-3 bg-white"
+        className="shadow rounded p-4 bg-white"
         onClick={e => {
           e.stopPropagation();
           e.nativeEvent.stopImmediatePropagation();

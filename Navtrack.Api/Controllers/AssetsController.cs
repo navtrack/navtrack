@@ -17,7 +17,7 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpPost]
-        public Task<ActionResult<AddAssetResponseModel>> Add([FromBody]AddAssetRequestModel model)
+        public Task<ActionResult<AddAssetResponseModel>> Add([FromBody] AddAssetRequestModel model)
         {
             return HandleRequest<AddAssetRequest, AddAssetResponseModel>(new AddAssetRequest
             {
@@ -62,6 +62,16 @@ namespace Navtrack.Api.Controllers
             return HandleRequest(new ChangeDeviceRequest
             {
                 Body = model,
+                UserId = User.GetId(),
+                AssetId = assetId
+            });
+        }
+
+        [HttpDelete("{assetId}")]
+        public Task<IActionResult> Delete([FromRoute] int assetId)
+        {
+            return HandleRequest(new DeleteAssetRequest
+            {
                 UserId = User.GetId(),
                 AssetId = assetId
             });

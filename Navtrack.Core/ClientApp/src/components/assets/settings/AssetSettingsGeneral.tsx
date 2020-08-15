@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Button from "components/library/elements/Button";
 import { useIntl } from "react-intl";
 import TextInput from "components/library/forms/TextInput";
@@ -9,6 +9,7 @@ import { addNotification } from "components/library/notifications/Notifications"
 import AssetSettingsCard from "./AssetSettingsCard";
 import { RenameAssetRequestModel } from "apis/types/asset/RenameAssetRequestModel";
 import { AssetModel } from "apis/types/asset/AssetModel";
+import DeleteAssetModal from "./DeleteAssetModal";
 
 type Props = {
   asset: AssetModel;
@@ -20,6 +21,7 @@ export default function AssetSettingsGeneral(props: Props) {
     name: props.asset.name
   });
   const [validate, validationResult, setErrors] = useNewValidation(validateAsset);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const intl = useIntl();
 
   const handleRenameClick = async () => {
@@ -33,6 +35,12 @@ export default function AssetSettingsGeneral(props: Props) {
         .catch(setErrors);
     }
   };
+
+  const handleDeleteClick = useCallback(() => {
+    setShowDeleteModal(true);
+    // setShowDeleteModal(true);
+    // setHandleDelete(() => () => deleteAsset(id, assets));
+  }, []);
 
   return (
     <>
@@ -67,9 +75,14 @@ export default function AssetSettingsGeneral(props: Props) {
           </span>
         </div>
         <div className="text-right flex-grow">
-          <Button color="warn">Delete asset</Button>
+          <Button color="warn" onClick={() => setShowDeleteModal(true)}>
+            Delete asset
+          </Button>
         </div>
       </AssetSettingsCard>
+      {showDeleteModal && (
+        <DeleteAssetModal asset={props.asset} closeModal={() => setShowDeleteModal(false)} />
+      )}
     </>
   );
 }

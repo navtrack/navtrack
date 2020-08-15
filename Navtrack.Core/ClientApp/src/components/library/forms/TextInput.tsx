@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { PropertyValidationResult } from "framework/validation/PropertyValidationResult";
 
 type Props = {
-  name: string;
+  name?: string;
   value: string | number | string[];
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   validationResult?: PropertyValidationResult | undefined;
