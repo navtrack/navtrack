@@ -1,12 +1,28 @@
 import { AppContextAccessor } from "framework/appContext/AppContextAccessor";
-import { AssetApi } from "apis/AssetApi";
+import { AssetsHub } from "apis/signalR/AssetsHub";
 
-export const AssetService = {
-  refreshAssets: async () => {
-    if (AppContextAccessor.getAppContext().authenticationInfo.authenticated) {
-      let assets = await AssetApi.getAll();
+let interval: NodeJS.Timeout;
 
-      AppContextAccessor.setAppContext({ ...AppContextAccessor.getAppContext(), assets: assets });
+export const AssetsService = {
+  init: async () => {
+    if (!interval) {
+      await AssetsService.refreshAssets();
+
+      interval = setInterval(AssetsService.refreshAssets, 1000 * 10);
     }
+  },
+
+  clear: () => {
+    if (interval) {
+      clearInterval(interval);
+    }
+  },
+
+  refreshAssets: async () => {
+    let assets = await AssetsHub.getAll();
+
+    AppContextAccessor.setAppContext((x) => {
+      return { ...x, assets: assets };
+    });
   }
 };

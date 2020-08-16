@@ -1,7 +1,7 @@
 import { TokenResponse } from "./types/identity/TokenResponse";
 import { HttpClient } from "framework/httpClient/HttpClient";
 import { UserInfo } from "./types/identity/UserInfo";
-import { identityUrl, formatUrl } from "framework/httpClient/HttpClientUtil";
+import { formatUrl, rootUrl } from "framework/httpClient/HttpClientUtil";
 
 export const IdentityApi = {
   login: async (username: string, password: string): Promise<TokenResponse> => {
@@ -14,7 +14,7 @@ export const IdentityApi = {
     };
 
     return HttpClient.post<TokenResponse>(
-      formatUrl(identityUrl("connect/token")),
+      formatUrl(rootUrl("connect/token")),
       body,
       "application/x-www-form-urlencoded",
       true
@@ -22,7 +22,7 @@ export const IdentityApi = {
   },
 
   getUserInfo: async (): Promise<UserInfo> => {
-    return HttpClient.get<UserInfo>(identityUrl("connect/userinfo"));
+    return HttpClient.get<UserInfo>(rootUrl("connect/userinfo"));
   },
 
   refreshToken: (refreshToken: string): Promise<TokenResponse> => {
@@ -34,7 +34,7 @@ export const IdentityApi = {
     };
 
     return HttpClient.post<TokenResponse>(
-      formatUrl(identityUrl("connect/token")),
+      formatUrl(rootUrl("connect/token")),
       body,
       "application/x-www-form-urlencoded",
       true

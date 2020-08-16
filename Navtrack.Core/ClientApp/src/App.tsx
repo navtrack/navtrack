@@ -15,11 +15,11 @@ import AssetLive from "components/assets/live/AssetLive";
 import AssetLog from "components/assets/log/AssetLog";
 import Notifications from "components/library/notifications/Notifications";
 import PrivateRoute from "components/library/routing/PrivateRoute";
-import { LocationService } from "services/LocationService";
 import { AccountService } from "services/AccountService";
 import LoginLayout from "components/framework/layouts/login/LoginLayout";
 import AdminLayout from "components/framework/layouts/admin/AdminLayout";
 import AssetSettings from "components/assets/settings/AssetSettings";
+import { AssetsService } from "services/AssetService";
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
@@ -42,10 +42,10 @@ export default function App() {
 
   useEffect(() => {
     if (appContext.authenticationInfo.authenticated) {
-      LocationService.init();
+      AssetsService.init();
       AccountService.getUserInfo();
     } else {
-      LocationService.clear();
+      AssetsService.clear();
     }
   }, [appContext.authenticationInfo]);
 

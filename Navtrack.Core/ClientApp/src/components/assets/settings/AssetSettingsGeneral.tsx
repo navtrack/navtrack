@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import Button from "components/library/elements/Button";
 import { useIntl } from "react-intl";
 import TextInput from "components/library/forms/TextInput";
@@ -28,19 +28,12 @@ export default function AssetSettingsGeneral(props: Props) {
     if (validate(renameModel)) {
       AssetApi.rename(props.asset.id, renameModel)
         .then(() => {
-          // history.push(`/assets/${response.id}/live`);
           addNotification("Device renamed successfully.");
           props.refreshAsset();
         })
         .catch(setErrors);
     }
   };
-
-  const handleDeleteClick = useCallback(() => {
-    setShowDeleteModal(true);
-    // setShowDeleteModal(true);
-    // setHandleDelete(() => () => deleteAsset(id, assets));
-  }, []);
 
   return (
     <>
