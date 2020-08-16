@@ -16,30 +16,46 @@ namespace Navtrack.Listener.Services
             this.repository = repository;
         }
 
-        public async Task<ConnectionEntity> NewConnection(string endPoint)
+        public async Task<DeviceConnectionEntity> NewConnection(string endPoint, int protocolPort)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             
-            ConnectionEntity connection = new ConnectionEntity
+            DeviceConnectionEntity deviceConnection = new DeviceConnectionEntity
             {
                 OpenedAt = DateTime.UtcNow,
-                RemoteEndPoint = endPoint
+                RemoteEndPoint = endPoint,
+                ProtocolPort = protocolPort
             };
 
-            unitOfWork.Add(connection);
+            unitOfWork.Add(deviceConnection);
 
             await unitOfWork.SaveChanges();
 
-            return connection;
+            return deviceConnection;
         }
 
-        public async Task MarkConnectionAsClosed(ConnectionEntity connection)
+        public async Task MarkConnectionAsClosed(DeviceConnectionEntity deviceConnection)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
-            connection.ClosedAt = DateTime.UtcNow;
+            deviceConnection.ClosedAt = DateTime.UtcNow;
 
-            unitOfWork.Update(connection);
+            unitOfWork.Update(deviceConnection);
+
+            await unitOfWork.SaveChanges();
+        }
+
+        public async Task AddMessage(int deviceConnectionId, string hex)
+        {
+            using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
+
+            DeviceConnectionMessageEntity entity = new DeviceConnectionMessageEntity
+            {
+                DeviceConnectionId = deviceConnectionId,
+                Hex = hex
+            };
+
+            unitOfWork.Add(entity);
 
             await unitOfWork.SaveChanges();
         }

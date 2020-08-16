@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Navtrack.DataAccess.Model;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
@@ -20,21 +21,22 @@ namespace Navtrack.Listener.Tests.Protocols
         private readonly CancellationTokenSource cancellationTokenSource;
         private Mock<INetworkStreamWrapper> networkStreamWrapperMock;
         private Mock<ILocationService> locationServiceMock;
-     
+
         public Client Client { get; }
-        
+
         public List<Location> LastParsedLocations { get; private set; }
         public List<Location> TotalParsedLocations { get; }
         public Location LastParsedLocation => LastParsedLocations?.FirstOrDefault();
-        
+
         public ProtocolTester(IProtocol protocol, ICustomMessageHandler customMessageHandler)
         {
             cancellationTokenSource = new CancellationTokenSource();
             TotalParsedLocations = new List<Location>();
-            
+
             Client = new Client
             {
-                Protocol = protocol
+                Protocol = protocol,
+                DeviceConnection = new DeviceConnectionEntity()
             };
 
             SetupLocationService();
@@ -45,7 +47,7 @@ namespace Navtrack.Listener.Tests.Protocols
         public void SendBytesFromDevice(byte[] value)
         {
             sendStream = new MemoryStream(value);
-            
+
             CallStreamHandler();
         }
 
@@ -66,8 +68,8 @@ namespace Navtrack.Listener.Tests.Protocols
             int length = receiveStream.Read(buffer, 0, ServerVariables.BufferLength);
 
             return HexUtil.ConvertHexStringArrayToHexString(HexUtil.ConvertByteArrayToHexStringArray(buffer[..length]));
-        }  
-        
+        }
+
         public string ReceiveStringInDevice()
         {
             byte[] buffer = new byte[ServerVariables.BufferLength];
@@ -81,7 +83,7 @@ namespace Navtrack.Listener.Tests.Protocols
         {
             streamHandler.HandleStream(cancellationTokenSource.Token, Client, networkStreamWrapperMock.Object);
         }
-        
+
         private void SetupLocationService()
         {
             locationServiceMock = new Mock<ILocationService>();
@@ -100,8 +102,11 @@ namespace Navtrack.Listener.Tests.Protocols
             serviceProviderMock.Setup(x => x.GetService(It.IsAny<Type>()))
                 .Returns(customMessageHandler);
 
-            IMessageHandler messageHandlerMock = new MessageHandler(serviceProviderMock.Object,
-                locationServiceMock.Object, new Mock<ILogger<MessageHandler>>().Object);
+            IMessageHandler messageHandlerMock = new MessageHandler(
+                serviceProviderMock.Object,
+                locationServiceMock.Object, 
+                new Mock<ILogger<MessageHandler>>().Object,
+                new Mock<IConnectionService>().Object);
 
             streamHandler =
                 new StreamHandler(new Mock<ILogger<StreamHandler>>().Object, messageHandlerMock);

@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Services;
 
@@ -26,7 +25,7 @@ namespace Navtrack.Listener.Server
         public async Task HandleClient(CancellationToken cancellationToken, Client client)
         {
             string endPoint = client.TcpClient.Client.RemoteEndPoint.ToString();
-            ConnectionEntity connection = await connectionService.NewConnection(endPoint);
+            client.DeviceConnection = await connectionService.NewConnection(endPoint, client.Protocol.Port);
 
             try
             {
@@ -46,7 +45,7 @@ namespace Navtrack.Listener.Server
                 
                 client.TcpClient.Close();
 
-                await connectionService.MarkConnectionAsClosed(connection);
+                await connectionService.MarkConnectionAsClosed(client.DeviceConnection);
             }
         }
     }

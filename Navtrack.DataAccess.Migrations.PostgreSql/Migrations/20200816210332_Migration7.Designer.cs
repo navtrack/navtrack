@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.DataAccess.Model;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 {
     [DbContext(typeof(NavtrackDbContext))]
-    partial class NavtrackContextModelSnapshot : ModelSnapshot
+    [Migration("20200816210332_Migration7")]
+    partial class Migration7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,9 +84,6 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<DateTime>("OpenedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("ProtocolPort")
-                        .HasColumnType("integer");
-
                     b.Property<string>("RemoteEndPoint")
                         .IsRequired()
                         .HasColumnType("character varying(64)")
@@ -93,26 +92,6 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DeviceConnections");
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceConnectionMessageEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("DeviceConnectionId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Hex")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeviceConnectionId");
-
-                    b.ToTable("DeviceConnectionMessages");
                 });
 
             modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceEntity", b =>
@@ -296,15 +275,6 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceConnectionMessageEntity", b =>
-                {
-                    b.HasOne("Navtrack.DataAccess.Model.DeviceConnectionEntity", "Connection")
-                        .WithMany("Messages")
-                        .HasForeignKey("DeviceConnectionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Navtrack.DataAccess.Model.DeviceEntity", b =>
