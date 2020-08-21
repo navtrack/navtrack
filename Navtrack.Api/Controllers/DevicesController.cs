@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Devices;
+using Navtrack.Api.Model.Devices.Requests;
 using Navtrack.Api.Services.Devices;
+using Navtrack.Api.Services.Extensions;
 
 namespace Navtrack.Api.Controllers
 {
@@ -14,6 +17,16 @@ namespace Navtrack.Api.Controllers
             serviceProvider)
         {
             this.deviceTypeService = deviceTypeService;
+        }
+
+        [HttpGet("{id}")]
+        public Task<ActionResult<DeviceModel>> Get([FromRoute] int id)
+        {
+            return HandleRequest<GetDeviceByIdRequest, DeviceModel>(new GetDeviceByIdRequest
+            {
+                DeviceId = id,
+                UserId = User.GetId()
+            });
         }
 
         [HttpGet("types")]

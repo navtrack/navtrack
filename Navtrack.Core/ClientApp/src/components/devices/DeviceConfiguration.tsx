@@ -20,22 +20,18 @@ export default function DeviceConfiguration(props: Props) {
         <tbody>
           <tr>
             <td
-              className="p-2 bg-gray-100 text-xs uppercase text-gray-700 font-medium border"
+              className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border"
               style={{ width: "120px" }}>
               Hostname
             </td>
             <td className="p-2 font-medium border">a.navtrack.io</td>
           </tr>
           <tr>
-            <td className="p-2 bg-gray-100 text-xs uppercase text-gray-700 font-medium border">
-              IP Address
-            </td>
+            <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">IP Address</td>
             <td className="p-2 font-medium border">116.202.177.156</td>
           </tr>
           <tr>
-            <td className="p-2 bg-gray-100 text-xs uppercase text-gray-700 font-medium border">
-              Port
-            </td>
+            <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">Port</td>
             <td className="p-2 font-medium border">
               {props.deviceType ? (
                 props.deviceType.protocol.port

@@ -10,7 +10,7 @@ export default function AdminSidebar() {
 
   return (
     <nav
-      className="p-3 bg-white w-48 text-sm shadow z-10"
+      className="p-3 bg-white w-48 text-sm shadow z-40"
       style={{ width: "180px", minWidth: "180px" }}>
       <div className="mb-2 text-gray-600 uppercase tracking-wide font-semibold text-xs flex items-center">
         <div>Assets</div>

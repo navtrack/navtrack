@@ -13,6 +13,7 @@ import { ChangeDeviceRequestModel } from "apis/types/asset/ChangeDeviceRequestMo
 import { DeviceTypeModel } from "apis/types/device/DeviceTypeModel";
 import { AssetApi } from "apis/AssetApi";
 import DeviceConfiguration from "components/devices/DeviceConfiguration";
+import { Link } from "react-router-dom";
 
 type Props = {
   asset: AssetModel;
@@ -115,7 +116,11 @@ export default function AssetSettingsDevice(props: Props) {
                   </tr>
                   {props.asset.devices.map((x) => (
                     <tr className="border" key={x.deviceId}>
-                      <td className="p-2">{x.deviceId}</td>
+                      <td className="p-2">
+                        <Link to={`/devices/${x.id}`} className="text-blue-700 font-medium">
+                          {x.deviceId}
+                        </Link>
+                      </td>
                       <td className="p-2">{x.deviceType.displayName}</td>
                       <td className="p-2">{x.locationsCount}</td>
                       <td className="p-2 text-right">

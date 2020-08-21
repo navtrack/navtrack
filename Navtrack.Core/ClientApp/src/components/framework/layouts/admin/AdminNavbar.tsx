@@ -19,7 +19,7 @@ export default function AdminNavbar() {
   };
 
   return (
-    <nav className="p-3 flex bg-gray-900 shadow z-20">
+    <nav className="p-3 flex bg-gray-900 shadow z-50">
       <h1 className="text-white font-medium">
         <FormattedMessage id="navbar.title" />
       </h1>

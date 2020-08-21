@@ -5,7 +5,7 @@ import { AssetModel } from "apis/types/asset/AssetModel";
 
 const useAsset = (): AssetModel | undefined => {
   const { appContext } = useContext(AppContext);
-  let { assetId } = useParams();
+  const { assetId } = useParams<{ assetId: string }>();
 
   let id = assetId ? parseInt(assetId) : 0;
 

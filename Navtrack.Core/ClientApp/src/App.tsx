@@ -1,25 +1,29 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router";
-import { AppContextAccessor } from "framework/appContext/AppContextAccessor";
-import { AuthenticationService } from "framework/authentication/AuthenticationService";
-import AddAsset from "components/assets/AddAsset";
-import UserList from "components/admin/users/UserList";
-import UserEdit from "components/admin/users/UserEdit";
-import Dashboard from "components/home/Dashboard";
-import Login from "components/account/login/Login";
-import Register from "components/account/register/Register";
-import AppContext, { CreateAppContext, SaveToLocalStorage } from "framework/appContext/AppContext";
+import AppContext, {
+  CreateAppContext,
+  SaveToLocalStorage
+} from "./framework/appContext/AppContext";
+import AssetSettingsLayout from "./components/assets/settings/AssetSettingsLayout";
+import UserEdit from "./components/admin/users/UserEdit";
+import AddAsset from "./components/assets/AddAsset";
+import AssetLive from "./components/assets/live/AssetLive";
+import Dashboard from "./components/home/Dashboard";
+import Login from "./components/account/login/Login";
+import AssetLog from "./components/assets/log/AssetLog";
+import AdminLayout from "./components/framework/layouts/admin/AdminLayout";
+import Register from "./components/account/register/Register";
+import { AppContextAccessor } from "./framework/appContext/AppContextAccessor";
+import translations from "./translations";
+import { AuthenticationService } from "./framework/authentication/AuthenticationService";
+import { AccountService } from "./services/AccountService";
+import Notifications from "./components/library/notifications/Notifications";
+import PrivateRoute from "./components/library/routing/PrivateRoute";
+import LoginLayout from "./components/framework/layouts/login/LoginLayout";
+import UserList from "./components/admin/users/UserList";
+import { AssetsService } from "./services/AssetService";
 import { IntlProvider } from "react-intl";
-import translations from "translations";
-import AssetLive from "components/assets/live/AssetLive";
-import AssetLog from "components/assets/log/AssetLog";
-import Notifications from "components/library/notifications/Notifications";
-import PrivateRoute from "components/library/routing/PrivateRoute";
-import { AccountService } from "services/AccountService";
-import LoginLayout from "components/framework/layouts/login/LoginLayout";
-import AdminLayout from "components/framework/layouts/admin/AdminLayout";
-import AssetSettings from "components/assets/settings/AssetSettings";
-import { AssetsService } from "services/AssetService";
+import DeviceLayout from "./components/devices/DeviceLayout";
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
@@ -72,7 +76,14 @@ export default function App() {
           </PrivateRoute>
           <PrivateRoute path={"/assets/:assetId/settings"}>
             <AdminLayout hidePadding={true}>
-              <AssetSettings />
+              <AssetSettingsLayout />
+            </AdminLayout>
+          </PrivateRoute>
+
+          {/*Devices*/}
+          <PrivateRoute path={"/devices/:deviceId"}>
+            <AdminLayout hidePadding={true}>
+              <DeviceLayout />
             </AdminLayout>
           </PrivateRoute>
 
@@ -105,7 +116,8 @@ export default function App() {
               <AdminLayout>
                 <UserEdit id={props.match.params.id} />
               </AdminLayout>
-            )}></Route>
+            )}
+          />
 
           {/* Home */}
           <PrivateRoute path="/">

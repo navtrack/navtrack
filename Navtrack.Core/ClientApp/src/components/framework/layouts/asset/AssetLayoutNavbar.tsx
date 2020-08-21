@@ -13,8 +13,8 @@ export default function AssetLayoutNavbar() {
   return (
     <>
       {asset && (
-        <div className="bg-white shadow flex text-sm" style={{ minWidth: "630px" }}>
-          <div className="mx-4 py-2 text-center font-semibold">
+        <div className="bg-white shadow flex text-sm z-30" style={{ minWidth: "630px" }}>
+          <div className="ml-4 py-2 text-center font-semibold">
             <div className="pr-4 border-r">{asset.name}</div>
           </div>
           <ul className="flex flex-row">

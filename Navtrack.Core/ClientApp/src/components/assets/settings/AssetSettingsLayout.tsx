@@ -10,7 +10,7 @@ import AssetLayout from "components/framework/layouts/asset/AssetLayout";
 import AssetSettingsGeneral from "./AssetSettingsGeneral";
 import AssetSettingsDevice from "./AssetSettingsDevice";
 
-export default function AssetSettings() {
+export default function AssetSettingsLayout() {
   const assetId = useAssetId();
   const [asset, setAsset] = useState<AssetModel>();
   let { path } = useRouteMatch();

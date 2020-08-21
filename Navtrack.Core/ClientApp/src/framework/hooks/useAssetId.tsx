@@ -1,11 +1,9 @@
 import { useParams } from "react-router";
 
 const useAssetId = (): number => {
-  let { assetId } = useParams();
+  let { assetId } = useParams<{ assetId: string }>();
 
-  let parsedId = assetId ? parseInt(assetId) : 0;
-
-  return parsedId;
+  return assetId ? parseInt(assetId) : 0;
 };
 
 export default useAssetId;
