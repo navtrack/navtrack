@@ -1,6 +1,5 @@
 import React from "react";
 import { DeviceModel } from "apis/types/device/DeviceModel";
-import { useRouteMatch } from "react-router";
 
 type Props = {
   device: DeviceModel;

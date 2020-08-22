@@ -1,8 +1,9 @@
 import React from "react";
+import PageLayout from "components/framework/PageLayout";
 
 export default function Dashboard() {
   return (
-    <>
+    <PageLayout>
       <div className="bg-white shadow p-3 rounded flex flex-col">
         <div className="font-bold text-xl">Welcome to Navtrack!</div>
         <div className="mt-2">Thank you for registering so early!</div>
@@ -11,6 +12,6 @@ export default function Dashboard() {
           please check back later.
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 }

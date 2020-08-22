@@ -65,24 +65,24 @@ export default function App() {
             </AdminLayout>
           </PrivateRoute>
           <PrivateRoute path={"/assets/:assetId/live"}>
-            <AdminLayout hidePadding={true}>
+            <AdminLayout>
               <AssetLive />
             </AdminLayout>
           </PrivateRoute>
           <PrivateRoute path={"/assets/:assetId/log"}>
-            <AdminLayout hidePadding={true}>
+            <AdminLayout>
               <AssetLog />
             </AdminLayout>
           </PrivateRoute>
           <PrivateRoute path={"/assets/:assetId/settings"}>
-            <AdminLayout hidePadding={true}>
+            <AdminLayout>
               <AssetSettingsLayout />
             </AdminLayout>
           </PrivateRoute>
 
           {/*Devices*/}
           <PrivateRoute path={"/devices/:deviceId"}>
-            <AdminLayout hidePadding={true}>
+            <AdminLayout>
               <DeviceLayout />
             </AdminLayout>
           </PrivateRoute>

@@ -28,7 +28,7 @@ export default function AssetSettingsLayout() {
   return (
     <AssetLayout>
       {asset && (
-        <div className="bg-white shadow p-3 rounded mb-3 flex ">
+        <div className="bg-white shadow p-3 rounded flex">
           <div className="mr-3 border-r" style={{ width: "180px" }}>
             <ul>
               <MenuItem url={`/assets/${assetId}/settings`} icon="a">

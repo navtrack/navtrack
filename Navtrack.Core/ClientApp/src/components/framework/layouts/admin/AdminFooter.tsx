@@ -1,15 +1,10 @@
 import React from "react";
-import classNames from "classnames";
 
-type Props = {
-  className: string;
-};
-
-export default function AdminFooter(props: Props) {
+export default function AdminFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={classNames("text-xs mt-2 text-right", props.className)}>
+    <footer className="text-xs font-medium text-right mx-5 my-2">
       &copy; {year}
       <a
         href="https://codeagency.com"
