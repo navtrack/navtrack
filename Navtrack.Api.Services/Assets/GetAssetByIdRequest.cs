@@ -28,35 +28,38 @@ namespace Navtrack.Api.Services.Assets
         public override async Task<AssetResponseModel> Handle(GetAssetByIdRequest request)
         {
             AssetEntity entity = await repository.GetEntities<AssetEntity>()
+                .Include(x => x.Devices)
                 .FirstOrDefaultAsync(x => x.Id == request.AssetId &&
                                           x.Users.Any(y => y.UserId == request.UserId));
 
             if (entity != null)
             {
-                List<DeviceEntity> devices = await repository.GetEntities<DeviceEntity>()
-                    .Where(x => x.AssetId == request.AssetId)
-                    .OrderByDescending(x => x.Id)
-                    .ToListAsync();
-
-                var locations = await repository.GetEntities<LocationEntity>()
-                    .GroupBy(x => x.DeviceId)
-                    .Select(x => new {DeviceId = x.Key, LocationsCount = x.Count()})
-                    .ToListAsync();
-
                 AssetResponseModel responseModel = mapper.Map<AssetEntity, AssetResponseModel>(entity);
-                responseModel.Devices = devices.Select(x =>
-                    {
-                        DeviceModel deviceModel = mapper.Map<DeviceEntity, DeviceModel>(x);
-                        deviceModel.LocationsCount = (locations.FirstOrDefault(y => y.DeviceId == x.Id)?.LocationsCount)
-                            .GetValueOrDefault();
-                        return deviceModel;
-                    })
-                    .ToList();
+
+                responseModel.Devices = await GetDevices(entity);
 
                 return responseModel;
             }
 
             return null;
+        }
+
+        private async Task<List<DeviceModel>> GetDevices(AssetEntity entity)
+        {
+            var locationCount = await repository.GetEntities<LocationEntity>().Where(x => x.AssetId == entity.Id)
+                .GroupBy(x => x.DeviceId)
+                .Select(x => new {DeviceId = x.Key, LocationsCount = x.Count()})
+                .ToListAsync();
+
+
+            return entity.Devices.Select(x =>
+            {
+                DeviceModel deviceModel = mapper.Map<DeviceEntity, DeviceModel>(x);
+                deviceModel.LocationsCount = (locationCount.FirstOrDefault(y => y.DeviceId == x.Id)?.LocationsCount)
+                    .GetValueOrDefault();
+
+                return deviceModel;
+            }).ToList();
         }
     }
 }

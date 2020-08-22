@@ -34,7 +34,10 @@ namespace Navtrack.Api.Services.Devices
             if (entity != null)
             {
                 DeviceModel model = mapper.Map<DeviceEntity, DeviceModel>(entity);
-                
+
+                model.LocationsCount = await repository.GetEntities<LocationEntity>()
+                    .CountAsync(x => x.DeviceId == entity.Id);
+
                 return model;
             }
 
