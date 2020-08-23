@@ -12,12 +12,11 @@ namespace Navtrack.Listener.Protocols.Tzone
         {
             GPRMC gprmc = GPRMC.Parse(input.DataMessage.BarSplit[1].Substring(2));
 
+            input.Client.SetDevice(input.DataMessage.BarSplit[0].Substring(4));
+            
             Location location = new Location(gprmc)
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.BarSplit[0].Substring(4)
-                },
+                Device = input.Client.Device,
                 HDOP = input.DataMessage.BarSplit.Get<decimal?>(3),
                 Odometer = input.DataMessage.BarSplit.GetDouble(11, 4)
             };

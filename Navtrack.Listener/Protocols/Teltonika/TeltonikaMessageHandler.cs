@@ -20,10 +20,7 @@ namespace Navtrack.Listener.Protocols.Teltonika
                 {
                     string imei = Encoding.ASCII.GetString(input.DataMessage.Bytes[2..17]);
 
-                    input.Client.Device = new Device
-                    {
-                        IMEI = imei
-                    };
+                    input.Client.SetDevice(imei);
 
                     input.NetworkStream.WriteByte(1);
                 }

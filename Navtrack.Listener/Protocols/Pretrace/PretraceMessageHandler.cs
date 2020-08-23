@@ -34,12 +34,11 @@ namespace Navtrack.Listener.Protocols.Pretrace
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[2].Value);
+
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[2].Value
-                    },
+                    Device = input.Client.Device,
                     PositionStatus = locationMatch.Groups[5].Value == "A",
                     DateTime = DateTimeUtil.New(locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
                         locationMatch.Groups[8].Value, locationMatch.Groups[9].Value, locationMatch.Groups[10].Value,

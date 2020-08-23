@@ -62,10 +62,7 @@ namespace Navtrack.Listener.Protocols.VjoyCar
             {
                 string imei = input.DataMessage.String[17..32];
                 
-                input.Client.Device = new Device
-                {
-                    IMEI = imei
-                };
+                input.Client.SetDevice(imei);
                 
                 string reply =
                     $"({string.Join(string.Empty, input.DataMessage.String[1..13])}{loginCommandResponse[command]})";

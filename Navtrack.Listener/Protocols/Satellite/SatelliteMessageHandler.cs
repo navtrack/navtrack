@@ -49,12 +49,11 @@ namespace Navtrack.Listener.Protocols.Satellite
             short type = input.DataMessage.ByteReader.Get<short>();
             int length = input.DataMessage.ByteReader.Get<short>();
 
+            input.Client.SetDevice($"{id}");
+            
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = $"{id}"
-                }
+                Device = input.Client.Device
             };
 
             location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());

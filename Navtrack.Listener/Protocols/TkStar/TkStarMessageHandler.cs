@@ -14,12 +14,11 @@ namespace Navtrack.Listener.Protocols.TkStar
         {
             int timeIndex = input.DataMessage.CommaSplit[2] == "V1" || input.DataMessage.CommaSplit[2] == "V2" ? 3 : 5;
 
+            input.Client.SetDevice(input.DataMessage.CommaSplit.Get<string>(1));
+
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.CommaSplit.Get<string>(1)
-                },
+                Device = input.Client.Device,
                 DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),
                     input.DataMessage.CommaSplit.Get<string>(timeIndex + 8)),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(timeIndex + 1) == "A",

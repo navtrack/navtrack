@@ -28,12 +28,11 @@ namespace Navtrack.Listener.Protocols.Arknav
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     PositionStatus = locationMatch.Groups[5].Value == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[6].Value,
                         locationMatch.Groups[7].Value),

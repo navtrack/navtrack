@@ -43,14 +43,8 @@ namespace Navtrack.Listener.Protocols.ATrack
             long id = input.DataMessage.ByteReader.GetLe<long>(false);
             byte[] idBytes = input.DataMessage.ByteReader.Get(8);
             
-            if (input.Client.Device == null)
-            {
-                input.Client.Device = new Device
-                {
-                    IMEI = $"{id}"
-                };
-            }
-
+            input.Client.SetDevice($"{id}");
+            
             List<Location> positions = new List<Location>();
 
             while (input.DataMessage.ByteReader.BytesLeft > 40)
@@ -362,14 +356,8 @@ namespace Navtrack.Listener.Protocols.ATrack
 
             if (locationMatch.Success)
             {
-                if (input.Client.Device == null && !string.IsNullOrEmpty(locationMatch.Groups[4].Value))
-                {
-                    input.Client.Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[4].Value
-                    };
-                }
-
+                input.Client.SetDevice(locationMatch.Groups[4].Value);
+              
                 Location location = new Location
                 {
                     Device = input.Client.Device,

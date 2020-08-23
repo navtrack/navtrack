@@ -27,10 +27,7 @@ namespace Navtrack.Listener.Protocols.GoPass
 
                 if (imeiMatch.Success)
                 {
-                    input.Client.Device = new Device
-                    {
-                        IMEI = imeiMatch.Groups[1].Value
-                    };
+                    input.Client.SetDevice(imeiMatch.Groups[1].Value);
                 }
             }
         }

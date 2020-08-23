@@ -22,12 +22,11 @@ namespace Navtrack.Listener.Protocols.Megastek
         {
             GPRMC gprmc = GPRMC.Parse(string.Join(",", input.DataMessage.CommaSplit.Skip(2).Take(13)));
 
+            input.Client.SetDevice(input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty));
+            
             Location location = new Location(gprmc)
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty)
-                },
+                Device = input.Client.Device,
                 Satellites = input.DataMessage.CommaSplit.Get<short>(18),
                 Altitude = input.DataMessage.CommaSplit.Get<decimal?>(19)
             };

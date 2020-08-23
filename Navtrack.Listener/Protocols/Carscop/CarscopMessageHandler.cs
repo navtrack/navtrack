@@ -62,11 +62,8 @@ namespace Navtrack.Listener.Protocols.Carscop
 
                 if (command == "UB05")
                 {
-                    input.Client.Device = new Device
-                    {
-                        IMEI = input.DataMessage.String.Substring(17, 15)
-                    };
-
+                    input.Client.SetDevice(input.DataMessage.String.Substring(17, 15));
+                  
                     // ReSharper disable once UnreachableCode
                     const string validImei = true ? "1" : "0";
 

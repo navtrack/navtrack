@@ -38,12 +38,11 @@ namespace Navtrack.Listener.Protocols.GlobalSat
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[6].Value,
                         locationMatch.Groups[5].Value,

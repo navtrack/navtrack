@@ -12,12 +12,11 @@ namespace Navtrack.Listener.Protocols.Xirgo
     {
         public override Location Parse(MessageInput input)
         {
+            input.Client.SetDevice(input.DataMessage.CommaSplit[0].Replace("$", Empty));
+
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.CommaSplit[0].Replace("$", Empty)
-                },
+                Device = input.Client.Device,
                 DateTime = DateTime.Parse($"{input.DataMessage.CommaSplit[2]} {input.DataMessage.CommaSplit[3]}"),
                 Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),
                 Longitude = input.DataMessage.CommaSplit.Get<decimal>(5),

@@ -27,12 +27,11 @@ namespace Navtrack.Listener.Protocols.Sanav
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[2].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[2].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[17].Value,
                         locationMatch.Groups[16].Value,

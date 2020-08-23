@@ -37,11 +37,8 @@ namespace Navtrack.Listener.Protocols.Galileosky
                 {
                     case 0x03:
                         byte[] bytes = input.DataMessage.ByteReader.Get(tagLength.GetValueOrDefault());
-                        input.Client.Device ??= new Device
-                        {
-                            IMEI = StringUtil.ConvertByteArrayToString(
-                                bytes)
-                        };
+                        input.Client.SetDevice(StringUtil.ConvertByteArrayToString(
+                            bytes));
                         break;
 
                     case 0x20:

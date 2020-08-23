@@ -11,12 +11,11 @@ namespace Navtrack.Listener.Protocols.Fifotrack
     {
         public override Location Parse(MessageInput input)
         {
+            input.Client.SetDevice(input.DataMessage.CommaSplit[1]);
+            
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.CommaSplit[1]
-                },
+                Device = input.Client.Device,
                 DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(6) == "A",
                 Latitude = input.DataMessage.CommaSplit.Get<decimal>(7),

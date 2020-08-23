@@ -43,9 +43,9 @@ namespace Navtrack.Listener.Protocols.Amwell
         private static decimal GetCoordinate(string[] input, byte highestByte)
         {
             string coordinate = input.StringJoin();
-            
+
             decimal converted = GpsUtil.ConvertDdmToDecimal(decimal.Parse(coordinate.Substring(0, 3)),
-                decimal.Parse(coordinate.Substring(3, 5))/1000, CardinalPoint.North);
+                decimal.Parse(coordinate.Substring(3, 5)) / 1000, CardinalPoint.North);
 
             return (highestByte & 0x80) != 0 ? -converted : converted;
         }
@@ -68,11 +68,9 @@ namespace Navtrack.Listener.Protocols.Amwell
                 string fullReply = $"{reply}{checksum}{end}";
 
                 input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(fullReply));
-                
-                input.Client.Device = new Device
-                {
-                    IMEI = int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber).ToString()
-                };
+
+                input.Client.SetDevice(int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber)
+                    .ToString());
             }
         }
 

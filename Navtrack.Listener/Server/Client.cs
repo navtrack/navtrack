@@ -8,7 +8,23 @@ namespace Navtrack.Listener.Server
     {
         public TcpClient TcpClient { get; set; }
         public IProtocol Protocol { get; set; }
-        public Device Device { get; set; }
+        public Device Device { get; private set; }
         public DeviceConnectionEntity DeviceConnection { get; set; }
+
+        public void SetDevice(Device device)
+        {
+            Device = device;
+        }
+
+        public void SetDevice(string imei)
+        {
+            if (!string.IsNullOrEmpty(imei) && Device == null)
+            {
+                Device = new Device
+                {
+                    IMEI = imei
+                };
+            }
+        }
     }
 }

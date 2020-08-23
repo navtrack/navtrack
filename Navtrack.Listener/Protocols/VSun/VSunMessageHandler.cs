@@ -44,10 +44,7 @@ namespace Navtrack.Listener.Protocols.VSun
 
                 if (locationMatch.Success)
                 {
-                    input.Client.Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    };
+                    input.Client.SetDevice(locationMatch.Groups[1].Value);
                 }
             }
 

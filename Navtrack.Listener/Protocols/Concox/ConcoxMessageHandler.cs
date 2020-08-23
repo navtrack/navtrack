@@ -75,10 +75,7 @@ namespace Navtrack.Listener.Protocols.Concox
 
                 if (StringUtil.IsDigitsOnly(imei))
                 {
-                    input.Client.Device = new Device
-                    {
-                        IMEI = imei
-                    };
+                    input.Client.SetDevice(imei);
 
                     ConcoxOutputMessage output = new ConcoxOutputMessage(protocolNumber, serialNumber);
 

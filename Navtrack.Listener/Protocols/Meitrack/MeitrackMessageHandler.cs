@@ -37,12 +37,11 @@ namespace Navtrack.Listener.Protocols.Meitrack
 
                 while (input.DataMessage.ByteReader.BytesLeft > 52)
                 {
+                    input.Client.SetDevice(imei);
+                    
                     Location location = new Location
                     {
-                        Device = new Device
-                        {
-                            IMEI = imei
-                        }
+                        Device = input.Client.Device
                     };
 
                     byte eventCode = input.DataMessage.ByteReader.GetOne();

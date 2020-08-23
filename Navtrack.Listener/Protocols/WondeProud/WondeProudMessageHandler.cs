@@ -26,12 +26,11 @@ namespace Navtrack.Listener.Protocols.WondeProud
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
                     Longitude = locationMatch.Groups[3].Get<decimal>(),
                     Latitude = locationMatch.Groups[4].Get<decimal>(),

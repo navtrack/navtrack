@@ -25,15 +25,16 @@ namespace Navtrack.Listener.Protocols.Freedom
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = DateTime.Parse($"{locationMatch.Groups[2].Value} {locationMatch.Groups[3].Value}"),
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value, locationMatch.Groups[4].Value),
-                    Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value, locationMatch.Groups[6].Value),
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
+                        locationMatch.Groups[4].Value),
+                    Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value,
+                        locationMatch.Groups[6].Value),
                     Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<decimal>())
                 };
 

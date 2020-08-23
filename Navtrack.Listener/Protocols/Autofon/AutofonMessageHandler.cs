@@ -34,12 +34,9 @@ namespace Navtrack.Listener.Protocols.Autofon
                 input.DataMessage.ByteReader.Skip(2);
             }
 
-            input.Client.Device = new Device
-            {
-                IMEI = HexUtil.ConvertByteArrayToHexStringArray(input.DataMessage.ByteReader.Get(8))
-                    .StringJoin().Substring(1)
-            };
-
+            input.Client.SetDevice(HexUtil.ConvertByteArrayToHexStringArray(input.DataMessage.ByteReader.Get(8))
+                .StringJoin().Substring(1));
+            
             SendLoginResponse(input);
 
             return null;

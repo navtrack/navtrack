@@ -27,12 +27,11 @@ namespace Navtrack.Listener.Protocols.StarLink
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    }
+                    Device = input.Client.Device
                 };
 
                 SetData(locationMatch.Groups[4].Value, location);

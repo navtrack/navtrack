@@ -14,6 +14,8 @@ namespace Navtrack.Listener.Protocols.Meiligao
         public override Location Parse(MessageInput input)
         {
             MeiligaoInputMessage inputMessage = new MeiligaoInputMessage(input.DataMessage);
+            
+            input.Client.SetDevice(inputMessage.DeviceIdTrimmed);
 
             HandleMessage(input, inputMessage);
 
@@ -21,7 +23,7 @@ namespace Navtrack.Listener.Protocols.Meiligao
             {
                 Location location = new Location
                 {
-                    Device = new Device {IMEI = inputMessage.DeviceIdTrimmed},
+                    Device = input.Client.Device,
                     PositionStatus = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[2],
                         inputMessage.MeiligaoDataMessage.GPRMCArray[3]),

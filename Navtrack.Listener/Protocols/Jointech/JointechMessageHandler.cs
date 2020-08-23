@@ -35,12 +35,11 @@ namespace Navtrack.Listener.Protocols.Jointech
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[7].Value,
                         locationMatch.Groups[6].Value,
@@ -71,7 +70,7 @@ namespace Navtrack.Listener.Protocols.Jointech
                     .Match(value);
 
             string direction = BitUtil.IsTrue(locatingIndicator, 1) ? "N" : "S";
-             
+
             return GpsUtil.ConvertDmmLatToDecimal($"{locationMatch.Groups[1].Value}.{locationMatch.Groups[2].Value}",
                 direction);
         }

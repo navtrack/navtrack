@@ -29,10 +29,7 @@ namespace Navtrack.Listener.Protocols.Coban
 
                 if (StringUtil.IsDigitsOnly(imei))
                 {
-                    input.Client.Device = new Device
-                    {
-                        IMEI = imei
-                    };
+                    input.Client.SetDevice(imei);
 
                     input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("LOAD"));
                 }

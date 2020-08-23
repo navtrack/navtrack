@@ -33,13 +33,12 @@ namespace Navtrack.Listener.Protocols.Haicom
             if (locationMatch.Success)
             {
                 int flags = locationMatch.Groups[9].Get<int>();
+                
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
 
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,
                         locationMatch.Groups[5].Value, locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
                         locationMatch.Groups[8].Value),

@@ -18,10 +18,7 @@ namespace Navtrack.Listener.Protocols.Neomatica
 
             if (type == 0x03) // imei
             {
-                input.Client.Device = new Device
-                {
-                    IMEI = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15))
-                };
+                input.Client.SetDevice(StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15)));
             }
             else
             {

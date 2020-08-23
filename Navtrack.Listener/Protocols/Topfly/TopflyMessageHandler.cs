@@ -24,16 +24,17 @@ namespace Navtrack.Listener.Protocols.Topfly
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
                     PositionStatus = locationMatch.Groups[4].Value == "A",
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value, locationMatch.Groups[6].Value),
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[7].Value, locationMatch.Groups[8].Value),
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
+                        locationMatch.Groups[6].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[7].Value,
+                        locationMatch.Groups[8].Value),
                     Speed = locationMatch.Groups[9].Get<decimal?>(),
                     Heading = locationMatch.Groups[10].Get<decimal?>()
                 };

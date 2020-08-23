@@ -28,12 +28,11 @@ namespace Navtrack.Listener.Protocols.GPSMarker
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[3].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[3].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
                     Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value, locationMatch.Groups[5].Value),
                     Longitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value, locationMatch.Groups[7].Value),

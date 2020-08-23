@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
@@ -92,11 +91,8 @@ namespace Navtrack.Listener.Protocols.Arusnavi
                 byte headerVersion = input.DataMessage.ByteReader.GetOne();
                 long imei = input.DataMessage.ByteReader.Get<long>();
 
-                input.Client.Device ??= new Device
-                {
-                    IMEI = $"{imei}"
-                };
-
+                input.Client.SetDevice($"{imei}");
+                
                 SendResponse(input, headerVersion, 0);
             }
 

@@ -6,7 +6,6 @@ using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Helpers.New2;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
-using static System.String;
 
 namespace Navtrack.Listener.Protocols.Laipac
 {
@@ -57,12 +56,11 @@ namespace Navtrack.Listener.Protocols.Laipac
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                         $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[4].Value,

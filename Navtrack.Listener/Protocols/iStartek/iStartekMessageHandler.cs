@@ -14,15 +14,14 @@ namespace Navtrack.Listener.Protocols.iStartek
             string data = input.DataMessage.String[13..^4];
             GPRMC gprmc = GPRMC.Parse(data.Substring(0, data.IndexOf('|')));
             
+            input.Client.SetDevice(string.Join(string.Empty, input.DataMessage.Hex[4..11]).TrimEnd('F'));
+            
             Location location = new Location(gprmc)
             {
-                Device = new Device
-                {
-                    IMEI = string.Join(string.Empty, input.DataMessage.Hex[4..11]).TrimEnd('F')
-                },
+                Device = input.Client.Device,
                 Heading = input.DataMessage.BarSplit.Get<decimal?>(1),
                 Altitude = input.DataMessage.BarSplit.Get<decimal?>(2)
-                //TODO add odometer
+                // TODO add odometer
             };
 
             return location;

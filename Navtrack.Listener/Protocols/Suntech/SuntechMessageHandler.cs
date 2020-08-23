@@ -11,12 +11,11 @@ namespace Navtrack.Listener.Protocols.Suntech
     {
         public override Location Parse(MessageInput input)
         {
+            input.Client.SetDevice(input.DataMessage.Split.Get<string>(1));
+            
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.Split.Get<string>(1)
-                },
+                Device = input.Client.Device,
                 DateTime = ConvertDate(input.DataMessage.Split.Get<string>(3),
                     input.DataMessage.Split.Get<string>(4)),
                 Latitude = input.DataMessage.Split.Get<decimal>(6),

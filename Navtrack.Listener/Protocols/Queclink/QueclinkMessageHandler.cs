@@ -22,12 +22,11 @@ namespace Navtrack.Listener.Protocols.Queclink
 
             if (imeiMatch.Success && locationMatch.Success)
             {
+                input.Client.SetDevice(imeiMatch.Groups[1].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = imeiMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     HDOP = locationMatch.Groups[2].Get<decimal?>(),
                     Speed = locationMatch.Groups[3].Get<decimal?>(),
                     Heading = locationMatch.Groups[4].Get<decimal?>(),

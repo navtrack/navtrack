@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
@@ -155,10 +154,7 @@ namespace Navtrack.Listener.Protocols.Eelink
 
         private static void HandleLoginPackage(MessageInput input)
         {   
-            input.Client.Device = new Device
-            {
-                IMEI = input.DataMessage.Hex[7..15].StringJoin().TrimStart('0')
-            };
+            input.Client.SetDevice(input.DataMessage.Hex[7..15].StringJoin().TrimStart('0'));
             
             string extra = Empty;
 
