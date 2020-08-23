@@ -53,7 +53,7 @@ namespace Navtrack.Listener.Protocols.Satellite
             {
                 Device = new Device
                 {
-                    DeviceId = $"{id}"
+                    IMEI = $"{id}"
                 }
             };
 

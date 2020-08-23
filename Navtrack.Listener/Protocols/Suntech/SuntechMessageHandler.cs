@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Suntech
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.Split.Get<string>(1)
+                    IMEI = input.DataMessage.Split.Get<string>(1)
                 },
                 DateTime = ConvertDate(input.DataMessage.Split.Get<string>(3),
                     input.DataMessage.Split.Get<string>(4)),

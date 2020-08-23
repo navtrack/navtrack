@@ -29,7 +29,7 @@ namespace Navtrack.Listener.Protocols.Freedom
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTime.Parse($"{locationMatch.Groups[2].Value} {locationMatch.Groups[3].Value}"),
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value, locationMatch.Groups[4].Value),

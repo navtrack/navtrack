@@ -21,7 +21,7 @@ namespace Navtrack.Listener.Protocols.Bofan
                 {
                     Location location = new Location(gprmc)
                     {
-                        Device = new Device {DeviceId = deviceIdMatch.Groups[1].Value}
+                        Device = new Device {IMEI = deviceIdMatch.Groups[1].Value}
                     };
 
                     return location;

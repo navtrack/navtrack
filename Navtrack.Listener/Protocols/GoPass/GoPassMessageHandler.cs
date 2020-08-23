@@ -29,7 +29,7 @@ namespace Navtrack.Listener.Protocols.GoPass
                 {
                     input.Client.Device = new Device
                     {
-                        DeviceId = imeiMatch.Groups[1].Value
+                        IMEI = imeiMatch.Groups[1].Value
                     };
                 }
             }

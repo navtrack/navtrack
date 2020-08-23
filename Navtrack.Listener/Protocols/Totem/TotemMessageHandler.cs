@@ -22,7 +22,7 @@ namespace Navtrack.Listener.Protocols.Totem
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.Reader.Skip(8).GetUntil('|')
+                    IMEI = input.DataMessage.Reader.Skip(8).GetUntil('|')
                 },
                 DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
                 Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(16).Get(2)),
@@ -44,7 +44,7 @@ namespace Navtrack.Listener.Protocols.Totem
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.Reader.Skip(8).GetUntil('|')
+                    IMEI = input.DataMessage.Reader.Skip(8).GetUntil('|')
                 },
                 DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
                 Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(36).Get(2)),

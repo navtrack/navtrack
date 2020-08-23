@@ -65,11 +65,11 @@ namespace Navtrack.Listener.Services
         public async Task SetDeviceId(Client client)
         {
             // TODO refactor this
-            if (client.Device != null && client.Device.Entity == null && !string.IsNullOrEmpty(client.Device.DeviceId))
+            if (client.Device != null && client.Device.Entity == null && !string.IsNullOrEmpty(client.Device.IMEI))
             {
                 client.Device.Entity = await repository.GetEntities<DeviceEntity>()
                     .FirstOrDefaultAsync(
-                        x => x.DeviceId == client.Device.DeviceId && x.ProtocolPort == client.Protocol.Port);
+                        x => x.DeviceId == client.Device.IMEI && x.ProtocolPort == client.Protocol.Port);
 
                 if (client.Device.Entity != null)
                 {

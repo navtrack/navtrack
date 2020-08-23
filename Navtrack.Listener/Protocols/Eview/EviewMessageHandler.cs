@@ -25,7 +25,7 @@ namespace Navtrack.Listener.Protocols.Eview
             {
                 input.Client.Device = new Device
                 {
-                    DeviceId = imeiMatch.Groups[1].Value
+                    IMEI = imeiMatch.Groups[1].Value
                 };
             }
 

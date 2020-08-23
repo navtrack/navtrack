@@ -47,7 +47,7 @@ namespace Navtrack.Listener.Protocols.ATrack
             {
                 input.Client.Device = new Device
                 {
-                    DeviceId = $"{id}"
+                    IMEI = $"{id}"
                 };
             }
 
@@ -366,7 +366,7 @@ namespace Navtrack.Listener.Protocols.ATrack
                 {
                     input.Client.Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[4].Value
+                        IMEI = locationMatch.Groups[4].Value
                     };
                 }
 

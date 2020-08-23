@@ -42,7 +42,7 @@ namespace Navtrack.Listener.Protocols.GlobalSat
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[6].Value,
@@ -90,7 +90,7 @@ namespace Navtrack.Listener.Protocols.GlobalSat
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[6].Value,

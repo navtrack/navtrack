@@ -31,7 +31,7 @@ namespace Navtrack.Listener.Protocols.StarLink
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     }
                 };
 

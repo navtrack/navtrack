@@ -18,7 +18,7 @@ namespace Navtrack.Listener.Protocols.Ruptela
             long imei = input.DataMessage.ByteReader.GetLe<long>();
             input.Client.Device ??= new Device
             {
-                DeviceId = $"{imei}"
+                IMEI = $"{imei}"
             };
 
             byte command = input.DataMessage.ByteReader.GetOne();

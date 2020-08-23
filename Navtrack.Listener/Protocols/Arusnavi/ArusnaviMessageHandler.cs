@@ -94,7 +94,7 @@ namespace Navtrack.Listener.Protocols.Arusnavi
 
                 input.Client.Device ??= new Device
                 {
-                    DeviceId = $"{imei}"
+                    IMEI = $"{imei}"
                 };
 
                 SendResponse(input, headerVersion, 0);
@@ -159,7 +159,7 @@ namespace Navtrack.Listener.Protocols.Arusnavi
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[3].Value
+                        IMEI = locationMatch.Groups[3].Value
                     },
                     Satellites = locationMatch.Groups[14].Get<short?>(),
                     Altitude = locationMatch.Groups[15].Get<decimal?>(),

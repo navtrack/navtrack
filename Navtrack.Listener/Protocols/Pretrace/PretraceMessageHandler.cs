@@ -38,7 +38,7 @@ namespace Navtrack.Listener.Protocols.Pretrace
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[2].Value
+                        IMEI = locationMatch.Groups[2].Value
                     },
                     PositionStatus = locationMatch.Groups[5].Value == "A",
                     DateTime = DateTimeUtil.New(locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,

@@ -32,7 +32,7 @@ namespace Navtrack.Listener.Protocols.GPSMarker
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[3].Value
+                        IMEI = locationMatch.Groups[3].Value
                     },
                     DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
                     Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value, locationMatch.Groups[5].Value),

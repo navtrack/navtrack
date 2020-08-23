@@ -36,7 +36,7 @@ namespace Navtrack.Listener.Protocols.KingSword
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.NewFromHex(
                         locationMatch.Groups[4].Value,

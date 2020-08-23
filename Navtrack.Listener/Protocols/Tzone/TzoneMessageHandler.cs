@@ -16,7 +16,7 @@ namespace Navtrack.Listener.Protocols.Tzone
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.BarSplit[0].Substring(4)
+                    IMEI = input.DataMessage.BarSplit[0].Substring(4)
                 },
                 HDOP = input.DataMessage.BarSplit.Get<decimal?>(3),
                 Odometer = input.DataMessage.BarSplit.GetDouble(11, 4)

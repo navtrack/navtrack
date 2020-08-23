@@ -41,7 +41,7 @@ namespace Navtrack.Listener.Protocols.CarTrackGPS
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.New(locationMatch.Groups[17].Value, 
                         locationMatch.Groups[16].Value,

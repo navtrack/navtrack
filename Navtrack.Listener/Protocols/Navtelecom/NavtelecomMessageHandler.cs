@@ -52,7 +52,7 @@ namespace Navtrack.Listener.Protocols.Navtelecom
                 {
                     input.Client.Device = new Device
                     {
-                        DeviceId = imeiMatch.Groups[1].Value
+                        IMEI = imeiMatch.Groups[1].Value
                     };
 
                     string hexReply = "*<S".ToHex();

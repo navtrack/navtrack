@@ -28,7 +28,7 @@ namespace Navtrack.Listener.Protocols.Topfly
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
                     PositionStatus = locationMatch.Groups[4].Value == "A",

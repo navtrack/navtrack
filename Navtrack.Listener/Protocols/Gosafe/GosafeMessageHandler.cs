@@ -19,7 +19,7 @@ namespace Navtrack.Listener.Protocols.Gosafe
                 {
                     input.Client.Device = new Device
                     {
-                        DeviceId = imeiMatch.Groups[2].Value
+                        IMEI = imeiMatch.Groups[2].Value
                     };
                 }
             }

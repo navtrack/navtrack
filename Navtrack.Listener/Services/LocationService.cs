@@ -27,7 +27,7 @@ namespace Navtrack.Listener.Services
 
         public async Task Add(Location location)
         {
-            DeviceEntity device = await deviceDataService.GetActiveDeviceByDeviceId(location.Device.DeviceId);
+            DeviceEntity device = await deviceDataService.GetActiveDeviceByDeviceId(location.Device.IMEI);
 
             if (device != null)
             {
@@ -42,7 +42,7 @@ namespace Navtrack.Listener.Services
         {
             if (locations.Any())
             {
-                string deviceId = locations.First().Device.DeviceId;
+                string deviceId = locations.First().Device.IMEI;
 
                 DeviceEntity device = await deviceDataService.GetActiveDeviceByDeviceId(deviceId);
 

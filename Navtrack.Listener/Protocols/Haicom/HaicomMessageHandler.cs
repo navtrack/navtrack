@@ -38,7 +38,7 @@ namespace Navtrack.Listener.Protocols.Haicom
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,
                         locationMatch.Groups[5].Value, locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,

@@ -20,7 +20,7 @@ namespace Navtrack.Listener.Protocols.Neomatica
             {
                 input.Client.Device = new Device
                 {
-                    DeviceId = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15))
+                    IMEI = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15))
                 };
             }
             else

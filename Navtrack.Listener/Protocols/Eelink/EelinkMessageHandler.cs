@@ -157,7 +157,7 @@ namespace Navtrack.Listener.Protocols.Eelink
         {   
             input.Client.Device = new Device
             {
-                DeviceId = input.DataMessage.Hex[7..15].StringJoin().TrimStart('0')
+                IMEI = input.DataMessage.Hex[7..15].StringJoin().TrimStart('0')
             };
             
             string extra = Empty;

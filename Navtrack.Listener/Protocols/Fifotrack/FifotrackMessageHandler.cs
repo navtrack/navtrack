@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Fifotrack
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.CommaSplit[1]
+                    IMEI = input.DataMessage.CommaSplit[1]
                 },
                 DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(6) == "A",

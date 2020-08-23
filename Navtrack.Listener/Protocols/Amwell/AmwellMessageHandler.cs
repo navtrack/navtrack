@@ -71,7 +71,7 @@ namespace Navtrack.Listener.Protocols.Amwell
                 
                 input.Client.Device = new Device
                 {
-                    DeviceId = int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber).ToString()
+                    IMEI = int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber).ToString()
                 };
             }
         }

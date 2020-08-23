@@ -18,7 +18,7 @@ namespace Navtrack.Listener.Protocols.TkStar
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.CommaSplit.Get<string>(1)
+                    IMEI = input.DataMessage.CommaSplit.Get<string>(1)
                 },
                 DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),
                     input.DataMessage.CommaSplit.Get<string>(timeIndex + 8)),

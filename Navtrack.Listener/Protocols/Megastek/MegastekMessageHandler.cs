@@ -26,7 +26,7 @@ namespace Navtrack.Listener.Protocols.Megastek
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty)
+                    IMEI = input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty)
                 },
                 Satellites = input.DataMessage.CommaSplit.Get<short>(18),
                 Altitude = input.DataMessage.CommaSplit.Get<decimal?>(19)
@@ -45,7 +45,7 @@ namespace Navtrack.Listener.Protocols.Megastek
             {
                 Device = new Device
                 {
-                    DeviceId = imei
+                    IMEI = imei
                 },
                 GsmSignal = input.DataMessage.CommaSplit.Get<short?>(17)
             };
@@ -59,7 +59,7 @@ namespace Navtrack.Listener.Protocols.Megastek
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.CommaSplit[1]
+                    IMEI = input.DataMessage.CommaSplit[1]
                 },
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
                     input.DataMessage.CommaSplit[8]),

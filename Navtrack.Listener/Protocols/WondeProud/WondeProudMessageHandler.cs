@@ -30,7 +30,7 @@ namespace Navtrack.Listener.Protocols.WondeProud
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
                     Longitude = locationMatch.Groups[3].Get<decimal>(),

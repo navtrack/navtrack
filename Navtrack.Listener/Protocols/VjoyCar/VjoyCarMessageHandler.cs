@@ -64,7 +64,7 @@ namespace Navtrack.Listener.Protocols.VjoyCar
                 
                 input.Client.Device = new Device
                 {
-                    DeviceId = imei
+                    IMEI = imei
                 };
                 
                 string reply =

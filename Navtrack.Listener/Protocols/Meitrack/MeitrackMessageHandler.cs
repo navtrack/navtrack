@@ -41,7 +41,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                     {
                         Device = new Device
                         {
-                            DeviceId = imei
+                            IMEI = imei
                         }
                     };
 
@@ -102,7 +102,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                     {
                         Device = new Device
                         {
-                            DeviceId = imei
+                            IMEI = imei
                         }
                     };
 
@@ -184,7 +184,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
                 {
                     Device = new Device
                     {
-                        DeviceId = input.DataMessage.CommaSplit[1]
+                        IMEI = input.DataMessage.CommaSplit[1]
                     },
                     Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),
                     Longitude = input.DataMessage.CommaSplit.Get<decimal>(5),

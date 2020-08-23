@@ -16,7 +16,7 @@ namespace Navtrack.Listener.Protocols.Xirgo
             {
                 Device = new Device
                 {
-                    DeviceId = input.DataMessage.CommaSplit[0].Replace("$", Empty)
+                    IMEI = input.DataMessage.CommaSplit[0].Replace("$", Empty)
                 },
                 DateTime = DateTime.Parse($"{input.DataMessage.CommaSplit[2]} {input.DataMessage.CommaSplit[3]}"),
                 Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),

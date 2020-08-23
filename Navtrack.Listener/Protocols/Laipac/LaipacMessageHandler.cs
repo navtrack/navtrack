@@ -61,7 +61,7 @@ namespace Navtrack.Listener.Protocols.Laipac
                 {
                     Device = new Device
                     {
-                        DeviceId = locationMatch.Groups[1].Value
+                        IMEI = locationMatch.Groups[1].Value
                     },
                     DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                         $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
