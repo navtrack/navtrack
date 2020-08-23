@@ -39,7 +39,7 @@ namespace Navtrack.Listener.Protocols.GlobalSat
             if (locationMatch.Success)
             {
                 input.Client.SetDevice(locationMatch.Groups[1].Value);
-                
+
                 Location location = new Location
                 {
                     Device = input.Client.Device,
@@ -51,8 +51,10 @@ namespace Navtrack.Listener.Protocols.GlobalSat
                         locationMatch.Groups[8].Value,
                         locationMatch.Groups[9].Value),
                     PositionStatus = locationMatch.Groups[3].Value != "1",
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[10].Value),
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value, locationMatch.Groups[12].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value,
+                        locationMatch.Groups[10].Value),
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
+                        locationMatch.Groups[12].Value),
                     Altitude = locationMatch.Groups[14].Get<decimal?>(),
                     Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<decimal>()),
                     Heading = locationMatch.Groups[16].Get<decimal?>(),
@@ -65,7 +67,7 @@ namespace Navtrack.Listener.Protocols.GlobalSat
 
             return null;
         }
-        
+
         private static Location ParseFormatAlternative(MessageInput input)
         {
             Match locationMatch =
@@ -85,12 +87,11 @@ namespace Navtrack.Listener.Protocols.GlobalSat
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[1].Value);
+
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[1].Value
-                    },
+                    Device = input.Client.Device,
                     DateTime = DateTimeUtil.New(
                         locationMatch.Groups[6].Value,
                         locationMatch.Groups[5].Value,
@@ -99,8 +100,10 @@ namespace Navtrack.Listener.Protocols.GlobalSat
                         locationMatch.Groups[8].Value,
                         locationMatch.Groups[9].Value),
                     PositionStatus = locationMatch.Groups[2].Value != "1",
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[10].Value),
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value, locationMatch.Groups[12].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value,
+                        locationMatch.Groups[10].Value),
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
+                        locationMatch.Groups[12].Value),
                     Altitude = locationMatch.Groups[14].Get<decimal?>(),
                     Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<decimal>()),
                     Heading = locationMatch.Groups[16].Get<decimal?>(),

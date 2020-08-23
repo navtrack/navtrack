@@ -55,12 +55,11 @@ namespace Navtrack.Listener.Protocols.Coban
 
         private static Location Location(MessageInput input)
         {
+            input.Client.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
+
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty)
-                },
+                Device = input.Client.Device,
                 DateTime = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(4) == "F",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],

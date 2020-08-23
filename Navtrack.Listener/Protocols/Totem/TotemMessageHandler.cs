@@ -39,12 +39,11 @@ namespace Navtrack.Listener.Protocols.Totem
 
         private static Location ParseLocation_AT09(MessageInput input)
         {
+            input.Client.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
+            
             return new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.Reader.Skip(8).GetUntil('|')
-                },
+                Device = input.Client.Device,
                 DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
                 Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(36).Get(2)),
                 GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),

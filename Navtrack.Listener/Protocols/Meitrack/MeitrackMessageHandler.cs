@@ -27,6 +27,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
             string imei = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
             string command = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
 
+            input.Client.SetDevice(imei);
+
             if (command == "CCC")
             {
                 short protocolVersion = input.DataMessage.ByteReader.Get<short>();
@@ -37,8 +39,6 @@ namespace Navtrack.Listener.Protocols.Meitrack
 
                 while (input.DataMessage.ByteReader.BytesLeft > 52)
                 {
-                    input.Client.SetDevice(imei);
-                    
                     Location location = new Location
                     {
                         Device = input.Client.Device
@@ -85,6 +85,8 @@ namespace Navtrack.Listener.Protocols.Meitrack
             string imei = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
             string command = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
 
+            input.Client.SetDevice(imei);
+
             if (command == "CCE")
             {
                 int cacheRecords = input.DataMessage.ByteReader.Get<int>();
@@ -99,10 +101,7 @@ namespace Navtrack.Listener.Protocols.Meitrack
 
                     Location location = new Location
                     {
-                        Device = new Device
-                        {
-                            IMEI = imei
-                        }
+                        Device = input.Client.Device
                     };
 
                     int[] sizes = {1, 2, 4};
@@ -179,12 +178,11 @@ namespace Navtrack.Listener.Protocols.Meitrack
         {
             if (input.DataMessage.CommaSplit.Length > 14)
             {
+                input.Client.SetDevice(input.DataMessage.CommaSplit[1]);
+
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = input.DataMessage.CommaSplit[1]
-                    },
+                    Device = input.Client.Device,
                     Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),
                     Longitude = input.DataMessage.CommaSplit.Get<decimal>(5),
                     DateTime = ConvertDate(input.DataMessage.CommaSplit[6]),

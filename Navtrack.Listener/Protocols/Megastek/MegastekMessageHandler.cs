@@ -40,12 +40,11 @@ namespace Navtrack.Listener.Protocols.Megastek
 
             GPRMC gprmc = GPRMC.Parse(input.DataMessage.Reader.Skip(2).GetUntil('*', 3));
 
+            input.Client.SetDevice(imei);
+            
             Location location = new Location(gprmc)
             {
-                Device = new Device
-                {
-                    IMEI = imei
-                },
+                Device = input.Client.Device,
                 GsmSignal = input.DataMessage.CommaSplit.Get<short?>(17)
             };
 
@@ -54,12 +53,11 @@ namespace Navtrack.Listener.Protocols.Megastek
 
         private static Location Parse_V3(MessageInput input)
         {
+            input.Client.SetDevice(input.DataMessage.CommaSplit[1]);
+            
             Location location = new Location
             {
-                Device = new Device
-                {
-                    IMEI = input.DataMessage.CommaSplit[1]
-                },
+                Device = input.Client.Device,
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
                     input.DataMessage.CommaSplit[8]),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],

@@ -151,12 +151,11 @@ namespace Navtrack.Listener.Protocols.Arusnavi
 
             if (locationMatch.Success)
             {
+                input.Client.SetDevice(locationMatch.Groups[3].Value);
+                
                 Location location = new Location
                 {
-                    Device = new Device
-                    {
-                        IMEI = locationMatch.Groups[3].Value
-                    },
+                    Device = input.Client.Device,
                     Satellites = locationMatch.Groups[14].Get<short?>(),
                     Altitude = locationMatch.Groups[15].Get<decimal?>(),
                     DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
