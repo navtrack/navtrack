@@ -15,6 +15,8 @@ namespace Navtrack.DataAccess.Model
         public DateTime? ClosedAt { get; set; }
         public int ProtocolPort { get; set; }
         public string RemoteEndPoint { get; set; }
+        public int? DeviceId { get; set; }
+        public DeviceEntity Device { get; set; }
         public ICollection<DeviceConnectionMessageEntity> Messages { get; set; }
     }
 }

@@ -47,6 +47,13 @@ namespace Navtrack.Listener.Server
             {
                 List<Location> locations = customMessageHandler.ParseRange(messageInput)?.ToList();
 
+                
+                // TODO refactor this
+                if (client.Device.Entity == null)
+                {
+                    await connectionService.SetDeviceId(client);
+                }
+                
                 if (locations != null && locations.Any())
                 {
                     await locationService.AddRange(locations);

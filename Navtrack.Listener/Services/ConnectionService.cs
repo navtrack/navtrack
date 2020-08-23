@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
+using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Services
 {
@@ -19,7 +21,7 @@ namespace Navtrack.Listener.Services
         public async Task<DeviceConnectionEntity> NewConnection(string endPoint, int protocolPort)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
-            
+
             DeviceConnectionEntity deviceConnection = new DeviceConnectionEntity
             {
                 OpenedAt = DateTime.UtcNow,
@@ -58,6 +60,28 @@ namespace Navtrack.Listener.Services
             unitOfWork.Add(entity);
 
             await unitOfWork.SaveChanges();
+        }
+
+        public async Task SetDeviceId(Client client)
+        {
+            // TODO refactor this
+            if (client.Device != null && client.Device.Entity == null && !string.IsNullOrEmpty(client.Device.DeviceId))
+            {
+                client.Device.Entity = await repository.GetEntities<DeviceEntity>()
+                    .FirstOrDefaultAsync(
+                        x => x.DeviceId == client.Device.DeviceId && x.ProtocolPort == client.Protocol.Port);
+
+                if (client.Device.Entity != null)
+                {
+                    using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
+
+                    client.DeviceConnection.DeviceId = client.Device.Entity.Id;
+
+                    unitOfWork.Update(client.DeviceConnection);
+
+                    await unitOfWork.SaveChanges();
+                }
+            }
         }
     }
 }
