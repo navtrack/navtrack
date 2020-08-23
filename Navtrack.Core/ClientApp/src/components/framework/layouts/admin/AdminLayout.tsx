@@ -18,7 +18,7 @@ export default function AdminLayout(props: Props) {
         <AdminSidebar />
         <div className="flex flex-grow flex-col">
           <Error error={props.error} />
-          <div className="flex-grow">{props.children}</div>
+          <div className="flex flex-grow flex-col">{props.children}</div>
           <AdminFooter />
         </div>
       </div>
