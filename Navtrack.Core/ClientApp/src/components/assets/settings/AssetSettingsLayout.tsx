@@ -9,6 +9,7 @@ import useAssetId from "framework/hooks/useAssetId";
 import AssetLayout from "components/framework/layouts/asset/AssetLayout";
 import AssetSettingsGeneral from "./AssetSettingsGeneral";
 import AssetSettingsDevice from "./AssetSettingsDevice";
+import AssetSettingsDeviceLayout from "./device/AssetSettingsDeviceLayout";
 
 export default function AssetSettingsLayout() {
   const assetId = useAssetId();
@@ -31,10 +32,10 @@ export default function AssetSettingsLayout() {
         <div className="bg-white shadow p-3 rounded flex">
           <div className="mr-3 border-r" style={{ width: "180px" }}>
             <ul>
-              <MenuItem url={`/assets/${assetId}/settings`} icon="a">
+              <MenuItem url={`/assets/${assetId}/settings`} icon="fa-cog">
                 General
               </MenuItem>
-              <MenuItem url={`/assets/${assetId}/settings/device`} icon="hdd">
+              <MenuItem url={`/assets/${assetId}/settings/device`} icon="fa-hdd">
                 Device
               </MenuItem>
             </ul>
@@ -43,6 +44,9 @@ export default function AssetSettingsLayout() {
             <Switch>
               <Route exact path={path}>
                 <AssetSettingsGeneral asset={asset} refreshAsset={getAsset} />
+              </Route>
+              <Route path={`${path}/device/:deviceId`}>
+                <AssetSettingsDeviceLayout asset={asset} />
               </Route>
               <Route path={`${path}/device`}>
                 <AssetSettingsDevice asset={asset} refreshAsset={getAsset} />
@@ -57,13 +61,15 @@ export default function AssetSettingsLayout() {
 
 const MenuItem = (props: { children: string; url: string; icon: string }) => {
   const location = useLocation();
-  const isHighlighted = location.pathname === props.url;
+  const isHighlighted =
+    (props.url.endsWith("settings") && location.pathname === props.url) ||
+    (!props.url.endsWith("settings") && location.pathname.includes(props.url));
 
   return (
     <Link to={props.url}>
       <li
         className={classNames(
-          "font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 py-1 m-1 rounded",
+          "text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 py-1 mb-1 mr-1 rounded",
           {
             "text-gray-800 bg-gray-200 hover:bg-gray-200": isHighlighted
           }

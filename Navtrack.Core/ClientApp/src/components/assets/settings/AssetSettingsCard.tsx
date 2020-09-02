@@ -9,8 +9,8 @@ type Props = {
 export default function AssetSettingsCard(props: Props) {
   return (
     <div className={props.className}>
-      <div className="text-xl mb-1 pb-2 border-b">{props.title}</div>
-      <div className="pt-2 pb-4">{props.children}</div>
+      <div className="text-lg font-medium mb-2 border-b">{props.title}</div>
+      <div>{props.children}</div>
     </div>
   );
 }

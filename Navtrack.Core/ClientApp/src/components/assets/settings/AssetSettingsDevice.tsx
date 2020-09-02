@@ -58,7 +58,7 @@ export default function AssetSettingsDevice(props: Props) {
     <>
       {deviceTypes && (
         <>
-          <AssetSettingsCard title="Device">
+          <AssetSettingsCard title="Active device">
             <div className="flex">
               <div className="flex-grow w-1/2 pr-4">
                 <SelectInput
@@ -100,28 +100,30 @@ export default function AssetSettingsDevice(props: Props) {
               <DeviceConfiguration className="w-1/2 pl-4" deviceType={selectedDeviceType} />
             </div>
           </AssetSettingsCard>
-          <AssetSettingsCard title="History" className="mt-4">
+          <AssetSettingsCard title="Device history" className="mt-4">
             <div className="flex flex-col">
               <span className="text-sm mt-1 mb-3">
-                An asset can have only one active device, below is the list of devices that have
-                been assigned to this asset and have location data.
+                Below is the list of devices that have been assigned to this asset, an asset can
+                have only one active device.
               </span>
               <table className="w-full text-sm rounded border">
                 <tbody>
-                  <tr className="bg-gray-100 text-xs uppercase text-gray-700 p-2 border rounded-t-md font-medium">
-                    <td className="p-2 rounded-t">Device ID</td>
+                  <tr className="bg-gray-100 text-xs uppercase text-gray-700 p-2 border font-medium">
                     <td className="p-2">Device Type</td>
+                    <td className="p-2">IMEI</td>
                     <td className="p-2">Locations</td>
                     <td></td>
                   </tr>
                   {props.asset.devices.map((x) => (
                     <tr className="border" key={x.deviceId}>
+                      <td className="p-2">{x.deviceType.displayName}</td>
                       <td className="p-2">
-                        <Link to={`/devices/${x.id}`} className="text-blue-700 font-medium">
+                        <Link
+                          to={`/assets/${x.assetId}/settings/device/${x.id}/info`}
+                          className="text-blue-700 font-medium">
                           {x.deviceId}
                         </Link>
                       </td>
-                      <td className="p-2">{x.deviceType.displayName}</td>
                       <td className="p-2">{x.locationsCount}</td>
                       <td className="p-2 text-right">
                         {props.asset.activeDevice.id === x.id && (

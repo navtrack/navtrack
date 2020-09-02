@@ -29,6 +29,18 @@ namespace Navtrack.Api.Controllers
             });
         }
 
+
+        [HttpGet("{id}/statistics")]
+        public Task<ActionResult<DeviceStatisticsResponseModel>> GetStatistics([FromRoute] int id)
+        {
+            return HandleRequest<GetDeviceStatisticsRequest, DeviceStatisticsResponseModel>(
+                new GetDeviceStatisticsRequest
+                {
+                    DeviceId = id,
+                    UserId = User.GetId()
+                });
+        }
+
         [HttpGet("{id}/connections")]
         public Task<ActionResult<IEnumerable<DeviceConnectionResponseModel>>> GetConnections([FromRoute] int id)
         {

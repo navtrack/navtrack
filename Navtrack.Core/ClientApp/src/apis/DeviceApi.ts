@@ -2,6 +2,7 @@ import { apiUrl } from "framework/httpClient/HttpClientUtil";
 import { ResponseModel } from "./types/ResponseModel";
 import { HttpClient } from "framework/httpClient/HttpClient";
 import { DeviceModel } from "./types/device/DeviceModel";
+import { DeviceStatisticsResponseModel } from "./types/device/DeviceStatisticsResponseModel";
 
 export const DeviceApi = {
   get: function (id: number): Promise<DeviceModel> {
@@ -20,6 +21,10 @@ export const DeviceApi = {
     const url = id ? `devices/available/${id}` : "devices/available";
 
     return HttpClient.get<DeviceModel[]>(apiUrl(url));
+  },
+
+  statistics: function (id: number): Promise<DeviceStatisticsResponseModel> {
+    return HttpClient.get<DeviceStatisticsResponseModel>(apiUrl(`devices/${id}/statistics`));
   },
 
   put: function (device: DeviceModel): Promise<ResponseModel> {

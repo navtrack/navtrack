@@ -60,14 +60,11 @@ export default function AssetSettingsGeneral(props: Props) {
         </div>
       </AssetSettingsCard>
       <AssetSettingsCard title="Delete">
-        <div>
-          <h1 className="text-sm font-semibold">Delete this asset</h1>
-          <span className="text-sm">
-            Once you delete an asset, everything related to it will be removed including all its
-            history.
-          </span>
-        </div>
-        <div className="text-right flex-grow">
+        <span className="text-sm">
+          Once you delete an asset, everything related to it will be removed including all its
+          history.
+        </span>
+        <div className="text-right w-full">
           <Button color="warn" onClick={() => setShowDeleteModal(true)}>
             Delete asset
           </Button>
