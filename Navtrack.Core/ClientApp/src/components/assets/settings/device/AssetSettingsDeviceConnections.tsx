@@ -29,7 +29,7 @@ export default function AssetSettingsDeviceConnections(props: Props) {
     },
     {
       title: "Closed at",
-      renderer: (x) => showDate(x.openedAt)
+      renderer: (x) => showDate(x.closedAt)
     },
     {
       title: "Remote Endpoint",
