@@ -5,7 +5,6 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Services;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
-using Navtrack.Listener.DataServices;
 using Location = Navtrack.Listener.Models.Location;
 
 namespace Navtrack.Listener.Services

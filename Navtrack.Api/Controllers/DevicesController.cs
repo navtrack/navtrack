@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Navtrack.Api.Model;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Model.Devices.Requests;
 using Navtrack.Api.Services.Devices;
@@ -42,12 +43,15 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{id}/connections")]
-        public Task<ActionResult<IEnumerable<DeviceConnectionResponseModel>>> GetConnections([FromRoute] int id)
+        public Task<ActionResult<TableResponse<DeviceConnectionResponseModel>>> GetConnections(
+            [FromRoute] DeviceConnectionRequestModel model)
         {
-            return HandleRequest<GetDeviceConnectionsRequest, IEnumerable<DeviceConnectionResponseModel>>(
+            return HandleRequest<GetDeviceConnectionsRequest, TableResponse<DeviceConnectionResponseModel>>(
                 new GetDeviceConnectionsRequest
                 {
-                    DeviceId = id,
+                    DeviceId = model.Id,
+                    Page = model.Page,
+                    PerPage = model.PerPage,
                     UserId = User.GetId()
                 });
         }

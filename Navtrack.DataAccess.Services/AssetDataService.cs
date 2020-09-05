@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.DataAccess.Model;
@@ -17,12 +18,20 @@ namespace Navtrack.DataAccess.Services
             this.repository = repository;
         }
 
-        public Task<bool> UserHasRole(int userId, int assetId, UserAssetRole userAssetRole)
+        public Task<bool> UserHasRoleForAsset(int userId, UserAssetRole userAssetRole, int assetId)
         {
             int roleId = (int) userAssetRole;
 
             return repository.GetEntities<UserAssetEntity>().AnyAsync(x =>
                 x.UserId == userId && x.AssetId == assetId && x.RoleId == roleId);
+        }
+
+        public Task<bool> UserHasRoleForDevice(int userId, UserAssetRole userAssetRole, int deviceId)
+        {
+            int roleId = (int) userAssetRole;
+
+            return repository.GetEntities<UserAssetEntity>().AnyAsync(x =>
+                x.UserId == userId && x.Asset.Devices.Any(y => y.Id == deviceId) && x.RoleId == roleId);
         }
 
         public Task<bool> HasActiveDeviceId(int assetId, string deviceId)

@@ -10,6 +10,7 @@ import useDeviceId from "framework/hooks/useDeviceId";
 import AssetSettingsDeviceConnections from "./AssetSettingsDeviceConnections";
 import { DeviceModel } from "apis/types/device/DeviceModel";
 import { DeviceApi } from "apis/DeviceApi";
+import AssetSettingsCard from "../AssetSettingsCard";
 
 type Props = {
   asset: AssetModel;
@@ -34,19 +35,22 @@ export default function AssetSettingsDeviceLayout(props: Props) {
 
   return (
     <>
-      <div className="font-medium border-b">
-        {device?.deviceType.displayName} ({device?.deviceId})
-      </div>
-      <div className="py-1 border-b flex">
-        <MenuItem url={`/assets/${assetId}/settings/device/${deviceId}/info`} icon="fa-info-circle">
-          Info
-        </MenuItem>
-        <MenuItem
-          url={`/assets/${assetId}/settings/device/${deviceId}/connections`}
-          icon="fa-network-wired">
-          Connections
-        </MenuItem>
-      </div>
+      <AssetSettingsCard
+        title={`${device?.deviceType.displayName} (${device?.deviceId})`}
+        className="border-b pb-2">
+        <div className="py-1 flex">
+          <MenuItem
+            url={`/assets/${assetId}/settings/device/${deviceId}/info`}
+            icon="fa-info-circle">
+            Info
+          </MenuItem>
+          <MenuItem
+            url={`/assets/${assetId}/settings/device/${deviceId}/connections`}
+            icon="fa-network-wired">
+            Connections
+          </MenuItem>
+        </div>
+      </AssetSettingsCard>
       <div className="mt-2">
         {device && (
           <Switch>
@@ -54,7 +58,7 @@ export default function AssetSettingsDeviceLayout(props: Props) {
               <AssetSettingsDeviceInfo asset={props.asset} device={device} />
             </Route>
             <Route path={`${path}/connections`}>
-              <AssetSettingsDeviceConnections asset={props.asset} />
+              <AssetSettingsDeviceConnections asset={props.asset} device={device} />
             </Route>
           </Switch>
         )}

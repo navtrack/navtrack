@@ -4,7 +4,7 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Listener.DataServices
+namespace Navtrack.DataAccess.Services
 {
     [Service(typeof(ILocationDataService))]
     public class LocationDataService : ILocationDataService

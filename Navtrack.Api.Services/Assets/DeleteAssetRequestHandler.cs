@@ -24,7 +24,7 @@ namespace Navtrack.Api.Services.Assets
 
         public override async Task Authorize(DeleteAssetRequest request)
         {
-            if (!await assetDataService.UserHasRole(request.UserId, request.AssetId, UserAssetRole.Owner))
+            if (!await assetDataService.UserHasRoleForAsset(request.UserId, UserAssetRole.Owner, request.AssetId))
             {
                 ApiResponse.IsUnauthorised();
             }
