@@ -4,4 +4,5 @@ export type DeviceConnectionResponseModel = {
   openedAt: Date;
   closedAt?: Date
   remoteEndPoint: string
+  messages: number
 };

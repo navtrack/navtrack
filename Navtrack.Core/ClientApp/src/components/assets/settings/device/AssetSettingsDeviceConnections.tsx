@@ -34,6 +34,10 @@ export default function AssetSettingsDeviceConnections(props: Props) {
     {
       title: "Remote Endpoint",
       renderer: (x) => x.remoteEndPoint
+    },
+    {
+      title: "Messages",
+      renderer: (x) => x.messages
     }
   ];
 

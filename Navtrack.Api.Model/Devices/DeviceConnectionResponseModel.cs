@@ -9,5 +9,6 @@ namespace Navtrack.Api.Model.Devices
         public DateTime OpenedAt { get; set; }
         public DateTime? ClosedAt { get; set; }
         public string RemoteEndPoint { get; set; }
+        public int Messages { get; set; }
     }
 }

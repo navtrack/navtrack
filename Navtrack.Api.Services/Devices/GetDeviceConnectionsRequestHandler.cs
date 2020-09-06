@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -60,20 +61,33 @@ namespace Navtrack.Api.Services.Devices
 
             int totalResults = await queryable.CountAsync();
 
+            List<DeviceConnectionEntity> results = await queryable.OrderByDescending(x => x.Id)
+                .Skip((request.Page - 1) * request.PerPage)
+                .Take(request.PerPage)
+                .ToListAsync();
+
+            List<int> deviceConnectionsIds = results.Select(x => x.Id).ToList();
+
+            var messageCounts =
+                await repository.GetEntities<DeviceConnectionMessageEntity>()
+                    .Where(x => deviceConnectionsIds.Contains(x.DeviceConnectionId))
+                    .GroupBy(x => x.DeviceConnectionId)
+                    .Select(x => new {DeviceConnectionId = x.Key, Messages = x.Count()})
+                    .ToListAsync();
+
             return new TableResponse<DeviceConnectionResponseModel>
             {
-                Results = await queryable.OrderByDescending(x => x.Id)
-                    .Skip((request.Page - 1) * request.PerPage)
-                    .Take(request.PerPage)
+                Results = results
                     .Select(x => new DeviceConnectionResponseModel
                     {
                         Id = x.Id,
                         DeviceId = request.DeviceId,
                         OpenedAt = x.OpenedAt,
                         ClosedAt = x.ClosedAt,
-                        RemoteEndPoint = x.RemoteEndPoint
-                    })
-                    .ToListAsync(),
+                        RemoteEndPoint = x.RemoteEndPoint,
+                        Messages = (messageCounts.FirstOrDefault(y => y.DeviceConnectionId == x.Id)?.Messages)
+                            .GetValueOrDefault()
+                    }).ToList(),
                 MaxPage = (totalResults + request.PerPage - 1) / request.PerPage,
                 PerPage = request.PerPage,
                 Page = request.Page,
