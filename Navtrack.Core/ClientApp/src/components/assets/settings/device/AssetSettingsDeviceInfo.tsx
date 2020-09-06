@@ -24,28 +24,32 @@ export default function AssetSettingsDeviceInfo(props: Props) {
     <>
       {props.device && deviceStatistics && (
         <div className="flex text-sm flex-col">
-          <table className="border w-1/2 mb-4">
-            <tbody>
-              <tr>
-                <td
-                  className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border"
-                  style={{ width: "120px" }}>
-                  IMEI
-                </td>
-                <td className="p-2 font-medium border">{props.device.deviceId}</td>
-              </tr>
-              <tr>
-                <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">
-                  Manufacturer
-                </td>
-                <td className="p-2 font-medium border">{props.device.deviceType.manufacturer}</td>
-              </tr>
-              <tr>
-                <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">Model</td>
-                <td className="p-2 font-medium border">{props.device.deviceType.model}</td>
-              </tr>
-            </tbody>
-          </table>
+          <AssetSettingsCard title="Device info">
+            <table className="border w-1/2 mb-4">
+              <tbody>
+                <tr>
+                  <td
+                    className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border"
+                    style={{ width: "120px" }}>
+                    IMEI
+                  </td>
+                  <td className="p-2 font-medium border">{props.device.deviceId}</td>
+                </tr>
+                <tr>
+                  <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">
+                    Manufacturer
+                  </td>
+                  <td className="p-2 font-medium border">{props.device.deviceType.manufacturer}</td>
+                </tr>
+                <tr>
+                  <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">
+                    Model
+                  </td>
+                  <td className="p-2 font-medium border">{props.device.deviceType.model}</td>
+                </tr>
+              </tbody>
+            </table>
+          </AssetSettingsCard>
           <AssetSettingsCard title="Statistics">
             <table className="border w-1/2">
               <tbody>
