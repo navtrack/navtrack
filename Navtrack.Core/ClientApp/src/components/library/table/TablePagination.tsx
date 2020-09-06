@@ -22,7 +22,7 @@ export default function TablePagination<T extends object>(props: Props<T>) {
   return (
     <div className="flex justify-center items-center py-3 text-sm select-none">
       <div className="text-xs" style={{ flexGrow: 1, flexBasis: 150 }}>
-        {startIndex} to {endIndex} of {props.data.totalResults} results
+        <b>{startIndex}</b> to <b>{endIndex}</b> of <b>{props.data.totalResults}</b> results
       </div>
       <div className="flex justify-center items-center" style={{ flexGrow: 3 }}>
         <div className="mr-4 cursor-pointer" onClick={() => setPage(props.currentPage - 1)}>
