@@ -10,7 +10,7 @@ import {
   DefaultLocationFilterModel,
   LocationFilterModel
 } from "../../common/locationFilter/types/LocationFilterModel";
-import AssetLocationsTable from "./LocationsTable";
+import AssetLocationsTable from "./AssetLocationsTable";
 
 export default function AssetLog() {
   useMap();
