@@ -1,12 +1,11 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { UserModel } from "apis/types/user/UserModel";
 import { useHistory } from "react-router";
-import { UserApi } from "apis/UserApi";
-import DeleteModal from "components/framework/DeleteModal";
-import { addNotification } from "components/library/notifications/Notifications";
-import Button from "components/library/elements/Button";
-import ReactTable from "components/library/table/ReactTable";
-import { ApiError } from "framework/httpClient/AppError";
+import { UserModel } from "../../../apis/types/user/UserModel";
+import { UserApi } from "../../../apis/UserApi";
+import { ApiError } from "../../../services/httpClient/AppError";
+import DeleteModal from "../../shared/DeleteModal";
+import Button from "../../shared/elements/Button";
+import { addNotification } from "../../shared/notifications/Notifications";
 
 export default function UserList() {
   const [users, setUsers] = useState<UserModel[]>([]);
@@ -37,6 +36,7 @@ export default function UserList() {
       });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const columns = useMemo(
     () => [
       {
@@ -78,7 +78,7 @@ export default function UserList() {
             </Button>
           </div>
         </div>
-        <ReactTable columns={columns} data={users} />
+        {/* <ReactTable columns={columns} data={users} /> */}
       </div>
     </>
   );

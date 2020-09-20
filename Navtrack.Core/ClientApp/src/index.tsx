@@ -1,21 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
 
 import "tailwindcss/dist/base.min.css";
 import "tailwindcss/dist/components.min.css";
 import "tailwindcss/dist/utilities.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "leaflet/dist/leaflet.css";
+import "./app.css";
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById("app-root");
 
-ReactDOM.render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>,
-    rootElement
-);
-
-registerServiceWorker();
+ReactDOM.render(<App />, rootElement);

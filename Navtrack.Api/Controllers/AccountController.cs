@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Accounts;
 using Navtrack.Api.Model.Accounts.Requests;
-using Navtrack.Api.Model.Models;
 using Navtrack.Api.Services.Extensions;
 
 namespace Navtrack.Api.Controllers
@@ -21,7 +20,7 @@ namespace Navtrack.Api.Controllers
         [HttpGet]
         public Task<ActionResult<AccountInfoResponseModel>> Get()
         {
-            return HandleRequest<AccountInfoRequest, AccountInfoResponseModel>(new AccountInfoRequest
+            return HandleCommand<AccountInfoCommand, AccountInfoResponseModel>(new AccountInfoCommand
             {
                 UserId = User.GetId()
             });
@@ -31,7 +30,7 @@ namespace Navtrack.Api.Controllers
         [HttpPost("register")]
         public Task<IActionResult> Register([FromBody] RegisterAccountModel model)
         {
-            return HandleRequest(model);
+            return HandleCommand(model);
         }
     }
 }

@@ -1,5 +1,5 @@
-import { AppContextAccessor } from "framework/appContext/AppContextAccessor";
-import { AccountApi } from "apis/AccountApi";
+import { AccountApi } from "../apis/AccountApi";
+import { AppContextAccessor } from "./appContext/AppContextAccessor";
 
 export const AccountService = {
   getUserInfo: async () => {

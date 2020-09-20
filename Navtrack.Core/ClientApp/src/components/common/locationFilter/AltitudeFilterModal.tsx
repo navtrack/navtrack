@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { NumberFilterType } from "./types/NumberFilterType";
-import { ComparisonType } from "./types/ComparisonType";
+import Button from "../../shared/elements/Button";
+import Checkbox from "../../shared/elements/Checkbox";
+import Modal from "../../shared/elements/Modal";
+import Icon from "../../shared/util/Icon";
 import { AltitudeFilterModel } from "./types/AltitudeFilterModel";
-import Modal from "components/library/elements/Modal";
-import Icon from "components/library/util/Icon";
-import Checkbox from "components/library/elements/Checkbox";
-import Button from "components/library/elements/Button";
+import { ComparisonType } from "./types/ComparisonType";
+import { NumberFilterType } from "./types/NumberFilterType";
 
 type Props = {
   filter: AltitudeFilterModel;

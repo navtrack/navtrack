@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { AssetModel } from "apis/types/asset/AssetModel";
-import { DeviceConnectionResponseModel } from "apis/types/device/DeviceConnectionResponseModel";
-import { DeviceModel } from "apis/types/device/DeviceModel";
-import { DeviceApi } from "apis/DeviceApi";
-import Table, { TableColumn } from "components/library/table/Table";
-import { TableResponse } from "apis/types/TableResponse";
-import { showDate } from "framework/util/DateUtil";
+import { DeviceApi } from "../../../../apis/DeviceApi";
+import { AssetModel } from "../../../../apis/types/asset/AssetModel";
+import { DeviceConnectionResponseModel } from "../../../../apis/types/device/DeviceConnectionResponseModel";
+import { DeviceModel } from "../../../../apis/types/device/DeviceModel";
+import { ResultsPaginationModel } from "../../../../apis/types/ResultsPaginationModel";
+import { showDate } from "../../../../services/util/DateUtil";
+import Table, { TableColumn } from "../../../shared/table/Table";
 
 type Props = {
   asset: AssetModel;
@@ -14,7 +14,9 @@ type Props = {
 
 export default function AssetSettingsDeviceConnections(props: Props) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [connections, setConnections] = useState<TableResponse<DeviceConnectionResponseModel>>();
+  const [connections, setConnections] = useState<
+    ResultsPaginationModel<DeviceConnectionResponseModel>
+  >();
 
   useEffect(() => {
     DeviceApi.connections(props.device.id, currentPage).then((x) => {

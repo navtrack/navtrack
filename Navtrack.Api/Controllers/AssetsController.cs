@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Model.Assets.Requests;
 using Navtrack.Api.Services.Extensions;
 
 namespace Navtrack.Api.Controllers
@@ -16,42 +15,52 @@ namespace Navtrack.Api.Controllers
         {
         }
 
-        [HttpPost]
-        public Task<ActionResult<AddAssetResponseModel>> Add([FromBody] AddAssetRequestModel model)
-        {
-            return HandleRequest<AddAssetRequest, AddAssetResponseModel>(new AddAssetRequest
-            {
-                Body = model,
-                UserId = User.GetId()
-            });
-        }
-
-        [HttpGet]
-        public Task<ActionResult<IEnumerable<AssetResponseModel>>> GetAll()
-        {
-            return HandleRequest<GetAllAssetsRequest, IEnumerable<AssetResponseModel>>(new GetAllAssetsRequest
-            {
-                UserId = User.GetId()
-            });
-        }
-
         [HttpGet("{id}")]
-        public Task<ActionResult<AssetResponseModel>> Get([FromRoute] int id)
+        public Task<ActionResult<AssetModel>> Get([FromRoute] int id)
         {
-            return HandleRequest<GetAssetByIdRequest, AssetResponseModel>(new GetAssetByIdRequest
+            return HandleCommand<GetAssetByIdCommand, AssetModel>(new GetAssetByIdCommand
             {
                 AssetId = id,
                 UserId = User.GetId()
             });
         }
 
+        [HttpGet]
+        public Task<ActionResult<IEnumerable<AssetModel>>> GetAll()
+        {
+            return HandleCommand<GetAllAssetsCommand, IEnumerable<AssetModel>>(new GetAllAssetsCommand
+            {
+                UserId = User.GetId()
+            });
+        }
+
+        [HttpPost]
+        public Task<ActionResult<AddAssetModel>> Add([FromBody] AddAssetRequestModel model)
+        {
+            return HandleCommand<AddAssetCommand, AddAssetModel>(new AddAssetCommand
+            {
+                Model = model,
+                UserId = User.GetId()
+            });
+        }
+
+        [HttpDelete("{assetId}")]
+        public Task<IActionResult> Delete([FromRoute] int assetId)
+        {
+            return HandleCommand(new DeleteAssetCommand
+            {
+                UserId = User.GetId(),
+                AssetId = assetId
+            });
+        }
+
         [HttpPost("{assetId}/settings/rename")]
         public Task<IActionResult> Rename([FromRoute] int assetId, [FromBody] RenameAssetRequestModel model)
         {
-            return HandleRequest(new RenameAssetRequest
+            return HandleCommand(new RenameAssetCommand
             {
                 AssetId = assetId,
-                Body = model,
+                Model = model,
                 UserId = User.GetId()
             });
         }
@@ -59,22 +68,48 @@ namespace Navtrack.Api.Controllers
         [HttpPut("{assetId}/device")]
         public Task<IActionResult> ChangeDevice([FromRoute] int assetId, [FromBody] ChangeDeviceRequestModel model)
         {
-            return HandleRequest(new ChangeDeviceRequest
+            return HandleCommand(new ChangeDeviceCommand
             {
-                Body = model,
+                Model = model,
                 UserId = User.GetId(),
                 AssetId = assetId
             });
         }
 
-        [HttpDelete("{assetId}")]
-        public Task<IActionResult> Delete([FromRoute] int assetId)
+        [HttpGet("{assetId}/trips")]
+        public Task<ActionResult<GetTripsModel>> GetTrips([FromRoute] int assetId)
         {
-            return HandleRequest(new DeleteAssetRequest
-            {
-                UserId = User.GetId(),
-                AssetId = assetId
-            });
+            return HandleCommand<GetTripsCommand, GetTripsModel>(
+                new GetTripsCommand
+                {
+                    AssetId = assetId,
+                    UserId = User.GetId()
+                });
+        }
+        
+        
+        [HttpGet("{assetId}/locations")]
+        public Task<ActionResult<IEnumerable<LocationModel>>> GetLocations([FromRoute] int assetId, 
+            [FromQuery] LocationHistoryRequestModel model)
+        {
+            return HandleCommand<GetLocationsCommand, IEnumerable<LocationModel>>(
+                new GetLocationsCommand
+                {
+                    AssetId = assetId,
+                    Model = model,
+                    UserId = User.GetId()
+                });
+        }
+
+        [HttpGet("{assetId}/locations/latest")]
+        public Task<ActionResult<LocationModel>> GetLatestLocation(int assetId)
+        {
+            return HandleCommand<GetLatestLocationCommand, LocationModel>(
+                new GetLatestLocationCommand
+                {
+                    AssetId = assetId,
+                    UserId = User.GetId()
+                });
         }
     }
 }

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router";
-import { AssetApi } from "apis/AssetApi";
-import TextInput from "components/library/forms/TextInput";
-import { DeviceTypeApi } from "apis/DeviceTypeApi";
 import { useIntl, FormattedMessage } from "react-intl";
-import Form from "components/library/forms/Form";
-import SelectInput from "components/library/forms/SelectInput";
-import { useNewValidation } from "framework/validation/useValidationHook";
-import { Validator } from "framework/validation/Validator";
-import { addNotification } from "components/library/notifications/Notifications";
-import Button from "components/library/elements/Button";
-import { DeviceTypeModel } from "apis/types/device/DeviceTypeModel";
+import { useHistory } from "react-router";
+import { AssetApi } from "../../apis/AssetApi";
+import { DeviceTypeApi } from "../../apis/DeviceTypeApi";
 import {
   DefaultAddAssetRequestModel,
   AddAssetRequestModel
-} from "apis/types/asset/AddAssetRequestModel";
-import DeviceConfiguration from "components/devices/DeviceConfiguration";
+} from "../../apis/types/asset/AddAssetRequestModel";
+import { DeviceTypeModel } from "../../apis/types/device/DeviceTypeModel";
+import { useNewValidation } from "../../services/validation/useValidationHook";
+import { ValidateAction } from "../../services/validation/ValidateAction";
+import DeviceConfiguration from "../devices/DeviceConfiguration";
+import Button from "../shared/elements/Button";
+import Form from "../shared/forms/Form";
+import SelectInput from "../shared/forms/SelectInput";
+import TextInput from "../shared/forms/TextInput";
+import { addNotification } from "../shared/notifications/Notifications";
 
 export default function AddAsset() {
   const [asset, setAsset] = useState(DefaultAddAssetRequestModel);
@@ -36,7 +36,6 @@ export default function AddAsset() {
       const deviceType = deviceTypes.find((x) => x.id === asset.deviceTypeId);
 
       setSelectedDeviceType(deviceType);
-      console.log(deviceType);
     }
   }, [asset.deviceTypeId, deviceTypes]);
 
@@ -100,7 +99,7 @@ export default function AddAsset() {
   );
 }
 
-const validateAsset: Validator<AddAssetRequestModel> = (object, validationResult, intl) => {
+const validateAsset: ValidateAction<AddAssetRequestModel> = (object, validationResult, intl) => {
   if (!object.name || object.name.length === 0) {
     validationResult.AddError("name", intl.formatMessage({ id: "assets.add.name.required" }));
   }

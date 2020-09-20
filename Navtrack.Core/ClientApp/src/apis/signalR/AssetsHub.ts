@@ -1,6 +1,6 @@
-import { AssetModel } from "apis/types/asset/AssetModel";
-import { SignalRClient } from "framework/signalR/SignalRClient";
-import { apiUrl } from "framework/httpClient/HttpClientUtil";
+import { apiUrl } from "../../services/httpClient/HttpClientUtil";
+import { SignalRClient } from "../../services/signalR/SignalRClient";
+import { AssetModel } from "../types/asset/AssetModel";
 
 export const AssetsHub = {
   getAll: async (): Promise<AssetModel[]> => {

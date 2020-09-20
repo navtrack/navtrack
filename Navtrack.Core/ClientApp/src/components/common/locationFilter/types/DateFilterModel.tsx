@@ -1,7 +1,7 @@
 import moment, { Moment } from "moment";
+import Configuration from "../../../../services/Configuration";
 import { DateFilterType } from "./DateFilterType";
 import { NumberFilterType } from "./NumberFilterType";
-import Configuration from "Configuration";
 
 export type DateFilterModel = {
   singleDate: Moment;
@@ -19,7 +19,7 @@ export const DefaultDateFilterModel: DateFilterModel = {
   intervalEndDate: moment(),
   dateFilterType: DateFilterType.Last7Days,
   numberFilterType: NumberFilterType.Interval,
-  startDate: moment().subtract(6, "days"),
+  startDate: moment().subtract(10, "days"),
   endDate: moment()
 };
 

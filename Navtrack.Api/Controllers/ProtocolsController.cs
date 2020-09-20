@@ -17,7 +17,7 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet]
-        public List<ProtocolResponseModel> GetProtocols()
+        public List<ProtocolModel> GetProtocols()
         {
             return protocolService.GetProtocols();
         }

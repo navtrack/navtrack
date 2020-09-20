@@ -1,5 +1,5 @@
-import { HttpClient } from "framework/httpClient/HttpClient";
-import { apiUrl } from "framework/httpClient/HttpClientUtil";
+import { HttpClient } from "../services/httpClient/HttpClient";
+import { apiUrl } from "../services/httpClient/HttpClientUtil";
 import { DeviceTypeModel } from "./types/device/DeviceTypeModel";
 
 export const DeviceTypeApi = {

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { SpeedFilterModel } from "./types/SpeedFilterModel";
-import { NumberFilterType } from "./types/NumberFilterType";
+import Button from "../../shared/elements/Button";
+import Checkbox from "../../shared/elements/Checkbox";
+import Modal from "../../shared/elements/Modal";
+import Icon from "../../shared/util/Icon";
 import { ComparisonType } from "./types/ComparisonType";
-import Modal from "components/library/elements/Modal";
-import Icon from "components/library/util/Icon";
-import Checkbox from "components/library/elements/Checkbox";
-import Button from "components/library/elements/Button";
+import { NumberFilterType } from "./types/NumberFilterType";
+import { SpeedFilterModel } from "./types/SpeedFilterModel";
 
 type Props = {
   filter: SpeedFilterModel;

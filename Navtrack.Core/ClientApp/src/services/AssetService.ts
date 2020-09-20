@@ -1,5 +1,5 @@
-import { AppContextAccessor } from "framework/appContext/AppContextAccessor";
-import { AssetsHub } from "apis/signalR/AssetsHub";
+import { AssetsHub } from "../apis/signalR/AssetsHub";
+import { AppContextAccessor } from "./appContext/AppContextAccessor";
 
 let interval: NodeJS.Timeout;
 

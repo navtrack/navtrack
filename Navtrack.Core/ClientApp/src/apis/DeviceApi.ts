@@ -1,11 +1,11 @@
-import { apiUrl } from "framework/httpClient/HttpClientUtil";
-import { ResponseModel } from "./types/ResponseModel";
-import { HttpClient } from "framework/httpClient/HttpClient";
+import queryString from "query-string";
+import { HttpClient } from "../services/httpClient/HttpClient";
+import { apiUrl } from "../services/httpClient/HttpClientUtil";
+import { DeviceConnectionResponseModel } from "./types/device/DeviceConnectionResponseModel";
 import { DeviceModel } from "./types/device/DeviceModel";
 import { DeviceStatisticsResponseModel } from "./types/device/DeviceStatisticsResponseModel";
-import { DeviceConnectionResponseModel } from "./types/device/DeviceConnectionResponseModel";
-import { TableResponse } from "./types/TableResponse";
-import queryString from "query-string";
+import { ResponseModel } from "./types/ResponseModel";
+import { ResultsPaginationModel } from "./types/ResultsPaginationModel";
 
 export const DeviceApi = {
   get: function (id: number): Promise<DeviceModel> {
@@ -26,12 +26,17 @@ export const DeviceApi = {
     return HttpClient.get<DeviceModel[]>(apiUrl(url));
   },
 
-  connections: function (id: number, page: number): Promise<TableResponse<DeviceConnectionResponseModel>> {
+  connections: function (
+    id: number,
+    page: number
+  ): Promise<ResultsPaginationModel<DeviceConnectionResponseModel>> {
     let params = queryString.stringify({
       page: page
     });
 
-    return HttpClient.get<TableResponse<DeviceConnectionResponseModel>>(apiUrl(`devices/${id}/connections?${params}`));
+    return HttpClient.get<ResultsPaginationModel<DeviceConnectionResponseModel>>(
+      apiUrl(`devices/${id}/connections?${params}`)
+    );
   },
 
   statistics: function (id: number): Promise<DeviceStatisticsResponseModel> {

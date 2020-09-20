@@ -1,16 +1,16 @@
 import React, { FormEvent, useState } from "react";
-import { LoginModel, DefaultLoginModel } from "./LoginModel";
-import { ApiError } from "framework/httpClient/AppError";
-import { useHistory } from "react-router";
-import { AuthenticationService } from "framework/authentication/AuthenticationService";
-import { useNewValidation } from "framework/validation/useValidationHook";
 import { useIntl, FormattedMessage } from "react-intl";
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import TextInput from "components/library/forms/TextInput";
-import Button from "components/library/elements/Button";
-import Icon from "components/library/util/Icon";
-import { Validator } from "framework/validation/Validator";
-import LoginBox from "components/framework/layouts/login/LoginBox";
+import { AuthenticationService } from "../../../services/authentication/AuthenticationService";
+import { ApiError } from "../../../services/httpClient/AppError";
+import { useNewValidation } from "../../../services/validation/useValidationHook";
+import { ValidateAction } from "../../../services/validation/ValidateAction";
+import Button from "../../shared/elements/Button";
+import TextInput from "../../shared/forms/TextInput";
+import LoginBox from "../../shared/layouts/login/LoginBox";
+import Icon from "../../shared/util/Icon";
+import { LoginModel, DefaultLoginModel } from "./LoginModel";
 
 export default function Login() {
   const [login, setLogin] = useState<LoginModel>(DefaultLoginModel);
@@ -84,7 +84,7 @@ export default function Login() {
   );
 }
 
-const validateLogin: Validator<LoginModel> = (object, validationResult, intl) => {
+const validateLogin: ValidateAction<LoginModel> = (object, validationResult, intl) => {
   if (!object.email) {
     validationResult.AddError("email", intl.formatMessage({ id: "login.email.required" }));
   }

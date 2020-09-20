@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { NumberFilterType } from "./types/NumberFilterType";
-import { DateFilterModel } from "./types/DateFilterModel";
-import useClickOutside from "framework/hooks/useClickOutside";
-import { DateFilterType } from "./types/DateFilterType";
 import moment, { Moment } from "moment";
-import Configuration from "Configuration";
-import Modal from "components/library/elements/Modal";
-import Icon from "components/library/util/Icon";
-import Checkbox from "components/library/elements/Checkbox";
-import DatePicker from "components/library/elements/Calendar";
-import Button from "components/library/elements/Button";
+import React, { useState } from "react";
+import Configuration from "../../../services/Configuration";
+import useClickOutside from "../../../services/hooks/useClickOutside";
+import Button from "../../shared/elements/Button";
+import DatePicker from "../../shared/elements/Calendar";
+import Checkbox from "../../shared/elements/Checkbox";
+import Modal from "../../shared/elements/Modal";
+import Icon from "../../shared/util/Icon";
+import { DateFilterModel } from "./types/DateFilterModel";
+import { DateFilterType } from "./types/DateFilterType";
+import { NumberFilterType } from "./types/NumberFilterType";
 
 type Props = {
   dateFilter: DateFilterModel;

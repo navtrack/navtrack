@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Model;
+using Navtrack.Api.Model.Custom;
 using Navtrack.Api.Model.Devices;
-using Navtrack.Api.Model.Devices.Requests;
 using Navtrack.Api.Services.Devices;
 using Navtrack.Api.Services.Extensions;
 
@@ -23,19 +22,18 @@ namespace Navtrack.Api.Controllers
         [HttpGet("{id}")]
         public Task<ActionResult<DeviceModel>> Get([FromRoute] int id)
         {
-            return HandleRequest<GetDeviceByIdRequest, DeviceModel>(new GetDeviceByIdRequest
+            return HandleCommand<GetDeviceByIdCommand, DeviceModel>(new GetDeviceByIdCommand
             {
                 DeviceId = id,
                 UserId = User.GetId()
             });
         }
 
-
         [HttpGet("{id}/statistics")]
-        public Task<ActionResult<DeviceStatisticsResponseModel>> GetStatistics([FromRoute] int id)
+        public Task<ActionResult<DeviceStatisticsModel>> GetStatistics([FromRoute] int id)
         {
-            return HandleRequest<GetDeviceStatisticsRequest, DeviceStatisticsResponseModel>(
-                new GetDeviceStatisticsRequest
+            return HandleCommand<GetDeviceStatisticsCommand, DeviceStatisticsModel>(
+                new GetDeviceStatisticsCommand
                 {
                     DeviceId = id,
                     UserId = User.GetId()
@@ -43,11 +41,11 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{id}/connections")]
-        public Task<ActionResult<TableResponse<DeviceConnectionResponseModel>>> GetConnections(
+        public Task<ActionResult<ResultsPaginationModel<DeviceConnectionModel>>> GetConnections(
             [FromRoute] DeviceConnectionRequestModel model)
         {
-            return HandleRequest<GetDeviceConnectionsRequest, TableResponse<DeviceConnectionResponseModel>>(
-                new GetDeviceConnectionsRequest
+            return HandleCommand<GetDeviceConnectionsCommand, ResultsPaginationModel<DeviceConnectionModel>>(
+                new GetDeviceConnectionsCommand
                 {
                     DeviceId = model.Id,
                     Page = model.Page,
@@ -57,7 +55,7 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("types")]
-        public List<DeviceTypeResponseModel> GetTypes()
+        public List<DeviceTypeModel> GetTypes()
         {
             return deviceTypeService.GetDeviceTypes();
         }

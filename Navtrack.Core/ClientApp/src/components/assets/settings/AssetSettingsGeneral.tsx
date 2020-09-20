@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import Button from "components/library/elements/Button";
 import { useIntl } from "react-intl";
-import TextInput from "components/library/forms/TextInput";
-import { useNewValidation } from "framework/validation/useValidationHook";
-import { Validator } from "framework/validation/Validator";
-import { AssetApi } from "apis/AssetApi";
-import { addNotification } from "components/library/notifications/Notifications";
+import { AssetApi } from "../../../apis/AssetApi";
+import { AssetModel } from "../../../apis/types/asset/AssetModel";
+import { RenameAssetRequestModel } from "../../../apis/types/asset/RenameAssetRequestModel";
+import { useNewValidation } from "../../../services/validation/useValidationHook";
+import { ValidateAction } from "../../../services/validation/ValidateAction";
+import Button from "../../shared/elements/Button";
+import TextInput from "../../shared/forms/TextInput";
+import { addNotification } from "../../shared/notifications/Notifications";
 import AssetSettingsCard from "./AssetSettingsCard";
-import { RenameAssetRequestModel } from "apis/types/asset/RenameAssetRequestModel";
-import { AssetModel } from "apis/types/asset/AssetModel";
 import DeleteAssetModal from "./DeleteAssetModal";
 
 type Props = {
@@ -77,7 +77,7 @@ export default function AssetSettingsGeneral(props: Props) {
   );
 }
 
-const validateAsset: Validator<RenameAssetRequestModel> = (object, validationResult, intl) => {
+const validateAsset: ValidateAction<RenameAssetRequestModel> = (object, validationResult, intl) => {
   if (!object.name || object.name.length === 0) {
     validationResult.AddError("name", intl.formatMessage({ id: "assets.add.name.required" }));
   }

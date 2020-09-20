@@ -1,14 +1,14 @@
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Assets;
 using Navtrack.DataAccess.Model;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Mappers
 {
-    [Service(typeof(IMapper<LocationEntity, LocationResponseModel>))]
-    public class LocationMapper : IMapper<LocationEntity, LocationResponseModel>
+    [Service(typeof(IMapper<LocationEntity, LocationModel>))]
+    public class LocationMapper : IMapper<LocationEntity, LocationModel>
     {
-        public LocationResponseModel Map(LocationEntity source, LocationResponseModel destination)
+        public LocationModel Map(LocationEntity source, LocationModel destination)
         {
             destination.Id = source.Id;
             destination.Latitude = source.Latitude;

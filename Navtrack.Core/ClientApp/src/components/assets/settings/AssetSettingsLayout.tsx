@@ -2,16 +2,17 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, Switch, Route, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import Icon from "components/library/util/Icon";
-import { AssetModel } from "apis/types/asset/AssetModel";
-import { AssetApi } from "apis/AssetApi";
-import useAssetId from "framework/hooks/useAssetId";
-import AssetLayout from "components/framework/layouts/asset/AssetLayout";
-import AssetSettingsGeneral from "./AssetSettingsGeneral";
+import { AssetApi } from "../../../apis/AssetApi";
+import { AssetModel } from "../../../apis/types/asset/AssetModel";
+import useAssetId from "../../../services/hooks/useAssetId";
+import Icon from "../../shared/util/Icon";
 import AssetSettingsDevice from "./AssetSettingsDevice";
+import AssetSettingsGeneral from "./AssetSettingsGeneral";
 import AssetSettingsDeviceLayout from "./device/AssetSettingsDeviceLayout";
+import useMap from "../../../services/hooks/useMap";
 
 export default function AssetSettingsLayout() {
+  useMap(false);
   const assetId = useAssetId();
   const [asset, setAsset] = useState<AssetModel>();
   let { path } = useRouteMatch();
@@ -27,9 +28,9 @@ export default function AssetSettingsLayout() {
   }, [getAsset]);
 
   return (
-    <AssetLayout>
+    <>
       {asset && (
-        <div className="bg-white shadow p-3 rounded flex">
+        <div className="bg-white shadow p-3 rounded flex z-0">
           <div className="mr-3 border-r" style={{ width: "180px" }}>
             <ul>
               <MenuItem url={`/assets/${assetId}/settings`} icon="fa-cog">
@@ -55,7 +56,7 @@ export default function AssetSettingsLayout() {
           </div>
         </div>
       )}
-    </AssetLayout>
+    </>
   );
 }
 

@@ -20,24 +20,24 @@ namespace Navtrack.Api.Hubs
 
         private protected async Task HandleRequest<T>(T input)
         {
-            IRequestHandler<T> requestHandler =
-                serviceProvider.GetRequiredService<IRequestHandler<T>>();
+            ICommandHandler<T> commandHandler =
+                serviceProvider.GetRequiredService<ICommandHandler<T>>();
             
-            await requestHandler.Authorize(input);
+            await commandHandler.Authorize(input);
 
-            if (!requestHandler.ApiResponse.IsValid || requestHandler.ApiResponse.HttpStatusCode.HasValue)
+            if (!commandHandler.ApiResponse.IsValid || commandHandler.ApiResponse.HttpStatusCode.HasValue)
             {
                 return;
             }
 
-            await requestHandler.Validate(input);
+            await commandHandler.Validate(input);
 
-            if (!requestHandler.ApiResponse.IsValid)
+            if (!commandHandler.ApiResponse.IsValid)
             {
                 return;
             }
 
-            await requestHandler.Handle(input);
+            await commandHandler.Handle(input);
         }
 
         private protected async Task<TResponse> HandleRequest<TSource, TResponse>(TSource input)

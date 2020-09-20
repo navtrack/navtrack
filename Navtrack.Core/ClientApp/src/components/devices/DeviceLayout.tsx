@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Route, Switch, useRouteMatch } from "react-router";
 import { DeviceModel } from "../../apis/types/device/DeviceModel";
 import DeviceLayoutNavbar from "./DeviceLayoutNavbar";
-import useDeviceId from "../../framework/hooks/useDeviceId";
+import useDeviceId from "../../services/hooks/useDeviceId";
 import { DeviceApi } from "../../apis/DeviceApi";
 import DeviceInfo from "./DeviceInfo";
 import DeviceLog from "./DeviceLog";

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { AssetModel } from "apis/types/asset/AssetModel";
-import { DeviceModel } from "apis/types/device/DeviceModel";
+import { DeviceApi } from "../../../../apis/DeviceApi";
+import { AssetModel } from "../../../../apis/types/asset/AssetModel";
+import { DeviceModel } from "../../../../apis/types/device/DeviceModel";
+import { DeviceStatisticsResponseModel } from "../../../../apis/types/device/DeviceStatisticsResponseModel";
+import { showDate } from "../../../../services/util/DateUtil";
 import AssetSettingsCard from "../AssetSettingsCard";
-import { DeviceStatisticsResponseModel } from "apis/types/device/DeviceStatisticsResponseModel";
-import { DeviceApi } from "apis/DeviceApi";
-import { showDate } from "framework/util/DateUtil";
 
 type Props = {
   asset: AssetModel;

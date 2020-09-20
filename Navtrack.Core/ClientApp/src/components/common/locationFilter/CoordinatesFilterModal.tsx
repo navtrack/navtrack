@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import Button from "../../shared/elements/Button";
+import Modal from "../../shared/elements/Modal";
+import Icon from "../../shared/util/Icon";
 import { CoordinatesFilterModel } from "./types/CoordinatesFilterModel";
-import Icon from "components/library/util/Icon";
-import Modal from "components/library/elements/Modal";
-import Button from "components/library/elements/Button";
 
 type Props = {
   filter: CoordinatesFilterModel;

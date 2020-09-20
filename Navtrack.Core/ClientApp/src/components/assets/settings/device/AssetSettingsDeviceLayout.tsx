@@ -2,15 +2,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, Switch, Route, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import Icon from "components/library/util/Icon";
-import { AssetModel } from "apis/types/asset/AssetModel";
-import useAssetId from "framework/hooks/useAssetId";
-import AssetSettingsDeviceInfo from "./AssetSettingsDeviceInfo";
-import useDeviceId from "framework/hooks/useDeviceId";
-import AssetSettingsDeviceConnections from "./AssetSettingsDeviceConnections";
-import { DeviceModel } from "apis/types/device/DeviceModel";
-import { DeviceApi } from "apis/DeviceApi";
+import { DeviceApi } from "../../../../apis/DeviceApi";
+import { AssetModel } from "../../../../apis/types/asset/AssetModel";
+import { DeviceModel } from "../../../../apis/types/device/DeviceModel";
+import useAssetId from "../../../../services/hooks/useAssetId";
+import useDeviceId from "../../../../services/hooks/useDeviceId";
+import Icon from "../../../shared/util/Icon";
 import AssetSettingsCard from "../AssetSettingsCard";
+import AssetSettingsDeviceConnections from "./AssetSettingsDeviceConnections";
+import AssetSettingsDeviceInfo from "./AssetSettingsDeviceInfo";
 
 type Props = {
   asset: AssetModel;

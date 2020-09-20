@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Navtrack.Api.Model.Locations;
-using Navtrack.Api.Model.Locations.Requests;
+using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.RequestHandlers;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
@@ -12,8 +11,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Locations
 {
-    [Service(typeof(IRequestHandler<GetLocationsHistoryRequest, IEnumerable<LocationResponseModel>>))]
-    public class GetLocationsHistoryRequestHandler : BaseRequestHandler<GetLocationsHistoryRequest, IEnumerable<LocationResponseModel>>
+    [Service(typeof(IRequestHandler<GetLocationsCommand, IEnumerable<LocationModel>>))]
+    public class GetLocationsHistoryRequestHandler : BaseRequestHandler<GetLocationsCommand, IEnumerable<LocationModel>>
     {
         private readonly IRepository repository;
         private readonly IMapper mapper;
@@ -24,11 +23,11 @@ namespace Navtrack.Api.Services.Locations
             this.mapper = mapper;
         }
 
-        public override async Task<IEnumerable<LocationResponseModel>> Handle(GetLocationsHistoryRequest request)
+        public override async Task<IEnumerable<LocationModel>> Handle(GetLocationsCommand command)
         {
             IQueryable<LocationEntity> queryable = repository.GetEntities<LocationEntity>();
 
-            queryable = ApplyFiltering(queryable, request.Body);
+            queryable = ApplyFiltering(queryable, command);
 
             queryable = queryable
                 .OrderByDescending(x => x.DateTime)
@@ -37,47 +36,42 @@ namespace Navtrack.Api.Services.Locations
 
             List<LocationEntity> locations = await queryable.ToListAsync();
 
-            List<LocationResponseModel> mapped = locations.Select(mapper.Map<LocationEntity, LocationResponseModel>).ToList();
+            List<LocationModel> mapped = locations.Select(mapper.Map<LocationEntity, LocationModel>).ToList();
 
             return mapped;
         }
         
         private static IQueryable<LocationEntity> ApplyFiltering(IQueryable<LocationEntity> queryable,
-            LocationHistoryRequestModel model)
+            GetLocationsCommand command)
         {
-            queryable = queryable.Where(x => x.AssetId == model.AssetId);
+            queryable = queryable.Where(x => x.AssetId == command.AssetId);
 
-            queryable = queryable.Where(x => x.DateTime > model.StartDate && x.DateTime < model.EndDate);
+            queryable = queryable.Where(x => x.DateTime > command.Model.StartDate && x.DateTime < command.Model.EndDate);
 
-            if (model.Latitude.HasValue && model.Longitude.HasValue && model.Radius.HasValue)
+            if (command.Model.StartSpeed.HasValue && command.Model.EndSpeed.HasValue)
             {
-                // TODO add location filter   
+                queryable = queryable.Where(x => x.Speed >= command.Model.StartSpeed && x.Speed <= command.Model.EndSpeed);
             }
-
-            if (model.StartSpeed.HasValue && model.EndSpeed.HasValue)
+            else if (command.Model.StartSpeed.HasValue)
             {
-                queryable = queryable.Where(x => x.Speed >= model.StartSpeed && x.Speed <= model.EndSpeed);
+                queryable = queryable.Where(x => x.Speed >= command.Model.StartSpeed);
             }
-            else if (model.StartSpeed.HasValue)
+            else if (command.Model.EndSpeed.HasValue)
             {
-                queryable = queryable.Where(x => x.Speed >= model.StartSpeed);
-            }
-            else if (model.EndSpeed.HasValue)
-            {
-                queryable = queryable.Where(x => x.Speed <= model.EndSpeed);
+                queryable = queryable.Where(x => x.Speed <= command.Model.EndSpeed);
             }
             
-            if (model.StartAltitude.HasValue && model.EndAltitude.HasValue)
+            if (command.Model.StartAltitude.HasValue && command.Model.EndAltitude.HasValue)
             {
-                queryable = queryable.Where(x => x.Altitude >= model.StartAltitude && x.Altitude <= model.EndAltitude);
+                queryable = queryable.Where(x => x.Altitude >= command.Model.StartAltitude && x.Altitude <= command.Model.EndAltitude);
             }
-            else if (model.StartAltitude.HasValue)
+            else if (command.Model.StartAltitude.HasValue)
             {
-                queryable = queryable.Where(x => x.Altitude >= model.StartAltitude);
+                queryable = queryable.Where(x => x.Altitude >= command.Model.StartAltitude);
             }
-            else if (model.EndAltitude.HasValue)
+            else if (command.Model.EndAltitude.HasValue)
             {
-                queryable = queryable.Where(x => x.Altitude <= model.EndAltitude);
+                queryable = queryable.Where(x => x.Altitude <= command.Model.EndAltitude);
             }
             
             return queryable;

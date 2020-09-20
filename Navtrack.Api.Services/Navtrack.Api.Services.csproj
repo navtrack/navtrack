@@ -13,4 +13,8 @@
       <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Util" />
+    </ItemGroup>
+
 </Project>

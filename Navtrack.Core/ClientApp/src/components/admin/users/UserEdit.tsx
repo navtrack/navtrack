@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { UserModel, DefaultUserModel } from "apis/types/user/UserModel";
-import { useHistory } from "react-router";
-import { UserApi } from "apis/UserApi";
-import { Validator } from "framework/validation/Validator";
-import { useNewValidation } from "framework/validation/useValidationHook";
-import Form from "components/library/forms/Form";
 import { useIntl } from "react-intl";
-import TextInput from "components/library/forms/TextInput";
-import { addNotification } from "components/library/notifications/Notifications";
-import Button from "components/library/elements/Button";
+import { useHistory } from "react-router";
+import { UserModel, DefaultUserModel } from "../../../apis/types/user/UserModel";
+import { UserApi } from "../../../apis/UserApi";
+import { useNewValidation } from "../../../services/validation/useValidationHook";
+import { ValidateAction } from "../../../services/validation/ValidateAction";
+import Button from "../../shared/elements/Button";
+import Form from "../../shared/forms/Form";
+import TextInput from "../../shared/forms/TextInput";
+import { addNotification } from "../../shared/notifications/Notifications";
 
 type Props = {
   id?: number;
@@ -98,7 +98,7 @@ export default function UserEdit(props: Props) {
     </>
   );
 }
-const validateUser: Validator<UserModel> = (model, validationResult, intl) => {
+const validateUser: ValidateAction<UserModel> = (model, validationResult, intl) => {
   if (!model.email) {
     validationResult.AddError(
       "email",

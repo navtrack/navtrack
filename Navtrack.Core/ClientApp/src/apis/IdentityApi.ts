@@ -1,7 +1,7 @@
+import { HttpClient } from "../services/httpClient/HttpClient";
+import { formatUrl, rootUrl } from "../services/httpClient/HttpClientUtil";
 import { TokenResponse } from "./types/identity/TokenResponse";
-import { HttpClient } from "framework/httpClient/HttpClient";
 import { UserInfo } from "./types/identity/UserInfo";
-import { formatUrl, rootUrl } from "framework/httpClient/HttpClientUtil";
 
 export const IdentityApi = {
   login: async (username: string, password: string): Promise<TokenResponse> => {

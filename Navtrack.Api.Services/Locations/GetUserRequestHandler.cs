@@ -1,8 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Navtrack.Api.Model.Locations;
-using Navtrack.Api.Model.Locations.Requests;
+using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.RequestHandlers;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Repository;
@@ -11,8 +10,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Locations
 {
-    [Service(typeof(IRequestHandler<GetLatestLocationRequest, LocationResponseModel>))]
-    public class GetLatestLocationRequestHandler : BaseRequestHandler<GetLatestLocationRequest, LocationResponseModel>
+    [Service(typeof(IRequestHandler<GetLatestLocationCommand, LocationModel>))]
+    public class GetLatestLocationRequestHandler : BaseRequestHandler<GetLatestLocationCommand, LocationModel>
     {
         private readonly IRepository repository;
         private readonly IMapper mapper;
@@ -23,16 +22,16 @@ namespace Navtrack.Api.Services.Locations
             this.mapper = mapper;
         }
 
-        public override async Task<LocationResponseModel> Handle(GetLatestLocationRequest request)
+        public override async Task<LocationModel> Handle(GetLatestLocationCommand command)
         {
             LocationEntity location = await repository.GetEntities<LocationEntity>()
-                .Where(x => x.AssetId == request.AssetId && x.Asset.Users.Any(y => y.UserId == request.UserId))
+                .Where(x => x.AssetId == command.AssetId && x.Asset.Users.Any(y => y.UserId == command.UserId))
                 .OrderByDescending(x => x.DateTime)
                 .FirstOrDefaultAsync();
 
             if (location != null)
             {
-                LocationResponseModel mapped = mapper.Map<LocationEntity, LocationResponseModel>(location);
+                LocationModel mapped = mapper.Map<LocationEntity, LocationModel>(location);
 
                 return mapped;
             }

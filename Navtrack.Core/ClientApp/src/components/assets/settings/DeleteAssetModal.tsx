@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import Button from "../../library/elements/Button";
-import Modal from "../../library/elements/Modal";
-import Icon from "../../library/util/Icon";
-import TextInput from "../../library/forms/TextInput";
-import { Validator } from "../../../framework/validation/Validator";
+import Button from "../../shared/elements/Button";
+import Modal from "../../shared/elements/Modal";
+import Icon from "../../shared/util/Icon";
+import TextInput from "../../shared/forms/TextInput";
 import {
   DefaultDeleteAssetModel,
   DeleteAssetModel
 } from "../../../apis/types/asset/DeleteAssetModel";
-import { useNewValidation } from "../../../framework/validation/useValidationHook";
+import { useNewValidation } from "../../../services/validation/useValidationHook";
 import { AssetApi } from "../../../apis/AssetApi";
-import { addNotification } from "../../library/notifications/Notifications";
+import { addNotification } from "../../shared/notifications/Notifications";
 import { useHistory } from "react-router";
 import { AssetModel } from "../../../apis/types/asset/AssetModel";
+import { ValidateAction } from "../../../services/validation/ValidateAction";
 
 type Props = {
   asset: AssetModel;
@@ -29,14 +29,14 @@ export default function DeleteAssetModal(props: Props) {
         .then(() => {
           addNotification("Device deleted successfully.");
           history.push(`/`);
-           })
+        })
         .catch(setErrors);
     }
     props.closeModal();
     // props.deleteHandler();
   };
 
-  const validateModel: Validator<DeleteAssetModel> = (object, validationResult, intl) => {
+  const validateModel: ValidateAction<DeleteAssetModel> = (object, validationResult, intl) => {
     if (!object.name || object.name.length === 0 || object.name !== props.asset.name) {
       validationResult.AddError("name", "The name is not correct.");
     }

@@ -1,6 +1,6 @@
 import React from "react";
-import { DeviceTypeModel } from "apis/types/device/DeviceTypeModel";
 import classNames from "classnames";
+import { DeviceTypeModel } from "../../apis/types/device/DeviceTypeModel";
 
 type Props = {
   deviceType?: DeviceTypeModel;

@@ -2,7 +2,7 @@ import React from "react";
 import { DeviceModel } from "../../apis/types/device/DeviceModel";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import Icon from "../library/util/Icon";
+import Icon from "../shared/util/Icon";
 import classNames from "classnames";
 
 type Props = {

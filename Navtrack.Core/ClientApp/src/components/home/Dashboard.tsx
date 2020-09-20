@@ -1,7 +1,10 @@
 import React from "react";
-import PageLayout from "components/framework/PageLayout";
+import useMap from "../../services/hooks/useMap";
+import PageLayout from "../shared/PageLayout";
 
 export default function Dashboard() {
+  useMap(false);
+
   return (
     <PageLayout>
       <div className="bg-white shadow p-3 rounded flex flex-col">

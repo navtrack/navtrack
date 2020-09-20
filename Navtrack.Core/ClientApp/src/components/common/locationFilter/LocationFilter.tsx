@@ -1,20 +1,20 @@
+import classNames from "classnames";
 import React, { useState } from "react";
-import useClickOutside from "framework/hooks/useClickOutside";
-import { LocationFilterModel } from "./types/LocationFilterModel";
+import useClickOutside from "../../../services/hooks/useClickOutside";
+import Icon from "../../shared/util/Icon";
+import AltitudeFilterModal from "./AltitudeFilterModal";
+import CoordinatesFilterModal from "./CoordinatesFilterModal";
 import DateFilterModal from "./DateFilterModal";
 import SpeedFilterModal from "./SpeedFilterModal";
-import { DefaultSpeedFilterModel, speedFilterToString } from "./types/SpeedFilterModel";
-import AltitudeFilterModal from "./AltitudeFilterModal";
-import { DefaultAltitudeFilterModel, altitudeFilterToString } from "./types/AltitudeFilterModel";
-import CoordinatesFilterModal from "./CoordinatesFilterModal";
+import { altitudeFilterToString, DefaultAltitudeFilterModel } from "./types/AltitudeFilterModel";
 import {
-  DefaultCoordinatesFilterModel,
-  coordinatesFilterToString
+  coordinatesFilterToString,
+  DefaultCoordinatesFilterModel
 } from "./types/CoordinatesFilterModel";
 import { dateFilterToString } from "./types/DateFilterModel";
-import classNames from "classnames";
 import { FilterType } from "./types/FilterType";
-import Icon from "components/library/util/Icon";
+import { LocationFilterModel } from "./types/LocationFilterModel";
+import { speedFilterToString, DefaultSpeedFilterModel } from "./types/SpeedFilterModel";
 
 type Props = {
   filter: LocationFilterModel;
@@ -58,10 +58,10 @@ export default function LocationFilter(props: Props) {
   };
 
   return (
-    <div className="bg-white shadow rounded mb-3 p-3 flex items-center z-20">
+    <div className="bg-white rounded-t p-3 flex items-center z-20">
       <Icon className="fa-filter mr-5" />
       <div
-        className="cursor-pointer focus:outline-none bg-gray-200 hover:bg-gray-300 text-sm px-2 py-1 shadow rounded rounded-lg"
+        className="cursor-pointer focus:outline-none bg-gray-200 hover:bg-gray-300 text-sm px-2 py-1 rounded rounded-lg"
         onClick={setShowDateFilter}>
         <Icon className="fa-calendar-alt" />
         <span className="ml-2">{dateFilterToString(props.filter.date)}</span>
@@ -212,7 +212,7 @@ function Filter(props: {
   return (
     <div
       className={classNames(
-        "ml-3 cursor-pointer focus:outline-none bg-gray-200 hover:bg-gray-300 text-sm px-2 py-1 shadow rounded rounded-lg",
+        "ml-3 cursor-pointer focus:outline-none bg-gray-200 hover:bg-gray-300 text-sm px-2 py-1 rounded rounded-lg",
         orderClassName
       )}
       onClick={props.onClick}>

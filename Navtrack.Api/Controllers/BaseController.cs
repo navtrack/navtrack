@@ -20,35 +20,35 @@ namespace Navtrack.Api.Controllers
             this.serviceProvider = serviceProvider;
         }
 
-        private protected async Task<IActionResult> HandleRequest<T>(T input)
+        private protected async Task<IActionResult> HandleCommand<T>(T input)
         {
-            IRequestHandler<T> requestHandler =
-                serviceProvider.GetRequiredService<IRequestHandler<T>>();
+            ICommandHandler<T> commandHandler =
+                serviceProvider.GetRequiredService<ICommandHandler<T>>();
             
-            await requestHandler.Authorize(input);
+            await commandHandler.Authorize(input);
 
-            if (!requestHandler.ApiResponse.IsValid)
+            if (!commandHandler.ApiResponse.IsValid)
             {
                 return NotFound();
             }
-            if (requestHandler.ApiResponse.HttpStatusCode.HasValue)
+            if (commandHandler.ApiResponse.HttpStatusCode.HasValue)
             {
-                return new StatusCodeResult((int) requestHandler.ApiResponse.HttpStatusCode);
+                return new StatusCodeResult((int) commandHandler.ApiResponse.HttpStatusCode);
             }
 
-            await requestHandler.Validate(input);
+            await commandHandler.Validate(input);
 
-            if (!requestHandler.ApiResponse.IsValid)
+            if (!commandHandler.ApiResponse.IsValid)
             {
-                return BadRequest(requestHandler.ApiResponse);
+                return BadRequest(commandHandler.ApiResponse);
             }
 
-            await requestHandler.Handle(input);
+            await commandHandler.Handle(input);
 
             return Ok();
         }
 
-        private protected async Task<ActionResult<TResponse>> HandleRequest<TSource, TResponse>(TSource input)
+        private protected async Task<ActionResult<TResponse>> HandleCommand<TSource, TResponse>(TSource input)
         {
             IRequestHandler<TSource, TResponse> requestHandler =
                 serviceProvider.GetRequiredService<IRequestHandler<TSource, TResponse>>();

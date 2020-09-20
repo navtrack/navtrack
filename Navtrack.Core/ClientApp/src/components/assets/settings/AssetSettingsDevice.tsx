@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import SelectInput from "components/library/forms/SelectInput";
-import { AssetModel } from "apis/types/asset/AssetModel";
-import { useNewValidation } from "framework/validation/useValidationHook";
 import { useIntl } from "react-intl";
-import { DeviceTypeApi } from "apis/DeviceTypeApi";
-import { addNotification } from "components/library/notifications/Notifications";
-import TextInput from "components/library/forms/TextInput";
-import Button from "components/library/elements/Button";
-import { Validator } from "framework/validation/Validator";
-import AssetSettingsCard from "./AssetSettingsCard";
-import { ChangeDeviceRequestModel } from "apis/types/asset/ChangeDeviceRequestModel";
-import { DeviceTypeModel } from "apis/types/device/DeviceTypeModel";
-import { AssetApi } from "apis/AssetApi";
-import DeviceConfiguration from "components/devices/DeviceConfiguration";
 import { Link } from "react-router-dom";
+import { AssetApi } from "../../../apis/AssetApi";
+import { DeviceTypeApi } from "../../../apis/DeviceTypeApi";
+import { AssetModel } from "../../../apis/types/asset/AssetModel";
+import { ChangeDeviceRequestModel } from "../../../apis/types/asset/ChangeDeviceRequestModel";
+import { DeviceTypeModel } from "../../../apis/types/device/DeviceTypeModel";
+import { useNewValidation } from "../../../services/validation/useValidationHook";
+import { ValidateAction } from "../../../services/validation/ValidateAction";
+import DeviceConfiguration from "../../devices/DeviceConfiguration";
+import Button from "../../shared/elements/Button";
+import SelectInput from "../../shared/forms/SelectInput";
+import TextInput from "../../shared/forms/TextInput";
+import { addNotification } from "../../shared/notifications/Notifications";
+import AssetSettingsCard from "./AssetSettingsCard";
 
 type Props = {
   asset: AssetModel;
@@ -144,7 +144,11 @@ export default function AssetSettingsDevice(props: Props) {
   );
 }
 
-const validateModel: Validator<ChangeDeviceRequestModel> = (object, validationResult, intl) => {
+const validateModel: ValidateAction<ChangeDeviceRequestModel> = (
+  object,
+  validationResult,
+  intl
+) => {
   if (!object.deviceTypeId || !(object.deviceTypeId > 0)) {
     validationResult.AddError(
       "deviceTypeId",

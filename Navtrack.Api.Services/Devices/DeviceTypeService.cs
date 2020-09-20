@@ -20,10 +20,10 @@ namespace Navtrack.Api.Services.Devices
             this.mapper = mapper;
         }
 
-        public List<DeviceTypeResponseModel> GetDeviceTypes()
+        public List<DeviceTypeModel> GetDeviceTypes()
         {
-            List<DeviceTypeResponseModel> devicesTypes = deviceTypeDataService.GetDeviceTypes()
-                .Select(mapper.Map<DeviceType, DeviceTypeResponseModel>)
+            List<DeviceTypeModel> devicesTypes = deviceTypeDataService.GetDeviceTypes()
+                .Select(mapper.Map<DeviceType, DeviceTypeModel>)
                 .OrderBy(x => x.DisplayName)
                 .ToList();
 

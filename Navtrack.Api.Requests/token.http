@@ -3,6 +3,6 @@ Content-Type: application/x-www-form-urlencoded
 
 client_id=navtrack.web
 &grant_type=password
-&password=test
+&password=i%40zQdWKTWN09YWK2%26DHLhow8YjTX%24s
 &scope=offline_access%20IdentityServerApi%20openid
-&username=test%40navtrack.io
+&username=hello%40andreisabau.com

@@ -1,15 +1,15 @@
 import React, { FormEvent, useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import { ApiError } from "framework/httpClient/AppError";
+import { AccountApi } from "../../../apis/AccountApi";
+import { ApiError } from "../../../services/httpClient/AppError";
+import { useNewValidation } from "../../../services/validation/useValidationHook";
+import { ValidateAction } from "../../../services/validation/ValidateAction";
+import Button from "../../shared/elements/Button";
+import TextInput from "../../shared/forms/TextInput";
+import LoginBox from "../../shared/layouts/login/LoginBox";
+import Icon from "../../shared/util/Icon";
 import { RegisterModel, DefaultRegisterModel } from "./RegisterModel";
-import { AccountApi } from "apis/AccountApi";
-import { Validator } from "framework/validation/Validator";
-import { useNewValidation } from "framework/validation/useValidationHook";
-import { FormattedMessage, useIntl } from "react-intl";
-import TextInput from "components/library/forms/TextInput";
-import Button from "components/library/elements/Button";
-import Icon from "components/library/util/Icon";
-import LoginBox from "components/framework/layouts/login/LoginBox";
 
 export default function Register() {
   const [registerModel, setRegisterModel] = useState<RegisterModel>(DefaultRegisterModel);
@@ -99,7 +99,7 @@ export default function Register() {
   );
 }
 
-const validateLogin: Validator<RegisterModel> = (model, validationResult, intl) => {
+const validateLogin: ValidateAction<RegisterModel> = (model, validationResult, intl) => {
   if (!model.email) {
     validationResult.AddError("email", intl.formatMessage({ id: "register.email.required" }));
   }

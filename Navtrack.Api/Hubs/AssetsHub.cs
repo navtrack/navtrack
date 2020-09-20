@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Model.Assets.Requests;
 using Navtrack.Api.Services.Extensions;
 
 namespace Navtrack.Api.Hubs
@@ -13,9 +12,9 @@ namespace Navtrack.Api.Hubs
         {
         }
         
-        public Task<IEnumerable<AssetResponseModel>> GetAll()
+        public Task<IEnumerable<AssetModel>> GetAll()
         {
-            return HandleRequest<GetAllAssetsRequest, IEnumerable<AssetResponseModel>>(new GetAllAssetsRequest
+            return HandleRequest<GetAllAssetsCommand, IEnumerable<AssetModel>>(new GetAllAssetsCommand
             {
                 UserId = Context.User.GetId()
             });

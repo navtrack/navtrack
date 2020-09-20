@@ -1,14 +1,12 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { AssetModel } from "apis/types/asset/AssetModel";
 import { useHistory } from "react-router";
-import AdminLayout from "components/framework/layouts/admin/AdminLayout";
-import { AssetApi } from "apis/AssetApi";
-import DeleteModal from "components/framework/DeleteModal";
-import { addNotification } from "components/library/notifications/Notifications";
-import { NotificationType } from "components/library/notifications/NotificationType";
-import Button from "components/library/elements/Button";
-import ReactTable from "components/library/table/ReactTable";
-import { ApiError } from "framework/httpClient/AppError";
+import { AssetApi } from "../../apis/AssetApi";
+import { AssetModel } from "../../apis/types/asset/AssetModel";
+import { ApiError } from "../../services/httpClient/AppError";
+import DeleteModal from "../shared/DeleteModal";
+import Button from "../shared/elements/Button";
+import { addNotification } from "../shared/notifications/Notifications";
+import { NotificationType } from "../shared/notifications/NotificationType";
 
 export default function AssetList() {
   const [assets, setAssets] = useState<AssetModel[]>([]);
@@ -71,7 +69,7 @@ export default function AssetList() {
   );
 
   return (
-    <AdminLayout>
+    <>
       {showDeleteModal && (
         <DeleteModal
           description="All the location history of this asset will also be removed."
@@ -88,8 +86,8 @@ export default function AssetList() {
             </Button>
           </div>
         </div>
-        <ReactTable columns={columns} data={assets} />
+        {/* <ReactTable columns={columns} data={assets} /> */}
       </div>
-    </AdminLayout>
+    </>
   );
 }

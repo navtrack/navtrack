@@ -1,5 +1,5 @@
 import React from "react";
-import { DeviceModel } from "apis/types/device/DeviceModel";
+import { DeviceModel } from "../../apis/types/device/DeviceModel";
 
 type Props = {
   device: DeviceModel;

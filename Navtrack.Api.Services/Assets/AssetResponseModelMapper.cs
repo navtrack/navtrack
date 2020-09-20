@@ -5,11 +5,11 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(IMapper<AssetEntity, AssetResponseModel>))]
-    [Service(typeof(IMapper<AssetResponseModel, AssetEntity>))]
-    public class AssetResponseModelMapper : IMapper<AssetEntity, AssetResponseModel>, IMapper<AssetResponseModel, AssetEntity>
+    [Service(typeof(IMapper<AssetEntity, AssetModel>))]
+    [Service(typeof(IMapper<AssetModel, AssetEntity>))]
+    public class AssetResponseModelMapper : IMapper<AssetEntity, AssetModel>, IMapper<AssetModel, AssetEntity>
     {
-        public AssetResponseModel Map(AssetEntity source, AssetResponseModel destination)
+        public AssetModel Map(AssetEntity source, AssetModel destination)
         {
             destination.Id = source.Id;
             destination.Name = source.Name;
@@ -17,7 +17,7 @@ namespace Navtrack.Api.Services.Assets
             return destination;
         }
 
-        public AssetEntity Map(AssetResponseModel source, AssetEntity destination)
+        public AssetEntity Map(AssetModel source, AssetEntity destination)
         {
             destination.Id = source.Id;
             destination.Name = source.Name;

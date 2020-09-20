@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Navtrack.Api.Model.Custom;
 
 namespace Navtrack.Api.Model.Models
 {

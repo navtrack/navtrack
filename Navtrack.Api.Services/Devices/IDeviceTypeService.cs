@@ -5,6 +5,6 @@ namespace Navtrack.Api.Services.Devices
 {
     public interface IDeviceTypeService
     {
-        List<DeviceTypeResponseModel> GetDeviceTypes();
+        List<DeviceTypeModel> GetDeviceTypes();
     }
 }
