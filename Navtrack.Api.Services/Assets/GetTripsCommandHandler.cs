@@ -55,7 +55,7 @@ namespace Navtrack.Api.Services.Assets
 
             return new GetTripsModel
             {
-                Results = trips
+                Results = trips.OrderByDescending(x => x.EndDate).ToList()
             };
         }
 

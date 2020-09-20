@@ -60,12 +60,12 @@ namespace Navtrack.Api.Services.Devices
 
             int totalResults = await queryable.CountAsync();
 
-            List<DeviceConnectionEntity> results = await queryable.OrderByDescending(x => x.Id)
+            List<DeviceConnectionEntity> connections = await queryable.OrderByDescending(x => x.Id)
                 .Skip((command.Page - 1) * command.PerPage)
                 .Take(command.PerPage)
                 .ToListAsync();
 
-            List<int> deviceConnectionsIds = results.Select(x => x.Id).ToList();
+            List<int> deviceConnectionsIds = connections.Select(x => x.Id).ToList();
 
             var messageCounts =
                 await repository.GetEntities<DeviceConnectionMessageEntity>()
@@ -76,7 +76,7 @@ namespace Navtrack.Api.Services.Devices
 
             return new ResultsPaginationModel<DeviceConnectionModel>
             {
-                Results = results
+                Results = connections
                     .Select(x => new DeviceConnectionModel
                     {
                         Id = x.Id,
