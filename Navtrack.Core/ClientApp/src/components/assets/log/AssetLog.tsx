@@ -10,7 +10,7 @@ import {
   DefaultLocationFilterModel,
   LocationFilterModel
 } from "../../common/locationFilter/types/LocationFilterModel";
-import LocationsTable from "./LocationsTable";
+import AssetLocationsTable from "./LocationsTable";
 
 export default function AssetLog() {
   useMap();
@@ -47,7 +47,7 @@ export default function AssetLog() {
   return (
     <>
       <LocationFilter filter={locationFilter} setFilter={setLocationFilter} />
-      <LocationsTable
+      <AssetLocationsTable
         loading={loading}
         locations={locations}
         selectedIndex={selectedLocationIndex}

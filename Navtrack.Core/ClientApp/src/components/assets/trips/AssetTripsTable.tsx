@@ -62,7 +62,7 @@ export default function AssetTripsTable(props: Props) {
       </ScrollableTableBody>
       <ScrollableTableFooter>
         <div style={{ flex: "0 0 80px" }} className="pr-1">
-          <span className="font-medium">{props.trips.length}</span> results
+          <span className="font-medium">{props.trips.length}</span> trips
         </div>
         <div style={{ flex: "1 0" }}></div>
         <div style={{ flex: "1 0" }} className="text-right mr-1"></div>
