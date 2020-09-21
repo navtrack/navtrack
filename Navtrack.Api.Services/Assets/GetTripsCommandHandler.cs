@@ -59,32 +59,46 @@ namespace Navtrack.Api.Services.Assets
             };
         }
 
-        private IEnumerable<TripModel> MapTrips(IReadOnlyList<LocationEntity> locations,
+        private IEnumerable<TripModel> MapTrips(IEnumerable<LocationEntity> locations,
             int medianTimeSpanBetweenLocations)
         {
             List<TripModel> trips = new List<TripModel>();
 
-            TripModel trip = null;
-            int tripNo = 1;
+            TripModel lastTrip = null;
 
-            for (int i = 0; i < locations.Count - 1; i++)
+            int tripNumber = 1;
+
+            foreach (LocationEntity location in locations)
             {
-                TimeSpan nextTimeSpan = locations[i + 1].DateTime - locations[i].DateTime;
-
-                if (nextTimeSpan.TotalSeconds > medianTimeSpanBetweenLocations || trip == null)
+                TimeSpan? timeSpan = GetTimeSpan(lastTrip, location);
+                
+                if (lastTrip == null || timeSpan == null || timeSpan.Value.TotalSeconds > medianTimeSpanBetweenLocations)
                 {
-                    trip = new TripModel
+                    lastTrip = new TripModel
                     {
-                        Number = tripNo++
+                        Number = tripNumber++
                     };
-
-                    trips.Add(trip);
+                    trips.Add(lastTrip);
                 }
 
-                trip.Locations.Add(mapper.Map<LocationEntity, LocationModel>(locations[i]));
+                lastTrip.Locations.Add(mapper.Map<LocationEntity, LocationModel>(location));
+            }
+            
+            return trips;
+        }
+
+        private static TimeSpan? GetTimeSpan(TripModel lastTrip, LocationEntity nextLocation)
+        {
+            LocationModel lastLocation = lastTrip?.Locations.LastOrDefault();
+
+            if (lastLocation != null)
+            {
+                TimeSpan timeSpan = nextLocation.DateTime - lastLocation.DateTime;
+
+                return timeSpan;
             }
 
-            return trips;
+            return null;
         }
     }
 }

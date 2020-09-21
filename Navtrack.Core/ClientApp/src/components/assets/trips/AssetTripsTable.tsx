@@ -42,6 +42,7 @@ export default function AssetTripsTable(props: Props) {
         <div style={{ flex: "1 0" }}>Start time</div>
         <div style={{ flex: "1 0" }}>End time</div>
         <div style={{ flex: "1 0" }}>Distance</div>
+        <div style={{ flex: "1 0" }}>Locations</div>
       </ScrollableTableHeader>
       <ScrollableTableBody>
         {props.trips.map((x, index) => (
@@ -57,6 +58,7 @@ export default function AssetTripsTable(props: Props) {
             <div style={{ flex: "1 0" }}>{x.startDate}</div>
             <div style={{ flex: "1 0" }}>{x.endDate}</div>
             <div style={{ flex: "1 0" }}>{getDistance(x.distance)}</div>
+            <div style={{ flex: "1 0" }}>{x.locations.length}</div>
           </ScrollableTableRow>
         ))}
       </ScrollableTableBody>
