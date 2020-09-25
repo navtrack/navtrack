@@ -72,6 +72,7 @@ namespace Navtrack.Api.Services.Assets
             {
                 TimeSpan? timeSpan = GetTimeSpan(lastTrip, location);
                 
+                // TODO add condition when it's the same connection id 
                 if (lastTrip == null || timeSpan == null || timeSpan.Value.TotalSeconds > medianTimeSpanBetweenLocations)
                 {
                     lastTrip = new TripModel
