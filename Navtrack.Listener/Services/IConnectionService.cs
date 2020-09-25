@@ -8,7 +8,7 @@ namespace Navtrack.Listener.Services
     {
         Task<DeviceConnectionEntity> NewConnection(string endPoint, int protocolPort);
         Task MarkConnectionAsClosed(DeviceConnectionEntity deviceConnection);
-        Task AddMessage(int deviceConnectionId, string hex);
+        Task<int> AddMessage(int deviceConnectionId, string hex);
         Task SetDeviceId(Client client);
     }
 }

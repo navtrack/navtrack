@@ -6,7 +6,6 @@ namespace Navtrack.Listener.Services
 {
     public interface ILocationService
     {
-        Task Add(Location location);
-        Task AddRange(List<Location> locations);
+        Task AddRange(List<Location> locations, int connectionMessageId);
     }
 }

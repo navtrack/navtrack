@@ -24,20 +24,7 @@ namespace Navtrack.Listener.Services
             this.deviceDataService = deviceDataService;
         }
 
-        public async Task Add(Location location)
-        {
-            DeviceEntity device = await deviceDataService.GetActiveDeviceByDeviceId(location.Device.IMEI);
-
-            if (device != null)
-            {
-                LocationEntity mapped =
-                    mapper.Map<Location, DeviceEntity, LocationEntity>(location, device);
-
-                await locationDataService.Add(mapped);
-            }
-        }
-
-        public async Task AddRange(List<Location> locations)
+        public async Task AddRange(List<Location> locations, int connectionMessageId)
         {
             if (locations.Any())
             {
@@ -50,6 +37,11 @@ namespace Navtrack.Listener.Services
                     List<LocationEntity> mapped =
                         locations.Select(x => mapper.Map<Location, DeviceEntity, LocationEntity>(x, device))
                             .ToList();
+
+                    foreach (LocationEntity locationEntity in mapped)
+                    {
+                        locationEntity.DeviceConnectionMessageId = connectionMessageId;
+                    }
 
                     await locationDataService.AddRange(mapped);
                 }

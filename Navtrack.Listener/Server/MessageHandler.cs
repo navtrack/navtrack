@@ -41,7 +41,7 @@ namespace Navtrack.Listener.Server
             logger.LogTrace(
                 $"{client.Protocol}: received {HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex)}");
 
-            await connectionService.AddMessage(client.DeviceConnection.Id, messageInput.DataMessage.HexString);
+            int connectionMessageId = await connectionService.AddMessage(client.DeviceConnection.Id, messageInput.DataMessage.HexString);
 
             try
             {
@@ -52,7 +52,7 @@ namespace Navtrack.Listener.Server
                     // TODO refactor this
                     await connectionService.SetDeviceId(client);
                     
-                    await locationService.AddRange(locations);
+                    await locationService.AddRange(locations, connectionMessageId);
                 }
             }
             catch (Exception e)

@@ -47,7 +47,7 @@ namespace Navtrack.Listener.Services
             await unitOfWork.SaveChanges();
         }
 
-        public async Task AddMessage(int deviceConnectionId, string hex)
+        public async Task<int> AddMessage(int deviceConnectionId, string hex)
         {
             using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
 
@@ -60,6 +60,8 @@ namespace Navtrack.Listener.Services
             unitOfWork.Add(entity);
 
             await unitOfWork.SaveChanges();
+
+            return entity.Id;
         }
 
         public async Task SetDeviceId(Client client)

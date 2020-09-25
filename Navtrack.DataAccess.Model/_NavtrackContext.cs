@@ -43,6 +43,11 @@ namespace Navtrack.DataAccess.Model
                     .WithMany(x => x.Locations)
                     .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
+                
+                entity.HasOne(x => x.ConnectionMessage)
+                    .WithMany(x => x.Locations)
+                    .HasForeignKey(x => x.DeviceConnectionMessageId)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<DeviceEntity>(entity =>
@@ -112,6 +117,11 @@ namespace Navtrack.DataAccess.Model
                 entity.HasOne(x => x.Connection)
                     .WithMany(x => x.Messages)
                     .HasForeignKey(x => x.DeviceConnectionId)
+                    .OnDelete(DeleteBehavior.NoAction);
+                
+                entity.HasMany(x => x.Locations)
+                    .WithOne(x => x.ConnectionMessage)
+                    .HasForeignKey(x => x.DeviceConnectionMessageId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
             

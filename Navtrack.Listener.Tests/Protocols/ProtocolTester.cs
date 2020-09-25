@@ -88,8 +88,8 @@ namespace Navtrack.Listener.Tests.Protocols
         {
             locationServiceMock = new Mock<ILocationService>();
 
-            locationServiceMock.Setup(x => x.AddRange(It.IsAny<List<Location>>()))
-                .Callback<List<Location>>(x =>
+            locationServiceMock.Setup(x => x.AddRange(It.IsAny<List<Location>>(), It.IsAny<int>()))
+                .Callback<List<Location>, int>((x, y) =>
                 {
                     LastParsedLocations = x;
                     TotalParsedLocations.AddRange(x);
@@ -104,7 +104,7 @@ namespace Navtrack.Listener.Tests.Protocols
 
             IMessageHandler messageHandlerMock = new MessageHandler(
                 serviceProviderMock.Object,
-                locationServiceMock.Object, 
+                locationServiceMock.Object,
                 new Mock<ILogger<MessageHandler>>().Object,
                 new Mock<IConnectionService>().Object);
 
