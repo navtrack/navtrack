@@ -27,6 +27,9 @@ namespace Navtrack.DataAccess.Model
         public int? LocationAreaCode { get; set; }
         public int? CellId { get; set; }
         
+        
+        
+        
         public int? DeviceConnectionMessageId { get; set; }
         public DeviceConnectionMessageEntity ConnectionMessage { get; set; }
     }

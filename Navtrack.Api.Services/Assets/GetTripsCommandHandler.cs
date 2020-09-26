@@ -44,6 +44,7 @@ namespace Navtrack.Api.Services.Assets
             DateTime lastMonth = DateTime.UtcNow.AddMonths(-1);
 
             List<LocationEntity> locations = await repository.GetEntities<LocationEntity>()
+                .Include(x => x.ConnectionMessage)
                 .Where(x => x.AssetId == command.AssetId && x.DateTime > lastMonth)
                 .OrderBy(x => x.DateTime)
                 .ToListAsync();
@@ -65,15 +66,17 @@ namespace Navtrack.Api.Services.Assets
             List<TripModel> trips = new List<TripModel>();
 
             TripModel lastTrip = null;
+            LocationEntity lastLocation = null;
 
             int tripNumber = 1;
 
             foreach (LocationEntity location in locations)
             {
                 TimeSpan? timeSpan = GetTimeSpan(lastTrip, location);
-                
-                // TODO add condition when it's the same connection id 
-                if (lastTrip == null || timeSpan == null || timeSpan.Value.TotalSeconds > medianTimeSpanBetweenLocations)
+
+                if ((lastTrip == null || timeSpan == null ||
+                     timeSpan.Value.TotalSeconds > medianTimeSpanBetweenLocations) &&
+                    DifferentConnectionId(lastLocation, location))
                 {
                     lastTrip = new TripModel
                     {
@@ -82,10 +85,25 @@ namespace Navtrack.Api.Services.Assets
                     trips.Add(lastTrip);
                 }
 
-                lastTrip.Locations.Add(mapper.Map<LocationEntity, LocationModel>(location));
+                lastTrip?.Locations.Add(mapper.Map<LocationEntity, LocationModel>(location));
+                lastLocation = location;
             }
-            
+
             return trips;
+        }
+
+        private static bool DifferentConnectionId(LocationEntity lastLocation, LocationEntity location)
+        {
+            if (lastLocation?.ConnectionMessage == null)
+            {
+                return true;
+            }
+            if (location?.ConnectionMessage == null)
+            {
+                return true;
+            }
+
+            return lastLocation.ConnectionMessage.DeviceConnectionId != location.ConnectionMessage.DeviceConnectionId;
         }
 
         private static TimeSpan? GetTimeSpan(TripModel lastTrip, LocationEntity nextLocation)
