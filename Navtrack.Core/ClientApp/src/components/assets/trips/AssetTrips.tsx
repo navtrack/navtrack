@@ -56,10 +56,9 @@ export default function AssetTrips() {
       <LocationFilter filter={locationFilter} setFilter={setLocationFilter} />
       <AssetTripsTable
         loading={loading}
-        trips={trips.results}
+        model={trips}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedLocationIndex}
-        totalDistance={trips.totalDistance}
       />
     </>
   );

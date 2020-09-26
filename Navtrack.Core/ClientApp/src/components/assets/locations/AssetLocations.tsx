@@ -12,7 +12,7 @@ import {
 } from "../../common/locationFilter/types/LocationFilterModel";
 import AssetLocationsTable from "./AssetLocationsTable";
 
-export default function AssetLog() {
+export default function AssetLocations() {
   useMap();
   const [locationFilter, setLocationFilter] = useState(DefaultLocationFilterModel);
   const [locations, setLocations] = useState<LocationModel[]>([]);

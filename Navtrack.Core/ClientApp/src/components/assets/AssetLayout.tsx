@@ -2,7 +2,7 @@ import React from "react";
 import AssetLayoutNavbar from "./AssetLayoutNavbar";
 import { Route, Switch } from "react-router";
 import AssetLive from "./live/AssetLive";
-import AssetLog from "./log/AssetLog";
+import AssetLocations from "./locations/AssetLocations";
 import AssetSettingsLayout from "./settings/AssetSettingsLayout";
 import AssetTrips from "./trips/AssetTrips";
 
@@ -16,8 +16,8 @@ export default function AssetLayout() {
             <Route path={"/assets/:assetId/live"}>
               <AssetLive />
             </Route>
-            <Route path={"/assets/:assetId/log"}>
-              <AssetLog />
+            <Route path={"/assets/:assetId/locations"}>
+              <AssetLocations />
             </Route>
             <Route path={"/assets/:assetId/trips"}>
               <AssetTrips />

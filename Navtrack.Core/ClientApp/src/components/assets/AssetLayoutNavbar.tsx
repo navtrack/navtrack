@@ -10,43 +10,39 @@ export default function AssetLayoutNavbar() {
   const asset = useAsset();
 
   return (
-    <>
-      {asset && (
-        <div
-          className="shadow flex text-sm z-30 relative"
-          style={{
-            minWidth: "630px",
-            backdropFilter: appContext.mapIsVisible ? "blur(10px)" : "",
-            backgroundColor: appContext.mapIsVisible
-              ? "rgba(255, 255, 255, 0.9)"
-              : "rgba(255, 255, 255, 0.6)"
-          }}>
-          <div className="ml-4 py-2 text-center font-semibold">
-            <div className="pr-4 border-r">{asset.name}</div>
-          </div>
-          <ul className="flex flex-row">
-            <NavbarMenuItem url={`/assets/${asset.id}/live`} icon="fa-map-marker-alt">
-              Live Tracking
-            </NavbarMenuItem>
-            <NavbarMenuItem url={`/assets/${asset.id}/trips`} icon="fa-route">
-              Trips
-            </NavbarMenuItem>
-            <NavbarMenuItem url={`/assets/${asset.id}/log`} icon="fa-database">
-              Log
-            </NavbarMenuItem>
-            <NavbarMenuItem url={`/assets/${asset.id}/reports`} icon="fa-table">
-              Reports
-            </NavbarMenuItem>
-            <NavbarMenuItem url={`/assets/${asset.id}/alerts`} icon="fa-bell">
-              Alerts
-            </NavbarMenuItem>
-            <NavbarMenuItem url={`/assets/${asset.id}/settings`} icon="fa-cog">
-              Settings
-            </NavbarMenuItem>
-          </ul>
-        </div>
-      )}
-    </>
+    <div
+      className="shadow flex text-sm z-30 relative"
+      style={{
+        minWidth: "630px",
+        backdropFilter: appContext.mapIsVisible ? "blur(10px)" : "",
+        backgroundColor: appContext.mapIsVisible
+          ? "rgba(255, 255, 255, 0.9)"
+          : "rgba(255, 255, 255, 0.6)"
+      }}>
+      <div className="ml-4 py-2 text-center font-semibold">
+        <div className="pr-4 border-r">{asset?.name}</div>
+      </div>
+      <ul className="flex flex-row">
+        <NavbarMenuItem url={`/assets/${asset?.id}/live`} icon="fa-map-marker-alt">
+          Live Tracking
+        </NavbarMenuItem>
+        <NavbarMenuItem url={`/assets/${asset?.id}/locations`} icon="fa-database">
+          Locations
+        </NavbarMenuItem>
+        <NavbarMenuItem url={`/assets/${asset?.id}/trips`} icon="fa-route">
+          Trips
+        </NavbarMenuItem>
+        <NavbarMenuItem url={`/assets/${asset?.id}/reports`} icon="fa-table">
+          Reports
+        </NavbarMenuItem>
+        <NavbarMenuItem url={`/assets/${asset?.id}/alerts`} icon="fa-bell">
+          Alerts
+        </NavbarMenuItem>
+        <NavbarMenuItem url={`/assets/${asset?.id}/settings`} icon="fa-cog">
+          Settings
+        </NavbarMenuItem>
+      </ul>
+    </div>
   );
 }
 
