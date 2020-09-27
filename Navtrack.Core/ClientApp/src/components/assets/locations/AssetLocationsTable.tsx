@@ -81,7 +81,7 @@ export default function AssetLocationsTable(props: Props) {
         ))}
       </ScrollableTableBody>
       <ScrollableTableFooter>
-        <div style={{ flex: "0 0 80px" }} className="pr-1">
+        <div style={{ flex: "1 0 80px" }} className="pr-1">
           <span className="font-medium">{props.locations.length}</span> locations
         </div>
       </ScrollableTableFooter>
