@@ -68,8 +68,6 @@ namespace Navtrack.Api.Services.Assets
             TripModel lastTrip = null;
             LocationEntity lastLocation = null;
 
-            int tripNumber = 1;
-
             foreach (LocationEntity location in locations)
             {
                 TimeSpan? timeSpan = GetTimeSpan(lastTrip, location);
@@ -78,16 +76,17 @@ namespace Navtrack.Api.Services.Assets
                      timeSpan.Value.TotalSeconds > medianTimeSpanBetweenLocations) &&
                     DifferentConnectionId(lastLocation, location))
                 {
-                    lastTrip = new TripModel
-                    {
-                        Number = tripNumber++
-                    };
+                    lastTrip = new TripModel();
                     trips.Add(lastTrip);
                 }
 
                 lastTrip?.Locations.Add(mapper.Map<LocationEntity, LocationModel>(location));
                 lastLocation = location;
             }
+
+            trips = trips.Where(x => x.Distance > 100).ToList();
+            int tripNo = 1;
+            trips.ForEach(x => x.Number = tripNo++);
 
             return trips;
         }
