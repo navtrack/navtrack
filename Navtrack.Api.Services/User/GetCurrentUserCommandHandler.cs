@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Commands;
 using Navtrack.Api.Model.User;
-using Navtrack.Api.Services.RequestHandlers;
+using Navtrack.Api.Services.CommandHandler;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.User

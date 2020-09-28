@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Custom;
 
-namespace Navtrack.Api.Services.RequestHandlers
+namespace Navtrack.Api.Services.CommandHandler
 {
     public interface ICommandHandler
     {

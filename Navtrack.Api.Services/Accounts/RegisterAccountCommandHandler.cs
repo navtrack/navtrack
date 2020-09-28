@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Accounts;
-using Navtrack.Api.Services.RequestHandlers;
+using Navtrack.Api.Services.CommandHandler;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Services;
 using Navtrack.Library.DI;

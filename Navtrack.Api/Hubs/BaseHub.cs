@@ -4,7 +4,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
-using Navtrack.Api.Services.RequestHandlers;
+using Navtrack.Api.Services.CommandHandler;
 
 namespace Navtrack.Api.Hubs
 {

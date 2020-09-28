@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Navtrack.Api.Model;
 using Navtrack.Api.Model.Custom;
 
-namespace Navtrack.Api.Services.RequestHandlers
+namespace Navtrack.Api.Services.CommandHandler
 {
     public abstract class BaseCommandHandler : ICommandHandler
     {

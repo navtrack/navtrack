@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Services.CommandHandler;
 using Navtrack.Api.Services.Devices;
-using Navtrack.Api.Services.RequestHandlers;
 using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
