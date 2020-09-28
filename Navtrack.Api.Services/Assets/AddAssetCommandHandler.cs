@@ -12,8 +12,8 @@ using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(IRequestHandler<AddAssetCommand, AddAssetModel>))]
-    public class AddAssetCommandHandler : BaseRequestHandler<AddAssetCommand, AddAssetModel>
+    [Service(typeof(ICommandHandler<AddAssetCommand, AddAssetModel>))]
+    public class AddAssetCommandHandler : BaseCommandHandler<AddAssetCommand, AddAssetModel>
     {
         private readonly IDeviceTypeDataService deviceTypeDataService;
         private readonly IRepository repository;

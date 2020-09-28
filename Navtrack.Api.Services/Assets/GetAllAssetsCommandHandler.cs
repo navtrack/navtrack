@@ -11,8 +11,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(IRequestHandler<GetAllAssetsCommand, IEnumerable<AssetModel>>))]
-    public class GetAllAssetsCommandHandler : BaseRequestHandler<GetAllAssetsCommand, IEnumerable<AssetModel>>
+    [Service(typeof(ICommandHandler<GetAllAssetsCommand, IEnumerable<AssetModel>>))]
+    public class GetAllAssetsCommandHandler : BaseCommandHandler<GetAllAssetsCommand, IEnumerable<AssetModel>>
     {
         private readonly IMapper mapper;
         private readonly IRepository repository;

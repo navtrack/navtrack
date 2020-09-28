@@ -10,9 +10,9 @@ using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.Devices
 {
-    [Service(typeof(IRequestHandler<GetDeviceStatisticsCommand, DeviceStatisticsModel>))]
+    [Service(typeof(ICommandHandler<GetDeviceStatisticsCommand, DeviceStatisticsModel>))]
     public class GetDeviceStatisticsCommandHandler
-        : BaseRequestHandler<GetDeviceStatisticsCommand, DeviceStatisticsModel>
+        : BaseCommandHandler<GetDeviceStatisticsCommand, DeviceStatisticsModel>
     {
         private readonly IRepository repository;
 

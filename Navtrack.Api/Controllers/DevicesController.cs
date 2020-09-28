@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Custom;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Devices;
-using Navtrack.Api.Services.Extensions;
+using Navtrack.Api.Services.IdentityServer;
 
 namespace Navtrack.Api.Controllers
 {

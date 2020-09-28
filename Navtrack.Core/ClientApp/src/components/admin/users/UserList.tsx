@@ -13,28 +13,28 @@ export default function UserList() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteHandler, setHandleDelete] = useState(() => () => {});
 
-  useEffect(() => {
-    UserApi.getAll().then((x) => setUsers(x));
-  }, []);
+  // useEffect(() => {
+  //   UserApi.getAll().then((x) => setUsers(x));
+  // }, []);
 
-  const handleDeleteClick = useCallback(
-    (id: number) => {
-      setShowDeleteModal(true);
-      setHandleDelete(() => () => deleteUser(id, users));
-    },
-    [users]
-  );
+  // const handleDeleteClick = useCallback(
+  //   (id: number) => {
+  //     setShowDeleteModal(true);
+  //     setHandleDelete(() => () => deleteUser(id, users));
+  //   },
+  //   [users]
+  // );
 
-  const deleteUser = (id: number, users: UserModel[]) => {
-    UserApi.delete(id)
-      .then(() => {
-        addNotification("User deleted successfully.");
-        setUsers(users.filter((x) => x.id !== id));
-      })
-      .catch((error: ApiError<UserModel>) => {
-        addNotification(`${error.message}`);
-      });
-  };
+  // const deleteUser = (id: number, users: UserModel[]) => {
+  //   UserApi.delete(id)
+  //     .then(() => {
+  //       addNotification("User deleted successfully.");
+  //       setUsers(users.filter((x) => x.id !== id));
+  //     })
+  //     .catch((error: ApiError<UserModel>) => {
+  //       addNotification(`${error.message}`);
+  //     });
+  // };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const columns = useMemo(
@@ -54,14 +54,14 @@ export default function UserList() {
             />
             <i
               className="fas fa-trash hover:text-gray-700 cursor-pointer"
-              onClick={() => handleDeleteClick(cell.cell.value)}
+              // onClick={() => handleDeleteClick(cell.cell.value)}
             />
           </>
         ),
         disableSortBy: true
       }
     ],
-    [handleDeleteClick, history]
+    [history]
   );
 
   return (

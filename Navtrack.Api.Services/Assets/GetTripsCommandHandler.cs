@@ -14,8 +14,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(IRequestHandler<GetTripsCommand, GetTripsModel>))]
-    public class GetTripsCommandHandler : BaseRequestHandler<GetTripsCommand, GetTripsModel>
+    [Service(typeof(ICommandHandler<GetTripsCommand, GetTripsModel>))]
+    public class GetTripsCommandHandler : BaseCommandHandler<GetTripsCommand, GetTripsModel>
     {
         private readonly IRepository repository;
         private readonly IAssetDataService assetDataService;

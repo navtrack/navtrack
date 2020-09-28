@@ -3,19 +3,19 @@ using Navtrack.Api.Model.Custom;
 
 namespace Navtrack.Api.Services.RequestHandlers
 {
-    public interface IRequestHandler
+    public interface ICommandHandler
     {
         ApiResponseModel ApiResponse { get; }
     }
     
-    public interface ICommandHandler<in TCommand> : IRequestHandler
+    public interface ICommandHandler<in TCommand> : ICommandHandler
     {
         Task Authorize(TCommand request);
         Task Validate(TCommand request);
         Task Handle(TCommand request);
     }
     
-    public interface IRequestHandler<in TCommand, TResponseModel> : IRequestHandler
+    public interface ICommandHandler<in TCommand, TResponseModel> : ICommandHandler
     {
         Task Authorize(TCommand request);
         Task Validate(TCommand request);

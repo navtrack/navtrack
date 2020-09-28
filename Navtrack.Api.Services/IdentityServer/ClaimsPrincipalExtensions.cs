@@ -3,7 +3,7 @@ using System.Security.Claims;
 using IdentityModel;
 using static System.Int32;
 
-namespace Navtrack.Api.Services.Extensions
+namespace Navtrack.Api.Services.IdentityServer
 {
     public static class ClaimsPrincipalExtensions
     {

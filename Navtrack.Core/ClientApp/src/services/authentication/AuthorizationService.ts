@@ -6,9 +6,10 @@ export const AuthorizationService = {
     var appContext = AppContextAccessor.getAppContext();
 
     return (
-      appContext.authenticationInfo.authenticated &&
-      (userRole === undefined ||
-        (appContext.user !== undefined && appContext.user.role === userRole))
+      appContext.authenticationInfo.authenticated 
+      // &&
+      // (userRole === undefined ||
+      //   (appContext.user !== undefined && appContext.user.role === userRole))
     );
   }
 };

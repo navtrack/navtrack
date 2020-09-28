@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useIntl } from "react-intl";
 import { useHistory } from "react-router";
-import { UserModel, DefaultUserModel } from "../../../apis/types/user/UserModel";
 import { UserApi } from "../../../apis/UserApi";
 import { useNewValidation } from "../../../services/validation/useValidationHook";
 import { ValidateAction } from "../../../services/validation/ValidateAction";
@@ -15,44 +14,44 @@ type Props = {
 };
 
 export default function UserEdit(props: Props) {
-  const [user, setUser] = useState<UserModel>(DefaultUserModel);
-  const [validate, validationResult, setApiError] = useNewValidation(validateUser);
+  // const [user, setUser] = useState<UserModel>(DefaultUserModel);
+  // const [validate, validationResult, setApiError] = useNewValidation(validateUser);
   const [show, setShow] = useState(!props.id);
   const history = useHistory();
   const intl = useIntl();
 
-  useEffect(() => {
-    if (props.id) {
-      UserApi.get(props.id).then((x) => {
-        setUser(x);
-        setShow(true);
-      });
-    }
-  }, [props.id]);
+  // useEffect(() => {
+  //   if (props.id) {
+  //     UserApi.get(props.id).then((x) => {
+  //       setUser(x);
+  //       setShow(true);
+  //     });
+  //   }
+  // }, [props.id]);
 
-  const handleSubmit = async () => {
-    if (validate(user)) {
-      if (user.id > 0) {
-        UserApi.update(user)
-          .then(() => {
-            history.push("/admin/users");
-            addNotification(intl.formatMessage({ id: "admin.user.edit.notification" }));
-          })
-          .catch(setApiError);
-      } else {
-        UserApi.add(user)
-          .then(() => {
-            history.push("/admin/users");
-            addNotification(intl.formatMessage({ id: "admin.user.add.notification" }));
-          })
-          .catch(setApiError);
-      }
-    }
-  };
+  // const handleSubmit = async () => {
+  //   if (validate(user)) {
+  //     if (user.id > 0) {
+  //       UserApi.update(user)
+  //         .then(() => {
+  //           history.push("/admin/users");
+  //           addNotification(intl.formatMessage({ id: "admin.user.edit.notification" }));
+  //         })
+  //         .catch(setApiError);
+  //     } else {
+  //       UserApi.add(user)
+  //         .then(() => {
+  //           history.push("/admin/users");
+  //           addNotification(intl.formatMessage({ id: "admin.user.add.notification" }));
+  //         })
+  //         .catch(setApiError);
+  //     }
+  //   }
+  // };
 
   return (
     <>
-      {show && (
+      {/* {show && (
         <Form
           title={intl.formatMessage({
             id: props.id ? "admin.user.edit.title" : "admin.user.add.title"
@@ -94,35 +93,35 @@ export default function UserEdit(props: Props) {
             }}
           />
         </Form>
-      )}
+      )} */}
     </>
   );
 }
-const validateUser: ValidateAction<UserModel> = (model, validationResult, intl) => {
-  if (!model.email) {
-    validationResult.AddError(
-      "email",
-      intl.formatMessage({ id: "admin.user.edit.email.required" })
-    );
-  }
-  if (model.id <= 0 && !model.password) {
-    validationResult.AddError(
-      "password",
-      intl.formatMessage({ id: "admin.user.add.password.required" })
-    );
-  }
-  if (model.id <= 0 && !model.confirmPassword) {
-    validationResult.AddError(
-      "confirmPassword",
-      intl.formatMessage({ id: "admin.user.add.confirmPassword.required" })
-    );
-  } else if (
-    (model.password || model.confirmPassword) &&
-    model.password !== model.confirmPassword
-  ) {
-    validationResult.AddError(
-      "confirmPassword",
-      intl.formatMessage({ id: "admin.user.edit.confirmPassword.match" })
-    );
-  }
-};
+// const validateUser: ValidateAction<UserModel> = (model, validationResult, intl) => {
+//   if (!model.email) {
+//     validationResult.AddError(
+//       "email",
+//       intl.formatMessage({ id: "admin.user.edit.email.required" })
+//     );
+//   }
+//   if (model.id <= 0 && !model.password) {
+//     validationResult.AddError(
+//       "password",
+//       intl.formatMessage({ id: "admin.user.add.password.required" })
+//     );
+//   }
+//   if (model.id <= 0 && !model.confirmPassword) {
+//     validationResult.AddError(
+//       "confirmPassword",
+//       intl.formatMessage({ id: "admin.user.add.confirmPassword.required" })
+//     );
+//   } else if (
+//     (model.password || model.confirmPassword) &&
+//     model.password !== model.confirmPassword
+//   ) {
+//     validationResult.AddError(
+//       "confirmPassword",
+//       intl.formatMessage({ id: "admin.user.edit.confirmPassword.match" })
+//     );
+//   }
+// };

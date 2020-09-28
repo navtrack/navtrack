@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api;
 using Navtrack.Api.Hubs;
+using Navtrack.Api.Services;
 using Navtrack.Api.Services.IdentityServer;
 using Navtrack.Api.Services.LetsEncrypt;
 

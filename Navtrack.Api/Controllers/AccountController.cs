@@ -4,8 +4,6 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Accounts;
-using Navtrack.Api.Model.Accounts.Requests;
-using Navtrack.Api.Services.Extensions;
 
 namespace Navtrack.Api.Controllers
 {
@@ -15,15 +13,6 @@ namespace Navtrack.Api.Controllers
     {
         public AccountController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-        }
-
-        [HttpGet]
-        public Task<ActionResult<AccountInfoResponseModel>> Get()
-        {
-            return HandleCommand<AccountInfoCommand, AccountInfoResponseModel>(new AccountInfoCommand
-            {
-                UserId = User.GetId()
-            });
         }
 
         [AllowAnonymous]

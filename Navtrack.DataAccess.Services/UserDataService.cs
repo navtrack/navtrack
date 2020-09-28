@@ -27,5 +27,10 @@ namespace Navtrack.DataAccess.Services
         {
             return repository.GetEntities<UserEntity>().AnyAsync(x => x.Email == email);
         }
+
+        public Task<UserEntity> GetUserById(int id)
+        {
+            return repository.GetEntities<UserEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

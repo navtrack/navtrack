@@ -1,17 +1,13 @@
-import { UserRole } from "./UserRole";
+import { MeasurementSystem } from "../general/MeasurementSystem";
 
 export type UserModel = {
   id: number;
   email: string;
-  password: string;
-  confirmPassword: string;
-  role: UserRole;
+  measurementSystem: MeasurementSystem;
 };
 
 export const DefaultUserModel: UserModel = {
   id: 0,
   email: "",
-  password: "",
-  confirmPassword: "",
-  role: UserRole.User
+  measurementSystem: MeasurementSystem.Metric
 };

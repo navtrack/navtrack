@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import AdminLayout from "./components/shared/layouts/admin/AdminLayout";
 import LoginLayout from "./components/shared/layouts/login/LoginLayout";
 import Notifications from "./components/shared/notifications/Notifications";
-import { AccountService } from "./services/AccountService";
+import { UserService } from "./services/UserService";
 import { AppContext, CreateAppContext, SaveToLocalStorage } from "./services/appContext/AppContext";
 import { AppContextAccessor } from "./services/appContext/AppContextAccessor";
 import { AssetsService } from "./services/AssetService";
@@ -33,7 +33,7 @@ export default function App() {
   useEffect(() => {
     if (appContext.authenticationInfo.authenticated) {
       AssetsService.init();
-      AccountService.getUserInfo();
+      UserService.fetchCurrentUser();
     } else {
       AssetsService.clear();
     }

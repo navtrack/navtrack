@@ -7,5 +7,6 @@ namespace Navtrack.DataAccess.Services
     {
         Task<UserEntity> GetUserByEmail(string email);
         Task<bool> EmailIsUsed(string email);
+        Task<UserEntity> GetUserById(int id);
     }
 }

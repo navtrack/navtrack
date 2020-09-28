@@ -1,4 +1,4 @@
-namespace Navtrack.Api
+namespace Navtrack.Api.Services
 {
     public class ApiConstants
     {

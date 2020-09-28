@@ -15,5 +15,6 @@ namespace Navtrack.DataAccess.Model
         public string Hash { get; set; }
         public int Role { get; set;  }
         public ICollection<UserAssetEntity> Assets { get; set; }
+        public int MeasurementSystem { get; set; }
     }
 }

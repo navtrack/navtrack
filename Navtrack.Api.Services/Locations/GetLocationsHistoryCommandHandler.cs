@@ -11,13 +11,13 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Locations
 {
-    [Service(typeof(IRequestHandler<GetLocationsCommand, IEnumerable<LocationModel>>))]
-    public class GetLocationsHistoryRequestHandler : BaseRequestHandler<GetLocationsCommand, IEnumerable<LocationModel>>
+    [Service(typeof(ICommandHandler<GetLocationsCommand, IEnumerable<LocationModel>>))]
+    public class GetLocationsHistoryCommandHandler : BaseCommandHandler<GetLocationsCommand, IEnumerable<LocationModel>>
     {
         private readonly IRepository repository;
         private readonly IMapper mapper;
 
-        public GetLocationsHistoryRequestHandler(IRepository repository, IMapper mapper)
+        public GetLocationsHistoryCommandHandler(IRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;

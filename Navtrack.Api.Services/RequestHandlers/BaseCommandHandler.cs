@@ -5,17 +5,17 @@ using Navtrack.Api.Model.Custom;
 
 namespace Navtrack.Api.Services.RequestHandlers
 {
-    public abstract class BaseRequestHandler : IRequestHandler
+    public abstract class BaseCommandHandler : ICommandHandler
     {
         public ApiResponseModel ApiResponse { get; }
 
-        protected BaseRequestHandler()
+        protected BaseCommandHandler()
         {
             ApiResponse = new ApiResponseModel();
         }
     }
 
-    public abstract class BaseCommandHandler<TRequestModel> : BaseRequestHandler, ICommandHandler<TRequestModel>
+    public abstract class BaseCommandHandler<TRequestModel> : BaseCommandHandler, ICommandHandler<TRequestModel>
     {
         public virtual Task Authorize(TRequestModel request)
         {
@@ -34,8 +34,8 @@ namespace Navtrack.Api.Services.RequestHandlers
     }
 
     public abstract class
-        BaseRequestHandler<TRequestModel, TResponseModel> : BaseRequestHandler,
-            IRequestHandler<TRequestModel, TResponseModel>
+        BaseCommandHandler<TRequestModel, TResponseModel> : BaseCommandHandler,
+            ICommandHandler<TRequestModel, TResponseModel>
     {
         public virtual Task Authorize(TRequestModel request)
         {

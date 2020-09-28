@@ -10,13 +10,13 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Locations
 {
-    [Service(typeof(IRequestHandler<GetLatestLocationCommand, LocationModel>))]
-    public class GetLatestLocationRequestHandler : BaseRequestHandler<GetLatestLocationCommand, LocationModel>
+    [Service(typeof(ICommandHandler<GetLatestLocationCommand, LocationModel>))]
+    public class GetLatestLocationCommandHandler : BaseCommandHandler<GetLatestLocationCommand, LocationModel>
     {
         private readonly IRepository repository;
         private readonly IMapper mapper;
 
-        public GetLatestLocationRequestHandler(IRepository repository, IMapper mapper)
+        public GetLatestLocationCommandHandler(IRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;

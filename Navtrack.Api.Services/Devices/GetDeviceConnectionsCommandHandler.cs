@@ -14,8 +14,8 @@ using Navtrack.Library.DI;
 namespace Navtrack.Api.Services.Devices
 {
     [Service(
-        typeof(IRequestHandler<GetDeviceConnectionsCommand, ResultsPaginationModel<DeviceConnectionModel>>))]
-    public class GetDeviceConnectionsCommandHandler : BaseRequestHandler<GetDeviceConnectionsCommand,
+        typeof(ICommandHandler<GetDeviceConnectionsCommand, ResultsPaginationModel<DeviceConnectionModel>>))]
+    public class GetDeviceConnectionsCommandHandler : BaseCommandHandler<GetDeviceConnectionsCommand,
         ResultsPaginationModel<DeviceConnectionModel>>
     {
         private readonly IRepository repository;

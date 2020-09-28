@@ -11,8 +11,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Devices
 {
-    [Service(typeof(IRequestHandler<GetDeviceByIdCommand, DeviceModel>))]
-    public class GetDeviceByIdCommandHandler : BaseRequestHandler<GetDeviceByIdCommand, DeviceModel>
+    [Service(typeof(ICommandHandler<GetDeviceByIdCommand, DeviceModel>))]
+    public class GetDeviceByIdCommandHandler : BaseCommandHandler<GetDeviceByIdCommand, DeviceModel>
     {
         private readonly IMapper mapper;
         private readonly IRepository repository;

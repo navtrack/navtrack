@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Services.Extensions;
+using Navtrack.Api.Services.IdentityServer;
 
 namespace Navtrack.Api.Controllers
 {

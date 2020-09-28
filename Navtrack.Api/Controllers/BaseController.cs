@@ -50,28 +50,28 @@ namespace Navtrack.Api.Controllers
 
         private protected async Task<ActionResult<TResponse>> HandleCommand<TSource, TResponse>(TSource input)
         {
-            IRequestHandler<TSource, TResponse> requestHandler =
-                serviceProvider.GetRequiredService<IRequestHandler<TSource, TResponse>>();
+            ICommandHandler<TSource, TResponse> commandHandler =
+                serviceProvider.GetRequiredService<ICommandHandler<TSource, TResponse>>();
 
-            await requestHandler.Authorize(input);
+            await commandHandler.Authorize(input);
 
-            if (!requestHandler.ApiResponse.IsValid)
+            if (!commandHandler.ApiResponse.IsValid)
             {
                 return NotFound();
             }
-            if (requestHandler.ApiResponse.HttpStatusCode.HasValue)
+            if (commandHandler.ApiResponse.HttpStatusCode.HasValue)
             {
-                return new StatusCodeResult((int) requestHandler.ApiResponse.HttpStatusCode);
+                return new StatusCodeResult((int) commandHandler.ApiResponse.HttpStatusCode);
             }
 
-            await requestHandler.Validate(input);
+            await commandHandler.Validate(input);
 
-            if (!requestHandler.ApiResponse.IsValid)
+            if (!commandHandler.ApiResponse.IsValid)
             {
-                return BadRequest(requestHandler.ApiResponse);
+                return BadRequest(commandHandler.ApiResponse);
             }
             
-            TResponse response = await requestHandler.Handle(input);
+            TResponse response = await commandHandler.Handle(input);
 
             if (response != null)
             {
