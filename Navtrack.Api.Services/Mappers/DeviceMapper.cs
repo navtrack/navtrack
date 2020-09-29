@@ -1,5 +1,6 @@
 using Navtrack.Api.Model.Devices;
 using Navtrack.DataAccess.Model;
+using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Services;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
@@ -26,9 +27,9 @@ namespace Navtrack.Api.Services.Mappers
             destination.IsActive = source.IsActive;
             destination.AssetId = source.AssetId;
             
-            DeviceData.Model.DeviceType deviceType = deviceTypeDataService.GetById(source.DeviceTypeId);
+            DeviceType deviceType = deviceTypeDataService.GetById(source.DeviceTypeId);
             destination.DeviceType = deviceType != null
-                ? mapper.Map<DeviceData.Model.DeviceType, DeviceTypeModel>(deviceType)
+                ? mapper.Map<DeviceType, DeviceTypeModel>(deviceType)
                 : null;
 
             return destination;

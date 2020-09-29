@@ -8,7 +8,6 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
 using Navtrack.DataAccess.Services;
-using Navtrack.DeviceData.Model;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.Assets

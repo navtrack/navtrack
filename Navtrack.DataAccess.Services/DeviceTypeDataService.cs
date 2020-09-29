@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Navtrack.DeviceData.Model;
+using Navtrack.DataAccess.Model.Custom;
 using Navtrack.Library.DI;
 
 namespace Navtrack.DataAccess.Services

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Navtrack.DeviceData.Model;
+using Navtrack.DataAccess.Model.Custom;
 
 namespace Navtrack.DataAccess.Services
 {

@@ -1,4 +1,4 @@
-namespace Navtrack.DeviceData.Model
+namespace Navtrack.DataAccess.Model.Custom
 {
     public class Protocol
     {
