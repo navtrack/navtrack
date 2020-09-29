@@ -1,4 +1,4 @@
-namespace Navtrack.Api.Services
+namespace Navtrack.Api.Model
 {
     public class WebConfiguration
     {

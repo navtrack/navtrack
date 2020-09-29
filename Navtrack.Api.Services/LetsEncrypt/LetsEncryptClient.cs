@@ -9,6 +9,7 @@ using Certes.Pkcs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Navtrack.Api.Model;
 using Navtrack.Common.Services;
 using Navtrack.Library.DI;
 

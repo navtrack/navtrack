@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Navtrack.Api.Model;
 using Navtrack.Common.Services;
 using Navtrack.Library.DI;
 
