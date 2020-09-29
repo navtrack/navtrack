@@ -1,6 +1,6 @@
 using Navtrack.Api.Model.Devices;
 using Navtrack.DataAccess.Model;
-using Navtrack.DeviceData.Services;
+using Navtrack.DataAccess.Services;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 

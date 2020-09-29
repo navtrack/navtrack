@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Protocols;
+using Navtrack.DataAccess.Services;
 using Navtrack.DeviceData.Model;
-using Navtrack.DeviceData.Services;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 

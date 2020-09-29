@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Navtrack.DeviceData.Model;
 
-namespace Navtrack.DeviceData.Services
+namespace Navtrack.DataAccess.Services
 {
     public interface IDeviceTypeDataService
     {

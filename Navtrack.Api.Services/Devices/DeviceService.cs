@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Services;
 using Navtrack.DeviceData.Model;
-using Navtrack.DeviceData.Services;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.Devices

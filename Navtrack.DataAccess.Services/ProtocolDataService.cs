@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Navtrack.DeviceData.Model;
 using Navtrack.Library.DI;
 
-namespace Navtrack.DeviceData.Services
+namespace Navtrack.DataAccess.Services
 {
     [Service(typeof(IProtocolDataService), ServiceLifetime.Singleton)]
     public class ProtocolDataService : IProtocolDataService

@@ -74,7 +74,7 @@ namespace Navtrack.Api.Controllers
             TResponse response = await commandHandler.Handle(input);
 
             if (response != null)
-            {
+            { 
                 return response;
             }
 
