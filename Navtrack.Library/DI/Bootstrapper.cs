@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using static System.String;
 
 namespace Navtrack.Library.DI
 {
@@ -35,8 +36,10 @@ namespace Navtrack.Library.DI
 
         private static IEnumerable<Assembly> GetAssemblies(Assembly assembly)
         {
+            string namespacePrefix = typeof(Bootstrapper).Namespace?.Split(".")[0];
+            
             foreach (Assembly referencedAssembly in assembly.GetReferencedAssemblies()
-                .Where(x => x.Name != null && x.Name.StartsWith("Navtrack")).Select(Assembly.Load)
+                .Where(x => x.Name != null && x.Name.StartsWith(namespacePrefix ?? Empty)).Select(Assembly.Load)
                 .SelectMany(GetAssemblies))
             {
                 yield return referencedAssembly;
