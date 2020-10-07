@@ -10,11 +10,13 @@ namespace Navtrack.DataAccess.Model
             Locations = new HashSet<LocationEntity>();
             Users = new HashSet<UserAssetEntity>();
             Devices = new HashSet<DeviceEntity>();
+            Trips = new HashSet<TripEntity>();
         }
         
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<DeviceEntity> Devices { get; set; }
+        public ICollection<TripEntity> Trips { get; set; }
         public ICollection<LocationEntity> Locations { get; set; }
         public ICollection<UserAssetEntity> Users { get; set; }
     }

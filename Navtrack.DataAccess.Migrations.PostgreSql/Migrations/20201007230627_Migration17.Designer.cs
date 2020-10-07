@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.DataAccess.Model;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 {
     [DbContext(typeof(NavtrackDbContext))]
-    partial class NavtrackContextModelSnapshot : ModelSnapshot
+    [Migration("20201007230627_Migration17")]
+    partial class Migration17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,9 +261,6 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Distance")
                         .HasColumnType("integer");
 
                     b.Property<int>("EndLocationId")

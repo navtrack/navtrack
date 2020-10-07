@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.DataAccess.Model;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
 {
     [DbContext(typeof(NavtrackDbContext))]
-    partial class NavtrackContextModelSnapshot : ModelSnapshot
+    [Migration("20201005000009_Migration16")]
+    partial class Migration16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,27 +263,18 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.Property<int>("AssetId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Distance")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EndLocationId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Number")
                         .HasColumnType("integer");
 
-                    b.Property<int>("StartLocationId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AssetId");
-
-                    b.HasIndex("EndLocationId")
-                        .IsUnique();
-
-                    b.HasIndex("StartLocationId")
-                        .IsUnique();
 
                     b.ToTable("Trips");
                 });
@@ -400,18 +393,6 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql.Migrations
                     b.HasOne("Navtrack.DataAccess.Model.AssetEntity", "Asset")
                         .WithMany("Trips")
                         .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Navtrack.DataAccess.Model.LocationEntity", "EndLocation")
-                        .WithOne()
-                        .HasForeignKey("Navtrack.DataAccess.Model.TripEntity", "EndLocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Navtrack.DataAccess.Model.LocationEntity", "StartLocation")
-                        .WithOne()
-                        .HasForeignKey("Navtrack.DataAccess.Model.TripEntity", "StartLocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

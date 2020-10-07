@@ -15,13 +15,15 @@ namespace Navtrack.Listener.Services
         private readonly ILocationDataService locationDataService;
         private readonly IDeviceDataService deviceDataService;
         private readonly IMapper mapper;
+        private readonly ITripDataService tripDataService;
 
         public LocationService(ILocationDataService locationDataService, IMapper mapper,
-            IDeviceDataService deviceDataService)
+            IDeviceDataService deviceDataService, ITripDataService tripDataService)
         {
             this.locationDataService = locationDataService;
             this.mapper = mapper;
             this.deviceDataService = deviceDataService;
+            this.tripDataService = tripDataService;
         }
 
         public async Task AddRange(List<Location> locations, int connectionMessageId)
@@ -44,6 +46,7 @@ namespace Navtrack.Listener.Services
                     }
 
                     await locationDataService.AddRange(mapped);
+                    await tripDataService.UpdateTrips(device.AssetId);
                 }
             }
         }

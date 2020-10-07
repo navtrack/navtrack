@@ -12,9 +12,10 @@ namespace Navtrack.DataAccess.Model
         public DbSet<LocationEntity> Locations { get; set; }
         public DbSet<DeviceEntity> Devices { get; set; }
         public DbSet<DeviceConnectionEntity> DeviceConnections { get; set; }
-        // public DbSet<DeviceConnectionMessageEntity> DeviceConnectionMessages { get; set; }
+        public DbSet<DeviceConnectionMessageEntity> DeviceConnectionMessages { get; set; }
         public DbSet<LogEntity> Logs { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<TripEntity> Trips { get; set; }
         public DbSet<ConfigurationEntity> Configurations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,7 +44,7 @@ namespace Navtrack.DataAccess.Model
                     .WithMany(x => x.Locations)
                     .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.NoAction);
-                
+
                 entity.HasOne(x => x.ConnectionMessage)
                     .WithMany(x => x.Locations)
                     .HasForeignKey(x => x.DeviceConnectionMessageId)
@@ -88,6 +89,11 @@ namespace Navtrack.DataAccess.Model
                     .WithOne(x => x.Asset)
                     .HasForeignKey(x => x.AssetId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(x => x.Trips)
+                    .WithOne(x => x.Asset)
+                    .HasForeignKey(x => x.AssetId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<DeviceConnectionEntity>(entity =>
@@ -97,7 +103,7 @@ namespace Navtrack.DataAccess.Model
                 entity.Property(x => x.RemoteEndPoint)
                     .HasMaxLength(64)
                     .IsRequired();
-                
+
                 entity.HasMany(x => x.Messages)
                     .WithOne(x => x.Connection)
                     .HasForeignKey(x => x.DeviceConnectionId)
@@ -113,18 +119,18 @@ namespace Navtrack.DataAccess.Model
             {
                 entity.ToTable("DeviceConnectionMessages");
                 entity.HasKey(x => x.Id);
-                
+
                 entity.HasOne(x => x.Connection)
                     .WithMany(x => x.Messages)
                     .HasForeignKey(x => x.DeviceConnectionId)
                     .OnDelete(DeleteBehavior.NoAction);
-                
+
                 entity.HasMany(x => x.Locations)
                     .WithOne(x => x.ConnectionMessage)
                     .HasForeignKey(x => x.DeviceConnectionMessageId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
-            
+
             modelBuilder.Entity<LogEntity>(entity =>
             {
                 entity.ToTable("Logs");
@@ -161,6 +167,24 @@ namespace Navtrack.DataAccess.Model
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Key).IsRequired().HasMaxLength(500);
                 entity.Property(x => x.Value).IsRequired();
+            });
+
+            modelBuilder.Entity<TripEntity>(entity =>
+            {
+                entity.ToTable("Trips");
+                entity.HasKey(x => x.Id);
+
+                entity.HasOne(x => x.Asset)
+                    .WithMany(x => x.Trips)
+                    .HasForeignKey(x => x.AssetId);
+
+                entity.HasOne(x => x.StartLocation)
+                    .WithOne()
+                    .HasForeignKey<TripEntity>(x => x.StartLocationId);
+
+                entity.HasOne(x => x.EndLocation)
+                    .WithOne()
+                    .HasForeignKey<TripEntity>(x => x.EndLocationId);
             });
         }
     }
