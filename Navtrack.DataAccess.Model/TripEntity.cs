@@ -2,7 +2,7 @@ using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.DataAccess.Model
 {
-    public class TripEntity : IEntity
+    public class TripEntity : CreatedEntityAudit, IEntity 
     {
         public int Id { get; set; }
         public int AssetId { get; set; }
