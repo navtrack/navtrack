@@ -7,6 +7,7 @@ import ScrollableTableBody from "../../shared/table/scrollable/ScrollableTableBo
 import ScrollableTableRow from "../../shared/table/scrollable/ScrollableTableRow";
 import { ScrollTableUtil } from "../../shared/table/scrollable/ScrollableTableUtil";
 import { GetTripsModel } from "../../../apis/types/asset/GetTripsModel";
+import { showDate } from "../../../services/util/DateUtil";
 
 type Props = {
   loading: boolean;
@@ -54,8 +55,8 @@ export default function AssetTripsTable(props: Props) {
             <div style={{ flex: "0 0 80px" }} className="pr-1">
               {x.number}
             </div>
-            <div style={{ flex: "1 0" }}>{x.startDate}</div>
-            <div style={{ flex: "1 0" }}>{x.endDate}</div>
+            <div style={{ flex: "1 0" }}>{showDate(x.startDate)}</div>
+            <div style={{ flex: "1 0" }}>{showDate(x.endDate)}</div>
             <div style={{ flex: "1 0" }}>{getDistance(x.distance)}</div>
             <div style={{ flex: "1 0" }}>{x.locations.length}</div>
           </ScrollableTableRow>
