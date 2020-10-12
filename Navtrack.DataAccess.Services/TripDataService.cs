@@ -85,14 +85,14 @@ namespace Navtrack.DataAccess.Services
                 .OrderBy(x => x.DateTime)
                 .ToListAsync();
 
-            List<TripWithLocations> tripWithLocationses = trips.Select(x => new TripWithLocations
+            List<TripWithLocations> tripWithLocations = trips.Select(x => new TripWithLocations
             {
                 Trip = x,
                 Locations = locations.Where(y =>
                     y.DateTime >= x.StartLocation.DateTime && y.DateTime <= x.EndLocation.DateTime).ToList()
             }).ToList();
 
-            return tripWithLocationses;
+            return tripWithLocations;
         }
 
         private static void AddLocationToTrip(List<TripEntity> trips, LocationEntity location)
