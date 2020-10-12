@@ -7,6 +7,7 @@ using Navtrack.DataAccess.Model;
 using Navtrack.DataAccess.Model.Custom;
 using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
+using Navtrack.Library.Services.TaskQueue;
 using Navtrack.Library.Util;
 
 namespace Navtrack.DataAccess.Services
@@ -20,10 +21,19 @@ namespace Navtrack.DataAccess.Services
         {
             this.repository = repository;
         }
-
+        
+        private static readonly CategorizedTaskQueue<int> UpdateTripsQueue = new CategorizedTaskQueue<int>();
+        
         public async Task UpdateTrips(int assetId)
         {
-            TripEntity lastTrip = await repository.GetEntities<TripEntity>()
+            await UpdateTripsQueue.Enqueue(assetId, () => ExecuteUpdateTrips(assetId));
+        }
+        
+        private async Task ExecuteUpdateTrips(int assetId)
+        {
+            using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
+            
+            TripEntity lastTrip = await unitOfWork.GetEntities<TripEntity>()
                 .Include(x => x.EndLocation)
                 .Where(x => x.AssetId == assetId)
                 .OrderByDescending(x => x.Id)
@@ -36,7 +46,7 @@ namespace Navtrack.DataAccess.Services
             {
                 DateTime lastLocationDate = GetLastLocationDate(trips);
 
-                locations = await repository.GetEntities<LocationEntity>()
+                locations = await unitOfWork.GetEntities<LocationEntity>()
                     .Where(x => x.AssetId == assetId && x.DateTime > lastLocationDate)
                     .OrderBy(x => x.DateTime)
                     .Take(1000)
@@ -48,14 +58,13 @@ namespace Navtrack.DataAccess.Services
                 }
             } while (locations.Count > 0);
 
-            await SaveTrips(assetId, trips);
+            await SaveTrips(assetId, trips, unitOfWork);
         }
 
-        private async Task SaveTrips(int assetId, List<TripEntity> trips)
+        private async Task SaveTrips(int assetId, List<TripEntity> trips, IUnitOfWork unitOfWork)
         {
             List<TripEntity> newTrips = trips.Where(x => x.Id == 0).ToList();
             
-            using IUnitOfWork unitOfWork = repository.CreateUnitOfWork();
             newTrips.ForEach(x =>
             {
                 x.StartLocation = null;
@@ -76,23 +85,28 @@ namespace Navtrack.DataAccess.Services
                 .Take(500)
                 .ToListAsync();
 
-            DateTime startDate = trips.Min(x => x.StartLocation.DateTime);
-            DateTime endDate = trips.Max(x => x.EndLocation.DateTime);
-
-            List<LocationEntity> locations = await repository.GetEntities<LocationEntity>()
-                .Include(x => x.ConnectionMessage)
-                .Where(x => x.AssetId == assetId && x.DateTime >= startDate && x.DateTime <= endDate)
-                .OrderBy(x => x.DateTime)
-                .ToListAsync();
-
-            List<TripWithLocations> tripWithLocations = trips.Select(x => new TripWithLocations
+            if (trips.Any())
             {
-                Trip = x,
-                Locations = locations.Where(y =>
-                    y.DateTime >= x.StartLocation.DateTime && y.DateTime <= x.EndLocation.DateTime).ToList()
-            }).ToList();
+                DateTime startDate = trips.Min(x => x.StartLocation.DateTime);
+                DateTime endDate = trips.Max(x => x.EndLocation.DateTime);
 
-            return tripWithLocations;
+                List<LocationEntity> locations = await repository.GetEntities<LocationEntity>()
+                    .Include(x => x.ConnectionMessage)
+                    .Where(x => x.AssetId == assetId && x.DateTime >= startDate && x.DateTime <= endDate)
+                    .OrderBy(x => x.DateTime)
+                    .ToListAsync();
+
+                List<TripWithLocations> tripWithLocations = trips.Select(x => new TripWithLocations
+                {
+                    Trip = x,
+                    Locations = locations.Where(y =>
+                        y.DateTime >= x.StartLocation.DateTime && y.DateTime <= x.EndLocation.DateTime).ToList()
+                }).ToList();
+
+                return tripWithLocations;
+            }
+
+            return Enumerable.Empty<TripWithLocations>().ToList();
         }
 
         private static void AddLocationToTrip(List<TripEntity> trips, LocationEntity location)
