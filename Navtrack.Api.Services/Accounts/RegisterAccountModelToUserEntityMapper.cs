@@ -6,8 +6,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Accounts
 {
-    [Service(typeof(IMapper<RegisterAccountModel, UserEntity>))]
-    public class RegisterAccountModelToUserEntityMapper : IMapper<RegisterAccountModel, UserEntity>
+    [Service(typeof(IMapper<RegisterAccountRequestModel, UserEntity>))]
+    public class RegisterAccountModelToUserEntityMapper : IMapper<RegisterAccountRequestModel, UserEntity>
     {
         private readonly IPasswordHasher passwordHasher;
 
@@ -16,7 +16,7 @@ namespace Navtrack.Api.Services.Accounts
             this.passwordHasher = passwordHasher;
         }
 
-        public UserEntity Map(RegisterAccountModel source, UserEntity destination)
+        public UserEntity Map(RegisterAccountRequestModel source, UserEntity destination)
         {
             (string key, string hash) = passwordHasher.Hash(source.Password);
 

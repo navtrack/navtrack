@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Model.Commands;
 using Navtrack.Api.Model.User;
 
 namespace Navtrack.Api.Controllers
@@ -17,9 +16,9 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult<UserModel>> Get()
+        public Task<ActionResult<UserResponseModel>> Get()
         {
-            return HandleCommand<GetCurrentUserCommand, UserModel>(new GetCurrentUserCommand());
+            return HandleCommand<GetCurrentUserCommand, UserResponseModel>(new GetCurrentUserCommand());
         }
     }
 }

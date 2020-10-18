@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Button from "../../shared/elements/Button";
 import Checkbox from "../../shared/elements/Checkbox";
 import Modal from "../../shared/elements/Modal";
+import SelectInput from "../../shared/forms/SelectInput";
+import TextInput from "../../shared/forms/TextInput";
 import Icon from "../../shared/util/Icon";
 import { ComparisonType } from "./types/ComparisonType";
 import { NumberFilterType } from "./types/NumberFilterType";
@@ -47,37 +49,29 @@ export default function SpeedFilterModal(props: Props) {
         <div
           className="mb-1 ml-5 flex flex-row items-center"
           onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Single })}>
-          <div className="text-sm relative" style={{ width: "110px" }}>
-            <div className="relative shadow rounded w-full">
-              <select
-                className="block appearance-none bg-white p-1 cursor-pointer focus:outline-none bg-gray-200 w-full text-gray-700"
-                value={filter.comparisonType}
-                onChange={(e) =>
-                  setFilter({ ...filter, comparisonType: parseInt(e.target.value) })
-                }>
-                <option value={ComparisonType.GreaterThan} key={0}>
-                  Greater Than
-                </option>
-                <option value={ComparisonType.Equals} key={1}>
-                  Equals
-                </option>
-                <option value={ComparisonType.LessThan} key={2}>
-                  Less Than
-                </option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 pt-1">
-                <i className="fas fa-chevron-down" />
-              </div>
-            </div>
+          <div style={{ minWidth: 140 }}>
+            <SelectInput
+              value={filter.comparisonType}
+              onChange={(e) => setFilter({ ...filter, comparisonType: parseInt(e.target.value) })}>
+              <option value={ComparisonType.GreaterThan} key={0}>
+                Greater Than
+              </option>
+              <option value={ComparisonType.Equals} key={1}>
+                Equals
+              </option>
+              <option value={ComparisonType.LessThan} key={2}>
+                Less Than
+              </option>
+            </SelectInput>
           </div>
-          <input
-            type="number"
-            className="ml-3 w-12 mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-            onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })}
-            value={filter.single}
-            onChange={(e) => setFilter({ ...filter, single: parseInt(e.target.value) })}
-          />
-          <span className="ml-1">km/h</span>
+          <div className="flex ml-1 items-center">
+            <TextInput
+              type="number"
+              value={filter.single}
+              onChange={(e) => setFilter({ ...filter, single: parseInt(e.target.value) })}>
+              km/h
+            </TextInput>
+          </div>
         </div>
         <Checkbox
           className="mb-1"
@@ -90,34 +84,22 @@ export default function SpeedFilterModal(props: Props) {
           className="mb-1 flex flex-row items-center"
           onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })}>
           <div className="ml-5">
-            <div className="text-xs uppercase font-semibold text-gray-700">Min</div>
-            <div className="text-sm relative">
-              <input
-                type="number"
-                className="w-12 mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-                onClick={() =>
-                  setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })
-                }
-                value={filter.min}
-                onChange={(e) => setMin(e.target.value)}
-              />
-              <span className="ml-1">-</span>
-            </div>
+            <TextInput
+              name="MIN"
+              type="number"
+              value={filter.min}
+              onChange={(e) => setMin(e.target.value)}>
+              km/h
+            </TextInput>
           </div>
           <div className="ml-1">
-            <div className="text-xs uppercase font-semibold text-gray-700">Max</div>
-            <div className="text-sm relative">
-              <input
-                type="number"
-                className="w-12 mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
-                onClick={() =>
-                  setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })
-                }
-                value={filter.max}
-                onChange={(e) => setMax(e.target.value)}
-              />
-              <span className="ml-1">km/h</span>
-            </div>
+            <TextInput
+              name="MAX"
+              type="number"
+              value={filter.max}
+              onChange={(e) => setMax(e.target.value)}>
+              km/h
+            </TextInput>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ using System;
 
 namespace Navtrack.Api.Model.Devices
 {
-    public class DeviceStatisticsModel
+    public class DeviceStatisticsResponseModel
     {
         public int Locations { get; set; }
         public DateTime? FirstLocationDateTime { get; set; }

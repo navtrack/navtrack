@@ -21,13 +21,13 @@ namespace Navtrack.Api.Services.User
             this.userDataService = userDataService;
         }
 
-        public async Task<UserModel> GetCurrentUser()
+        public async Task<UserResponseModel> GetCurrentUser()
         {
             int currentUserId = httpContextAccessor.HttpContext.User.GetId();
 
             UserEntity entity = await userDataService.GetUserById(currentUserId);
 
-            return new UserModel
+            return new UserResponseModel
             {
                 Id = entity.Id,
                 Email = entity.Email,

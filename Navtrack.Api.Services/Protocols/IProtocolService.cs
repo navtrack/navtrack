@@ -5,6 +5,6 @@ namespace Navtrack.Api.Services.Protocols
 {
     public interface IProtocolService
     {
-        List<ProtocolModel> GetProtocols();
+        List<ProtocolResponseModel> GetProtocols();
     }
 }

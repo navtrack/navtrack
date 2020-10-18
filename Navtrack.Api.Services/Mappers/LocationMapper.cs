@@ -5,10 +5,10 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Mappers
 {
-    [Service(typeof(IMapper<LocationEntity, LocationModel>))]
-    public class LocationMapper : IMapper<LocationEntity, LocationModel>
+    [Service(typeof(IMapper<LocationEntity, LocationResponseModel>))]
+    public class LocationMapper : IMapper<LocationEntity, LocationResponseModel>
     {
-        public LocationModel Map(LocationEntity source, LocationModel destination)
+        public LocationResponseModel Map(LocationEntity source, LocationResponseModel destination)
         {
             destination.Id = source.Id;
             destination.Latitude = source.Latitude;

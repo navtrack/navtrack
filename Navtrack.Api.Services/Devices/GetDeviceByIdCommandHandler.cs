@@ -11,8 +11,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Devices
 {
-    [Service(typeof(ICommandHandler<GetDeviceByIdCommand, DeviceModel>))]
-    public class GetDeviceByIdCommandHandler : BaseCommandHandler<GetDeviceByIdCommand, DeviceModel>
+    [Service(typeof(ICommandHandler<GetDeviceByIdCommand, DeviceResponseModel>))]
+    public class GetDeviceByIdCommandHandler : BaseCommandHandler<GetDeviceByIdCommand, DeviceResponseModel>
     {
         private readonly IMapper mapper;
         private readonly IRepository repository;
@@ -23,7 +23,7 @@ namespace Navtrack.Api.Services.Devices
             this.repository = repository;
         }
 
-        public override async Task<DeviceModel> Handle(GetDeviceByIdCommand command)
+        public override async Task<DeviceResponseModel> Handle(GetDeviceByIdCommand command)
         {
             DeviceEntity entity = await repository.GetEntities<DeviceEntity>()
                 .FirstOrDefaultAsync(x => x.Id == command.DeviceId &&
@@ -32,7 +32,7 @@ namespace Navtrack.Api.Services.Devices
 
             if (entity != null)
             {
-                DeviceModel model = mapper.Map<DeviceEntity, DeviceModel>(entity);
+                DeviceResponseModel model = mapper.Map<DeviceEntity, DeviceResponseModel>(entity);
 
                 model.LocationsCount = await repository.GetEntities<LocationEntity>()
                     .CountAsync(x => x.DeviceId == entity.Id);

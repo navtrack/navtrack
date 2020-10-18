@@ -9,8 +9,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Accounts
 {
-    [Service(typeof(ICommandHandler<RegisterAccountModel>))]
-    public class RegisterAccountCommandHandler : BaseCommandHandler<RegisterAccountModel>
+    [Service(typeof(ICommandHandler<RegisterAccountRequestModel>))]
+    public class RegisterAccountCommandHandler : BaseCommandHandler<RegisterAccountRequestModel>
     {
         private readonly IUserDataService userDataService;
         private readonly IMapper mapper;
@@ -21,38 +21,38 @@ namespace Navtrack.Api.Services.Accounts
             this.mapper = mapper;
         }
 
-        public override async Task Validate(RegisterAccountModel request)
+        public override async Task Validate(RegisterAccountRequestModel command)
         {
-            if (string.IsNullOrEmpty(request.Email))
+            if (string.IsNullOrEmpty(command.Email))
             {
-                ApiResponse.AddError(nameof(RegisterAccountModel.Email), "The email is required.");
+                ApiResponse.AddError(nameof(RegisterAccountRequestModel.Email), "The email is required.");
             }
-            else if (!new EmailAddressAttribute().IsValid(request.Email))
+            else if (!new EmailAddressAttribute().IsValid(command.Email))
             {
-                ApiResponse.AddError(nameof(RegisterAccountModel.Email), "The email address is not valid.");
+                ApiResponse.AddError(nameof(RegisterAccountRequestModel.Email), "The email address is not valid.");
             }
-            else if (await userDataService.EmailIsUsed(request.Email))
+            else if (await userDataService.EmailIsUsed(command.Email))
             {
-                ApiResponse.AddError(nameof(RegisterAccountModel.Email), "Email is already used.");
+                ApiResponse.AddError(nameof(RegisterAccountRequestModel.Email), "Email is already used.");
             }
 
-            if (string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(command.Password))
             {
-                ApiResponse.AddError(nameof(RegisterAccountModel.Password), "The password is required.");
+                ApiResponse.AddError(nameof(RegisterAccountRequestModel.Password), "The password is required.");
             }
-            if (string.IsNullOrEmpty(request.ConfirmPassword))
+            if (string.IsNullOrEmpty(command.ConfirmPassword))
             {
-                ApiResponse.AddError(nameof(RegisterAccountModel.ConfirmPassword), "The confirm password is required.");
+                ApiResponse.AddError(nameof(RegisterAccountRequestModel.ConfirmPassword), "The confirm password is required.");
             }
-            else if (request.Password != request.ConfirmPassword)
+            else if (command.Password != command.ConfirmPassword)
             {
-                ApiResponse.AddError(nameof(RegisterAccountModel.ConfirmPassword), "The passwords must match.");
+                ApiResponse.AddError(nameof(RegisterAccountRequestModel.ConfirmPassword), "The passwords must match.");
             }
         }
 
-        public override async Task Handle(RegisterAccountModel request)
+        public override async Task Handle(RegisterAccountRequestModel command)
         {
-            UserEntity user = mapper.Map<RegisterAccountModel, UserEntity>(request);
+            UserEntity user = mapper.Map<RegisterAccountRequestModel, UserEntity>(command);
 
             await userDataService.Add(user);
         }

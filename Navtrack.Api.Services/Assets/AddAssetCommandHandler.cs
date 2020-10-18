@@ -11,8 +11,8 @@ using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(ICommandHandler<AddAssetCommand, AddAssetModel>))]
-    public class AddAssetCommandHandler : BaseCommandHandler<AddAssetCommand, AddAssetModel>
+    [Service(typeof(ICommandHandler<AddAssetCommand, AddAssetResponseModel>))]
+    public class AddAssetCommandHandler : BaseCommandHandler<AddAssetCommand, AddAssetResponseModel>
     {
         private readonly IDeviceTypeDataService deviceTypeDataService;
         private readonly IRepository repository;
@@ -59,13 +59,13 @@ namespace Navtrack.Api.Services.Assets
             }
         }
 
-        public override async Task<AddAssetModel> Handle(AddAssetCommand command)
+        public override async Task<AddAssetResponseModel> Handle(AddAssetCommand command)
         {
             DeviceType deviceType = deviceTypeDataService.GetById(command.Model.DeviceTypeId);
 
             AssetEntity asset = await AddAsset(command, deviceType);
 
-            return new AddAssetModel
+            return new AddAssetResponseModel
             {
                 Id = asset.Id
             };

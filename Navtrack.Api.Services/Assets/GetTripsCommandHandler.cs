@@ -11,8 +11,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(ICommandHandler<GetTripsCommand, GetTripsModel>))]
-    public class GetTripsCommandHandler : BaseCommandHandler<GetTripsCommand, GetTripsModel>
+    [Service(typeof(ICommandHandler<GetTripsCommand, GetTripsResponseModel>))]
+    public class GetTripsCommandHandler : BaseCommandHandler<GetTripsCommand, GetTripsResponseModel>
     {
         private readonly IAssetDataService assetDataService;
         private readonly IMapper mapper;
@@ -28,25 +28,30 @@ namespace Navtrack.Api.Services.Assets
 
         public override async Task Authorize(GetTripsCommand command)
         {
-            if (!await assetDataService.UserHasRoleForAsset(command.UserId, UserAssetRole.Owner, command.AssetId))
+            if (!await assetDataService.UserHasRolesForAsset(command.UserId,
+                new[] {UserAssetRole.User, UserAssetRole.Owner}, command.AssetId))
             {
                 ApiResponse.IsUnauthorised();
             }
         }
 
-        public override async Task<GetTripsModel> Handle(GetTripsCommand command)
+        public override async Task<GetTripsResponseModel> Handle(GetTripsCommand command)
         {
             await tripDataService.UpdateTrips(command.AssetId);
-            
-            IEnumerable<TripModel> trips =
-                (await tripDataService.GetTrips(command.AssetId)).Select(x => new TripModel
-                {
-                    Number = x.Trip.Number,
-                    Distance = x.Trip.Distance,
-                    Locations = x.Locations.Select(y => mapper.Map<LocationEntity, LocationModel>(y)).ToList()
-                }).ToList();
-            
-            return new GetTripsModel
+
+            IEnumerable<TripResponseModel> trips =
+                (await tripDataService.GetTrips(command.AssetId,
+                    mapper.Map<LocationFilterRequestModel, LocationFilter>(command.Model)))
+                .Select(x =>
+                    new TripResponseModel
+                    {
+                        Number = x.Trip.Number,
+                        Distance = x.Trip.Distance,
+                        Locations = x.Locations.Select(y => mapper.Map<LocationEntity, LocationResponseModel>(y))
+                            .ToList()
+                    }).ToList();
+
+            return new GetTripsResponseModel
             {
                 Results = trips.OrderByDescending(x => x.EndDate).ToList()
             };

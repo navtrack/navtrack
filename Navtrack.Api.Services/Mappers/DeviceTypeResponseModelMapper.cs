@@ -6,8 +6,8 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Mappers
 {
-    [Service(typeof(IMapper<DeviceType, DeviceTypeModel>))]
-    public class DeviceTypeResponseModelMapper : IMapper<DeviceType, DeviceTypeModel>
+    [Service(typeof(IMapper<DeviceType, DeviceTypeResponseModel>))]
+    public class DeviceTypeResponseModelMapper : IMapper<DeviceType, DeviceTypeResponseModel>
     {
         private readonly IMapper mapper;
 
@@ -16,13 +16,13 @@ namespace Navtrack.Api.Services.Mappers
             this.mapper = mapper;
         }
 
-        public DeviceTypeModel Map(DeviceType source, DeviceTypeModel destination)
+        public DeviceTypeResponseModel Map(DeviceType source, DeviceTypeResponseModel destination)
         {
             destination.Id = source.Id;
             destination.DisplayName = $"{source.Manufacturer} {source.Type}";
             destination.Manufacturer = source.Manufacturer;
             destination.Model = source.Type;
-            destination.Protocol = mapper.Map<Protocol, ProtocolModel>(source.Protocol);
+            destination.Protocol = mapper.Map<Protocol, ProtocolResponseModel>(source.Protocol);
 
             return destination;
         }

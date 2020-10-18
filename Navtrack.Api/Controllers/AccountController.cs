@@ -17,7 +17,7 @@ namespace Navtrack.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public Task<IActionResult> Register([FromBody] RegisterAccountModel model)
+        public Task<IActionResult> Register([FromBody] RegisterAccountRequestModel model)
         {
             return HandleCommand(model);
         }

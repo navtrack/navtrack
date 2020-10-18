@@ -10,15 +10,15 @@ namespace Navtrack.Api.Services.CommandHandler
     
     public interface ICommandHandler<in TCommand> : ICommandHandler
     {
-        Task Authorize(TCommand request);
-        Task Validate(TCommand request);
-        Task Handle(TCommand request);
+        Task Authorize(TCommand command);
+        Task Validate(TCommand command);
+        Task Handle(TCommand command);
     }
     
     public interface ICommandHandler<in TCommand, TResponseModel> : ICommandHandler
     {
-        Task Authorize(TCommand request);
-        Task Validate(TCommand request);
-        Task<TResponseModel> Handle(TCommand request);
+        Task Authorize(TCommand command);
+        Task Validate(TCommand command);
+        Task<TResponseModel> Handle(TCommand command);
     }
 }

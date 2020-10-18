@@ -11,9 +11,9 @@ export type AltitudeFilterModel = {
 };
 
 export const DefaultAltitudeFilterModel: AltitudeFilterModel = {
-  single: 50,
-  min: 50,
-  max: 130,
+  single: 0,
+  min: 0,
+  max: 1000,
   numberFilterType: NumberFilterType.Single,
   enabled: false,
   comparisonType: ComparisonType.GreaterThan

@@ -6,12 +6,14 @@ import InputWrapper from "./InputWrapper";
 type Props = {
   name?: string;
   value: string | number | string[];
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   validationResult?: PropertyValidationResult | undefined;
   className?: string;
   placeholder?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "number";
   children?: ReactNode;
+  onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
+  readOnly?: boolean;
 };
 
 export default function TextInput(props: Props) {
@@ -25,12 +27,16 @@ export default function TextInput(props: Props) {
         )}
         value={props.value}
         onChange={(e) => {
-          props.onChange(e);
+          if (props.onChange) {
+            props.onChange(e);
+          }
           props.validationResult?.Clear();
         }}
         placeholder={props.placeholder}
+        readOnly={props.readOnly}
+        onClick={props.onClick}
       />
-      {props.children}
+      {props.children && <div className="text-sm ml-2 flex items-center">{props.children}</div>}
     </InputWrapper>
   );
 }

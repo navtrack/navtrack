@@ -6,9 +6,10 @@ import { AssetModel } from "./types/asset/AssetModel";
 import { ChangeDeviceRequestModel } from "./types/asset/ChangeDeviceRequestModel";
 import { GetTripsModel } from "./types/asset/GetTripsModel";
 import { RenameAssetRequestModel } from "./types/asset/RenameAssetRequestModel";
-import { LocationHistoryRequestModel } from "./types/location/LocationHistoryRequestModel";
+import { LocationFilterRequestModel } from "./types/asset/LocationFilterRequestModel";
 import { LocationModel } from "./types/location/LocationModel";
 import { ResponseModel } from "./types/ResponseModel";
+import { GetLocationsModel } from "./types/asset/GetLocationsModel";
 
 export const AssetApi = {
   get: function (id: number): Promise<AssetModel> {
@@ -38,7 +39,7 @@ export const AssetApi = {
     return HttpClient.put(apiUrl(`assets/${assetId}/device`), model);
   },
 
-  getTrips: function (id: number, filter: LocationHistoryRequestModel): Promise<GetTripsModel> {
+  getTrips: function (id: number, filter: LocationFilterRequestModel): Promise<GetTripsModel> {
     return HttpClient.get<GetTripsModel>(formatUrl(apiUrl(`assets/${id}/trips`), filter));
   },
 
@@ -48,9 +49,9 @@ export const AssetApi = {
 
   getLocations: function (
     assetId: number,
-    filter: LocationHistoryRequestModel
-  ): Promise<LocationModel[]> {
-    return HttpClient.get<LocationModel[]>(
+    filter: LocationFilterRequestModel
+  ): Promise<GetLocationsModel> {
+    return HttpClient.get<GetLocationsModel>(
       formatUrl(apiUrl(`assets/${assetId}/locations`), filter)
     );
   }

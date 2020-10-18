@@ -9,8 +9,9 @@ export type DateFilterModel = {
   intervalEndDate: Moment;
   dateFilterType: DateFilterType;
   numberFilterType: NumberFilterType;
-  startDate: Moment;
-  endDate: Moment;
+  startDate?: Moment;
+  endDate?: Moment;
+  enabled: boolean;
 };
 
 export const DefaultDateFilterModel: DateFilterModel = {
@@ -19,20 +20,21 @@ export const DefaultDateFilterModel: DateFilterModel = {
   intervalEndDate: moment(),
   dateFilterType: DateFilterType.Last7Days,
   numberFilterType: NumberFilterType.Interval,
-  startDate: moment().subtract(10, "days"),
-  endDate: moment()
+  startDate: undefined,
+  endDate: undefined,
+  enabled: false
 };
 
 export const dateFilterToString = (dateFilter: DateFilterModel) => {
   if (dateFilter.numberFilterType === NumberFilterType.Single) {
     return dateFilter.singleDate.format(Configuration.dateFormatAlt);
   } else {
-    if (dateFilter.startDate.isSame(dateFilter.endDate, "day")) {
+    if (dateFilter.startDate && dateFilter.startDate.isSame(dateFilter.endDate, "day")) {
       return dateFilter.startDate.format(Configuration.dateFormatAlt);
     }
 
-    return `${dateFilter.startDate.format(
+    return `${dateFilter.startDate?.format(
       Configuration.dateFormatAlt
-    )} - ${dateFilter.endDate.format(Configuration.dateFormatAlt)}`;
+    )} - ${dateFilter.endDate?.format(Configuration.dateFormatAlt)}`;
   }
 };

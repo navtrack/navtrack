@@ -51,8 +51,7 @@ export default function AssetSettingsGeneral(props: Props) {
               <Button
                 color="basic"
                 onClick={handleRenameClick}
-                disabled={validationResult.HasErrors()}
-                className="ml-2">
+                disabled={validationResult.HasErrors()}>
                 Rename
               </Button>
             </TextInput>

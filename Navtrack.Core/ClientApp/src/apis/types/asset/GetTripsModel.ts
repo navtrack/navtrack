@@ -9,5 +9,6 @@ export interface GetTripsModel extends ResultsModel<TripModel> {
 export const DefaultGetTripsModel: GetTripsModel = {
   totalDistance: 0,
   totalLocations: 0,
-  results: []
+  results: [],
+  totalResults: 0
 };

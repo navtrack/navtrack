@@ -5,6 +5,6 @@ namespace Navtrack.Api.Services.User
 {
     public interface IUserService
     {
-        Task<UserModel> GetCurrentUser();
+        Task<UserResponseModel> GetCurrentUser();
     }
 }

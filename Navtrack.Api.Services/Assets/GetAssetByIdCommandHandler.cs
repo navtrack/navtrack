@@ -43,7 +43,7 @@ namespace Navtrack.Api.Services.Assets
             return null;
         }
 
-        private async Task<List<DeviceModel>> GetDevices(AssetEntity entity)
+        private async Task<List<DeviceResponseModel>> GetDevices(AssetEntity entity)
         {
             var locationCount = await repository.GetEntities<LocationEntity>()
                 .Where(x => x.AssetId == entity.Id)
@@ -54,7 +54,7 @@ namespace Navtrack.Api.Services.Assets
 
             return entity.Devices.Select(x =>
             {
-                DeviceModel deviceModel = mapper.Map<DeviceEntity, DeviceModel>(x);
+                DeviceResponseModel deviceModel = mapper.Map<DeviceEntity, DeviceResponseModel>(x);
                 deviceModel.LocationsCount = (locationCount.FirstOrDefault(y => y.DeviceId == x.Id)?.LocationsCount)
                     .GetValueOrDefault();
 

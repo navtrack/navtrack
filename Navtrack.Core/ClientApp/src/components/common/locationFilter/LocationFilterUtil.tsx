@@ -1,25 +1,31 @@
 import { LocationFilterModel } from "./types/LocationFilterModel";
 import { NumberFilterType } from "./types/NumberFilterType";
 import { ComparisonType } from "./types/ComparisonType";
-import { LocationHistoryRequestModel } from "../../../apis/types/location/LocationHistoryRequestModel";
+import { LocationFilterRequestModel } from "../../../apis/types/asset/LocationFilterRequestModel";
 
 export function MapToLocationHistoryRequestModel(
   locationFilter: LocationFilterModel,
   assetId: number
 ) {
-  let filter: LocationHistoryRequestModel = {
-    startDate: locationFilter.date.startDate.toISOString(),
-    endDate: locationFilter.date.endDate.toISOString(),
-    startAltitude: getStart({ ...locationFilter.altitude }),
-    endAltitude: getEnd({ ...locationFilter.altitude }),
-    startSpeed: getStart({ ...locationFilter.speed }),
-    endSpeed: getEnd({ ...locationFilter.speed })
+  let filter: LocationFilterRequestModel = {
+    startDate:
+      locationFilter.date.enabled && locationFilter.date.startDate !== undefined
+        ? locationFilter.date.startDate.toISOString()
+        : undefined,
+    endDate:
+      locationFilter.date.enabled && locationFilter.date.endDate !== undefined
+        ? locationFilter.date.endDate.toISOString()
+        : undefined,
+    minAltitude: getMin({ ...locationFilter.altitude }),
+    maxAltitude: getMax({ ...locationFilter.altitude }),
+    minSpeed: getMin({ ...locationFilter.speed }),
+    maxSpeed: getMax({ ...locationFilter.speed })
   };
 
   return filter;
 }
 
-const getStart = (props: {
+const getMin = (props: {
   enabled: boolean;
   numberFilterType: NumberFilterType;
   comparisonType: ComparisonType;
@@ -42,7 +48,7 @@ const getStart = (props: {
   return undefined;
 };
 
-const getEnd = (props: {
+const getMax = (props: {
   enabled: boolean;
   numberFilterType: NumberFilterType;
   comparisonType: ComparisonType;

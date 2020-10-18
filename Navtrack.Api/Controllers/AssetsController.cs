@@ -35,9 +35,9 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpPost]
-        public Task<ActionResult<AddAssetModel>> Add([FromBody] AddAssetRequestModel model)
+        public Task<ActionResult<AddAssetResponseModel>> Add([FromBody] AddAssetRequestModel model)
         {
-            return HandleCommand<AddAssetCommand, AddAssetModel>(new AddAssetCommand
+            return HandleCommand<AddAssetCommand, AddAssetResponseModel>(new AddAssetCommand
             {
                 Model = model,
                 UserId = User.GetId()
@@ -77,22 +77,24 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{assetId}/trips")]
-        public Task<ActionResult<GetTripsModel>> GetTrips([FromRoute] int assetId)
+        public Task<ActionResult<GetTripsResponseModel>> GetTrips([FromRoute] int assetId, 
+            [FromQuery] GetTripsRequestModel model)
         {
-            return HandleCommand<GetTripsCommand, GetTripsModel>(
+            return HandleCommand<GetTripsCommand, GetTripsResponseModel>(
                 new GetTripsCommand
                 {
                     AssetId = assetId,
-                    UserId = User.GetId()
+                    UserId = User.GetId(),
+                    Model = model
                 });
         }
         
         
         [HttpGet("{assetId}/locations")]
-        public Task<ActionResult<IEnumerable<LocationModel>>> GetLocations([FromRoute] int assetId, 
-            [FromQuery] LocationHistoryRequestModel model)
+        public Task<ActionResult<GetLocationsResponseModel>> GetLocations([FromRoute] int assetId, 
+            [FromQuery] GetLocationsRequestModel model)
         {
-            return HandleCommand<GetLocationsCommand, IEnumerable<LocationModel>>(
+            return HandleCommand<GetLocationsCommand, GetLocationsResponseModel>(
                 new GetLocationsCommand
                 {
                     AssetId = assetId,
@@ -102,9 +104,9 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{assetId}/locations/latest")]
-        public Task<ActionResult<LocationModel>> GetLatestLocation(int assetId)
+        public Task<ActionResult<LocationResponseModel>> GetLatestLocation(int assetId)
         {
-            return HandleCommand<GetLatestLocationCommand, LocationModel>(
+            return HandleCommand<GetLatestLocationCommand, LocationResponseModel>(
                 new GetLatestLocationCommand
                 {
                     AssetId = assetId,

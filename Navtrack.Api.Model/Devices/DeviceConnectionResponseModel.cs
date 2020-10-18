@@ -3,7 +3,7 @@ using Navtrack.Api.Model.Custom;
 
 namespace Navtrack.Api.Model.Devices
 {
-    public class DeviceConnectionModel : IModel
+    public class DeviceConnectionResponseModel : IModel
     {
         public int Id { get; set; }
         public int DeviceId { get; set; }

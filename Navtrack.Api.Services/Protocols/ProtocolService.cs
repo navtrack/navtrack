@@ -20,10 +20,10 @@ namespace Navtrack.Api.Services.Protocols
             this.mapper = mapper;
         }
 
-        public List<ProtocolModel> GetProtocols()
+        public List<ProtocolResponseModel> GetProtocols()
         {
             return protocolDataService.GetProtocols()
-                .Select(mapper.Map<Protocol, ProtocolModel>)
+                .Select(mapper.Map<Protocol, ProtocolResponseModel>)
                 .OrderBy(x => x.Name)
                 .ToList();
         }

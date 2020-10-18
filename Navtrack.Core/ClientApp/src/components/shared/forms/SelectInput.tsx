@@ -4,7 +4,7 @@ import { PropertyValidationResult } from "../../../services/validation/PropertyV
 import InputWrapper from "./InputWrapper";
 
 type Props = {
-  name: string;
+  name?: string;
   value: string | number | string[];
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   validationResult?: PropertyValidationResult | undefined;

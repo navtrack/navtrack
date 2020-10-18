@@ -10,8 +10,8 @@ namespace Navtrack.Api.Model.Assets
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public DeviceModel ActiveDevice => Devices?.FirstOrDefault(x => x.IsActive);
-        public IEnumerable<DeviceModel> Devices { get; set; }
-        public LocationModel Location { get; set; }
+        public DeviceResponseModel ActiveDevice => Devices?.FirstOrDefault(x => x.IsActive);
+        public IEnumerable<DeviceResponseModel> Devices { get; set; }
+        public LocationResponseModel Location { get; set; }
     }
 }

@@ -20,9 +20,9 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public Task<ActionResult<DeviceModel>> Get([FromRoute] int id)
+        public Task<ActionResult<DeviceResponseModel>> Get([FromRoute] int id)
         {
-            return HandleCommand<GetDeviceByIdCommand, DeviceModel>(new GetDeviceByIdCommand
+            return HandleCommand<GetDeviceByIdCommand, DeviceResponseModel>(new GetDeviceByIdCommand
             {
                 DeviceId = id,
                 UserId = User.GetId()
@@ -30,9 +30,9 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{id}/statistics")]
-        public Task<ActionResult<DeviceStatisticsModel>> GetStatistics([FromRoute] int id)
+        public Task<ActionResult<DeviceStatisticsResponseModel>> GetStatistics([FromRoute] int id)
         {
-            return HandleCommand<GetDeviceStatisticsCommand, DeviceStatisticsModel>(
+            return HandleCommand<GetDeviceStatisticsCommand, DeviceStatisticsResponseModel>(
                 new GetDeviceStatisticsCommand
                 {
                     DeviceId = id,
@@ -41,10 +41,10 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("{id}/connections")]
-        public Task<ActionResult<ResultsPaginationModel<DeviceConnectionModel>>> GetConnections(
+        public Task<ActionResult<ResultsPaginationResponseModel<DeviceConnectionResponseModel>>> GetConnections(
             [FromRoute] DeviceConnectionRequestModel model)
         {
-            return HandleCommand<GetDeviceConnectionsCommand, ResultsPaginationModel<DeviceConnectionModel>>(
+            return HandleCommand<GetDeviceConnectionsCommand, ResultsPaginationResponseModel<DeviceConnectionResponseModel>>(
                 new GetDeviceConnectionsCommand
                 {
                     DeviceId = model.Id,
@@ -55,7 +55,7 @@ namespace Navtrack.Api.Controllers
         }
 
         [HttpGet("types")]
-        public List<DeviceTypeModel> GetTypes()
+        public List<DeviceTypeResponseModel> GetTypes()
         {
             return deviceTypeService.GetDeviceTypes();
         }

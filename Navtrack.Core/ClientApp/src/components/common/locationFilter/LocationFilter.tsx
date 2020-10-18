@@ -11,7 +11,7 @@ import {
   coordinatesFilterToString,
   DefaultCoordinatesFilterModel
 } from "./types/CoordinatesFilterModel";
-import { dateFilterToString } from "./types/DateFilterModel";
+import { dateFilterToString, DefaultDateFilterModel } from "./types/DateFilterModel";
 import { FilterType } from "./types/FilterType";
 import { LocationFilterModel } from "./types/LocationFilterModel";
 import { speedFilterToString, DefaultSpeedFilterModel } from "./types/SpeedFilterModel";
@@ -59,14 +59,22 @@ export default function LocationFilter(props: Props) {
 
   return (
     <div className="bg-white rounded-t p-3 flex items-center z-20">
-      <Icon className="fa-filter mr-5" />
-      <div
-        className="cursor-pointer focus:outline-none bg-gray-200 hover:bg-gray-300 text-sm px-2 py-1 rounded rounded-lg"
-        onClick={setShowDateFilter}>
-        <Icon className="fa-calendar-alt" />
-        <span className="ml-2">{dateFilterToString(props.filter.date)}</span>
-        <Icon className="fa-edit ml-2" />
-      </div>
+      <Icon className="fa-filter" />
+      {props.filter.date.enabled && (
+        <Filter
+          icon="fa-calendar-alt"
+          displayText={dateFilterToString(props.filter.date)}
+          onClick={setShowDateFilter}
+          order={getOrder(FilterType.Date)}
+          onClickDelete={(e) =>
+            handleFilterDelete(
+              e,
+              { ...props.filter, date: DefaultDateFilterModel },
+              FilterType.Date
+            )
+          }
+        />
+      )}
       {props.filter.speed.enabled && (
         <Filter
           icon="fa-tachometer-alt"
@@ -161,6 +169,16 @@ export default function LocationFilter(props: Props) {
           {showAddFilterMenu && (
             <div className="mt-2 absolute fadeIn animated faster text-sm">
               <div className="bg-white rounded-lg shadow overflow-hidden py-1">
+                {!props.filter.date.enabled && (
+                  <MenuItem
+                    icon="fa-calendar-alt"
+                    label="Date"
+                    onClick={(e) => {
+                      setShowDateFilter(e);
+                      hideAddFilterMenu();
+                    }}
+                  />
+                )}
                 {/* {!props.filter.coordinates.enabled && (
                   <MenuItem
                     icon="fa-location-arrow"

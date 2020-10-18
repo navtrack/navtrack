@@ -6,6 +6,7 @@ import Button from "../../shared/elements/Button";
 import DatePicker from "../../shared/elements/Calendar";
 import Checkbox from "../../shared/elements/Checkbox";
 import Modal from "../../shared/elements/Modal";
+import TextInput from "../../shared/forms/TextInput";
 import Icon from "../../shared/util/Icon";
 import { DateFilterModel } from "./types/DateFilterModel";
 import { DateFilterType } from "./types/DateFilterType";
@@ -29,43 +30,49 @@ export default function DateFilterModal(props: Props) {
   const [endDatePickerVisible, showEndDatePicker, hideEndDatePicker] = useClickOutside();
 
   const saveFilter = () => {
-    const dateFilters = {
+    const dateFilters: Record<number, DateFilterModel> = {
       [DateFilterType.Today]: {
         ...filter,
         singleDate: moment(),
         startDate: getDate(moment()).startOf("day"),
         endDate: getDate(moment()).endOf("day"),
-        numberFilterType: NumberFilterType.Single
+        numberFilterType: NumberFilterType.Single,
+        enabled: true
       },
       [DateFilterType.Last7Days]: {
         ...filter,
         startDate: getDate(moment()).startOf("day").subtract(6, "day"),
         endDate: getDate(moment()).endOf("day"),
-        numberFilterType: NumberFilterType.Interval
+        numberFilterType: NumberFilterType.Interval,
+        enabled: true
       },
       [DateFilterType.Last28Days]: {
         ...filter,
         startDate: getDate(moment()).subtract(27, "day").startOf("day"),
         endDate: getDate(moment()).endOf("day"),
-        numberFilterType: NumberFilterType.Interval
+        numberFilterType: NumberFilterType.Interval,
+        enabled: true
       },
       [DateFilterType.CurrentMonth]: {
         ...filter,
         startDate: getDate(moment()).startOf("month").startOf("day"),
         endDate: getDate(moment()).endOf("month").endOf("day"),
-        numberFilterType: NumberFilterType.Interval
+        numberFilterType: NumberFilterType.Interval,
+        enabled: true
       },
       [DateFilterType.SingleDay]: {
         ...filter,
         startDate: getDate(filter.singleDate).startOf("day"),
         endDate: getDate(filter.singleDate).endOf("day"),
-        numberFilterType: NumberFilterType.Single
+        numberFilterType: NumberFilterType.Single,
+        enabled: true
       },
       [DateFilterType.Interval]: {
         ...filter,
         startDate: getDate(filter.intervalStartDate).startOf("day"),
         endDate: getDate(filter.intervalEndDate).endOf("day"),
-        numberFilterType: NumberFilterType.Interval
+        numberFilterType: NumberFilterType.Interval,
+        enabled: true
       }
     };
 
@@ -139,16 +146,16 @@ export default function DateFilterModal(props: Props) {
           onClick={() => setFilter({ ...filter, dateFilterType: DateFilterType.SingleDay })}>
           <div className="ml-5">
             <div className="text-sm relative">
-              <input
+              <TextInput
                 type="text"
-                className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer "
+                value={filter.singleDate.format(Configuration.dateFormat)}
                 onClick={(e) => {
                   setFilter({ ...filter, dateFilterType: DateFilterType.SingleDay });
                   hideAll();
                   showSingleDateDatePicker(e);
                 }}
-                value={filter.singleDate.format(Configuration.dateFormat)}
-                readOnly></input>
+                readOnly
+              />
               {sngleDatePickerVisible && (
                 <div className="absolute bottom-0 mb-10 fadeIn animated faster">
                   <DatePicker
@@ -174,16 +181,16 @@ export default function DateFilterModal(props: Props) {
           <div className="ml-5">
             <div className="text-xs uppercase font-semibold text-gray-700">Start date</div>
             <div className="text-sm relative">
-              <input
+              <TextInput
                 type="text"
-                className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
+                value={filter.intervalStartDate.format(Configuration.dateFormat)}
                 onClick={(e) => {
                   setFilter({ ...filter, dateFilterType: DateFilterType.Interval });
                   hideAll();
                   showStartDatePicker(e);
                 }}
-                value={filter.intervalStartDate.format(Configuration.dateFormat)}
-                readOnly></input>
+                readOnly
+              />
               {startDatePickerVisible && (
                 <div className="absolute bottom-0 mb-10 fadeIn animated faster">
                   <DatePicker
@@ -198,16 +205,16 @@ export default function DateFilterModal(props: Props) {
           <div className="ml-3">
             <div className="text-xs uppercase font-semibold text-gray-700">End date</div>
             <div className="text-sm relative">
-              <input
+              <TextInput
                 type="text"
-                className="mt-1 mb-1 bg-gray-200 text-gray-700 shadow rounded p-1 focus:outline-none cursor-pointer"
+                value={filter.intervalEndDate.format(Configuration.dateFormat)}
                 onClick={(e) => {
                   setFilter({ ...filter, dateFilterType: DateFilterType.Interval });
                   hideAll();
                   showEndDatePicker(e);
                 }}
-                value={filter.intervalEndDate.format(Configuration.dateFormat)}
-                readOnly></input>
+                readOnly
+              />
               {endDatePickerVisible && (
                 <div className="absolute bottom-0 mb-10 fadeIn animated faster">
                   <DatePicker

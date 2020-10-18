@@ -14,39 +14,39 @@ namespace Navtrack.Api.Services.CommandHandler
         }
     }
 
-    public abstract class BaseCommandHandler<TRequestModel> : BaseCommandHandler, ICommandHandler<TRequestModel>
+    public abstract class BaseCommandHandler<TCommand> : BaseCommandHandler, ICommandHandler<TCommand>
     {
-        public virtual Task Authorize(TRequestModel request)
+        public virtual Task Authorize(TCommand command)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task Validate(TRequestModel request)
+        public virtual Task Validate(TCommand command)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task Handle(TRequestModel request)
+        public virtual Task Handle(TCommand command)
         {
             throw new NotImplementedException();
         }
     }
 
     public abstract class
-        BaseCommandHandler<TRequestModel, TResponseModel> : BaseCommandHandler,
-            ICommandHandler<TRequestModel, TResponseModel>
+        BaseCommandHandler<TCommand, TResponseModel> : BaseCommandHandler,
+            ICommandHandler<TCommand, TResponseModel>
     {
-        public virtual Task Authorize(TRequestModel request)
+        public virtual Task Authorize(TCommand command)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task Validate(TRequestModel request)
+        public virtual Task Validate(TCommand command)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task<TResponseModel> Handle(TRequestModel request)
+        public virtual Task<TResponseModel> Handle(TCommand command)
         {
             throw new NotImplementedException();
         }

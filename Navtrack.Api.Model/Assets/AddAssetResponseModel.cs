@@ -1,6 +1,6 @@
 namespace Navtrack.Api.Model.Assets
 {
-    public class AddAssetModel
+    public class AddAssetResponseModel
     {
         public int Id { get; set; }
     }

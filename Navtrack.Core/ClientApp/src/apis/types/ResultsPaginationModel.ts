@@ -1,6 +1,6 @@
 import { PaginationModel } from "./PaginationModel";
+import { ResultsModel } from "./ResultsModel";
 
-export type ResultsPaginationModel<T extends object> = {
-  results: T[];
+export interface ResultsPaginationModel<T extends object> extends ResultsModel<T> {
   pagination: PaginationModel;
 };

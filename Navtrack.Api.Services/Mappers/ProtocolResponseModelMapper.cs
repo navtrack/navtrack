@@ -5,10 +5,10 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Mappers
 {
-    [Service(typeof(IMapper<Protocol, ProtocolModel>))]
-    public class ProtocolResponseModelMapper : IMapper<Protocol, ProtocolModel>
+    [Service(typeof(IMapper<Protocol, ProtocolResponseModel>))]
+    public class ProtocolResponseModelMapper : IMapper<Protocol, ProtocolResponseModel>
     {
-        public ProtocolModel Map(Protocol source, ProtocolModel destination)
+        public ProtocolResponseModel Map(Protocol source, ProtocolResponseModel destination)
         {
             destination.Name = source.Name;
             destination.Port = source.Port;

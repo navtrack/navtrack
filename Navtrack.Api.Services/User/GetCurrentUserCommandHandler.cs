@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
-using Navtrack.Api.Model.Commands;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.CommandHandler;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.User
 {
-    [Service(typeof(ICommandHandler<GetCurrentUserCommand, UserModel>))]
-    public class GetCurrentUserCommandHandler : BaseCommandHandler<GetCurrentUserCommand, UserModel>
+    [Service(typeof(ICommandHandler<GetCurrentUserCommand, UserResponseModel>))]
+    public class GetCurrentUserCommandHandler : BaseCommandHandler<GetCurrentUserCommand, UserResponseModel>
     {
         private readonly IUserService userService;
 
@@ -16,7 +15,7 @@ namespace Navtrack.Api.Services.User
             this.userService = userService;
         }
 
-        public override Task<UserModel> Handle(GetCurrentUserCommand command)
+        public override Task<UserResponseModel> Handle(GetCurrentUserCommand command)
         {
             return userService.GetCurrentUser();
         }

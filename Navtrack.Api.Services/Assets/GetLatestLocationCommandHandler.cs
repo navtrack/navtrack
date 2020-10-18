@@ -8,10 +8,10 @@ using Navtrack.DataAccess.Repository;
 using Navtrack.Library.DI;
 using Navtrack.Library.Services;
 
-namespace Navtrack.Api.Services.Locations
+namespace Navtrack.Api.Services.Assets
 {
-    [Service(typeof(ICommandHandler<GetLatestLocationCommand, LocationModel>))]
-    public class GetLatestLocationCommandHandler : BaseCommandHandler<GetLatestLocationCommand, LocationModel>
+    [Service(typeof(ICommandHandler<GetLatestLocationCommand, LocationResponseModel>))]
+    public class GetLatestLocationCommandHandler : BaseCommandHandler<GetLatestLocationCommand, LocationResponseModel>
     {
         private readonly IRepository repository;
         private readonly IMapper mapper;
@@ -22,7 +22,7 @@ namespace Navtrack.Api.Services.Locations
             this.mapper = mapper;
         }
 
-        public override async Task<LocationModel> Handle(GetLatestLocationCommand command)
+        public override async Task<LocationResponseModel> Handle(GetLatestLocationCommand command)
         {
             LocationEntity location = await repository.GetEntities<LocationEntity>()
                 .Where(x => x.AssetId == command.AssetId && x.Asset.Users.Any(y => y.UserId == command.UserId))
@@ -31,7 +31,7 @@ namespace Navtrack.Api.Services.Locations
 
             if (location != null)
             {
-                LocationModel mapped = mapper.Map<LocationEntity, LocationModel>(location);
+                LocationResponseModel mapped = mapper.Map<LocationEntity, LocationResponseModel>(location);
 
                 return mapped;
             }

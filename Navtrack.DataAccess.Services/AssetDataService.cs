@@ -26,6 +26,14 @@ namespace Navtrack.DataAccess.Services
                 x.UserId == userId && x.AssetId == assetId && x.RoleId == roleId);
         }
 
+        public Task<bool> UserHasRolesForAsset(int userId, UserAssetRole[] userAssetRoles, int assetId)
+        {
+            int[] roleIds = userAssetRoles.Select(x => (int) x).ToArray();
+
+            return repository.GetEntities<UserAssetEntity>().AnyAsync(x =>
+                x.UserId == userId && x.AssetId == assetId && roleIds.Contains(x.RoleId));
+        }
+
         public Task<bool> UserHasRoleForDevice(int userId, UserAssetRole userAssetRole, int deviceId)
         {
             int roleId = (int) userAssetRole;

@@ -14,9 +14,9 @@ using Navtrack.Library.DI;
 namespace Navtrack.Api.Services.Devices
 {
     [Service(
-        typeof(ICommandHandler<GetDeviceConnectionsCommand, ResultsPaginationModel<DeviceConnectionModel>>))]
+        typeof(ICommandHandler<GetDeviceConnectionsCommand, ResultsPaginationResponseModel<DeviceConnectionResponseModel>>))]
     public class GetDeviceConnectionsCommandHandler : BaseCommandHandler<GetDeviceConnectionsCommand,
-        ResultsPaginationModel<DeviceConnectionModel>>
+        ResultsPaginationResponseModel<DeviceConnectionResponseModel>>
     {
         private readonly IRepository repository;
         private readonly IAssetDataService assetDataService;
@@ -52,7 +52,7 @@ namespace Navtrack.Api.Services.Devices
             return Task.CompletedTask;
         }
 
-        public override async Task<ResultsPaginationModel<DeviceConnectionModel>> Handle(
+        public override async Task<ResultsPaginationResponseModel<DeviceConnectionResponseModel>> Handle(
             GetDeviceConnectionsCommand command)
         {
             IQueryable<DeviceConnectionEntity> queryable = repository.GetEntities<DeviceConnectionEntity>()
@@ -74,10 +74,10 @@ namespace Navtrack.Api.Services.Devices
                     .Select(x => new {DeviceConnectionId = x.Key, Messages = x.Count()})
                     .ToListAsync();
 
-            return new ResultsPaginationModel<DeviceConnectionModel>
+            return new ResultsPaginationResponseModel<DeviceConnectionResponseModel>
             {
                 Results = connections
-                    .Select(x => new DeviceConnectionModel
+                    .Select(x => new DeviceConnectionResponseModel
                     {
                         Id = x.Id,
                         DeviceId = command.DeviceId,
@@ -91,9 +91,9 @@ namespace Navtrack.Api.Services.Devices
                 {
                     MaxPage = (totalResults + command.PerPage - 1) / command.PerPage,
                     PerPage = command.PerPage,
-                    Page = command.Page,
-                    TotalResults = totalResults
-                }
+                    Page = command.Page
+                },
+                TotalResults = totalResults
             };
         }
     }

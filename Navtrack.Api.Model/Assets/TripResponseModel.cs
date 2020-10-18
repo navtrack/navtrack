@@ -4,17 +4,17 @@ using System.Linq;
 
 namespace Navtrack.Api.Model.Assets
 {
-    public class TripModel
+    public class TripResponseModel
     {
-        public TripModel()
+        public TripResponseModel()
         {
-            Locations = new List<LocationModel>();
+            Locations = new List<LocationResponseModel>();
         }
 
         public int Number { get; set; }
         public DateTime? StartDate => Locations?.FirstOrDefault()?.DateTime;
         public DateTime? EndDate => Locations?.LastOrDefault()?.DateTime;
-        public List<LocationModel> Locations { get; set; }
+        public List<LocationResponseModel> Locations { get; set; }
         public int Distance { get; set; }
     }
 }

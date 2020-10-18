@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { AssetApi } from "../../../apis/AssetApi";
-import { LocationModel } from "../../../apis/types/location/LocationModel";
+import {
+  DefaultGetLocationsModel,
+  GetLocationsModel
+} from "../../../apis/types/asset/GetLocationsModel";
 import useAssetId from "../../../services/hooks/useAssetId";
 import useMap from "../../../services/hooks/useMap";
 import { MapService } from "../../../services/MapService";
@@ -15,7 +18,7 @@ import AssetLocationsTable from "./AssetLocationsTable";
 export default function AssetLocations() {
   useMap();
   const [locationFilter, setLocationFilter] = useState(DefaultLocationFilterModel);
-  const [locations, setLocations] = useState<LocationModel[]>([]);
+  const [locations, setLocations] = useState<GetLocationsModel>(DefaultGetLocationsModel);
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const assetId = useAssetId();
@@ -38,7 +41,7 @@ export default function AssetLocations() {
   }, [assetId, locationFilter]);
 
   useEffect(() => {
-    let location = locations[selectedLocationIndex];
+    let location = locations.results[selectedLocationIndex];
     if (location) {
       MapService.showMarker([location.latitude, location.longitude]);
     }
@@ -49,7 +52,7 @@ export default function AssetLocations() {
       <LocationFilter filter={locationFilter} setFilter={setLocationFilter} />
       <AssetLocationsTable
         loading={loading}
-        locations={locations}
+        locations={locations.results}
         selectedIndex={selectedLocationIndex}
         setSelectedIndex={setSelectedLocationIndex}
       />

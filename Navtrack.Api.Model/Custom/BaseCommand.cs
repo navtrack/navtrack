@@ -5,8 +5,8 @@ namespace Navtrack.Api.Model.Custom
         public int UserId { get; set; }
     }
     
-    public class BaseCommand<T> : BaseCommand
+    public class BaseCommand<TRequestModel> : BaseCommand
     {
-        public T Model { get; set; }
+        public TRequestModel Model { get; set; }
     }
 }

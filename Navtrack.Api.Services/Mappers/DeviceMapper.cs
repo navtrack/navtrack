@@ -7,9 +7,9 @@ using Navtrack.Library.Services;
 
 namespace Navtrack.Api.Services.Mappers
 {
-    [Service(typeof(IMapper<DeviceEntity, DeviceModel>))]
-    [Service(typeof(IMapper<DeviceModel, DeviceEntity>))]
-    public class DeviceMapper : IMapper<DeviceEntity, DeviceModel>, IMapper<DeviceModel, DeviceEntity>
+    [Service(typeof(IMapper<DeviceEntity, DeviceResponseModel>))]
+    [Service(typeof(IMapper<DeviceResponseModel, DeviceEntity>))]
+    public class DeviceMapper : IMapper<DeviceEntity, DeviceResponseModel>, IMapper<DeviceResponseModel, DeviceEntity>
     {
         private readonly IDeviceTypeDataService deviceTypeDataService;
         private readonly IMapper mapper;
@@ -20,7 +20,7 @@ namespace Navtrack.Api.Services.Mappers
             this.mapper = mapper;
         }
 
-        public DeviceModel Map(DeviceEntity source, DeviceModel destination)
+        public DeviceResponseModel Map(DeviceEntity source, DeviceResponseModel destination)
         {
             destination.Id = source.Id;
             destination.DeviceId = source.DeviceId;
@@ -29,13 +29,13 @@ namespace Navtrack.Api.Services.Mappers
             
             DeviceType deviceType = deviceTypeDataService.GetById(source.DeviceTypeId);
             destination.DeviceType = deviceType != null
-                ? mapper.Map<DeviceType, DeviceTypeModel>(deviceType)
+                ? mapper.Map<DeviceType, DeviceTypeResponseModel>(deviceType)
                 : null;
 
             return destination;
         }
 
-        public DeviceEntity Map(DeviceModel source, DeviceEntity destination)
+        public DeviceEntity Map(DeviceResponseModel source, DeviceEntity destination)
         {
             destination.Id = source.Id;
             destination.DeviceId = source.DeviceId;

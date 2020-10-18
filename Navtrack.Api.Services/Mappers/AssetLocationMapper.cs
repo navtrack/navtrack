@@ -21,7 +21,7 @@ namespace Navtrack.Api.Services.Mappers
 
             if (source2 != null)
             {
-                destination.Location = mapper.Map<LocationEntity, LocationModel>(source2);
+                destination.Location = mapper.Map<LocationEntity, LocationResponseModel>(source2);
             }
             
             return destination;

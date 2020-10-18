@@ -2,7 +2,7 @@ using System;
 
 namespace Navtrack.Api.Model.Assets
 {
-    public class LocationModel
+    public class LocationResponseModel
     {
         public int Id { get; set; }
         public decimal Latitude { get; set; }

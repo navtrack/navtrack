@@ -10,9 +10,9 @@ using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.Devices
 {
-    [Service(typeof(ICommandHandler<GetDeviceStatisticsCommand, DeviceStatisticsModel>))]
+    [Service(typeof(ICommandHandler<GetDeviceStatisticsCommand, DeviceStatisticsResponseModel>))]
     public class GetDeviceStatisticsCommandHandler
-        : BaseCommandHandler<GetDeviceStatisticsCommand, DeviceStatisticsModel>
+        : BaseCommandHandler<GetDeviceStatisticsCommand, DeviceStatisticsResponseModel>
     {
         private readonly IRepository repository;
 
@@ -21,7 +21,7 @@ namespace Navtrack.Api.Services.Devices
             this.repository = repository;
         }
 
-        public override async Task<DeviceStatisticsModel> Handle(GetDeviceStatisticsCommand command)
+        public override async Task<DeviceStatisticsResponseModel> Handle(GetDeviceStatisticsCommand command)
         {
             DeviceEntity entity = await repository.GetEntities<DeviceEntity>()
                 .FirstOrDefaultAsync(x => x.Id == command.DeviceId &&
@@ -30,7 +30,7 @@ namespace Navtrack.Api.Services.Devices
 
             if (entity != null)
             {
-                DeviceStatisticsModel model = new DeviceStatisticsModel
+                DeviceStatisticsResponseModel model = new DeviceStatisticsResponseModel
                 {
                     Locations = await repository.GetEntities<LocationEntity>()
                         .CountAsync(x => x.DeviceId == entity.Id),
