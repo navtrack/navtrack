@@ -38,6 +38,7 @@ namespace Navtrack.Api.Services.Assets
                         into locations
                     from location in locations.DefaultIfEmpty()
                     select new {asset, location})
+                .OrderBy(x => x.asset.Name)
                 .ToListAsync();
 
             List<AssetModel> models = entities
