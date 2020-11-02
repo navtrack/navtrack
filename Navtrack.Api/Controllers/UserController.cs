@@ -4,6 +4,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.User;
+using Navtrack.Api.Services.IdentityServer;
 
 namespace Navtrack.Api.Controllers
 {
@@ -19,6 +20,16 @@ namespace Navtrack.Api.Controllers
         public Task<ActionResult<UserResponseModel>> Get()
         {
             return HandleCommand<GetCurrentUserCommand, UserResponseModel>(new GetCurrentUserCommand());
+        }
+
+        [HttpPatch]
+        public Task<IActionResult> Update([FromBody] UpdateUserRequestModel model)
+        {
+            return HandleCommand(new UpdateUserCommand
+            {
+                UserId = User.GetId(),
+                Model = model
+            });
         }
     }
 }
