@@ -30,7 +30,7 @@ namespace Navtrack.Api.Services.Mappers
         public UserEntity Map(UserModel source, UserEntity destination)
         {
             destination.Id = source.Id;
-            destination.Email = source.Email;
+            destination.Email = source.Email.ToLower();
 
             if (!string.IsNullOrEmpty(source.Password))
             {
