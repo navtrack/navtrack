@@ -1,5 +1,5 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS publish
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS publish
 WORKDIR /src
 COPY . .
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
