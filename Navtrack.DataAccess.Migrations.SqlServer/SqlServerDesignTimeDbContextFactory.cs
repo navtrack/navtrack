@@ -8,8 +8,7 @@ namespace Navtrack.DataAccess.Migrations.SqlServer
     {
         public NavtrackDbContext CreateDbContext(string[] args)
         {
-            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackDbContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder = new();
 
             optionsBuilder.UseSqlServer(
                 "data source=localhost;initial catalog=navtrack;user id=navtrack;password=navtrack;",

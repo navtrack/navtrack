@@ -8,8 +8,7 @@ namespace Navtrack.DataAccess.Migrations.Sqlite
     {
         public NavtrackDbContext CreateDbContext(string[] args)
         {
-            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackDbContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder = new();
 
             optionsBuilder.UseSqlite(
                 "data source=localhost;initial catalog=navtrack;user id=navtrack;password=navtrack;",

@@ -8,8 +8,7 @@ namespace Navtrack.DataAccess.Migrations.PostgreSql
     {
         public NavtrackDbContext CreateDbContext(string[] args)
         {
-            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder =
-                new DbContextOptionsBuilder<NavtrackDbContext>();
+            DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder = new();
 
             optionsBuilder.UseNpgsql(
                 "Host=localhost;Database=navtrack;Username=postgres;Password=postgres",
