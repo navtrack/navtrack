@@ -51,11 +51,11 @@ namespace Navtrack.Core
 
 
             services.AddHttpContextAccessor();
-            
+
             services.AddIdentityServer()
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
-                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources());
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+                .AddInMemoryApiScopes(IdentityServerConfig.GetScopes());
             services.AddLocalApiAuthentication();
 
             // In production, the React files will be served from this directory

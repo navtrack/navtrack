@@ -6,7 +6,7 @@ namespace Navtrack.Api.Services.IdentityServer
 {
     public static class IdentityServerConfig
     {
-        public static List<IdentityResource> GetIdentityResources()
+        public static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
             {
@@ -15,19 +15,12 @@ namespace Navtrack.Api.Services.IdentityServer
             };
         }
         
-        public static IEnumerable<ApiResource> GetApiResources()
-        {
-            return new List<ApiResource>
-            {
-                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
-            };
-        }
 
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
             {
-                new Client
+                new()
                 {
                     ClientId = "navtrack.web",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
@@ -40,6 +33,11 @@ namespace Navtrack.Api.Services.IdentityServer
                     AllowOfflineAccess = true
                 }
             };
+        }
+
+        public static IEnumerable<ApiScope> GetScopes()
+        {
+            return new List<ApiScope> { new(IdentityServerConstants.LocalApi.ScopeName) };
         }
     }
 }
