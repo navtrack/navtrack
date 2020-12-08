@@ -1,5 +1,0 @@
-services:
-  - docker
-
-script:
-  - docker build . -f Navtrack.Core/Dockerfile
