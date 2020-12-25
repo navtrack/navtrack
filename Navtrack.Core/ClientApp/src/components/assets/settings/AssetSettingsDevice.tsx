@@ -81,7 +81,7 @@ export default function AssetSettingsDevice(props: Props) {
                   ))}
                 </SelectInput>
                 <TextInput
-                  name={intl.formatMessage({ id: "assets.add.deviceId" })}
+                  title={intl.formatMessage({ id: "assets.add.deviceId" })}
                   value={model.deviceId}
                   validationResult={validationResult.property.deviceId}
                   placeholder={intl.formatMessage({ id: "assets.add.deviceId.placeholder" })}

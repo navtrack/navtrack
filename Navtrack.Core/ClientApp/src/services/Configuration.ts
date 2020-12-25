@@ -1,9 +1,9 @@
-type Configuration = {
+type ConfigurationModel = {
   dateFormat: string;
   dateFormatAlt: string;
 };
 
-const Configuration: Configuration = {
+const Configuration: ConfigurationModel = {
   dateFormat: "YYYY-MM-DD",
   dateFormatAlt: "MMM D, YYYY"
 };

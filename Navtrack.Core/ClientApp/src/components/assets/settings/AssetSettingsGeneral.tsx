@@ -41,7 +41,7 @@ export default function AssetSettingsGeneral(props: Props) {
         <div className="w-1/2 flex">
           <div className="flex-grow">
             <TextInput
-              name={intl.formatMessage({ id: "assets.add.name" })}
+              title={intl.formatMessage({ id: "assets.add.name" })}
               value={renameModel.name}
               validationResult={validationResult.property.name}
               className="mb-3"

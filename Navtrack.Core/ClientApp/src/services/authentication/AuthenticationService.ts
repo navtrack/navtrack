@@ -1,7 +1,7 @@
 import { IdentityApi } from "../../apis/IdentityApi";
 import { TokenResponse } from "../../apis/types/identity/TokenResponse";
 import { AppContextAccessor } from "../appContext/AppContextAccessor";
-import { DefaultAuthenticationInfo, AuthenticationInfo } from "./AuthenticationInfo";
+import { InitialAuthenticationInfo, AuthenticationInfo } from "./AuthenticationInfo";
 
 export const AuthenticationService = {
   clearAuthenticationInfo: (sessionExpired?: boolean) => {
@@ -9,7 +9,7 @@ export const AuthenticationService = {
       return {
         ...appContext,
         authenticationInfo: {
-          ...DefaultAuthenticationInfo,
+          ...InitialAuthenticationInfo,
           session_expired: sessionExpired ? true : false
         }
       };

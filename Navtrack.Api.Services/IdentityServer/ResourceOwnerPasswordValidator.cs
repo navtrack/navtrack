@@ -35,7 +35,7 @@ namespace Navtrack.Api.Services.IdentityServer
             else
             {
                 context.Result =
-                    new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password");
+                    new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password.");
             }
         }
     }

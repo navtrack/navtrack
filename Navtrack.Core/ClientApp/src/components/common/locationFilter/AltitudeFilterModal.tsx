@@ -90,7 +90,7 @@ export default function AltitudeFilterModal(props: Props) {
           onClick={() => setFilter({ ...filter, numberFilterType: NumberFilterType.Interval })}>
           <div className="ml-5">
             <TextInput
-              name="MIN"
+              title="MIN"
               type="number"
               value={filter.min}
               onChange={(e) => setMin(e.target.value)}>
@@ -99,7 +99,7 @@ export default function AltitudeFilterModal(props: Props) {
           </div>
           <div className="ml-1">
             <TextInput
-              name="MAX"
+              title="MAX"
               type="number"
               value={filter.max}
               onChange={(e) => setMax(e.target.value)}>

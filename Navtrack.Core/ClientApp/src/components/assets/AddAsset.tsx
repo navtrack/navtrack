@@ -60,7 +60,7 @@ export default function AddAsset() {
       }
       rightChildren={<DeviceConfiguration deviceType={selectedDeviceType} />}>
       <TextInput
-        name={intl.formatMessage({ id: "assets.add.name" })}
+        title={intl.formatMessage({ id: "assets.add.name" })}
         value={asset.name}
         validationResult={validationResult.property.name}
         className="mb-3"
@@ -86,7 +86,7 @@ export default function AddAsset() {
         ))}
       </SelectInput>
       <TextInput
-        name={intl.formatMessage({ id: "assets.add.deviceId" })}
+        title={intl.formatMessage({ id: "assets.add.deviceId" })}
         value={asset.deviceId}
         validationResult={validationResult.property.deviceId}
         placeholder={intl.formatMessage({ id: "assets.add.deviceId.placeholder" })}

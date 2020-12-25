@@ -1,11 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../../../services/appContext/AppContext";
-import { ApiError } from "../../../../services/httpClient/AppError";
 import { MapService } from "../../../../services/MapService";
-
-type Props = {
-  error?: ApiError<object>;
-};
 
 export default function AdminMap() {
   const { appContext } = useContext(AppContext);

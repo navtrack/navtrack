@@ -10,6 +10,9 @@ import { AppContextAccessor } from "./services/appContext/AppContextAccessor";
 import { AssetsService } from "./services/AssetService";
 import { AuthenticationService } from "./services/authentication/AuthenticationService";
 import translations from "./translations";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const [appContext, setAppContext] = useState(CreateAppContext());
@@ -40,15 +43,17 @@ export default function App() {
   }, [appContext.authenticationInfo]);
 
   return (
-    <div className="text-gray-900">
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AppContext.Provider value={appContextWrapper}>
           <IntlProvider locale="en" messages={translations["en"]}>
-            <Notifications />
-            {AuthenticationService.isAuthenticated() ? <AdminLayout /> : <LoginLayout />}
+            <div className="text-gray-900 h-screen">
+              <Notifications />
+              {AuthenticationService.isAuthenticated() ? <AdminLayout /> : <LoginLayout />}
+            </div>
           </IntlProvider>
         </AppContext.Provider>
       </BrowserRouter>
-    </div>
+    </QueryClientProvider>
   );
 }

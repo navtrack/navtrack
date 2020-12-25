@@ -34,7 +34,7 @@ export default function NotificationComponent(props: Props) {
       props.notification.visible = false;
       NotificationService.cleanUp();
     }, 4500);
-  }, [props.notification.animating, props.notification.visible]);
+  }, [props.notification]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { AssetModel } from "../../apis/types/asset/AssetModel";
 import { UserModel } from "../../apis/types/user/UserModel";
 import {
   AuthenticationInfo,
-  DefaultAuthenticationInfo
+  InitialAuthenticationInfo
 } from "../authentication/AuthenticationInfo";
 
 export type AppContext = {
@@ -14,7 +14,7 @@ export type AppContext = {
 };
 
 const DefaultAppContext: AppContext = {
-  authenticationInfo: DefaultAuthenticationInfo,
+  authenticationInfo: InitialAuthenticationInfo,
   mapIsVisible: false
 };
 
@@ -35,6 +35,7 @@ export function CreateAppContext(): AppContext {
   return appContext;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AppContext = React.createContext<AppContextWrapper>({
   appContext: DefaultAppContext,
   setAppContext: () => {}

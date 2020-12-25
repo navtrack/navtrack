@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,17 +7,14 @@ namespace Navtrack.Api.Model.Custom
 {
     public class ApiResponseModel
     {
-        [JsonPropertyName("title")] 
-        public string Title { get; set; }
+        [JsonPropertyName("message")] 
+        public string Message { get; set; }
         
-        [JsonPropertyName("errors")]
-        public IDictionary<string, string[]> Errors { get; set;  } 
-        
-        [JsonPropertyName("messages")]
-        public IDictionary<string, string[]> Messages { get; set; }
+        [JsonPropertyName("fields")]
+        public Dictionary<string, string> Fields { get; set;  } 
         
         [JsonIgnore]
-        public bool IsValid => Errors == null || !Errors.Any() && string.IsNullOrEmpty(Title);
+        public bool IsValid => Fields == null || !Fields.Any() && string.IsNullOrEmpty(Message);
 
         public HttpStatusCode? HttpStatusCode { get; set; }
 
@@ -26,17 +22,12 @@ namespace Navtrack.Api.Model.Custom
         {
             property = char.ToLowerInvariant(property[0]) + property.Substring(1);
             
-            if (Errors == null)
+            if (Fields == null)
             {
-                Errors = new Dictionary<string, string[]>(StringComparer.Ordinal);
-            }
-            
-            if (!Errors.ContainsKey(property))
-            {
-                Errors[property] = new string[] { };
+                Fields = new Dictionary<string, string>();
             }
 
-            Errors[property] = Errors[property].Append(message).ToArray();
+            Fields[property] = message;
         }
 
         public void IsUnauthorised()
