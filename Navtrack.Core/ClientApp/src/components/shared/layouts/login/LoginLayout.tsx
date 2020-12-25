@@ -11,7 +11,7 @@ export default function LoginLayout() {
   return (
     <div className="bg-gray-900 flex min-h-screen flex-col">
       <div className="justify-center flex flex-1 items-end">
-        <a href="https://www.navtrack.io">
+        <a href="https://www.navtrack.io" className="mb-4">
           <img
             src={NavtrackLogo}
             width="100"
@@ -33,7 +33,9 @@ export default function LoginLayout() {
           </Switch>
         </div>
       </div>
-      <div className="flex-1"></div>
+      <div className="flex-1">
+        <div style={{ height: "100px" }} className="mt-4"></div>
+      </div>
     </div>
   );
 }
