@@ -22,26 +22,10 @@ namespace Navtrack.DataAccess.Repository
 
             switch (connectionString.DatabaseType)
             {
-                case DatabaseType.SqlServer:
-                    optionsBuilder.UseSqlServer(connectionString.Value,
-                        x => x.MigrationsAssembly(
-                            
-                            typeof(Migrations.SqlServer.Reference).Assembly.FullName));
-                    break;
                 case DatabaseType.PostgreSql:
                     optionsBuilder.UseNpgsql(connectionString.Value,
                         x => x.MigrationsAssembly(
                             typeof(Migrations.PostgresSql.Reference).Assembly.FullName));
-                    break;
-                case DatabaseType.MySql:
-                    optionsBuilder.UseMySQL(connectionString.Value,
-                        x => x.MigrationsAssembly(
-                            typeof(Migrations.MySql.Reference).Assembly.FullName));
-                    break;
-                case DatabaseType.Sqlite:
-                    optionsBuilder.UseSqlite(connectionString.Value,
-                        x => x.MigrationsAssembly(
-                            typeof(Migrations.Sqlite.Reference).Assembly.FullName));
                     break;
             }
         }

@@ -5,10 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Navtrack.DataAccess.Migrations.MySql\Navtrack.DataAccess.Migrations.MySql.csproj" />
       <ProjectReference Include="..\Navtrack.DataAccess.Migrations.PostgreSql\Navtrack.DataAccess.Migrations.PostgreSql.csproj" />
-      <ProjectReference Include="..\Navtrack.DataAccess.Migrations.Sqlite\Navtrack.DataAccess.Migrations.Sqlite.csproj" />
-      <ProjectReference Include="..\Navtrack.DataAccess.Migrations.SqlServer\Navtrack.DataAccess.Migrations.SqlServer.csproj" />
       <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj" />
       <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
     </ItemGroup>
