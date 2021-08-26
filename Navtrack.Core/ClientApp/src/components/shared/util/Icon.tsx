@@ -1,6 +1,4 @@
-import React from "react";
-import classNames from "classnames";
-import { ClassDictionary } from "classnames/types";
+import classNames, { Mapping } from "classnames";
 
 type Props = {
   show?: boolean;
@@ -11,7 +9,7 @@ type Props = {
 export default function Icon(props: Props) {
   let show = props.show === undefined || props.show;
 
-  let classes: ClassDictionary = {};
+  let classes: Mapping = {};
 
   if (props.margin && props.margin > 0) {
     classes[`mr-${props.margin}`] = true;
