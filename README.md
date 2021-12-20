@@ -8,10 +8,14 @@ www.navtrack.com
 #### 1. Install docker
 
 #### 2. Get the latest docker-compose.yml
-`curl https://raw.githubusercontent.com/navtrack/navtrack/main/docker-compose.yml -o docker-compose.yml`
+```
+curl https://raw.githubusercontent.com/navtrack/navtrack/main/docker-compose.yml -o docker-compose.yml
+```
 
 #### 3. Run Docker Compose 
-`docker-compose up`
+```
+docker-compose up
+```
 
 #### 4. Open Navtrack in a browser
 [http://localhost:3000](http://localhost:3000)
