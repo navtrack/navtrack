@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+concurrency: main
+
 jobs:
   build:
     runs-on: ubuntu-latest
