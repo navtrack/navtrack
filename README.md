@@ -14,4 +14,3 @@ curl https://raw.githubusercontent.com/navtrack/navtrack/main/docker-compose.yml
 ```
 docker-compose up
 ```
-
