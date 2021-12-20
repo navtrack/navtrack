@@ -1,6 +1,6 @@
 services:
   web:
-    image: navtrack/web:latest
+    image: ghcr.io/navtrack/navtrack/web:latest
     networks:
       - navtrack
     ports:
@@ -10,7 +10,7 @@ services:
       - "ASPNETCORE_URLS=http://*:3000"
 
   api:
-    image: navtrack/api:latest
+    image: ghcr.io/navtrack/navtrack/api:latest
     networks:
       - navtrack
     ports:
@@ -22,7 +22,7 @@ services:
       - "MongoOptions__ConnectionString=mongodb://navtrack:navtrack@database/?authSource=admin"
 
   listener:
-    image: navtrack/listener:latest
+    image: ghcr.io/navtrack/navtrack/listener:latest
     networks:
       - navtrack
     ports:
