@@ -5,12 +5,12 @@ www.navtrack.com
 
 ## Running Navtrack
 
-###### 1. Install docker
-###### 2. Get the latest docker-compose.yml
+#### 1. Install docker
+#### 2. Get the latest docker-compose.yml
 ```
 curl https://raw.githubusercontent.com/navtrack/navtrack/main/docker-compose.yml -o docker-compose.yml
 ```
-###### 3. Run Docker Compose
+#### 3. Run Docker Compose
 ```
 docker-compose up
 ```
