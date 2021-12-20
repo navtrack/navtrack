@@ -1,8 +1,9 @@
-## Navtrack - Location tracking system
-### www.navtrack.com
+## Navtrack
+### Open source GPS tracking system based on .NET and React.
+www.navtrack.com
 
 
-### Running navtrack
+## Running Navtrack
 
 ###### 1. Install docker
 ###### 2. Get the latest docker-compose.yml
