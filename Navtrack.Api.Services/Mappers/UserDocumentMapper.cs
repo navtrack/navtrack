@@ -15,7 +15,8 @@ public static class UserDocumentMapper
                 Hash = hash,
                 Salt = salt
             },
-            UnitsType = UnitsType.Metric
+            UnitsType = UnitsType.Metric,
+            Created = AuditElementMapper.Map(),
         };
     }
 }

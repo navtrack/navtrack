@@ -6,7 +6,7 @@ namespace Navtrack.Api.Services.Mappers;
 
 public static class AuditElementMapper
 {
-    public static AuditElement Map(ObjectId userId)
+    public static AuditElement Map(ObjectId? userId = null)
     {
         return new AuditElement
         {
