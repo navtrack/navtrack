@@ -3,37 +3,34 @@ using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Navtrack.Api.Model.Models;
-using Navtrack.Api.Services.Users;
+using MongoDB.Bson;
+using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Services.Users;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Api.Services.IdentityServer
+namespace Navtrack.Api.Services.IdentityServer;
+
+[Service(typeof(IProfileService))]
+public class ProfileService : IProfileService
 {
-    [Service(typeof(IProfileService))]
-    public class ProfileService : IProfileService
+    private readonly IUserDataService userDataService;
+
+    public ProfileService(IUserDataService userDataService)
     {
-        private readonly IUserService userService;
+        this.userDataService = userDataService;
+    }
 
-        public ProfileService(IUserService userService)
-        {
-            this.userService = userService;
-        }
-
-        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
-        {
-            int userId = context.Subject.GetId();
-            UserModel user = await userService.Get(userId);
+    public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+    {
+        string userId = context.Subject.GetId();
             
-            context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email));
-            if (user.Role != null)
-            {
-                context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, ((UserRole) user.Role).ToString()));
-            }
-        }
+        UserDocument user = await userDataService.GetById(ObjectId.Parse(userId));
 
-        public Task IsActiveAsync(IsActiveContext context)
-        {
-            return Task.CompletedTask;
-        }
+        context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email));
+    }
+
+    public Task IsActiveAsync(IsActiveContext context)
+    {
+        return Task.CompletedTask;
     }
 }

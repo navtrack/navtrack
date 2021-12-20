@@ -1,7 +1,6 @@
-namespace Navtrack.Listener.Server
+namespace Navtrack.Listener.Server;
+
+public static class ServerVariables
 {
-    public static class ServerVariables
-    {
-        public const int BufferLength = 2048;
-    }
+    public const int BufferLength = 2048;
 }

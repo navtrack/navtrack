@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
+using Navtrack.Listener.Models;
 
-namespace Navtrack.Listener.Server
+namespace Navtrack.Listener.Server;
+
+public interface IMessageHandler
 {
-    public interface IMessageHandler
-    {
-        Task HandleMessage(Client client, INetworkStreamWrapper networkStream, byte[] bytes);
-    }
+    Task HandleMessage(Client client, INetworkStreamWrapper networkStream, byte[] bytes);
 }

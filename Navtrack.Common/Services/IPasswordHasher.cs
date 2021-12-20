@@ -1,8 +1,7 @@
-namespace Navtrack.Common.Services
+namespace Navtrack.Common.Services;
+
+public interface IPasswordHasher
 {
-    public interface IPasswordHasher
-    {
-        (string, string) Hash(string password);
-        bool CheckPassword(string password, string salt, string hash);
-    }
+    (string, string) Hash(string password);
+    bool CheckPassword(string password, string hash, string salt);
 }

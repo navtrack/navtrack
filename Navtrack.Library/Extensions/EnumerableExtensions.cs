@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace Navtrack.Library.Extensions
+namespace Navtrack.Library.Extensions;
+
+public static class EnumerableExtensions
 {
-    public static class EnumerableExtensions
+    public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
     {
-        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        foreach (T item in enumerable)
         {
-            foreach (T item in enumerable)
-            {
-                action(item);
-            }
+            action(item);
         }
     }
 }

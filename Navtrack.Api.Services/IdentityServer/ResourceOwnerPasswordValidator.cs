@@ -4,39 +4,38 @@ using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Common.Services;
-using Navtrack.DataAccess.Model;
-using Navtrack.DataAccess.Services;
+using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Services.Users;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Api.Services.IdentityServer
+namespace Navtrack.Api.Services.IdentityServer;
+
+[Service(typeof(IResourceOwnerPasswordValidator))]
+public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
 {
-    [Service(typeof(IResourceOwnerPasswordValidator))]
-    public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
+    private readonly IPasswordHasher passwordHasher;
+    private readonly IUserDataService userDataService;
+
+    public ResourceOwnerPasswordValidator(IPasswordHasher passwordHasher, IUserDataService userDataService)
     {
-        private readonly IPasswordHasher passwordHasher;
-        private readonly IUserDataService userDataService;
+        this.passwordHasher = passwordHasher;
+        this.userDataService = userDataService;
+    }
 
-        public ResourceOwnerPasswordValidator(IPasswordHasher passwordHasher, IUserDataService userDataService)
+    public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
+    {
+        UserDocument user = await userDataService.GetUserByEmail(context.UserName);
+
+        if (user != null && passwordHasher.CheckPassword(context.Password, user.Password.Hash, user.Password.Salt))
         {
-            this.passwordHasher = passwordHasher;
-            this.userDataService = userDataService;
+            context.Result = new GrantValidationResult($"{user.Id}",
+                "custom",
+                new List<Claim>());
         }
-
-        public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
+        else
         {
-            UserEntity user = await userDataService.GetUserByEmail(context.UserName);
-
-            if (user != null && passwordHasher.CheckPassword(context.Password, user.Hash, user.Salt))
-            {
-                context.Result = new GrantValidationResult($"{user.Id}",
-                    "custom",
-                    new List<Claim>());
-            }
-            else
-            {
-                context.Result =
-                    new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password.");
-            }
+            context.Result =
+                new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password.");
         }
     }
 }

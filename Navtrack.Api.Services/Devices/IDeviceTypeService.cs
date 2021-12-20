@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using Navtrack.Api.Model.Devices;
 
-namespace Navtrack.Api.Services.Devices
+namespace Navtrack.Api.Services.Devices;
+
+public interface IDeviceTypeService
 {
-    public interface IDeviceTypeService
-    {
-        List<DeviceTypeResponseModel> GetDeviceTypes();
-    }
+    DeviceTypeListModel GetDeviceTypes();
 }

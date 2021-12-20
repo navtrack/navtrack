@@ -1,3 +1,0 @@
-### Device statistics
-GET https://localhost:5001/api/devices/73/statistics
-Authorization: Bearer {{token}}

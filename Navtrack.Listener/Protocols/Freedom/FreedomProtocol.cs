@@ -1,11 +1,10 @@
 using Navtrack.Library.DI;
 using Navtrack.Listener.Server;
 
-namespace Navtrack.Listener.Protocols.Freedom
+namespace Navtrack.Listener.Protocols.Freedom;
+
+[Service(typeof(IProtocol))]
+public class FreedomProtocol : BaseProtocol
 {
-    [Service(typeof(IProtocol))]
-    public class FreedomProtocol : BaseProtocol
-    {
-        public override int Port => 7049;
-    }
+    public override int Port => 7049;
 }

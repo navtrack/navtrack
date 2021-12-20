@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace Navtrack.Api.Services.IdentityServer
+namespace Navtrack.Api.Services.IdentityServer;
+
+public static class UseSignalRQueryStringAuthenticationExtensions
 {
-    public static class UseSignalRQueryStringAuthenticationExtensions
+    public static IApplicationBuilder UseSignalRQueryStringAuthentication(this IApplicationBuilder builder)
     {
-        public static IApplicationBuilder UseSignalRQueryStringAuthentication(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<SignalRQueryStringAuthenticationMiddleware>();
-        }
+        return builder.UseMiddleware<SignalRQueryStringAuthenticationMiddleware>();
     }
 }

@@ -1,14 +1,14 @@
 using System.Threading.Tasks;
-using Navtrack.DataAccess.Model;
-using Navtrack.Listener.Server;
+using MongoDB.Bson;
+using Navtrack.DataAccess.Model.Devices;
+using Navtrack.Listener.Models;
 
-namespace Navtrack.Listener.Services
+namespace Navtrack.Listener.Services;
+
+public interface IConnectionService
 {
-    public interface IConnectionService
-    {
-        Task<DeviceConnectionEntity> NewConnection(string endPoint, int protocolPort);
-        Task MarkConnectionAsClosed(DeviceConnectionEntity deviceConnection);
-        Task<int> AddMessage(int deviceConnectionId, string hex);
-        Task SetDeviceId(Client client);
-    }
+    Task<DeviceConnectionDocument> NewConnection(string endPoint, int protocolPort);
+    Task MarkConnectionAsClosed(DeviceConnectionDocument deviceConnection);
+    Task<ObjectId> AddMessage(ObjectId deviceConnectionId, string hex);
+    Task SetDeviceId(Client client);
 }

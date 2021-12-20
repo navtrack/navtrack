@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using Navtrack.Api.Model.Models;
+using Navtrack.Api.Model.Users;
 
-namespace Navtrack.Api.Services.Users
+namespace Navtrack.Api.Services.Users;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task<UserModel> Get(int userId);
-    }
+    Task<CurrentUserModel> GetCurrentUser();
+    Task UpdateUser(UpdateUserModel model);
 }

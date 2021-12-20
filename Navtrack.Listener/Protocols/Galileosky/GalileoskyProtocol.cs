@@ -1,11 +1,10 @@
 using Navtrack.Library.DI;
 using Navtrack.Listener.Server;
 
-namespace Navtrack.Listener.Protocols.Galileosky
+namespace Navtrack.Listener.Protocols.Galileosky;
+
+[Service(typeof(IProtocol))]
+public class GalileoskyProtocol : BaseProtocol
 {
-    [Service(typeof(IProtocol))]
-    public class GalileoskyProtocol : BaseProtocol
-    {
-        public override int Port => 7055;
-    }
+    public override int Port => 7055;
 }

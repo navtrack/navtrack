@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,8 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Certes" Version="2.3.4" />
         <PackageReference Include="IdentityServer4" Version="4.1.2" />
     </ItemGroup>
-    
+
 </Project>

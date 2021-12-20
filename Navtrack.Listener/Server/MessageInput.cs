@@ -1,9 +1,10 @@
-namespace Navtrack.Listener.Server
+using Navtrack.Listener.Models;
+
+namespace Navtrack.Listener.Server;
+
+public class MessageInput
 {
-    public class MessageInput
-    {
-        public Client Client { get; set; }
-        public INetworkStreamWrapper NetworkStream { get; set; }
-        public DataMessage DataMessage { get; set; }
-    }
+    public Client Client { get; set; }
+    public INetworkStreamWrapper NetworkStream { get; set; }
+    public DataMessage DataMessage { get; set; }
 }

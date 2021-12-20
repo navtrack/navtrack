@@ -1,3 +1,0 @@
-### Get all trips
-GET https://localhost:5001/api/assets/6/trips
-Authorization: Bearer {{token}}

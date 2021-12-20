@@ -1,7 +1,0 @@
-### Get one asset
-GET https://localhost:5001/api/locations/20/latest
-Authorization: Bearer {{token}}
-
-### Get history
-GET https://localhost:5001/api/locations/20/history
-Authorization: Bearer {{token}}

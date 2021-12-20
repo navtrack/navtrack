@@ -1,10 +1,9 @@
-namespace Navtrack.Listener.Models
+namespace Navtrack.Listener.Models;
+
+public enum CardinalPoint
 {
-    public enum CardinalPoint
-    {
-        North,
-        East,
-        South,
-        West
-    }
+    North,
+    East,
+    South,
+    West
 }

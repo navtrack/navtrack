@@ -1,8 +1,7 @@
-namespace Navtrack.Listener.Protocols.Ruptela
+namespace Navtrack.Listener.Protocols.Ruptela;
+
+public enum Command
 {
-    public enum Command
-    {
-        Records = 0x01,
-        ExtendedRecords = 0x44
-    }
+    Records = 0x01,
+    ExtendedRecords = 0x44
 }

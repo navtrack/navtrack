@@ -1,31 +1,27 @@
 using System.Collections.Generic;
-using System.Linq;
 using Navtrack.Api.Model.Protocols;
-using Navtrack.DataAccess.Model.Custom;
-using Navtrack.DataAccess.Services;
+using Navtrack.Api.Services.Mappers;
+using Navtrack.Api.Services.Old.Protocols;
+using Navtrack.DataAccess.Model.Protocols;
+using Navtrack.DataAccess.Services.Protocols;
 using Navtrack.Library.DI;
-using Navtrack.Library.Services;
 
-namespace Navtrack.Api.Services.Protocols
+namespace Navtrack.Api.Services.Protocols;
+
+[Service(typeof(IProtocolService))]
+public class ProtocolService : IProtocolService
 {
-    [Service(typeof(IProtocolService))]
-    public class ProtocolService : IProtocolService
+    private readonly IProtocolDataService protocolDataService;
+
+    public ProtocolService(IProtocolDataService protocolDataService)
     {
-        private readonly IProtocolDataService protocolDataService;
-        private readonly IMapper mapper;
+        this.protocolDataService = protocolDataService;
+    }
 
-        public ProtocolService(IProtocolDataService protocolDataService, IMapper mapper)
-        {
-            this.protocolDataService = protocolDataService;
-            this.mapper = mapper;
-        }
+    public ProtocolListModel GetProtocols()
+    {
+        IEnumerable<Protocol> protocols = protocolDataService.GetProtocols();
 
-        public List<ProtocolResponseModel> GetProtocols()
-        {
-            return protocolDataService.GetProtocols()
-                .Select(mapper.Map<Protocol, ProtocolResponseModel>)
-                .OrderBy(x => x.Name)
-                .ToList();
-        }
+        return ProtocolListMapper.Map(protocols);
     }
 }

@@ -1,35 +1,41 @@
-﻿using System;
+﻿using System.Net.Mime;
 using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Model.User;
-using Navtrack.Api.Services.IdentityServer;
+using Navtrack.Api.Model.Users;
+using Navtrack.Api.Services.Users;
 
-namespace Navtrack.Api.Controllers
+namespace Navtrack.Api.Controllers;
+
+[Route("user")]
+[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+public class UserController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-    public class UserController : BaseController
+    private readonly IUserService userService;
+
+    public UserController(IUserService userService)
     {
-        public UserController(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
+        this.userService = userService;
+    }
 
-        [HttpGet]
-        public Task<ActionResult<UserResponseModel>> Get()
-        {
-            return HandleCommand<GetCurrentUserCommand, UserResponseModel>(new GetCurrentUserCommand());
-        }
+    [HttpGet]
+    [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Produces(MediaTypeNames.Application.Json)]
+    public async Task<CurrentUserModel> Get()
+    {
+        CurrentUserModel currentUser = await userService.GetCurrentUser();
 
-        [HttpPatch]
-        public Task<IActionResult> Update([FromBody] UpdateUserRequestModel model)
-        {
-            return HandleCommand(new UpdateUserCommand
-            {
-                UserId = User.GetId(),
-                Model = model
-            });
-        }
+        return currentUser;
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> Update([FromBody] UpdateUserModel model)
+    {
+        await userService.UpdateUser(model);
+
+        return Ok();
     }
 }

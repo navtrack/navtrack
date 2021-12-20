@@ -1,9 +1,8 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable once InconsistentNaming
-namespace Navtrack.Listener.Helpers.New
+namespace Navtrack.Listener.Helpers.New;
+
+public enum GpsFormat
 {
-    public enum GpsFormat
-    {
-        DDDMMmmmm
-    }
+    DDDMMmmmm
 }

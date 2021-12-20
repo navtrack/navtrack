@@ -1,0 +1,64 @@
+import { Form, Formik } from "formik";
+import { FormattedMessage } from "react-intl";
+import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
+import { nameOf } from "../../../../utils/typescript";
+import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
+import { DeleteAssetFormValues } from "./types";
+import useDeleteAsset from "./useDeleteAsset";
+import Modal from "../../../ui/shared/modal/Modal";
+import DeleteModalContainer from "../../../ui/shared/modal/DeleteModalContainer";
+
+interface IDeleteAssetModal {
+  show: boolean;
+  close: () => void;
+}
+
+export default function DeleteAssetModal(props: IDeleteAssetModal) {
+  const { currentAsset } = useCurrentAsset();
+  const { handleSubmit, validationSchema, loading } = useDeleteAsset();
+
+  return (
+    <Modal open={props.show} close={props.close} className="max-w-md">
+      <Formik<DeleteAssetFormValues>
+        initialValues={{ name: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}>
+        {({ values }) => (
+          <Form>
+            <DeleteModalContainer close={props.close} loading={loading}>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                <FormattedMessage id="shared.delete-modal.title" />
+              </h3>
+              <div className="mt-2 text-sm">
+                <p>
+                  <FormattedMessage id="assets.settings.general.delete-asset.question" />
+                </p>
+                <p className="mt-2">
+                  <FormattedMessage id="assets.settings.general.delete-asset.warning" />
+                </p>
+                <p className="mt-2">
+                  <FormattedMessage
+                    id="assets.settings.general.delete-asset.type-name"
+                    values={{
+                      name: (
+                        <span className="font-semibold">
+                          {currentAsset?.name}
+                        </span>
+                      )
+                    }}
+                  />
+                </p>
+              </div>
+              <div className="mt-4">
+                <FormikTextInput
+                  name={nameOf<DeleteAssetFormValues>("name")}
+                  value={values.name}
+                />
+              </div>
+            </DeleteModalContainer>
+          </Form>
+        )}
+      </Formik>
+    </Modal>
+  );
+}

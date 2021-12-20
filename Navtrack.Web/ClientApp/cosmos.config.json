@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/cosmos-config",
+  "port": 3010,
+  "staticPath": "public",
+  "watchDirs": [
+    "src"
+  ],
+  "globalImports": [
+    "src/index.css",
+    "leaflet/dist/leaflet.css"
+  ]
+}

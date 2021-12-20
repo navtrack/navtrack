@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Navtrack.Api.Services.Devices
+namespace Navtrack.Api.Services.Devices;
+
+public interface IDeviceService
 {
-    public interface IDeviceService
-    {
-        Task<bool> DeviceIsUsed(string deviceId, int deviceTypeId, int? excludeAssetId = null);
-    }
+    Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string excludeAssetId = null);
 }

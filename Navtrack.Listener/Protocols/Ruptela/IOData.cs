@@ -1,8 +1,7 @@
-namespace Navtrack.Listener.Protocols.Ruptela
+namespace Navtrack.Listener.Protocols.Ruptela;
+
+public class IOData
 {
-    public class IOData
-    {
-        public short Id { get; set; }
-        public byte[] Value { get; set; }
-    }
+    public short Id { get; set; }
+    public byte[] Value { get; set; }
 }

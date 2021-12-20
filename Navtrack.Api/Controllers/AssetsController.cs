@@ -1,117 +1,171 @@
-using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 using System.Threading.Tasks;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Services.IdentityServer;
+using Navtrack.Api.Model.Common;
+using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Reports;
+using Navtrack.Api.Model.Trips;
+using Navtrack.Api.Services.Assets;
+using Navtrack.Api.Services.Locations;
+using Navtrack.Api.Services.Reports;
+using Navtrack.Api.Services.Trips;
 
-namespace Navtrack.Api.Controllers
+namespace Navtrack.Api.Controllers;
+
+[ApiController]
+[Route("assets")]
+[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+public class AssetsController : ControllerBase
 {
-    [Authorize]
-    public class AssetsController : BaseController
+    private readonly IAssetService assetService;
+    private readonly ILocationService locationService;
+    private readonly ITripService tripService;
+    private readonly IReportService reportService;
+
+    public AssetsController(IAssetService assetService, ILocationService locationService, ITripService tripService,
+        IReportService reportService)
     {
-        public AssetsController(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
+        this.assetService = assetService;
+        this.locationService = locationService;
+        this.tripService = tripService;
+        this.reportService = reportService;
+    }
 
-        [HttpGet("{id}")]
-        public Task<ActionResult<AssetModel>> Get([FromRoute] int id)
-        {
-            return HandleCommand<GetAssetByIdCommand, AssetModel>(new GetAssetByIdCommand
-            {
-                AssetId = id,
-                UserId = User.GetId()
-            });
-        }
+    [HttpGet]
+    [ProducesResponseType(typeof(AssetListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Produces(MediaTypeNames.Application.Json)]
+    public async Task<IActionResult> GetAssets()
+    {
+        AssetListModel assets = await assetService.GetAssets();
 
-        [HttpGet]
-        public Task<ActionResult<IEnumerable<AssetModel>>> GetAll()
-        {
-            return HandleCommand<GetAllAssetsCommand, IEnumerable<AssetModel>>(new GetAllAssetsCommand
-            {
-                UserId = User.GetId()
-            });
-        }
+        return new JsonResult(assets);
+    }
 
-        [HttpPost]
-        public Task<ActionResult<AddAssetResponseModel>> Add([FromBody] AddAssetRequestModel model)
-        {
-            return HandleCommand<AddAssetCommand, AddAssetResponseModel>(new AddAssetCommand
-            {
-                Model = model,
-                UserId = User.GetId()
-            });
-        }
+    [HttpGet("{assetId}")]
+    [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Produces(MediaTypeNames.Application.Json)]
+    public async Task<AssetModel> GetAsset(string assetId)
+    {
+        AssetModel asset = await assetService.GetById(assetId);
 
-        [HttpDelete("{assetId}")]
-        public Task<IActionResult> Delete([FromRoute] int assetId)
-        {
-            return HandleCommand(new DeleteAssetCommand
-            {
-                UserId = User.GetId(),
-                AssetId = assetId
-            });
-        }
+        return asset;
+    }
 
-        [HttpPost("{assetId}/settings/rename")]
-        public Task<IActionResult> Rename([FromRoute] int assetId, [FromBody] RenameAssetRequestModel model)
-        {
-            return HandleCommand(new RenameAssetCommand
-            {
-                AssetId = assetId,
-                Model = model,
-                UserId = User.GetId()
-            });
-        }
+    [HttpPost]
+    [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [Produces(MediaTypeNames.Application.Json)]
+    public async Task<AssetModel> AddAsset([FromBody] AddAssetModel model)
+    {
+        AssetModel asset = await assetService.Add(model);
 
-        [HttpPut("{assetId}/device")]
-        public Task<IActionResult> ChangeDevice([FromRoute] int assetId, [FromBody] ChangeDeviceRequestModel model)
-        {
-            return HandleCommand(new ChangeDeviceCommand
-            {
-                Model = model,
-                UserId = User.GetId(),
-                AssetId = assetId
-            });
-        }
+        return asset;
+    }
 
-        [HttpGet("{assetId}/trips")]
-        public Task<ActionResult<GetTripsResponseModel>> GetTrips([FromRoute] int assetId, 
-            [FromQuery] GetTripsRequestModel model)
-        {
-            return HandleCommand<GetTripsCommand, GetTripsResponseModel>(
-                new GetTripsCommand
-                {
-                    AssetId = assetId,
-                    UserId = User.GetId(),
-                    Model = model
-                });
-        }
+    [HttpPatch("{assetId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateAsset(string assetId, [FromBody] UpdateAssetModel model)
+    {
+        await assetService.Update(assetId, model);
+
+        return Ok();
+    }
+
+    [HttpDelete("{assetId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> DeleteAsset(string assetId)
+    {
+        await assetService.Delete(assetId);
+
+        return Ok();
+    }
+
+    [HttpGet("{assetId}/locations")]
+    [ProducesResponseType(typeof(LocationListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+    public async Task<JsonResult> GetLocations(
+        [FromRoute] string assetId,
+        [FromQuery] LocationFilterModel filter,
+        [FromQuery] int page = 0,
+        [FromQuery] [Range(0, 1000)] int size = 1000)
+    {
+        LocationListModel locations = await locationService.GetLocations(assetId, filter, page, size);
+
+        return new JsonResult(locations);
+    }
         
-        
-        [HttpGet("{assetId}/locations")]
-        public Task<ActionResult<GetLocationsResponseModel>> GetLocations([FromRoute] int assetId, 
-            [FromQuery] GetLocationsRequestModel model)
-        {
-            return HandleCommand<GetLocationsCommand, GetLocationsResponseModel>(
-                new GetLocationsCommand
-                {
-                    AssetId = assetId,
-                    Model = model,
-                    UserId = User.GetId()
-                });
-        }
+    [HttpGet("{assetId}/users")]
+    [ProducesResponseType(typeof(AssetUserListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<JsonResult> GetAssetUsers([FromRoute] string assetId)
+    {
+        AssetUserListModel assetUserList = await assetService.GetAssetUsers(assetId);
 
-        [HttpGet("{assetId}/locations/latest")]
-        public Task<ActionResult<LocationResponseModel>> GetLatestLocation(int assetId)
-        {
-            return HandleCommand<GetLatestLocationCommand, LocationResponseModel>(
-                new GetLatestLocationCommand
-                {
-                    AssetId = assetId,
-                    UserId = User.GetId()
-                });
-        }
+        return new JsonResult(assetUserList);
+    }
+
+    [HttpPost("{assetId}/users")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AddUserToAsset([FromRoute] string assetId, [FromBody]AddUserToAssetModel model)
+    {
+        await assetService.AddUserToAsset(assetId, model);
+
+        return Ok();
+    }
+
+    [HttpDelete("{assetId}/users/{userId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteUserFromAsset([FromRoute] string assetId, [FromRoute]string userId)
+    {
+        await assetService.RemoveUserFromAsset(assetId, userId);
+
+        return Ok();
+    }
+
+    [HttpGet("{assetId}/trips")]
+    [ProducesResponseType(typeof(TripListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<JsonResult> GetTrips(
+        [FromRoute] string assetId,
+        [FromQuery] TripFilterModel filter)
+    {
+        TripListModel locations = await tripService.GetTrips(assetId, filter);
+
+        return new JsonResult(locations);
+    }
+
+    [HttpGet("{assetId}/reports/time-distance")]
+    [ProducesResponseType(typeof(TripListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<JsonResult> GetTimeDistanceReport(
+        [FromRoute] string assetId,
+        [FromQuery] DistanceReportFilterModel filter)
+    {
+        DistanceReportListModel distanceReport = await reportService.GetDistanceReport(assetId, filter);
+
+        return new JsonResult(distanceReport);
     }
 }

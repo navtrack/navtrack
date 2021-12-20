@@ -1,3 +1,0 @@
-### Device types
-GET https://localhost:5001/api/devices/72/connections
-Authorization: Bearer {{token}}

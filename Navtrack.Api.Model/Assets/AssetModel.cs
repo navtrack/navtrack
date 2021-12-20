@@ -1,19 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Navtrack.Api.Model.Custom;
-using Navtrack.Api.Model.Devices;
+using System.ComponentModel.DataAnnotations;
+using Navtrack.Api.Model.Locations;
 
-namespace Navtrack.Api.Model.Assets
+namespace Navtrack.Api.Model.Assets;
+
+public class AssetModel
 {
-    public class AssetModel : IModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public bool Online => Location != null && Location.DateTime > DateTime.Now.AddMinutes(-2);
+    [Required]
+    public string Id { get; set; }
+        
+    [Required]
+    public string ShortId => Id.Substring(Math.Max(0, Id.Length - 6));
+        
+    [Required]
+    public string Name { get; set; }
+         
+    [Required]
+    public bool Online => Location != null && Location.DateTime > DateTime.Now.AddMinutes(-2);
+        
+    [Required]
+    public int MaxSpeed => 400; // TODO update this property
 
-        public DeviceResponseModel ActiveDevice => Devices?.FirstOrDefault(x => x.IsActive);
-        public IEnumerable<DeviceResponseModel> Devices { get; set; }
-        public LocationResponseModel Location { get; set; }
-    }
+    public LocationModel Location { get; set; }
 }

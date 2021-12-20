@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using Navtrack.Api.Model.Protocols;
 
-namespace Navtrack.Api.Services.Protocols
+namespace Navtrack.Api.Services.Old.Protocols;
+
+public interface IProtocolService
 {
-    public interface IProtocolService
-    {
-        List<ProtocolResponseModel> GetProtocols();
-    }
+    ProtocolListModel GetProtocols();
 }

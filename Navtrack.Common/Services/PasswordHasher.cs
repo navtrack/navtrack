@@ -3,47 +3,46 @@ using System.Linq;
 using System.Security.Cryptography;
 using Navtrack.Library.DI;
 
-namespace Navtrack.Common.Services
+namespace Navtrack.Common.Services;
+
+[Service(typeof(IPasswordHasher))]
+public class PasswordHasher : IPasswordHasher
 {
-    [Service(typeof(IPasswordHasher))]
-    public class PasswordHasher : IPasswordHasher
+    private const int SaltSize = 32;
+    private const int KeySize = 64;
+    private const int Iterations = 1000;
+    private readonly HashAlgorithmName hashAlgorithmName  = HashAlgorithmName.SHA512;
+
+    public (string, string) Hash(string password)
     {
-        private const int SaltSize = 32;
-        private const int KeySize = 64;
-        private const int Iterations = 1000;
-        private readonly HashAlgorithmName hashAlgorithmName  = HashAlgorithmName.SHA512;
+        using Rfc2898DeriveBytes algorithm = new(
+            password,
+            SaltSize,
+            Iterations,
+            hashAlgorithmName);
 
-        public (string, string) Hash(string password)
-        {
-            using Rfc2898DeriveBytes algorithm = new Rfc2898DeriveBytes(
-                password,
-                SaltSize,
-                Iterations,
-                hashAlgorithmName);
+        byte[] inArray = algorithm.GetBytes(KeySize);
+        string hash = Convert.ToBase64String(inArray);
+        string salt = Convert.ToBase64String(algorithm.Salt);
 
-            byte[] inArray = algorithm.GetBytes(KeySize);
-            string key = Convert.ToBase64String(inArray);
-            string salt = Convert.ToBase64String(algorithm.Salt);
+        return (hash, salt);
+    }
 
-            return (key, salt);
-        }
+    public bool CheckPassword(string password, string hash, string salt)
+    {
+        byte[] keyBytes = Convert.FromBase64String(hash);
+        byte[] saltBytes = Convert.FromBase64String(salt);
 
-        public bool CheckPassword(string password, string hash, string salt)
-        {
-            byte[] keyBytes = Convert.FromBase64String(hash);
-            byte[] saltBytes = Convert.FromBase64String(salt);
-
-            using Rfc2898DeriveBytes algorithm = new Rfc2898DeriveBytes(
-                password,
-                saltBytes,
-                Iterations,
-                hashAlgorithmName);
+        using Rfc2898DeriveBytes algorithm = new(
+            password,
+            saltBytes,
+            Iterations,
+            hashAlgorithmName);
             
-            byte[] keyToCheck = algorithm.GetBytes(KeySize);
+        byte[] keyToCheck = algorithm.GetBytes(KeySize);
 
-            bool verified = keyToCheck.SequenceEqual(keyBytes);
+        bool verified = keyToCheck.SequenceEqual(keyBytes);
 
-            return verified;
-        }
+        return verified;
     }
 }

@@ -1,11 +1,10 @@
 using Navtrack.Library.DI;
 using Navtrack.Listener.Server;
 
-namespace Navtrack.Listener.Protocols.ATrack
+namespace Navtrack.Listener.Protocols.ATrack;
+
+[Service(typeof(IProtocol))]
+public class ATrackProtocol : BaseProtocol
 {
-    [Service(typeof(IProtocol))]
-    public class ATrackProtocol : BaseProtocol
-    {
-        public override int Port => 7061;
-    }
+    public override int Port => 7061;
 }

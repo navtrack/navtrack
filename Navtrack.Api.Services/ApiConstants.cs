@@ -1,7 +1,6 @@
-namespace Navtrack.Api.Services
+namespace Navtrack.Api.Services;
+
+public class ApiConstants
 {
-    public class ApiConstants
-    {
-        public static string HubUrl(string hub = "") => $"/api/hubs/{hub}";
-    }
+    public static string HubUrl(string hub = "") => $"/hubs/{hub}";
 }

@@ -1,30 +1,36 @@
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Navtrack.Api.Model.Models;
-using Navtrack.DataAccess.Model;
-using Navtrack.DataAccess.Repository;
+using Navtrack.Api.Model.Users;
+using Navtrack.Api.Services.Mappers;
+using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Services.Users;
 using Navtrack.Library.DI;
-using Navtrack.Library.Services;
+using UnitsType = Navtrack.DataAccess.Model.Common.UnitsType;
 
-namespace Navtrack.Api.Services.Users
+namespace Navtrack.Api.Services.Users;
+
+[Service(typeof(IUserService))]
+public class UserService : IUserService
 {
-    [Service(typeof(IUserService))]
-    public class UserService : IUserService
+    private readonly ICurrentUserAccessor currentUserAccessor;
+    private readonly IUserDataService userDataService;
+
+    public UserService(ICurrentUserAccessor currentUserAccessor, IUserDataService userDataService)
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
+        this.currentUserAccessor = currentUserAccessor;
+        this.userDataService = userDataService;
+    }
 
-        public UserService(IRepository repository, IMapper mapper)
-        {
-            this.repository = repository;
-            this.mapper = mapper;
-        }
+    public async Task<CurrentUserModel> GetCurrentUser()
+    {
+        UserDocument entity = await currentUserAccessor.GetCurrentUser();
 
-        public async Task<UserModel> Get(int userId)
-        {
-            UserEntity entity = await repository.GetEntities<UserEntity>().FirstOrDefaultAsync(x => x.Id == userId);
+        return CurrentUserMapper.Map(entity);
+    }
 
-            return entity != null ? mapper.Map<UserEntity, UserModel>(entity) : null;
-        }
+    public async Task UpdateUser(UpdateUserModel model)
+    {
+        UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+
+        await userDataService.UpdateUser(currentUser, model.Email, (UnitsType?)model.UnitsType);
     }
 }

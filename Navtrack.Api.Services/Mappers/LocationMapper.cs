@@ -1,29 +1,35 @@
-using Navtrack.Api.Model.Assets;
-using Navtrack.DataAccess.Model;
-using Navtrack.Library.DI;
-using Navtrack.Library.Services;
+using Navtrack.Api.Model.Locations;
+using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Model.Locations;
 
-namespace Navtrack.Api.Services.Mappers
+namespace Navtrack.Api.Services.Mappers;
+
+public static class LocationMapper
 {
-    [Service(typeof(IMapper<LocationEntity, LocationResponseModel>))]
-    public class LocationMapper : IMapper<LocationEntity, LocationResponseModel>
+    public static LocationModel Map(LocationDocument source, UnitsType unitsType)
     {
-        public LocationResponseModel Map(LocationEntity source, LocationResponseModel destination)
+        if (source == null)
         {
-            destination.Id = source.Id;
-            destination.Latitude = source.Latitude;
-            destination.Longitude = source.Longitude;
-            destination.DateTime = source.DateTime;
-            destination.Speed = source.Speed;
-            destination.Heading = source.Heading;
-            destination.Altitude = source.Altitude;
-            destination.Satellites = source.Satellites;
-            destination.HDOP = source.HDOP;
-            destination.PositionStatus = source.PositionStatus;
-            destination.GsmSignal = source.GsmSignal;
-            destination.Odometer = source.Odometer;
-            
-            return destination;
+            return null;
         }
+            
+        LocationModel location = new()
+        {
+            Id = source.Id.ToString(),
+            Latitude = source.Coordinates[1],
+            Longitude = source.Coordinates[0],
+            Coordinates = source.Coordinates,
+            DateTime = source.DateTime,
+            Speed = UnitsMapper.MapSpeed(source.Speed, unitsType),
+            Heading = source.Heading,
+            Altitude = UnitsMapper.MapDistance(source.Altitude, unitsType),
+            Satellites = source.Satellites,
+            HDOP = source.HDOP,
+            Valid = source.Valid,
+            GsmSignal = source.GsmSignal,
+            Odometer = source.Odometer
+        };
+
+        return location;
     }
 }

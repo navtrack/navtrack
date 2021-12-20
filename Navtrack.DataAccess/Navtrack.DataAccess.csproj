@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Navtrack.DataAccess.Migrations.PostgreSql\Navtrack.DataAccess.Migrations.PostgreSql.csproj" />
       <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj" />
       <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Bson" Version="2.14.1" />
+      <PackageReference Include="MongoDB.Driver" Version="2.14.1" />
     </ItemGroup>
 
 </Project>

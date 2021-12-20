@@ -1,23 +1,26 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Services.IdentityServer;
+using Navtrack.Api.Services.Assets;
 
-namespace Navtrack.Api.Hubs
+namespace Navtrack.Api.Hubs;
+
+[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+public class AssetsHub : Hub
 {
-    public class AssetsHub : BaseHub
+    private readonly IAssetService assetService;
+
+    public AssetsHub(IAssetService assetService)
     {
-        public AssetsHub(IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-        }
-        
-        public Task<IEnumerable<AssetModel>> GetAll()
-        {
-            return HandleRequest<GetAllAssetsCommand, IEnumerable<AssetModel>>(new GetAllAssetsCommand
-            {
-                UserId = Context.User.GetId()
-            });
-        }
+        this.assetService = assetService;
+    }
+
+    public async Task<AssetListModel> GetAll()
+    {
+        AssetListModel assets = await assetService.GetAssets();
+
+        return assets;
     }
 }

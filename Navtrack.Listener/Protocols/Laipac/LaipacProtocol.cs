@@ -1,11 +1,10 @@
 using Navtrack.Library.DI;
 using Navtrack.Listener.Server;
 
-namespace Navtrack.Listener.Protocols.Laipac
+namespace Navtrack.Listener.Protocols.Laipac;
+
+[Service(typeof(IProtocol))]
+public class LaipacProtocol : BaseProtocol
 {
-    [Service(typeof(IProtocol))]
-    public class LaipacProtocol : BaseProtocol
-    {
-        public override int Port => 7052;
-    }
+    public override int Port => 7052;
 }

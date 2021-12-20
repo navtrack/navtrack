@@ -1,63 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Net.Mime;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Model.Custom;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Devices;
-using Navtrack.Api.Services.IdentityServer;
 
-namespace Navtrack.Api.Controllers
+namespace Navtrack.Api.Controllers;
+
+[ApiController]
+[Route("devices")]
+[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+public class DevicesController : ControllerBase
 {
-    public class DevicesController : BaseController
+    private readonly IDeviceTypeService deviceTypeService;
+
+    public DevicesController(IDeviceTypeService deviceTypeService)
     {
-        private readonly IDeviceTypeService deviceTypeService;
+        this.deviceTypeService = deviceTypeService;
+    }
 
-        public DevicesController(IDeviceTypeService deviceTypeService, IServiceProvider serviceProvider) : base(
-            serviceProvider)
-        {
-            this.deviceTypeService = deviceTypeService;
-        }
-
-        [HttpGet("{id}")]
-        public Task<ActionResult<DeviceResponseModel>> Get([FromRoute] int id)
-        {
-            return HandleCommand<GetDeviceByIdCommand, DeviceResponseModel>(new GetDeviceByIdCommand
-            {
-                DeviceId = id,
-                UserId = User.GetId()
-            });
-        }
-
-        [HttpGet("{id}/statistics")]
-        public Task<ActionResult<DeviceStatisticsResponseModel>> GetStatistics([FromRoute] int id)
-        {
-            return HandleCommand<GetDeviceStatisticsCommand, DeviceStatisticsResponseModel>(
-                new GetDeviceStatisticsCommand
-                {
-                    DeviceId = id,
-                    UserId = User.GetId()
-                });
-        }
-
-        [HttpGet("{id}/connections")]
-        public Task<ActionResult<ResultsPaginationResponseModel<DeviceConnectionResponseModel>>> GetConnections(
-            [FromRoute] DeviceConnectionRequestModel model)
-        {
-            return HandleCommand<GetDeviceConnectionsCommand, ResultsPaginationResponseModel<DeviceConnectionResponseModel>>(
-                new GetDeviceConnectionsCommand
-                {
-                    DeviceId = model.Id,
-                    Page = model.Page,
-                    PerPage = model.PerPage,
-                    UserId = User.GetId()
-                });
-        }
-
-        [HttpGet("types")]
-        public List<DeviceTypeResponseModel> GetTypes()
-        {
-            return deviceTypeService.GetDeviceTypes();
-        }
+    [HttpGet("types")]
+    [ProducesResponseType(typeof(DeviceTypeListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Produces(MediaTypeNames.Application.Json)]
+    public IActionResult GetTypes()
+    {
+        return new JsonResult(deviceTypeService.GetDeviceTypes());
     }
 }

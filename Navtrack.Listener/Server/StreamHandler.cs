@@ -4,98 +4,98 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Models;
 
-namespace Navtrack.Listener.Server
+namespace Navtrack.Listener.Server;
+
+[Service(typeof(IStreamHandler))]
+public class StreamHandler : IStreamHandler
 {
-    [Service(typeof(IStreamHandler))]
-    public class StreamHandler : IStreamHandler
+    private readonly ILogger<StreamHandler> logger;
+    private readonly IMessageHandler messageHandler;
+
+    public StreamHandler(ILogger<StreamHandler> logger, IMessageHandler messageHandler)
     {
-        private readonly ILogger<StreamHandler> logger;
-        private readonly IMessageHandler messageHandler;
+        this.logger = logger;
+        this.messageHandler = messageHandler;
+    }
 
-        public StreamHandler(ILogger<StreamHandler> logger, IMessageHandler messageHandler)
+    public async Task HandleStream(CancellationToken cancellationToken, Client client,
+        INetworkStreamWrapper networkStream)
+    {
+        byte[] buffer = new byte[ServerVariables.BufferLength];
+        int length;
+
+        do
         {
-            this.logger = logger;
-            this.messageHandler = messageHandler;
-        }
+            length = ReadMessage(networkStream, buffer, client.Protocol, cancellationToken);
 
-        public async Task HandleStream(CancellationToken cancellationToken, Client client,
-            INetworkStreamWrapper networkStream)
-        {
-            byte[] buffer = new byte[ServerVariables.BufferLength];
-            int length;
-
-            do
+            if (length > 0)
             {
-                length = ReadMessage(networkStream, buffer, client.Protocol, cancellationToken);
+                logger.LogDebug($"{client.Protocol}: received {length} bytes");
 
-                if (length > 0)
-                {
-                    logger.LogDebug($"{client.Protocol}: received {length} bytes");
+                int startIndex = GetStartIndex(buffer, length, client.Protocol);
 
-                    int startIndex = GetStartIndex(buffer, length, client.Protocol);
+                await messageHandler.HandleMessage(client, networkStream, buffer[startIndex..length]);
+            }
+        } while (!cancellationToken.IsCancellationRequested && length > 0 && networkStream.CanRead);
+    }
 
-                    await messageHandler.HandleMessage(client, networkStream, buffer[startIndex..length]);
-                }
-            } while (!cancellationToken.IsCancellationRequested && length > 0 && networkStream.CanRead);
-        }
+    private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
+        CancellationToken cancellationToken)
+    {
+        int bytesReadCount = 0;
+        byte[] oneByteBuffer = new byte[1];
+        int length;
 
-        private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
-            CancellationToken cancellationToken)
+        int? messageLength = null;
+
+        do
         {
-            int bytesReadCount = 0;
-            byte[] oneByteBuffer = new byte[1];
-            int length;
+            length = networkStream.Read(oneByteBuffer, 0, 1);
 
-            int? messageLength = null;
-
-            do
+            if (length > 0)
             {
-                length = networkStream.Read(oneByteBuffer, 0, 1);
+                buffer[bytesReadCount++] = oneByteBuffer[0];
 
-                if (length > 0)
-                {
-                    buffer[bytesReadCount++] = oneByteBuffer[0];
+                messageLength = protocol.GetMessageLength(buffer[..bytesReadCount]);
+            }
+        } while (!cancellationToken.IsCancellationRequested &&
+                 networkStream.CanRead &&
+                 networkStream.DataAvailable &&
+                 length > 0 &&
+                 bytesReadCount < ServerVariables.BufferLength &&
+                 (!messageLength.HasValue || bytesReadCount < messageLength) &&
+                 !ReachedEnd(buffer, bytesReadCount, protocol));
 
-                    messageLength = protocol.GetMessageLength(buffer[..bytesReadCount]);
-                }
-            } while (!cancellationToken.IsCancellationRequested &&
-                     networkStream.CanRead &&
-                     networkStream.DataAvailable &&
-                     length > 0 &&
-                     bytesReadCount < ServerVariables.BufferLength &&
-                     (!messageLength.HasValue || bytesReadCount < messageLength) &&
-                     !ReachedEnd(buffer, bytesReadCount, protocol));
+        return bytesReadCount;
+    }
 
-            return bytesReadCount;
-        }
-
-        private static int GetStartIndex(byte[] buffer, in int length, IProtocol protocol)
+    private static int GetStartIndex(byte[] buffer, in int length, IProtocol protocol)
+    {
+        if (protocol.MessageStart.Length > 0)
         {
-            if (protocol.MessageStart.Length > 0)
+            for (int i = 0; i < length-protocol.MessageStart.Length; i++)
             {
-                for (int i = 0; i < length-protocol.MessageStart.Length; i++)
-                {
-                    int endIndex = i + protocol.MessageStart.Length;
+                int endIndex = i + protocol.MessageStart.Length;
 
-                    if (protocol.MessageStart.IsEqual(buffer[i..endIndex]))
-                    {
-                        return i;
-                    }
+                if (protocol.MessageStart.IsEqual(buffer[i..endIndex]))
+                {
+                    return i;
                 }
             }
-
-            return 0;
         }
 
-        private static bool ReachedEnd(byte[] buffer, int bytesReadCount, IProtocol protocol)
+        return 0;
+    }
+
+    private static bool ReachedEnd(byte[] buffer, int bytesReadCount, IProtocol protocol)
+    {
+        return protocol.MessageEnd.Where(x => x.Length > 0).Any(bytes =>
         {
-            return protocol.MessageEnd.Where(x => x.Length > 0).Any(bytes =>
-            {
-                int startIndex = bytesReadCount - bytes.Length;
+            int startIndex = bytesReadCount - bytes.Length;
 
-                return startIndex > 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
-            });
-        }
+            return startIndex > 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
+        });
     }
 }

@@ -1,8 +1,7 @@
-namespace Navtrack.Listener.Protocols.Arusnavi
+namespace Navtrack.Listener.Protocols.Arusnavi;
+
+public enum HeaderVersion
 {
-    public enum HeaderVersion
-    {
-        V1 = 0x22,
-        V2 = 0x23
-    }
+    V1 = 0x22,
+    V2 = 0x23
 }

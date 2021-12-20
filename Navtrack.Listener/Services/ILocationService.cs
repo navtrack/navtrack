@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using Navtrack.Listener.Models;
 
-namespace Navtrack.Listener.Services
+namespace Navtrack.Listener.Services;
+
+public interface ILocationService
 {
-    public interface ILocationService
-    {
-        Task AddRange(List<Location> locations, int connectionMessageId);
-    }
+    Task AddRange(List<Location> locations, ObjectId connectionMessageId);
 }
