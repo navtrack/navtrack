@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.Skypatrol;
 
 [Service(typeof(ICustomMessageHandler<SkypatrolProtocol>))]
-public class SkypatrolMessageHandler : GosafeMessageHandler
+public class SkypatrolMessageHandler : BaseGosafeMessageHandler<SkypatrolProtocol>
 {
 }

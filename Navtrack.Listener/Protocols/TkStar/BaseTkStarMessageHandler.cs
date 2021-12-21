@@ -1,5 +1,4 @@
 using System;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
@@ -7,8 +6,7 @@ using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.TkStar;
 
-[Service(typeof(ICustomMessageHandler<TkStarProtocol>))]
-public class TkStarMessageHandler : BaseTkStarMessageHandler<TkStarProtocol>
+public class BaseTkStarMessageHandler<T> : BaseMessageHandler<T>
 {
     public override Location Parse(MessageInput input)
     {

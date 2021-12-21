@@ -9,7 +9,7 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.Carscop;
 
 [Service(typeof(ICustomMessageHandler<CarscopProtocol>))]
-public class CarscopMessageHandler : TkStarMessageHandler
+public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
 {
     public override Location Parse(MessageInput input)
     {

@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.Smartrack;
 
 [Service(typeof(ICustomMessageHandler<SmartrackProtocol>))]
-public class SmartrackMessageHandler : VjoyCarMessageHandler
+public class SmartrackMessageHandler : BaseVjoyCarMessageHandler<SmartrackProtocol>
 {
 }

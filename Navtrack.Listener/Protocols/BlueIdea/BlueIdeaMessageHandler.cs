@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.BlueIdea;
 
 [Service(typeof(ICustomMessageHandler<BlueIdeaProtocol>))]
-public class BlueIdeaMessageHandler : BofanMessageHandler
+public class BlueIdeaMessageHandler : BaseBofanMessageHandler<BlueIdeaProtocol>
 {
 }

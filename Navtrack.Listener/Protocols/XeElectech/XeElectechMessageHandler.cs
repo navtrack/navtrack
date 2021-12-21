@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.XeElectech;
 
 [Service(typeof(ICustomMessageHandler<XeElectechProtocol>))]
-public class XeElectechMessageHandler : TkStarMessageHandler
+public class XeElectechMessageHandler : BaseTkStarMessageHandler<XeElectechProtocol>
 {
 }

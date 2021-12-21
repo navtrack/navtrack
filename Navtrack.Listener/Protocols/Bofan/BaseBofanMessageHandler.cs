@@ -1,13 +1,11 @@
 using System.Text.RegularExpressions;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.Bofan;
 
-[Service(typeof(ICustomMessageHandler<BofanProtocol>))]
-public class BofanMessageHandler : BaseBofanMessageHandler<BofanProtocol>
+public class BaseBofanMessageHandler<T> : BaseMessageHandler<T>
 {
     public override Location Parse(MessageInput input)
     {

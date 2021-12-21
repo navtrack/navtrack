@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.CanTrack;
 
 [Service(typeof(ICustomMessageHandler<CanTrackProtocol>))]
-public class CanTrackMessageHandler : TkStarMessageHandler
+public class CanTrackMessageHandler : BaseTkStarMessageHandler<CanTrackProtocol>
 {
 }

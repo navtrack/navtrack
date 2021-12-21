@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.SinoTrack;
 
 [Service(typeof(ICustomMessageHandler<SinoTrackProtocol>))]
-public class SinoTrackMessageHandler : TkStarMessageHandler
+public class SinoTrackMessageHandler : BaseTkStarMessageHandler<SinoTrackProtocol>
 {
 }

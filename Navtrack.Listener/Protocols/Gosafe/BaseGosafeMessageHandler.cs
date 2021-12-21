@@ -1,13 +1,11 @@
 using System.Text.RegularExpressions;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.Gosafe;
 
-[Service(typeof(ICustomMessageHandler<GosafeProtocol>))]
-public class GosafeMessageHandler : BaseGosafeMessageHandler<GosafeProtocol>
+public class BaseGosafeMessageHandler<T> : BaseMessageHandler<T>
 {
     public override Location Parse(MessageInput input)
     {

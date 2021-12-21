@@ -6,6 +6,6 @@ namespace Navtrack.Listener.Protocols.iCarGPS;
 
 [Service(typeof(ICustomMessageHandler<iCarGPSProtocol>))]
 // ReSharper disable once InconsistentNaming
-public class iCarGPSMessageHandler : TkStarMessageHandler
+public class iCarGPSMessageHandler : BaseTkStarMessageHandler<iCarGPSProtocol>
 {
 }

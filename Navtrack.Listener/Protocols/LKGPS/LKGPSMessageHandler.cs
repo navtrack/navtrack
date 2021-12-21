@@ -5,6 +5,6 @@ using Navtrack.Listener.Server;
 namespace Navtrack.Listener.Protocols.LKGPS;
 
 [Service(typeof(ICustomMessageHandler<LKGPSProtocol>))]
-public class LKGPSMessageHandler : TkStarMessageHandler
+public class LKGPSMessageHandler : BaseTkStarMessageHandler<LKGPSProtocol>
 {
 }
