@@ -7,7 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-        <PackageReference Include="Sentry.AspNetCore" Version="3.12.2" />
+        <PackageReference Include="Sentry.AspNetCore" Version="3.12.3" />
     </ItemGroup>
 
     <ItemGroup>

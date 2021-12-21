@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Sentry.AspNetCore" Version="3.12.2" />
+        <PackageReference Include="Sentry.AspNetCore" Version="3.12.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
