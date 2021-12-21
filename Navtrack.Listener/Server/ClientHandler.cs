@@ -25,7 +25,7 @@ public class ClientHandler : IClientHandler
 
     public async Task HandleClient(CancellationToken cancellationToken, Client client)
     {
-        string endPoint = client.TcpClient.Client.RemoteEndPoint.ToString();
+        string endPoint = client.TcpClient.Client.RemoteEndPoint?.ToString();
         client.DeviceConnection = await connectionService.NewConnection(endPoint, client.Protocol.Port);
 
         try

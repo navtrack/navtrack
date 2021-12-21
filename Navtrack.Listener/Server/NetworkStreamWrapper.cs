@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -30,7 +31,14 @@ public class NetworkStreamWrapper : INetworkStreamWrapper
 
     public int Read(byte[] buffer, int offset, int size)
     {
-        return baseStream.Read(buffer, offset, size);
+        try
+        {
+            return baseStream.Read(buffer, offset, size);
+        }
+        catch (IOException)
+        {
+            return 0;
+        }
     }
 
     public void WriteByte(byte value)
