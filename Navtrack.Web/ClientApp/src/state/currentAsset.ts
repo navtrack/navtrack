@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { Asset } from "../api/model";
+import { AssetModel } from "../api/model";
 
-export const currentAssetAtom = atom<Asset | undefined>({
+export const currentAssetAtom = atom<AssetModel | undefined>({
   key: "CurrentAsset",
   default: undefined
 });

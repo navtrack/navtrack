@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { CurrentUser } from "../api/model";
+import { CurrentUserModel } from "../api/model";
 
-export const currentUserAtom = atom<CurrentUser | undefined>({
+export const currentUserAtom = atom<CurrentUserModel | undefined>({
   key: "CurrentUser",
   default: undefined
 });

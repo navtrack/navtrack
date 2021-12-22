@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Asset } from "../../../../api/model";
+import { AssetModel } from "../../../../api/model";
 import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { useHistory } from "react-router";
 import IconWithText from "../../shared/icon/IconWithText";
@@ -8,7 +8,7 @@ import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons
 import useScrollToAsset from "./useScrollToAsset";
 
 export interface IAdminLayoutSideBarItemProps {
-  asset: Asset;
+  asset: AssetModel;
 }
 
 export default function AdminLayoutSideBarItem(

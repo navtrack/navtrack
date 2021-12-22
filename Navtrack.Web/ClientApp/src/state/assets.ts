@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
-import { Asset } from "../api/model";
+import { AssetModel } from "../api/model";
 
-export const assetsAtom = atom<Asset[]>({
+export const assetsAtom = atom<AssetModel[]>({
   key: "Assets",
   default: []
 });

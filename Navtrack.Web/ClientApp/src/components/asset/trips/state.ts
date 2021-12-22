@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
-import { Trip } from "../../../api/model";
+import { TripModel } from "../../../api/model";
 
-export const tripsAtom = atom<Trip[]>({
+export const tripsAtom = atom<TripModel[]>({
   key: "Trips",
   default: []
 });
@@ -17,7 +17,9 @@ export const selectedTripSelector = selector({
     const trips = get(tripsAtom);
     const selectedTripIndex = get(selectedTripIndexAtom);
 
-    return selectedTripIndex !== undefined ? trips[selectedTripIndex] : undefined;
+    return selectedTripIndex !== undefined
+      ? trips[selectedTripIndex]
+      : undefined;
   }
 });
 

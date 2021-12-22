@@ -1,12 +1,12 @@
 import React, { ReactNode } from "react";
 import { useIntl } from "react-intl";
-import { Location } from "../../../../api/model";
+import { LocationModel } from "../../../../api/model";
 import useDateTime from "../../../../hooks/util/useDateTime";
 import useDistance from "../../../../hooks/util/useDistance";
 import LocationInfo from "./LocationInfo";
 
 interface IAssetLocationBar {
-  location?: Location;
+  location?: LocationModel;
   children?: ReactNode;
 }
 

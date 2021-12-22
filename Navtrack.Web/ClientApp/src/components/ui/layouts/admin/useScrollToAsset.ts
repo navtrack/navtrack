@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { Asset } from "../../../../api/model";
+import { AssetModel } from "../../../../api/model";
 import { scrollToAssetAtom } from "../../../../state/assets";
 
-export default function useScrollToAsset(asset?: Asset) {
+export default function useScrollToAsset(asset?: AssetModel) {
   const [scrollToAsset, setScrollToAsset] = useRecoilState(scrollToAssetAtom);
   const elementRef = useRef<HTMLAnchorElement>(null);
 

@@ -1,11 +1,11 @@
 import L, { LatLng, Polyline } from "leaflet";
 import { useEffect, useState } from "react";
 import useMap from "./useMap";
-import { Trip } from "../../../../api/model";
+import { TripModel } from "../../../../api/model";
 import MapPin from "./MapPin";
 
 interface IMapTrip {
-  trip?: Trip;
+  trip?: TripModel;
 }
 
 export default function MapTrip(props: IMapTrip) {
@@ -15,7 +15,9 @@ export default function MapTrip(props: IMapTrip) {
 
   useEffect(() => {
     if (props.trip && !polylineVisible) {
-      const latlngs = props.trip.locations.map((x) => new LatLng(x.latitude, x.longitude));
+      const latlngs = props.trip.locations.map(
+        (x) => new LatLng(x.latitude, x.longitude)
+      );
       const polyline = L.polyline(latlngs, { color: "red" }).addTo(map.map);
 
       map.map.fitBounds(polyline.getBounds(), { padding: [30, 30] });

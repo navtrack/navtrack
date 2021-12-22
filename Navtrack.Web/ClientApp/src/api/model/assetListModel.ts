@@ -4,8 +4,8 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0
  */
+import type { AssetModel } from './assetModel';
 
-export interface ProtocolModel {
-  port: number;
-  name: string;
+export interface AssetListModel {
+  items: AssetModel[];
 }
