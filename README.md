@@ -1,8 +1,6 @@
 ## Navtrack
 ### Open source GPS tracking system based on .NET and React.
-www.navtrack.com
-
-www.codeagency.com
+[navtrack.com](https://navtrack.com) - [codeagency.com](https://codeagency.com)
 
 ## Running Navtrack
 
