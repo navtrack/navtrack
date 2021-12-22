@@ -55,9 +55,11 @@ export default function LocationFilterAddButton(
       {!filtersEnabled.all && (
         <Menu as="div" className="relative inline-block text-left order-last">
           <Menu.Button as={Fragment}>
-            <Button color="primary" size="xs">
-              <FormattedMessage id="locations.filter.add" />
-            </Button>
+            <div>
+              <Button color="primary" size="xs">
+                <FormattedMessage id="locations.filter.add" />
+              </Button>
+            </div>
           </Menu.Button>
           <Transition
             as={Fragment}
