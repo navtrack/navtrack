@@ -20,8 +20,9 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
             new()
             {
                 {ProtocolNumber.LoginInformation, LoginInformationHandler},
-                {ProtocolNumber.StatusInformation, StatusInformationHandler},
-                {ProtocolNumber.PositioningData, PositioningDataHandler}
+                {ProtocolNumber.Heartbeat, HeartbeatHandler},
+                {ProtocolNumber.PositioningData, PositioningDataHandler},
+                {ProtocolNumber.PositioningData2, PositioningDataHandler}
             };
 
         return methods.ContainsKey(protocolNumber) ? methods[protocolNumber](input) : null;
@@ -70,7 +71,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         try
         {
             string imei = GetImei(input.DataMessage.Hex);
-            string[] serialNumber = input.DataMessage.Hex[12..14];
+            string[] serialNumber = { "00", "01" };
             ProtocolNumber protocolNumber = (ProtocolNumber) input.DataMessage.Bytes[3];
 
             if (StringUtil.IsDigitsOnly(imei))
@@ -91,11 +92,11 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         return null;
     }
 
-    private static Location StatusInformationHandler(MessageInput input)
+    private static Location HeartbeatHandler(MessageInput input)
     {
         try
         {
-            string[] serialNumber = input.DataMessage.Hex[9..11];
+            string[] serialNumber = input.DataMessage.Hex[^6..^4];
             ProtocolNumber protocolNumber = (ProtocolNumber) input.DataMessage.Bytes[3];
 
             ConcoxOutputMessage output = new(protocolNumber, serialNumber);
