@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Locations;
+using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.DataAccess.Services.Locations;
 using Navtrack.Library.DI;
@@ -17,11 +18,14 @@ public class LocationService : ILocationService
 {
     private readonly ILocationDataService locationDataService;
     private readonly IDeviceDataService deviceDataService;
+    private readonly IAssetDataService assetDataService;
 
-    public LocationService(ILocationDataService locationDataService, IDeviceDataService deviceDataService)
+    public LocationService(ILocationDataService locationDataService, IDeviceDataService deviceDataService,
+        IAssetDataService assetDataService)
     {
         this.locationDataService = locationDataService;
         this.deviceDataService = deviceDataService;
+        this.assetDataService = assetDataService;
     }
 
     public async Task AddRange(List<Location> locations, ObjectId connectionMessageId)
@@ -35,15 +39,14 @@ public class LocationService : ILocationService
             if (asset != null)
             {
                 List<LocationDocument> mapped =
-                    locations.Select(x => LocationDocumentMapper.Map(x, asset))
+                    locations.Select(x => LocationDocumentMapper.Map(x, asset, connectionMessageId))
                         .ToList();
 
-                foreach (LocationDocument locationEntity in mapped)
-                {
-                    locationEntity.DeviceConnectionMessageId = connectionMessageId;
-                }
-
                 await locationDataService.AddRange(mapped);
+                
+                LocationDocument latestLocation = mapped.OrderByDescending(x => x.DateTime).First();
+
+                await assetDataService.UpdateLocation(asset.Id, latestLocation);
             }
         }
     }

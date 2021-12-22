@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
+using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.DataAccess.Services.Assets;
@@ -15,6 +16,7 @@ public interface IAssetDataService
     Task Delete(string assetId);
     Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole);
     Task RemoveUserFromAsset(string assetId, string userId);
+    Task UpdateLocation(ObjectId assetId, LocationDocument location);
 
 
     Task<bool> UserHasRoleForAsset(string userId, AssetRoleType assetRoleType, string assetId);

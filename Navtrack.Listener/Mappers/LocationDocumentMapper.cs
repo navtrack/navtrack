@@ -1,3 +1,5 @@
+using System;
+using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Locations;
 using Location = Navtrack.Listener.Models.Location;
@@ -6,7 +8,7 @@ namespace Navtrack.Listener.Mappers;
 
 public static class LocationDocumentMapper
 {
-    public static LocationDocument Map(Location source1, AssetDocument source2)
+    public static LocationDocument Map(Location source1, AssetDocument source2, ObjectId connectionMessageId)
     {
         LocationDocument destination = new()
         {
@@ -24,7 +26,9 @@ public static class LocationDocumentMapper
             Satellites = source1.Satellites,
             HDOP = source1.HDOP as float?,
             GsmSignal = source1.GsmSignal,
-            Odometer = source1.Odometer
+            Odometer = source1.Odometer,
+            CreatedDate = DateTime.UtcNow,
+            DeviceConnectionMessageId = connectionMessageId
         };
 
         if (source1.MobileCountryCode.HasValue || source1.MobileNetworkCode.HasValue ||

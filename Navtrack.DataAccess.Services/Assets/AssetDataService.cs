@@ -8,6 +8,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
+using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Library.DI;
@@ -107,12 +108,14 @@ public class AssetDataService : IAssetDataService
             .UpdateOneAsync(x => x.Id == userObjectId,
                 Builders<UserDocument>.Update.PullFilter(x => x.AssetRoles, x => x.AssetId == assetObjectId));
     }
-        
-        
-        
-        
-        
-        
+
+    public Task UpdateLocation(ObjectId assetId, LocationDocument location)
+    {
+        return repository.GetCollection<AssetDocument>()
+            .UpdateOneAsync(x => x.Id == assetId,
+                Builders<AssetDocument>.Update.Set(x => x.Location, location));
+    }
+    
     public Task<bool> UserHasRoleForAsset(string userId, AssetRoleType assetRoleType, string assetId)
     {
         int roleId = (int)assetRoleType;
