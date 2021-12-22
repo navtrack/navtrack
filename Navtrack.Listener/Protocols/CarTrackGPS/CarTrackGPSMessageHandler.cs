@@ -52,9 +52,9 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
                 PositionStatus = locationMatch.Groups[8].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
                 Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[12].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[13].Get<decimal>()),
-                Heading = locationMatch.Groups[14].Get<decimal?>() / 10,
-                HDOP = locationMatch.Groups[20].Get<decimal?>() / 10,
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[13].Get<float>()),
+                Heading = locationMatch.Groups[14].Get<float?>() / 10,
+                HDOP = locationMatch.Groups[20].Get<float?>() / 10,
                 Odometer = GetOdometer(locationMatch.Groups[22].Value)
             };
            

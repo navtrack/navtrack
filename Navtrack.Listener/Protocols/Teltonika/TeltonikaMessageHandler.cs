@@ -97,9 +97,9 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
         return location;
     }
 
-    private static decimal GetCoordinate(byte[] coordinate)
+    private static double GetCoordinate(byte[] coordinate)
     {
-        decimal convertedCoordinate = coordinate.ToInt32();
+        double convertedCoordinate = coordinate.ToInt32();
         string binary = Convert.ToString(coordinate[0], 2).PadLeft(8, '0');
         bool isNegative = binary[0] == 1;
 

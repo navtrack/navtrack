@@ -61,12 +61,12 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
 
             if (dataKey[i] == "#SPD#")
             {
-                location.Speed = SpeedUtil.KnotsToKph(Convert.ToDecimal(data[i]));
+                location.Speed = SpeedUtil.KnotsToKph(Convert.ToSingle(data[i]));
             }
 
             if (dataKey[i] == "#HEAD#")
             {
-                location.Heading = Convert.ToDecimal(data[i]);
+                location.Heading = Convert.ToSingle(data[i]);
             }
 
             if (dataKey[i] == "#ODO#")
@@ -81,12 +81,12 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
         }
     }
 
-    private decimal GetCoordinate(string value)
+    private double GetCoordinate(string value)
     {
         Match coordinateMatch = new Regex("(\\+?)(\\d{2})(\\d+.\\d+)").Match(value);
 
-        decimal coordinate = coordinateMatch.Groups[2].Get<decimal>();
-        coordinate += coordinateMatch.Groups[3].Get<decimal>() / 60;
+        double coordinate = coordinateMatch.Groups[2].Get<double>();
+        coordinate += coordinateMatch.Groups[3].Get<double>() / 60;
 
         return coordinateMatch.Groups[1].Value == "+" ? coordinate : -coordinate;
     }

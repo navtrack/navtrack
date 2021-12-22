@@ -43,8 +43,8 @@ public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
                 PositionStatus = locationMatch.Groups[8].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[12].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<decimal>()),
-                Heading = locationMatch.Groups[15].Get<decimal?>()
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<float>()),
+                Heading = locationMatch.Groups[15].Get<float?>()
             };
 
             return location;

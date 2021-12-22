@@ -57,11 +57,11 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         return location;
     }
 
-    private static decimal GetCoordinate(string[] strings, CardinalPoint cardinalPoint)
+    private static double GetCoordinate(string[] strings, CardinalPoint cardinalPoint)
     {
-        decimal d = int.Parse(Join(Empty, strings), NumberStyles.HexNumber);
+        double d = int.Parse(Join(Empty, strings), NumberStyles.HexNumber);
         int degrees = (int) (d / 30000 / 60);
-        decimal minutes = d / 30000 - degrees * 60;
+        double minutes = d / 30000 - degrees * 60;
 
         return GpsUtil.ConvertDmmToDecimal(degrees, minutes, cardinalPoint);
     }

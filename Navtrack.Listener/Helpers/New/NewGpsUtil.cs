@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 // ReSharper disable IdentifierTypo
@@ -5,7 +6,7 @@ namespace Navtrack.Listener.Helpers.New;
 
 public abstract class NewGpsUtil
 {
-    public static decimal Convert(GpsFormat dateFormat, params string[] input)
+    public static double Convert(GpsFormat dateFormat, params string[] input)
     {
         return dateFormat switch
         {
@@ -13,7 +14,7 @@ public abstract class NewGpsUtil
         };
     }
 
-    private static decimal Parse_DDDmmmmmm(string[] input)
+    private static double Parse_DDDmmmmmm(IReadOnlyList<string> input)
     {
         Match coordinateMatch = new Regex("(\\d{2,3})(\\d{2})(\\d{4})").Match(input[0]); // DD(D) mm mmmm
 

@@ -47,8 +47,8 @@ public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
                     locationMatch.Groups[11].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[8].Value,
                     locationMatch.Groups[9].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[12].Get<decimal>()),
-                Heading = locationMatch.Groups[15].Get<decimal>(),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[12].Get<float>()),
+                Heading = locationMatch.Groups[15].Get<float>(),
                 Odometer = long.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
                 PositionStatus = locationMatch.Groups[7].Value != "V"
             };

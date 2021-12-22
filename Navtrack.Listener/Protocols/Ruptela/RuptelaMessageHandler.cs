@@ -70,10 +70,10 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
             ? input.DataMessage.ByteReader.GetOne()
             : default;
         byte priority = input.DataMessage.ByteReader.GetOne();
-        location.Longitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000m;
-        location.Latitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000m;
-        location.Altitude = input.DataMessage.ByteReader.GetLe<short>() / 10m;
-        location.Heading = input.DataMessage.ByteReader.GetLe<short>() / 100m;
+        location.Longitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000.0;
+        location.Latitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000.0;
+        location.Altitude = input.DataMessage.ByteReader.GetLe<short>() / 10f;
+        location.Heading = input.DataMessage.ByteReader.GetLe<short>() / 100f;
         location.Satellites = input.DataMessage.ByteReader.GetOne();
         location.Speed = input.DataMessage.ByteReader.GetLe<short>();
         location.HDOP = input.DataMessage.ByteReader.GetOne() / 10;

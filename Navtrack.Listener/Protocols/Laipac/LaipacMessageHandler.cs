@@ -67,8 +67,8 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
                     locationMatch.Groups[5].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[6].Value,
                     locationMatch.Groups[7].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<decimal>()),
-                Heading = locationMatch.Groups[9].Get<decimal>()
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<float>()),
+                Heading = locationMatch.Groups[9].Get<float>()
             };
 
             SendLocationAcknowledge(locationMatch.Groups[3].Value, locationMatch.Groups[11].Value,

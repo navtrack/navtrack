@@ -59,7 +59,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         location.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
         location.Altitude = input.DataMessage.ByteReader.GetLe<short>();
         location.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
-        location.Heading = input.DataMessage.ByteReader.GetOne() * 2.0m;
+        location.Heading = input.DataMessage.ByteReader.GetOne() * 2.0f;
         location.HDOP = input.DataMessage.ByteReader.GetLe<short>();
 
         input.DataMessage.ByteReader.Skip(3);
@@ -112,18 +112,18 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         input.NetworkStream.Write(response.ToArray());
     }
 
-    private static decimal GetCoordinate(short degrees, int minutes)
+    private static double GetCoordinate(short degrees, int minutes)
     {
-        decimal value = degrees + BitUtil.ShiftRight(minutes, 4) / 600000.0m;
+        double value = degrees + BitUtil.ShiftRight(minutes, 4) / 600000.0f;
 
         return BitUtil.IsTrue(minutes, 0) ? value : -value;
     }
 
-    private static decimal GetCoordinate(int value)
+    private static double GetCoordinate(int value)
     {
         int degrees = value / 1000000;
-        decimal minutes = value % 1000000 / 10000.0m;
-        return degrees + minutes / 60m;
+        double minutes = value % 1000000 / 10000.0f;
+        return degrees + minutes / 60f;
     }
 
     private static DateTime GetDateTime(MessageInput input)

@@ -46,8 +46,8 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
 
                 byte eventCode = input.DataMessage.ByteReader.GetOne();
 
-                location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001m;
-                location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001m;
+                location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                 location.DateTime = new DateTime(2001, 1, 1)
                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
                 location.PositionStatus = input.DataMessage.ByteReader.GetOne() == 0x01;
@@ -55,7 +55,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                 location.GsmSignal = input.DataMessage.ByteReader.GetOne();
                 location.Speed = input.DataMessage.ByteReader.Get<short>();
                 location.Heading = input.DataMessage.ByteReader.Get<short>();
-                location.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1m;
+                location.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
                 location.Altitude = input.DataMessage.ByteReader.Get<short>();
                 location.Odometer = input.DataMessage.ByteReader.Get<int>();
                 int runTime = input.DataMessage.ByteReader.Get<int>();
@@ -117,10 +117,10 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                         switch (id)
                         {
                             case 0x02:
-                                location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001m;
+                                location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x03:
-                                location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001m;
+                                location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x04:
                                 location.DateTime = new DateTime(2001, 1, 1)
@@ -142,7 +142,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                                 location.Heading = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x0A:
-                                location.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1m;
+                                location.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
                                 break;
                             case 0x0B:
                                 location.Altitude = input.DataMessage.ByteReader.Get<short>();
@@ -183,15 +183,15 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             Location location = new()
             {
                 Device = input.Client.Device,
-                Latitude = input.DataMessage.CommaSplit.Get<decimal>(4),
-                Longitude = input.DataMessage.CommaSplit.Get<decimal>(5),
+                Latitude = input.DataMessage.CommaSplit.Get<double>(4),
+                Longitude = input.DataMessage.CommaSplit.Get<double>(5),
                 DateTime = ConvertDate(input.DataMessage.CommaSplit[6]),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(7) == "A",
                 Satellites = input.DataMessage.CommaSplit.Get<short>(8),
                 GsmSignal = GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9)),
-                Speed = input.DataMessage.CommaSplit.Get<decimal?>(10),
-                Heading = input.DataMessage.CommaSplit.Get<decimal?>(11),
-                HDOP = input.DataMessage.CommaSplit.Get<decimal?>(12),
+                Speed = input.DataMessage.CommaSplit.Get<float?>(10),
+                Heading = input.DataMessage.CommaSplit.Get<float?>(11),
+                HDOP = input.DataMessage.CommaSplit.Get<float?>(12),
                 Altitude = input.DataMessage.CommaSplit.Get<int>(13),
                 Odometer = input.DataMessage.CommaSplit.Get<uint>(14)
             };

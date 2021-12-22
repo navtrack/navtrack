@@ -44,8 +44,8 @@ public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
                     locationMatch.Groups[8].Value),
                 Latitude = GetCoordinate(locationMatch, 10, 11, flags, 2),
                 Longitude = GetCoordinate(locationMatch, 12, 13, flags, 1),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<decimal>() / 10),
-                Heading = locationMatch.Groups[15].Get<decimal?>() / 10
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<float>() / 10),
+                Heading = locationMatch.Groups[15].Get<float?>() / 10
             };
            
             return location;
@@ -54,10 +54,10 @@ public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
         return null;
     }
 
-    private static decimal GetCoordinate(Match locationMatch, int degreesIndex, int minutesIndex, int flags, int i2)
+    private static double GetCoordinate(Match locationMatch, int degreesIndex, int minutesIndex, int flags, int i2)
     {
-        decimal coordinate = locationMatch.Groups[degreesIndex].Get<decimal>() +
-                             locationMatch.Groups[minutesIndex].Get<decimal>() / 60000;
+        double coordinate = locationMatch.Groups[degreesIndex].Get<double>() +
+                            locationMatch.Groups[minutesIndex].Get<double>() / 60000;
 
         return !BitUtil.IsTrue(flags, i2) ? -coordinate : coordinate;
     }

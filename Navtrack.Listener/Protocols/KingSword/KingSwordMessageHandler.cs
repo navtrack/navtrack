@@ -48,10 +48,10 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
                 Latitude = GetCoordinate(locationMatch.Groups[10].Value, locationMatch.Groups[11].Value),
                 Longitude = GetCoordinate(locationMatch.Groups[12].Value, locationMatch.Groups[13].Value),
                 Speed = int.Parse(locationMatch.Groups[14].Value, NumberStyles.HexNumber) / 100,
-                Heading = locationMatch.Groups[15].Get<decimal?>(),
+                Heading = locationMatch.Groups[15].Get<float?>(),
                 GsmSignal = short.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber),
                 Odometer = long.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber),
-                Altitude = locationMatch.Groups[22].Get<decimal?>(),
+                Altitude = locationMatch.Groups[22].Get<float?>(),
             };
 
             return location;
@@ -60,9 +60,9 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
         return null;
     }
 
-    private static decimal GetCoordinate(string minus, string p1)
+    private static double GetCoordinate(string minus, string p1)
     {
-        decimal coordinate = int.Parse(p1, NumberStyles.HexNumber) / (decimal)600000;
+        double coordinate = int.Parse(p1, NumberStyles.HexNumber) / (double)600000;
 
         return minus == "8" ? -coordinate : coordinate;
     }

@@ -36,7 +36,7 @@ public class ManPowerMessageHandler : BaseMessageHandler<ManPowerProtocol>
                     locationMatch.Groups[6].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[7].Value,
                     locationMatch.Groups[8].Value),
-                Speed = locationMatch.Groups[9].Get<decimal?>()
+                Speed = locationMatch.Groups[9].Get<float?>()
             };
 
             return location;

@@ -47,12 +47,12 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
                     locationMatch.Groups[13].Value),
                 Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[14].Value,
                     locationMatch.Groups[15].Value),
-                Speed = locationMatch.Groups[16].Get<decimal?>(),
-                Heading = locationMatch.Groups[17].Get<decimal?>(),
+                Speed = locationMatch.Groups[16].Get<float?>(),
+                Heading = locationMatch.Groups[17].Get<float?>(),
                 Altitude = int.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
                 Odometer = int.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
                 Satellites = short.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber),
-                HDOP = locationMatch.Groups[21].Get<decimal?>(),
+                HDOP = locationMatch.Groups[21].Get<float?>(),
                 GsmSignal = locationMatch.Groups[22].Get<short?>()
             };
 

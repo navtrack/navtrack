@@ -63,7 +63,7 @@ public class JointechMessageHandler : BaseMessageHandler<JointechProtocol>
         return null;
     }
 
-    private static decimal GetCoordinate(string value, char locatingIndicator, int index, string regex)
+    private static double GetCoordinate(string value, char locatingIndicator, int index, string regex)
     {
         Match locationMatch =
             new Regex("(\\d{4})(\\d{4})")

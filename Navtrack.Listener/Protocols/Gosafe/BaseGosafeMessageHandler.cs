@@ -42,10 +42,10 @@ public class BaseGosafeMessageHandler<T> : BaseMessageHandler<T>
                         locationMatch.Groups[3].Value),
                     Longitude = GpsUtil.ConvertStringToDecimal(locationMatch.Groups[6].Value,
                         locationMatch.Groups[5].Value),
-                    Speed = locationMatch.Groups[7].Get<decimal?>(),
-                    Heading = locationMatch.Groups[8].Get<decimal?>(),
-                    Altitude = locationMatch.Groups.Count == 13 ? locationMatch.Groups[10].Get<decimal?>() : null,
-                    HDOP = locationMatch.Groups.Count == 13 ? locationMatch.Groups[11].Get<decimal?>() : null
+                    Speed = locationMatch.Groups[7].Get<float?>(),
+                    Heading = locationMatch.Groups[8].Get<float?>(),
+                    Altitude = locationMatch.Groups.Count == 13 ? locationMatch.Groups[10].Get<float?>() : null,
+                    HDOP = locationMatch.Groups.Count == 13 ? locationMatch.Groups[11].Get<float?>() : null
                 };
 
                 return location;

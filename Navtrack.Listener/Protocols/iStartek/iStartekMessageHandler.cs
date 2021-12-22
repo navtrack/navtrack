@@ -19,8 +19,8 @@ public class iStartekMessageHandler : BaseMessageHandler<iStartekProtocol>
         Location location = new(gprmc)
         {
             Device = input.Client.Device,
-            Heading = input.DataMessage.BarSplit.Get<decimal?>(1),
-            Altitude = input.DataMessage.BarSplit.Get<decimal?>(2)
+            Heading = input.DataMessage.BarSplit.Get<float?>(1),
+            Altitude = input.DataMessage.BarSplit.Get<float?>(2)
             // TODO add odometer
         };
 

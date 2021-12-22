@@ -48,8 +48,8 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
                 case 0x30:
 
                     location.PositionStatus = (input.DataMessage.ByteReader.GetOne() & 0xf0) == 0x00;
-                    location.Latitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0m;
-                    location.Longitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0m;
+                    location.Latitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0;
+                    location.Longitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0;
                     locations.Add(location);
                     break;
 

@@ -2,8 +2,8 @@ namespace Navtrack.Listener.Helpers.New;
 
 public abstract class SpeedUtil
 {
-    public static decimal KnotsToKph(decimal knots)
+    public static float? KnotsToKph(float knots)
     {
-        return knots * (decimal) 1.852;
+        return knots * 1.852f;
     }
 }

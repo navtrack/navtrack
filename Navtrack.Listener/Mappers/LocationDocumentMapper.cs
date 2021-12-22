@@ -16,15 +16,15 @@ public static class LocationDocumentMapper
             AssetId = source2.Id,
             Coordinates = new[]
             {
-                (double)source1.Longitude, (double)source1.Latitude
+                source1.Longitude, source1.Latitude
             },
             DateTime = source1.DateTime,
             Valid = source1.PositionStatus,
-            Speed = source1.Speed as float?,
-            Heading = source1.Heading as float?,
-            Altitude = source1.Altitude as float?,
+            Speed = source1.Speed,
+            Heading = source1.Heading,
+            Altitude = source1.Altitude,
             Satellites = source1.Satellites,
-            HDOP = source1.HDOP as float?,
+            HDOP = source1.HDOP,
             GsmSignal = source1.GsmSignal,
             Odometer = source1.Odometer,
             CreatedDate = DateTime.UtcNow,

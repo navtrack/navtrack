@@ -35,7 +35,7 @@ public class FreedomMessageHandler : BaseMessageHandler<FreedomProtocol>
                     locationMatch.Groups[4].Value),
                 Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value,
                     locationMatch.Groups[6].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<decimal>())
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<float>())
             };
 
             return location;

@@ -26,12 +26,12 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
             Location location = new()
             {
                 Device = input.Client.Device,
-                HDOP = locationMatch.Groups[2].Get<decimal?>(),
-                Speed = locationMatch.Groups[3].Get<decimal?>(),
-                Heading = locationMatch.Groups[4].Get<decimal?>(),
-                Altitude = locationMatch.Groups[5].Get<decimal?>(),
-                Longitude = locationMatch.Groups[6].Get<decimal>(),
-                Latitude = locationMatch.Groups[7].Get<decimal>(),
+                HDOP = locationMatch.Groups[2].Get<float?>(),
+                Speed = locationMatch.Groups[3].Get<float?>(),
+                Heading = locationMatch.Groups[4].Get<float?>(),
+                Altitude = locationMatch.Groups[5].Get<float?>(),
+                Longitude = locationMatch.Groups[6].Get<double>(),
+                Latitude = locationMatch.Groups[7].Get<double>(),
                 DateTime = DateTimeUtil.New(locationMatch.Groups[8].Value, locationMatch.Groups[9].Value,
                     locationMatch.Groups[10].Value,
                     locationMatch.Groups[11].Value, locationMatch.Groups[12].Value, locationMatch.Groups[13].Value,

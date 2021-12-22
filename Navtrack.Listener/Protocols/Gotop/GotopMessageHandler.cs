@@ -39,10 +39,10 @@ public class GotopMessageHandler : BaseMessageHandler<GotopProtocol>
                     locationMatch.Groups[8].Value,
                     locationMatch.Groups[9].Value),
                 PositionStatus = locationMatch.Groups[3].Value == "A",
-                Latitude = GetCoordinate(locationMatch.Groups[10].Get<decimal>(), locationMatch.Groups[11].Value),
-                Longitude = GetCoordinate(locationMatch.Groups[12].Get<decimal>(), locationMatch.Groups[13].Value),
-                Speed = locationMatch.Groups[14].Get<decimal?>(),
-                Heading = locationMatch.Groups[16].Get<decimal?>()
+                Latitude = GetCoordinate(locationMatch.Groups[10].Get<double>(), locationMatch.Groups[11].Value),
+                Longitude = GetCoordinate(locationMatch.Groups[12].Get<double>(), locationMatch.Groups[13].Value),
+                Speed = locationMatch.Groups[14].Get<float?>(),
+                Heading = locationMatch.Groups[16].Get<float?>()
             };
 
             return location;
@@ -51,7 +51,7 @@ public class GotopMessageHandler : BaseMessageHandler<GotopProtocol>
         return null;
     }
 
-    private static decimal GetCoordinate(decimal coordinate, string value)
+    private static double GetCoordinate(double coordinate, string value)
     {
         if (value == "S" || value == "W")
         {

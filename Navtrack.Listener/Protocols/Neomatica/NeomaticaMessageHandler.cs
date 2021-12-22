@@ -46,14 +46,14 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
 
         short status = input.DataMessage.ByteReader.Get<short>();
         location.PositionStatus = !BitUtil.IsTrue(status, 5);
-        location.Latitude = (decimal) input.DataMessage.ByteReader.Get<float>();
-        location.Longitude = (decimal) input.DataMessage.ByteReader.Get<float>();
-        location.Heading = input.DataMessage.ByteReader.Get<short>() * 0.1m;
-        location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.1m;
+        location.Latitude = input.DataMessage.ByteReader.Get<float>();
+        location.Longitude = input.DataMessage.ByteReader.Get<float>();
+        location.Heading = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+        location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.1f;
         input.DataMessage.ByteReader.GetOne();
         location.Altitude = input.DataMessage.ByteReader.Get<short>();
-        location.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1m;
-        location.Satellites = (short?) (input.DataMessage.ByteReader.GetOne() & 0x0f);
+        location.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1f;
+        location.Satellites = (short?)(input.DataMessage.ByteReader.GetOne() & 0x0f);
         location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
 
         MarkAsNull(location);

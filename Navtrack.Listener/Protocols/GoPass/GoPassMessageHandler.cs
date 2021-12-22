@@ -67,8 +67,8 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
                 PositionStatus = locationMatch.Groups[6].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value, locationMatch.Groups[8].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[11].Get<decimal>()),
-                Heading = locationMatch.Groups[12].Get<decimal?>()
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[11].Get<float>()),
+                Heading = locationMatch.Groups[12].Get<float?>()
             };
 
             return location;

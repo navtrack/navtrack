@@ -32,11 +32,11 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
             {
                 Device = input.Client.Device,
                 DateTime = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
-                Longitude = locationMatch.Groups[3].Get<decimal>(),
-                Latitude = locationMatch.Groups[4].Get<decimal>(),
-                Speed = locationMatch.Groups[5].Get<decimal?>(),
-                Heading = locationMatch.Groups[6].Get<decimal?>(),
-                Altitude = locationMatch.Groups[7].Get<decimal?>(),
+                Longitude = locationMatch.Groups[3].Get<double>(),
+                Latitude = locationMatch.Groups[4].Get<double>(),
+                Speed = locationMatch.Groups[5].Get<float?>(),
+                Heading = locationMatch.Groups[6].Get<float?>(),
+                Altitude = locationMatch.Groups[7].Get<float?>(),
                 Satellites = locationMatch.Groups[8].Get<short?>(),
             };
 

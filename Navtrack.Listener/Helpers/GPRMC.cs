@@ -7,11 +7,11 @@ namespace Navtrack.Listener.Helpers;
 public class GPRMC
 {
     public DateTime DateTime { get; set; }
-    public decimal Latitude { get; set; }
-    public decimal Longitude { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
     public bool PositionStatus { get; set; }
-    public decimal? Speed { get; set; }
-    public decimal? Heading { get; set; }
+    public float? Speed { get; set; }
+    public float? Heading { get; set; }
 
     // Input example: $GPRMC,102156.000,A,2232.4690,N,11403.6847,E,0.00,,180909,,*15
     public static GPRMC Parse(string input)
@@ -34,8 +34,8 @@ public class GPRMC
                 PositionStatus = match.Groups[2].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(match.Groups[3].Value, match.Groups[4].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(match.Groups[5].Value, match.Groups[6].Value),
-                Speed = SpeedUtil.KnotsToKph(match.Groups[7].Get<decimal>()),
-                Heading = match.Groups[8].Get<decimal?>()
+                Speed = SpeedUtil.KnotsToKph(match.Groups[7].Get<float>()),
+                Heading = match.Groups[8].Get<float?>()
             };
 
             return gprmc;

@@ -38,9 +38,9 @@ public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
                     locationMatch.Groups[7].Value),
                 Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[8].Value,
                     locationMatch.Groups[9].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[10].Get<decimal>()),
-                Heading = locationMatch.Groups[11].Get<decimal?>(),
-                HDOP = locationMatch.Groups[12].Get<decimal?>(),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[10].Get<float>()),
+                Heading = locationMatch.Groups[11].Get<float?>(),
+                HDOP = locationMatch.Groups[12].Get<float?>(),
                 DateTime = DateTimeUtil.New(locationMatch.Groups[18].Value, locationMatch.Groups[17].Value,
                     locationMatch.Groups[16].Value, locationMatch.Groups[13].Value, locationMatch.Groups[14].Value,
                     locationMatch.Groups[15].Value)

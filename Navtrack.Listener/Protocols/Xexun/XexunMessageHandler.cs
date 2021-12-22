@@ -32,8 +32,8 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
                 PositionStatus = lgc[16].Value == "F",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[6].Value, lgc[7].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[8].Value, lgc[9].Value),
-                Speed = SpeedUtil.KnotsToKph(lgc[10].Get<decimal>()),
-                Heading = string.IsNullOrEmpty(lgc[11].Value) ? default(decimal?) : decimal.Parse(lgc[11].Value)
+                Speed = SpeedUtil.KnotsToKph(lgc[10].Get<float>()),
+                Heading = string.IsNullOrEmpty(lgc[11].Value) ? default(float?) : float.Parse(lgc[11].Value)
             };
 
             MatchCollection extra =
@@ -47,7 +47,7 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
                 if (match.Count == 14)
                 {
                     location.Satellites = short.Parse(match[3].Value);
-                    location.Altitude = decimal.Parse(match[4].Value);
+                    location.Altitude = float.Parse(match[4].Value);
                     location.MobileCountryCode = int.Parse(match[10].Value);
                     location.MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber);
                     location.LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber);

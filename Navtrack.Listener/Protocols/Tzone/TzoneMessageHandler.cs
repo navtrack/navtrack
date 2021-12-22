@@ -17,7 +17,7 @@ public class TzoneMessageHandler : BaseMessageHandler<TzoneProtocol>
         Location location = new(gprmc)
         {
             Device = input.Client.Device,
-            HDOP = input.DataMessage.BarSplit.Get<decimal?>(3),
+            HDOP = input.DataMessage.BarSplit.Get<float?>(3),
             Odometer = input.DataMessage.BarSplit.GetDouble(11, 4)
         };
 

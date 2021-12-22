@@ -57,9 +57,9 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
         };
 
         location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
-        location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001m;
-        location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001m;
-        location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.01m;
+        location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+        location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+        location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.01f;
         location.Altitude = input.DataMessage.ByteReader.Get<short>();
         location.Heading = input.DataMessage.ByteReader.Get<short>();
         location.PositionStatus = input.DataMessage.ByteReader.GetOne() > 0;

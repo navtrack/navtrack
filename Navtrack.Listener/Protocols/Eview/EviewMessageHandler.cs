@@ -56,11 +56,11 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
                     Device = input.Client.Device,
                     DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
                         locationMatch.Groups[2].Value),
-                    Latitude = locationMatch.Groups[3].Get<decimal>(),
-                    Longitude = locationMatch.Groups[4].Get<decimal>(),
-                    Speed = locationMatch.Groups[5].Get<decimal?>(),
-                    Heading = locationMatch.Groups[6].Get<decimal?>(),
-                    Altitude = locationMatch.Groups[9].Get<decimal?>(),
+                    Latitude = locationMatch.Groups[3].Get<double>(),
+                    Longitude = locationMatch.Groups[4].Get<double>(),
+                    Speed = locationMatch.Groups[5].Get<float?>(),
+                    Heading = locationMatch.Groups[6].Get<float?>(),
+                    Altitude = locationMatch.Groups[9].Get<float?>(),
                     Satellites = locationMatch.Groups[11].Get<short?>()
                 };
 

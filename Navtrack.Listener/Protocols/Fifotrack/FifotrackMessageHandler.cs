@@ -18,11 +18,11 @@ public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
             Device = input.Client.Device,
             DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
             PositionStatus = input.DataMessage.CommaSplit.Get<string>(6) == "A",
-            Latitude = input.DataMessage.CommaSplit.Get<decimal>(7),
-            Longitude = input.DataMessage.CommaSplit.Get<decimal>(8),
-            Speed = input.DataMessage.CommaSplit.Get<decimal?>(9),
-            Heading = input.DataMessage.CommaSplit.Get<decimal?>(10),
-            Altitude = input.DataMessage.CommaSplit.Get<decimal?>(11),
+            Latitude = input.DataMessage.CommaSplit.Get<double>(7),
+            Longitude = input.DataMessage.CommaSplit.Get<double>(8),
+            Speed = input.DataMessage.CommaSplit.Get<float?>(9),
+            Heading = input.DataMessage.CommaSplit.Get<float?>(10),
+            Altitude = input.DataMessage.CommaSplit.Get<float?>(11),
             Odometer = input.DataMessage.CommaSplit.Get<double?>(12),
         };
 

@@ -31,10 +31,10 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
                     inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
                 DateTime = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
                     inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
-                Speed = SpeedUtil.KnotsToKph(inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal>(6)),
-                Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<decimal?>(7),
-                HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<decimal?>(1),
-                Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<decimal?>(2),
+                Speed = SpeedUtil.KnotsToKph(inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float>(6)),
+                Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7),
+                HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(1),
+                Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(2),
                 Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7)
             };
 

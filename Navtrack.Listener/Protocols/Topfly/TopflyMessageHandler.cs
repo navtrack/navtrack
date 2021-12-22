@@ -35,8 +35,8 @@ public class TopflyMessageHandler : BaseMessageHandler<TopflyProtocol>
                     locationMatch.Groups[6].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[7].Value,
                     locationMatch.Groups[8].Value),
-                Speed = locationMatch.Groups[9].Get<decimal?>(),
-                Heading = locationMatch.Groups[10].Get<decimal?>()
+                Speed = locationMatch.Groups[9].Get<float?>(),
+                Heading = locationMatch.Groups[10].Get<float?>()
             };
 
             return location;

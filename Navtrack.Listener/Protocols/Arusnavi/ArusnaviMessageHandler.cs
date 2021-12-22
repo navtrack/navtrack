@@ -37,7 +37,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
             input.DataMessage.ByteReader.Skip(1); // checksum
         }
 
-        SendResponse(input, (byte) HeaderVersion.V1, parcelNumber);
+        SendResponse(input, (byte)HeaderVersion.V1, parcelNumber);
 
         return locations;
     }
@@ -58,17 +58,17 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
             switch (tag)
             {
                 case 3:
-                    location.Latitude = (decimal) input.DataMessage.ByteReader.Get<float>();
+                    location.Latitude = input.DataMessage.ByteReader.Get<float>();
                     break;
 
                 case 4:
-                    location.Latitude = (decimal) input.DataMessage.ByteReader.Get<float>();
+                    location.Latitude = input.DataMessage.ByteReader.Get<float>();
                     break;
 
                 case 5:
                     location.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
                     byte satellites = input.DataMessage.ByteReader.GetOne();
-                    location.Satellites = (short) (satellites & 0x0F + (satellites >> 4) & 0x0F);
+                    location.Satellites = (short)(satellites & 0x0F + (satellites >> 4) & 0x0F);
                     location.Altitude = input.DataMessage.ByteReader.GetOne() * 10;
                     location.Heading = input.DataMessage.ByteReader.GetOne() * 2;
                     break;
@@ -92,7 +92,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
             long imei = input.DataMessage.ByteReader.Get<long>();
 
             input.Client.SetDevice($"{imei}");
-                
+
             SendResponse(input, headerVersion, 0);
         }
 
@@ -101,19 +101,19 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 
     private static void SendResponse(MessageInput input, byte version, int index)
     {
-        List<byte> response = new() {0x7B};
+        List<byte> response = new() { 0x7B };
 
-        if (version == (int) HeaderVersion.V1)
+        if (version == (int)HeaderVersion.V1)
         {
             response.Add(0x00);
-            response.Add((byte) index);
+            response.Add((byte)index);
         }
-        else if (version == (int) HeaderVersion.V2)
+        else if (version == (int)HeaderVersion.V2)
         {
             response.Add(0x04);
             response.Add(0x00);
-            byte[] timeBytes = BitConverter.GetBytes((int) DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-            response.Add((byte) ChecksumUtil.Modulo256(timeBytes));
+            byte[] timeBytes = BitConverter.GetBytes((int)DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            response.Add((byte)ChecksumUtil.Modulo256(timeBytes));
             response.AddRange(timeBytes);
         }
 
@@ -152,23 +152,23 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
         if (locationMatch.Success)
         {
             input.Client.SetDevice(locationMatch.Groups[3].Value);
-                
+
             Location location = new()
             {
                 Device = input.Client.Device,
                 Satellites = locationMatch.Groups[14].Get<short?>(),
-                Altitude = locationMatch.Groups[15].Get<decimal?>(),
+                Altitude = locationMatch.Groups[15].Get<float?>(),
                 DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                     $"{locationMatch.Groups[26].Value}{locationMatch.Groups[19].Value}"),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[20].Value,
                     locationMatch.Groups[21].Value),
                 Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[22].Value,
                     locationMatch.Groups[23].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[24].Get<decimal>()),
-                Heading = locationMatch.Groups[25].Get<decimal?>(),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[24].Get<float>()),
+                Heading = locationMatch.Groups[25].Get<float?>(),
             };
 
-            return new[] {location};
+            return new[] { location };
         }
 
         return null;

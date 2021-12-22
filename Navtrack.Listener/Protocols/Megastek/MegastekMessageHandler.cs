@@ -28,7 +28,7 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
         {
             Device = input.Client.Device,
             Satellites = input.DataMessage.CommaSplit.Get<short>(18),
-            Altitude = input.DataMessage.CommaSplit.Get<decimal?>(19)
+            Altitude = input.DataMessage.CommaSplit.Get<float?>(19)
         };
 
         return location;
@@ -64,10 +64,10 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
                 input.DataMessage.CommaSplit[10]),
             DateTime = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
             Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
-            HDOP = input.DataMessage.CommaSplit.Get<decimal?>(14),
-            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<decimal>(15)),
-            Heading = input.DataMessage.CommaSplit.Get<decimal?>(16),
-            Altitude = input.DataMessage.CommaSplit.Get<decimal?>(17),
+            HDOP = input.DataMessage.CommaSplit.Get<float?>(14),
+            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(15)),
+            Heading = input.DataMessage.CommaSplit.Get<float?>(16),
+            Altitude = input.DataMessage.CommaSplit.Get<float?>(17),
             Odometer = input.DataMessage.CommaSplit.Get<double?>(18) * 1000,
             GsmSignal = input.DataMessage.CommaSplit.Get<short?>(23)
         };

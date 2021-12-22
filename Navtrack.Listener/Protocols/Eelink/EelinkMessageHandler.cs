@@ -96,8 +96,8 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
 
         input.DataMessage.ByteReader.Skip(startIndex);
         location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
-        location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
-        location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
+        location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
+        location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
         location.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
         location.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();
         location.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToInt16();
@@ -132,8 +132,8 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
 
         if (mask[^1] == '1')
         {
-            location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
-            location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0m;
+            location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
+            location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
             location.Altitude = input.DataMessage.ByteReader.Get(2).ToInt16();
             location.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
             location.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();

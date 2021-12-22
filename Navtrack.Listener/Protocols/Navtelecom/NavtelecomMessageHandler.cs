@@ -63,7 +63,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
     private IEnumerable<Location> Handle_FLEX(MessageInput input)
     {
         int? flexStartIndex =
-            input.DataMessage.Bytes.GetStartIndex(new byte[] {0x2A, 0x3E, 0x46, 0x4C, 0x45, 0x58});
+            input.DataMessage.Bytes.GetStartIndex(new byte[] { 0x2A, 0x3E, 0x46, 0x4C, 0x45, 0x58 });
 
         if (flexStartIndex.HasValue)
         {
@@ -73,7 +73,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             byte structVersion = input.DataMessage.ByteReader.GetOne();
             byte dataSize = input.DataMessage.ByteReader.GetOne();
 
-            int result = (int) Math.Ceiling((double) dataSize / 8);
+            int result = (int)Math.Ceiling((double)dataSize / 8);
             byte[] bytes = input.DataMessage.ByteReader.Get(result);
 
             flexArray = new bool[dataSize];
@@ -159,7 +159,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
                           $"{input.DataMessage.Hex[2..6].StringJoin()}"; // event Index
         SendResponse(response, input.NetworkStream);
 
-        return new[] {location};
+        return new[] { location };
     }
 
     private IEnumerable<Location> Handle_V1_C_CurrentState(MessageInput input)
@@ -172,7 +172,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             string response = $"{input.DataMessage.Hex[..2].StringJoin()}";
             SendResponse(response, input.NetworkStream);
 
-            return new[] {location};
+            return new[] { location };
         }
 
         return null;
@@ -192,7 +192,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         string preamble = input.DataMessage.Hex[..4].StringJoin();
         const string receiverId = "00000000";
         string senderId = input.DataMessage.Hex[4..8].StringJoin();
-        string dataCount = HexUtil.ConvertByteArrayToHexStringArray(BitConverter.GetBytes((short) data.Length))
+        string dataCount = HexUtil.ConvertByteArrayToHexStringArray(BitConverter.GetBytes((short)data.Length))
             .StringJoin();
         string dataChecksum = ChecksumUtil.Xor(data);
         string reply = $"{preamble}{receiverId}{senderId}{dataCount}{dataChecksum}";
@@ -219,16 +219,16 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
                         location.DateTime = DateTime.UnixEpoch.AddSeconds(reader.Get<int>());
                         break;
                     case 10:
-                        location.Latitude = reader.Get<int>() / 600000.0m;
+                        location.Latitude = reader.Get<int>() / 600000.0;
                         break;
                     case 11:
-                        location.Longitude = reader.Get<int>() / 600000.0m;
+                        location.Longitude = reader.Get<int>() / 600000.0;
                         break;
                     case 12:
                         location.Altitude = reader.Get<int>() / 10;
                         break;
                     case 13:
-                        location.Speed = (decimal?) reader.Get<float>();
+                        location.Speed = reader.Get<float>();
                         break;
                     case 14:
                         location.Heading = reader.Get<short>();
@@ -255,7 +255,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         };
 
         short packageLength = reader.Get<short>();
-        Version dataStructureVersion = (Version) reader.GetOne();
+        Version dataStructureVersion = (Version)reader.GetOne();
         byte staticDataLength = reader.GetOne();
         int packageNumber = reader.Get<int>();
         short eventCode = reader.Get<short>();
@@ -263,10 +263,10 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         location.DateTime = DateTime.UnixEpoch.AddSeconds(eventTime);
         byte navigationSensorState = reader.GetOne();
         int gpsTime = reader.Get<int>();
-        location.Latitude = reader.Get<int>() / 600000.0m;
-        location.Longitude = reader.Get<int>() / 600000.0m;
+        location.Latitude = reader.Get<int>() / 600000.0;
+        location.Longitude = reader.Get<int>() / 600000.0;
         location.Altitude = reader.Get<int>();
-        location.Speed = (decimal?) reader.Get<float>();
+        location.Speed = reader.Get<float>();
         location.Heading = reader.Get<short>();
         location.Odometer = reader.Get<float>() * 1000;
 

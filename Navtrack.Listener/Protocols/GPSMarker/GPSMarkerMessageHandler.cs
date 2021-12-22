@@ -36,8 +36,8 @@ public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
                 DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
                 Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value, locationMatch.Groups[5].Value),
                 Longitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value, locationMatch.Groups[7].Value),
-                Speed = locationMatch.Groups[9].Get<decimal?>(),
-                Heading = locationMatch.Groups[10].Get<decimal?>(),
+                Speed = locationMatch.Groups[9].Get<float?>(),
+                Heading = locationMatch.Groups[10].Get<float?>(),
                 Satellites = short.Parse(locationMatch.Groups[11].Value, NumberStyles.HexNumber)
             };
 

@@ -33,19 +33,19 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
                 int.Parse(input.DataMessage.Hex[14])),
             Latitude = GetCoordinate(input.DataMessage.Hex[15..19], input.DataMessage.Bytes[15]),
             Longitude = GetCoordinate(input.DataMessage.Hex[19..23], input.DataMessage.Bytes[19]),
-            Speed = decimal.Parse(input.DataMessage.Hex[23..25].StringJoin()),
-            Heading = decimal.Parse(input.DataMessage.Hex[25..27].StringJoin())
+            Speed = float.Parse(input.DataMessage.Hex[23..25].StringJoin()),
+            Heading = float.Parse(input.DataMessage.Hex[25..27].StringJoin())
         };
 
         return location;
     }
 
-    private static decimal GetCoordinate(string[] input, byte highestByte)
+    private static double GetCoordinate(string[] input, byte highestByte)
     {
         string coordinate = input.StringJoin();
 
-        decimal converted = GpsUtil.ConvertDdmToDecimal(decimal.Parse(coordinate.Substring(0, 3)),
-            decimal.Parse(coordinate.Substring(3, 5)) / 1000, CardinalPoint.North);
+        double converted = GpsUtil.ConvertDdmToDecimal(double.Parse(coordinate[..3]),
+            double.Parse(coordinate.Substring(3, 5)) / 1000, CardinalPoint.North);
 
         return (highestByte & 0x80) != 0 ? -converted : converted;
     }

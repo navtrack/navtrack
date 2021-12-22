@@ -55,11 +55,11 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
                     locationMatch.Groups[10].Value),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
                     locationMatch.Groups[12].Value),
-                Altitude = locationMatch.Groups[14].Get<decimal?>(),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<decimal>()),
-                Heading = locationMatch.Groups[16].Get<decimal?>(),
+                Altitude = locationMatch.Groups[14].Get<float?>(),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<float>()),
+                Heading = locationMatch.Groups[16].Get<float?>(),
                 Satellites = locationMatch.Groups[17].Get<short?>(),
-                HDOP = locationMatch.Groups[18].Get<decimal?>()
+                HDOP = locationMatch.Groups[18].Get<float?>()
             };
 
             return location;
@@ -104,11 +104,11 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
                     locationMatch.Groups[10].Value),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
                     locationMatch.Groups[12].Value),
-                Altitude = locationMatch.Groups[14].Get<decimal?>(),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<decimal>()),
-                Heading = locationMatch.Groups[16].Get<decimal?>(),
+                Altitude = locationMatch.Groups[14].Get<float?>(),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<float>()),
+                Heading = locationMatch.Groups[16].Get<float?>(),
                 Satellites = locationMatch.Groups[17].Get<short?>(),
-                HDOP = locationMatch.Groups[18].Get<decimal?>()
+                HDOP = locationMatch.Groups[18].Get<float?>()
             };
 
             return location;

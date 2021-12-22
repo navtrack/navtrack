@@ -42,8 +42,8 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
                 PositionStatus = lgc[2].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
-                Speed = SpeedUtil.KnotsToKph(lgc[9].Get<decimal>()),
-                Heading = decimal.Parse(lgc[13].Value),
+                Speed = SpeedUtil.KnotsToKph(lgc[9].Get<float>()),
+                Heading = float.Parse(lgc[13].Value),
                 Odometer = double.Parse(lgc[16].Value)
             };
 

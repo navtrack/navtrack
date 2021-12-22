@@ -24,8 +24,8 @@ public class BaseTkStarMessageHandler<T> : BaseMessageHandler<T>
                 input.DataMessage.CommaSplit[timeIndex + 3]),
             Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[timeIndex + 4],
                 input.DataMessage.CommaSplit[timeIndex + 5]),
-            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<decimal>(timeIndex + 6)),
-            Heading = input.DataMessage.CommaSplit.Get<decimal?>(timeIndex + 7)
+            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(timeIndex + 6)),
+            Heading = input.DataMessage.CommaSplit.Get<float?>(timeIndex + 7)
         };
 
         return location;

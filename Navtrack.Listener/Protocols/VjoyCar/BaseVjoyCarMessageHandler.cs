@@ -35,8 +35,8 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
                 PositionStatus = lgc[4].Value == "F",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
-                Speed = decimal.Parse(lgc[9].Value),
-                Heading = decimal.Parse(lgc[13].Value),
+                Speed = float.Parse(lgc[9].Value),
+                Heading = float.Parse(lgc[13].Value),
                 Odometer = long.Parse(lgc[15].Value, NumberStyles.HexNumber)
             };
 

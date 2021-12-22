@@ -58,12 +58,12 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
             DateTime rtcDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime sendDate = GetDateTime(input.DataMessage.ByteReader, input);
             position.DateTime = gpsDate;
-            position.Longitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001m;
-            position.Latitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001m;
+            position.Longitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
+            position.Latitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
             position.Heading = input.DataMessage.ByteReader.GetLe<short>();
             int reportId = input.DataMessage.ByteReader.GetOne();
             position.Odometer = input.DataMessage.ByteReader.GetLe<int>() * 100;
-            position.HDOP = input.DataMessage.ByteReader.GetLe<short>() * 0.1m;
+            position.HDOP = input.DataMessage.ByteReader.GetLe<short>() * 0.1f;
             byte inputStatus = input.DataMessage.ByteReader.GetOne();
             position.Speed = input.DataMessage.ByteReader.GetLe<short>();
             byte outputStatus = input.DataMessage.ByteReader.GetOne();
@@ -362,12 +362,12 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
             {
                 Device = input.Client.Device,
                 DateTime = GetDateTime(locationMatch.Groups[5].Value),
-                Longitude = locationMatch.Groups[8].Get<int>() * 0.000001m,
-                Latitude = locationMatch.Groups[9].Get<int>() * 0.000001m,
-                Heading = locationMatch.Groups[10].Get<decimal?>(),
+                Longitude = locationMatch.Groups[8].Get<int>() * 0.000001,
+                Latitude = locationMatch.Groups[9].Get<int>() * 0.000001,
+                Heading = locationMatch.Groups[10].Get<float?>(),
                 Odometer = locationMatch.Groups[12].Get<double?>() * 100,
-                HDOP = locationMatch.Groups[13].Get<decimal?>() * 0.1m,
-                Speed = locationMatch.Groups[15].Get<decimal>()
+                HDOP = locationMatch.Groups[13].Get<float?>() * 0.1f,
+                Speed = locationMatch.Groups[15].Get<float>()
             };
 
             return location;
