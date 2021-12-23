@@ -2,7 +2,7 @@
 ### Open source GPS tracking system based on .NET and React.
 [navtrack.com](https://navtrack.com) - [codeagency.com](https://codeagency.com)
 
-![Discord](https://img.shields.io/discord/515183168060391427?label=Discord)
+[![Discord](https://img.shields.io/discord/515183168060391427?label=Discord)](https://discord.gg/N4ZxhB3y6h)
 
 
 ## Running Navtrack
