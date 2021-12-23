@@ -13,8 +13,8 @@ export default function BrowserRouterProvider() {
     <BrowserRouter>
       {appContext.initialized && (
         <>
-          {appContext.isAuthenticated && axiosAuthState?.interceptorInit ? (
-            <RoutesAuthenticated />
+          {appContext.isAuthenticated ? (
+            <>{axiosAuthState?.interceptorInit && <RoutesAuthenticated />}</>
           ) : (
             <RoutesUnauthenticated />
           )}
