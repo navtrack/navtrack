@@ -2,6 +2,9 @@
 ### Open source GPS tracking system based on .NET and React.
 [navtrack.com](https://navtrack.com) - [codeagency.com](https://codeagency.com)
 
+![Discord](https://img.shields.io/discord/515183168060391427?label=Discord)
+
+
 ## Running Navtrack
 
 #### 1. Install docker
