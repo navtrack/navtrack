@@ -1,4 +1,4 @@
-import { isAfter, sub } from "date-fns";
+import { add, isAfter, sub } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { AUTHENTICATION } from "../../constants";
 import useAppContext from "../app/useAppContext";
@@ -10,22 +10,25 @@ export const useTokenRefresh = () => {
   const [checkTokenInterval, setCheckTokenInterval] = useState<
     NodeJS.Timeout | undefined
   >();
-  const [currentRefreshToken, setCurrentRefreshToken] = useState<
-    string | undefined
-  >();
   const logout = useLogout();
+  const [reinitialize, setReinitialize] = useState(false);
 
   const refreshTokenMutation = useGetTokenMutation({
     onSuccess: (data) => {
+      const expiryDate = add(new Date(), {
+        seconds: data.expires_in
+      });
+
       setAppContext((current) => ({
         ...current,
         isAuthenticated: true,
         token: {
           accessToken: data.access_token,
           refreshToken: data.refresh_token,
-          expiryDate: new Date(new Date().getTime() + data.expires_in * 1000)
+          expiryDate: expiryDate
         }
       }));
+      setReinitialize(true);
     },
     onError: () => {
       logout();
@@ -34,9 +37,14 @@ export const useTokenRefresh = () => {
 
   const checkToken = useCallback(() => {
     if (appContext.token) {
+      console.log("[TOKEN REFRESH] Checking");
       const expiryDate = sub(appContext.token.expiryDate, { minutes: 2 });
 
       if (isAfter(new Date(), expiryDate)) {
+        console.log(
+          "[TOKEN REFRESH] Token expired, refreshing token",
+          appContext.token.expiryDate
+        );
         const data = {
           grant_type: "refresh_token",
           client_id: AUTHENTICATION.CLIENT_ID,
@@ -44,56 +52,45 @@ export const useTokenRefresh = () => {
         };
 
         refreshTokenMutation.mutate(data);
+      } else {
+        console.log("[TOKEN REFRESH] Token valid", appContext.token.expiryDate);
       }
     }
   }, [appContext.token, refreshTokenMutation]);
 
-  const clearCheck = useCallback(() => {
-    if (checkTokenInterval) {
-      clearInterval(checkTokenInterval);
-      setCurrentRefreshToken(undefined);
-    }
-  }, [checkTokenInterval]);
-
-  const setCheck = useCallback(() => {
+  const setCheckInterval = useCallback(() => {
     const interval = setInterval(() => {
       checkToken();
-    }, 1000);
+    }, 10000);
+
     setCheckTokenInterval(interval);
-    setCurrentRefreshToken(appContext.token?.refreshToken);
-  }, [appContext.token?.refreshToken, checkToken]);
+  }, [checkToken]);
 
   // If the user is authenticated, set the interval to check the token
   useEffect(() => {
     if (appContext.isAuthenticated && !checkTokenInterval) {
-      setCheck();
+      console.log("[TOKEN REFRESH] Setting interval");
+
+      setCheckInterval();
     }
-  }, [appContext.isAuthenticated, checkTokenInterval, setCheck]);
+  }, [appContext.isAuthenticated, checkTokenInterval, setCheckInterval]);
 
   // If the user logs out, clear the interval
   useEffect(() => {
-    if (!appContext.isAuthenticated) {
-      clearCheck();
+    if (!appContext.isAuthenticated && checkTokenInterval) {
+      console.log("[TOKEN REFRESH] Stopping");
+      clearInterval(checkTokenInterval);
+      setCheckTokenInterval(undefined);
     }
-  }, [appContext.isAuthenticated, clearCheck]);
+  }, [appContext.isAuthenticated, checkTokenInterval]);
 
-  // If the refresh token changes, clear the interval and set the interval again
+  // If the expiry date changes, clear the interval and set a new one
   useEffect(() => {
-    if (
-      appContext.isAuthenticated &&
-      checkTokenInterval !== undefined &&
-      currentRefreshToken &&
-      currentRefreshToken !== appContext.token?.refreshToken
-    ) {
-      clearCheck();
-      setCheck();
+    if (reinitialize && checkTokenInterval) {
+      console.log("[TOKEN REFRESH] Reinitializing");
+      setReinitialize(false);
+      clearInterval(checkTokenInterval);
+      setCheckInterval();
     }
-  }, [
-    appContext.isAuthenticated,
-    appContext.token?.refreshToken,
-    checkTokenInterval,
-    clearCheck,
-    currentRefreshToken,
-    setCheck
-  ]);
+  }, [checkTokenInterval, reinitialize, setCheckInterval]);
 };
