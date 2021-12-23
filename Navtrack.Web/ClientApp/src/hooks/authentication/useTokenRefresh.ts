@@ -5,6 +5,10 @@ import useAppContext from "../app/useAppContext";
 import { useGetTokenMutation } from "../mutations/useGetTokenMutation";
 import { useLogout } from "./useLogout";
 
+function log(message?: any, ...optionalParams: any[]) {
+  // console.log(message, ...optionalParams);
+}
+
 export const useTokenRefresh = () => {
   const { appContext, setAppContext } = useAppContext();
   const [checkTokenInterval, setCheckTokenInterval] = useState<
@@ -37,11 +41,11 @@ export const useTokenRefresh = () => {
 
   const checkToken = useCallback(() => {
     if (appContext.token) {
-      console.log("[TOKEN REFRESH] Checking");
+      log("[TOKEN REFRESH] Checking");
       const expiryDate = sub(appContext.token.expiryDate, { minutes: 2 });
 
       if (isAfter(new Date(), expiryDate)) {
-        console.log(
+        log(
           "[TOKEN REFRESH] Token expired, refreshing token",
           appContext.token.expiryDate
         );
@@ -53,7 +57,7 @@ export const useTokenRefresh = () => {
 
         refreshTokenMutation.mutate(data);
       } else {
-        console.log("[TOKEN REFRESH] Token valid", appContext.token.expiryDate);
+        log("[TOKEN REFRESH] Token valid", appContext.token.expiryDate);
       }
     }
   }, [appContext.token, refreshTokenMutation]);
@@ -69,7 +73,7 @@ export const useTokenRefresh = () => {
   // If the user is authenticated, set the interval to check the token
   useEffect(() => {
     if (appContext.isAuthenticated && !checkTokenInterval) {
-      console.log("[TOKEN REFRESH] Setting interval");
+      log("[TOKEN REFRESH] Setting interval");
 
       setCheckInterval();
     }
@@ -78,7 +82,7 @@ export const useTokenRefresh = () => {
   // If the user logs out, clear the interval
   useEffect(() => {
     if (!appContext.isAuthenticated && checkTokenInterval) {
-      console.log("[TOKEN REFRESH] Stopping");
+      log("[TOKEN REFRESH] Stopping");
       clearInterval(checkTokenInterval);
       setCheckTokenInterval(undefined);
     }
@@ -87,7 +91,7 @@ export const useTokenRefresh = () => {
   // If the expiry date changes, clear the interval and set a new one
   useEffect(() => {
     if (reinitialize && checkTokenInterval) {
-      console.log("[TOKEN REFRESH] Reinitializing");
+      log("[TOKEN REFRESH] Reinitializing");
       setReinitialize(false);
       clearInterval(checkTokenInterval);
       setCheckInterval();
