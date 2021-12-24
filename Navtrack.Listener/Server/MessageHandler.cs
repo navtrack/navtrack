@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Navtrack.Library.DI;
@@ -67,7 +68,8 @@ public class MessageHandler : IMessageHandler
     {
         Type type = typeof(ICustomMessageHandler<>).MakeGenericType(protocol.GetType());
 
-        ICustomMessageHandler customMessageHandler = (ICustomMessageHandler) serviceProvider.GetService(type);
+        IServiceScope serviceScope = serviceProvider.CreateScope();
+        ICustomMessageHandler customMessageHandler = (ICustomMessageHandler) serviceScope.ServiceProvider.GetService(type);
 
         if (customMessageHandler == null)
         {

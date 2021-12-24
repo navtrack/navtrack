@@ -26,7 +26,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         4, 4, 8, 8, 8
     };
 
-    private bool[] flexArray;
+    private const string FlexArrayKey = "FLEX_ARRAY";
 
     public override IEnumerable<Location> ParseRange(MessageInput input)
     {
@@ -76,7 +76,8 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             int result = (int)Math.Ceiling((double)dataSize / 8);
             byte[] bytes = input.DataMessage.ByteReader.Get(result);
 
-            flexArray = new bool[dataSize];
+            bool[] flexArray = new bool[dataSize];
+            
             int byteIndex = 0;
             int bitIndex = 0;
 
@@ -90,10 +91,11 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
                     byteIndex++;
                 }
             }
-
+            
             string hexReply =
                 $"{"*<FLEX".ToHex()}{protocol:X2}{protocolVersion:X2}{structVersion:X2}";
             SendResponseWithTitle(input, hexReply);
+            input.Client.SetClientCache(FlexArrayKey, flexArray);
         }
 
         return null;
@@ -127,8 +129,8 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             : null;
     }
 
-    private List<Location> HandleArrayPackage(MessageInput input,
-        Func<Device, ByteReader, Location> locationMapper)
+    private static List<Location> HandleArrayPackage(MessageInput input,
+        Func<MessageInput, ByteReader, Location> locationMapper)
     {
         input.DataMessage.ByteReader.Skip(2);
         byte size = input.DataMessage.ByteReader.GetOne();
@@ -137,7 +139,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
 
         for (int i = 0; i < size; i++)
         {
-            Location location = locationMapper(input.Client.Device, input.DataMessage.ByteReader);
+            Location location = locationMapper(input, input.DataMessage.ByteReader);
 
             locations.Add(location);
         }
@@ -150,10 +152,10 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
     }
 
     private IEnumerable<Location> HandleSinglePackage(MessageInput input,
-        Func<Device, ByteReader, Location> locationMapper)
+        Func<MessageInput, ByteReader, Location> locationMapper)
     {
         input.DataMessage.ByteReader.Skip(6); // header + event index
-        Location location = locationMapper(input.Client.Device, input.DataMessage.ByteReader);
+        Location location = locationMapper(input, input.DataMessage.ByteReader);
 
         string response = $"{input.DataMessage.Hex[..2].StringJoin()}" + // header
                           $"{input.DataMessage.Hex[2..6].StringJoin()}"; // event Index
@@ -167,7 +169,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         if (input.DataMessage.String.StartsWith("~C"))
         {
             input.DataMessage.ByteReader.Skip(2); // header
-            Location location = GetFlex10Location(input.Client.Device, input.DataMessage.ByteReader);
+            Location location = GetFlex10Location(input, input.DataMessage.ByteReader);
 
             string response = $"{input.DataMessage.Hex[..2].StringJoin()}";
             SendResponse(response, input.NetworkStream);
@@ -202,12 +204,14 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(replyWithChecksum));
     }
 
-    private Location GetFlex10Location(Device device, ByteReader reader)
+    private Location GetFlex10Location(MessageInput input, ByteReader reader)
     {
         Location location = new()
         {
-            Device = device
+            Device = input.Client.Device
         };
+
+        bool[] flexArray = input.Client.GetClientCache<bool[]>(FlexArrayKey);
 
         for (int i = 1; i <= flexArray.Length; i++)
         {
@@ -247,11 +251,11 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
     }
 
     [SuppressMessage("ReSharper", "UnusedVariable")]
-    private static Location GetFlex20ExtensionLocation(Device device, ByteReader reader)
+    private static Location GetFlex20ExtensionLocation(MessageInput input, ByteReader reader)
     {
         Location location = new()
         {
-            Device = device
+            Device = input.Client.Device
         };
 
         short packageLength = reader.Get<short>();

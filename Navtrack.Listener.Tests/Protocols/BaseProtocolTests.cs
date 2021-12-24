@@ -14,7 +14,7 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> where TProtocol : IPr
     [SetUp]
     public void Setup()
     {
-        ProtocolTester = new ProtocolTester(new TProtocol(), new TMessageHandler());
+        ProtocolTester = new ProtocolTester<TProtocol, TMessageHandler>();
     }
 
     [TearDown]

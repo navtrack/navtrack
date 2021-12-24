@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Moq;
@@ -14,7 +15,8 @@ using Navtrack.Listener.Services;
 
 namespace Navtrack.Listener.Tests.Protocols;
 
-public class ProtocolTester : IProtocolTester
+public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
+    where TProtocol : IProtocol, new() where TMessageHandler : new()
 {
     private MemoryStream sendStream;
     private MemoryStream receiveStream;
@@ -29,19 +31,19 @@ public class ProtocolTester : IProtocolTester
     public List<Location> TotalParsedLocations { get; }
     public Location LastParsedLocation => LastParsedLocations?.FirstOrDefault();
 
-    public ProtocolTester(IProtocol protocol, ICustomMessageHandler customMessageHandler)
+    public ProtocolTester()
     {
         cancellationTokenSource = new CancellationTokenSource();
         TotalParsedLocations = new List<Location>();
 
         Client = new Client
         {
-            Protocol = protocol,
+            Protocol = new TProtocol(),
             DeviceConnection = new DeviceConnectionDocument()
         };
 
         SetupLocationService();
-        SetupStreamHandler(customMessageHandler);
+        SetupStreamHandler();
         SetupNetworkStreamMock();
     }
 
@@ -90,27 +92,34 @@ public class ProtocolTester : IProtocolTester
         locationServiceMock = new Mock<ILocationService>();
 
         locationServiceMock.Setup(x => x.AddRange(It.IsAny<List<Location>>(), It.IsAny<ObjectId>()))
-            .Callback<List<Location>, ObjectId>((x, y) =>
+            .Callback<List<Location>, ObjectId>((x, _) =>
             {
                 LastParsedLocations = x;
                 TotalParsedLocations.AddRange(x);
             });
     }
 
-    private void SetupStreamHandler(ICustomMessageHandler customMessageHandler)
+    private void SetupStreamHandler()
     {
         Mock<IServiceProvider> serviceProviderMock = new();
         serviceProviderMock.Setup(x => x.GetService(It.IsAny<Type>()))
-            .Returns(customMessageHandler);
+            .Returns(() => new TMessageHandler());
+        Mock<IServiceScope> serviceScopeMock = new();
+        serviceScopeMock.Setup(x => x.ServiceProvider).Returns(serviceProviderMock.Object);
+        Mock<IServiceScopeFactory> serviceScopeFactoryMock = new();
+        serviceScopeFactoryMock.Setup(x => x.CreateScope())
+            .Returns(serviceScopeMock.Object);
+        serviceProviderMock.Setup(x => x.GetService(typeof(IServiceScopeFactory)))
+            .Returns(serviceScopeFactoryMock.Object);
 
-        IMessageHandler messageHandlerMock = new MessageHandler(
+        IMessageHandler messageHandler = new MessageHandler(
             serviceProviderMock.Object,
             locationServiceMock.Object,
             new Mock<ILogger<MessageHandler>>().Object,
             new Mock<IConnectionService>().Object);
 
         streamHandler =
-            new StreamHandler(new Mock<ILogger<StreamHandler>>().Object, messageHandlerMock);
+            new StreamHandler(new Mock<ILogger<StreamHandler>>().Object, messageHandler);
     }
 
     private void SetupNetworkStreamMock()
