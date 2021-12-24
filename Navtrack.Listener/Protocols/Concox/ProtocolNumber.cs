@@ -4,7 +4,7 @@ public enum ProtocolNumber
 {
     LoginInformation = 0x01,
     PositioningData = 0x12,
-    PositioningData2 = 0x22,
+    PositioningDataNew = 0x22,
     Heartbeat = 0x13,
     OnlineCommandResponse = 0x21,
     AlarmData = 0x16,

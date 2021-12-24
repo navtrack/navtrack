@@ -13,9 +13,16 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
 
     public virtual IEnumerable<Location> ParseRange(MessageInput input)
     {
-        Location location = Parse(input);
+        try
+        {
+            Location location = Parse(input);
 
-        return location != null ? new[] {location} : null;
+            return location != null ? new[] {location} : null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     protected Location Parse(MessageInput input, params Func<MessageInput, Location>[] parsers)
