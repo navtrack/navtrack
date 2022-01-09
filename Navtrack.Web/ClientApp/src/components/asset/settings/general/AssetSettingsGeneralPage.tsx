@@ -10,6 +10,7 @@ import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import Icon from "../../../ui/shared/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import LoadingIndicator from "../../../ui/shared/loading-indicator/LoadingIndicator";
+import { RenameAssetFormValues } from "./types";
 
 export default function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
@@ -28,18 +29,19 @@ export default function AssetSettingsGeneralPage() {
                 </h2>
               </div>
               <div className="mt-6">
-                <Formik<{ name: string }>
+                <Formik<RenameAssetFormValues>
                   initialValues={{ name: `${currentAsset?.name}` }}
-                  onSubmit={(values) => renameAsset.submit(values)}
+                  onSubmit={(values, formikHelpers) =>
+                    renameAsset.submit(values, formikHelpers)
+                  }
                   validationSchema={renameAsset.validationSchema}
                   enableReinitialize>
-                  {({ values }) => (
+                  {() => (
                     <Form className="grid grid-cols-12 gap-6">
                       <div className="col-span-7">
                         <FormikTextInput
                           name="name"
                           label="generic.name"
-                          value={values.name}
                           rightAddon={
                             <div className="ml-2 flex items-center">
                               <Button color="white" type="submit" size="base">

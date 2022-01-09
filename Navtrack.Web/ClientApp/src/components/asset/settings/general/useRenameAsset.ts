@@ -4,6 +4,9 @@ import { object, SchemaOf, string } from "yup";
 import { useRenameAssetMutation } from "../../../../hooks/mutations/useRenameAssetMutation";
 import useGetAssetsSignalRQuery from "../../../../hooks/queries/useGetAssetsSignalRQuery";
 import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
+import { mapErrors } from "../../../../utils/formik";
+import { RenameAssetFormValues } from "./types";
+import { FormikHelpers } from "formik";
 
 export default function useRenameAsset() {
   const { currentAsset } = useCurrentAsset();
@@ -12,7 +15,10 @@ export default function useRenameAsset() {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const submit = useCallback(
-    (values: { name: string }) => {
+    (
+      values: RenameAssetFormValues,
+      formikHelpers: FormikHelpers<RenameAssetFormValues>
+    ) => {
       setShowSuccess(false);
       if (currentAsset) {
         renameAssetMutation.mutate(
@@ -22,7 +28,8 @@ export default function useRenameAsset() {
               assetsQuery.refetch();
               setShowSuccess(true);
               setInterval(() => setShowSuccess(false), 5000);
-            }
+            },
+            onError: (error) => mapErrors(error, formikHelpers)
           }
         );
       }

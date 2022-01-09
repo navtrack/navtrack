@@ -43,6 +43,8 @@ public class AssetDataService : IAssetDataService
 
     public Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string assetId = null)
     {
+        name = name.ToLower();
+        
         Expression<Func<AssetDocument, bool>> filter = assetId == null
             ? x =>
                 x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&

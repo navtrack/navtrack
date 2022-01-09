@@ -101,6 +101,7 @@ public class AssetService : IAssetService
     {
         UserDocument user = await currentUserAccessor.GetCurrentUser();
 
+        AdjustModel(model);
         await ValidateModel(model, user);
 
         AssetDocument assetDocument = await AddDocuments(model);
@@ -210,5 +211,10 @@ public class AssetService : IAssetService
         {
             throw validationException;
         }
+    }
+    
+    private static void AdjustModel(AddAssetModel model)
+    {
+        model.Name = model.Name?.Trim();
     }
 }

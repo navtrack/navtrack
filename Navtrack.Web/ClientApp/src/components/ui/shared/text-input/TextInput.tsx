@@ -56,7 +56,7 @@ export default function TextInput(props: ITextInput) {
           name={props.name}
           type={props.type ?? "text"}
           className={classNames(
-            "border-gray-300 border rounded-md text-gray-700 w-full text-sm py-1.5 px-3 shadow-sm",
+            "border-gray-300 border rounded-md text-gray-700 w-full text-sm py-1.5 px-3 shadow-sm placeholder-gray-400",
             { "border-red-600": props.error },
             props.className
           )}

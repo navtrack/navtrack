@@ -18,7 +18,6 @@ export default function AssetAddPage() {
       <Formik<AddAssetFormValues>
         initialValues={DefaultAddAssetFormValues}
         validationSchema={validationSchema}
-        initialErrors={{ name: "errorz" }}
         enableReinitialize
         onSubmit={(values, formikHelpers) =>
           handleSubmit(values, formikHelpers)
@@ -29,12 +28,16 @@ export default function AssetAddPage() {
               <div className="px-4 py-5 bg-white p-6">
                 <div>
                   <h2 className="text-lg leading-6 font-medium text-gray-900">
-                    Add a new asset
+                    <FormattedMessage id="assets.add.title" />
                   </h2>
                 </div>
                 <div className="grid grid-cols-6 gap-6 mt-6">
                   <div className="col-span-3 col-gap-3">
-                    <FormikTextInput name="name" label="generic.name" />
+                    <FormikTextInput
+                      name="name"
+                      label="generic.name"
+                      placeholder="assets.add.name.placeholder"
+                    />
                   </div>
                   <div className="col-span-3 col-start-1">
                     <FormikSelectInput
@@ -50,6 +53,7 @@ export default function AssetAddPage() {
                     <FormikTextInput
                       name="serialNumber"
                       label="generic.serial-number"
+                      placeholder="assets.add.serial-number.placeholder"
                     />
                   </div>
                 </div>
