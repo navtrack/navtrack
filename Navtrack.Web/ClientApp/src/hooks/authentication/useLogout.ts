@@ -1,16 +1,17 @@
 import { useCallback } from "react";
-import useAppContext from "../app/useAppContext";
+import { useSetRecoilState } from "recoil";
+import { authenticationAtom } from "../../state/app.authentication";
 
 export const useLogout = () => {
-  const { setAppContext } = useAppContext();
+  const setState = useSetRecoilState(authenticationAtom);
 
   const logout = useCallback(() => {
-    setAppContext((current) => ({
+    setState((current) => ({
       ...current,
       isAuthenticated: false,
       token: undefined
     }));
-  }, [setAppContext]);
+  }, [setState]);
 
   return logout;
 };

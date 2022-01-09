@@ -2,22 +2,26 @@ import { useCallback } from "react";
 import { useHistory } from "react-router";
 import { useGetTokenMutation } from "../mutations/useGetTokenMutation";
 import { LoginFormValues } from "../../components/login/LoginFormValues";
-import useAppContext from "../app/useAppContext";
 import { AUTHENTICATION } from "../../constants";
+import { useSetRecoilState } from "recoil";
+import { authenticationAtom } from "../../state/app.authentication";
+import { add } from "date-fns";
 
 export const useLogin = () => {
-  const { setAppContext } = useAppContext();
+  const setState = useSetRecoilState(authenticationAtom);
   const history = useHistory();
 
   const getTokenMutation = useGetTokenMutation({
     onSuccess: (data) => {
-      setAppContext((current) => ({
+      setState((current) => ({
         ...current,
         isAuthenticated: true,
         token: {
           accessToken: data.access_token,
           refreshToken: data.refresh_token,
-          expiryDate: new Date(new Date().getTime() + data.expires_in * 1000)
+          expiryDate: add(new Date(), {
+            seconds: data.expires_in
+          }).toISOString()
         }
       }));
 

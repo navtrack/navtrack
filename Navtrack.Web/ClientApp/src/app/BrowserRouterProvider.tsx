@@ -1,20 +1,20 @@
 import { BrowserRouter } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { axiosAuthAtom } from "../api/axiosAuthAtom";
-import useAppContext from "../hooks/app/useAppContext";
+import { appContextSelector } from "../state/app.context";
 import RoutesAuthenticated from "./RoutesAuthenticated";
 import RoutesUnauthenticated from "./RoutesUnauthenticated";
 
 export default function BrowserRouterProvider() {
-  const { appContext } = useAppContext();
-  const axiosAuthState = useRecoilValue(axiosAuthAtom);
+  const appContext = useRecoilValue(appContextSelector);
+
+  console.log(appContext);
 
   return (
     <BrowserRouter>
       {appContext.initialized && (
         <>
-          {appContext.isAuthenticated ? (
-            <>{axiosAuthState?.interceptorInit && <RoutesAuthenticated />}</>
+          {appContext.authentication.isAuthenticated ? (
+            <>{appContext.axios?.initialized && <RoutesAuthenticated />}</>
           ) : (
             <RoutesUnauthenticated />
           )}

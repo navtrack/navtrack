@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useConfig } from "../hooks/config/useConfig";
+import { useRecoilValue } from "recoil";
+import { configSelector } from "../state/app.config";
 import { AUTH_AXIOS_INSTANCE } from "./authAxiosInstance";
 import { AXIOS_INSTANCE } from "./axiosInstance";
 
 export const useAxiosBaseUrls = () => {
-  const config = useConfig();
+  const config = useRecoilValue(configSelector);
 
   useEffect(() => {
     if (config !== undefined) {

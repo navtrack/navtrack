@@ -1,10 +1,17 @@
 using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Navtrack.DataAccess.Model.Users;
 
 public class AccessTokenElement
 {
+    /// <summary>
+    /// Represents the user id.
+    /// </summary>
+    [BsonId]
+    public ObjectId Id { get; set; }
     public IEnumerable<KeyValuePair<string, string>> Claims { get; set; }
     public IEnumerable<string> AllowedSigningAlgorithms { get; set; }
     public string Confirmation { get; set; }

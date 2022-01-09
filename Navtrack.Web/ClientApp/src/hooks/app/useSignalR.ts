@@ -5,7 +5,8 @@ import {
   LogLevel
 } from "@microsoft/signalr";
 import { useCallback } from "react";
-import useAppContext from "./useAppContext";
+import { useRecoilValue } from "recoil";
+import { appContextSelector } from "../../state/app.context";
 
 type HubConnectionState = {
   hubConnection: HubConnection;
@@ -15,15 +16,18 @@ type HubConnectionState = {
 let hubConnections: Record<string, HubConnectionState> = {};
 
 export default function useSignalR() {
-  const { appContext } = useAppContext();
+  const appContext = useRecoilValue(appContextSelector);
 
   const getAccessToken = useCallback(() => {
-    return appContext.token?.accessToken as string;
-  }, [appContext.token?.accessToken]);
+    return appContext.authentication.token?.accessToken as string;
+  }, [appContext.authentication.token?.accessToken]);
 
   const initialise = useCallback(
     async (hubUrl: string): Promise<HubConnection> => {
-      if (!hubConnections[hubUrl] && appContext.isAuthenticated) {
+      if (
+        !hubConnections[hubUrl] &&
+        appContext.authentication.isAuthenticated
+      ) {
         hubConnections[hubUrl] = {
           hubConnection: new HubConnectionBuilder()
             .withUrl(hubUrl, {
@@ -49,7 +53,7 @@ export default function useSignalR() {
 
       return hubConnections[hubUrl].hubConnection;
     },
-    [appContext.isAuthenticated, getAccessToken]
+    [appContext.authentication.isAuthenticated, getAccessToken]
   );
 
   const invoke = useCallback(

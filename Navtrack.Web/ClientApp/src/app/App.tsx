@@ -5,9 +5,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 import ConfigProvider from "./ConfigProvider";
 import SentryProvider from "./SentryProvider";
-import AppContextProvider from "./AppContextProvider";
 import AxiosConfigurationProvider from "./AxiosConfigurationProvider";
-import TokenRefreshProvider from "./TokenRefreshProvider";
+import AuthenticationProvider from "./AuthenticationProvider";
 
 const queryClient = new QueryClient();
 
@@ -16,17 +15,15 @@ export function App() {
     <RecoilRoot>
       <ConfigProvider>
         <SentryProvider>
-          <AppContextProvider>
-            <QueryClientProvider client={queryClient}>
-              <AxiosConfigurationProvider>
-                <TokenRefreshProvider>
-                  <IntlProvider locale="en" messages={translations["en"]}>
-                    <BrowserRouterProvider />
-                  </IntlProvider>
-                </TokenRefreshProvider>
-              </AxiosConfigurationProvider>
-            </QueryClientProvider>
-          </AppContextProvider>
+          <QueryClientProvider client={queryClient}>
+            <AxiosConfigurationProvider>
+              <AuthenticationProvider>
+                <IntlProvider locale="en" messages={translations["en"]}>
+                  <BrowserRouterProvider />
+                </IntlProvider>
+              </AuthenticationProvider>
+            </AxiosConfigurationProvider>
+          </QueryClientProvider>
         </SentryProvider>
       </ConfigProvider>
     </RecoilRoot>

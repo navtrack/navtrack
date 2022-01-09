@@ -1,11 +1,12 @@
 import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
 import { AssetListModel } from "../../api/model";
+import { configSelector } from "../../state/app.config";
 import useSignalR from "../app/useSignalR";
-import { useConfig } from "../config/useConfig";
 
 export default function useGetAssetsSignalRQuery() {
   const signalR = useSignalR();
-  const config = useConfig();
+  const config = useRecoilValue(configSelector);
 
   const query = useQuery(
     "GetAssetsSignalR",

@@ -1,10 +1,11 @@
 import { init } from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import { useEffect, useState } from "react";
-import { useConfig } from "../config/useConfig";
+import { useRecoilValue } from "recoil";
+import { configSelector } from "../../state/app.config";
 
 export default function useSentry() {
-  const config = useConfig();
+  const config = useRecoilValue(configSelector);
   const [initalised, setInitialised] = useState(false);
 
   useEffect(() => {

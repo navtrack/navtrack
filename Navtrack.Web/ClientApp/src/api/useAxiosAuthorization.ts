@@ -1,32 +1,32 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { AUTH_AXIOS_INSTANCE } from "./authAxiosInstance";
-import { axiosAuthAtom } from "./axiosAuthAtom";
-import useAppContext from "../hooks/app/useAppContext";
+import { axiosAtom } from "../state/app.axios";
+import { authenticationAtom } from "../state/app.authentication";
 
 export default function useAxiosAuthorization() {
-  const { appContext } = useAppContext();
-  const [axiosAuthState, setAxiosAuthState] = useRecoilState(axiosAuthAtom);
+  const authentication = useRecoilValue(authenticationAtom);
+  const [axiosAuthState, setAxiosAuthState] = useRecoilState(axiosAtom);
 
   useEffect(() => {
     if (
-      appContext.initialized &&
-      appContext.isAuthenticated &&
-      appContext.token?.accessToken !== undefined &&
-      appContext.token?.accessToken !== axiosAuthState?.accessToken
+      authentication.isAuthenticated &&
+      authentication.token?.accessToken !== undefined &&
+      authentication.token?.accessToken !== axiosAuthState?.accessToken
     ) {
-      if (axiosAuthState !== undefined) {
+      if (axiosAuthState.interceptorId !== undefined) {
         AUTH_AXIOS_INSTANCE.interceptors.request.eject(
           axiosAuthState.interceptorId
         );
       }
+
       const newInterceptorId = AUTH_AXIOS_INSTANCE.interceptors.request.use(
         (config) => {
           return {
             ...config,
             headers: {
               ...config.headers,
-              Authorization: `Bearer ${appContext.token?.accessToken}`
+              Authorization: `Bearer ${authentication.token?.accessToken}`
             }
           };
         }
@@ -34,16 +34,14 @@ export default function useAxiosAuthorization() {
 
       setAxiosAuthState({
         interceptorId: newInterceptorId,
-        accessToken: appContext.token?.accessToken,
-        interceptorInit: true
+        accessToken: authentication.token?.accessToken,
+        initialized: true
       });
     }
   }, [
-    appContext.initialized,
-    appContext.isAuthenticated,
-    appContext.token?.accessToken,
+    authentication.isAuthenticated,
+    authentication.token?.accessToken,
     axiosAuthState,
-    axiosAuthState?.accessToken,
     setAxiosAuthState
   ]);
 }

@@ -1,9 +1,11 @@
+import useLocalStorage from "../hooks/app/useLocalStorageData";
 import { useFetchConfig } from "../hooks/config/useFetchConfig";
 
 const ConfigProvider: React.FC = (props) => {
-  const loaded = useFetchConfig();
+  const { initialized: configInitialized } = useFetchConfig();
+  const { initialized: localStorageInitialized } = useLocalStorage();
 
-  return <>{loaded && props.children}</>;
+  return <>{configInitialized && localStorageInitialized && props.children}</>;
 };
 
 export default ConfigProvider;
