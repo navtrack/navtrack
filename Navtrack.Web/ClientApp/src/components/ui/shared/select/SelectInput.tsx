@@ -60,7 +60,6 @@ export default function SelectInput<T>(props: ISelectInput<T>) {
                   ? (selectedItem[props.labelKey] as unknown as string)
                   : ""
               }
-              disabled
               error={props.error}
               onChange={(e) => {
                 setSelectedItem(undefined);
