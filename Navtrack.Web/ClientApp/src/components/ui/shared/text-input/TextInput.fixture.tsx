@@ -2,7 +2,6 @@ import TextInput from "./TextInput";
 import TextInputLeftAddon from "./TextInputLeftAddon";
 import TextInputRightAddon from "./TextInputRightAddon";
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   Basic: <TextInput name="basic" />,
   BasicDisabled: <TextInput name="basic" disabled value="1234" />,
