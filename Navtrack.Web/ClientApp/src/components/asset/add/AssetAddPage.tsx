@@ -8,10 +8,15 @@ import {
   DefaultAddAssetFormValues
 } from "./AddAssetFormValues";
 import useAddAsset from "./useAddAsset";
+import DeviceConfiguration from "./DeviceConfiguration";
+import { useState } from "react";
+import { DeviceTypeModel } from "../../../api/model";
 
 export default function AssetAddPage() {
   const { deviceTypes, validationSchema, handleSubmit, loading } =
     useAddAsset();
+  const [selectedDeviceType, setSelectedDeviceType] =
+    useState<DeviceTypeModel>();
 
   return (
     <div>
@@ -32,14 +37,12 @@ export default function AssetAddPage() {
                   </h2>
                 </div>
                 <div className="grid grid-cols-6 gap-6 mt-6">
-                  <div className="col-span-3 col-gap-3">
+                  <div className="grid col-span-3 gap-6">
                     <FormikTextInput
                       name="name"
                       label="generic.name"
                       placeholder="assets.add.name.placeholder"
                     />
-                  </div>
-                  <div className="col-span-3 col-start-1">
                     <FormikSelectInput
                       name="deviceTypeId"
                       label="generic.device-type"
@@ -47,14 +50,20 @@ export default function AssetAddPage() {
                       items={deviceTypes}
                       idKey="id"
                       labelKey="displayName"
+                      onChange={(value) => {
+                        setSelectedDeviceType(
+                          deviceTypes.find((d) => d.id === value)
+                        );
+                      }}
                     />
-                  </div>
-                  <div className="col-span-3 col-start-1">
                     <FormikTextInput
                       name="serialNumber"
                       label="generic.serial-number"
                       placeholder="assets.add.serial-number.placeholder"
                     />
+                  </div>
+                  <div className="grid col-span-3 gap-6">
+                    <DeviceConfiguration deviceType={selectedDeviceType} />
                   </div>
                 </div>
               </div>
