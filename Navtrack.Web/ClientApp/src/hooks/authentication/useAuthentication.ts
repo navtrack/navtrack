@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { AUTHENTICATION } from "../../constants";
 import { authenticationAtom } from "../../state/app.authentication";
 import { localStorageAtom } from "../../state/app.localStorage";
-import { log } from "../../utils/log";
+import { log, LogLevel } from "../../utils/log";
 import { useGetTokenMutation } from "../mutations/useGetTokenMutation";
 
 export const useAuthentication = () => {
@@ -58,7 +58,7 @@ export const useAuthentication = () => {
     }
 
     if (authentication.token) {
-      log("[TOKEN REFRESH] Checking");
+      log(LogLevel.INFO, "[TOKEN REFRESH] Checking");
 
       const expiryDate = sub(parseISO(authentication.token.expiryDate), {
         minutes: 2
@@ -66,6 +66,7 @@ export const useAuthentication = () => {
 
       if (isAfter(new Date(), expiryDate)) {
         log(
+          LogLevel.INFO,
           "[TOKEN REFRESH] Token expired, refreshing token",
           authentication.token.expiryDate
         );
@@ -78,7 +79,11 @@ export const useAuthentication = () => {
 
         refreshTokenMutation.mutate(data);
       } else {
-        log("[TOKEN REFRESH] Token valid", authentication.token.expiryDate);
+        log(
+          LogLevel.INFO,
+          "[TOKEN REFRESH] Token valid",
+          authentication.token.expiryDate
+        );
 
         if (!authentication.isAuthenticated) {
           setAuthentication((x) => ({
@@ -107,7 +112,7 @@ export const useAuthentication = () => {
   // If the user is authenticated, set the interval to check the token
   useEffect(() => {
     if (authentication.isAuthenticated && !checkTokenInterval) {
-      log("[TOKEN REFRESH] Setting interval");
+      log(LogLevel.INFO, "[TOKEN REFRESH] Setting interval");
       setCheckInterval();
     }
   }, [authentication.isAuthenticated, checkTokenInterval, setCheckInterval]);
@@ -115,7 +120,7 @@ export const useAuthentication = () => {
   // If the user logs out, clear the interval
   useEffect(() => {
     if (!authentication.isAuthenticated && checkTokenInterval) {
-      log("[TOKEN REFRESH] Stopping");
+      log(LogLevel.INFO, "[TOKEN REFRESH] Stopping");
       clearInterval(checkTokenInterval);
       setCheckTokenInterval(undefined);
     }
@@ -124,7 +129,7 @@ export const useAuthentication = () => {
   // If the expiry date changes, clear the interval and set a new one
   useEffect(() => {
     if (reinitializeCheckInterval && checkTokenInterval) {
-      log("[TOKEN REFRESH] Reinitializing");
+      log(LogLevel.INFO, "[TOKEN REFRESH] Reinitializing");
       setReinitializeCheckInterval(false);
       clearInterval(checkTokenInterval);
       setCheckInterval();

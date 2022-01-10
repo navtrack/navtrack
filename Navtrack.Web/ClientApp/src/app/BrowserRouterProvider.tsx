@@ -7,8 +7,6 @@ import RoutesUnauthenticated from "./RoutesUnauthenticated";
 export default function BrowserRouterProvider() {
   const appContext = useRecoilValue(appContextSelector);
 
-  console.log(appContext);
-
   return (
     <BrowserRouter>
       {appContext.initialized && (
