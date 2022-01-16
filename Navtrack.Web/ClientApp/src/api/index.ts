@@ -15,10 +15,10 @@ import {
   QueryKey
 } from 'react-query'
 import type {
+  ProblemDetails,
   ChangePasswordModel,
   RegisterAccountModel,
   AssetListModel,
-  ProblemDetails,
   AssetModel,
   ErrorModel,
   AddAssetModel,
@@ -32,6 +32,7 @@ import type {
   GetAssetsAssetIdReportsTimedistanceParams,
   DeviceTypeListModel,
   ProtocolListModel,
+  GetSettings200,
   CurrentUserModel,
   UpdateUserModel
 } from './model'
@@ -55,7 +56,7 @@ export const postAccountPassword = (
   
 
 
-    export const usePostAccountPassword = <TError = unknown,
+    export const usePostAccountPassword = <TError = ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<AsyncReturnType<typeof postAccountPassword>, TError,{data: ChangePasswordModel}, TContext>, }
 ) => {
@@ -85,7 +86,7 @@ export const postAccount = (
   
 
 
-    export const usePostAccount = <TError = unknown,
+    export const usePostAccount = <TError = ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<AsyncReturnType<typeof postAccount>, TError,{data: RegisterAccountModel}, TContext>, }
 ) => {
@@ -581,6 +582,41 @@ export const useGetProtocols = <TData = AsyncReturnType<typeof getProtocols>, TE
 }
 
 
+export const getSettings = (
+    
+ ) => {
+      return authAxiosInstance<GetSettings200>(
+      {url: `/settings`, method: 'get'
+    },
+      );
+    }
+  
+
+export const getGetSettingsQueryKey = () => [`/settings`];
+
+    
+export const useGetSettings = <TData = AsyncReturnType<typeof getSettings>, TError = ProblemDetails>(
+  options?: { query?:UseQueryOptions<AsyncReturnType<typeof getSettings>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const {query: queryOptions} = options || {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetSettingsQueryKey();
+
+  
+
+  const queryFn: QueryFunction<AsyncReturnType<typeof getSettings>> = () => getSettings();
+
+  const query = useQuery<AsyncReturnType<typeof getSettings>, TError, TData>(queryKey, queryFn, queryOptions)
+
+  return {
+    queryKey,
+    ...query
+  }
+}
+
+
 export const getUser = (
     
  ) => {
@@ -594,7 +630,7 @@ export const getUser = (
 export const getGetUserQueryKey = () => [`/user`];
 
     
-export const useGetUser = <TData = AsyncReturnType<typeof getUser>, TError = void>(
+export const useGetUser = <TData = AsyncReturnType<typeof getUser>, TError = ProblemDetails>(
   options?: { query?:UseQueryOptions<AsyncReturnType<typeof getUser>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

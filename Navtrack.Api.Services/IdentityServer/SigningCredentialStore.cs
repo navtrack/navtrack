@@ -6,7 +6,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using Microsoft.IdentityModel.Tokens;
 using Navtrack.Api.Services.IdentityServer.Model;
-using Navtrack.Common.Services;
+using Navtrack.Common.Services.Settings;
 using Navtrack.Library.DI;
 
 namespace Navtrack.Api.Services.IdentityServer;
@@ -15,11 +15,11 @@ namespace Navtrack.Api.Services.IdentityServer;
 [Service(typeof(IValidationKeysStore))]
 public class SigningCredentialStore : ISigningCredentialStore, IValidationKeysStore
 {
-    private readonly ISettingProvider settingProvider;
+    private readonly ISettingService settingService;
 
-    public SigningCredentialStore(ISettingProvider settingProvider)
+    public SigningCredentialStore(ISettingService settingService)
     {
-        this.settingProvider = settingProvider;
+        this.settingService = settingService;
     }
 
     public async Task<SigningCredentials> GetSigningCredentialsAsync()
@@ -42,23 +42,25 @@ public class SigningCredentialStore : ISigningCredentialStore, IValidationKeysSt
 
     private async Task<SigningCredentials> GetSigningCredentials()
     {
-        IdentityServerSigningCredentials identityServerSigningCredentials =
-            await settingProvider.Get<IdentityServerSigningCredentials>();
+        IdentityServerSettings identityServerSettings = await settingService.Get<IdentityServerSettings>();
 
         RsaSecurityKey rsaSecurityKey;
 
-        if (identityServerSigningCredentials == null)
+        if (identityServerSettings == null)
         {
             rsaSecurityKey = CreateRsaSecurityKey();
 
-            identityServerSigningCredentials = CreateIdentityServerSigningCredentials(rsaSecurityKey);
+            identityServerSettings = new IdentityServerSettings
+            {
+                SigningCredentials = CreateIdentityServerSigningCredentials(rsaSecurityKey)
+            };
 
-            await settingProvider.Set(identityServerSigningCredentials);
+            await settingService.Set(identityServerSettings);
         }
 
-        rsaSecurityKey = new RsaSecurityKey(RsaParametersMapper.Map(identityServerSigningCredentials.KeyParameters))
+        rsaSecurityKey = new RsaSecurityKey(RsaParametersMapper.Map(identityServerSettings.SigningCredentials.KeyParameters))
         {
-            KeyId = identityServerSigningCredentials.Key
+            KeyId = identityServerSettings.SigningCredentials.Key
         };
 
         SigningCredentials credentials = new(rsaSecurityKey, SecurityAlgorithms.RsaSha256);
@@ -72,7 +74,7 @@ public class SigningCredentialStore : ISigningCredentialStore, IValidationKeysSt
         {
             KeyId = CryptoRandom.CreateUniqueId(16)
         };
-        
+
         return rsaSecurityKey;
     }
 

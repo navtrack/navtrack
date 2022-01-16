@@ -27,4 +27,13 @@ public class UserDocument
         
     [BsonElement("assetRoles")]
     public IEnumerable<UserAssetRoleElement> AssetRoles { get; set; }
+
+    [BsonElement("googleId")]
+    public string? GoogleId { get; set; }
+
+    [BsonElement("microsoftId")]
+    public string? MicrosoftId { get; set; }
+
+    [BsonElement("appleId")]
+    public string? AppleId { get; set; }
 }

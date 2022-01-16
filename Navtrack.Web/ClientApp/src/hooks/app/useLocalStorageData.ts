@@ -30,5 +30,5 @@ export default function useLocalStorage() {
     }
   }, [state.data, state.initialized]);
 
-  return state;
+  return state.initialized;
 }

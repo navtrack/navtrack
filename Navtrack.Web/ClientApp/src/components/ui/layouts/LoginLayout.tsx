@@ -12,14 +12,11 @@ export default function LoginLayout(props: ILoginLayoutProps) {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col p-8">
       <img
-        className="mx-auto w-28 bg-gray-800 rounded-full"
+        className="mx-auto w-20 bg-gray-800 rounded-full"
         src={NavtrackLogo}
         alt={intl.formatMessage({ id: "navtrack" })}
       />
       {props.children}
-      <div className="flex-1">
-        <div style={{ height: "100px" }} className="mt-4"></div>
-      </div>
     </div>
   );
 }

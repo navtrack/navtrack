@@ -75,7 +75,7 @@ public class AccountService : IAccountService
 
         (string hash, string salt) = passwordHasher.Hash(model.Password);
 
-        UserDocument userDocument = UserDocumentMapper.Map(model.Email, hash, salt);
+        UserDocument? userDocument = UserDocumentMapper.Map(model.Email, hash, salt);
 
         await userDataService.Add(userDocument);
     }

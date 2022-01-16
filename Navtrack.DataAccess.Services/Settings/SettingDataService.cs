@@ -1,4 +1,4 @@
-using System.Text.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -19,44 +19,39 @@ public class SettingDataService : ISettingDataService
         this.repository = repository;
     }
 
-    public async Task<string> GetSetting(string key)
+    public Task<SettingDocument> Get(string key)
     {
-        SettingDocument setting =
-            await repository.GetEntities<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
-
-        return setting?.Value;
+        return repository.GetEntities<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
     }
 
-    public async Task<T> GetSetting<T>(string key)
+    public async Task Save(string key, BsonDocument value)
     {
-        SettingDocument setting =
-            await repository.GetEntities<SettingDocument>()
-                .FirstOrDefaultAsync(x => x.Key == key);
+        SettingDocument document = await Get(key);
 
-        return setting != null && !string.IsNullOrEmpty(setting.Value)
-            ? JsonSerializer.Deserialize<T>(setting.Value)
-            : default;
-    }
-
-    public Task SaveSetting<T>(string key, T value)
-    {
-        return repository.GetCollection<SettingDocument>()
-            .ReplaceOneAsync(x => x.Key == key, new SettingDocument
+        if (document == null)
+        {
+            document = new SettingDocument
             {
                 Id = ObjectId.GenerateNewId(),
                 Key = key,
-                Value = JsonSerializer.Serialize(value)
-            }, new ReplaceOptions { IsUpsert = true });
+                Value = value,
+                PublicKeys = new List<string>()
+            };
+        }
+        else
+        {
+            document.Value = value;
+        }
+
+        await repository.GetCollection<SettingDocument>()
+            .ReplaceOneAsync(x => x.Id == document.Id, document, new ReplaceOptions
+            {
+                IsUpsert = true
+            });
     }
 
-    public Task SetSetting(string key, string value)
+    public Task<List<SettingDocument>> GetSettings()
     {
-        return repository.GetCollection<SettingDocument>()
-            .ReplaceOneAsync(x => x.Key == key, new SettingDocument
-            {
-                Id = ObjectId.GenerateNewId(),
-                Key = key,
-                Value = value
-            }, new ReplaceOptions { IsUpsert = true });
+        return repository.GetEntities<SettingDocument>().ToListAsync();
     }
 }

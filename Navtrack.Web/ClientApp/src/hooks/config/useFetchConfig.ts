@@ -22,5 +22,5 @@ export const useFetchConfig = () => {
     }
   }, [setState, state]);
 
-  return state;
+  return state.initialized;
 };

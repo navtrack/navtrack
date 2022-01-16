@@ -9,6 +9,7 @@ using Navtrack.Api.Services.Accounts;
 
 namespace Navtrack.Api.Controllers;
 
+[ApiController]
 [Route("account")]
 public class AccountController : ControllerBase
 {

@@ -9,6 +9,14 @@ public class GpsUtilTests
     [Test]
     public void ConvertDdmToDecimal_Latitude()
     {
+        
+        
+        
+        
+        
+        
+        
+        
         const int degrees = 46;
         const double minutes = 46.272;
         const CardinalPoint cardinalPoint = CardinalPoint.North;

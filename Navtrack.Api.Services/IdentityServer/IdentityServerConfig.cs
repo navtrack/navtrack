@@ -22,7 +22,7 @@ public static class IdentityServerConfig
             new()
             {
                 ClientId = "navtrack.web",
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                AllowedGrantTypes = new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple"},
                 AllowedScopes =
                 {
                     IdentityServerConstants.LocalApi.ScopeName,
@@ -31,7 +31,7 @@ public static class IdentityServerConfig
                 RequireClientSecret = false,
                 AllowOfflineAccess = true,
                 AllowedCorsOrigins = new List<string>(),
-                AbsoluteRefreshTokenLifetime = 365 * 24 * 60 * 60 // 1 year
+                AbsoluteRefreshTokenLifetime = 365 * 24 * 60 * 60 // 1 year,
             }
         };
     }

@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using Navtrack.DataAccess.Model.Settings;
 
 namespace Navtrack.DataAccess.Services.Settings;
 
 public interface ISettingDataService
 {
-    Task<string> GetSetting(string key);
-    Task<T> GetSetting<T>(string key);
-    Task SaveSetting<T>(string key, T value);
-    Task SetSetting(string key, string value);
+    Task<List<SettingDocument>> GetSettings();
+    Task<SettingDocument> Get(string key);
+    Task Save(string key, BsonDocument value);
 }

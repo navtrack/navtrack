@@ -1,11 +1,20 @@
+import { useAxiosBaseUrls } from "../api/useAxiosBaseUrls";
 import useLocalStorage from "../hooks/app/useLocalStorageData";
 import { useFetchConfig } from "../hooks/config/useFetchConfig";
 
 const ConfigProvider: React.FC = (props) => {
-  const { initialized: configInitialized } = useFetchConfig();
-  const { initialized: localStorageInitialized } = useLocalStorage();
+  const configInitialized = useFetchConfig();
+  const localStorageInitialized = useLocalStorage();
+  const interceptorInitialised = useAxiosBaseUrls();
 
-  return <>{configInitialized && localStorageInitialized && props.children}</>;
+  return (
+    <>
+      {configInitialized &&
+        localStorageInitialized &&
+        interceptorInitialised &&
+        props.children}
+    </>
+  );
 };
 
 export default ConfigProvider;

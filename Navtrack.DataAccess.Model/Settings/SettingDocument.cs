@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Model.Attributes;
@@ -12,7 +13,10 @@ public class SettingDocument
 
     [BsonElement("key")]
     public string Key { get; set; }
-
+  
     [BsonElement("value")]
-    public string Value { get; set; }
+    public BsonDocument Value { get; set; }
+    
+    [BsonElement("publicKeys")]
+    public IEnumerable<string> PublicKeys { get; set; }
 }

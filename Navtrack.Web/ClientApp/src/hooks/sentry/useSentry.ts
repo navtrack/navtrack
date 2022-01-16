@@ -2,20 +2,20 @@ import { init } from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { configSelector } from "../../state/app.config";
+import { settingsSelector } from "../../state/app.settings";
 
 export default function useSentry() {
-  const config = useRecoilValue(configSelector);
+  const settings = useRecoilValue(settingsSelector);
   const [initalised, setInitialised] = useState(false);
 
   useEffect(() => {
-    if (config?.sentryDsn && !initalised) {
+    if (settings["Sentry.Dsn"] && !initalised) {
       setInitialised(true);
       init({
-        dsn: config.sentryDsn,
+        dsn: settings["Sentry.Dsn"],
         integrations: [new Integrations.BrowserTracing()],
-        environment: config.environment
+        environment: settings["Application.Environment"]
       });
     }
-  }, [config?.environment, config?.sentryDsn, initalised]);
+  }, [initalised, settings]);
 }

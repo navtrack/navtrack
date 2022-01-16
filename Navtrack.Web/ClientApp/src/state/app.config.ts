@@ -7,9 +7,6 @@ export type ConfigState = {
 
 export type Config = {
   apiUrl: string;
-  mapTileUrl: string;
-  sentryDsn?: string;
-  environment?: string;
 };
 
 export const configAtom = atom<ConfigState>({

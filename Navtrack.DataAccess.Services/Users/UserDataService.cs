@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +25,21 @@ public class UserDataService : IUserDataService
     public Task<UserDocument> GetById(ObjectId id)
     {
         return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public Task<UserDocument> GetByAppleId(string email, string id)
+    {
+        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.AppleId == id || x.Email == email);
+    }
+
+    public Task<UserDocument> GetByGoogleId(string email, string id)
+    {
+        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.GoogleId == id || x.Email == email);
+    }
+
+    public Task<UserDocument> GetByMicrosoftId(string email, string id)
+    {
+        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.MicrosoftId == id || x.Email == email);
     }
 
     public Task DeleteAssetRoles(string assetId)
@@ -77,13 +93,13 @@ public class UserDataService : IUserDataService
                 }));
     }
 
-    public async Task UpdateUser(UserDocument currentUser, string email, UnitsType? unitsType)
+    public async Task UpdateUser(UserDocument currentUser, string email, UnitsType? unitsType = null)
     {
         List<UpdateDefinition<UserDocument>> updateDefinitions = new();
 
-        if (!string.IsNullOrEmpty(email) && currentUser.Email != email)
+        if (!string.IsNullOrEmpty(email) && !string.Equals(currentUser.Email, email, StringComparison.CurrentCultureIgnoreCase))
         {
-            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Email, email));
+            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Email, email.ToLower()));
         }
 
         if (unitsType.HasValue && unitsType.Value != currentUser.UnitsType)
@@ -101,5 +117,23 @@ public class UserDataService : IUserDataService
     public Task Add(UserDocument user)
     {
         return repository.GetCollection<UserDocument>().InsertOneAsync(user);
+    }
+
+    public Task SetGoogleId(ObjectId userDocumentId, string id)
+    {
+        return repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == userDocumentId,
+            Builders<UserDocument>.Update.Set(x => x.GoogleId, id));
+    }
+
+    public Task SetMicrosoftId(ObjectId userDocumentId, string id)
+    {
+        return repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == userDocumentId,
+            Builders<UserDocument>.Update.Set(x => x.MicrosoftId, id));
+    }
+
+    public Task SetAppleId(ObjectId userDocumentId, string id)
+    {
+        return repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == userDocumentId,
+            Builders<UserDocument>.Update.Set(x => x.AppleId, id));
     }
 }

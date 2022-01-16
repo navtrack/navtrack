@@ -24,3 +24,4 @@ export * from './getAssetsAssetIdTripsParams';
 export * from './addUserToAssetModel';
 export * from './assetModel';
 export * from './getAssetsAssetIdReportsTimedistanceParams';
+export * from './getSettings200';

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useHistory } from "react-router";
 import { useGetTokenMutation } from "../mutations/useGetTokenMutation";
 import { LoginFormValues } from "../../components/login/LoginFormValues";
@@ -10,6 +10,7 @@ import { add } from "date-fns";
 export const useLogin = () => {
   const setState = useSetRecoilState(authenticationAtom);
   const history = useHistory();
+  const [error, setError] = useState(false);
 
   const getTokenMutation = useGetTokenMutation({
     onSuccess: (data) => {
@@ -39,10 +40,26 @@ export const useLogin = () => {
         client_id: AUTHENTICATION.CLIENT_ID
       };
 
+      setError(false);
       getTokenMutation.mutate(data);
     },
     [getTokenMutation]
   );
 
-  return { login, loading: getTokenMutation.isLoading };
+  const externalLogin = useCallback(
+    (code: string, grantType: "apple" | "microsoft" | "google") => {
+      const data = {
+        grant_type: grantType,
+        code: code,
+        scope: "offline_access IdentityServerApi openid",
+        client_id: AUTHENTICATION.CLIENT_ID
+      };
+
+      setError(false);
+      getTokenMutation.mutate(data, { onError: () => setError(true) });
+    },
+    [getTokenMutation]
+  );
+
+  return { login, externalLogin, loading: getTokenMutation.isLoading, error };
 };

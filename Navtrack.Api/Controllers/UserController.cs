@@ -9,6 +9,7 @@ using Navtrack.Api.Services.Users;
 
 namespace Navtrack.Api.Controllers;
 
+[ApiController]
 [Route("user")]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 public class UserController : ControllerBase
