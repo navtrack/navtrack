@@ -30,7 +30,7 @@ export default function ExternalLoginButtonGoogle(
         <GoogleLogin
           clientId={settings["GoogleAuthentication.ClientId"]}
           onSuccess={handleGoogleSuccess}
-          onFailure={() => {}}
+          onFailure={(error) => console.log(error)}
           render={(renderProps) => (
             <ExternalLoginButton icon={faGoogle} onClick={renderProps.onClick}>
               <FormattedMessage id="generic.google" />
