@@ -32,11 +32,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.MapGet("/config.json", () => JsonSerializer.Serialize(new Config
     {
-        ApiUrl = Environment.GetEnvironmentVariable(ConfigVariables.ApiUrl),
-        MapTileUrl = Environment.GetEnvironmentVariable(ConfigVariables.MapTileUrl),
-        SentryDsn = Environment.GetEnvironmentVariable(ConfigVariables.SentryDsn),
-        Environment = app.Environment.EnvironmentName,
-        Release = Environment.GetEnvironmentVariable(ConfigVariables.SentryRelease),
+        ApiUrl = Environment.GetEnvironmentVariable(ConfigVariables.ApiUrl)
     }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
 }
 
