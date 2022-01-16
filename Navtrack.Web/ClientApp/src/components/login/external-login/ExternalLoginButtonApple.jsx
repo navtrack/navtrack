@@ -5,9 +5,7 @@ import { useRecoilValue } from "recoil";
 import AppleSignin from "react-apple-signin-auth";
 import { settingsSelector } from "../../../state/app.settings";
 
-
-
-export default function ExternalLoginButtonApple3(
+export default function ExternalLoginButtonApple(
   props) {
   const settings = useRecoilValue(settingsSelector);
 
