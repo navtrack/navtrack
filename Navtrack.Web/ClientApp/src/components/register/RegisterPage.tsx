@@ -12,23 +12,26 @@ import TextInputLeftAddon from "../ui/shared/text-input/TextInputLeftAddon";
 import Icon from "../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import ExternalLogin from "../login/external-login/ExternalLogin";
+import { useLogin } from "../../hooks/authentication/useLogin";
 
 export default function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
   const register = useRegister();
+  const { externalLogin } = useLogin();
 
   return (
     <>
-      <h2 className="mt-4 mx-auto text-3xl font-extrabold text-gray-900">
+      <h2 className="mx-auto mt-4 text-3xl font-extrabold text-gray-900">
         <FormattedMessage id="register.title" />
       </h2>
-      <Card className="max-w-md mx-auto p-8 mt-8 w-full">
+      <Card className="mx-auto mt-8 w-full max-w-md p-8">
         {register.success ? (
           <>
             <div className="text-center">
               <FormattedMessage id="register.success" />
             </div>
-            <div className="text-center mt-4">
+            <div className="mt-4 text-center">
               <Link to={Paths.Login} text="register.continue" />
             </div>
           </>
@@ -89,7 +92,7 @@ export default function RegisterPage() {
                 </Form>
               )}
             </Formik>
-            <div className="text-center text-sm font-medium mt-4">
+            <div className="mt-4 text-center text-sm font-medium">
               <span className="text-gray-600">
                 <FormattedMessage id="register.existing.question" />
               </span>
@@ -99,6 +102,7 @@ export default function RegisterPage() {
                 className="ml-1"
               />
             </div>
+            <ExternalLogin login={externalLogin} />
           </>
         )}
       </Card>
