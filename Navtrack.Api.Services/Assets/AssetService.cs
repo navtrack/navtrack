@@ -185,6 +185,8 @@ public class AssetService : IAssetService
         DeviceDocument deviceDocument = DeviceDocumentMapper.Map(model, assetDocument.Id, currentUser.Id);
         await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
 
+        assetDocument.Device = ActiveDeviceElementMapper.Map(deviceDocument, deviceType);
+        
         await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == currentUser.Id,
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement
             {
