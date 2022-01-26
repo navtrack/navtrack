@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { AssetModel } from "../../../../api/model";
+import { AssetModel } from "../../../../api/model/generated";
 import { scrollToAssetAtom } from "../../../../state/assets";
 
 export default function useScrollToAsset(asset?: AssetModel) {

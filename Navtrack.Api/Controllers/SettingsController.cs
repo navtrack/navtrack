@@ -20,7 +20,6 @@ public class SettingsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(Dictionary<string, string>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<IActionResult> Get()
     {

@@ -13,7 +13,7 @@ public class AssetDeviceElement
     public string SerialNumber { get; set; }
 
     [BsonElement("deviceTypeId")]
-    public int DeviceTypeId { get; set; }
+    public string DeviceTypeId { get; set; }
 
     [BsonElement("protocolPort")]
     public int ProtocolPort { get; set; }

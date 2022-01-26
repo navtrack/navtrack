@@ -5,5 +5,5 @@ export default function useDevicesTypesQuery() {
     query: { refetchOnMount: false, refetchOnWindowFocus: false }
   });
 
-  return query;
+  return { deviceTypes: query.data?.items ?? [] };
 }

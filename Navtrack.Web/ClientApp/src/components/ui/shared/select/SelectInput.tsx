@@ -13,35 +13,39 @@ import Icon from "../icon/Icon";
 import TextInput from "../text-input/TextInput";
 import TextInputRightAddon from "../text-input/TextInputRightAddon";
 
-export interface ISelectInput<T> {
+export interface ISelectInputItem {
+  id: string;
+  label: string;
+}
+
+export interface ISelectInput {
   name?: string;
   label?: string;
   placeholder?: string;
-  value?: T;
-  items: T[];
-  idKey: keyof T;
-  labelKey: keyof T;
+  value?: string;
+  items: ISelectInputItem[];
   onChange?: (value: string) => void;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   error?: string;
 }
 
-export default function SelectInput<T>(props: ISelectInput<T>) {
-  const [selectedItem, setSelectedItem] = useState<T | undefined>();
-  const [searchText, setSearchText] = useState("");
+export default function SelectInput(props: ISelectInput) {
+  const [selectedItem, setSelectedItem] = useState(
+    props.items.find((item) => item.id === props.value)
+  );
+
+  const [searchText, setSearchText] = useState(selectedItem?.label);
   const inputEl = useRef(null);
   const inputSize = useElementSize(inputEl);
 
   const filteredItems = useMemo(
     () =>
-      searchText !== ""
+      searchText !== undefined && selectedItem === undefined
         ? props.items.filter((x) =>
-            (x[props.labelKey] as unknown as string)
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
+            x.label.toLowerCase().includes(searchText.toLowerCase())
           )
         : props.items,
-    [props.items, props.labelKey, searchText]
+    [props.items, searchText, selectedItem]
   );
 
   return (
@@ -53,13 +57,7 @@ export default function SelectInput<T>(props: ISelectInput<T>) {
               name={props.name}
               label={props.label}
               placeholder={props.placeholder}
-              value={
-                searchText !== ""
-                  ? searchText
-                  : selectedItem !== undefined
-                  ? (selectedItem[props.labelKey] as unknown as string)
-                  : ""
-              }
+              value={searchText}
               error={props.error}
               onChange={(e) => {
                 setSelectedItem(undefined);
@@ -71,14 +69,20 @@ export default function SelectInput<T>(props: ISelectInput<T>) {
                   {selectedItem !== undefined ? (
                     <div
                       className="pointer-events-auto cursor-pointer hover:text-gray-900"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         setSelectedItem(undefined);
+                        setSearchText("");
                         props.onChange?.("");
                       }}>
                       <Icon icon={faTimes} className="mr-4" />
                     </div>
                   ) : null}
-                  <Icon icon={open ? faAngleUp : faAngleDown} size="lg" />
+                  <Icon
+                    icon={open ? faAngleUp : faAngleDown}
+                    size="lg"
+                    className="pointer-events-auto cursor-pointer hover:text-gray-900"
+                  />
                 </TextInputRightAddon>
               }
             />
@@ -99,20 +103,18 @@ export default function SelectInput<T>(props: ISelectInput<T>) {
                 {filteredItems.length > 0 ? (
                   filteredItems.map((item) => (
                     <div
-                      key={item[props.idKey] as unknown as string}
+                      key={item.id}
                       className={classNames(
                         "px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100",
-                        c(item === selectedItem, "bg-gray-100")
+                        c(item.id === selectedItem?.id, "bg-gray-100")
                       )}
                       onClick={() => {
-                        setSearchText("");
+                        setSearchText(item.label);
                         setSelectedItem(item);
-                        props.onChange?.(
-                          `${item[props.idKey] as unknown as string}`
-                        );
+                        props.onChange?.(item.id);
                         close();
                       }}>
-                      {item[props.labelKey]}
+                      {item.label}
                     </div>
                   ))
                 ) : (

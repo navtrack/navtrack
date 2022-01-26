@@ -27,6 +27,8 @@ public class MongoDatabaseFactory : IMongoDatabaseFactory
             
         ConventionRegistry.Register(nameof(IgnoreIfNullConvention),
             new ConventionPack { new IgnoreIfNullConvention(true) }, t => true);
+        ConventionRegistry.Register(nameof(IgnoreExtraElementsConvention),
+            new ConventionPack { new IgnoreExtraElementsConvention(true) }, t => true);
 
         return mongoDatabase;
     }

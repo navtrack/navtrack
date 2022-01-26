@@ -26,7 +26,7 @@ public class UserDocument
     public AuditElement Created { get; set; }
         
     [BsonElement("assetRoles")]
-    public IEnumerable<UserAssetRoleElement> AssetRoles { get; set; }
+    public IEnumerable<UserAssetRoleElement>? AssetRoles { get; set; }
 
     [BsonElement("googleId")]
     public string? GoogleId { get; set; }

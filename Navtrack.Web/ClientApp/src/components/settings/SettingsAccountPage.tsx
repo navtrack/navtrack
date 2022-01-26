@@ -80,10 +80,10 @@ export default function SettingsAccountPage() {
           }>
           {() => (
             <Form>
-              <div className="shadow sm:rounded-md sm:overflow-hidden">
-                <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+              <div className="shadow sm:overflow-hidden sm:rounded-md">
+                <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
                   <div>
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    <h3 className="text-lg font-medium leading-6 text-gray-900">
                       <FormattedMessage id="settings.account.title" />
                     </h3>
                   </div>
@@ -104,7 +104,7 @@ export default function SettingsAccountPage() {
                     </div>
                   </div>
                 </div>
-                <div className="px-3 py-3 bg-gray-50 text-right">
+                <div className="bg-gray-50 px-3 py-3 text-right">
                   <Button size="lg" type="submit">
                     <FormattedMessage id="generic.save" />
                   </Button>

@@ -6,6 +6,6 @@
  */
 import type { ProtocolModel } from './protocolModel';
 
-export interface ProtocolListModel {
+export interface ProtocolsModel {
   items: ProtocolModel[];
 }

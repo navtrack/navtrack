@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useRecoilValue } from "recoil";
-import { AssetListModel } from "../../api/model";
+import { AssetsModel } from "../../api/model/generated";
 import { configSelector } from "../../state/app.config";
 import useSignalR from "../app/useSignalR";
 
@@ -11,7 +11,7 @@ export default function useGetAssetsSignalRQuery() {
   const query = useQuery(
     "GetAssetsSignalR",
     () =>
-      signalR.invoke<AssetListModel>(`${config?.apiUrl}/hubs/assets`, "GetAll"),
+      signalR.invoke<AssetsModel>(`${config?.apiUrl}/hubs/assets`, "GetAll"),
     {
       refetchIntervalInBackground: true,
       refetchInterval: 5000

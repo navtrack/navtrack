@@ -1,22 +1,34 @@
 using System;
 using MongoDB.Bson;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Model.Devices;
 using Navtrack.DataAccess.Model.Devices;
-using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers;
 
 public static class DeviceDocumentMapper
 {
-    public static DeviceDocument Map(AddAssetModel model, UserDocument user, DeviceType deviceType)
+    public static DeviceDocument Map(AddAssetModel model, ObjectId assetId, ObjectId userId)
     {
         return new DeviceDocument
         {
             Id = ObjectId.GenerateNewId(),
+            AssetId = assetId,
             SerialNumber = model.SerialNumber,
-            DeviceTypeId = Convert.ToInt32(model.DeviceTypeId),
-            Created = AuditElementMapper.Map(user.Id),
-            ProtocolPort = deviceType.Protocol.Port
+            DeviceTypeId = model.DeviceTypeId,
+            Created = AuditElementMapper.Map(userId)
+        };
+    }
+
+    public static DeviceDocument Map(string assetId, AddDeviceModel model, ObjectId userId)
+    {
+        return new DeviceDocument
+        {
+            Id = ObjectId.GenerateNewId(),
+            AssetId = ObjectId.Parse(assetId),
+            SerialNumber = model.SerialNumber,
+            DeviceTypeId = model.DeviceTypeId,
+            Created = AuditElementMapper.Map(userId)
         };
     }
 }

@@ -1,17 +1,12 @@
-import SelectInput from "./SelectInput";
+import SelectInput, { ISelectInputItem } from "./SelectInput";
 
-type Asset = {
-  id: string;
-  name: string;
-};
-
-const assets: Asset[] = Array.from(Array(100).keys()).map((x) => ({
+const assets: ISelectInputItem[] = Array.from(Array(100).keys()).map((x) => ({
   id: `${x}`,
-  name: `CJ${x}NAV`
+  label: `CJ${x}NAV`
 }));
 
 export default {
   Basic: () => {
-    return <SelectInput items={assets} idKey="id" labelKey="name" />;
+    return <SelectInput items={assets} />;
   }
 };

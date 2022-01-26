@@ -6,6 +6,6 @@
  */
 import type { AssetModel } from './assetModel';
 
-export interface AssetListModel {
+export interface AssetsModel {
   items: AssetModel[];
 }

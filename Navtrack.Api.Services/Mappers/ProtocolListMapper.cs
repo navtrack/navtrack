@@ -7,9 +7,9 @@ namespace Navtrack.Api.Services.Mappers;
 
 public static class ProtocolListMapper
 {
-    public static ProtocolListModel Map(IEnumerable<Protocol> protocols)
+    public static ProtocolsModel Map(IEnumerable<Protocol> protocols)
     {
-        ProtocolListModel listModel = new()
+        ProtocolsModel listModel = new()
         {
             Items = protocols.Select(ProtocolModelMapper.Map).ToList()
         };

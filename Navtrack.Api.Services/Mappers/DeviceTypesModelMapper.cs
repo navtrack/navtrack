@@ -7,9 +7,9 @@ namespace Navtrack.Api.Services.Mappers;
 
 public class DeviceTypesModelMapper
 {
-    public static DeviceTypeListModel Map(IEnumerable<DeviceType> deviceTypes)
+    public static DeviceTypesModel Map(IEnumerable<DeviceType> deviceTypes)
     {
-        return new DeviceTypeListModel
+        return new DeviceTypesModel
         {
             Items = deviceTypes.Select(DeviceTypeModelMapper.Map)
                 .OrderBy(x => x.DisplayName)

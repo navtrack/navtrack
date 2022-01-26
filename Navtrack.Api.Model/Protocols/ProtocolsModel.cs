@@ -2,6 +2,6 @@ using Navtrack.Api.Model.Common;
 
 namespace Navtrack.Api.Model.Protocols;
 
-public class ProtocolListModel : ListModel<ProtocolModel>
+public class ProtocolsModel : ListModel<ProtocolModel>
 {
 }

@@ -3,7 +3,7 @@ module.exports = {
     output: {
       mode: "single",
       target: "./src/api/index.ts",
-      schemas: "./src/api/model",
+      schemas: "./src/api/model/generated",
       client: "react-query",
       override: {
         mutator: {

@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { AssetUserModel } from "../../../../api/model";
+import { AssetUserModel } from "../../../../api/model/generated";
 import { useDeleteUserFromAssetMutation } from "../../../../hooks/mutations/useDeleteUserFromAssetMutation";
 import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { getError } from "../../../../utils/api";
@@ -42,7 +42,7 @@ export default function DeleteUserFromAssetModal(props: IDeleteAssetModal) {
           props.close();
         }
       }}>
-      <h3 className="text-lg leading-6 font-medium text-gray-900">
+      <h3 className="text-lg font-medium leading-6 text-gray-900">
         <FormattedMessage id="shared.delete-modal.title" />
       </h3>
       <p className="mt-2 text-sm">

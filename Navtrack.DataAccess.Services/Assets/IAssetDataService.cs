@@ -17,10 +17,6 @@ public interface IAssetDataService
     Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole);
     Task RemoveUserFromAsset(string assetId, string userId);
     Task UpdateLocation(ObjectId assetId, LocationDocument location);
-
-
-    Task<bool> UserHasRoleForAsset(string userId, AssetRoleType assetRoleType, string assetId);
-    Task<bool> UserHasRolesForAsset(string userId, AssetRoleType[] assetRoleTypes, string assetId);
-    Task<bool> UserHasRoleForDevice(string userId, AssetRoleType assetRoleType, string deviceId);
-    Task<bool> HasActiveDeviceId(string assetId, string deviceId);
+    Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
+        int protocolPort);
 }

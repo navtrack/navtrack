@@ -26,7 +26,7 @@ export default function DeleteAssetModal(props: IDeleteAssetModal) {
         {({ values }) => (
           <Form>
             <DeleteModalContainer close={props.close} loading={loading}>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="shared.delete-modal.title" />
               </h3>
               <div className="mt-2 text-sm">

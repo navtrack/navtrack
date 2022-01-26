@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { TripModel } from "../../../api/model";
+import { TripModel } from "../../../api/model/generated";
 
 export const tripsAtom = atom<TripModel[]>({
   key: "Trips",

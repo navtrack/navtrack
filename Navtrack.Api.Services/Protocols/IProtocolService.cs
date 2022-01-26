@@ -1,8 +1,8 @@
 using Navtrack.Api.Model.Protocols;
 
-namespace Navtrack.Api.Services.Old.Protocols;
+namespace Navtrack.Api.Services.Protocols;
 
 public interface IProtocolService
 {
-    ProtocolListModel GetProtocols();
+    ProtocolsModel GetProtocols();
 }

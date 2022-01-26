@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { useIntl } from "react-intl";
-import { LocationModel } from "../../../../api/model";
+import { LocationModel } from "../../../../api/model/generated";
 import useDateTime from "../../../../hooks/util/useDateTime";
 import useDistance from "../../../../hooks/util/useDistance";
 import LocationInfo from "./LocationInfo";
@@ -18,7 +18,7 @@ export default function LocationBar(props: IAssetLocationBar) {
   return (
     <>
       {props.location && (
-        <div className="flex gap-x-4 grid grid-cols-9">
+        <div className="flex grid grid-cols-9 gap-x-4">
           <LocationInfo
             titleId={"generic.date"}
             hideMargin={true}

@@ -13,11 +13,27 @@ public static class ObjectExtensions
         }
     }
         
-    public static void ThrowApiExceptionIfNull(this object @object, HttpStatusCode httpStatusCode)
+    public static void ThrowApiExceptionIfNull(this object @object, HttpStatusCode httpStatusCode, string? message = null)
     {
         if (@object == null)
         {
-            throw new ApiException(httpStatusCode);
+            throw new ApiException(httpStatusCode, message);
+        }
+    }
+    
+    public static void ThrowApiExceptionIfTrue(this bool boolean, HttpStatusCode httpStatusCode, string? message = null)
+    {
+        if (boolean)
+        {
+            throw new ApiException(httpStatusCode, message);
+        }
+    }
+    
+    public static void ThrowApiExceptionIfFalse(this bool boolean, HttpStatusCode httpStatusCode, string? message = null)
+    {
+        if (!boolean)
+        {
+            throw new ApiException(httpStatusCode, message);
         }
     }
 }

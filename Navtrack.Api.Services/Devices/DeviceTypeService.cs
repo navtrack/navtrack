@@ -17,7 +17,7 @@ public class DeviceTypeService : IDeviceTypeService
         this.deviceTypeDataService = deviceTypeDataService;
     }
 
-    public DeviceTypeListModel GetDeviceTypes()
+    public DeviceTypesModel GetAll()
     {
         IEnumerable<DeviceType> devicesTypes = deviceTypeDataService.GetDeviceTypes();
 

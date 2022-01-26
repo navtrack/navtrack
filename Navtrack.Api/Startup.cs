@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Hubs;
 using Navtrack.Api.Services;
+using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.IdentityServer;
 using Navtrack.DataAccess.Mongo;
@@ -35,11 +36,15 @@ public class Startup
             });
         });
 
-        services.AddControllers(options => { options.Filters.Add(typeof(ModelStateMappingActionFilter)); })
+        services.AddControllers(options =>
+            {
+                options.Filters.Add<AuthorizeActionFilter>();
+                options.Filters.Add<ModelStateMappingActionFilter>();
+            })
             .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; })
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
         services.AddSignalR().AddHubOptions<AssetsHub>(options => { options.EnableDetailedErrors = true; });

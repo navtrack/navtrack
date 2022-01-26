@@ -12,7 +12,7 @@ import useScrollToAsset from "../../ui/layouts/admin/useScrollToAsset";
 import useNotification from "../../ui/shared/notification/useNotification";
 
 export default function useAddAsset() {
-  const deviceTypes = useDevicesTypesQuery();
+  const { deviceTypes } = useDevicesTypesQuery();
   const intl = useIntl();
   const addAssetMutation = useAddAssetMutation();
   const history = useHistory();
@@ -71,7 +71,7 @@ export default function useAddAsset() {
   );
 
   return {
-    deviceTypes: deviceTypes.data?.items ?? [],
+    deviceTypes,
     validationSchema,
     handleSubmit,
     loading: addAssetMutation.isLoading

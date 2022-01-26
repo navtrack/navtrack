@@ -5,6 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 import type { LocationModel } from './locationModel';
+import type { DeviceModel } from './deviceModel';
 
 export interface AssetModel {
   id: string;
@@ -13,4 +14,5 @@ export interface AssetModel {
   readonly online: boolean;
   readonly maxSpeed: number;
   location?: LocationModel;
+  device: DeviceModel;
 }

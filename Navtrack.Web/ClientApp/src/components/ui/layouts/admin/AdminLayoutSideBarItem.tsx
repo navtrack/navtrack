@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { AssetModel } from "../../../../api/model";
+import { AssetModel } from "../../../../api/model/generated";
 import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { useHistory } from "react-router";
 import IconWithText from "../../shared/icon/IconWithText";
@@ -26,7 +26,7 @@ export default function AdminLayoutSideBarItem(
         currentAsset === props.asset
           ? "bg-gray-900 text-white"
           : "text-gray-300 hover:bg-gray-700 hover:text-white",
-        "cursor-pointer flex items-center px-2 py-3 text-sm font-medium rounded-md"
+        "flex cursor-pointer items-center rounded-md px-2 py-3 text-sm font-medium"
       )}
       onClick={(e) => {
         e.preventDefault();

@@ -2,6 +2,7 @@ import classNames from "classnames";
 import Icon from "../../../ui/shared/icon/Icon";
 import { useHistory, useRouteMatch } from "react-router";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FormattedMessage } from "react-intl";
 
 export interface ISidebarItem {
   label: string;
@@ -35,7 +36,9 @@ export default function SidebarItem(props: ISidebarItem) {
         )}
         icon={props.icon}
       />
-      <span className="truncate">{props.label}</span>
+      <span className="truncate">
+        <FormattedMessage id={props.label} />
+      </span>
     </a>
   );
 }

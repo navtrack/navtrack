@@ -7,8 +7,8 @@ namespace Navtrack.Api.Services.Exceptions;
 
 public class ApiException : Exception
 {
-    public ApiException(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest,
-        string message = null) : base(message)
+    public ApiException(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string? message = null) :
+        base(message)
     {
         this.httpStatusCode = httpStatusCode;
         ValidationErrors = new List<ValidationError>();

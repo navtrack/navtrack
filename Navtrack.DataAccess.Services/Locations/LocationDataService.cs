@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
+using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Library.DI;
@@ -47,6 +49,17 @@ public class LocationDataService : ILocationDataService
             .Find(filter)
             .SortBy(x => x.DateTime)
             .ToListAsync();
+    }
+
+    public async Task<Dictionary<ObjectId, int>> GetLocationsCountByDeviceIds(IEnumerable<ObjectId> deviceIds)
+    {
+        var counts = await repository.GetEntities<LocationDocument>()
+            .Where(x => deviceIds.Contains(x.DeviceId))
+            .GroupBy(x => x.DeviceId)
+            .Select(x => new { DeviceId = x.Key, Count = x.Count() })
+            .ToListAsync();
+
+        return counts.ToDictionary(x => x.DeviceId, x => x.Count);
     }
 
     public Task DeleteByAssetId(string assetId)

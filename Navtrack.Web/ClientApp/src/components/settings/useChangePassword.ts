@@ -2,17 +2,13 @@ import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, ref, SchemaOf, string } from "yup";
-import { useAddAssetMutation } from "../../hooks/mutations/useAddAssetMutation";
 import { useChangePasswordMutation } from "../../hooks/mutations/useChangePasswordMutation";
-import useDevicesTypesQuery from "../../hooks/queries/useDevicesTypesQuery";
 import { mapErrors } from "../../utils/formik";
 import useNotification from "../ui/shared/notification/useNotification";
 import { ChangePasswordFormValues } from "./types";
 
 export default function useChangePassword() {
-  const deviceTypes = useDevicesTypesQuery();
   const intl = useIntl();
-  const addAssetMutation = useAddAssetMutation();
   const { showNotification } = useNotification();
   const changePasswordMutation = useChangePasswordMutation();
 
@@ -83,9 +79,7 @@ export default function useChangePassword() {
   }).defined();
 
   return {
-    deviceTypes: deviceTypes.data?.items ?? [],
     validationSchema,
-    handleSubmit,
-    loading: addAssetMutation.isLoading
+    handleSubmit
   };
 }

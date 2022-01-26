@@ -3,20 +3,20 @@ import { useIntl } from "react-intl";
 import { IFormikInput } from "../formik/IFormikInput";
 import SelectInput, { ISelectInput } from "./SelectInput";
 
-export default function FormikSelectInput<T>(
-  props: ISelectInput<T> & IFormikInput
-) {
+export default function FormikSelectInput(props: ISelectInput & IFormikInput) {
   const formikContext = useFormikContext();
-  const fieldMeta = formikContext.getFieldMeta(`${props.name}`);
+  const fieldMeta = formikContext.getFieldMeta<string>(`${props.name}`);
   const intl = useIntl();
 
   return (
     <SelectInput
-      {...props}
+      items={props.items}
       onChange={(value) => {
         props.onChange?.(value);
         formikContext.setFieldValue(props.name, value);
       }}
+      placeholder={props.placeholder}
+      value={fieldMeta.value}
       onBlur={props.onBlur ?? formikContext.handleBlur}
       label={props.label ? intl.formatMessage({ id: props.label }) : undefined}
       error={

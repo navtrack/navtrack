@@ -18,7 +18,7 @@ import type {
   ProblemDetails,
   ChangePasswordModel,
   RegisterAccountModel,
-  AssetListModel,
+  AssetsModel,
   AssetModel,
   ErrorModel,
   AddAssetModel,
@@ -30,12 +30,14 @@ import type {
   TripListModel,
   GetAssetsAssetIdTripsParams,
   GetAssetsAssetIdReportsTimedistanceParams,
-  DeviceTypeListModel,
-  ProtocolListModel,
+  DevicesModel,
+  AddDeviceModel,
+  DeviceTypesModel,
+  ProtocolsModel,
   GetSettings200,
   CurrentUserModel,
   UpdateUserModel
-} from './model'
+} from './model/generated'
 import { authAxiosInstance } from './authAxiosInstance'
 
 
@@ -107,7 +109,7 @@ export const postAccount = (
 export const getAssets = (
     
  ) => {
-      return authAxiosInstance<AssetListModel>(
+      return authAxiosInstance<AssetsModel>(
       {url: `/assets`, method: 'get'
     },
       );
@@ -477,10 +479,106 @@ export const useGetAssetsAssetIdReportsTimedistance = <TData = AsyncReturnType<t
 }
 
 
+export const getAssetsAssetIdDevices = (
+    assetId: string,
+ ) => {
+      return authAxiosInstance<DevicesModel>(
+      {url: `/assets/${assetId}/devices`, method: 'get'
+    },
+      );
+    }
+  
+
+export const getGetAssetsAssetIdDevicesQueryKey = (assetId: string,) => [`/assets/${assetId}/devices`];
+
+    
+export const useGetAssetsAssetIdDevices = <TData = AsyncReturnType<typeof getAssetsAssetIdDevices>, TError = ProblemDetails>(
+ assetId: string, options?: { query?:UseQueryOptions<AsyncReturnType<typeof getAssetsAssetIdDevices>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const {query: queryOptions} = options || {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetAssetsAssetIdDevicesQueryKey(assetId);
+
+  
+
+  const queryFn: QueryFunction<AsyncReturnType<typeof getAssetsAssetIdDevices>> = () => getAssetsAssetIdDevices(assetId, );
+
+  const query = useQuery<AsyncReturnType<typeof getAssetsAssetIdDevices>, TError, TData>(queryKey, queryFn, {enabled: !!(assetId), ...queryOptions})
+
+  return {
+    queryKey,
+    ...query
+  }
+}
+
+
+export const postAssetsAssetIdDevices = (
+    assetId: string,
+    addDeviceModel: AddDeviceModel,
+ ) => {
+      return authAxiosInstance<void>(
+      {url: `/assets/${assetId}/devices`, method: 'post',
+      data: addDeviceModel
+    },
+      );
+    }
+  
+
+
+    export const usePostAssetsAssetIdDevices = <TError = ProblemDetails,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<AsyncReturnType<typeof postAssetsAssetIdDevices>, TError,{assetId: string;data: AddDeviceModel}, TContext>, }
+) => {
+      const {mutation: mutationOptions} = options || {}
+
+      
+
+
+      const mutationFn: MutationFunction<AsyncReturnType<typeof postAssetsAssetIdDevices>, {assetId: string;data: AddDeviceModel}> = (props) => {
+          const {assetId,data} = props || {};
+
+          return  postAssetsAssetIdDevices(assetId,data,)
+        }
+
+      return useMutation<AsyncReturnType<typeof postAssetsAssetIdDevices>, TError, {assetId: string;data: AddDeviceModel}, TContext>(mutationFn, mutationOptions)
+    }
+    
+export const deleteAssetsAssetIdDevicesDeviceId = (
+    assetId: string,
+    deviceId: string,
+ ) => {
+      return authAxiosInstance<void>(
+      {url: `/assets/${assetId}/devices/${deviceId}`, method: 'delete'
+    },
+      );
+    }
+  
+
+
+    export const useDeleteAssetsAssetIdDevicesDeviceId = <TError = ProblemDetails,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<AsyncReturnType<typeof deleteAssetsAssetIdDevicesDeviceId>, TError,{assetId: string;deviceId: string}, TContext>, }
+) => {
+      const {mutation: mutationOptions} = options || {}
+
+      
+
+
+      const mutationFn: MutationFunction<AsyncReturnType<typeof deleteAssetsAssetIdDevicesDeviceId>, {assetId: string;deviceId: string}> = (props) => {
+          const {assetId,deviceId} = props || {};
+
+          return  deleteAssetsAssetIdDevicesDeviceId(assetId,deviceId,)
+        }
+
+      return useMutation<AsyncReturnType<typeof deleteAssetsAssetIdDevicesDeviceId>, TError, {assetId: string;deviceId: string}, TContext>(mutationFn, mutationOptions)
+    }
+    
 export const getDevicesTypes = (
     
  ) => {
-      return authAxiosInstance<DeviceTypeListModel>(
+      return authAxiosInstance<DeviceTypesModel>(
       {url: `/devices/types`, method: 'get'
     },
       );
@@ -550,7 +648,7 @@ export const useGetHealth = <TData = AsyncReturnType<typeof getHealth>, TError =
 export const getProtocols = (
     
  ) => {
-      return authAxiosInstance<ProtocolListModel>(
+      return authAxiosInstance<ProtocolsModel>(
       {url: `/protocols`, method: 'get'
     },
       );
@@ -560,7 +658,7 @@ export const getProtocols = (
 export const getGetProtocolsQueryKey = () => [`/protocols`];
 
     
-export const useGetProtocols = <TData = AsyncReturnType<typeof getProtocols>, TError = ProblemDetails>(
+export const useGetProtocols = <TData = AsyncReturnType<typeof getProtocols>, TError = unknown>(
   options?: { query?:UseQueryOptions<AsyncReturnType<typeof getProtocols>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -595,7 +693,7 @@ export const getSettings = (
 export const getGetSettingsQueryKey = () => [`/settings`];
 
     
-export const useGetSettings = <TData = AsyncReturnType<typeof getSettings>, TError = ProblemDetails>(
+export const useGetSettings = <TData = AsyncReturnType<typeof getSettings>, TError = unknown>(
   options?: { query?:UseQueryOptions<AsyncReturnType<typeof getSettings>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -655,7 +753,7 @@ export const useGetUser = <TData = AsyncReturnType<typeof getUser>, TError = Pro
 export const patchUser = (
     updateUserModel: UpdateUserModel,
  ) => {
-      return authAxiosInstance<void>(
+      return authAxiosInstance<CurrentUserModel>(
       {url: `/user`, method: 'patch',
       data: updateUserModel
     },
@@ -664,7 +762,7 @@ export const patchUser = (
   
 
 
-    export const usePatchUser = <TError = unknown,
+    export const usePatchUser = <TError = ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<AsyncReturnType<typeof patchUser>, TError,{data: UpdateUserModel}, TContext>, }
 ) => {

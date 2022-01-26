@@ -10,7 +10,7 @@ import {
 import useAddAsset from "./useAddAsset";
 import DeviceConfiguration from "./DeviceConfiguration";
 import { useState } from "react";
-import { DeviceTypeModel } from "../../../api/model";
+import { DeviceTypeModel } from "../../../api/model/generated";
 
 export default function AssetAddPage() {
   const { deviceTypes, validationSchema, handleSubmit, loading } =
@@ -29,15 +29,15 @@ export default function AssetAddPage() {
         }>
         {() => (
           <Form>
-            <div className="shadow overflow-hidden rounded-lg">
-              <div className="px-4 py-5 bg-white p-6">
+            <div className="overflow-hidden rounded-lg shadow">
+              <div className="bg-white p-6 px-4 py-5">
                 <div>
-                  <h2 className="text-lg leading-6 font-medium text-gray-900">
+                  <h2 className="text-lg font-medium leading-6 text-gray-900">
                     <FormattedMessage id="assets.add.title" />
                   </h2>
                 </div>
-                <div className="grid grid-cols-6 gap-6 mt-6">
-                  <div className="grid col-span-3 gap-6">
+                <div className="mt-6 grid grid-cols-6 gap-6">
+                  <div className="col-span-3 grid gap-6">
                     <FormikTextInput
                       name="name"
                       label="generic.name"
@@ -47,9 +47,10 @@ export default function AssetAddPage() {
                       name="deviceTypeId"
                       label="generic.device-type"
                       placeholder="Select a device type"
-                      items={deviceTypes}
-                      idKey="id"
-                      labelKey="displayName"
+                      items={deviceTypes.map((x) => ({
+                        id: x.id,
+                        label: x.displayName
+                      }))}
                       onChange={(value) => {
                         setSelectedDeviceType(
                           deviceTypes.find((d) => d.id === value)
@@ -62,12 +63,12 @@ export default function AssetAddPage() {
                       placeholder="assets.add.serial-number.placeholder"
                     />
                   </div>
-                  <div className="grid col-span-3 gap-6">
+                  <div className="col-span-3 grid gap-6">
                     <DeviceConfiguration deviceType={selectedDeviceType} />
                   </div>
                 </div>
               </div>
-              <div className="px-6 py-3 bg-gray-50 text-right">
+              <div className="bg-gray-50 px-6 py-3 text-right">
                 <Button
                   color="primary"
                   type="submit"

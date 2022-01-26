@@ -10,6 +10,7 @@ using Navtrack.Api.Services.Devices;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers;
+using Navtrack.Api.Services.Mappers.Assets;
 using Navtrack.Api.Services.Users;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
@@ -51,18 +52,25 @@ public class AssetService : IAssetService
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
         UserDocument user = await currentUserAccessor.GetCurrentUser();
+        DeviceType deviceType = deviceTypeDataService.GetById(asset.Device.DeviceTypeId);
 
-        return AssetMapper.Map(asset, user.UnitsType);
+        return AssetModelMapper.Map(asset, user.UnitsType, deviceType);
     }
 
-    public async Task<AssetListModel> GetAssets()
+    public async Task<AssetsModel> GetAssets()
     {
         UserDocument user = await currentUserAccessor.GetCurrentUser();
         List<ObjectId> assetIds = user.AssetRoles?.Select(x => x.AssetId).ToList() ??
                                   Enumerable.Empty<ObjectId>().ToList();
         List<AssetDocument> assets = await assetDataService.GetAssetsByIds(assetIds);
 
-        AssetListModel assetList = AssetListMapper.Map(assets, user.UnitsType);
+        List<string> assetDeviceTypes =
+            assets.Select(x => x.Device.DeviceTypeId).Distinct().ToList();
+
+        IEnumerable<DeviceType> deviceTypes =
+            deviceTypeDataService.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
+
+        AssetsModel assetList = AssetListMapper.Map(assets, user.UnitsType, deviceTypes);
 
         return assetList;
     }
@@ -105,8 +113,9 @@ public class AssetService : IAssetService
         await ValidateModel(model, user);
 
         AssetDocument assetDocument = await AddDocuments(model);
+        DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
 
-        return AssetMapper.Map(assetDocument, user.UnitsType);
+        return AssetModelMapper.Map(assetDocument, user.UnitsType, deviceType);
     }
 
     public async Task<AssetUserListModel> GetAssetUsers(string assetId)
@@ -170,11 +179,12 @@ public class AssetService : IAssetService
         UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
         DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
 
-        DeviceDocument deviceDocument = DeviceDocumentMapper.Map(model, currentUser, deviceType);
-        AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser, deviceDocument);
-
-        await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
+        AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);
         await repository.GetCollection<AssetDocument>().InsertOneAsync(assetDocument);
+
+        DeviceDocument deviceDocument = DeviceDocumentMapper.Map(model, assetDocument.Id, currentUser.Id);
+        await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
+
         await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == currentUser.Id,
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement
             {
@@ -182,6 +192,9 @@ public class AssetService : IAssetService
                 Role = AssetRoleType.Owner,
                 AssetId = assetDocument.Id
             }));
+
+        await assetDataService.SetActiveDevice(assetDocument.Id, deviceDocument.Id, deviceDocument.SerialNumber,
+            deviceDocument.DeviceTypeId, deviceType.Protocol.Port);
 
         return assetDocument;
     }
@@ -212,7 +225,7 @@ public class AssetService : IAssetService
             throw validationException;
         }
     }
-    
+
     private static void AdjustModel(AddAssetModel model)
     {
         model.Name = model.Name?.Trim();

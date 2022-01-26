@@ -6,6 +6,7 @@ using Navtrack.DataAccess.Model.Common;
 namespace Navtrack.DataAccess.Model.Devices;
 
 [Collection("devices")]
+[BsonIgnoreExtraElements]
 public class DeviceDocument
 {
     [BsonId]
@@ -15,10 +16,7 @@ public class DeviceDocument
     public string SerialNumber { get; set; }
 
     [BsonElement("deviceTypeId")]
-    public int DeviceTypeId { get; set; }
-
-    [BsonElement("protocolPort")]
-    public int ProtocolPort { get; set; }
+    public string DeviceTypeId { get; set; }
 
     [BsonElement("assetId")]
     public ObjectId AssetId { get; set; }

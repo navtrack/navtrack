@@ -1,49 +1,43 @@
-import React from "react";
 import classNames from "classnames";
-import { DeviceTypeModel } from "../../../api/model";
+import { DeviceTypeModel } from "../../../api/model/generated";
 import { FormattedMessage } from "react-intl";
 
-type Props = {
+interface IDeviceConfiguration {
   deviceType?: DeviceTypeModel;
   className?: string;
-};
+}
 
-export default function DeviceConfiguration(props: Props) {
+export default function DeviceConfiguration(props: IDeviceConfiguration) {
   return (
     <div className={classNames("text-sm", props.className)}>
-      <h1 className="font-semibold mb-2">
+      <h1 className="font-semibold">
         <FormattedMessage id="assets.settings.device.configuration.title" />
       </h1>
-      <div className="mb-2">
-        <FormattedMessage id="assets.settings.device.configuration.description.1" />
-        <br />
-        <FormattedMessage id="assets.settings.device.configuration.description.2" />
-      </div>
-      <table className="w-full text-sm rounded border">
+      <table className="mt-2 w-full border">
         <tbody>
           <tr>
             <td
-              className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border"
+              className="border bg-gray-100 p-2 text-xs font-medium text-gray-700"
               style={{ width: "120px" }}>
               <FormattedMessage id="generic.hostname" />
             </td>
-            <td className="p-2 font-medium border">
+            <td className="border p-2 font-medium">
               <FormattedMessage id="navtrack.listener.hostname" />
             </td>
           </tr>
           <tr>
-            <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">
+            <td className="border bg-gray-100 p-2 text-xs font-medium text-gray-700">
               <FormattedMessage id="generic.ip-address" />
             </td>
-            <td className="p-2 font-medium border">
+            <td className="border p-2 font-medium">
               <FormattedMessage id="navtrack.listener.ip-address" />
             </td>
           </tr>
           <tr>
-            <td className="p-2 bg-gray-100 text-xs text-gray-700 font-medium border">
+            <td className="border bg-gray-100 p-2 text-xs font-medium text-gray-700">
               <FormattedMessage id="generic.port" />
             </td>
-            <td className="p-2 font-medium border">
+            <td className="border p-2 font-medium">
               {props.deviceType ? (
                 props.deviceType.protocol.port
               ) : (
@@ -53,6 +47,12 @@ export default function DeviceConfiguration(props: Props) {
           </tr>
         </tbody>
       </table>
+      <div className="mt-2">
+        <FormattedMessage id="assets.settings.device.configuration.description.1" />
+      </div>
+      <div>
+        <FormattedMessage id="assets.settings.device.configuration.description.2" />
+      </div>
     </div>
   );
 }

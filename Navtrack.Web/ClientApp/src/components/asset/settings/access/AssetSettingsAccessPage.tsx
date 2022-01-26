@@ -19,21 +19,19 @@ export default function AssetSettingsAccessPage() {
     <>
       {currentAsset && (
         <AssetSettingsLayout>
-          <div className="p-6">
-            <div className="flex justify-between pb-4 items-center">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">
-                <FormattedMessage id="assets.settings.access.manage" />
-              </h2>
-              <Button color="green" onClick={() => setShowModal(true)}>
-                Add user
-              </Button>
-            </div>
-            <UsersTable
-              rows={assetUsers.data?.items}
-              loading={assetUsers.isLoading}
-              refresh={assetUsers.refetch}
-            />
+          <div className="flex justify-between pb-4 items-center">
+            <h2 className="text-lg leading-6 font-medium text-gray-900">
+              <FormattedMessage id="assets.settings.access.manage" />
+            </h2>
+            <Button color="green" onClick={() => setShowModal(true)}>
+              Add user
+            </Button>
           </div>
+          <UsersTable
+            rows={assetUsers.data?.items}
+            loading={assetUsers.isLoading}
+            refresh={assetUsers.refetch}
+          />
           <AddUserToAssetModal
             show={showModal}
             close={() => setShowModal(false)}

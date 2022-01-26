@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { AssetModel } from "../api/model";
+import { AssetModel } from "../api/model/generated";
 
 export const assetsAtom = atom<AssetModel[]>({
   key: "Assets",

@@ -11,7 +11,6 @@ namespace Navtrack.Api.Controllers;
 
 [ApiController]
 [Route("user")]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 public class UserController : ControllerBase
 {
     private readonly IUserService userService;
@@ -25,6 +24,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces(MediaTypeNames.Application.Json)]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<CurrentUserModel> Get()
     {
         CurrentUserModel currentUser = await userService.GetCurrentUser();
@@ -33,6 +33,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPatch]
+    [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<IActionResult> Update([FromBody] UpdateUserModel model)
     {
         await userService.UpdateUser(model);

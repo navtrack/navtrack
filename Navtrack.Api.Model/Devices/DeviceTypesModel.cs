@@ -2,6 +2,6 @@ using Navtrack.Api.Model.Common;
 
 namespace Navtrack.Api.Model.Devices;
 
-public class DeviceTypeListModel : ListModel<DeviceTypeModel>
+public class DeviceTypesModel : ListModel<DeviceTypeModel>
 {
 }

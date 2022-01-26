@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Navtrack.Api.Model.Protocols;
 using Navtrack.Api.Services.Mappers;
-using Navtrack.Api.Services.Old.Protocols;
 using Navtrack.DataAccess.Model.Protocols;
 using Navtrack.DataAccess.Services.Protocols;
 using Navtrack.Library.DI;
@@ -18,7 +17,7 @@ public class ProtocolService : IProtocolService
         this.protocolDataService = protocolDataService;
     }
 
-    public ProtocolListModel GetProtocols()
+    public ProtocolsModel GetProtocols()
     {
         IEnumerable<Protocol> protocols = protocolDataService.GetProtocols();
 

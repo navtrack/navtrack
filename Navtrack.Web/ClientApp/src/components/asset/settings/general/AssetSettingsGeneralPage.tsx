@@ -21,13 +21,11 @@ export default function AssetSettingsGeneralPage() {
     <>
       {currentAsset && (
         <AssetSettingsLayout>
-          <div className="divide-y divide-gray-200 col-span-9">
-            <div className="py-6 px-4 sm:p-6 lg:pb-8">
-              <div>
-                <h2 className="text-lg leading-6 font-medium text-gray-900">
-                  <FormattedMessage id="assets.settings.general" />
-                </h2>
-              </div>
+          <div className="divide-y divide-gray-200 col-span-9 space-y-6">
+            <div>
+              <h2 className="text-lg leading-6 font-medium text-gray-900">
+                <FormattedMessage id="assets.settings.general" />
+              </h2>
               <div className="mt-6">
                 <Formik<RenameAssetFormValues>
                   initialValues={{ name: `${currentAsset?.name}` }}
@@ -65,7 +63,7 @@ export default function AssetSettingsGeneralPage() {
                 </Formik>
               </div>
             </div>
-            <div className="p-6">
+            <div className="pt-6">
               <h2 className="text-lg leading-6 font-medium text-gray-900">
                 <FormattedMessage id="assets.settings.general.delete-asset" />
               </h2>

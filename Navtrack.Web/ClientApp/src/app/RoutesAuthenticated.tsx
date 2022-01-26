@@ -13,6 +13,7 @@ import AssetSettingsAccessPage from "../components/asset/settings/access/AssetSe
 import Paths from "./Paths";
 import SettingsPasswordPage from "../components/settings/SettingsPasswordPage";
 import useSignalR from "../hooks/app/useSignalR";
+import AssetSettingsDevicePage from "../components/asset/settings/device/AssetSettingsDevicePage";
 
 export default function RoutesAuthenticated() {
   useSignalR();
@@ -37,6 +38,9 @@ export default function RoutesAuthenticated() {
         </Route>
         <Route path={Paths.AssetSettingsAccess}>
           <AssetSettingsAccessPage />
+        </Route>
+        <Route path={Paths.AssetSettingsDevice}>
+          <AssetSettingsDevicePage />
         </Route>
         <Route path={Paths.AssetSettings}>
           <AssetSettingsGeneral />

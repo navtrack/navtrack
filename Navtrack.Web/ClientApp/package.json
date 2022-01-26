@@ -55,6 +55,8 @@
     "autoprefixer": "^9.8.6",
     "cross-env": "^7.0.3",
     "postcss": "^7.0.36",
+    "prettier": "^2.5.1",
+    "prettier-plugin-tailwindcss": "^0.1.1",
     "react-cosmos": "^5.6.3",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.14"
   },

@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Navtrack.Api.Services.Mappers;
 
-namespace Navtrack.Api.Services.Exceptions;
+namespace Navtrack.Api.Services.ActionFilters;
 
-public class ModelStateMappingActionFilter : IActionFilter
+public class ModelStateMappingActionFilter : ActionFilterAttribute
 {
-    public void OnActionExecuting(ActionExecutingContext context)
+    public override void OnActionExecuting(ActionExecutingContext context)
     {
         if (!context.ModelState.IsValid)
         {
@@ -16,9 +16,5 @@ public class ModelStateMappingActionFilter : IActionFilter
                 StatusCode = (int?)HttpStatusCode.BadRequest
             };
         }
-    }
-
-    public void OnActionExecuted(ActionExecutedContext context)
-    {
     }
 }

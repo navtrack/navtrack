@@ -6,6 +6,10 @@
  */
 import type { DeviceTypeModel } from './deviceTypeModel';
 
-export interface DeviceTypeListModel {
-  items: DeviceTypeModel[];
+export interface DeviceModel {
+  id: string;
+  serialNumber: string;
+  deviceType: DeviceTypeModel;
+  active: boolean;
+  locations?: number | null;
 }

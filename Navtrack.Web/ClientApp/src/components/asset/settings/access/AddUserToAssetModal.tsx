@@ -56,7 +56,7 @@ export default function AddUserToAssetModal(props: IAddUserToAssetModal) {
               <ModalContent>
                 <ModalIcon icon={faUser} />
                 <ModalBody>
-                  <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
                     <FormattedMessage id="assets.settings.access.add-user.title" />
                   </h3>
                   <div className="mt-2 space-y-2">
@@ -69,9 +69,10 @@ export default function AddUserToAssetModal(props: IAddUserToAssetModal) {
                       name="role"
                       label="generic.role"
                       placeholder="Select a role"
-                      items={roles}
-                      idKey="value"
-                      labelKey="label"
+                      items={roles.map((x) => ({
+                        id: x.value,
+                        label: x.label
+                      }))}
                     />
                   </div>
                 </ModalBody>

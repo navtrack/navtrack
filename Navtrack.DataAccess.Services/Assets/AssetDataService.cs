@@ -7,7 +7,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
@@ -44,7 +43,7 @@ public class AssetDataService : IAssetDataService
     public Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string assetId = null)
     {
         name = name.ToLower();
-        
+
         Expression<Func<AssetDocument, bool>> filter = assetId == null
             ? x =>
                 x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
@@ -117,45 +116,15 @@ public class AssetDataService : IAssetDataService
             .UpdateOneAsync(x => x.Id == assetId,
                 Builders<AssetDocument>.Update.Set(x => x.Location, location));
     }
-    
-    public Task<bool> UserHasRoleForAsset(string userId, AssetRoleType assetRoleType, string assetId)
+
+    public Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
+        int protocolPort)
     {
-        int roleId = (int)assetRoleType;
-
-        return repository.GetEntities<UserDocument>().AnyAsync(x =>
-            x.Id == ObjectId.Parse(userId) &&
-            x.AssetRoles.Any(y => y.AssetId == ObjectId.Parse(assetId) && y.Role == assetRoleType));
-    }
-
-    public Task<bool> UserHasRolesForAsset(string userId, AssetRoleType[] assetRoleTypes, string assetId)
-    {
-        int[] roleIds = assetRoleTypes.Select(x => (int)x).ToArray();
-
-        return repository.GetEntities<UserDocument>().AnyAsync(x =>
-            x.Id == ObjectId.Parse(userId) &&
-            x.AssetRoles.Any(y => y.AssetId == ObjectId.Parse(assetId) && assetRoleTypes.Contains(y.Role)));
-    }
-
-    public async Task<bool> UserHasRoleForDevice(string userId, AssetRoleType assetRoleType, string deviceId)
-    {
-        DeviceDocument device = await repository.GetEntities<DeviceDocument>()
-            .FirstOrDefaultAsync(x => x.Id == ObjectId.Parse(deviceId));
-
-        if (device != null)
-        {
-            bool result = await repository.GetEntities<UserDocument>().AnyAsync(x =>
-                x.Id == ObjectId.Parse(userId) &&
-                x.AssetRoles.Any(y => y.Role == assetRoleType && y.AssetId == device.AssetId));
-
-            return result;
-        }
-
-        return false;
-    }
-
-    public Task<bool> HasActiveDeviceId(string assetId, string deviceId)
-    {
-        return repository.GetEntities<AssetDocument>()
-            .AnyAsync(x => x.Id == ObjectId.Parse(assetId) && x.Device.Id == ObjectId.Parse(deviceId));
+        return repository.GetCollection<AssetDocument>()
+            .UpdateOneAsync(x => x.Id == assetId,
+                Builders<AssetDocument>.Update.Set(x => x.Device.Id, deviceId)
+                    .Set(x => x.Device.SerialNumber, serialNumber)
+                    .Set(x => x.Device.ProtocolPort, protocolPort)
+                    .Set(x => x.Device.DeviceTypeId, deviceTypeId));
     }
 }

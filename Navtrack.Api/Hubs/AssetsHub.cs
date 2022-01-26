@@ -17,9 +17,9 @@ public class AssetsHub : Hub
         this.assetService = assetService;
     }
 
-    public async Task<AssetListModel> GetAll()
+    public async Task<AssetsModel> GetAll()
     {
-        AssetListModel assets = await assetService.GetAssets();
+        AssetsModel assets = await assetService.GetAssets();
 
         return assets;
     }
