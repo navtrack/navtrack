@@ -1,5 +1,5 @@
+import { TripModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
 import { atom, selector } from "recoil";
-import { TripModel } from "../../../api/model/generated";
 
 export const tripsAtom = atom<TripModel[]>({
   key: "Trips",

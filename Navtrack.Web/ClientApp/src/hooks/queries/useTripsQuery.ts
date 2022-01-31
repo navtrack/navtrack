@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdTrips } from "../../api";
+import { useGetAssetsAssetIdTrips } from "@navtrack/navtrack-shared";
 
 export type IUseTripsQuery = {
   assetId?: string;

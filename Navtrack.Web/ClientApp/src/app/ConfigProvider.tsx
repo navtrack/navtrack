@@ -1,4 +1,4 @@
-import { useAxiosBaseUrls } from "../api/useAxiosBaseUrls";
+import { useAxiosBaseUrls } from "@navtrack/navtrack-shared";
 import useLocalStorage from "../hooks/app/useLocalStorageData";
 import { useFetchConfig } from "../hooks/config/useFetchConfig";
 

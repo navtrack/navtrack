@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { UnitsType } from "../../api/model/custom/UnitsType";
+import { UnitsType } from "@navtrack/navtrack-shared";
 import useCurrentUnits from "./useCurrentUnits";
 
 export default function useDistance() {

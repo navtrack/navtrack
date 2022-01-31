@@ -7,7 +7,6 @@ import { Formik, Form, FormikHelpers } from "formik";
 import FormikSelectInput from "../../../ui/shared/select/FormikSelectInput";
 import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
 import DeviceConfiguration from "../../add/DeviceConfiguration";
-import { DeviceTypeModel } from "../../../../api/model/generated";
 import useAssetDevicesQuery from "../../../../hooks/queries/useAssetDevicesQuery";
 import DevicesTable from "./DevicesTable";
 import { useAddDeviceMutation } from "../../../../hooks/mutations/useAddDeviceMutation";
@@ -15,6 +14,7 @@ import useNotification from "../../../ui/shared/notification/useNotification";
 import { mapErrors } from "../../../../utils/formik";
 import useDevicesTypesQuery from "../../../../hooks/queries/useDevicesTypesQuery";
 import { object, SchemaOf, string } from "yup";
+import { DeviceTypeModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;

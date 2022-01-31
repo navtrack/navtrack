@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdUsers } from "../../api";
+import { useGetAssetsAssetIdUsers } from "@navtrack/navtrack-shared";
 
 interface IUseAssetUsersQuery {
   assetId: string;

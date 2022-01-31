@@ -1,8 +1,8 @@
 import styled from "@mui/styled-engine";
+import { settingsSelector } from "@navtrack/navtrack-shared";
 import { ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useRecoilValue } from "recoil";
-import { settingsSelector } from "../../../../state/app.settings";
 import { LatLng } from "./types";
 
 interface IMap {
@@ -30,12 +30,12 @@ export default function Map(props: IMap) {
   const settings = useRecoilValue(settingsSelector);
 
   return (
-    <StyledDiv className="flex flex-grow relative">
+    <StyledDiv className="relative flex flex-grow">
       {props.center !== undefined && (
         <MapContainer
           center={[props.center.latitude, props.center.longitude]}
           zoom={props.zoom ?? 13}
-          className="absolute top-0 left-0 w-full h-full rounded-lg">
+          className="absolute top-0 left-0 h-full w-full rounded-lg">
           <TileLayer
             attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org">OpenMapTiles</a>, &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
             url={settings["Map.TileUrl"]}

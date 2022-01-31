@@ -1,5 +1,5 @@
+import { DeviceTypeModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
 import classNames from "classnames";
-import { DeviceTypeModel } from "../../../api/model/generated";
 import { FormattedMessage } from "react-intl";
 
 interface IDeviceConfiguration {

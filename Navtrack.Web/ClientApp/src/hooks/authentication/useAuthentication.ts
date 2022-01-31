@@ -2,8 +2,8 @@ import { add, isAfter, parseISO, sub } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { AUTHENTICATION } from "../../constants";
-import { authenticationAtom } from "../../state/app.authentication";
-import { localStorageAtom } from "../../state/app.localStorage";
+import { authenticationAtom } from "@navtrack/navtrack-shared";
+import { localStorageAtom } from "@navtrack/navtrack-shared";
 import { log, LogLevel } from "../../utils/log";
 import { useGetTokenMutation } from "../mutations/useGetTokenMutation";
 

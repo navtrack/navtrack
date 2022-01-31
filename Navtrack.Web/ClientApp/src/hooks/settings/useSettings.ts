@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import useSettingsQuery from "../queries/useSettingsQuery";
-import { settingsAtom } from "../../state/app.settings";
+import { settingsAtom } from "@navtrack/navtrack-shared";
 
 export const useSettings = () => {
   const settings = useSettingsQuery();

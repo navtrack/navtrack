@@ -1,10 +1,10 @@
 import { FormattedMessage } from "react-intl";
-import { AssetUserModel } from "../../../../api/model/generated";
 import { useDeleteUserFromAssetMutation } from "../../../../hooks/mutations/useDeleteUserFromAssetMutation";
 import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { getError } from "../../../../utils/api";
 import DeleteModal from "../../../ui/shared/modal/DeleteModal";
 import useNotification from "../../../ui/shared/notification/useNotification";
+import { AssetUserModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
 
 interface IDeleteAssetModal {
   user?: AssetUserModel;

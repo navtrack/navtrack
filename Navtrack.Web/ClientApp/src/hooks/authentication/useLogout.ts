@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
-import { authenticationAtom } from "../../state/app.authentication";
+import { authenticationAtom } from "@navtrack/navtrack-shared";
 
 export const useLogout = () => {
   const setState = useSetRecoilState(authenticationAtom);

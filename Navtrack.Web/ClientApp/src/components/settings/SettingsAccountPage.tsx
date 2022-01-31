@@ -7,11 +7,11 @@ import FormikTextInput from "../ui/shared/text-input/FormikTextInput";
 import SettingsLayout from "./SettingsLayout";
 import { FormattedMessage, useIntl } from "react-intl";
 import FormikSelect from "../ui/shared/select/FormikSelect";
-import { UnitsType } from "../../api/model/custom/UnitsType";
 import { ISelectOption } from "../ui/shared/select/types";
 import { useUpdateUserMutation } from "../../hooks/mutations/useUpdateUserMutation";
 import useNotification from "../ui/shared/notification/useNotification";
 import { mapErrors } from "../../utils/formik";
+import { UnitsType } from "@navtrack/navtrack-shared";
 
 type AccountSettingsFormValues = {
   email?: string;

@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { appContextSelector } from "../state/app.context";
+import { appContextSelector } from "@navtrack/navtrack-shared";
 import RoutesAuthenticated from "./RoutesAuthenticated";
 import RoutesUnauthenticated from "./RoutesUnauthenticated";
 

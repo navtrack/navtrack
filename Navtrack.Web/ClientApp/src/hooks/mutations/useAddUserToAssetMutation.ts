@@ -1,4 +1,4 @@
-import { usePostAssetsAssetIdUsers } from "../../api";
+import { usePostAssetsAssetIdUsers } from "@navtrack/navtrack-shared";
 
 export const useAddUserToAssetMutation = () => {
   const mutation = usePostAssetsAssetIdUsers();

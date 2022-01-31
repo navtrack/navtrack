@@ -1,4 +1,4 @@
-import { useGetDevicesTypes } from "../../api";
+import { useGetDevicesTypes } from "@navtrack/navtrack-shared";
 
 export default function useDevicesTypesQuery() {
   const query = useGetDevicesTypes({

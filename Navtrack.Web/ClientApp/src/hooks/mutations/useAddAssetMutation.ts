@@ -1,4 +1,4 @@
-import { usePostAssets } from "../../api";
+import { usePostAssets } from "@navtrack/navtrack-shared";
 
 export const useAddAssetMutation = () => {
   const mutation = usePostAssets();

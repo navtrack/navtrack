@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { UnitsType } from "../../api/model/custom/UnitsType";
+import { UnitsType } from "@navtrack/navtrack-shared";
 import useGetCurrentUserQuery from "../queries/useGetCurrentUserQuery";
 
 type CurrentUser = {

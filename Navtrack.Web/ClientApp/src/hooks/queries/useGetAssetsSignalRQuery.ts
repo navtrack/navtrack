@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { useRecoilValue } from "recoil";
-import { AssetsModel } from "../../api/model/generated";
-import { configSelector } from "../../state/app.config";
+import { AssetsModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
+import { configSelector } from "@navtrack/navtrack-shared";
 import useSignalR from "../app/useSignalR";
 
 export default function useGetAssetsSignalRQuery() {

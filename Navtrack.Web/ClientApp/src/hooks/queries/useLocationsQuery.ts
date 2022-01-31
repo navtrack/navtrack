@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdLocations } from "../../api";
+import { useGetAssetsAssetIdLocations } from "@navtrack/navtrack-shared";
 
 export type IUseLocationsQuery = {
   assetId?: string;

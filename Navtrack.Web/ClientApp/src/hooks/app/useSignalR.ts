@@ -6,7 +6,7 @@ import {
 } from "@microsoft/signalr";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
-import { appContextSelector } from "../../state/app.context";
+import { appContextSelector } from "@navtrack/navtrack-shared";
 
 type HubConnectionState = {
   hubConnection: HubConnection;

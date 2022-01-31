@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdDevices } from "../../api";
+import { useGetAssetsAssetIdDevices } from "@navtrack/navtrack-shared";
 
 export default function useAssetDevicesQuery(assetId?: string) {
   const query = useGetAssetsAssetIdDevices(`${assetId}`, {

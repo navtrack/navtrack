@@ -1,4 +1,4 @@
-import { useGetSettings } from "../../api";
+import { useGetSettings } from "@navtrack/navtrack-shared";
 
 export default function useSettingsQuery() {
   const query = useGetSettings({

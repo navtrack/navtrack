@@ -1,6 +1,6 @@
+import { LocationModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
 import React, { ReactNode } from "react";
 import { useIntl } from "react-intl";
-import { LocationModel } from "../../../../api/model/generated";
 import useDateTime from "../../../../hooks/util/useDateTime";
 import useDistance from "../../../../hooks/util/useDistance";
 import LocationInfo from "./LocationInfo";

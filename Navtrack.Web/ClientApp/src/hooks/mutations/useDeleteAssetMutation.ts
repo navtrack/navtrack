@@ -1,4 +1,4 @@
-import { useDeleteAssetsAssetId } from "../../api";
+import { useDeleteAssetsAssetId } from "@navtrack/navtrack-shared";
 
 export const useDeleteAssetMutation = () => {
   const mutation = useDeleteAssetsAssetId();

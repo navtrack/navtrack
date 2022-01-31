@@ -2,7 +2,6 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { AssetRoleType } from "../../../../api/model/custom/AssetRoleType";
 import Button from "../../../ui/shared/button/Button";
 import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
 import Modal from "../../../ui/shared/modal/Modal";
@@ -14,6 +13,7 @@ import ModalIcon from "../../../ui/shared/modal/ModalIcon";
 import FormikSelectInput from "../../../ui/shared/select/FormikSelectInput";
 import { AddUserToAssetFormValues } from "./types";
 import useAddUserToAsset from "./useAddUserToAsset";
+import { AssetRoleType } from "@navtrack/navtrack-shared";
 
 interface IAddUserToAssetModal {
   show: boolean;

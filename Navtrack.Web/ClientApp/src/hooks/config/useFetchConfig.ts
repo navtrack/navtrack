@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { LocalConfig } from "../../app.config";
-import { configAtom } from "../../state/app.config";
+import { configAtom } from "@navtrack/navtrack-shared";
 import { isDevEnv } from "../../utils/isDevEnv";
 
 export const useFetchConfig = () => {

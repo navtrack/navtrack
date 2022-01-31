@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentAssetIdAtom, currentAssetSelector } from "../../state/assets";
+import {
+  currentAssetIdAtom,
+  currentAssetSelector
+} from "@navtrack/navtrack-shared";
 
 export default function useCurrentAsset() {
   const currentAsset = useRecoilValue(currentAssetSelector);

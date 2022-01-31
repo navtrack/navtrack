@@ -1,4 +1,4 @@
-import { usePatchAssetsAssetId } from "../../api";
+import { usePatchAssetsAssetId } from "@navtrack/navtrack-shared";
 
 export const useRenameAssetMutation = () => {
   const mutation = usePatchAssetsAssetId();

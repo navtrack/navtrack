@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useIntl } from "react-intl";
-import { UnitsType } from "../../api/model/custom/UnitsType";
+import { UnitsType } from "@navtrack/navtrack-shared";
 import useCurrentUser from "../app/useCurrentUser";
 
 type Units = {

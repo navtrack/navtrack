@@ -1,4 +1,4 @@
-import { usePatchUser } from "../../api";
+import { usePatchUser } from "@navtrack/navtrack-shared";
 
 export const useUpdateUserMutation = () => {
   const mutation = usePatchUser();

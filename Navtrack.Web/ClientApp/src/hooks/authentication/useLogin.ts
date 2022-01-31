@@ -4,7 +4,7 @@ import { useGetTokenMutation } from "../mutations/useGetTokenMutation";
 import { LoginFormValues } from "../../components/login/LoginFormValues";
 import { AUTHENTICATION } from "../../constants";
 import { useSetRecoilState } from "recoil";
-import { authenticationAtom } from "../../state/app.authentication";
+import { authenticationAtom } from "@navtrack/navtrack-shared";
 import { add } from "date-fns";
 
 export const useLogin = () => {

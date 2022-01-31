@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions } from "react-query";
-import { axiosInstance } from "../../api/axiosInstance";
+import { axiosInstance } from "@navtrack/navtrack-shared";
 
 type TokenRequest = {
   grant_type: string;

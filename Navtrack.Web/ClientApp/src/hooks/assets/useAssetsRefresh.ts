@@ -1,6 +1,6 @@
+import { assetsAtom } from "@navtrack/navtrack-shared";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { assetsAtom } from "../../state/assets";
 import useGetAssetsSignalRQuery from "../queries/useGetAssetsSignalRQuery";
 
 export default function useAssetsRefresh() {

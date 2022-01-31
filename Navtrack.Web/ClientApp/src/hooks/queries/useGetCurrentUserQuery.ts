@@ -1,4 +1,4 @@
-import { useGetUser } from "../../api";
+import { useGetUser } from "@navtrack/navtrack-shared";
 
 export default function useGetCurrentUserQuery() {
   const query = useGetUser({

@@ -1,4 +1,4 @@
-import { usePostAccount } from "../../api";
+import { usePostAccount } from "@navtrack/navtrack-shared";
 
 export const useRegisterAccountMutation = () => {
   const mutation = usePostAccount();

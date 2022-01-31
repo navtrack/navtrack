@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { AssetModel } from "../../../../api/model/generated";
+import { AssetModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
 import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { useHistory } from "react-router";
 import IconWithText from "../../shared/icon/IconWithText";
