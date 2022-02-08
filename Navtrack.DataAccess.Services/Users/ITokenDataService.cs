@@ -7,5 +7,5 @@ public interface ITokenDataService
 {
     Task Add(RefreshTokenDocument document);
     Task Remove(string userId);
-    Task<RefreshTokenDocument> GetByUserId(string userId);
+    Task<RefreshTokenDocument?> GetByUserId(string userId);
 }

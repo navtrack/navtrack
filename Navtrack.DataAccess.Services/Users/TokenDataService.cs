@@ -32,8 +32,10 @@ public class TokenDataService : ITokenDataService
         return repository.GetCollection<RefreshTokenDocument>().DeleteOneAsync(x => x.Id == ObjectId.Parse(userId));
     }
 
-    public Task<RefreshTokenDocument> GetByUserId(string userId)
+    public async Task<RefreshTokenDocument?> GetByUserId(string userId)
     {
-        return repository.GetEntities<RefreshTokenDocument>().FirstOrDefaultAsync(x => x.Id == ObjectId.Parse(userId));
+        return ObjectId.TryParse(userId, out ObjectId objectId)
+            ? await repository.GetEntities<RefreshTokenDocument>().FirstOrDefaultAsync(x => x.Id == objectId)
+            : null;
     }
 }

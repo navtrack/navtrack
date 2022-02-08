@@ -37,10 +37,15 @@ public class RefreshTokenStore : IRefreshTokenStore
     public async Task<RefreshToken> GetRefreshTokenAsync(string refreshTokenHandle)
     {
         RefreshTokenDocument document = await tokenDataService.GetByUserId(refreshTokenHandle);
+
+        if (document != null)
+        {
+            RefreshToken refreshToken = RefreshTokenMapper.Map(document);
+
+            return refreshToken;
+        }
         
-        RefreshToken refreshToken = RefreshTokenMapper.Map(document);
-        
-        return refreshToken;
+        return null;
     }
 
     public Task RemoveRefreshTokenAsync(string refreshTokenHandle)
