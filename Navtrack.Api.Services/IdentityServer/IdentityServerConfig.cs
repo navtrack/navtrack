@@ -32,6 +32,20 @@ public static class IdentityServerConfig
                 AllowOfflineAccess = true,
                 AllowedCorsOrigins = new List<string>(),
                 AbsoluteRefreshTokenLifetime = 365 * 24 * 60 * 60 // 1 year,
+            },
+            new()
+            {
+                ClientId = "navtrack.mobile",
+                AllowedGrantTypes = new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple"},
+                AllowedScopes =
+                {
+                    IdentityServerConstants.LocalApi.ScopeName,
+                    IdentityServerConstants.StandardScopes.OpenId
+                },
+                RequireClientSecret = false,
+                AllowOfflineAccess = true,
+                AllowedCorsOrigins = new List<string>(),
+                AbsoluteRefreshTokenLifetime = 365 * 24 * 60 * 60 // 1 year
             }
         };
     }
