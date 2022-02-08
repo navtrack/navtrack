@@ -15,10 +15,10 @@ export default function RoutesUnauthenticated() {
         <Route path={Paths.ForgotPassword}>
           <ForgotPasswordPage />
         </Route>
-        <Route path={Paths.Login}>
+        <Route path={Paths.Home} exact>
           <LoginPage />
         </Route>
-        <Redirect from="*" to={Paths.Login} />
+        <Redirect to={Paths.Home} />
       </Switch>
     </LoginLayout>
   );

@@ -1,6 +1,6 @@
+import { nameOf } from "@navtrack/navtrack-app-shared";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { nameOf } from "../../utils/typescript";
 import Button from "../ui/shared/button/Button";
 import Card from "../ui/shared/card/Card";
 import FormikTextInput from "../ui/shared/text-input/FormikTextInput";
@@ -31,7 +31,7 @@ export default function SettingsPasswordPage() {
                 <Text type="h3">
                   <FormattedMessage id="settings.password.title" />
                 </Text>
-                <div className="grid grid-cols-6 gap-6 mt-6">
+                <div className="mt-6 grid grid-cols-6 gap-6">
                   <div className="col-span-3">
                     <FormikTextInput
                       type="password"
@@ -55,7 +55,7 @@ export default function SettingsPasswordPage() {
                   </div>
                 </div>
               </div>
-              <div className="px-6 py-3 bg-gray-50 text-right">
+              <div className="bg-gray-50 px-6 py-3 text-right">
                 <Button type="submit" size="lg">
                   <FormattedMessage id="generic.save" />
                 </Button>

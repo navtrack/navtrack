@@ -1,9 +1,0 @@
-import { useGetDevicesTypes } from "@navtrack/navtrack-shared";
-
-export default function useDevicesTypesQuery() {
-  const query = useGetDevicesTypes({
-    query: { refetchOnMount: false, refetchOnWindowFocus: false }
-  });
-
-  return { deviceTypes: query.data?.items ?? [] };
-}

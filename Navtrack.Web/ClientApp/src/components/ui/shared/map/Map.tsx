@@ -1,5 +1,5 @@
 import styled from "@mui/styled-engine";
-import { settingsSelector } from "@navtrack/navtrack-shared";
+import { settingsSelector } from "@navtrack/navtrack-app-shared";
 import { ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useRecoilValue } from "recoil";

@@ -5,9 +5,9 @@ import {
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
+import { c } from "@navtrack/navtrack-app-shared";
 import classNames from "classnames";
 import { Fragment, useMemo } from "react";
-import c from "../../../../utils/tailwind";
 import Icon from "../icon/Icon";
 
 export type SnackbarType = "success" | "error" | "info";
@@ -43,7 +43,7 @@ export default function Snackbar(props: ISnackbar) {
       leaveFrom="transform scale-100 opacity-100"
       leaveTo="transform scale-95 opacity-0">
       <div
-        className="bg-white p-5 shadow-md rounded-lg border absolute bottom-8 left-1/2 right-auto flex max-w-md"
+        className="absolute bottom-8 left-1/2 right-auto flex max-w-md rounded-lg border bg-white p-5 shadow-md"
         style={{ transform: "translateX(-50%)" }}>
         <div
           className={classNames("mr-5", c(!props.title, "flex items-center"))}>
@@ -61,7 +61,7 @@ export default function Snackbar(props: ISnackbar) {
         </div>
         <div className={classNames(c(!props.title, "flex items-center"))}>
           {props.title && (
-            <div className="font-semibold mb-2">{props.title}</div>
+            <div className="mb-2 font-semibold">{props.title}</div>
           )}
           <div className="text-sm text-gray-500">{props.description}</div>
         </div>
@@ -70,7 +70,7 @@ export default function Snackbar(props: ISnackbar) {
           <Icon
             icon={faTimes}
             size="lg"
-            className="hover:text-gray-600 cursor-pointer"
+            className="cursor-pointer hover:text-gray-600"
             onClick={props.onCloseClick}
           />
         </div>

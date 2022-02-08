@@ -1,4 +1,4 @@
-import { TripModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
+import { TripModel } from "@navtrack/navtrack-app-shared/dist/api/model/generated";
 import { atom, selector } from "recoil";
 
 export const tripsAtom = atom<TripModel[]>({

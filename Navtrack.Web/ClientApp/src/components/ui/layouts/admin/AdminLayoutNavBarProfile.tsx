@@ -7,11 +7,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Icon from "../../shared/icon/Icon";
 import classNames from "classnames";
-import { useLogout } from "../../../../hooks/authentication/useLogout";
-import useCurrentUser from "../../../../hooks/app/useCurrentUser";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router";
 import IconWithText from "../../shared/icon/IconWithText";
+import { useCurrentUser, useLogout } from "@navtrack/navtrack-app-shared";
 
 export interface IAdminLayoutNavBarProfile {}
 
@@ -23,8 +22,8 @@ export default function AdminLayoutNavBarProfile(
   const history = useHistory();
 
   return (
-    <Menu as="div" className="ml-3 relative flex">
-      <Menu.Button className="flex items-center rounded-full text-xl focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-indigo-500">
+    <Menu as="div" className="relative ml-3 flex">
+      <Menu.Button className="focus:outline-none flex items-center rounded-full text-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-4">
         <Icon icon={faUser} />
       </Menu.Button>
       <Transition
@@ -35,10 +34,10 @@ export default function AdminLayoutNavBarProfile(
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95">
-        <Menu.Items className="divide-y divide-gray-100 origin-top-right absolute right-0 mt-6 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="focus:outline-none absolute right-0 mt-6 origin-top-right divide-y divide-gray-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
           <div className="py-1">
             <Menu.Item disabled>
-              <div className="bg-white px-4 py-2 text-sm text-gray-700 cursor-default">
+              <div className="cursor-default bg-white px-4 py-2 text-sm text-gray-700">
                 <FormattedMessage id="navbar.profile.logged-in-as" />{" "}
                 <span className="font-semibold">{currentUser?.email}</span>
               </div>
@@ -51,7 +50,7 @@ export default function AdminLayoutNavBarProfile(
                   onClick={() => history.push("/settings/account")}
                   className={classNames(
                     active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                    "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                   )}>
                   <IconWithText icon={faSlidersH}>
                     <FormattedMessage id="navbar.profile.settings" />
@@ -65,7 +64,7 @@ export default function AdminLayoutNavBarProfile(
                   onClick={logout}
                   className={classNames(
                     active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                    "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                   )}>
                   <IconWithText icon={faSignOutAlt}>
                     <FormattedMessage id="navbar.profile.logout" />

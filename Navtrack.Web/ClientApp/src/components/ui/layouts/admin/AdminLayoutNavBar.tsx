@@ -9,15 +9,15 @@ import AdminLayoutNavBarItem from "./AdminLayoutNavBarItem";
 import Button from "../../shared/button/Button";
 import { useHistory } from "react-router";
 import { FormattedMessage } from "react-intl";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/navtrack-app-shared";
 
 export default function AdminLayoutNavBar() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const history = useHistory();
 
   return (
-    <div className="flex h-14 bg-white shadow z-10">
-      <div className="flex-1 ml-4 space-x-8 flex">
+    <div className="z-10 flex h-14 bg-white shadow">
+      <div className="ml-4 flex flex-1 space-x-8">
         {currentAsset && (
           <>
             <AdminLayoutNavBarItem

@@ -6,7 +6,7 @@ import ExternalLoginButtonMicrosoft from "./ExternalLoginButtonMicrosoft";
 import ExternalLoginButtonGoogle from "./ExternalLoginButtonGoogle";
 import { useRecoilValue } from "recoil";
 import useMicrosoftLogin from "./useMicrosoftLogin";
-import { settingsSelector } from "@navtrack/navtrack-shared";
+import { settingsSelector } from "@navtrack/navtrack-app-shared";
 
 interface IExternalLogin {
   login: (code: string, grantType: "apple" | "microsoft" | "google") => void;

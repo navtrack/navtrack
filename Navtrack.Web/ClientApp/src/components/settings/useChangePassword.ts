@@ -1,9 +1,11 @@
+import {
+  mapErrors,
+  useChangePasswordMutation
+} from "@navtrack/navtrack-app-shared";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, ref, SchemaOf, string } from "yup";
-import { useChangePasswordMutation } from "../../hooks/mutations/useChangePasswordMutation";
-import { mapErrors } from "../../utils/formik";
 import useNotification from "../ui/shared/notification/useNotification";
 import { ChangePasswordFormValues } from "./types";
 

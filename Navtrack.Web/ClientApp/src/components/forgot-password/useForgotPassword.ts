@@ -1,6 +1,6 @@
+import { useGetTokenMutation } from "@navtrack/navtrack-app-shared";
 import { useCallback } from "react";
 import { useHistory } from "react-router";
-import { useGetTokenMutation } from "../../hooks/mutations/useGetTokenMutation";
 import { ForgotPasswordFormValues } from "./ForgotPasswordFormValues";
 
 export const useForgotPassword = () => {
@@ -30,5 +30,9 @@ export const useForgotPassword = () => {
     // getTokenMutation.mutate(data);
   }, []);
 
-  return { register, loading: getTokenMutation.isLoading, success: getTokenMutation.isSuccess };
+  return {
+    register,
+    loading: getTokenMutation.isLoading,
+    success: getTokenMutation.isSuccess
+  };
 };

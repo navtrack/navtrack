@@ -1,9 +1,13 @@
-import { useAxiosBaseUrls } from "@navtrack/navtrack-shared";
-import useLocalStorage from "../hooks/app/useLocalStorageData";
-import { useFetchConfig } from "../hooks/config/useFetchConfig";
+import {
+  isDevEnv,
+  useAxiosBaseUrls,
+  useFetchConfig
+} from "@navtrack/navtrack-app-shared";
+import { LocalConfig } from "../app.config";
+import useLocalStorage from "../hooks/app/useLocalStorage";
 
 const ConfigProvider: React.FC = (props) => {
-  const configInitialized = useFetchConfig();
+  const configInitialized = useFetchConfig(isDevEnv ? LocalConfig : undefined);
   const localStorageInitialized = useLocalStorage();
   const interceptorInitialised = useAxiosBaseUrls();
 

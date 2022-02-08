@@ -1,5 +1,4 @@
 import AssetSettingsLayout from "../layout/AssetSettingsLayout";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { FormattedMessage, useIntl } from "react-intl";
 import Button from "../../../ui/shared/button/Button";
 import { useCallback, useEffect, useState } from "react";
@@ -7,14 +6,17 @@ import { Formik, Form, FormikHelpers } from "formik";
 import FormikSelectInput from "../../../ui/shared/select/FormikSelectInput";
 import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
 import DeviceConfiguration from "../../add/DeviceConfiguration";
-import useAssetDevicesQuery from "../../../../hooks/queries/useAssetDevicesQuery";
 import DevicesTable from "./DevicesTable";
-import { useAddDeviceMutation } from "../../../../hooks/mutations/useAddDeviceMutation";
 import useNotification from "../../../ui/shared/notification/useNotification";
-import { mapErrors } from "../../../../utils/formik";
-import useDevicesTypesQuery from "../../../../hooks/queries/useDevicesTypesQuery";
 import { object, SchemaOf, string } from "yup";
-import { DeviceTypeModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
+import { DeviceTypeModel } from "@navtrack/navtrack-app-shared/dist/api/model/generated";
+import {
+  mapErrors,
+  useAddDeviceMutation,
+  useAssetDevicesQuery,
+  useCurrentAsset,
+  useDevicesTypesQuery
+} from "@navtrack/navtrack-app-shared";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -22,7 +24,7 @@ type ChangeDeviceFormValues = {
 };
 
 export default function AssetSettingsDevicePage() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
 
   const [selectedDeviceType, setSelectedDeviceType] =
     useState<DeviceTypeModel>();

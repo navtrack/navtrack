@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { format } from "date-fns";
 import { useState } from "react";
 import { usePopper } from "react-popper";
-import c from "../../../../utils/tailwind";
+import { c } from "@navtrack/navtrack-app-shared";
 import TextInput from "../text-input/TextInput";
 
 interface IDatePicker {
@@ -74,7 +74,7 @@ export default function DatePicker(props: IDatePicker) {
         style={styles.popper}
         {...attributes.popper}
         className={classNames(
-          "rounded-lg shadow-lg overflow-hidden",
+          "overflow-hidden rounded-lg shadow-lg",
           c(
             props.placement === "bottom-start" || props.placement === undefined,
             "mt-2"

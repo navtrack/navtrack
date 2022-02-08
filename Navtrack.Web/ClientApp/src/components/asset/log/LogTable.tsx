@@ -1,7 +1,6 @@
+import { useDateTime, useDistance } from "@navtrack/navtrack-app-shared";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import useDateTime from "../../../hooks/util/useDateTime";
-import useDistance from "../../../hooks/util/useDistance";
 import LoadingIndicator from "../../ui/shared/loading-indicator/LoadingIndicator";
 import useLog from "./useLog";
 
@@ -12,33 +11,33 @@ export default function LogTable() {
 
   return (
     <div
-      className="flex flex-col flex-grow overflow-hidden rounded-lg shadow"
+      className="flex flex-grow flex-col overflow-hidden rounded-lg shadow"
       style={{ flexBasis: 0 }}>
-      <div className="border-b border-gray-200 flex text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 grid grid-cols-12">
-        <div className="pl-2 py-2 col-span-2">
+      <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.date" />
         </div>
-        <div className="pl-2 py-2">
+        <div className="py-2 pl-2">
           <FormattedMessage id="generic.latitude" />
         </div>
-        <div className="pl-2 py-2">
+        <div className="py-2 pl-2">
           <FormattedMessage id="generic.longitude" />
         </div>
-        <div className="pl-2 py-2">
+        <div className="py-2 pl-2">
           <FormattedMessage id="generic.altitude" />
         </div>
-        <div className="pl-2 py-2">
+        <div className="py-2 pl-2">
           <FormattedMessage id="generic.speed" />
         </div>
-        <div className="pl-2 py-2">
+        <div className="py-2 pl-2">
           <FormattedMessage id="generic.heading" />
         </div>
-        <div className="pl-2 py-2">
+        <div className="py-2 pl-2">
           <FormattedMessage id="generic.satellites" />
         </div>
       </div>
-      <div className="flex bg-gray-50 flex-grow overflow-hidden">
-        <div className="border-b border-gray-200 text-gray-600 text-xs flex-col overflow-y-scroll flex-grow">
+      <div className="flex flex-grow overflow-hidden bg-gray-50">
+        <div className="flex-grow flex-col overflow-y-scroll border-b border-gray-200 text-xs text-gray-600">
           {log.isLoading ? (
             <div className="py-1">
               <LoadingIndicator className="text-base" />
@@ -50,7 +49,7 @@ export default function LogTable() {
                   <div
                     key={location.id}
                     className={classNames(
-                      "flex flex-row grid grid-cols-12 cursor-pointer",
+                      "flex grid cursor-pointer grid-cols-12 flex-row",
                       log.selectedLocationIndex === index
                         ? "bg-gray-300 hover:bg-gray-300"
                         : index % 2 === 0
@@ -59,17 +58,17 @@ export default function LogTable() {
                     )}
                     ref={(el) => (log.locationElements.current[index] = el)}
                     onClick={() => log.setSelectedLocationIndex(index)}>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showDateTime(location.dateTime)}
                     </div>
-                    <div className="pl-2 py-1">{location.latitude}</div>
-                    <div className="pl-2 py-1">{location.longitude}</div>
-                    <div className="pl-2 py-1">
+                    <div className="py-1 pl-2">{location.latitude}</div>
+                    <div className="py-1 pl-2">{location.longitude}</div>
+                    <div className="py-1 pl-2">
                       {showAltitude(location.altitude)}
                     </div>
-                    <div className="pl-2 py-1">{showSpeed(location.speed)}</div>
-                    <div className="pl-2 py-1">{location.heading}</div>
-                    <div className="pl-2 py-1">{location.satellites}</div>
+                    <div className="py-1 pl-2">{showSpeed(location.speed)}</div>
+                    <div className="py-1 pl-2">{location.heading}</div>
+                    <div className="py-1 pl-2">{location.satellites}</div>
                   </div>
                 ))
               ) : (
@@ -82,20 +81,20 @@ export default function LogTable() {
         </div>
       </div>
       {log.data?.items.length && (
-        <div className="border-b border-gray-200 flex text-xs text-gray-600 bg-gray-50 grid grid-cols-12 font-medium">
-          <div className="pl-2 py-1">
+        <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
+          <div className="py-1 pl-2">
             <span className="mr-1">{log.data?.items.length ?? 0}</span>
             <FormattedMessage id="assets.log.table.locations" />
           </div>
-          <div className="pl-2 py-1"></div>
-          <div className="pl-2 py-1"></div>
-          <div className="pl-2 py-1">
+          <div className="py-1 pl-2"></div>
+          <div className="py-1 pl-2"></div>
+          <div className="py-1 pl-2">
             <FormattedMessage id="generic.average" />
           </div>
-          <div className="pl-2 py-1">
+          <div className="py-1 pl-2">
             {showAltitude(log.data.averageAltitude)}
           </div>
-          <div className="pl-2 py-1">{showSpeed(log.data.averageSpeed)}</div>
+          <div className="py-1 pl-2">{showSpeed(log.data.averageSpeed)}</div>
         </div>
       )}
     </div>

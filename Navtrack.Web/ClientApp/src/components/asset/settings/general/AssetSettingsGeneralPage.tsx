@@ -6,24 +6,24 @@ import Button from "../../../ui/shared/button/Button";
 import { FormattedMessage } from "react-intl";
 import DeleteAssetModal from "./DeleteAssetModal";
 import { useState } from "react";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import Icon from "../../../ui/shared/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import LoadingIndicator from "../../../ui/shared/loading-indicator/LoadingIndicator";
 import { RenameAssetFormValues } from "./types";
+import { useCurrentAsset } from "@navtrack/navtrack-app-shared";
 
 export default function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
       {currentAsset && (
         <AssetSettingsLayout>
-          <div className="divide-y divide-gray-200 col-span-9 space-y-6">
+          <div className="col-span-9 space-y-6 divide-y divide-gray-200">
             <div>
-              <h2 className="text-lg leading-6 font-medium text-gray-900">
+              <h2 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="assets.settings.general" />
               </h2>
               <div className="mt-6">
@@ -45,7 +45,7 @@ export default function AssetSettingsGeneralPage() {
                               <Button color="white" type="submit" size="base">
                                 <FormattedMessage id="assets.settings.general.rename" />
                               </Button>
-                              <div className="w-4 ml-2">
+                              <div className="ml-2 w-4">
                                 {renameAsset.loading && <LoadingIndicator />}
                                 {renameAsset.showSuccess && (
                                   <Icon
@@ -64,13 +64,13 @@ export default function AssetSettingsGeneralPage() {
               </div>
             </div>
             <div className="pt-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">
+              <h2 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="assets.settings.general.delete-asset" />
               </h2>
               <p className="mt-2 text-sm text-gray-500">
                 <FormattedMessage id="assets.settings.general.delete-asset.info" />
               </p>
-              <div className="text-right mt-4">
+              <div className="mt-4 text-right">
                 <Button
                   color="warn"
                   type="submit"

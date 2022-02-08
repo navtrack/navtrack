@@ -1,7 +1,7 @@
+import { c } from "@navtrack/navtrack-app-shared";
 import classNames from "classnames";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import c from "../../../../utils/tailwind";
 import LoadingIndicator from "../loading-indicator/LoadingIndicator";
 
 export interface ITableColumn<T> {
@@ -18,7 +18,7 @@ interface ITable<T> {
 export default function Table<T>(props: ITable<T>) {
   return (
     <table className="w-full border">
-      <thead className="border text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 ">
+      <thead className="border bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500 ">
         <tr>
           {props.columns.map((column, index) => (
             <td key={`header${index}`} className="p-2">
@@ -29,7 +29,7 @@ export default function Table<T>(props: ITable<T>) {
           ))}
         </tr>
       </thead>
-      <tbody className="text-sm text-gray-900 border-b">
+      <tbody className="border-b text-sm text-gray-900">
         {props.loading ? (
           <tr className="border">
             <td className="p-2 text-center" colSpan={props.columns.length}>

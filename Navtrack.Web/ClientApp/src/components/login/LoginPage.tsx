@@ -8,7 +8,6 @@ import Card from "../ui/shared/card/Card";
 import Link from "../ui/shared/link/Link";
 import Copyright from "../shared/Copyright";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { useLogin } from "../../hooks/authentication/useLogin";
 import FormikTextInput from "../ui/shared/text-input/FormikTextInput";
 import TextInputLeftAddon from "../ui/shared/text-input/TextInputLeftAddon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
@@ -16,25 +15,42 @@ import LoadingIndicator from "../ui/shared/loading-indicator/LoadingIndicator";
 import Paths from "../../app/Paths";
 import ExternalLogin from "./external-login/ExternalLogin";
 import Alert from "../ui/shared/alert/Alert";
+import { useLogin } from "@navtrack/navtrack-app-shared";
+import { AUTHENTICATION } from "../../constants";
 
 export default function LoginPage() {
   const validationSchema = useLoginFormValidationSchema();
-  const { login, externalLogin, loading, error } = useLogin();
+  const {
+    internalLogin,
+    externalLogin,
+    loading,
+    internalLoginError,
+    externalLoginError
+  } = useLogin({
+    clientId: AUTHENTICATION.CLIENT_ID
+  });
 
   return (
     <>
-      <h2 className="mt-4 mx-auto text-3xl font-extrabold text-gray-900">
+      <h2 className="mx-auto mt-4 text-3xl font-extrabold text-gray-900">
         <FormattedMessage id="login.title" />
       </h2>
-      <Card className="max-w-md mx-auto p-8 mt-8 w-full">
-        {error && (
+      <Card className="mx-auto mt-8 w-full max-w-md p-8">
+        {internalLoginError && (
+          <Alert className="mb-3">
+            <FormattedMessage id="login.internal-login-error" />
+          </Alert>
+        )}
+        {externalLoginError && (
           <Alert className="mb-3">
             <FormattedMessage id="generic.error-message" />
           </Alert>
         )}
         <Formik
           initialValues={InitialLoginFormValues}
-          onSubmit={(values) => login(values)}
+          onSubmit={(values) =>
+            internalLogin({ username: values.email, password: values.password })
+          }
           validationSchema={validationSchema}>
           {({ values }) => (
             <Form className="space-y-2">
@@ -78,14 +94,14 @@ export default function LoginPage() {
             </Form>
           )}
         </Formik>
-        <div className="text-center text-sm mt-4 font-medium">
+        <div className="mt-4 text-center text-sm font-medium">
           <Link to={Paths.Register} text="login.new.action" />
           <span className="mx-2">•</span>
           <Link to={Paths.ForgotPassword} text="login.forgot" />
         </div>
         <ExternalLogin login={externalLogin} />
       </Card>
-      <div className="text-center text-xs mt-4">
+      <div className="mt-4 text-center text-xs">
         <Copyright />
       </div>
     </>

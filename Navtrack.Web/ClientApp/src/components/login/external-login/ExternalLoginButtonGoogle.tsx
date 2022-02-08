@@ -6,7 +6,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { ExternalLoginButton } from "./ExternalLoginButton";
 import { FormattedMessage } from "react-intl";
 import { useRecoilValue } from "recoil";
-import { settingsSelector } from "@navtrack/navtrack-shared";
+import { settingsSelector } from "@navtrack/navtrack-app-shared";
 import { ICustomExternalLoginButton } from "./types";
 
 export default function ExternalLoginButtonGoogle(

@@ -2,11 +2,13 @@ import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, SchemaOf, string } from "yup";
-import { useAddUserToAssetMutation } from "../../../../hooks/mutations/useAddUserToAssetMutation";
-import useAssetUsersQuery from "../../../../hooks/queries/useAssetUsersQuery";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
-import { mapErrors } from "../../../../utils/formik";
 import { AddUserToAssetFormValues } from "./types";
+import {
+  mapErrors,
+  useAddUserToAssetMutation,
+  useAssetUsersQuery,
+  useCurrentAsset
+} from "@navtrack/navtrack-app-shared";
 
 interface IUseAddUserToAsset {
   close: () => void;
@@ -15,7 +17,7 @@ interface IUseAddUserToAsset {
 export default function useAddUserToAsset(props: IUseAddUserToAsset) {
   const intl = useIntl();
   const mutation = useAddUserToAssetMutation();
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const assetUsers = useAssetUsersQuery({
     assetId: !!currentAsset ? currentAsset.id : ""
   });

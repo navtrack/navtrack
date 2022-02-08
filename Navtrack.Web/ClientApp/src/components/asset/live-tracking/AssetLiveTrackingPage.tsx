@@ -1,12 +1,12 @@
+import { useCurrentAsset } from "@navtrack/navtrack-app-shared";
 import { FormattedMessage } from "react-intl";
-import useCurrentAsset from "../../../hooks/assets/useCurrentAsset";
 import Card from "../../ui/shared/card/Card";
 import Map from "../../ui/shared/map/Map";
 import LocationBar from "../shared/location-bar/LocationBar";
 import LiveTrackingMapPin from "./LiveTrackingMapPin";
 
 export default function AssetLiveTrackingPage() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
 
   return (
     <>
@@ -15,7 +15,7 @@ export default function AssetLiveTrackingPage() {
           <Card className="p-2">
             <LocationBar location={currentAsset.location} />
           </Card>
-          <div className="rounded-lg shadow flex flex-grow bg-white">
+          <div className="flex flex-grow rounded-lg bg-white shadow">
             <Map
               center={{
                 latitude: 0,

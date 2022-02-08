@@ -2,14 +2,16 @@ import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { useHistory } from "react-router";
 import { object, SchemaOf, string } from "yup";
-import { useDeleteAssetMutation } from "../../../../hooks/mutations/useDeleteAssetMutation";
-import useGetAssetsSignalRQuery from "../../../../hooks/queries/useGetAssetsSignalRQuery";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
 import { DeleteAssetFormValues } from "./types";
 import useNotification from "../../../ui/shared/notification/useNotification";
+import {
+  useCurrentAsset,
+  useDeleteAssetMutation,
+  useGetAssetsSignalRQuery
+} from "@navtrack/navtrack-app-shared";
 
 export default function useDeleteAsset() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const intl = useIntl();
   const deleteAssetMutation = useDeleteAssetMutation();
   const history = useHistory();

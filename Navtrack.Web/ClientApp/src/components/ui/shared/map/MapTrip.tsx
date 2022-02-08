@@ -1,7 +1,7 @@
 import L, { LatLng, Polyline } from "leaflet";
 import { useEffect, useState } from "react";
 import useMap from "./useMap";
-import { TripModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
+import { TripModel } from "@navtrack/navtrack-app-shared/dist/api/model/generated";
 import MapPin from "./MapPin";
 
 interface IMapTrip {

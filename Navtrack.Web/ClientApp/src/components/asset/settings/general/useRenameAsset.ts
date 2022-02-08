@@ -1,15 +1,17 @@
 import { useCallback, useState } from "react";
 import { useIntl } from "react-intl";
 import { object, SchemaOf, string } from "yup";
-import { useRenameAssetMutation } from "../../../../hooks/mutations/useRenameAssetMutation";
-import useGetAssetsSignalRQuery from "../../../../hooks/queries/useGetAssetsSignalRQuery";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
-import { mapErrors } from "../../../../utils/formik";
 import { RenameAssetFormValues } from "./types";
 import { FormikHelpers } from "formik";
+import {
+  mapErrors,
+  useCurrentAsset,
+  useGetAssetsSignalRQuery,
+  useRenameAssetMutation
+} from "@navtrack/navtrack-app-shared";
 
 export default function useRenameAsset() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const renameAssetMutation = useRenameAssetMutation();
   const assetsQuery = useGetAssetsSignalRQuery();
   const [showSuccess, setShowSuccess] = useState(false);

@@ -10,7 +10,7 @@ import {
 import useAddAsset from "./useAddAsset";
 import DeviceConfiguration from "./DeviceConfiguration";
 import { useState } from "react";
-import { DeviceTypeModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
+import { DeviceTypeModel } from "@navtrack/navtrack-app-shared/dist/api/model/generated";
 
 export default function AssetAddPage() {
   const { deviceTypes, validationSchema, handleSubmit, loading } =

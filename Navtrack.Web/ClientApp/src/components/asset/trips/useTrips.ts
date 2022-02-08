@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import useTripsQuery from "../../../hooks/queries/useTripsQuery";
-import useCurrentAsset from "../../../hooks/assets/useCurrentAsset";
 import { locationFiltersSelector } from "../shared/location-filter/state";
 import useLocationFilterKey from "../shared/location-filter/useLocationFilterKey";
 import {
@@ -9,9 +7,10 @@ import {
   selectedTripLocationIndexAtom,
   tripsAtom
 } from "./state";
+import { useCurrentAsset, useTripsQuery } from "@navtrack/navtrack-app-shared";
 
 export default function useTrips() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("trips");
   const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
   const query = useTripsQuery({ assetId: currentAsset?.id, ...filters });

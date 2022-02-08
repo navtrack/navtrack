@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import { AssetModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
+import { AssetModel } from "@navtrack/navtrack-app-shared/dist/api/model/generated";
 import { useHistory } from "react-router";
 import IconWithText from "../../shared/icon/IconWithText";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
 import useScrollToAsset from "./useScrollToAsset";
+import { useCurrentAsset } from "@navtrack/navtrack-app-shared";
 
 export interface IAdminLayoutSideBarItemProps {
   asset: AssetModel;
@@ -14,7 +14,7 @@ export interface IAdminLayoutSideBarItemProps {
 export default function AdminLayoutSideBarItem(
   props: IAdminLayoutSideBarItemProps
 ) {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const history = useHistory();
   const { elementRef } = useScrollToAsset(props.asset);
 

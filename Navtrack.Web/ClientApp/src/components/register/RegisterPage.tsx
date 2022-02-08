@@ -13,12 +13,15 @@ import Icon from "../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import ExternalLogin from "../login/external-login/ExternalLogin";
-import { useLogin } from "../../hooks/authentication/useLogin";
+import { useLogin } from "@navtrack/navtrack-app-shared";
+import { AUTHENTICATION } from "../../constants";
 
 export default function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
   const register = useRegister();
-  const { externalLogin } = useLogin();
+  const { externalLogin } = useLogin({
+    clientId: AUTHENTICATION.CLIENT_ID
+  });
 
   return (
     <>
@@ -32,7 +35,7 @@ export default function RegisterPage() {
               <FormattedMessage id="register.success" />
             </div>
             <div className="mt-4 text-center">
-              <Link to={Paths.Login} text="register.continue" />
+              <Link to={Paths.Home} text="register.continue" />
             </div>
           </>
         ) : (
@@ -97,7 +100,7 @@ export default function RegisterPage() {
                 <FormattedMessage id="register.existing.question" />
               </span>
               <Link
-                to={Paths.Login}
+                to={Paths.Home}
                 text="register.existing.action"
                 className="ml-1"
               />

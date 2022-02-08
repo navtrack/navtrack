@@ -1,13 +1,10 @@
+import { useCurrentAsset } from "@navtrack/navtrack-app-shared";
 import { useMemo } from "react";
-import useCurrentAssetId from "../../../../hooks/assets/useCurrentAssetId";
 
 export default function useDefaultFilterKey(page: string) {
-  const currentAssetId = useCurrentAssetId();
+  const currentAsset = useCurrentAsset();
 
-  const key = useMemo(
-    () => `${page}:${currentAssetId}`,
-    [currentAssetId, page]
-  );
+  const key = useMemo(() => `${page}:${currentAsset}`, [currentAsset, page]);
 
   return key;
 }

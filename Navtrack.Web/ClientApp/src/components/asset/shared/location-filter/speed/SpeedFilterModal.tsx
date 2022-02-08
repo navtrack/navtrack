@@ -1,8 +1,6 @@
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import useCurrentUnits from "../../../../../hooks/util/useCurrentUnits";
-import { nameOf } from "../../../../../utils/typescript";
 import FormikTextInput from "../../../../ui/shared/text-input/FormikTextInput";
 import Modal from "../../../../ui/shared/modal/Modal";
 import Slider from "../../../../ui/shared/slider/Slider";
@@ -10,6 +8,7 @@ import TextInputRightAddon from "../../../../ui/shared/text-input/TextInputRight
 import FilterModal from "../FilterModal";
 import { DEFAULT_MAX_SPEED, SpeedFilterFormValues } from "../types";
 import useSpeedFilter from "./useSpeedFilter";
+import { nameOf, useCurrentUnits } from "@navtrack/navtrack-app-shared";
 
 interface ISpeedFilterModal {
   average?: boolean;
@@ -38,7 +37,7 @@ export default function SpeedFilterModal(props: ISpeedFilterModal) {
               icon={faTachometerAlt}
               className="max-w-sm"
               onCancel={close}>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage
                   id={
                     props.average

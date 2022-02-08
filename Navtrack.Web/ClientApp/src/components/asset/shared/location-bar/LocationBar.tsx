@@ -1,8 +1,7 @@
-import { LocationModel } from "@navtrack/navtrack-shared/dist/api/model/generated";
-import React, { ReactNode } from "react";
+import { useDateTime, useDistance } from "@navtrack/navtrack-app-shared";
+import { LocationModel } from "@navtrack/navtrack-app-shared/dist/api/model/generated";
+import { ReactNode } from "react";
 import { useIntl } from "react-intl";
-import useDateTime from "../../../../hooks/util/useDateTime";
-import useDistance from "../../../../hooks/util/useDistance";
 import LocationInfo from "./LocationInfo";
 
 interface IAssetLocationBar {

@@ -13,8 +13,8 @@ import { LatLng } from "../../../ui/shared/map/types";
 import Icon from "../../../ui/shared/icon/Icon";
 import DurationFilterBadge from "./duration/DurationFilterBadge";
 import DurationFilterModal from "./duration/DurationFilterModal";
-import useCurrentAssetId from "../../../../hooks/assets/useCurrentAssetId";
 import { useMemo } from "react";
+import { useCurrentAsset } from "@navtrack/navtrack-app-shared";
 
 interface ILocationFilter {
   center?: LatLng;
@@ -25,16 +25,16 @@ interface ILocationFilter {
 }
 
 export default function LocationFilter(props: ILocationFilter) {
-  const currentAssetId = useCurrentAssetId();
+  const currentAsset = useCurrentAsset();
   const key = useMemo(
-    () => `${props.filterKey}:${currentAssetId}`,
-    [currentAssetId, props.filterKey]
+    () => `${props.filterKey}:${currentAsset?.id}`,
+    [currentAsset, props.filterKey]
   );
 
   return (
     <>
       <div className="flex">
-        <Card className="flex flex-grow text-xs p-2 items-center text-gray-600 space-x-2 h-10">
+        <Card className="flex h-10 flex-grow items-center space-x-2 p-2 text-xs text-gray-600">
           <Icon icon={faFilter} />
           <DateFilterBadge filterKey={key} />
           <GeofenceFilterBadge filterKey={key} />

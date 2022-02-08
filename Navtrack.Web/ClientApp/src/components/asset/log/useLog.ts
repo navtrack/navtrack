@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
-import useLocationsQuery from "../../../hooks/queries/useLocationsQuery";
-import useCurrentAsset from "../../../hooks/assets/useCurrentAsset";
 import { locationFiltersSelector } from "../shared/location-filter/state";
 import useLocationFilterKey from "../shared/location-filter/useLocationFilterKey";
+import {
+  useCurrentAsset,
+  useLocationsQuery
+} from "@navtrack/navtrack-app-shared";
 
 export default function useLog() {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("log");
   const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
   const query = useLocationsQuery({ assetId: currentAsset?.id, ...filters });

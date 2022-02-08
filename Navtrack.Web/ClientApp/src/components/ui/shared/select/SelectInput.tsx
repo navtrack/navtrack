@@ -4,11 +4,10 @@ import {
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import { Popover, Transition } from "@headlessui/react";
+import { c, useHTMLElementSize } from "@navtrack/navtrack-app-shared";
 import classNames from "classnames";
 import { FocusEventHandler, Fragment, useMemo, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import useElementSize from "../../../../hooks/util/useElementSize";
-import c from "../../../../utils/tailwind";
 import Icon from "../icon/Icon";
 import TextInput from "../text-input/TextInput";
 import TextInputRightAddon from "../text-input/TextInputRightAddon";
@@ -36,7 +35,7 @@ export default function SelectInput(props: ISelectInput) {
 
   const [searchText, setSearchText] = useState(selectedItem?.label);
   const inputEl = useRef(null);
-  const inputSize = useElementSize(inputEl);
+  const inputSize = useHTMLElementSize(inputEl);
 
   const filteredItems = useMemo(
     () =>
@@ -99,13 +98,13 @@ export default function SelectInput(props: ISelectInput) {
               as="div"
               className="absolute z-10 mt-2"
               style={{ width: inputSize.width }}>
-              <div className="overflow-scroll rounded-lg shadow-lg max-h-72 grid gap-2 bg-white py-2 ring-1 ring-black ring-opacity-5">
+              <div className="grid max-h-72 gap-2 overflow-scroll rounded-lg bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5">
                 {filteredItems.length > 0 ? (
                   filteredItems.map((item) => (
                     <div
                       key={item.id}
                       className={classNames(
-                        "px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100",
+                        "cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
                         c(item.id === selectedItem?.id, "bg-gray-100")
                       )}
                       onClick={() => {

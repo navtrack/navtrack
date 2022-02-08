@@ -1,7 +1,7 @@
 import { faMountain } from "@fortawesome/free-solid-svg-icons";
+import { useCurrentUnits } from "@navtrack/navtrack-app-shared";
 import { useMemo } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import useCurrentUnits from "../../../../../hooks/util/useCurrentUnits";
 import Badge from "../../../../ui/shared/badge/Badge";
 import IconWithText from "../../../../ui/shared/icon/IconWithText";
 import { altitudeFilterAtom } from "../state";

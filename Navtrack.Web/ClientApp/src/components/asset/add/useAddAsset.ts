@@ -1,15 +1,17 @@
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, SchemaOf, string } from "yup";
-import useDevicesTypesQuery from "../../../hooks/queries/useDevicesTypesQuery";
 import { AddAssetFormValues } from "./AddAssetFormValues";
-import { useAddAssetMutation } from "../../../hooks/mutations/useAddAssetMutation";
 import { FormikHelpers } from "formik";
-import { mapErrors } from "../../../utils/formik";
 import { useHistory } from "react-router";
-import useGetAssetsSignalRQuery from "../../../hooks/queries/useGetAssetsSignalRQuery";
 import useScrollToAsset from "../../ui/layouts/admin/useScrollToAsset";
 import useNotification from "../../ui/shared/notification/useNotification";
+import {
+  mapErrors,
+  useAddAssetMutation,
+  useDevicesTypesQuery,
+  useGetAssetsSignalRQuery
+} from "@navtrack/navtrack-app-shared";
 
 export default function useAddAsset() {
   const { deviceTypes } = useDevicesTypesQuery();

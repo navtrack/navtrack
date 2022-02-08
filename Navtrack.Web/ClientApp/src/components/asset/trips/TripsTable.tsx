@@ -1,9 +1,10 @@
+import {
+  useCurrentUnits,
+  useDateTime,
+  useDistance
+} from "@navtrack/navtrack-app-shared";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import useCurrentUnits from "../../../hooks/util/useCurrentUnits";
-import useDateTime from "../../../hooks/util/useDateTime";
-import useDistance from "../../../hooks/util/useDistance";
-import { showDateTime } from "../../../utils/dates";
 import LoadingIndicator from "../../ui/shared/loading-indicator/LoadingIndicator";
 import useTrips from "./useTrips";
 
@@ -15,30 +16,30 @@ export default function TripsTable() {
 
   return (
     <div
-      className="flex flex-col flex-grow overflow-hidden rounded-lg shadow"
+      className="flex flex-grow flex-col overflow-hidden rounded-lg shadow"
       style={{ flexBasis: 0, minHeight: "190px" }}>
-      <div className="border-b border-gray-200 flex text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 grid grid-cols-12">
-        <div className="pl-2 py-2 col-span-2">
+      <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.start-date" />
         </div>
-        <div className="pl-2 py-2 col-span-2">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.end-date" />
         </div>
-        <div className="pl-2 py-2 col-span-2">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.duration" />
         </div>
-        <div className="pl-2 py-2 col-span-2">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.distance" />
         </div>
-        <div className="pl-2 py-2 col-span-2">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.avg-speed" />
         </div>
-        <div className="pl-2 py-2 col-span-2">
+        <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.avg-altitude" />
         </div>
       </div>
-      <div className="flex bg-gray-50 flex-grow overflow-hidden">
-        <div className="border-b border-gray-200 text-gray-600 text-xs flex-col overflow-y-scroll flex-grow">
+      <div className="flex flex-grow overflow-hidden bg-gray-50">
+        <div className="flex-grow flex-col overflow-y-scroll border-b border-gray-200 text-xs text-gray-600">
           {trips.isLoading ? (
             <div className="py-1">
               <LoadingIndicator className="text-base" size="lg" />
@@ -50,7 +51,7 @@ export default function TripsTable() {
                   <div
                     key={trip.startLocation.id}
                     className={classNames(
-                      "flex flex-row grid grid-cols-12 cursor-pointer",
+                      "flex grid cursor-pointer grid-cols-12 flex-row",
                       trips.selectedTripIndex === index
                         ? "bg-gray-300 hover:bg-gray-300"
                         : index % 2 === 0
@@ -59,22 +60,22 @@ export default function TripsTable() {
                     )}
                     ref={(el) => (trips.tripElements.current[index] = el)}
                     onClick={() => trips.setTripIndex(index)}>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showDateTime(trip.startLocation.dateTime)}
                     </div>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showDateTime(trip.endLocation.dateTime)}
                     </div>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showDuration(trip.duration)}
                     </div>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showDistance(trip.distance)}
                     </div>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showSpeed(trip.averageSpeed)}
                     </div>
-                    <div className="pl-2 py-1 col-span-2">
+                    <div className="col-span-2 py-1 pl-2">
                       {showAltitude(trip.averageAltitude)}
                     </div>
                   </div>
@@ -89,25 +90,28 @@ export default function TripsTable() {
         </div>
       </div>
       {trips.data?.items?.length && (
-        <div className="border-b border-gray-200 flex text-xs text-gray-600 bg-gray-50 grid grid-cols-12 font-medium">
-          <div className="pl-2 py-1"></div>
-          <div className="pl-2 py-1"></div>
-          <div className="pl-2 py-1"></div>
-          <div className="pl-2 py-1"></div>
-          <div className="pl-2 py-1 col-span-2">
+        <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
+          <div className="py-1 pl-2"></div>
+          <div className="py-1 pl-2"></div>
+          <div className="py-1 pl-2"></div>
+          <div className="py-1 pl-2"></div>
+          <div className="col-span-2 py-1 pl-2">
             {showDuration(trips.data?.totalDuration)}
           </div>
-          <div className="pl-2 py-1 col-span-2">
+          <div className="col-span-2 py-1 pl-2">
             {showDistance(trips.data?.totalDistance)}
           </div>
-          <div className="pl-2 py-1 col-span-2">
+          <div className="col-span-2 py-1 pl-2">
             {showSpeed(trips.data?.totalAvgSpeed)}
           </div>
-          <div className="pl-2 py-1">
+          <div className="py-1 pl-2">
             {Math.round(trips.data?.totalAvgAltitude as number)} {units.length}
           </div>
         </div>
       )}
     </div>
   );
+}
+function showDateTime(dateTime: string): import("react").ReactNode {
+  throw new Error("Function not implemented.");
 }

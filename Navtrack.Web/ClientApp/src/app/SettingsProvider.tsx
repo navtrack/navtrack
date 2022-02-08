@@ -1,4 +1,4 @@
-import { useSettings } from "../hooks/settings/useSettings";
+import { useSettings } from "@navtrack/navtrack-app-shared";
 
 const SettingsProvider: React.FC = (props) => {
   const settingsInitialized = useSettings();

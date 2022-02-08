@@ -1,7 +1,9 @@
+import {
+  mapErrors,
+  useRegisterAccountMutation
+} from "@navtrack/navtrack-app-shared";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
-import { useRegisterAccountMutation } from "../../hooks/mutations/useRegisterAccountMutation";
-import { mapErrors } from "../../utils/formik";
 import { RegisterFormValues } from "./RegisterFormValues";
 
 export const useRegister = () => {

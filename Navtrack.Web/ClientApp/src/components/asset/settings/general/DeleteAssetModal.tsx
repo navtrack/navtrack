@@ -1,12 +1,11 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import useCurrentAsset from "../../../../hooks/assets/useCurrentAsset";
-import { nameOf } from "../../../../utils/typescript";
 import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
 import { DeleteAssetFormValues } from "./types";
 import useDeleteAsset from "./useDeleteAsset";
 import Modal from "../../../ui/shared/modal/Modal";
 import DeleteModalContainer from "../../../ui/shared/modal/DeleteModalContainer";
+import { nameOf, useCurrentAsset } from "@navtrack/navtrack-app-shared";
 
 interface IDeleteAssetModal {
   show: boolean;
@@ -14,7 +13,7 @@ interface IDeleteAssetModal {
 }
 
 export default function DeleteAssetModal(props: IDeleteAssetModal) {
-  const { currentAsset } = useCurrentAsset();
+  const currentAsset = useCurrentAsset();
   const { handleSubmit, validationSchema, loading } = useDeleteAsset();
 
   return (
