@@ -46,7 +46,10 @@ public class LocationService : ILocationService
                 
                 LocationDocument latestLocation = mapped.OrderByDescending(x => x.DateTime).First();
 
-                await assetDataService.UpdateLocation(asset.Id, latestLocation);
+                if (asset.Location == null || latestLocation.DateTime > asset.Location.DateTime)
+                {
+                    await assetDataService.UpdateLocation(asset.Id, latestLocation);
+                }
             }
         }
     }
