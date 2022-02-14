@@ -11,6 +11,7 @@ interface IMapPin {
   follow?: boolean;
   color?: "primary" | "green" | "red";
   zIndexOffset?: number;
+  zoom?: number;
 }
 
 export default function MapPin(props: IMapPin) {
@@ -29,16 +30,18 @@ export default function MapPin(props: IMapPin) {
 
   useEffect(() => {
     if (props.follow && props.latitude && props.longitude) {
-      map.setCenter([props.latitude, props.longitude]);
+      const zoom = props.zoom !== undefined ? props.zoom : map.map.getZoom();
+      map.setCenter([props.latitude, props.longitude], zoom);
     }
-  }, [map, props.follow, props.latitude, props.longitude]);
+  }, [map, props.follow, props.latitude, props.longitude, props.zoom]);
 
-  if (props.latitude && props.longitude) {
+  if (props.latitude !== undefined && props.longitude !== undefined) {
     return (
       <Marker
         position={[props.latitude, props.longitude]}
         icon={pin}
-        zIndexOffset={props.zIndexOffset}></Marker>
+        zIndexOffset={props.zIndexOffset}
+      />
     );
   }
 
