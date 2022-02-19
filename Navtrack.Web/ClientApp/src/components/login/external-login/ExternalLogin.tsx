@@ -34,7 +34,7 @@ export default function ExternalLogin(props: IExternalLogin) {
           </div>
           <div className="flex-grow bg-gray-300" style={{ height: "1px" }} />
         </div>
-        <div className="flex space-x-2">
+        <div className="grid grid-cols-3 gap-2">
           <ExternalLoginButtonApple login={props.login} />
           <ExternalLoginButtonMicrosoft login={props.login} />
           <ExternalLoginButtonGoogle login={props.login} />

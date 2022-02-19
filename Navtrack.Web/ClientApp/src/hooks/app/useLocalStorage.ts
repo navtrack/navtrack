@@ -15,9 +15,13 @@ export default function useLocalStorage() {
       const json = localStorage.getItem(CONTEXT_KEY);
 
       if (json) {
-        const data = JSON.parse(json) as LocalStorageData;
+        try {
+          const data = JSON.parse(json) as LocalStorageData;
 
-        setState({ initialized: true, data });
+          setState({ initialized: true, data });
+        } catch (e) {
+          setState({ initialized: true });
+        }
       } else {
         setState({ initialized: true });
       }
