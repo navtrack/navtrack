@@ -1,6 +1,6 @@
 import Map from "../ui/shared/map/Map";
 import MapPin from "../ui/shared/map/MapPin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DEFAULT_MAP_CENTER } from "../../constants";
 import {
   LocationPinUpdateEvent,
@@ -16,6 +16,14 @@ export function Maps() {
       setEvent(e);
     }
   });
+
+  useEffect(() => {
+    if (typeof window !== undefined && "ReactNativeWebView" in window) {
+      const reactNativeWebView = (window as any).ReactNativeWebView;
+
+      reactNativeWebView.postMessage("loaded");
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen">
