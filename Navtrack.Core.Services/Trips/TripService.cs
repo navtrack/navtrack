@@ -27,7 +27,6 @@ public class TripService : ITripService
         IEnumerable<Trip> trips = TripsMapper.Map(locations);
 
         trips = ApplyFiltering(trips, tripFilter);
-
         trips = ApplyOrdering(trips);
 
         return trips;
@@ -141,18 +140,18 @@ public class TripService : ITripService
         if (locationFilter.StartDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartLocation.DateTime >= locationFilter.StartDate.Value).ToList();
+                .Where(x => x.StartLocation.DateTime.Date >= locationFilter.StartDate.Value.Date).ToList();
         }
 
         if (locationFilter.EndDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartLocation.DateTime <= locationFilter.EndDate.Value).ToList();
+                .Where(x => x.StartLocation.DateTime.Date <= locationFilter.EndDate.Value.Date).ToList();
         }
 
         return filteredTrips;
     }
-        
+
     private static IEnumerable<Trip> ApplyOrdering(IEnumerable<Trip> trips)
     {
         return trips.OrderByDescending(x => x.StartLocation.DateTime).ToList();
