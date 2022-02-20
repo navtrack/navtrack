@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/state";
-import useLocationFilterKey from "../shared/location-filter/useLocationFilterKey";
+import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import {
   useCurrentAsset,
   useLocationsQuery

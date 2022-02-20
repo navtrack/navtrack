@@ -26,16 +26,16 @@ export default function AssetTripsPage() {
 
   return (
     <>
-      <LocationFilter filterKey="trips" duration avgAltitude avgSpeed />
+      <LocationFilter filterPage="trips" duration avgAltitude avgSpeed />
       <TripsTable />
       {selectedTrip !== undefined && (
         <>
           <Card>
-            <div className="p-2 text-xs bg-gray-50 border-b text-gray-500 tracking-wider flex rounded-t-lg">
-              <div className="uppercase font-medium">
+            <div className="flex rounded-t-lg border-b bg-gray-50 p-2 text-xs tracking-wider text-gray-500">
+              <div className="font-medium uppercase">
                 <FormattedMessage id="generic.location" />
               </div>
-              <div className="text-right w-full tracking-normal">
+              <div className="w-full text-right tracking-normal">
                 <Icon icon={faInfoCircle} />
                 <span className="ml-1">
                   <FormattedMessage id="assets.trips.location.tip" />
@@ -67,7 +67,7 @@ export default function AssetTripsPage() {
             </div>
           </Card>
           <div className="flex" style={{ flexGrow: 2, minHeight: "200px" }}>
-            <div className="rounded-lg shadow flex flex-grow bg-white">
+            <div className="flex flex-grow rounded-lg bg-white shadow">
               <Map
                 center={{
                   latitude: selectedTrip.startLocation.latitude,

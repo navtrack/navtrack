@@ -10,7 +10,7 @@ export default function AssetLogPage() {
   return (
     <>
       <LocationFilter
-        filterKey="log"
+        filterPage="log"
         center={
           log.location
             ? {
@@ -23,7 +23,7 @@ export default function AssetLogPage() {
       <LogTable />
       {log.location && (
         <div className="flex flex-grow" style={{ flexBasis: 0 }}>
-          <div className="rounded-lg shadow flex flex-grow bg-white">
+          <div className="flex flex-grow rounded-lg bg-white shadow">
             <Map
               center={{
                 latitude: log.location.latitude,

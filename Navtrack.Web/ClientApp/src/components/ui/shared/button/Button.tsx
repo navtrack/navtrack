@@ -20,7 +20,7 @@ export default function Button(props: Props) {
     <button
       className={classNames(
         "focus:outline-none inline-flex items-center justify-center rounded-md border font-medium shadow-sm focus:ring-2 focus:ring-offset-2",
-        c(props.size === "xs", "px-1 py-0.5 text-xs"),
+        c(props.size === "xs", "px-1.5 py-0.5 text-xs"),
         c(props.size === "sm", "px-2 py-1 text-xs"),
         c(props.size === "md", "px-3 py-1.5 text-xs"),
         c(
