@@ -11,7 +11,7 @@ import useTrips from "./useTrips";
 export default function TripsTable() {
   const trips = useTrips();
   const units = useCurrentUnits();
-  const { showDuration } = useDateTime();
+  const { showDuration, showDateTime } = useDateTime();
   const { showSpeed, showDistance, showAltitude } = useDistance();
 
   return (
@@ -111,7 +111,4 @@ export default function TripsTable() {
       )}
     </div>
   );
-}
-function showDateTime(dateTime: string): import("react").ReactNode {
-  throw new Error("Function not implemented.");
 }
