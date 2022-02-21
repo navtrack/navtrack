@@ -11,23 +11,20 @@ concurrency:
 
 jobs:
   build:
+    if: github.GITHUB_REPOSITORY == 'navtrack/navtrack'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Login to GHCR
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Docker build
         run: |
           ./build-docker-images.sh
-
       - name: Docker push
         run: |
           docker tag navtrack/api ghcr.io/navtrack/navtrack/api
