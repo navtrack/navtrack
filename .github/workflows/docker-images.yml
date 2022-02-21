@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.GITHUB_REPOSITORY == 'navtrack/navtrack'
+    if: github.repository == 'navtrack/navtrack'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
