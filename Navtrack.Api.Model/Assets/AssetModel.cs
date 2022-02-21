@@ -17,7 +17,7 @@ public class AssetModel
     public string Name { get; set; }
 
     [Required]
-    public bool Online => Location != null && Location.DateTime > DateTime.Now.AddMinutes(-1);
+    public bool Online => Location != null && Location.DateTime > DateTime.UtcNow.AddMinutes(-1);
 
     [Required]
     public int MaxSpeed => 400; // TODO update this property
