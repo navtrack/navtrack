@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: sync
+  cancel-in-progress: true
+
 jobs:
   git-sync:
     if: github.repository == 'navtrack/navtrack'
