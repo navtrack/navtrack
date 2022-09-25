@@ -1478,12 +1478,15 @@
         "type": "object",
         "properties": {
           "name": {
+            "minLength": 1,
             "type": "string"
           },
           "deviceTypeId": {
+            "minLength": 1,
             "type": "string"
           },
           "serialNumber": {
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1497,9 +1500,11 @@
         "type": "object",
         "properties": {
           "serialNumber": {
+            "minLength": 1,
             "type": "string"
           },
           "deviceTypeId": {
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1513,9 +1518,11 @@
         "type": "object",
         "properties": {
           "email": {
+            "minLength": 1,
             "type": "string"
           },
           "role": {
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1533,13 +1540,16 @@
         "type": "object",
         "properties": {
           "id": {
+            "minLength": 1,
             "type": "string"
           },
           "shortId": {
+            "minLength": 1,
             "type": "string",
             "readOnly": true
           },
           "name": {
+            "minLength": 1,
             "type": "string"
           },
           "online": {
@@ -1556,21 +1566,6 @@
           },
           "device": {
             "$ref": "#/components/schemas/DeviceModel"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AssetsModel": {
-        "required": [
-          "items"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AssetModel"
-            }
           }
         },
         "additionalProperties": false
@@ -1599,13 +1594,31 @@
         "type": "object",
         "properties": {
           "email": {
+            "minLength": 1,
             "type": "string"
           },
           "role": {
+            "minLength": 1,
             "type": "string"
           },
           "userId": {
+            "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetsModel": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetModel"
+            }
           }
         },
         "additionalProperties": false
@@ -1619,12 +1632,15 @@
         "type": "object",
         "properties": {
           "currentPassword": {
+            "minLength": 1,
             "type": "string"
           },
           "password": {
+            "minLength": 1,
             "type": "string"
           },
           "confirmPassword": {
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1639,9 +1655,11 @@
         "type": "object",
         "properties": {
           "id": {
+            "minLength": 1,
             "type": "string"
           },
           "email": {
+            "minLength": 1,
             "type": "string"
           },
           "units": {
@@ -1660,9 +1678,11 @@
         "type": "object",
         "properties": {
           "id": {
+            "minLength": 1,
             "type": "string"
           },
           "serialNumber": {
+            "minLength": 1,
             "type": "string"
           },
           "deviceType": {
@@ -1679,21 +1699,6 @@
         },
         "additionalProperties": false
       },
-      "DevicesModel": {
-        "required": [
-          "items"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DeviceModel"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
       "DeviceTypeModel": {
         "required": [
           "displayName",
@@ -1705,15 +1710,19 @@
         "type": "object",
         "properties": {
           "id": {
+            "minLength": 1,
             "type": "string"
           },
           "manufacturer": {
+            "minLength": 1,
             "type": "string"
           },
           "model": {
+            "minLength": 1,
             "type": "string"
           },
           "displayName": {
+            "minLength": 1,
             "type": "string",
             "readOnly": true
           },
@@ -1733,6 +1742,21 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DeviceTypeModel"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "DevicesModel": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceModel"
             }
           }
         },
@@ -1904,6 +1928,7 @@
             "format": "int32"
           },
           "name": {
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -1933,12 +1958,15 @@
         "type": "object",
         "properties": {
           "email": {
+            "minLength": 1,
             "type": "string"
           },
           "password": {
+            "minLength": 1,
             "type": "string"
           },
           "confirmPassword": {
+            "minLength": 1,
             "type": "string"
           }
         },
@@ -2083,6 +2111,7 @@
             "nullable": true
           },
           "propertyName": {
+            "minLength": 1,
             "type": "string"
           }
         },
