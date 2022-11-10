@@ -1,7 +1,7 @@
 import { Popover } from "@headlessui/react";
 import { LocalizationProvider, StaticDatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
 import { styled } from "@mui/system";
 import classNames from "classnames";
 import { format } from "date-fns";
@@ -87,13 +87,15 @@ export default function DatePicker(props: IDatePicker) {
               <StaticDatePicker
                 displayStaticWrapperAs="desktop"
                 value={props.value}
-                onChange={(newValue) => {
+                onChange={(newValue: Date | null) => {
                   if (newValue?.getDate() !== props.value?.getDate()) {
                     close();
                   }
                   props.onChange(newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(
+                  params: JSX.IntrinsicAttributes & TextFieldProps
+                ) => <TextField {...params} />}
               />
             </StyledDatePickerContainer>
           </LocalizationProvider>
