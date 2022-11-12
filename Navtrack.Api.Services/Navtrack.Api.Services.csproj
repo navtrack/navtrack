@@ -1,9 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-    </PropertyGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\Navtrack.Api.Model\Navtrack.Api.Model.csproj" />
       <ProjectReference Include="..\Navtrack.Common\Navtrack.Common.csproj" />

@@ -1,27 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Sentry.AspNetCore" Version="3.21.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+        <PackageReference Include="Sentry.AspNetCore" Version="3.21.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Api.Model\Navtrack.Api.Model.csproj" />
-        <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj" />
-        <ProjectReference Include="..\Navtrack.Common\Navtrack.Common.csproj" />
-        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
-        <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
+        <ProjectReference Include="..\Navtrack.Api.Model\Navtrack.Api.Model.csproj"/>
+        <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj"/>
+        <ProjectReference Include="..\Navtrack.Common\Navtrack.Common.csproj"/>
+        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj"/>
+        <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj"/>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="dotnet tool restore" />
-        <Exec Command="dotnet swagger tofile --output $(SolutionDir)api.json $(OutputPath)$(AssemblyName).dll v1" />
+        <Exec Command="dotnet tool restore"/>
+        <Exec Command="dotnet swagger tofile --output $(SolutionDir)api.json $(OutputPath)$(AssemblyName).dll v1"/>
     </Target>
 </Project>

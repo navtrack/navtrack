@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj" />
-      <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
-      <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj" />
+        <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj"/>
+        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj"/>
+        <ProjectReference Include="..\Navtrack.Library\Navtrack.Library.csproj"/>
     </ItemGroup>
-
 </Project>

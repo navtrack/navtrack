@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS publish
 WORKDIR /src
 COPY . .
+RUN dotnet tool restore
 RUN dotnet publish "Navtrack.Api/Navtrack.Api.csproj" -c Release -o /app
 
 FROM base AS final
