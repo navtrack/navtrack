@@ -3,29 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Library", "Navtrack.Library\Navtrack.Library.csproj", "{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Library", "backend\Navtrack.Library\Navtrack.Library.csproj", "{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "backend\Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "backend\Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Common", "Navtrack.Common\Navtrack.Common.csproj", "{17363B48-67D0-4183-AE79-BC083AD7DEA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Common", "backend\Navtrack.Common\Navtrack.Common.csproj", "{17363B48-67D0-4183-AE79-BC083AD7DEA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.Tests", "Navtrack.Listener.Tests\Navtrack.Listener.Tests.csproj", "{703CB45E-01DA-4CF3-8114-E47C20455A83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.Tests", "backend\Navtrack.Listener.Tests\Navtrack.Listener.Tests.csproj", "{703CB45E-01DA-4CF3-8114-E47C20455A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Common.Tests", "Navtrack.Common.Tests\Navtrack.Common.Tests.csproj", "{C645F80C-8794-425B-89F2-5FD59C1F9ECA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Common.Tests", "backend\Navtrack.Common.Tests\Navtrack.Common.Tests.csproj", "{C645F80C-8794-425B-89F2-5FD59C1F9ECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "Navtrack.Api\Navtrack.Api.csproj", "{E7524FB6-F04C-4021-9815-D947D3001532}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "backend\Navtrack.Api\Navtrack.Api.csproj", "{E7524FB6-F04C-4021-9815-D947D3001532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.DeviceSimulator", "Navtrack.Listener.DeviceSimulator\Navtrack.Listener.DeviceSimulator.csproj", "{D6237E82-B5ED-45B5-96B2-D1159C942146}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.DeviceSimulator", "backend\Navtrack.Listener.DeviceSimulator\Navtrack.Listener.DeviceSimulator.csproj", "{D6237E82-B5ED-45B5-96B2-D1159C942146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Model", "Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj", "{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Model", "backend\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj", "{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Model", "Navtrack.Api.Model\Navtrack.Api.Model.csproj", "{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Model", "backend\Navtrack.Api.Model\Navtrack.Api.Model.csproj", "{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Services", "Navtrack.Api.Services\Navtrack.Api.Services.csproj", "{4B5348CD-CD15-4D81-930E-D71BC533C3D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Services", "backend\Navtrack.Api.Services\Navtrack.Api.Services.csproj", "{4B5348CD-CD15-4D81-930E-D71BC533C3D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Services", "Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj", "{0577F018-F560-401E-A5BA-E4F7F7C07BD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Services", "backend\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj", "{0577F018-F560-401E-A5BA-E4F7F7C07BD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{BE4BBA96-89E3-4187-9D2E-2053A18656DB}"
 EndProject
@@ -38,13 +38,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Listener", "Listener", "{6B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{639AC932-0665-45A6-87F8-B72A6C457952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Core.Services", "Navtrack.Core.Services\Navtrack.Core.Services.csproj", "{8917FB7A-9EDA-4A0B-8DE0-A8E261C331BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Core.Services", "backend\Navtrack.Core.Services\Navtrack.Core.Services.csproj", "{8917FB7A-9EDA-4A0B-8DE0-A8E261C331BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Core.Model", "Navtrack.Core.Model\Navtrack.Core.Model.csproj", "{391353CD-B47F-4F32-8DEB-BDCEFCE78AC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Core.Model", "backend\Navtrack.Core.Model\Navtrack.Core.Model.csproj", "{391353CD-B47F-4F32-8DEB-BDCEFCE78AC3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{EBEC1542-8312-4F99-84AE-5AC816599DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Web", "Navtrack.Web\Navtrack.Web.csproj", "{015DC0B9-D9B1-406A-B18B-7809F5DA5ECC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Web", "frontend\Navtrack.Web\Navtrack.Web.csproj", "{015DC0B9-D9B1-406A-B18B-7809F5DA5ECC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{B8B72829-9A46-45B9-987F-CDD4486FC36D}"
 	ProjectSection(SolutionItems) = preProject
