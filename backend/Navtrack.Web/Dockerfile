@@ -3,7 +3,7 @@ WORKDIR /src
 COPY . .
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
-RUN dotnet publish "Navtrack.Web/Navtrack.Web.csproj" -c Release -o /app
+RUN dotnet publish "backend/Navtrack.Web/Navtrack.Web.csproj" -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
