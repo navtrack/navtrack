@@ -6,41 +6,37 @@
 
 ## Running Navtrack
 
-### From source code
+### Running from source code
 
 #### Requirements
 
-1. Node.js (https://nodejs.org/)
-2. Docker (to run MongoDB) (https://docs.docker.com/get-docker/)
-3. Or an instance of MongoDB running
+1. .NET 7 SDK (https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+2. Node.js (https://nodejs.org/)
+3. MongoDB (and Docker to run the server) (https://docs.docker.com/get-docker/)
+4. Optional: Rider or Visual Studio
 
 
 #### Steps
 
 1. Clone this repository
-2. Start MongoDB using our development docker-compose file.
+2. Open up a terminal
+3. Start MongoDB using our development docker-compose file or if you already have a MongoDB instance running you can configure the connection strings in the following 2 files, one for the API and one for the Listener service.
 
 ```
 docker-compose -f docker-compose.dev.yml up
 ```
-
-Or if you have a MongoDB instance already running you can configure the connection strings in 2 files, one for the API and one for the Listener service.
 
 ```
 backend/Navtrack.Api/appsettings.Development.json
 backend/Navtrack.Listener/appsettings.Development.json
 ```
 
-3. Open up `Navtrack.sln` in Visual Studio or Rider
-4. Build the solution
-5. Start `Navtrack.Api`
-6. Start `Navtrack.Listener`
-7. Open up a terminal and go to the `frontend` directory
-8. Run `npm install`
-9. Go into the `web` directory
-10. Run `npm start`
+4. Build the solution with `dotnet build`
+5. Start the API with `dotnet run --project Navtrack.Api`
+6. Start the Listener service with `dotnet run --project Navtrack.Listener`
+7. Start the web interface with `cd frontend/web && npm start`
 
-### With containers
+### Running with containers
 
 #### 1. Install docker
 
