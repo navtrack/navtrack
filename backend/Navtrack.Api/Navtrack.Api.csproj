@@ -20,6 +20,6 @@
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="dotnet tool restore" />
-        <Exec Command="dotnet swagger tofile --output $(SolutionDir)api.json $(OutputPath)$(AssemblyName).dll v1" />
+        <Exec Command="dotnet swagger tofile --output %22$(ProjectDir)../../api.json%22 %22$(OutputPath)$(AssemblyName).dll%22 v1" />
     </Target>
 </Project>
