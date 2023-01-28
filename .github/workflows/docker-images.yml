@@ -1,10 +1,5 @@
 name: Publish Docker Images
 
-on:
-  push:
-    branches:
-      - main
-
 concurrency:
   group: main
   cancel-in-progress: true
