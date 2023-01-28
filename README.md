@@ -10,10 +10,10 @@
 
 #### Requirements
 
-1. .NET 7 SDK (https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
-2. Node.js (https://nodejs.org/)
-3. MongoDB (and Docker to run the server) (https://docs.docker.com/get-docker/)
-4. Optional: Rider or Visual Studio
+- .NET 7 SDK (https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+- Node.js (https://nodejs.org/)
+- Docker (to run MongoDB) (https://docs.docker.com/get-docker/)
+- Optional: Rider or Visual Studio
 
 
 #### Steps
