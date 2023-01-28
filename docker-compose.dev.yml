@@ -2,9 +2,6 @@ services:
   database:
     image: mongo
     restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: navtrack
-      MONGO_INITDB_ROOT_PASSWORD: navtrack
     volumes:
       - navtrack:/data/db
     ports:
