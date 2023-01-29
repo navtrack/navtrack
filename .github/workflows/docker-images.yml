@@ -1,5 +1,9 @@
 name: Publish Docker Images
 
+on:
+  release:
+    types: [released]
+
 concurrency:
   group: main
   cancel-in-progress: true
@@ -20,11 +24,22 @@ jobs:
       - name: Docker build
         run: |
           ./build-docker-images.sh
+      - name: Release version
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          VERSION=${TAG#v}
+          echo Version: $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Docker tag
+        run: |
+          docker tag navtrack/api ghcr.io/navtrack/navtrack/api:latest
+          docker tag navtrack/api ghcr.io/navtrack/navtrack/api:${{ env.VERSION }}
+          docker tag navtrack/web ghcr.io/navtrack/navtrack/web:latest
+          docker tag navtrack/web ghcr.io/navtrack/navtrack/web:${{ env.VERSION }}
+          docker tag navtrack/listener ghcr.io/navtrack/navtrack/listener:latest
+          docker tag navtrack/listener ghcr.io/navtrack/navtrack/listener:${{ env.VERSION }}
       - name: Docker push
         run: |
-          docker tag navtrack/api ghcr.io/navtrack/navtrack/api
-          docker tag navtrack/web ghcr.io/navtrack/navtrack/web
-          docker tag navtrack/listener ghcr.io/navtrack/navtrack/listener
-          docker push ghcr.io/navtrack/navtrack/api
-          docker push ghcr.io/navtrack/navtrack/web
-          docker push ghcr.io/navtrack/navtrack/listener
+          docker push --all-tags ghcr.io/navtrack/navtrack/api
+          docker push --all-tags ghcr.io/navtrack/navtrack/web
+          docker push --all-tags ghcr.io/navtrack/navtrack/listener
