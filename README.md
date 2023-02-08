@@ -20,7 +20,8 @@
 
 1. Clone this repository
 2. Open up a terminal
-3. Start MongoDB using our development docker-compose file or if you already have a MongoDB instance running you can configure the connection strings in the following 2 files, one for the API and one for the Listener service.
+3. Build the solution with `dotnet build`
+4. Start MongoDB using our development docker-compose file or if you already have a MongoDB instance running you can configure the connection strings in the following 2 files, one for the API and one for the Listener service.
 
 ```
 docker-compose -f docker-compose.dev.yml up
@@ -30,8 +31,6 @@ docker-compose -f docker-compose.dev.yml up
 backend/Navtrack.Api/appsettings.Development.json
 backend/Navtrack.Listener/appsettings.Development.json
 ```
-
-4. Build the solution with `dotnet build`
 5. Start the API with `dotnet run --project Navtrack.Api`
 6. Start the Listener service with `dotnet run --project Navtrack.Listener`
 7. Start the web interface with `cd frontend/web && npm start`
