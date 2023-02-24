@@ -1,4 +1,6 @@
-using Navtrack.Api.Model.Users;
+using Navtrack.Api.Model.User;
+using Navtrack.Core.Model;
+using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers;

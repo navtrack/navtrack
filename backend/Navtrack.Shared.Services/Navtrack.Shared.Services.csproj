@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <RootNamespace>Navtrack.Common</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj" />
+        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
+        <ProjectReference Include="..\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj" />
+    </ItemGroup>
+</Project>

@@ -11,7 +11,7 @@ public interface IAssetDataService
 {
     Task<AssetDocument> GetById(string id);
     Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids);
-    Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string assetId = null);
+    Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string? assetId = null);
     Task UpdateName(string assetId, string name);
     Task Delete(string assetId);
     Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole);

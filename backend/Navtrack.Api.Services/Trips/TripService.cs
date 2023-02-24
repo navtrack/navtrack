@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Mappers;
-using Navtrack.Api.Services.Users;
+using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.Library.DI;
 using Trip = Navtrack.Core.Model.Trips.Trip;

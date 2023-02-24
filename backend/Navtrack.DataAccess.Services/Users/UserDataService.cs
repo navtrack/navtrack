@@ -22,7 +22,7 @@ public class UserDataService : IUserDataService
         this.repository = repository;
     }
 
-    public Task<UserDocument> GetById(ObjectId id)
+    public Task<UserDocument> GetByObjectId(ObjectId id)
     {
         return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.Id == id);
     }
@@ -50,17 +50,17 @@ public class UserDataService : IUserDataService
                 x => x.AssetId == ObjectId.Parse(assetId)));
     }
 
-    public async Task<UserDocument> GetUserByEmail(string email)
+    public async Task<UserDocument?> GetUserByEmail(string email)
     {
         email = email.ToLower();
 
-        UserDocument user = await repository.GetEntities<UserDocument>()
+        UserDocument? user = await repository.GetEntities<UserDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         return user;
     }
 
-    public Task<bool> EmailIsUsed(string email)
+    public Task<bool> EmailExists(string email)
     {
         email = email.ToLower();
 
@@ -97,7 +97,8 @@ public class UserDataService : IUserDataService
     {
         List<UpdateDefinition<UserDocument>> updateDefinitions = new();
 
-        if (!string.IsNullOrEmpty(email) && !string.Equals(currentUser.Email, email, StringComparison.CurrentCultureIgnoreCase))
+        if (!string.IsNullOrEmpty(email) &&
+            !string.Equals(currentUser.Email, email, StringComparison.CurrentCultureIgnoreCase))
         {
             updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Email, email.ToLower()));
         }

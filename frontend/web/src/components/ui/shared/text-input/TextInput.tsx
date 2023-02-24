@@ -5,9 +5,9 @@ import {
   FocusEventHandler,
   MouseEventHandler,
   ReactNode,
-  RefObject
+  RefObject,
 } from "react";
-import InputError from "../input/InputError";
+import { InputError } from "../input/InputError";
 
 export interface ITextInput {
   disabled?: boolean;
@@ -45,10 +45,11 @@ export default function TextInput(props: ITextInput) {
     <div>
       <label
         htmlFor={props.name}
-        className="block text-sm font-medium text-gray-700">
+        className="block text-sm font-medium text-gray-700"
+      >
         {props.label}
       </label>
-      <div className="mt-1 relative rounded-md shadow-sm flex">
+      <div className="relative mt-1 flex rounded-md shadow-sm">
         {props.leftAddon}
         <StyledInput
           ref={props.ref}
@@ -56,7 +57,7 @@ export default function TextInput(props: ITextInput) {
           name={props.name}
           type={props.type ?? "text"}
           className={classNames(
-            "border-gray-300 border rounded-md text-gray-700 w-full text-sm py-1.5 px-3 shadow-sm placeholder-gray-400",
+            "w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm text-gray-700 placeholder-gray-400 shadow-sm",
             { "border-red-600": props.error },
             props.className
           )}

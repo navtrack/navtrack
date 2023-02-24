@@ -34,9 +34,9 @@ public class RefreshTokenStore : IRefreshTokenStore
         return tokenDataService.Add(document);
     }
 
-    public async Task<RefreshToken> GetRefreshTokenAsync(string refreshTokenHandle)
+    public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshTokenHandle)
     {
-        RefreshTokenDocument document = await tokenDataService.GetByUserId(refreshTokenHandle);
+        RefreshTokenDocument? document = await tokenDataService.GetByUserId(refreshTokenHandle);
 
         if (document != null)
         {

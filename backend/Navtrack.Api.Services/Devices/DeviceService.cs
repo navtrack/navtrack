@@ -7,7 +7,7 @@ using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Devices;
-using Navtrack.Api.Services.Users;
+using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Model.Users;

@@ -7,7 +7,7 @@ namespace Navtrack.DataAccess.Services.Settings;
 
 public interface ISettingDataService
 {
-    Task<List<SettingDocument>> GetSettings();
-    Task<SettingDocument> Get(string key);
+    Task<List<SettingDocument>> GetAll();
+    Task<SettingDocument?> Get(string key);
     Task Save(string key, BsonDocument value);
 }

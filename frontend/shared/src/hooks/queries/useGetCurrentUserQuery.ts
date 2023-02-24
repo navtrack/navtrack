@@ -4,8 +4,8 @@ export const useGetCurrentUserQuery = () => {
   const query = useGetUser({
     query: {
       refetchOnWindowFocus: false,
-      refetchOnMount: false
-    }
+      refetchOnMount: false,
+    },
   });
 
   return query;

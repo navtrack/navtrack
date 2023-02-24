@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj"/>
+        <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj" />
     </ItemGroup>
 </Project>

@@ -22,7 +22,7 @@ public class Program
                 IConfiguration configuration = hostContext.Configuration;
                 collection.AddOptions<MongoOptions>().Bind(configuration.GetSection(nameof(MongoOptions)));
 
-                Bootstrapper.ConfigureServices(collection);
+                Bootstrapper.ConfigureServices<Program>(collection);
             })
             .Build();
 

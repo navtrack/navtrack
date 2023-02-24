@@ -1,5 +1,5 @@
 import { FormikErrors } from "formik";
-import InputError from "./InputError";
+import { InputError } from "./InputError";
 
 export interface IInputErrors<T> {
   errors?: FormikErrors<T>;

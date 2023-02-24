@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Navtrack.Api.Model.Locations;
 using Navtrack.Api.Model.Reports;
 using Navtrack.Api.Model.Trips;
+using Navtrack.Core.Model;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Locations;
 

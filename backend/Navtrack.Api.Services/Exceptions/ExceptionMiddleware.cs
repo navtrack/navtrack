@@ -22,7 +22,7 @@ public class ExceptionMiddleware
         }
         catch (ApiException exception)
         {
-            httpContext.Response.StatusCode = (int)exception.httpStatusCode;
+            httpContext.Response.StatusCode = (int)exception.HttpStatusCode;
 
             ErrorModel model = ErrorModelMapper.Map(exception);
 

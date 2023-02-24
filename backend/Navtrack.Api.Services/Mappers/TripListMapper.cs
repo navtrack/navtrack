@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Trips;
+using Navtrack.Core.Model;
 using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.Api.Services.Mappers;

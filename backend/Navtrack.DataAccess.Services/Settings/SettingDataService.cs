@@ -19,14 +19,17 @@ public class SettingDataService : ISettingDataService
         this.repository = repository;
     }
 
-    public Task<SettingDocument> Get(string key)
+    public async Task<SettingDocument?> Get(string key)
     {
-        return repository.GetEntities<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
+        SettingDocument? document =
+            await repository.GetEntities<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
+
+        return document;
     }
 
     public async Task Save(string key, BsonDocument value)
     {
-        SettingDocument document = await Get(key);
+        SettingDocument? document = await Get(key);
 
         if (document == null)
         {
@@ -34,8 +37,7 @@ public class SettingDataService : ISettingDataService
             {
                 Id = ObjectId.GenerateNewId(),
                 Key = key,
-                Value = value,
-                PublicKeys = new List<string>()
+                Value = value
             };
         }
         else
@@ -50,7 +52,7 @@ public class SettingDataService : ISettingDataService
             });
     }
 
-    public Task<List<SettingDocument>> GetSettings()
+    public Task<List<SettingDocument>> GetAll()
     {
         return repository.GetEntities<SettingDocument>().ToListAsync();
     }

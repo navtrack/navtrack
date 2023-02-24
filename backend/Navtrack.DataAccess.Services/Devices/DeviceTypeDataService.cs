@@ -12,7 +12,7 @@ namespace Navtrack.DataAccess.Services.Devices;
 [Service(typeof(IDeviceTypeDataService), ServiceLifetime.Singleton)]
 public class DeviceTypeDataService : IDeviceTypeDataService
 {
-    private DeviceType[] deviceTypes;
+    private DeviceType[]? deviceTypes;
 
     public DeviceType GetById(string deviceTypeId)
     {
@@ -30,11 +30,10 @@ public class DeviceTypeDataService : IDeviceTypeDataService
         {
             using StringReader stringReader = new(DeviceTypes.DeviceTypesCsv);
 
-            string line;
             List<DeviceType> list = new();
             Dictionary<int, Protocol> protocols = new();
 
-            while ((line = stringReader.ReadLine()) != null)
+            while (stringReader.ReadLine() is { } line)
             {
                 if (!string.IsNullOrEmpty(line))
                 {

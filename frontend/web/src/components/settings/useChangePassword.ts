@@ -1,4 +1,4 @@
-import { useChangePasswordMutation } from "@navtrack/ui-shared/hooks/mutations/useChangePasswordMutation";
+import { useChangePasswordMutation } from "@navtrack/ui-shared/hooks/mutations/users/useChangePasswordMutation";
 import { mapErrors } from "@navtrack/ui-shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
@@ -22,20 +22,20 @@ export default function useChangePassword() {
           data: {
             currentPassword: values.currentPassword,
             password: values.password,
-            confirmPassword: values.confirmPassword
-          }
+            confirmPassword: values.confirmPassword,
+          },
         },
         {
           onSuccess: () => {
             showNotification({
               type: "success",
               description: intl.formatMessage({
-                id: "settings.password.success"
-              })
+                id: "settings.password.success",
+              }),
             });
             formikHelpers.resetForm();
           },
-          onError: (error) => mapErrors(error, formikHelpers)
+          onError: (error) => mapErrors(error, formikHelpers),
         }
       );
     },
@@ -46,7 +46,7 @@ export default function useChangePassword() {
     currentPassword: string()
       .required(
         intl.formatMessage({
-          id: "settings.password.current-password.required"
+          id: "settings.password.current-password.required",
         })
       )
       .defined(),
@@ -54,7 +54,7 @@ export default function useChangePassword() {
       .not(
         [ref("currentPassword")],
         intl.formatMessage({
-          id: "settings.password.different-password"
+          id: "settings.password.different-password",
         })
       )
       .required(intl.formatMessage({ id: "generic.password.required" }))
@@ -67,7 +67,7 @@ export default function useChangePassword() {
       .equals(
         [ref("password")],
         intl.formatMessage({
-          id: "generic.confirm-password.requirements.match"
+          id: "generic.confirm-password.requirements.match",
         })
       )
       .required(intl.formatMessage({ id: "generic.confirm-password.required" }))
@@ -75,11 +75,11 @@ export default function useChangePassword() {
         8,
         intl.formatMessage({ id: "generic.password.requirements.length" })
       )
-      .defined()
+      .defined(),
   }).defined();
 
   return {
     validationSchema,
-    handleSubmit
+    handleSubmit,
   };
 }

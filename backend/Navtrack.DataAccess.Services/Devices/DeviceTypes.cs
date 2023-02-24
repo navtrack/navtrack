@@ -1,6 +1,6 @@
 namespace Navtrack.DataAccess.Services.Devices;
 
-public class DeviceTypes
+public static class DeviceTypes
 {
     public const string DeviceTypesCsv = @"
 1;Meitrack;MT80A;meitrack;7001

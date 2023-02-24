@@ -11,7 +11,7 @@ using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Assets;
-using Navtrack.Api.Services.Users;
+using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Model.Users;
@@ -149,7 +149,7 @@ public class AssetService : IAssetService
             validationException.AddValidationError(nameof(model.Role), "Invalid role.");
         }
 
-        if (validationException.HasErrors)
+        if (validationException.HasValidationErrors)
         {
             throw validationException;
         }
@@ -222,7 +222,7 @@ public class AssetService : IAssetService
                 "The serial number is already used by another device.");
         }
 
-        if (validationException.HasErrors)
+        if (validationException.HasValidationErrors)
         {
             throw validationException;
         }

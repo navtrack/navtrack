@@ -8,7 +8,7 @@ import FormikSelect from "../ui/shared/select/FormikSelect";
 import { ISelectOption } from "../ui/shared/select/types";
 import useNotification from "../ui/shared/notification/useNotification";
 import { useCurrentUser } from "@navtrack/ui-shared/hooks/app/useCurrentUser";
-import { useUpdateUserMutation } from "@navtrack/ui-shared/hooks/mutations/useUpdateUserMutation";
+import { useUpdateUserMutation } from "@navtrack/ui-shared/hooks/mutations/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/ui-shared/utils/formik";
 import { nameOf } from "@navtrack/ui-shared/utils/typescript";
 import { UnitsType } from "@navtrack/ui-shared/api/model/custom/UnitsType";
@@ -33,20 +33,20 @@ export default function SettingsAccountPage() {
         {
           data: {
             email: values.email,
-            unitsType: values.units === UnitsType.Metric ? 0 : 1
-          }
+            unitsType: values.units === UnitsType.Metric ? 0 : 1,
+          },
         },
         {
           onSuccess: () => {
             showNotification({
               type: "success",
               description: intl.formatMessage({
-                id: "settings.account.success"
-              })
+                id: "settings.account.success",
+              }),
             });
             formikHelpers.resetForm();
           },
-          onError: (error) => mapErrors(error, formikHelpers)
+          onError: (error) => mapErrors(error, formikHelpers),
         }
       );
     },
@@ -57,12 +57,12 @@ export default function SettingsAccountPage() {
     () => [
       {
         label: intl.formatMessage({ id: "generic.units.metric" }),
-        value: UnitsType.Metric
+        value: UnitsType.Metric,
       },
       {
         label: intl.formatMessage({ id: "generic.units.imperial" }),
-        value: UnitsType.Imperial
-      }
+        value: UnitsType.Imperial,
+      },
     ],
     [intl]
   );
@@ -73,11 +73,12 @@ export default function SettingsAccountPage() {
         <Formik<AccountSettingsFormValues>
           initialValues={{
             email: user?.email,
-            units: user?.units
+            units: user?.units,
           }}
           onSubmit={(values, formikHelpers) =>
             handleSubmit(values, formikHelpers)
-          }>
+          }
+        >
           {() => (
             <Form>
               <div className="shadow sm:overflow-hidden sm:rounded-md">

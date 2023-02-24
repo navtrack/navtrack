@@ -22,9 +22,9 @@ public class ProfileService : IProfileService
 
     public async Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
-        string userId = context.Subject.GetId();
+        string? userId = context.Subject.GetId();
             
-        UserDocument user = await userDataService.GetById(ObjectId.Parse(userId));
+        UserDocument user = await userDataService.GetByObjectId(ObjectId.Parse(userId));
 
         context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email));
     }

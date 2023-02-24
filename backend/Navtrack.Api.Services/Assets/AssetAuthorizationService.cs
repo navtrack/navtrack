@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using Navtrack.Api.Services.Users;
+using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.Library.DI;

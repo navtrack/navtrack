@@ -1,3 +1,4 @@
+using Navtrack.Core.Model;
 using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.Api.Services.Mappers;

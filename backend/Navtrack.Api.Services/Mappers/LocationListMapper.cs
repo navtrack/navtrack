@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Locations;
+using Navtrack.Core.Model;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Locations;
 

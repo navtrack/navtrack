@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { settingsAtom } from "../../state/app.settings";
-import { useSettingsQuery } from "../queries/useSettingsQuery";
+import { useGetEnvironmentQuery } from "../queries/useGetEnvironmentQuery";
 
 export const useSettings = () => {
-  const settings = useSettingsQuery();
+  const settings = useGetEnvironmentQuery();
   const [state, setState] = useRecoilState(settingsAtom);
 
   useEffect(() => {

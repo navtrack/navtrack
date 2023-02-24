@@ -40,7 +40,7 @@ public class AssetDataService : IAssetDataService
             .ToListAsync();
     }
 
-    public Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string assetId = null)
+    public Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string? assetId = null)
     {
         name = name.ToLower();
 

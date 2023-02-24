@@ -1,5 +1,6 @@
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.Mappers.Devices;
+using Navtrack.Core.Model;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Devices;

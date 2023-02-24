@@ -30,7 +30,6 @@
     "leaflet": "^1.9.2",
     "maplibre-gl": "^2.4.0",
     "moment": "^2.29.1",
-    "orval": "^6.5.1",
     "react": "18.0.0",
     "react-apple-signin-auth": "^1.0.4",
     "react-dom": "18.0.0",
@@ -64,7 +63,6 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "generate": "orval --config ./orval.config.js",
     "cosmos": "cross-env FAST_REFRESH=false cosmos",
     "cosmos:export": "cosmos-export"
   },

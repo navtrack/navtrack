@@ -13,7 +13,7 @@ public static class ErrorModelMapper
         {
             Code = exception.Code,
             Message = string.IsNullOrEmpty(exception.Message) ? null : exception.Message,
-            ValidationErrors = exception.HasErrors
+            ValidationErrors = exception.HasValidationErrors
                 ? exception.ValidationErrors.Select(x => new ValidationErrorModel
                 {
                     Code = x.Code,

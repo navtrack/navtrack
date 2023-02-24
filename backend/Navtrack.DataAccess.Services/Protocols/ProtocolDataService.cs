@@ -11,7 +11,7 @@ namespace Navtrack.DataAccess.Services.Protocols;
 public class ProtocolDataService : IProtocolDataService
 {
     private readonly IDeviceTypeDataService deviceTypeDataService;
-    private Protocol[] protocols;
+    private Protocol[]? protocols;
 
     public ProtocolDataService(IDeviceTypeDataService deviceTypeDataService)
     {
@@ -20,16 +20,11 @@ public class ProtocolDataService : IProtocolDataService
 
     public IEnumerable<Protocol> GetProtocols()
     {
-        if (protocols == null)
-        {
-            protocols = deviceTypeDataService.GetDeviceTypes()
-                .GroupBy(x => x.Protocol)
-                .Select(x => x.Key)
-                .OrderBy(x => x.Name)
-                .ThenBy(x => x.Port)
-                .ToArray();
-        }
-
-        return protocols;
+        return protocols ??= deviceTypeDataService.GetDeviceTypes()
+            .GroupBy(x => x.Protocol)
+            .Select(x => x.Key)
+            .OrderBy(x => x.Name)
+            .ThenBy(x => x.Port)
+            .ToArray();
     }
 }

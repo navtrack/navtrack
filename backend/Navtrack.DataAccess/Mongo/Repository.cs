@@ -7,16 +7,15 @@ namespace Navtrack.DataAccess.Mongo;
 [Service(typeof(IRepository))]
 public class Repository : IRepository
 {
-    private readonly IMongoDatabaseFactory mongoDatabaseFactory;
     private readonly IMongoDatabase mongoDatabase;
+
+    private readonly IMongoDatabaseFactory mongoDatabaseFactory;
     // private readonly IInterceptorService interceptorService;
 
     public Repository(IMongoDatabaseFactory mongoDatabaseFactory)
     {
         this.mongoDatabaseFactory = mongoDatabaseFactory;
-
         mongoDatabase = mongoDatabaseFactory.CreateMongoDatabase();
-            
     }
 
     public IMongoQueryable<T> GetEntities<T>() where T : class

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { FocusEventHandler } from "react";
-import InputError from "../input/InputError";
+import { InputError } from "../input/InputError";
 import { ISelectOption } from "./types";
 
 export interface ISelect {
@@ -24,15 +24,16 @@ export default function Select(props: ISelect) {
     <div>
       <label
         htmlFor={props.name}
-        className="block text-sm font-medium text-gray-700">
+        className="block text-sm font-medium text-gray-700"
+      >
         {props.label}
       </label>
-      <div className="mt-1 relative rounded-md shadow-sm flex">
+      <div className="relative mt-1 flex rounded-md shadow-sm">
         <select
           disabled={props.disabled}
           name={props.name}
           className={classNames(
-            "border-gray-300 border rounded-md text-gray-700 w-full text-sm py-1.5 px-3 shadow-sm",
+            "w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm text-gray-700 shadow-sm",
             { "border-red-600": props.error },
             props.className
           )}
@@ -43,7 +44,8 @@ export default function Select(props: ISelect) {
             if (item) {
               props.onChange?.(item.value);
             }
-          }}>
+          }}
+        >
           {props.options.map((x) => (
             <option key={x.value} value={x.value}>
               {x.label}

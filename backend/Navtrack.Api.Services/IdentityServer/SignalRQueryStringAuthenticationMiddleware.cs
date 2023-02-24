@@ -17,7 +17,7 @@ public class SignalRQueryStringAuthenticationMiddleware
     public async Task Invoke(HttpContext context)
     {
         if (context.Request.Path.Value != null &&
-            context.Request.Path.Value.Contains(ApiConstants.HubUrl()) &&
+            context.Request.Path.Value.Contains(ApiConstants.SignalRHubUrlPrefix) &&
             context.Request.Query.TryGetValue("access_token", out StringValues token))
         {
             context.Request.Headers.Add("Authorization", "Bearer " + token.First());

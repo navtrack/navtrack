@@ -3,7 +3,7 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Common.Services.Settings;
+using Navtrack.Api.Services.Environment;
 
 namespace Navtrack.Api.Controllers;
 
@@ -11,11 +11,11 @@ namespace Navtrack.Api.Controllers;
 [Route("settings")]
 public class SettingsController : ControllerBase
 {
-    private readonly ISettingService settingService;
+    private readonly IEnvironmentService environmentService;
 
-    public SettingsController(ISettingService settingService)
+    public SettingsController(IEnvironmentService environmentService)
     {
-        this.settingService = settingService;
+        this.environmentService = environmentService;
     }
 
     [HttpGet]
@@ -23,7 +23,7 @@ public class SettingsController : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<IActionResult> Get()
     {
-        Dictionary<string, string> settings = await settingService.GetPublicSettings();
+        Dictionary<string, string> settings = await environmentService.Get();
 
         return new JsonResult(settings);
     }

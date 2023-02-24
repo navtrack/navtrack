@@ -1,12 +1,16 @@
-export interface IInputError {
+import { ErrorMessage } from "../../../shared/ErrorMessage";
+
+export interface InputErrorProps {
   error?: string;
 }
-export default function InputError(props: IInputError) {
+export const InputError = (props: InputErrorProps) => {
   return (
     <>
       {props.error && (
-        <p className="text-red-600 text-xs mt-1">{props.error}</p>
+        <p className="mt-1 text-xs text-red-600">
+          <ErrorMessage code={props.error} />
+        </p>
       )}
     </>
   );
-}
+};

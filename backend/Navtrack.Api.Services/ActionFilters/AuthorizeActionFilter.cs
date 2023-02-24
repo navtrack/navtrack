@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using Navtrack.Api.Services.Assets;
 using Navtrack.Api.Services.Exceptions;
-using Navtrack.Api.Services.Users;
+using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.ActionFilters;

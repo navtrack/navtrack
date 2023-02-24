@@ -2,6 +2,7 @@ const Paths = {
   Home: "/",
   Register: "/register",
   ForgotPassword: "/forgotpassword",
+  ResetPassword: "/resetpassword/:hash",
   AssetsLive: "/assets/:id/live",
   AssetsLog: "/assets/:id/log",
   AssetsTrips: "/assets/:id/trips",
@@ -13,7 +14,7 @@ const Paths = {
   AssetsAdd: "/assets/add",
   SettingsAccount: "/settings/account",
   SettingsPassword: "/settings/password",
-  Maps: "/maps"
+  Maps: "/maps",
 };
 
 export default Paths;
