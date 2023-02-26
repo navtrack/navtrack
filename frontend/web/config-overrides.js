@@ -11,10 +11,10 @@ function myOverrides(config, env) {
 
   // Enable compiling outside of src/
   config.module.rules[1].oneOf = config.module.rules[1].oneOf.map((rule) => {
-    if (rule.loader && rule.loader.match(/\/babel-loader\//) && rule.include) {
+    if (rule.loader && rule.loader.includes("babel-loader") && rule.include) {
       return {
         ...rule,
-        include: [rule.include, sharedRepoPath]
+        include: [rule.include, sharedRepoPath],
       };
     }
 
