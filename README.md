@@ -6,7 +6,11 @@
 
 ## Running Navtrack
 
-### Running from source code
+1. [From source code](#running-from-source-code)
+2. [With Docker containers](#running-with-containers)
+
+
+## Running from source code
 
 #### Requirements
 
@@ -35,7 +39,7 @@ backend/Navtrack.Listener/appsettings.Development.json
 6. Start the Listener service with `dotnet run --project Navtrack.Listener`
 7. Start the web interface with `cd frontend/web && npm start`
 
-### Running with containers
+## Running with Docker containers
 
 #### 1. Install docker
 
