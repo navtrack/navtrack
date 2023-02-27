@@ -1,5 +1,5 @@
 import { Redirect, Route, Switch } from "react-router-dom";
-import ForgotPasswordPage from "../components/user/forgot-password/ForgotPasswordPage";
+import { ForgotPasswordPage } from "../components/user/forgot-password/ForgotPasswordPage";
 import { LoginPage } from "../components/user/login-page/LoginPage";
 import { Maps } from "../components/maps/Maps";
 import RegisterPage from "../components/user/register-page/RegisterPage";

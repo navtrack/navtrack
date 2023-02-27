@@ -3,16 +3,16 @@ import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import Button from "../../ui/shared/button/Button";
 import Card from "../../ui/shared/card/Card";
-import { InitialForgotPasswordFormValues } from "./ForgotPasswordFormValues";
-import { useForgotPassword } from "./useForgotPassword";
-import { useForgotPasswordFormValidationSchema } from "./useForgotPasswordFormValidationSchema";
 import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
 import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
 import Icon from "../../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import Paths from "../../../app/Paths";
+import { InitialForgotPasswordFormValues } from "@navtrack/ui-shared/hs/user/forgot-password/ForgotPasswordFormValues";
+import { useForgotPassword } from "@navtrack/ui-shared/hs/user/forgot-password/useForgotPassword";
+import { useForgotPasswordFormValidationSchema } from "@navtrack/ui-shared/hs/user/forgot-password/useForgotPasswordFormValidationSchema";
 
-export default function ForgotPasswordPage() {
+export function ForgotPasswordPage() {
   const validationSchema = useForgotPasswordFormValidationSchema();
   const forgotPassword = useForgotPassword();
 

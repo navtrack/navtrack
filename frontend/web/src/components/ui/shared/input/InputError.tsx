@@ -1,4 +1,4 @@
-import { ErrorMessage } from "../../../shared/ErrorMessage";
+import { ErrorMessage } from "../../../../../../shared/src/components/ErrorMessage";
 
 export interface InputErrorProps {
   error?: string;
