@@ -24,10 +24,11 @@ export function useForgotPassword(props?: UseForgotPasswordProps) {
         },
         {
           onError: (error) => mapErrors(error, formikHelpers),
+          onSuccess: props?.onSuccess,
         }
       );
     },
-    [resetPasswordMutation]
+    [props?.onSuccess, resetPasswordMutation]
   );
 
   return {

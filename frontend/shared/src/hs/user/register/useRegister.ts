@@ -1,10 +1,14 @@
-import { useRegisterAccountMutation } from "@navtrack/ui-shared/hooks/mutations/useRegisterAccountMutation";
-import { mapErrors } from "@navtrack/ui-shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
+import { useRegisterAccountMutation } from "../../../hooks/mutations/useRegisterAccountMutation";
+import { mapErrors } from "../../../utils/formik";
 import { RegisterFormValues } from "./RegisterFormValues";
 
-export const useRegister = () => {
+type UseRegisterProps = {
+  onSuccess?: () => void;
+};
+
+export const useRegister = (props?: UseRegisterProps) => {
   const registerAccountMutation = useRegisterAccountMutation();
 
   const register = useCallback(
@@ -17,20 +21,21 @@ export const useRegister = () => {
           data: {
             email: values.email,
             password: values.password,
-            confirmPassword: values.confirmPassword
-          }
+            confirmPassword: values.confirmPassword,
+          },
         },
         {
-          onError: (error) => mapErrors(error, formikHelpers)
+          onError: (error) => mapErrors(error, formikHelpers),
+          onSuccess: props?.onSuccess,
         }
       );
     },
-    [registerAccountMutation]
+    [props?.onSuccess, registerAccountMutation]
   );
 
   return {
     register,
     loading: registerAccountMutation.isLoading,
-    success: registerAccountMutation.isSuccess
+    success: registerAccountMutation.isSuccess,
   };
 };
