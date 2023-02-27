@@ -5,7 +5,7 @@ import { RegisterFormValues } from "./RegisterFormValues";
 export const useRegisterFormValidationSchema = () => {
   const validationSchema: SchemaOf<RegisterFormValues> = object({
     email: string()
-      .email("generic.email.valid")
+      .email("generic.email.invalid")
       .required("generic.email.required")
       .defined(),
     password: string()

@@ -7,7 +7,7 @@
   "generic.save": "Save",
   "generic.delete": "Delete",
   "generic.email": "Email",
-  "generic.email.valid": "The email is not valid.",
+  "generic.email.invalid": "The email is not valid.",
   "generic.email.required": "The email is required.",
   "generic.password": "Password",
   "generic.password.required": "The password is required.",
