@@ -7,17 +7,17 @@
   ],
   "dependencies": {
     "typescript": "^4.8.4",
-    "react-native": "0.69.6"
+    "react-native": "0.71.3"
   },
   "scripts": {
     "build:web": "cd web && npm run build"
   },
   "devDependencies": {
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6"
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11"
   },
   "overrides": {
-    "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
