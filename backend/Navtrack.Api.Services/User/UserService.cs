@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Mappers;
@@ -44,14 +45,12 @@ public class UserService : IUserService
 
         if (await userDataService.EmailExists(model.Email))
         {
-            apiException.AddValidationError(nameof(model.Email),
-                "There is already an account with this email.");
+            apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyExists);
         }
 
         if (model.Password != model.ConfirmPassword)
         {
-            apiException.AddValidationError(nameof(model.ConfirmPassword),
-                "The passwords do not match.");
+            apiException.AddValidationError(nameof(model.ConfirmPassword), ValidationErrorCodes.PasswordsDoNotMatch);
         }
 
         apiException.ThrowIfInvalid();
