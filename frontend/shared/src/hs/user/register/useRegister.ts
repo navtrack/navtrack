@@ -5,7 +5,7 @@ import { mapErrors } from "../../../utils/formik";
 import { RegisterFormValues } from "./RegisterFormValues";
 
 type UseRegisterProps = {
-  onSuccess?: () => void;
+  onSuccess?: (values: RegisterFormValues) => void;
 };
 
 export const useRegister = (props?: UseRegisterProps) => {
@@ -26,11 +26,11 @@ export const useRegister = (props?: UseRegisterProps) => {
         },
         {
           onError: (error) => mapErrors(error, formikHelpers),
-          onSuccess: props?.onSuccess,
+          onSuccess: () => props?.onSuccess?.(values),
         }
       );
     },
-    [props?.onSuccess, registerAccountMutation]
+    [props, registerAccountMutation]
   );
 
   return {
