@@ -7,7 +7,7 @@
 ## Running Navtrack
 
 1. [From source code](#running-from-source-code)
-2. [With Docker containers](#running-with-containers)
+2. [With Docker containers](#running-with-docker-containers)
 
 
 ## Running from source code

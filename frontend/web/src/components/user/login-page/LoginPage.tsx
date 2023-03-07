@@ -2,8 +2,7 @@ import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
 import Button from "../../ui/shared/button/Button";
 import Icon from "../../ui/shared/icon/Icon";
-import { InitialLoginFormValues } from "./LoginFormValues";
-import { useLoginFormValidationSchema } from "./useLoginFormValidationSchema";
+import { InitialLoginFormValues } from "../../../../../shared/src/hs/user/login/LoginFormValues";
 import Card from "../../ui/shared/card/Card";
 import Link from "../../ui/shared/link/Link";
 import Copyright from "../../shared/Copyright";
@@ -17,6 +16,7 @@ import ExternalLogin from "./external-login/ExternalLogin";
 import Alert from "../../ui/shared/alert/Alert";
 import { AUTHENTICATION } from "../../../constants";
 import { useLogin } from "@navtrack/ui-shared/hooks/authentication/useLogin";
+import { useLoginFormValidationSchema } from "@navtrack/ui-shared/hs/user/login/useLoginFormValidationSchema";
 
 export const LoginPage = () => {
   const validationSchema = useLoginFormValidationSchema();

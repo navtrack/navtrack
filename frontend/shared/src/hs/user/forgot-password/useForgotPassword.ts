@@ -1,10 +1,14 @@
-import { useForgotPasswordMutation } from "@navtrack/ui-shared/hooks/mutations/users/useForgotPasswordMutation";
-import { mapErrors } from "@navtrack/ui-shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
+import { useForgotPasswordMutation } from "../../../hooks/mutations/users/useForgotPasswordMutation";
+import { mapErrors } from "../../../utils/formik";
 import { ForgotPasswordFormValues } from "./ForgotPasswordFormValues";
 
-export const useForgotPassword = () => {
+type UseForgotPasswordProps = {
+  onSuccess?: () => void;
+};
+
+export function useForgotPassword(props?: UseForgotPasswordProps) {
   const resetPasswordMutation = useForgotPasswordMutation();
 
   const resetPassword = useCallback(
@@ -20,10 +24,11 @@ export const useForgotPassword = () => {
         },
         {
           onError: (error) => mapErrors(error, formikHelpers),
+          onSuccess: props?.onSuccess,
         }
       );
     },
-    [resetPasswordMutation]
+    [props?.onSuccess, resetPasswordMutation]
   );
 
   return {
@@ -31,4 +36,4 @@ export const useForgotPassword = () => {
     loading: resetPasswordMutation.isLoading,
     success: resetPasswordMutation.isSuccess,
   };
-};
+}

@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Navtrack.Api.Model.Errors;
 
 public static class ApiErrorCodes

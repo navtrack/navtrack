@@ -1,5 +1,5 @@
-import { isNumeric } from "@navtrack/ui-shared/utils/numbers";
 import { FormattedMessage } from "react-intl";
+import { isNumeric } from "../utils/numbers";
 
 type ErrorMessageProps = {
   code: string;

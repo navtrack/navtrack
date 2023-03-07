@@ -17,17 +17,17 @@ export default function useAddUserToAsset(props: IUseAddUserToAsset) {
   const mutation = useAddUserToAssetMutation();
   const currentAsset = useCurrentAsset();
   const assetUsers = useAssetUsersQuery({
-    assetId: !!currentAsset ? currentAsset.id : ""
+    assetId: !!currentAsset ? currentAsset.id : "",
   });
 
   const validationSchema: SchemaOf<AddUserToAssetFormValues> = object({
     email: string()
-      .email(intl.formatMessage({ id: "generic.email.valid" }))
+      .email(intl.formatMessage({ id: "generic.email.invalid" }))
       .required(intl.formatMessage({ id: "generic.email.required" }))
       .defined(),
     role: string()
       .required(intl.formatMessage({ id: "generic.password.required" }))
-      .defined()
+      .defined(),
   }).defined();
 
   const handleSubmit = useCallback(
@@ -41,15 +41,15 @@ export default function useAddUserToAsset(props: IUseAddUserToAsset) {
             assetId: currentAsset.id,
             data: {
               email: values.email,
-              role: values.role
-            }
+              role: values.role,
+            },
           },
           {
             onSuccess: () => {
               assetUsers.refetch();
               props.close();
             },
-            onError: (error) => mapErrors(error, formikHelpers)
+            onError: (error) => mapErrors(error, formikHelpers),
           }
         );
       }

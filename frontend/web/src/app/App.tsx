@@ -1,5 +1,4 @@
 import { IntlProvider } from "react-intl";
-import translations from "../translations";
 import { BrowserRouterProvider } from "./BrowserRouterProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
@@ -7,6 +6,7 @@ import ConfigProvider from "./ConfigProvider";
 import { SentryProvider } from "./SentryProvider";
 import { AuthenticationProvider } from "./AuthenticationProvider";
 import { SettingsProvider } from "./SettingsProvider";
+import { translations } from "@navtrack/ui-shared/translations";
 
 const queryClient = new QueryClient();
 

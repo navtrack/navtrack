@@ -2,9 +2,7 @@ import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
 import Button from "../../ui/shared/button/Button";
 import Card from "../../ui/shared/card/Card";
-import { InitialRegisterFormValues } from "./RegisterFormValues";
-import { useRegister } from "./useRegister";
-import { useRegisterFormValidationSchema } from "./useRegisterFormValidationSchema";
+import { InitialRegisterFormValues } from "../../../../../shared/src/hs/user/register/RegisterFormValues";
 import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
 import Link from "../../ui/shared/link/Link";
 import Paths from "../../../app/Paths";
@@ -15,6 +13,8 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import ExternalLogin from "../login-page/external-login/ExternalLogin";
 import { AUTHENTICATION } from "../../../constants";
 import { useLogin } from "@navtrack/ui-shared/hooks/authentication/useLogin";
+import { useRegister } from "@navtrack/ui-shared/hs/user/register/useRegister";
+import { useRegisterFormValidationSchema } from "@navtrack/ui-shared/hs/user/register/useRegisterFormValidationSchema";
 
 export default function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();

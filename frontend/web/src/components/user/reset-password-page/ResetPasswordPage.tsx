@@ -10,7 +10,7 @@ import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
 import Icon from "../../ui/shared/icon/Icon";
 import Paths from "../../../app/Paths";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { ErrorMessage } from "../../shared/ErrorMessage";
+import { ErrorMessage } from "../../../../../shared/src/components/ErrorMessage";
 import Link from "../../ui/shared/link/Link";
 
 export const ResetPasswordPage = () => {
