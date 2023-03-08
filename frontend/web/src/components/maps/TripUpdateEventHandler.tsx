@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useMapEventHandler } from "@navtrack/ui-shared/hooks/map-events/useMapEventHandler";
+import { useMapEventHandler } from "@navtrack/shared/hooks/map-events/useMapEventHandler";
 import {
   MapEvents,
   TripUpdateEvent
-} from "@navtrack/ui-shared/hooks/map-events/events";
+} from "@navtrack/shared/hooks/map-events/events";
 import { MapTrip } from "../ui/shared/map/MapTrip";
 
 export const TripUpdateEventHandler = () => {

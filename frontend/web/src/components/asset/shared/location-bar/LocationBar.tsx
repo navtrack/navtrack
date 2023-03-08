@@ -1,6 +1,6 @@
-import { LocationModel } from "@navtrack/ui-shared/api/model/generated";
-import { useDateTime } from "@navtrack/ui-shared/hooks/util/useDateTime";
-import { useDistance } from "@navtrack/ui-shared/hooks/util/useDistance";
+import { LocationModel } from "@navtrack/shared/api/model/generated";
+import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
+import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { ReactNode } from "react";
 import { useIntl } from "react-intl";
 import LocationInfo from "./LocationInfo";

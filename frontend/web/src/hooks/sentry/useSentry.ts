@@ -1,4 +1,4 @@
-import { settingsSelector } from "@navtrack/ui-shared/state/app.settings";
+import { settingsSelector } from "@navtrack/shared/state/app.settings";
 import { init } from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import { useEffect, useState } from "react";

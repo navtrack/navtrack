@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import classNames from "classnames";
 import LoadingIndicator from "../loading-indicator/LoadingIndicator";
-import { c } from "@navtrack/ui-shared/utils/tailwind";
+import { c } from "@navtrack/shared/utils/tailwind";
 
 type Props = {
   children: ReactNode;
@@ -19,7 +19,7 @@ export default function Button(props: Props) {
   return (
     <button
       className={classNames(
-        "focus:outline-none inline-flex items-center justify-center rounded-md border font-medium shadow-sm focus:ring-2 focus:ring-offset-2",
+        "inline-flex items-center justify-center rounded-md border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2",
         c(props.size === "xs", "px-1.5 py-0.5 text-xs"),
         c(props.size === "sm", "px-2 py-1 text-xs"),
         c(props.size === "md", "px-3 py-1.5 text-xs"),

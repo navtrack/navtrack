@@ -22,26 +22,22 @@ export const useAxiosAuthorization = () => {
 
       const newInterceptorId = AUTH_AXIOS_INSTANCE.interceptors.request.use(
         (config) => {
-          return {
-            ...config,
-            headers: {
-              ...config.headers,
-              Authorization: `Bearer ${authentication.token?.accessToken}`
-            }
-          };
+          config.headers.Authorization = `Bearer ${authentication.token?.accessToken}`;
+
+          return config;
         }
       );
 
       setAxiosAuthState({
         interceptorId: newInterceptorId,
         accessToken: authentication.token?.accessToken,
-        initialized: true
+        initialized: true,
       });
     }
   }, [
     authentication.isAuthenticated,
     authentication.token?.accessToken,
     axiosAuthState,
-    setAxiosAuthState
+    setAxiosAuthState,
   ]);
 };

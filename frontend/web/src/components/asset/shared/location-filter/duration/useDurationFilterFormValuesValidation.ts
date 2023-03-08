@@ -1,20 +1,24 @@
 import { useIntl } from "react-intl";
-import { number, object, SchemaOf } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { DurationFilterFormValues } from "../types";
 
 export const useDurationFilterFormValuesValidation = () => {
   const intl = useIntl();
 
-  const validationSchema: SchemaOf<DurationFilterFormValues> = object()
-    .shape({
-      minDuration: number()
-        .typeError(intl.formatMessage({ id: "generic.number.required" }))
-        .optional(),
-      maxDuration: number()
-        .typeError(intl.formatMessage({ id: "generic.number.required" }))
-        .optional()
-    })
-    .defined();
+  const validationSchema: ObjectSchema<DurationFilterFormValues> = object({
+    minDuration: string()
+      .matches(
+        /^[0-9]+$/,
+        intl.formatMessage({ id: "generic.number.required" })
+      )
+      .required(intl.formatMessage({ id: "generic.number.required" })),
+    maxDuration: string()
+      .matches(
+        /^[0-9]+$/,
+        intl.formatMessage({ id: "generic.number.required" })
+      )
+      .required(intl.formatMessage({ id: "generic.number.required" }))
+  }).defined();
 
   return validationSchema;
 };

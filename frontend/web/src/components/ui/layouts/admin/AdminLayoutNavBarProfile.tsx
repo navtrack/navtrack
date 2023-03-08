@@ -10,8 +10,8 @@ import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router";
 import IconWithText from "../../shared/icon/IconWithText";
-import { useCurrentUser } from "@navtrack/ui-shared/hooks/app/useCurrentUser";
-import { useLogout } from "@navtrack/ui-shared/hooks/authentication/useLogout";
+import { useCurrentUser } from "@navtrack/shared/hooks/app/useCurrentUser";
+import { useLogout } from "@navtrack/shared/hooks/authentication/useLogout";
 
 export interface IAdminLayoutNavBarProfile {}
 
@@ -24,7 +24,7 @@ export default function AdminLayoutNavBarProfile(
 
   return (
     <Menu as="div" className="relative ml-3 flex">
-      <Menu.Button className="focus:outline-none flex items-center rounded-full text-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-4">
+      <Menu.Button className="flex items-center rounded-full text-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-4">
         <Icon icon={faUser} />
       </Menu.Button>
       <Transition
@@ -35,7 +35,7 @@ export default function AdminLayoutNavBarProfile(
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95">
-        <Menu.Items className="focus:outline-none absolute right-0 mt-6 origin-top-right divide-y divide-gray-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+        <Menu.Items className="absolute right-0 mt-6 origin-top-right divide-y divide-gray-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Menu.Item disabled>
               <div className="cursor-default bg-white px-4 py-2 text-sm text-gray-700">

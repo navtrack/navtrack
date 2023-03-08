@@ -1,10 +1,10 @@
 import MapPin from "../ui/shared/map/MapPin";
 import { useEffect, useState } from "react";
-import { useMapEventHandler } from "@navtrack/ui-shared/hooks/map-events/useMapEventHandler";
+import { useMapEventHandler } from "@navtrack/shared/hooks/map-events/useMapEventHandler";
 import {
   LocationPinUpdateEvent,
   MapEvents
-} from "@navtrack/ui-shared/hooks/map-events/events";
+} from "@navtrack/shared/hooks/map-events/events";
 
 export const LocationPinUpdateEventHandler = () => {
   const [event, setEvent] = useState<LocationPinUpdateEvent>();

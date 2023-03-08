@@ -1,24 +1,20 @@
 import { ref } from "yup";
-import { object, SchemaOf, string } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { RegisterFormValues } from "./RegisterFormValues";
 
 export const useRegisterFormValidationSchema = () => {
-  const validationSchema: SchemaOf<RegisterFormValues> = object({
+  const validationSchema: ObjectSchema<RegisterFormValues> = object({
     email: string()
       .email("generic.email.invalid")
-      .required("generic.email.required")
-      .defined(),
+      .required("generic.email.required"),
     password: string()
       .required("generic.password.required")
-      .min(8, "generic.password.requirements.length")
-      .defined(),
+      .min(8, "generic.password.requirements.length"),
     confirmPassword: string()
-      .equals([ref("password")], "generic.confirm-password.requirements.match")
       .required("generic.confirm-password.required")
       .min(8, "generic.password.requirements.length")
-      .defined()
-      .defined(),
-  });
+      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
+  }).defined();
 
   return validationSchema;
 };

@@ -8,9 +8,9 @@ import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
 import Icon from "../../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import Paths from "../../../app/Paths";
-import { InitialForgotPasswordFormValues } from "@navtrack/ui-shared/hs/user/forgot-password/ForgotPasswordFormValues";
-import { useForgotPassword } from "@navtrack/ui-shared/hs/user/forgot-password/useForgotPassword";
-import { useForgotPasswordFormValidationSchema } from "@navtrack/ui-shared/hs/user/forgot-password/useForgotPasswordFormValidationSchema";
+import { InitialForgotPasswordFormValues } from "@navtrack/shared/hs/user/forgot-password/ForgotPasswordFormValues";
+import { useForgotPassword } from "@navtrack/shared/hs/user/forgot-password/useForgotPassword";
+import { useForgotPasswordFormValidationSchema } from "@navtrack/shared/hs/user/forgot-password/useForgotPasswordFormValidationSchema";
 
 export function ForgotPasswordPage() {
   const validationSchema = useForgotPasswordFormValidationSchema();
@@ -28,8 +28,7 @@ export function ForgotPasswordPage() {
             forgotPassword.resetPassword(values, formikHelpers)
           }
           validationSchema={() => validationSchema}
-          enableReinitialize
-        >
+          enableReinitialize>
           {({ values, status }) => (
             <>
               {forgotPassword.success ? (
@@ -40,8 +39,7 @@ export function ForgotPasswordPage() {
                   <div className="mt-4 text-center">
                     <Link
                       to={Paths.Home}
-                      className="ml-1 text-sm font-medium text-blue-600"
-                    >
+                      className="ml-1 text-sm font-medium text-blue-600">
                       <FormattedMessage id="forgot-password.go-home" />
                     </Link>
                   </div>
@@ -77,8 +75,7 @@ export function ForgotPasswordPage() {
                         size="lg"
                         disabled={forgotPassword.loading}
                         fullWidth
-                        loading={forgotPassword.loading}
-                      >
+                        loading={forgotPassword.loading}>
                         <FormattedMessage id="forgot-password.button" />
                       </Button>
                     </div>

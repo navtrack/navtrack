@@ -1,4 +1,4 @@
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
 import { useMemo } from "react";
 
 export type LocationFilterPage = "trips" | "log";

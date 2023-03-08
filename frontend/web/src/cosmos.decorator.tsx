@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import { IntlProvider } from "react-intl";
-import { translations } from "@navtrack/ui-shared/translations";
+import { translations } from "@navtrack/shared/translations";
 
 export default function Decorator({ children }: { children: ReactNode }) {
   return (

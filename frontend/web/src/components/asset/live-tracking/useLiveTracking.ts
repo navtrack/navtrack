@@ -1,5 +1,5 @@
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
-import { assetConfigurationAtom } from "@navtrack/ui-shared/state/assets";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { assetConfigurationAtom } from "@navtrack/shared/state/assets";
 import { useEffect } from "react";
 import { useMapEvents } from "react-leaflet";
 import { useRecoilState } from "recoil";

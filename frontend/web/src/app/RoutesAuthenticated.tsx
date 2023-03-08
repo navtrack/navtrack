@@ -13,8 +13,8 @@ import AssetSettingsAccessPage from "../components/asset/settings/access/AssetSe
 import Paths from "./Paths";
 import SettingsPasswordPage from "../components/settings/SettingsPasswordPage";
 import AssetSettingsDevicePage from "../components/asset/settings/device/AssetSettingsDevicePage";
-import { useSetCurrentAssetFromRoute } from "@navtrack/ui-shared/hooks/assets/useSetCurrentAssetFromRoute";
-import { useSignalR } from "@navtrack/ui-shared/hooks/signalr/useSignalR";
+import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hs/assets/useSetCurrentAssetFromRoute";
+import { useSignalR } from "@navtrack/shared/hooks/signalr/useSignalR";
 
 export default function RoutesAuthenticated() {
   useSignalR();

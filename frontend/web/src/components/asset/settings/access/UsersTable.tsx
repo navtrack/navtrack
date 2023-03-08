@@ -1,5 +1,5 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { AssetUserModel } from "@navtrack/ui-shared/api/model/generated";
+import { AssetUserModel } from "@navtrack/shared/api/model/generated";
 import { useState } from "react";
 import IconButton from "../../../ui/shared/button/IconButton";
 import Table, { ITableColumn } from "../../../ui/shared/table/Table";

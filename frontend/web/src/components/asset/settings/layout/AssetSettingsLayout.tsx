@@ -3,7 +3,7 @@ import { faCog, faHdd, faUsers } from "@fortawesome/free-solid-svg-icons";
 import SidebarItem, { ISidebarItem } from "./SidebarItem";
 import { generatePath } from "react-router";
 import Paths from "../../../../app/Paths";
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
 
 interface IAssetSettingsLayout {
   children?: ReactNode;

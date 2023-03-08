@@ -5,7 +5,7 @@ import {
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
-import { c } from "@navtrack/ui-shared/utils/tailwind";
+import { c } from "@navtrack/shared/utils/tailwind";
 import classNames from "classnames";
 import { Fragment, useMemo } from "react";
 import Icon from "../icon/Icon";

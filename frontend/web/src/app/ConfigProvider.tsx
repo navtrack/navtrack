@@ -1,5 +1,5 @@
-import { useAxiosBaseUrls } from "@navtrack/ui-shared/hooks/axios/useAxiosBaseUrls";
-import { useSetConfig } from "@navtrack/ui-shared/hooks/config/useSetConfig";
+import { useAxiosBaseUrls } from "@navtrack/shared/hooks/axios/useAxiosBaseUrls";
+import { useSetConfig } from "@navtrack/shared/hooks/config/useSetConfig";
 import { ReactNode } from "react";
 import useLocalStorage from "../hooks/app/useLocalStorage";
 

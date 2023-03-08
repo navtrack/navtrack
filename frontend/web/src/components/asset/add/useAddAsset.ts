@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
-import { object, SchemaOf, string } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { AddAssetFormValues } from "./AddAssetFormValues";
 import { FormikHelpers } from "formik";
 import { useHistory } from "react-router";
 import useScrollToAsset from "../../ui/layouts/admin/useScrollToAsset";
 import useNotification from "../../ui/shared/notification/useNotification";
-import { useAddAssetMutation } from "@navtrack/ui-shared/hooks/mutations/useAddAssetMutation";
-import { useDevicesTypesQuery } from "@navtrack/ui-shared/hooks/queries/useDevicesTypesQuery";
-import { useGetAssetsSignalRQuery } from "@navtrack/ui-shared/hooks/queries/useGetAssetsSignalRQuery";
-import { mapErrors } from "@navtrack/ui-shared/utils/formik";
+import { useAddAssetMutation } from "@navtrack/shared/hooks/mutations/useAddAssetMutation";
+import { useDevicesTypesQuery } from "@navtrack/shared/hooks/queries/useDevicesTypesQuery";
+import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
+import { mapErrors } from "@navtrack/shared/utils/formik";
 
 export default function useAddAsset() {
   const { deviceTypes } = useDevicesTypesQuery();
@@ -20,16 +20,16 @@ export default function useAddAsset() {
   const assetsQuery = useGetAssetsSignalRQuery();
   const { setScrollToAsset } = useScrollToAsset();
 
-  const validationSchema: SchemaOf<AddAssetFormValues> = object({
-    name: string()
-      .required(intl.formatMessage({ id: "generic.name.required" }))
-      .defined(),
-    deviceTypeId: string()
-      .required(intl.formatMessage({ id: "generic.device-type.required" }))
-      .defined(),
-    serialNumber: string()
-      .required(intl.formatMessage({ id: "generic.serial-number.required" }))
-      .defined()
+  const validationSchema: ObjectSchema<AddAssetFormValues> = object({
+    name: string().required(
+      intl.formatMessage({ id: "generic.name.required" })
+    ),
+    deviceTypeId: string().required(
+      intl.formatMessage({ id: "generic.device-type.required" })
+    ),
+    serialNumber: string().required(
+      intl.formatMessage({ id: "generic.serial-number.required" })
+    )
   }).defined();
 
   const handleSubmit = useCallback(

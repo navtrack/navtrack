@@ -1,5 +1,5 @@
-import { useAuthentication } from "@navtrack/ui-shared/hooks/authentication/useAuthentication";
-import { useAxiosAuthorization } from "@navtrack/ui-shared/hooks/axios/useAxiosAuthorization";
+import { useAuthentication } from "@navtrack/shared/hooks/authentication/useAuthentication";
+import { useAxiosAuthorization } from "@navtrack/shared/hooks/axios/useAxiosAuthorization";
 import { ReactNode } from "react";
 import { AUTHENTICATION } from "../constants";
 

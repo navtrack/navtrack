@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 import { useIntl } from "react-intl";
-import { object, SchemaOf, string } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { RenameAssetFormValues } from "./types";
 import { FormikHelpers } from "formik";
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
-import { useRenameAssetMutation } from "@navtrack/ui-shared/hooks/mutations/useRenameAssetMutation";
-import { useGetAssetsSignalRQuery } from "@navtrack/ui-shared/hooks/queries/useGetAssetsSignalRQuery";
-import { mapErrors } from "@navtrack/ui-shared/utils/formik";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/useRenameAssetMutation";
+import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
+import { mapErrors } from "@navtrack/shared/utils/formik";
 
 export default function useRenameAsset() {
   const currentAsset = useCurrentAsset();
@@ -39,10 +39,8 @@ export default function useRenameAsset() {
 
   const intl = useIntl();
 
-  const validationSchema: SchemaOf<{ name: string }> = object({
-    name: string()
-      .required(intl.formatMessage({ id: "generic.name.required" }))
-      .defined()
+  const validationSchema: ObjectSchema<{ name: string }> = object({
+    name: string().required(intl.formatMessage({ id: "generic.name.required" }))
   }).defined();
 
   return {

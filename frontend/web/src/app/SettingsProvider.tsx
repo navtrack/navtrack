@@ -1,4 +1,4 @@
-import { useSettings } from "@navtrack/ui-shared/hooks/settings/useSettings";
+import { useSettings } from "@navtrack/shared/hooks/settings/useSettings";
 import { ReactNode } from "react";
 
 export const SettingsProvider = (props: { children: ReactNode }) => {

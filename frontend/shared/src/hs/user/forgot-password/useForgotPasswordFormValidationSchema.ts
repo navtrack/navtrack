@@ -1,12 +1,11 @@
-import { object, SchemaOf, string } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { ForgotPasswordFormValues } from "./ForgotPasswordFormValues";
 
 export const useForgotPasswordFormValidationSchema = () => {
-  const validationSchema: SchemaOf<ForgotPasswordFormValues> = object({
+  const validationSchema: ObjectSchema<ForgotPasswordFormValues> = object({
     email: string()
       .email("generic.email.invalid")
-      .required("generic.email.required")
-      .defined(),
+      .required("generic.email.required"),
   }).defined();
 
   return validationSchema;

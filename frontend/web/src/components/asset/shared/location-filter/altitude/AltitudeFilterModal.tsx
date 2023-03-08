@@ -8,8 +8,8 @@ import FilterModal from "../FilterModal";
 import { AltitudeFilterFormValues } from "../types";
 import useAltitudeFilter from "./useAltitudeFilter";
 import { useAltitudeFilterFormValuesValidation } from "./useAltitudeFilterFormValuesValidation";
-import { useCurrentUnits } from "@navtrack/ui-shared/hooks/util/useCurrentUnits";
-import { nameOf } from "@navtrack/ui-shared/utils/typescript";
+import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
+import { nameOf } from "@navtrack/shared/utils/typescript";
 
 interface IAltitudeFilterModal {
   average?: boolean;

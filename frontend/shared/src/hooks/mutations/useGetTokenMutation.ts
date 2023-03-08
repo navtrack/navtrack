@@ -1,6 +1,6 @@
+import queryString from "query-string";
 import { useMutation, UseMutationOptions } from "react-query";
 import { axiosInstance } from "../../api/axiosInstance";
-import { stringify } from "query-string";
 
 type TokenRequest = {
   grant_type: string;
@@ -34,10 +34,10 @@ export const useGetTokenMutation = (
       axiosInstance<TokenResponse>({
         url: `/connect/token`,
         method: "post",
-        data: stringify(data),
+        data: queryString.stringify(data),
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       }),
     options
   );

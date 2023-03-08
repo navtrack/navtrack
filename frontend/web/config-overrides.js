@@ -14,7 +14,7 @@ function myOverrides(config, env) {
     if (rule.loader && rule.loader.includes("babel-loader") && rule.include) {
       return {
         ...rule,
-        include: [rule.include, sharedRepoPath],
+        include: [rule.include, sharedRepoPath]
       };
     }
 
@@ -22,7 +22,7 @@ function myOverrides(config, env) {
   });
 
   // Mirror TypeScript @shared path in webpack
-  config.resolve.alias["@navtrack/ui-shared"] = sharedRepoPath;
+  config.resolve.alias["@navtrack/shared"] = sharedRepoPath;
 
   return config;
 }

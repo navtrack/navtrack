@@ -5,7 +5,7 @@ import { useMsal } from "@azure/msal-react";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { ICustomExternalLoginButton } from "./types";
-import { settingsSelector } from "@navtrack/ui-shared/state/app.settings";
+import { settingsSelector } from "@navtrack/shared/state/app.settings";
 
 export default function ExternalLoginButtonMicrosoft(
   props: ICustomExternalLoginButton

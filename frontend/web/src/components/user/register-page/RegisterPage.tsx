@@ -12,15 +12,15 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import ExternalLogin from "../login-page/external-login/ExternalLogin";
 import { AUTHENTICATION } from "../../../constants";
-import { useLogin } from "@navtrack/ui-shared/hooks/authentication/useLogin";
-import { useRegister } from "@navtrack/ui-shared/hs/user/register/useRegister";
-import { useRegisterFormValidationSchema } from "@navtrack/ui-shared/hs/user/register/useRegisterFormValidationSchema";
+import { useLogin } from "@navtrack/shared/hooks/authentication/useLogin";
+import { useRegister } from "@navtrack/shared/hs/user/register/useRegister";
+import { useRegisterFormValidationSchema } from "@navtrack/shared/hs/user/register/useRegisterFormValidationSchema";
 
 export default function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
   const register = useRegister();
   const { externalLogin } = useLogin({
-    clientId: AUTHENTICATION.CLIENT_ID,
+    clientId: AUTHENTICATION.CLIENT_ID
   });
 
   return (
@@ -47,8 +47,7 @@ export default function RegisterPage() {
               }
               validationSchema={() => validationSchema}
               initialErrors={undefined}
-              enableReinitialize
-            >
+              enableReinitialize>
               {({ values, status, errors }) => (
                 <Form className="space-y-4">
                   <FormikTextInput
@@ -92,8 +91,7 @@ export default function RegisterPage() {
                       disabled={register.loading}
                       fullWidth
                       size="lg"
-                      loading={register.loading}
-                    >
+                      loading={register.loading}>
                       <FormattedMessage id="register.button" />
                     </Button>
                   </div>

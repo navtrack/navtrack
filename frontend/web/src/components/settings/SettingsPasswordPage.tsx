@@ -1,4 +1,4 @@
-import { nameOf } from "@navtrack/ui-shared/utils/typescript";
+import { nameOf } from "@navtrack/shared/utils/typescript";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
 import Button from "../ui/shared/button/Button";
@@ -7,7 +7,7 @@ import FormikTextInput from "../ui/shared/text-input/FormikTextInput";
 import Text from "../ui/shared/text/Text";
 import SettingsLayout from "./SettingsLayout";
 import { ChangePasswordFormValues } from "./types";
-import useChangePassword from "./useChangePassword";
+import { useChangePassword } from "./useChangePassword";
 
 export default function SettingsPasswordPage() {
   const { validationSchema, handleSubmit } = useChangePassword();

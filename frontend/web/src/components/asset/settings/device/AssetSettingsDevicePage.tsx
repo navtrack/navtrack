@@ -8,13 +8,13 @@ import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
 import DeviceConfiguration from "../../add/DeviceConfiguration";
 import DevicesTable from "./DevicesTable";
 import useNotification from "../../../ui/shared/notification/useNotification";
-import { object, SchemaOf, string } from "yup";
-import { DeviceTypeModel } from "@navtrack/ui-shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
-import { useAddDeviceMutation } from "@navtrack/ui-shared/hooks/mutations/useAddDeviceMutation";
-import { useAssetDevicesQuery } from "@navtrack/ui-shared/hooks/queries/useAssetDevicesQuery";
-import { useDevicesTypesQuery } from "@navtrack/ui-shared/hooks/queries/useDevicesTypesQuery";
-import { mapErrors } from "@navtrack/ui-shared/utils/formik";
+import { object, ObjectSchema, string } from "yup";
+import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useAddDeviceMutation } from "@navtrack/shared/hooks/mutations/useAddDeviceMutation";
+import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/useAssetDevicesQuery";
+import { useDevicesTypesQuery } from "@navtrack/shared/hooks/queries/useDevicesTypesQuery";
+import { mapErrors } from "@navtrack/shared/utils/formik";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -72,13 +72,13 @@ export default function AssetSettingsDevicePage() {
     }
   }, [currentAsset?.device.deviceType.id, deviceTypes, selectedDeviceType]);
 
-  const validationSchema: SchemaOf<ChangeDeviceFormValues> = object({
-    deviceTypeId: string()
-      .required(intl.formatMessage({ id: "generic.device-type.required" }))
-      .defined(),
-    serialNumber: string()
-      .required(intl.formatMessage({ id: "generic.serial-number.required" }))
-      .defined()
+  const validationSchema: ObjectSchema<ChangeDeviceFormValues> = object({
+    deviceTypeId: string().required(
+      intl.formatMessage({ id: "generic.device-type.required" })
+    ),
+    serialNumber: string().required(
+      intl.formatMessage({ id: "generic.serial-number.required" })
+    )
   }).defined();
 
   return (

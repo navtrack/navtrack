@@ -1,7 +1,7 @@
 import {
   localStorageAtom,
   LocalStorageData
-} from "@navtrack/ui-shared/state/app.localStorage";
+} from "@navtrack/shared/state/app.localStorage";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 

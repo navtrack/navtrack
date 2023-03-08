@@ -3,7 +3,7 @@ import { ExternalLoginButton } from "./ExternalLoginButton";
 import { FormattedMessage } from "react-intl";
 import { useRecoilValue } from "recoil";
 import AppleSignin from "react-apple-signin-auth";
-import { settingsSelector } from "@navtrack/ui-shared/state/app.settings";
+import { settingsSelector } from "@navtrack/shared/state/app.settings";
 
 export default function ExternalLoginButtonApple(props) {
   const settings = useRecoilValue(settingsSelector);

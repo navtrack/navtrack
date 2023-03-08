@@ -1,20 +1,24 @@
 import { useIntl } from "react-intl";
-import { number, object, SchemaOf } from "yup";
+import { object, ObjectSchema, string } from "yup";
 import { AltitudeFilterFormValues } from "../types";
 
 export const useAltitudeFilterFormValuesValidation = () => {
   const intl = useIntl();
 
-  const validationSchema: SchemaOf<AltitudeFilterFormValues> = object()
-    .shape({
-      minAltitude: number()
-        .typeError(intl.formatMessage({ id: "generic.number.required" }))
-        .optional(),
-      maxAltitude: number()
-        .typeError(intl.formatMessage({ id: "generic.number.required" }))
-        .optional()
-    })
-    .defined();
+  const validationSchema: ObjectSchema<AltitudeFilterFormValues> = object({
+    minAltitude: string()
+      .matches(
+        /^[0-9]+$/,
+        intl.formatMessage({ id: "generic.number.required" })
+      )
+      .required(intl.formatMessage({ id: "generic.number.required" })),
+    maxAltitude: string()
+      .matches(
+        /^[0-9]+$/,
+        intl.formatMessage({ id: "generic.number.required" })
+      )
+      .required(intl.formatMessage({ id: "generic.number.required" }))
+  }).defined();
 
   return validationSchema;
 };

@@ -8,7 +8,7 @@ import { FormattedMessage } from "react-intl";
 import { useRecoilValue } from "recoil";
 
 import { ICustomExternalLoginButton } from "./types";
-import { settingsSelector } from "@navtrack/ui-shared/state/app.settings";
+import { settingsSelector } from "@navtrack/shared/state/app.settings";
 
 export default function ExternalLoginButtonGoogle(
   props: ICustomExternalLoginButton

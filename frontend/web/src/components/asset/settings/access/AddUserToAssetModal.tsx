@@ -13,7 +13,7 @@ import ModalIcon from "../../../ui/shared/modal/ModalIcon";
 import FormikSelectInput from "../../../ui/shared/select/FormikSelectInput";
 import { AddUserToAssetFormValues } from "./types";
 import useAddUserToAsset from "./useAddUserToAsset";
-import { AssetRoleType } from "@navtrack/ui-shared/api/model/custom/AssetRoleType";
+import { AssetRoleType } from "@navtrack/shared/api/model/custom/AssetRoleType";
 
 interface IAddUserToAssetModal {
   show: boolean;

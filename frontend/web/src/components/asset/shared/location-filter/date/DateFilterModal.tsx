@@ -1,6 +1,6 @@
 import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons";
 import { RadioGroup } from "@headlessui/react";
-import { nameOf } from "@navtrack/ui-shared/utils/typescript";
+import { nameOf } from "@navtrack/shared/utils/typescript";
 import classNames from "classnames";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
@@ -42,7 +42,7 @@ export default function DateFilterModal(props: IDateFilterModal) {
                         value={setting.range}
                         className={({ checked }) =>
                           classNames(
-                            "focus:outline-none relative flex  cursor-pointer py-1",
+                            "relative flex cursor-pointer  py-1 focus:outline-none",
                             settingIdx === dateOptions.length - 1
                               ? "rounded-bl-md rounded-br-md"
                               : "",

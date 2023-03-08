@@ -10,7 +10,7 @@ import Icon from "../../../ui/shared/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import LoadingIndicator from "../../../ui/shared/loading-indicator/LoadingIndicator";
 import { RenameAssetFormValues } from "./types";
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
 
 export default function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();

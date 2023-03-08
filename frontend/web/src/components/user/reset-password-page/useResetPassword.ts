@@ -1,5 +1,5 @@
-import { useResetPasswordMutation } from "@navtrack/ui-shared/hooks/mutations/users/useResetPasswordMutation";
-import { mapErrors } from "@navtrack/ui-shared/utils/formik";
+import { useResetPasswordMutation } from "@navtrack/shared/hooks/mutations/users/useResetPasswordMutation";
+import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
@@ -19,11 +19,11 @@ export const useResetPassword = () => {
           data: {
             hash: hash,
             password: values.password,
-            confirmPassword: values.confirmPassword,
-          },
+            confirmPassword: values.confirmPassword
+          }
         },
         {
-          onError: (error) => mapErrors(error, formikHelpers),
+          onError: (error) => mapErrors(error, formikHelpers)
         }
       );
     },
@@ -33,6 +33,6 @@ export const useResetPassword = () => {
   return {
     resetPassword,
     loading: changePasswordMutation.isLoading,
-    success: changePasswordMutation.isSuccess,
+    success: changePasswordMutation.isSuccess
   };
 };

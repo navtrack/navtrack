@@ -6,7 +6,7 @@ import ConfigProvider from "./ConfigProvider";
 import { SentryProvider } from "./SentryProvider";
 import { AuthenticationProvider } from "./AuthenticationProvider";
 import { SettingsProvider } from "./SettingsProvider";
-import { translations } from "@navtrack/ui-shared/translations";
+import { translations } from "@navtrack/shared/translations";
 
 const queryClient = new QueryClient();
 

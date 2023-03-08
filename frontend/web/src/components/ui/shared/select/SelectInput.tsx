@@ -4,8 +4,8 @@ import {
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import { Popover, Transition } from "@headlessui/react";
-import { useHTMLElementSize } from "@navtrack/ui-shared/hooks/util/useHTMLElementSize";
-import { c } from "@navtrack/ui-shared/utils/tailwind";
+import { useHTMLElementSize } from "@navtrack/shared/hooks/util/useHTMLElementSize";
+import { c } from "@navtrack/shared/utils/tailwind";
 import classNames from "classnames";
 import { FocusEventHandler, Fragment, useMemo, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";

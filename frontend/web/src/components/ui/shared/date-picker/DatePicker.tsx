@@ -2,7 +2,7 @@ import { Popover } from "@headlessui/react";
 import { LocalizationProvider, StaticDatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { styled, TextField, TextFieldProps } from "@mui/material";
-import { c } from "@navtrack/ui-shared/utils/tailwind";
+import { c } from "@navtrack/shared/utils/tailwind";
 import classNames from "classnames";
 import { format } from "date-fns";
 import { useState } from "react";

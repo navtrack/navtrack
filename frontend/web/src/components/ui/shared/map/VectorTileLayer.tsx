@@ -13,6 +13,7 @@ export const VectorTileLayer = (props: VectorTileLayerProps) => {
 
   useEffect(() => {
     if (!layer) {
+      //@ts-ignore TODO
       const l = L.maplibreGL({ style: props.styleUrl }).addTo(map);
 
       setLayer(l);

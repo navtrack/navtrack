@@ -1,7 +1,7 @@
-import { AssetUserModel } from "@navtrack/ui-shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/ui-shared/newHooks/assets/useCurrentAsset";
-import { useDeleteUserFromAssetMutation } from "@navtrack/ui-shared/hooks/mutations/useDeleteUserFromAssetMutation";
-import { getError } from "@navtrack/ui-shared/utils/api";
+import { AssetUserModel } from "@navtrack/shared/api/model/generated";
+import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useDeleteUserFromAssetMutation } from "@navtrack/shared/hooks/mutations/useDeleteUserFromAssetMutation";
+import { getError } from "@navtrack/shared/utils/api";
 import { FormattedMessage } from "react-intl";
 import DeleteModal from "../../../ui/shared/modal/DeleteModal";
 import useNotification from "../../../ui/shared/notification/useNotification";

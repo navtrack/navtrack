@@ -15,8 +15,8 @@ import Paths from "../../../app/Paths";
 import ExternalLogin from "./external-login/ExternalLogin";
 import Alert from "../../ui/shared/alert/Alert";
 import { AUTHENTICATION } from "../../../constants";
-import { useLogin } from "@navtrack/ui-shared/hooks/authentication/useLogin";
-import { useLoginFormValidationSchema } from "@navtrack/ui-shared/hs/user/login/useLoginFormValidationSchema";
+import { useLogin } from "@navtrack/shared/hooks/authentication/useLogin";
+import { useLoginFormValidationSchema } from "@navtrack/shared/hs/user/login/useLoginFormValidationSchema";
 
 export const LoginPage = () => {
   const validationSchema = useLoginFormValidationSchema();
@@ -25,9 +25,9 @@ export const LoginPage = () => {
     externalLogin,
     loading,
     internalLoginError,
-    externalLoginError,
+    externalLoginError
   } = useLogin({
-    clientId: AUTHENTICATION.CLIENT_ID,
+    clientId: AUTHENTICATION.CLIENT_ID
   });
 
   return (
@@ -51,8 +51,7 @@ export const LoginPage = () => {
           onSubmit={(values) =>
             internalLogin({ username: values.email, password: values.password })
           }
-          validationSchema={validationSchema}
-        >
+          validationSchema={validationSchema}>
           {({ values }) => (
             <Form className="space-y-2">
               <FormikTextInput
@@ -84,8 +83,7 @@ export const LoginPage = () => {
                   color="primary"
                   size="lg"
                   disabled={loading}
-                  fullWidth
-                >
+                  fullWidth>
                   {loading ? (
                     <LoadingIndicator />
                   ) : (
