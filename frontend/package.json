@@ -12,7 +12,8 @@
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "build:web": "cd web && npm run build"
+    "build:web": "cd web && npm run build",
+    "clean": "rm -rf node_modules && rm -rf shared/node_modules && rm -rf web/node_modules"
   },
   "overrides": {
     "react": "18.2.0",
