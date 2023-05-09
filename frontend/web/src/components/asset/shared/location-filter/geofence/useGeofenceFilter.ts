@@ -4,7 +4,7 @@ import { DEFAULT_MAP_CENTER } from "../../../../../constants";
 import { CircleGeofence, LatLng } from "../../../../ui/shared/map/types";
 import { geofenceFilterAtom } from "../state";
 
-export default function useGeofenceFilter(
+export function useGeofenceFilter(
   filterKey: string,
   initialMapCenter?: LatLng
 ) {

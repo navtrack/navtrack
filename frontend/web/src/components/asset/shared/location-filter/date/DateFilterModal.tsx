@@ -4,18 +4,18 @@ import { nameOf } from "@navtrack/shared/utils/typescript";
 import classNames from "classnames";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import DatePicker from "../../../../ui/shared/date-picker/DatePicker";
-import Modal from "../../../../ui/shared/modal/Modal";
-import FilterModal from "../FilterModal";
+import { DatePicker } from "../../../../ui/shared/date-picker/DatePicker";
+import { Modal } from "../../../../ui/shared/modal/Modal";
+import { FilterModal } from "../FilterModal";
 import { DateFilter, DateRange } from "../types";
 import { dateOptions } from "./date-options";
-import useDateFilter from "./useDateFilter";
+import { useDateFilter } from "./useDateFilter";
 
 interface IDateFilterModal {
   filterKey: string;
 }
 
-export default function DateFilterModal(props: IDateFilterModal) {
+export function DateFilterModal(props: IDateFilterModal) {
   const { state, close, handleSubmit } = useDateFilter(props);
 
   return (

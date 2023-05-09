@@ -1,3 +1,3 @@
-export default function AssetAlertsPage() {
+export function AssetAlertsPage() {
   return <>alerts page</>;
 }

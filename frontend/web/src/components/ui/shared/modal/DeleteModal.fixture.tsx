@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DeleteModal from "./DeleteModal";
+import { DeleteModal } from "./DeleteModal";
 
 export default {
   Default: () => {

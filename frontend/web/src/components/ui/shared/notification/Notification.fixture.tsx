@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Notification from "./Notification";
-import useNotification from "./useNotification";
+import { Notification } from "./Notification";
+import { useNotification } from "./useNotification";
 
 export default {
   Default: () => {

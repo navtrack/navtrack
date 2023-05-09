@@ -1,8 +1,8 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import Snackbar from "../snackbar/Snackbar";
+import { Snackbar } from "../snackbar/Snackbar";
 import { notificationAtom, showNotificationAtom } from "./state";
 
-export default function Notification() {
+export function Notification() {
   const notification = useRecoilValue(notificationAtom);
   const [showNotification, setShowNotification] =
     useRecoilState(showNotificationAtom);

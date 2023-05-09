@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { format } from "date-fns";
 import { useState } from "react";
 import { usePopper } from "react-popper";
-import TextInput from "../text-input/TextInput";
+import { TextInput } from "../text-input/TextInput";
 
 interface IDatePicker {
   value: Date | null;
@@ -49,7 +49,7 @@ const StyledDatePickerContainer = styled("div")`
   }
 `;
 
-export default function DatePicker(props: IDatePicker) {
+export function DatePicker(props: IDatePicker) {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>();
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>();

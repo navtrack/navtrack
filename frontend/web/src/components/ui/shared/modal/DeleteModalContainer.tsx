@@ -1,12 +1,12 @@
 import { FormattedMessage } from "react-intl";
-import Button from "../button/Button";
+import { Button } from "../button/Button";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
-import ModalContainer from "./ModalContainer";
-import ModalContent from "./ModalContent";
-import ModalIcon from "./ModalIcon";
-import ModalBody from "./ModalBody";
-import ModalActions from "./ModalActions";
+import { ModalContainer } from "./ModalContainer";
+import { ModalContent } from "./ModalContent";
+import { ModalIcon } from "./ModalIcon";
+import { ModalBody } from "./ModalBody";
+import { ModalActions } from "./ModalActions";
 
 interface IDeleteModalContainer {
   close: () => void;
@@ -15,7 +15,7 @@ interface IDeleteModalContainer {
   loading?: boolean;
 }
 
-export default function DeleteModalContainer(props: IDeleteModalContainer) {
+export function DeleteModalContainer(props: IDeleteModalContainer) {
   return (
     <ModalContainer>
       <ModalContent>

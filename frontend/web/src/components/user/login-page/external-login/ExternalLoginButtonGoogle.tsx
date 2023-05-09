@@ -8,12 +8,10 @@ import { FormattedMessage } from "react-intl";
 import { useRecoilValue } from "recoil";
 
 import { ICustomExternalLoginButton } from "./types";
-import { settingsSelector } from "@navtrack/shared/state/app.settings";
+import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 
-export default function ExternalLoginButtonGoogle(
-  props: ICustomExternalLoginButton
-) {
-  const settings = useRecoilValue(settingsSelector);
+export function ExternalLoginButtonGoogle(props: ICustomExternalLoginButton) {
+  const settings = useRecoilValue(environmentSettingsSelector);
 
   const handleGoogleSuccess = (
     response: GoogleLoginResponse | GoogleLoginResponseOffline

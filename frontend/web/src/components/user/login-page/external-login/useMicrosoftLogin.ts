@@ -1,10 +1,10 @@
 import { useRecoilValue } from "recoil";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { useMemo } from "react";
-import { settingsSelector } from "@navtrack/shared/state/app.settings";
+import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 
-export default function useMicrosoftLogin() {
-  const settings = useRecoilValue(settingsSelector);
+export function useMicrosoftLogin() {
+  const settings = useRecoilValue(environmentSettingsSelector);
 
   const publicClientApplication = useMemo(
     () =>

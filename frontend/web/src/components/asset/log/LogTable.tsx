@@ -2,7 +2,7 @@ import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import LoadingIndicator from "../../ui/shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
 import useLog from "./useLog";
 
 export default function LogTable() {

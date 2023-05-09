@@ -1,11 +1,11 @@
-import { settingsSelector } from "@navtrack/shared/state/app.settings";
+import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 import { init } from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
-export default function useSentry() {
-  const settings = useRecoilValue(settingsSelector);
+export function useSentry() {
+  const settings = useRecoilValue(environmentSettingsSelector);
   const [initalised, setInitialised] = useState(false);
 
   useEffect(() => {

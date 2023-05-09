@@ -4,21 +4,22 @@ import {
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import { Popover, Transition } from "@headlessui/react";
-import { useHTMLElementSize } from "@navtrack/shared/hooks/util/useHTMLElementSize";
+
 import { c } from "@navtrack/shared/utils/tailwind";
 import classNames from "classnames";
 import { FocusEventHandler, Fragment, useMemo, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import Icon from "../icon/Icon";
-import TextInput from "../text-input/TextInput";
-import TextInputRightAddon from "../text-input/TextInputRightAddon";
+import { Icon } from "../icon/Icon";
+import { TextInput } from "../text-input/TextInput";
+import { TextInputRightAddon } from "../text-input/TextInputRightAddon";
+import { useHTMLElementSize } from "@navtrack/shared/hooks/app/util/useHTMLElementSize";
 
 export interface ISelectInputItem {
   id: string;
   label: string;
 }
 
-export interface ISelectInput {
+export interface SelectInputProps {
   name?: string;
   label?: string;
   placeholder?: string;
@@ -29,7 +30,7 @@ export interface ISelectInput {
   error?: string;
 }
 
-export default function SelectInput(props: ISelectInput) {
+export function SelectInput(props: SelectInputProps) {
   const [selectedItem, setSelectedItem] = useState(
     props.items.find((item) => item.id === props.value)
   );

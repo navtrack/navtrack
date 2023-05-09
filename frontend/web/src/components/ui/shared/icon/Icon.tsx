@@ -10,7 +10,7 @@ interface IIconsProps {
   className?: string;
 }
 
-export default function Icon(props: IIconsProps) {
+export function Icon(props: IIconsProps) {
   return !props.hidden ? (
     <FontAwesomeIcon {...props} onClick={props.onClick} />
   ) : null;

@@ -1,20 +1,20 @@
 import { FormattedMessage } from "react-intl";
 import { useMemo } from "react";
 import { MsalProvider } from "@azure/msal-react";
-import ExternalLoginButtonApple from "./ExternalLoginButtonApple";
-import ExternalLoginButtonMicrosoft from "./ExternalLoginButtonMicrosoft";
-import ExternalLoginButtonGoogle from "./ExternalLoginButtonGoogle";
+import { ExternalLoginButtonApple } from "./ExternalLoginButtonApple";
+import { ExternalLoginButtonMicrosoft } from "./ExternalLoginButtonMicrosoft";
+import { ExternalLoginButtonGoogle } from "./ExternalLoginButtonGoogle";
 import { useRecoilValue } from "recoil";
-import useMicrosoftLogin from "./useMicrosoftLogin";
-import { settingsSelector } from "@navtrack/shared/state/app.settings";
+import { useMicrosoftLogin } from "./useMicrosoftLogin";
+import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 
 interface IExternalLogin {
   login: (code: string, grantType: "apple" | "microsoft" | "google") => void;
 }
 
-export default function ExternalLogin(props: IExternalLogin) {
+export function ExternalLogin(props: IExternalLogin) {
   const { publicClientApplication } = useMicrosoftLogin();
-  const settings = useRecoilValue(settingsSelector);
+  const settings = useRecoilValue(environmentSettingsSelector);
 
   const hasExternalLogins = useMemo(
     () =>

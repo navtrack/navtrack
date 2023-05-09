@@ -1,23 +1,21 @@
 import { Redirect, Route, Switch } from "react-router-dom";
-import HomePage from "../components/home/HomePage";
-import AssetLiveTrackingPage from "../components/asset/live-tracking/AssetLiveTrackingPage";
-import AssetLogPage from "../components/asset/log/AssetLogPage";
-import AssetTripsPage from "../components/asset/trips/AssetTripsPage";
-import AssetAlertsPage from "../components/asset/alerts/AssetAlertsPage";
-import AssetReportsPage from "../components/asset/reports/AssetReportsPage";
-import SettingsAccountPage from "../components/settings/SettingsAccountPage";
-import AdminLayout from "../components/ui/layouts/admin/AdminLayout";
-import AssetSettingsGeneral from "../components/asset/settings/general/AssetSettingsGeneralPage";
-import AssetAddPage from "../components/asset/add/AssetAddPage";
-import AssetSettingsAccessPage from "../components/asset/settings/access/AssetSettingsAccessPage";
+import { HomePage } from "../components/home/HomePage";
+import { AssetLiveTrackingPage } from "../components/asset/live-tracking/AssetLiveTrackingPage";
+import { AssetLogPage } from "../components/asset/log/AssetLogPage";
+import { AssetTripsPage } from "../components/asset/trips/AssetTripsPage";
+import { AssetAlertsPage } from "../components/asset/alerts/AssetAlertsPage";
+import { AssetReportsPage } from "../components/asset/reports/AssetReportsPage";
+import { SettingsAccountPage } from "../components/settings/SettingsAccountPage";
+import { AdminLayout } from "../components/ui/layouts/admin/AdminLayout";
+import { AssetSettingsGeneralPage } from "../components/asset/settings/general/AssetSettingsGeneralPage";
+import { AssetAddPage } from "../components/asset/add/AssetAddPage";
+import { AssetSettingsAccessPage } from "../components/asset/settings/access/AssetSettingsAccessPage";
 import Paths from "./Paths";
-import SettingsPasswordPage from "../components/settings/SettingsPasswordPage";
-import AssetSettingsDevicePage from "../components/asset/settings/device/AssetSettingsDevicePage";
-import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hs/assets/useSetCurrentAssetFromRoute";
-import { useSignalR } from "@navtrack/shared/hooks/signalr/useSignalR";
+import { SettingsPasswordPage } from "../components/settings/SettingsPasswordPage";
+import { AssetSettingsDevicePage } from "../components/asset/settings/device/AssetSettingsDevicePage";
+import { useSetCurrentAssetFromRoute } from "../hooks/assets/useSetCurrentAssetFromRoute";
 
-export default function RoutesAuthenticated() {
-  useSignalR();
+export function RoutesAuthenticated() {
   useSetCurrentAssetFromRoute();
 
   return (
@@ -45,7 +43,7 @@ export default function RoutesAuthenticated() {
           <AssetSettingsDevicePage />
         </Route>
         <Route path={Paths.AssetsSettings}>
-          <AssetSettingsGeneral />
+          <AssetSettingsGeneralPage />
         </Route>
         <Route path={Paths.AssetsAdd}>
           <AssetAddPage />

@@ -3,12 +3,12 @@ import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
 import { RenameAssetFormValues } from "./types";
 import { FormikHelpers } from "formik";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/useRenameAssetMutation";
 import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 
-export default function useRenameAsset() {
+export function useRenameAsset() {
   const currentAsset = useCurrentAsset();
   const renameAssetMutation = useRenameAssetMutation();
   const assetsQuery = useGetAssetsSignalRQuery();
@@ -20,9 +20,9 @@ export default function useRenameAsset() {
       formikHelpers: FormikHelpers<RenameAssetFormValues>
     ) => {
       setShowSuccess(false);
-      if (currentAsset) {
+      if (currentAsset.data) {
         renameAssetMutation.mutate(
-          { assetId: currentAsset?.id, data: { name: values.name } },
+          { assetId: currentAsset.data?.id, data: { name: values.name } },
           {
             onSuccess: () => {
               assetsQuery.refetch();

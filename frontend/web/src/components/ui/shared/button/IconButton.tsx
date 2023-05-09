@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "../icon/Icon";
+import { Icon } from "../icon/Icon";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface IIconButton {
@@ -9,7 +9,7 @@ interface IIconButton {
   icon: IconProp;
 }
 
-export default function IconButton(props: IIconButton) {
+export function IconButton(props: IIconButton) {
   return (
     <button onClick={props.onClick} disabled={props.disabled}>
       <Icon icon={props.icon} className={props.className} />

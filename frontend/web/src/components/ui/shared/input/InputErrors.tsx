@@ -5,7 +5,7 @@ export interface IInputErrors<T> {
   errors?: FormikErrors<T>;
 }
 
-export default function InputErrors<T>(props: IInputErrors<T>) {
+export function InputErrors<T>(props: IInputErrors<T>) {
   return (
     <>
       {props.errors &&

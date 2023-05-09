@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Select from "./Select";
+import { Select } from "./Select";
 import { ISelectOption } from "./types";
 
 const assets: ISelectOption[] = Array.from(Array(100).keys()).map((x) => ({

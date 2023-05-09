@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
-import Button from "../../../ui/shared/button/Button";
+import { Button } from "../../../ui/shared/button/Button";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -15,7 +15,7 @@ import {
   speedFilterAtom,
   durationFilterAtom
 } from "./state";
-import LocationFilterAddButtonMenuItem from "./LocationFilterAddButtonMenuItem";
+import { LocationFilterAddButtonMenuItem } from "./LocationFilterAddButtonMenuItem";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 interface ILocationFilterAddButton {
@@ -25,9 +25,7 @@ interface ILocationFilterAddButton {
   filterKey: string;
 }
 
-export default function LocationFilterAddButton(
-  props: ILocationFilterAddButton
-) {
+export function LocationFilterAddButton(props: ILocationFilterAddButton) {
   const filtersEnabled = useRecoilValue(
     filtersEnabledSelector(props.filterKey)
   );
@@ -53,7 +51,7 @@ export default function LocationFilterAddButton(
   return (
     <>
       {!filtersEnabled.all && (
-        <Menu as="div" className="relative inline-block text-left order-last">
+        <Menu as="div" className="relative order-last inline-block text-left">
           <Menu.Button as={Fragment}>
             <div>
               <Button color="primary" size="xs">
@@ -69,7 +67,7 @@ export default function LocationFilterAddButton(
             leave="transition ease-in duration-75"
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95">
-            <Menu.Items className="z-30 origin-top-left absolute left-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items className="absolute left-0 z-30 mt-2 w-44 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="py-1">
                 {!altitudeFilter.enabled && (
                   <Menu.Item>

@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,8 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
+        Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+        
         IHost host = Host.CreateDefaultBuilder(args)
             .ConfigureLogging((_, builder) =>
             {

@@ -4,7 +4,7 @@ import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, ref, string } from "yup";
-import useNotification from "../ui/shared/notification/useNotification";
+import { useNotification } from "../ui/shared/notification/useNotification";
 import { ChangePasswordFormValues } from "./types";
 
 export function useChangePassword() {

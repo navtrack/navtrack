@@ -1666,19 +1666,13 @@
           "id",
           "maxSpeed",
           "name",
-          "online",
-          "shortId"
+          "online"
         ],
         "type": "object",
         "properties": {
           "id": {
             "minLength": 1,
             "type": "string"
-          },
-          "shortId": {
-            "minLength": 1,
-            "type": "string",
-            "readOnly": true
           },
           "name": {
             "minLength": 1,

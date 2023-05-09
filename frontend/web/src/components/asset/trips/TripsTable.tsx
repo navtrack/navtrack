@@ -3,10 +3,10 @@ import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import LoadingIndicator from "../../ui/shared/loading-indicator/LoadingIndicator";
-import useTrips from "./useTrips";
+import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
+import { useTrips } from "./useTrips";
 
-export default function TripsTable() {
+export function TripsTable() {
   const trips = useTrips();
   const units = useCurrentUnits();
   const { showDuration, showDateTime } = useDateTime();

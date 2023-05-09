@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import classNames from "classnames";
-import LoadingIndicator from "../loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 import { c } from "@navtrack/shared/utils/tailwind";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
   loading?: boolean;
 };
 
-export default function Button(props: Props) {
+export function Button(props: Props) {
   return (
     <button
       className={classNames(

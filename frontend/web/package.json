@@ -17,7 +17,6 @@
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.12",
     "@maplibre/maplibre-gl-leaflet": "^0.0.19",
-    "@microsoft/signalr": "^7.0.3",
     "@mui/lab": "^5.0.0-alpha.122",
     "@mui/material": "^5.11.12",
     "@popperjs/core": "^2.11.0",

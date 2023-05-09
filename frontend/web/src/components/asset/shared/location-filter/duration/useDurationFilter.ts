@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { durationFilterAtom } from "../state";
 import { DurationFilterFormValues } from "../types";
 
-export default function useDurationFilter(key: string) {
+export function useDurationFilter(key: string) {
   const [state, setState] = useRecoilState(durationFilterAtom(key));
 
   const initialValues: DurationFilterFormValues = useMemo(
@@ -30,7 +30,10 @@ export default function useDurationFilter(key: string) {
     [setState]
   );
 
-  const close = useCallback(() => setState((x) => ({ ...x, open: false })), [setState]);
+  const close = useCallback(
+    () => setState((x) => ({ ...x, open: false })),
+    [setState]
+  );
 
   return { handleSubmit, close, initialValues, state };
 }

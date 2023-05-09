@@ -1,4 +1,4 @@
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useAddUserToAssetMutation } from "@navtrack/shared/hooks/mutations/useAddUserToAssetMutation";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/useAssetUsersQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
@@ -12,12 +12,12 @@ interface IUseAddUserToAsset {
   close: () => void;
 }
 
-export default function useAddUserToAsset(props: IUseAddUserToAsset) {
+export function useAddUserToAsset(props: IUseAddUserToAsset) {
   const intl = useIntl();
   const mutation = useAddUserToAssetMutation();
   const currentAsset = useCurrentAsset();
   const assetUsers = useAssetUsersQuery({
-    assetId: !!currentAsset ? currentAsset.id : ""
+    assetId: currentAsset.data?.id ?? ""
   });
 
   const validationSchema: ObjectSchema<AddUserToAssetFormValues> = object({
@@ -34,10 +34,10 @@ export default function useAddUserToAsset(props: IUseAddUserToAsset) {
       values: AddUserToAssetFormValues,
       formikHelpers: FormikHelpers<AddUserToAssetFormValues>
     ) => {
-      if (currentAsset) {
+      if (currentAsset.data) {
         mutation.mutate(
           {
-            assetId: currentAsset.id,
+            assetId: currentAsset.data.id,
             data: {
               email: values.email,
               role: values.role

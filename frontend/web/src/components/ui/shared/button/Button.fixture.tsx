@@ -1,9 +1,9 @@
-import LoadingIndicator from "../loading-indicator/LoadingIndicator";
-import Button from "./Button";
+import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
+import { Button } from "./Button";
 
 export default {
   Primary: (
-    <div className="space-x-4 block">
+    <div className="block space-x-4">
       <Button size="xs">Click me</Button>
       <Button size="sm">Click me</Button>
       <Button size="md">Click me</Button>
@@ -12,7 +12,7 @@ export default {
     </div>
   ),
   PrimaryLoading: (
-    <div className="space-x-4 block">
+    <div className="block space-x-4">
       <Button size="xs">Click me</Button>
       <Button size="xs">
         <LoadingIndicator />

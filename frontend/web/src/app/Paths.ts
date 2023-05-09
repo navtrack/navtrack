@@ -13,8 +13,7 @@ const Paths = {
   AssetsSettingsDevice: "/assets/:id/settings/device",
   AssetsAdd: "/assets/add",
   SettingsAccount: "/settings/account",
-  SettingsPassword: "/settings/password",
-  Maps: "/maps",
+  SettingsPassword: "/settings/password"
 };
 
 export default Paths;

@@ -11,9 +11,6 @@ public class AssetModel
     public string Id { get; set; }
 
     [Required]
-    public string ShortId => Id.Substring(Math.Max(0, Id.Length - 6));
-
-    [Required]
     public string Name { get; set; }
 
     [Required]

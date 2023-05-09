@@ -1,24 +1,24 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import { useCallback, useMemo } from "react";
-import Button from "../ui/shared/button/Button";
-import FormikTextInput from "../ui/shared/text-input/FormikTextInput";
-import SettingsLayout from "./SettingsLayout";
+import { Button } from "../ui/shared/button/Button";
+import { FormikTextInput } from "../ui/shared/text-input/FormikTextInput";
+import { SettingsLayout } from "./SettingsLayout";
 import { FormattedMessage, useIntl } from "react-intl";
-import FormikSelect from "../ui/shared/select/FormikSelect";
+import { FormikSelect } from "../ui/shared/select/FormikSelect";
 import { ISelectOption } from "../ui/shared/select/types";
-import useNotification from "../ui/shared/notification/useNotification";
-import { useCurrentUser } from "@navtrack/shared/hooks/app/useCurrentUser";
+import { useNotification } from "../ui/shared/notification/useNotification";
 import { useUpdateUserMutation } from "@navtrack/shared/hooks/mutations/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { UnitsType } from "@navtrack/shared/api/model/custom/UnitsType";
+import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
 
 type AccountSettingsFormValues = {
   email?: string;
   units?: string;
 };
 
-export default function SettingsAccountPage() {
+export function SettingsAccountPage() {
   const user = useCurrentUser();
   const updateUserMutation = useUpdateUserMutation();
   const { showNotification } = useNotification();

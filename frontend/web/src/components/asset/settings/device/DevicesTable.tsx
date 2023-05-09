@@ -5,9 +5,9 @@ import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/useDel
 
 import { FormattedMessage, useIntl } from "react-intl";
 import { useQueryClient } from "react-query";
-import IconButton from "../../../ui/shared/button/IconButton";
-import useNotification from "../../../ui/shared/notification/useNotification";
-import Table, { ITableColumn } from "../../../ui/shared/table/Table";
+import { IconButton } from "../../../ui/shared/button/IconButton";
+import { useNotification } from "../../../ui/shared/notification/useNotification";
+import { Table, ITableColumn } from "../../../ui/shared/table/Table";
 
 interface IDevicesTable {
   assetId: string;
@@ -16,7 +16,7 @@ interface IDevicesTable {
   refresh: () => void;
 }
 
-export default function DevicesTable(props: IDevicesTable) {
+export function DevicesTable(props: IDevicesTable) {
   const deleteDeviceMutation = useDeleteDeviceMutation();
   const queryClient = useQueryClient();
   const { showNotification } = useNotification();

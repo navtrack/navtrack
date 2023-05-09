@@ -1,28 +1,31 @@
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { assetConfigurationAtom } from "@navtrack/shared/state/assets";
 import { useEffect } from "react";
 import { useMapEvents } from "react-leaflet";
 import { useRecoilState } from "recoil";
-import useMap from "../../ui/shared/map/useMap";
+import { useMap } from "../../ui/shared/map/useMap";
 
-export default function useLiveTracking() {
+export function useLiveTracking() {
   const currentAsset = useCurrentAsset();
   const [configuration, setConfiguration] = useRecoilState(
-    assetConfigurationAtom(currentAsset?.id)
+    assetConfigurationAtom(currentAsset.data?.id)
   );
   const { map, setCenter } = useMap();
 
   useEffect(() => {
-    if (configuration.liveTracking.follow && currentAsset?.location) {
+    if (configuration.liveTracking.follow && currentAsset.data?.location) {
       setCenter(
-        [currentAsset.location.latitude, currentAsset.location.longitude],
+        [
+          currentAsset.data.location.latitude,
+          currentAsset.data.location.longitude
+        ],
         configuration.liveTracking.zoom
       );
     }
   }, [
     configuration.liveTracking.follow,
     configuration.liveTracking.zoom,
-    currentAsset?.location,
+    currentAsset.data?.location,
     map,
     setCenter
   ]);
@@ -36,5 +39,5 @@ export default function useLiveTracking() {
     }
   });
 
-  return { location: currentAsset?.location };
+  return { location: currentAsset.data?.location };
 }

@@ -6,14 +6,16 @@ type ITextInputRightAddon = {
   className?: string;
 };
 
-export default function TextInputRightAddon(props: ITextInputRightAddon) {
+export function TextInputRightAddon(props: ITextInputRightAddon) {
   return (
     <div
       className={classNames(
-        "absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none",
+        "pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3",
         props.className
       )}>
-      <span className="text-gray-500 text-sm flex items-center">{props.children}</span>
+      <span className="flex items-center text-sm text-gray-500">
+        {props.children}
+      </span>
     </div>
   );
 }

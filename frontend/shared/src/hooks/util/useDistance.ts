@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { UnitsType } from "../../api/model/custom/UnitsType";
 import { useCurrentUnits } from "./useCurrentUnits";
+import { UnitsType } from "../../api/model/custom/UnitsType";
 
 export const useDistance = () => {
   const units = useCurrentUnits();

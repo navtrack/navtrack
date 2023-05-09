@@ -2,28 +2,35 @@ import { IntlProvider } from "react-intl";
 import { BrowserRouterProvider } from "./BrowserRouterProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
-import ConfigProvider from "./ConfigProvider";
 import { SentryProvider } from "./SentryProvider";
-import { AuthenticationProvider } from "./AuthenticationProvider";
-import { SettingsProvider } from "./SettingsProvider";
+import { EnvironmentFetcher } from "../../../shared/src/components/EnvironmentFetcher";
 import { translations } from "@navtrack/shared/translations";
+import { ConfigProvider } from "@navtrack/shared/components/ConfigProvider";
+import { AuthenticationProvider } from "@navtrack/shared/components/AuthenticationProvider";
+import { AUTHENTICATION } from "../constants";
+import { SignalRProvider } from "@navtrack/shared/components/SignalRProvider";
 
 const queryClient = new QueryClient();
+const config = {
+  apiUrl: `${process.env.REACT_APP_API_URL}`
+};
 
 export function App() {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ConfigProvider>
-          <SettingsProvider>
+        <ConfigProvider config={config}>
+          <EnvironmentFetcher>
             <SentryProvider>
-              <AuthenticationProvider>
-                <IntlProvider locale="en" messages={translations["en"]}>
-                  <BrowserRouterProvider />
-                </IntlProvider>
+              <AuthenticationProvider clientId={AUTHENTICATION.CLIENT_ID}>
+                <SignalRProvider>
+                  <IntlProvider locale="en" messages={translations["en"]}>
+                    <BrowserRouterProvider />
+                  </IntlProvider>
+                </SignalRProvider>
               </AuthenticationProvider>
             </SentryProvider>
-          </SettingsProvider>
+          </EnvironmentFetcher>
         </ConfigProvider>
       </QueryClientProvider>
     </RecoilRoot>

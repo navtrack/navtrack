@@ -1,6 +1,6 @@
-import TextInput from "./TextInput";
-import TextInputLeftAddon from "./TextInputLeftAddon";
-import TextInputRightAddon from "./TextInputRightAddon";
+import { TextInput } from "./TextInput";
+import { TextInputLeftAddon } from "./TextInputLeftAddon";
+import { TextInputRightAddon } from "./TextInputRightAddon";
 
 export default {
   Basic: <TextInput name="basic" />,

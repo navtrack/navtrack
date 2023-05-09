@@ -2,11 +2,11 @@ import { circle } from "leaflet";
 import { Circle, Layer } from "leaflet";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IGeofenceCircle } from "../types";
-import useMap from "../useMap";
+import { useMap } from "../useMap";
 
 // TODO refactor this
 
-export default function useGeofenceCircle(props: IGeofenceCircle) {
+export function useGeofenceCircle(props: IGeofenceCircle) {
   const { map } = useMap();
   const [initialised, setInitialised] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -15,17 +15,24 @@ export default function useGeofenceCircle(props: IGeofenceCircle) {
   const [onChangeCalled, setOnChangeCalled] = useState(false);
 
   const initCircle = useMemo(
-      () =>
-          props.geofence
-              ? circle([props.geofence.latitude, props.geofence.longitude], {
-                radius: props.geofence.radius
-              })
-              : undefined,
-      [props.geofence]
+    () =>
+      props.geofence
+        ? circle([props.geofence.latitude, props.geofence.longitude], {
+            radius: props.geofence.radius
+          })
+        : undefined,
+    [props.geofence]
   );
 
   useEffect(() => {
-    if (initialised && clicked && !drawing && geofence && props.onChange && !onChangeCalled) {
+    if (
+      initialised &&
+      clicked &&
+      !drawing &&
+      geofence &&
+      props.onChange &&
+      !onChangeCalled
+    ) {
       props.onChange(geofence);
       setOnChangeCalled(true);
     }
@@ -34,7 +41,11 @@ export default function useGeofenceCircle(props: IGeofenceCircle) {
   const setMapOptions = useCallback(() => {
     map.pm.setGlobalOptions({
       snappingOrder: ["Circle"],
-      panes: { vertexPane: "markerPane", layerPane: "overlayPane", markerPane: "markerPane" },
+      panes: {
+        vertexPane: "markerPane",
+        layerPane: "overlayPane",
+        markerPane: "markerPane"
+      },
       maxRadiusCircle: 1000
     });
   }, [map.pm]);
@@ -53,16 +64,19 @@ export default function useGeofenceCircle(props: IGeofenceCircle) {
         map.on("mousemove", () => {
           if (centerPlaced) {
             setGeofence((current) =>
-                current
-                    ? {
-                      ...current,
-                      mapCenter: map.getCenter(),
-                      mapZoom: map.getZoom(),
-                      radius: Math.round(
-                          Math.min((event.workingLayer as Circle).getRadius() + 1, 1000)
+              current
+                ? {
+                    ...current,
+                    mapCenter: map.getCenter(),
+                    mapZoom: map.getZoom(),
+                    radius: Math.round(
+                      Math.min(
+                        (event.workingLayer as Circle).getRadius() + 1,
+                        1000
                       )
-                    }
-                    : undefined
+                    )
+                  }
+                : undefined
             );
           }
         });
@@ -107,7 +121,17 @@ export default function useGeofenceCircle(props: IGeofenceCircle) {
         setOnChangeCalled(false);
       });
     }
-  }, [clicked, geofence, initCircle, initialised, map, map.pm, props, setGeofence, setMapOptions]);
+  }, [
+    clicked,
+    geofence,
+    initCircle,
+    initialised,
+    map,
+    map.pm,
+    props,
+    setGeofence,
+    setMapOptions
+  ]);
 
   return { clicked, geofence };
 }

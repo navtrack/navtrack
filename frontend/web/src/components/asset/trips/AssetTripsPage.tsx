@@ -2,22 +2,22 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
-import LocationFilter from "../shared/location-filter/LocationFilter";
-import Card from "../../ui/shared/card/Card";
-import Icon from "../../ui/shared/icon/Icon";
+import { LocationFilter } from "../shared/location-filter/LocationFilter";
+import { Card } from "../../ui/shared/card/Card";
+import { Icon } from "../../ui/shared/icon/Icon";
 import { Map } from "../../ui/shared/map/Map";
-import MapPin from "../../ui/shared/map/MapPin";
+import { MapPin } from "../../ui/shared/map/MapPin";
 import { MapTrip } from "../../ui/shared/map/MapTrip";
-import Slider from "../../ui/shared/slider/Slider";
-import LocationBar from "../shared/location-bar/LocationBar";
+import { Slider } from "../../ui/shared/slider/Slider";
+import { LocationBar } from "../shared/location-bar/LocationBar";
 import {
   selectedTripLocationIndexAtom,
   selectedTripLocationSelector,
   selectedTripSelector
 } from "./state";
-import TripsTable from "./TripsTable";
+import { TripsTable } from "./TripsTable";
 
-export default function AssetTripsPage() {
+export function AssetTripsPage() {
   const selectedTrip = useRecoilValue(selectedTripSelector);
   const selectedTripLocation = useRecoilValue(selectedTripLocationSelector);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =

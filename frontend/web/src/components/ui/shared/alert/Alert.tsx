@@ -6,11 +6,11 @@ interface IAlert {
   children?: ReactNode;
 }
 
-export default function Alert(props: IAlert) {
+export function Alert(props: IAlert) {
   return (
     <div
       className={classNames(
-        "bg-red-100 px-4 py-3 text-sm text-red-700 rounded-md",
+        "rounded-md bg-red-100 px-4 py-3 text-sm text-red-700",
         props.className
       )}>
       {props.children}

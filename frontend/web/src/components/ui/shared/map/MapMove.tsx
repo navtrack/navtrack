@@ -6,14 +6,17 @@ interface IMapMove {
   onMove?: (center: LatLng, zoom: number) => void;
 }
 
-export default function MapMove(props: IMapMove) {
+export function MapMove(props: IMapMove) {
   const map = useMap();
 
   const onMove = useCallback(() => {
     if (props.onMove) {
       const center = map.getCenter();
 
-      props.onMove({ latitude: center.lat, longitude: center.lng }, map.getZoom());
+      props.onMove(
+        { latitude: center.lat, longitude: center.lng },
+        map.getZoom()
+      );
     }
   }, [map, props]);
 

@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import IconWithText from "../../../ui/shared/icon/IconWithText";
+import { IconWithText } from "../../../ui/shared/icon/IconWithText";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface ILocationFilterAddButtonMenuItem {
@@ -8,13 +8,13 @@ interface ILocationFilterAddButtonMenuItem {
   labelId: string;
 }
 
-export default function LocationFilterAddButtonMenuItem(
+export function LocationFilterAddButtonMenuItem(
   props: ILocationFilterAddButtonMenuItem
 ) {
   return (
     <span
       className={
-        "text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm cursor-pointer"
+        "block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
       }
       onClick={props.onClick}>
       <IconWithText icon={props.icon}>

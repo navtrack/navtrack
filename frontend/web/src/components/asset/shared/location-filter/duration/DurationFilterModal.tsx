@@ -1,12 +1,12 @@
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import FormikTextInput from "../../../../ui/shared/text-input/FormikTextInput";
-import Modal from "../../../../ui/shared/modal/Modal";
-import TextInputRightAddon from "../../../../ui/shared/text-input/TextInputRightAddon";
-import FilterModal from "../FilterModal";
+import { FormikTextInput } from "../../../../ui/shared/text-input/FormikTextInput";
+import { Modal } from "../../../../ui/shared/modal/Modal";
+import { TextInputRightAddon } from "../../../../ui/shared/text-input/TextInputRightAddon";
+import { FilterModal } from "../FilterModal";
 import { DurationFilterFormValues } from "../types";
-import useDurationFilter from "./useDurationFilter";
+import { useDurationFilter } from "./useDurationFilter";
 import { useDurationFilterFormValuesValidation } from "./useDurationFilterFormValuesValidation";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
@@ -15,7 +15,7 @@ interface IDurationFilterModal {
   filterKey: string;
 }
 
-export default function DurationFilterModal(props: IDurationFilterModal) {
+export function DurationFilterModal(props: IDurationFilterModal) {
   const units = useCurrentUnits();
   const validationSchema = useDurationFilterFormValuesValidation();
   const { initialValues, state, close, handleSubmit } = useDurationFilter(

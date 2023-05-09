@@ -1,3 +1,3 @@
-export default function AssetReportsPage() {
+export function AssetReportsPage() {
   return <>reports page</>;
 }

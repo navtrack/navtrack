@@ -1,16 +1,16 @@
-import AssetSettingsLayout from "../layout/AssetSettingsLayout";
-import UsersTable from "./UsersTable";
+import { AssetSettingsLayout } from "../layout/AssetSettingsLayout";
+import { UsersTable } from "./UsersTable";
 import { FormattedMessage } from "react-intl";
-import Button from "../../../ui/shared/button/Button";
+import { Button } from "../../../ui/shared/button/Button";
 import { useState } from "react";
-import AddUserToAssetModal from "./AddUserToAssetModal";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { AddUserToAssetModal } from "./AddUserToAssetModal";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/useAssetUsersQuery";
 
-export default function AssetSettingsAccessPage() {
+export function AssetSettingsAccessPage() {
   const currentAsset = useCurrentAsset();
   const assetUsers = useAssetUsersQuery({
-    assetId: !!currentAsset ? currentAsset.id : ""
+    assetId: currentAsset.data?.id ?? ""
   });
 
   const [showModal, setShowModal] = useState(false);

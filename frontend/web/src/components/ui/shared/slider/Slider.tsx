@@ -1,7 +1,11 @@
 import { Slider as MuiSlider, styled } from "@mui/material";
 
 interface ISlider {
-  onChange?: (event: Event, value: number | number[], activeThumb: number) => void;
+  onChange?: (
+    event: Event,
+    value: number | number[],
+    activeThumb: number
+  ) => void;
   value?: number | number[];
   min?: number;
   max?: number;
@@ -39,7 +43,7 @@ const StyledSlider = styled(MuiSlider)`
   }
 `;
 
-export default function Slider(props: ISlider) {
+export function Slider(props: ISlider) {
   return (
     <StyledSlider
       step={props.step}
@@ -49,7 +53,9 @@ export default function Slider(props: ISlider) {
       marks={props.marks}
       onChange={props.onChange}
       onMouseDown={props.onMouseDown}
-      valueLabelDisplay={props.displayValueLabel ? props.displayValueLabel : "off"}
+      valueLabelDisplay={
+        props.displayValueLabel ? props.displayValueLabel : "off"
+      }
       disableSwap
     />
   );

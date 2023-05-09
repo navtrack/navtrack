@@ -1,18 +1,18 @@
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import DateFilterModal from "./date/DateFilterModal";
-import SpeedFilterModal from "./speed/SpeedFilterModal";
-import AltitudeFilterModal from "./altitude/AltitudeFilterModal";
-import GeofenceFilterModal from "./geofence/GeofenceFilterModal";
-import GeofenceFilterBadge from "./geofence/GeofenceFilterBadge";
-import DateFilterBadge from "./date/DateFilterBadge";
-import SpeedFilterBadge from "./speed/SpeedFilterBadge";
-import AltitudeFilterBadge from "./altitude/AltitudeFilterBadge";
-import LocationFilterAddButton from "./LocationFilterAddButton";
-import Card from "../../../ui/shared/card/Card";
+import { DateFilterModal } from "./date/DateFilterModal";
+import { SpeedFilterModal } from "./speed/SpeedFilterModal";
+import { AltitudeFilterModal } from "./altitude/AltitudeFilterModal";
+import { GeofenceFilterModal } from "./geofence/GeofenceFilterModal";
+import { GeofenceFilterBadge } from "./geofence/GeofenceFilterBadge";
+import { DateFilterBadge } from "./date/DateFilterBadge";
+import { SpeedFilterBadge } from "./speed/SpeedFilterBadge";
+import { AltitudeFilterBadge } from "./altitude/AltitudeFilterBadge";
+import { LocationFilterAddButton } from "./LocationFilterAddButton";
+import { Card } from "../../../ui/shared/card/Card";
 import { LatLng } from "../../../ui/shared/map/types";
-import Icon from "../../../ui/shared/icon/Icon";
-import DurationFilterBadge from "./duration/DurationFilterBadge";
-import DurationFilterModal from "./duration/DurationFilterModal";
+import { Icon } from "../../../ui/shared/icon/Icon";
+import { DurationFilterBadge } from "./duration/DurationFilterBadge";
+import { DurationFilterModal } from "./duration/DurationFilterModal";
 import {
   LocationFilterPage,
   useLocationFilterKey
@@ -26,7 +26,7 @@ interface ILocationFilter {
   filterPage: LocationFilterPage;
 }
 
-export default function LocationFilter(props: ILocationFilter) {
+export function LocationFilter(props: ILocationFilter) {
   const filterKey = useLocationFilterKey(props.filterPage);
 
   return (

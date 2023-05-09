@@ -1,11 +1,11 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
+import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
 import { DeleteAssetFormValues } from "./types";
-import useDeleteAsset from "./useDeleteAsset";
-import Modal from "../../../ui/shared/modal/Modal";
-import DeleteModalContainer from "../../../ui/shared/modal/DeleteModalContainer";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useDeleteAsset } from "./useDeleteAsset";
+import { Modal } from "../../../ui/shared/modal/Modal";
+import { DeleteModalContainer } from "../../../ui/shared/modal/DeleteModalContainer";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 
 interface IDeleteAssetModal {
@@ -13,7 +13,7 @@ interface IDeleteAssetModal {
   close: () => void;
 }
 
-export default function DeleteAssetModal(props: IDeleteAssetModal) {
+export function DeleteAssetModal(props: IDeleteAssetModal) {
   const currentAsset = useCurrentAsset();
   const { handleSubmit, validationSchema, loading } = useDeleteAsset();
 
@@ -42,7 +42,7 @@ export default function DeleteAssetModal(props: IDeleteAssetModal) {
                     values={{
                       name: (
                         <span className="font-semibold">
-                          {currentAsset?.name}
+                          {currentAsset.data?.name}
                         </span>
                       )
                     }}

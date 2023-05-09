@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import useMap from "./useMap";
+import { useMap } from "./useMap";
 
-interface IMapZoom {
+type MapZoomProps = {
   zoom?: number;
-}
+};
 
-export function MapZoom(props: IMapZoom) {
+export function MapZoom(props: MapZoomProps) {
   const map = useMap();
 
   useEffect(() => {

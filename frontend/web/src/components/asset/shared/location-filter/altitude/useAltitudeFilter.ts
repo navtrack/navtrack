@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { altitudeFilterAtom } from "../state";
 import { AltitudeFilterFormValues } from "../types";
 
-export default function useAltitudeFilter(key: string) {
+export function useAltitudeFilter(key: string) {
   const [state, setState] = useRecoilState(altitudeFilterAtom(key));
 
   const initialValues = useMemo(
@@ -29,7 +29,10 @@ export default function useAltitudeFilter(key: string) {
     [setState]
   );
 
-  const close = useCallback(() => setState((x) => ({ ...x, open: false })), [setState]);
+  const close = useCallback(
+    () => setState((x) => ({ ...x, open: false })),
+    [setState]
+  );
 
   return { handleSubmit, close, initialValues, state };
 }

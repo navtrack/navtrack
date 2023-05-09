@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useMap from "./useMap";
+import { useMap } from "./useMap";
 
 interface IMapCenter {
   latitude?: number;

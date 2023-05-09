@@ -6,6 +6,10 @@ interface IModalBody {
   className?: string;
 }
 
-export default function ModalBody(props: IModalBody) {
-  return <div className={classNames("p-4 flex-grow", props.className)}>{props.children}</div>;
+export function ModalBody(props: IModalBody) {
+  return (
+    <div className={classNames("flex-grow p-4", props.className)}>
+      {props.children}
+    </div>
+  );
 }

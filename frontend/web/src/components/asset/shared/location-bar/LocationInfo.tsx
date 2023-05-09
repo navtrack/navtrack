@@ -8,7 +8,7 @@ interface ILocationInfo {
   className?: string;
 }
 
-export default function LocationInfo(props: ILocationInfo) {
+export function LocationInfo(props: ILocationInfo) {
   return (
     <div className={props.className}>
       <div className="text-xs">

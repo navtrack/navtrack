@@ -24,6 +24,13 @@ public abstract class ChecksumUtil
         return $"{checksum:X2}".ToUpper();
     }
 
+    public static byte XorByte(byte[] bytes)
+    {
+        byte checksum = bytes.Aggregate((byte)0x0, (current, t) => (byte)(current ^ t));
+
+        return checksum;
+    }
+
     public static byte Crc8(byte[] bytes)
     {
         byte crc = 0xFF;

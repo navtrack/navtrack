@@ -2,15 +2,15 @@ import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useMemo } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import Badge from "../../../../ui/shared/badge/Badge";
-import IconWithText from "../../../../ui/shared/icon/IconWithText";
+import { Badge } from "../../../../ui/shared/badge/Badge";
+import { IconWithText } from "../../../../ui/shared/icon/IconWithText";
 import { altitudeFilterAtom } from "../state";
 
 interface IAltitudeFilterBadge {
   filterKey: string;
 }
 
-export default function AltitudeFilterBadge(props: IAltitudeFilterBadge) {
+export function AltitudeFilterBadge(props: IAltitudeFilterBadge) {
   const [state, setState] = useRecoilState(altitudeFilterAtom(props.filterKey));
   const units = useCurrentUnits();
   const reset = useResetRecoilState(altitudeFilterAtom(props.filterKey));

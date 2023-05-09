@@ -3,12 +3,12 @@ import { useIntl } from "react-intl";
 import { useHistory } from "react-router";
 import { object, ObjectSchema, string } from "yup";
 import { DeleteAssetFormValues } from "./types";
-import useNotification from "../../../ui/shared/notification/useNotification";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useNotification } from "../../../ui/shared/notification/useNotification";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useDeleteAssetMutation } from "@navtrack/shared/hooks/mutations/useDeleteAssetMutation";
 import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
 
-export default function useDeleteAsset() {
+export function useDeleteAsset() {
   const currentAsset = useCurrentAsset();
   const intl = useIntl();
   const deleteAssetMutation = useDeleteAssetMutation();
@@ -25,7 +25,7 @@ export default function useDeleteAsset() {
           })
         )
         .equals(
-          [`${currentAsset?.name}`],
+          [`${currentAsset.data?.name}`],
           intl.formatMessage({
             id: "assets.settings.general.delete-asset.name-match"
           })
@@ -34,9 +34,9 @@ export default function useDeleteAsset() {
     .defined();
 
   const handleSubmit = useCallback(() => {
-    if (currentAsset) {
+    if (currentAsset.data) {
       deleteAssetMutation.mutate(
-        { assetId: currentAsset.id },
+        { assetId: currentAsset.data?.id },
         {
           onSuccess: () => {
             assetsQuery.refetch();

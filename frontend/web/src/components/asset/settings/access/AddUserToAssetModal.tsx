@@ -2,17 +2,17 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import Button from "../../../ui/shared/button/Button";
-import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
-import Modal from "../../../ui/shared/modal/Modal";
-import ModalActions from "../../../ui/shared/modal/ModalActions";
-import ModalBody from "../../../ui/shared/modal/ModalBody";
-import ModalContainer from "../../../ui/shared/modal/ModalContainer";
-import ModalContent from "../../../ui/shared/modal/ModalContent";
-import ModalIcon from "../../../ui/shared/modal/ModalIcon";
-import FormikSelectInput from "../../../ui/shared/select/FormikSelectInput";
+import { Button } from "../../../ui/shared/button/Button";
+import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
+import { Modal } from "../../../ui/shared/modal/Modal";
+import { ModalActions } from "../../../ui/shared/modal/ModalActions";
+import { ModalBody } from "../../../ui/shared/modal/ModalBody";
+import { ModalContainer } from "../../../ui/shared/modal/ModalContainer";
+import { ModalContent } from "../../../ui/shared/modal/ModalContent";
+import { ModalIcon } from "../../../ui/shared/modal/ModalIcon";
+import { FormikSelectInput } from "../../../ui/shared/select/FormikSelectInput";
 import { AddUserToAssetFormValues } from "./types";
-import useAddUserToAsset from "./useAddUserToAsset";
+import { useAddUserToAsset } from "./useAddUserToAsset";
 import { AssetRoleType } from "@navtrack/shared/api/model/custom/AssetRoleType";
 
 interface IAddUserToAssetModal {
@@ -25,7 +25,7 @@ type Role = {
   value: AssetRoleType;
 };
 
-export default function AddUserToAssetModal(props: IAddUserToAssetModal) {
+export function AddUserToAssetModal(props: IAddUserToAssetModal) {
   const { validationSchema, handleSubmit, loading } = useAddUserToAsset({
     close: props.close
   });

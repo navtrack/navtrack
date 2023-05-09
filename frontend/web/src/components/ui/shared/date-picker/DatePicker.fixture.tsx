@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DatePicker from "./DatePicker";
+import { DatePicker } from "./DatePicker";
 
 export default {
   Default: () => {

@@ -5,19 +5,17 @@ import {
   faSlidersH,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
-import Icon from "../../shared/icon/Icon";
+import { Icon } from "../../shared/icon/Icon";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router";
-import IconWithText from "../../shared/icon/IconWithText";
-import { useCurrentUser } from "@navtrack/shared/hooks/app/useCurrentUser";
-import { useLogout } from "@navtrack/shared/hooks/authentication/useLogout";
+import { IconWithText } from "../../shared/icon/IconWithText";
+import { useLogout } from "@navtrack/shared/hooks/app/authentication/useLogout";
+import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
 
 export interface IAdminLayoutNavBarProfile {}
 
-export default function AdminLayoutNavBarProfile(
-  props: IAdminLayoutNavBarProfile
-) {
+export function AdminLayoutNavBarProfile(props: IAdminLayoutNavBarProfile) {
   const currentUser = useCurrentUser();
   const logout = useLogout();
   const history = useHistory();

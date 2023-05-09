@@ -1,9 +1,9 @@
-import AdminLayoutSideBarItem from "./AdminLayoutSideBarItem";
+import { AdminLayoutSideBarItem } from "./AdminLayoutSideBarItem";
 import { FormattedMessage } from "react-intl";
-import LoadingIndicator from "../../shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
 
-export default function AdminLayoutSideBarAssets() {
+export function AdminLayoutSideBarAssets() {
   const assetsQuery = useGetAssetsSignalRQuery();
 
   return (

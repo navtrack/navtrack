@@ -1,9 +1,13 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { speedFilterAtom } from "../state";
-import { DEFAULT_MAX_SPEED, DEFAULT_MIN_SPEED, SpeedFilterFormValues } from "../types";
+import {
+  DEFAULT_MAX_SPEED,
+  DEFAULT_MIN_SPEED,
+  SpeedFilterFormValues
+} from "../types";
 
-export default function useSpeedFilter(key: string) {
+export function useSpeedFilter(key: string) {
   const [state, setState] = useRecoilState(speedFilterAtom(key));
 
   const isValidNumber = useCallback((newValue: string) => {
@@ -24,8 +28,14 @@ export default function useSpeedFilter(key: string) {
 
   const initialValues = useMemo(
     () => ({
-      minSpeed: state.minSpeed === undefined ? `${DEFAULT_MIN_SPEED}` : `${state.minSpeed}`,
-      maxSpeed: state.maxSpeed === undefined ? `${DEFAULT_MAX_SPEED}` : `${state.maxSpeed}`
+      minSpeed:
+        state.minSpeed === undefined
+          ? `${DEFAULT_MIN_SPEED}`
+          : `${state.minSpeed}`,
+      maxSpeed:
+        state.maxSpeed === undefined
+          ? `${DEFAULT_MAX_SPEED}`
+          : `${state.maxSpeed}`
     }),
     [state.maxSpeed, state.minSpeed]
   );
@@ -45,13 +55,20 @@ export default function useSpeedFilter(key: string) {
     [setState]
   );
 
-  const close = useCallback(() => setState((x) => ({ ...x, open: false })), [setState]);
+  const close = useCallback(
+    () => setState((x) => ({ ...x, open: false })),
+    [setState]
+  );
 
   const handleChange = useCallback(
     (
       e: React.ChangeEvent<HTMLInputElement>,
       field: string,
-      setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
+      setFieldValue: (
+        field: string,
+        value: any,
+        shouldValidate?: boolean | undefined
+      ) => void
     ) => {
       if (isValidNumber(e.target.value)) {
         setFieldValue(field, e.target.value);
@@ -60,5 +77,12 @@ export default function useSpeedFilter(key: string) {
     [isValidNumber]
   );
 
-  return { getSliderValue, handleSubmit, close, handleChange, state, initialValues };
+  return {
+    getSliderValue,
+    handleSubmit,
+    close,
+    handleChange,
+    state,
+    initialValues
+  };
 }

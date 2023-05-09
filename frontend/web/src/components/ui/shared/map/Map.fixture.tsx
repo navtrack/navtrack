@@ -1,6 +1,6 @@
 import { DEFAULT_MAP_CENTER } from "../../../../constants";
 import { Map } from "./Map";
-import MapPin from "./MapPin";
+import { MapPin } from "./MapPin";
 
 export default {
   Default: () => {

@@ -8,10 +8,13 @@ interface IDateFilter {
   filterKey: string;
 }
 
-export default function useDateFilter(props: IDateFilter) {
+export function useDateFilter(props: IDateFilter) {
   const [state, setState] = useRecoilState(dateFilterAtom(props.filterKey));
 
-  const close = useCallback(() => setState((x) => ({ ...x, open: false })), [setState]);
+  const close = useCallback(
+    () => setState((x) => ({ ...x, open: false })),
+    [setState]
+  );
 
   const handleSubmit = useCallback(
     (values: DateFilter) => {

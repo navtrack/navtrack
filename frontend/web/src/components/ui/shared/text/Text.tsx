@@ -8,7 +8,7 @@ export interface ITextProps {
   type?: "h3";
 }
 
-export default function Text(props: ITextProps) {
+export function Text(props: ITextProps) {
   return (
     <span
       className={classNames(

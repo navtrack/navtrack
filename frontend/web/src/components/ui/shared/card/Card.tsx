@@ -6,9 +6,9 @@ export interface ICard {
   className?: string;
 }
 
-export default function Card(props: ICard) {
+export function Card(props: ICard) {
   return (
-    <div className={classNames("shadow rounded-lg bg-white", props.className)}>
+    <div className={classNames("rounded-lg bg-white shadow", props.className)}>
       {props.children}
     </div>
   );

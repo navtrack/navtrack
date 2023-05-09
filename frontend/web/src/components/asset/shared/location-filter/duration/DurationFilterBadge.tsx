@@ -2,15 +2,15 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { useMemo } from "react";
 import { useIntl } from "react-intl";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import Badge from "../../../../ui/shared/badge/Badge";
-import IconWithText from "../../../../ui/shared/icon/IconWithText";
+import { Badge } from "../../../../ui/shared/badge/Badge";
+import { IconWithText } from "../../../../ui/shared/icon/IconWithText";
 import { durationFilterAtom } from "../state";
 
 interface IDurationFilterBadge {
   filterKey: string;
 }
 
-export default function DurationFilterBadge(props: IDurationFilterBadge) {
+export function DurationFilterBadge(props: IDurationFilterBadge) {
   const [state, setState] = useRecoilState(durationFilterAtom(props.filterKey));
   const reset = useResetRecoilState(durationFilterAtom(props.filterKey));
   const intl = useIntl();

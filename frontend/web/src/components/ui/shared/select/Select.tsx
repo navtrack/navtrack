@@ -19,13 +19,12 @@ export interface ISelect {
   autoCompleteOff?: boolean;
 }
 
-export default function Select(props: ISelect) {
+export function Select(props: ISelect) {
   return (
     <div>
       <label
         htmlFor={props.name}
-        className="block text-sm font-medium text-gray-700"
-      >
+        className="block text-sm font-medium text-gray-700">
         {props.label}
       </label>
       <div className="relative mt-1 flex rounded-md shadow-sm">
@@ -44,8 +43,7 @@ export default function Select(props: ISelect) {
             if (item) {
               props.onChange?.(item.value);
             }
-          }}
-        >
+          }}>
           {props.options.map((x) => (
             <option key={x.value} value={x.value}>
               {x.label}

@@ -1,9 +1,9 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { AssetUserModel } from "@navtrack/shared/api/model/generated";
 import { useState } from "react";
-import IconButton from "../../../ui/shared/button/IconButton";
-import Table, { ITableColumn } from "../../../ui/shared/table/Table";
-import DeleteUserFromAssetModal from "./DeleteUserFromAssetModal";
+import { IconButton } from "../../../ui/shared/button/IconButton";
+import { Table, ITableColumn } from "../../../ui/shared/table/Table";
+import { DeleteUserFromAssetModal } from "./DeleteUserFromAssetModal";
 
 interface IUsersTable {
   rows?: AssetUserModel[];
@@ -11,7 +11,7 @@ interface IUsersTable {
   refresh: () => void;
 }
 
-export default function UsersTable(props: IUsersTable) {
+export function UsersTable(props: IUsersTable) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [user, setUser] = useState<AssetUserModel | undefined>();
 

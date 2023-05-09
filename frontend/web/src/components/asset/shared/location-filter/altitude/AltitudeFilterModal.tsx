@@ -1,12 +1,12 @@
 import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import FormikTextInput from "../../../../ui/shared/text-input/FormikTextInput";
-import Modal from "../../../../ui/shared/modal/Modal";
-import TextInputRightAddon from "../../../../ui/shared/text-input/TextInputRightAddon";
-import FilterModal from "../FilterModal";
+import { FormikTextInput } from "../../../../ui/shared/text-input/FormikTextInput";
+import { Modal } from "../../../../ui/shared/modal/Modal";
+import { TextInputRightAddon } from "../../../../ui/shared/text-input/TextInputRightAddon";
+import { FilterModal } from "../FilterModal";
 import { AltitudeFilterFormValues } from "../types";
-import useAltitudeFilter from "./useAltitudeFilter";
+import { useAltitudeFilter } from "./useAltitudeFilter";
 import { useAltitudeFilterFormValuesValidation } from "./useAltitudeFilterFormValuesValidation";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
@@ -16,7 +16,7 @@ interface IAltitudeFilterModal {
   filterKey: string;
 }
 
-export default function AltitudeFilterModal(props: IAltitudeFilterModal) {
+export function AltitudeFilterModal(props: IAltitudeFilterModal) {
   const units = useCurrentUnits();
   const validationSchema = useAltitudeFilterFormValuesValidation();
   const { initialValues, state, close, handleSubmit } = useAltitudeFilter(

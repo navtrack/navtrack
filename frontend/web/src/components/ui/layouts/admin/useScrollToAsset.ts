@@ -3,7 +3,7 @@ import { scrollToAssetAtom } from "@navtrack/shared/state/assets";
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 
-export default function useScrollToAsset(asset?: AssetModel) {
+export function useScrollToAsset(asset?: AssetModel) {
   const [scrollToAsset, setScrollToAsset] = useRecoilState(scrollToAssetAtom);
   const elementRef = useRef<HTMLAnchorElement>(null);
 

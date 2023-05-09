@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,8 @@ using Navtrack.DataAccess.Mongo;
 using Navtrack.Library.DI;
 
 const string defaultCorsPolicy = "defaultCorsPolicy";
+
+Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

@@ -4,14 +4,14 @@ import { object, ObjectSchema, string } from "yup";
 import { AddAssetFormValues } from "./AddAssetFormValues";
 import { FormikHelpers } from "formik";
 import { useHistory } from "react-router";
-import useScrollToAsset from "../../ui/layouts/admin/useScrollToAsset";
-import useNotification from "../../ui/shared/notification/useNotification";
+import { useScrollToAsset } from "../../ui/layouts/admin/useScrollToAsset";
+import { useNotification } from "../../ui/shared/notification/useNotification";
 import { useAddAssetMutation } from "@navtrack/shared/hooks/mutations/useAddAssetMutation";
 import { useDevicesTypesQuery } from "@navtrack/shared/hooks/queries/useDevicesTypesQuery";
 import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 
-export default function useAddAsset() {
+export function useAddAsset() {
   const { deviceTypes } = useDevicesTypesQuery();
   const intl = useIntl();
   const addAssetMutation = useAddAssetMutation();
@@ -54,7 +54,7 @@ export default function useAddAsset() {
             assetsQuery.refetch().then(() => {
               setScrollToAsset(asset.id);
             });
-            history.push(`/assets/${asset.shortId}/live`);
+            history.push(`/assets/${asset.id}/live`);
           },
           onError: (error) => mapErrors(error, formikHelpers)
         }

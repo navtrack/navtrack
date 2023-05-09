@@ -3,14 +3,14 @@ import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { ReactNode } from "react";
 import { useIntl } from "react-intl";
-import LocationInfo from "./LocationInfo";
+import { LocationInfo } from "./LocationInfo";
 
-interface IAssetLocationBar {
+type LocationBarProps = {
   location?: LocationModel;
   children?: ReactNode;
-}
+};
 
-export default function LocationBar(props: IAssetLocationBar) {
+export function LocationBar(props: LocationBarProps) {
   const intl = useIntl();
   const { showDateTime } = useDateTime();
   const { showSpeed, showAltitude } = useDistance();

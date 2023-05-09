@@ -1,4 +1,4 @@
-import Table, { ITableColumn } from "./Table";
+import { Table, ITableColumn } from "./Table";
 
 type User = {
   email: string;

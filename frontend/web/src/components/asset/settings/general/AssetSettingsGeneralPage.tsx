@@ -1,18 +1,18 @@
-import AssetSettingsLayout from "../layout/AssetSettingsLayout";
-import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
+import { AssetSettingsLayout } from "../layout/AssetSettingsLayout";
+import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
 import { Form, Formik } from "formik";
-import useRenameAsset from "./useRenameAsset";
-import Button from "../../../ui/shared/button/Button";
+import { useRenameAsset } from "./useRenameAsset";
+import { Button } from "../../../ui/shared/button/Button";
 import { FormattedMessage } from "react-intl";
-import DeleteAssetModal from "./DeleteAssetModal";
+import { DeleteAssetModal } from "./DeleteAssetModal";
 import { useState } from "react";
-import Icon from "../../../ui/shared/icon/Icon";
+import { Icon } from "../../../ui/shared/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import LoadingIndicator from "../../../ui/shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../../ui/shared/loading-indicator/LoadingIndicator";
 import { RenameAssetFormValues } from "./types";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
-export default function AssetSettingsGeneralPage() {
+export function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
   const currentAsset = useCurrentAsset();
   const [showModal, setShowModal] = useState(false);
@@ -28,7 +28,7 @@ export default function AssetSettingsGeneralPage() {
               </h2>
               <div className="mt-6">
                 <Formik<RenameAssetFormValues>
-                  initialValues={{ name: `${currentAsset?.name}` }}
+                  initialValues={{ name: `${currentAsset.data?.name}` }}
                   onSubmit={(values, formikHelpers) =>
                     renameAsset.submit(values, formikHelpers)
                   }

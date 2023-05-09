@@ -4,7 +4,7 @@ interface IPinIcon {
   color?: "primary" | "green" | "red";
 }
 
-export default function PinIcon(props: IPinIcon) {
+export function PinIcon(props: IPinIcon) {
   const color = useMemo(() => {
     switch (props.color) {
       case "primary":
@@ -22,14 +22,54 @@ export default function PinIcon(props: IPinIcon) {
     <svg display="block" height="41px" width="27px" viewBox="0 0 27 41">
       <g fillRule="nonzero">
         <g transform="translate(3.0, 29.0)" fill="#000000">
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="10.5" ry="5.25002273"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="10.5" ry="5.25002273"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="9.5" ry="4.77275007"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="8.5" ry="4.29549936"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="7.5" ry="3.81822308"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="6.5" ry="3.34094679"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="5.5" ry="2.86367051"></ellipse>
-          <ellipse opacity="0.04" cx="10.5" cy="5.80029008" rx="4.5" ry="2.38636864"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="10.5"
+            ry="5.25002273"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="10.5"
+            ry="5.25002273"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="9.5"
+            ry="4.77275007"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="8.5"
+            ry="4.29549936"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="7.5"
+            ry="3.81822308"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="6.5"
+            ry="3.34094679"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="5.5"
+            ry="2.86367051"></ellipse>
+          <ellipse
+            opacity="0.04"
+            cx="10.5"
+            cy="5.80029008"
+            rx="4.5"
+            ry="2.38636864"></ellipse>
         </g>
         <g fill={color}>
           <path d="M27,13.5 C27,19.074644 20.250001,27.000002 14.75,34.500002 C14.016665,35.500004 12.983335,35.500004 12.25,34.500002 C6.7499993,27.000002 0,19.222562 0,13.5 C0,6.0441559 6.0441559,0 13.5,0 C20.955844,0 27,6.0441559 27,13.5 Z"></path>
@@ -39,7 +79,12 @@ export default function PinIcon(props: IPinIcon) {
         </g>
         <g transform="translate(6.0, 7.0)" fill="#FFFFFF"></g>
         <g transform="translate(8.0, 8.0)">
-          <circle fill="#000000" opacity="0.25" cx="5.5" cy="5.5" r="5.4999962"></circle>
+          <circle
+            fill="#000000"
+            opacity="0.25"
+            cx="5.5"
+            cy="5.5"
+            r="5.4999962"></circle>
           <circle fill="#FFFFFF" cx="5.5" cy="5.5" r="5.4999962"></circle>
         </g>
       </g>

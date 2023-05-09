@@ -1,4 +1,5 @@
 import { atom, atomFamily } from "recoil";
+import { getLocalStorageEffect } from "./getLocalStorageEffect";
 
 export const scrollToAssetAtom = atom<string | undefined>({
   key: "Navtrack:Assets:ScrollToAtom",
@@ -7,7 +8,8 @@ export const scrollToAssetAtom = atom<string | undefined>({
 
 export const currentAssetIdAtom = atom<string | undefined>({
   key: "Navtrack:Assets:CurrentAsset:Id",
-  default: undefined
+  default: undefined,
+  effects: [getLocalStorageEffect<string | undefined>()]
 });
 
 type AssetConfiguration = {

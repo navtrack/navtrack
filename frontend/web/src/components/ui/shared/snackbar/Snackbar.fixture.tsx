@@ -1,4 +1,4 @@
-import Snackbar from "./Snackbar";
+import { Snackbar } from "./Snackbar";
 
 export default {
   Error: (
@@ -9,7 +9,14 @@ export default {
       description="There was an error while adding your asset, please try again."
     />
   ),
-  Info: <Snackbar show type="info" title="Information" description="I just wanted to say hello!" />,
+  Info: (
+    <Snackbar
+      show
+      type="info"
+      title="Information"
+      description="I just wanted to say hello!"
+    />
+  ),
   Success: (
     <Snackbar
       show
@@ -18,7 +25,9 @@ export default {
       description="Your asset was added successfully."
     />
   ),
-  NoTitle: <Snackbar show type="success" description="Asset added successfully!" />,
+  NoTitle: (
+    <Snackbar show type="success" description="Asset added successfully!" />
+  ),
   NoTitleLongerText: (
     <Snackbar
       show

@@ -4,14 +4,14 @@ import {
   faMapMarkerAlt,
   faRoute
 } from "@fortawesome/free-solid-svg-icons";
-import AdminLayoutNavBarProfile from "./AdminLayoutNavBarProfile";
-import AdminLayoutNavBarItem from "./AdminLayoutNavBarItem";
-import Button from "../../shared/button/Button";
+import { AdminLayoutNavBarProfile } from "./AdminLayoutNavBarProfile";
+import { AdminLayoutNavBarItem } from "./AdminLayoutNavBarItem";
+import { Button } from "../../shared/button/Button";
 import { useHistory } from "react-router";
 import { FormattedMessage } from "react-intl";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
-export default function AdminLayoutNavBar() {
+export function AdminLayoutNavBar() {
   const currentAsset = useCurrentAsset();
   const history = useHistory();
 
@@ -23,17 +23,17 @@ export default function AdminLayoutNavBar() {
             <AdminLayoutNavBarItem
               labelId="navbar.asset.live-tracking"
               icon={faMapMarkerAlt}
-              href={`/assets/${currentAsset.shortId}/live`}
+              href={`/assets/${currentAsset.data?.id}/live`}
             />
             <AdminLayoutNavBarItem
               labelId="navbar.asset.log"
               icon={faDatabase}
-              href={`/assets/${currentAsset.shortId}/log`}
+              href={`/assets/${currentAsset.data?.id}/log`}
             />
             <AdminLayoutNavBarItem
               labelId="navbar.asset.trips"
               icon={faRoute}
-              href={`/assets/${currentAsset.shortId}/trips`}
+              href={`/assets/${currentAsset.data?.id}/trips`}
             />
             {/* <AdminLayoutNavBarItem
               labelId="navbar.asset.reports"
@@ -48,7 +48,7 @@ export default function AdminLayoutNavBar() {
             <AdminLayoutNavBarItem
               labelId="navbar.asset.settings"
               icon={faCog}
-              href={`/assets/${currentAsset.shortId}/settings`}
+              href={`/assets/${currentAsset.data?.id}/settings`}
             />
           </>
         )}

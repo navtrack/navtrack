@@ -1,16 +1,16 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import Button from "../../ui/shared/button/Button";
-import Card from "../../ui/shared/card/Card";
-import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
-import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
-import Icon from "../../ui/shared/icon/Icon";
+import { Button } from "../../ui/shared/button/Button";
+import { Card } from "../../ui/shared/card/Card";
+import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
+import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
+import { Icon } from "../../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import Paths from "../../../app/Paths";
-import { InitialForgotPasswordFormValues } from "@navtrack/shared/hs/user/forgot-password/ForgotPasswordFormValues";
-import { useForgotPassword } from "@navtrack/shared/hs/user/forgot-password/useForgotPassword";
-import { useForgotPasswordFormValidationSchema } from "@navtrack/shared/hs/user/forgot-password/useForgotPasswordFormValidationSchema";
+import { InitialForgotPasswordFormValues } from "@navtrack/shared/hooks/user/forgot-password/ForgotPasswordFormValues";
+import { useForgotPassword } from "@navtrack/shared/hooks/user/forgot-password/useForgotPassword";
+import { useForgotPasswordFormValidationSchema } from "@navtrack/shared/hooks/user/forgot-password/useForgotPasswordFormValidationSchema";
 
 export function ForgotPasswordPage() {
   const validationSchema = useForgotPasswordFormValidationSchema();

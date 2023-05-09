@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
@@ -14,6 +15,7 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> where TProtocol : IPr
     [SetUp]
     public void Setup()
     {
+        Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
         ProtocolTester = new ProtocolTester<TProtocol, TMessageHandler>();
     }
 

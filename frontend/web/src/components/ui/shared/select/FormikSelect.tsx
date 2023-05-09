@@ -1,9 +1,9 @@
 import { useFormikContext } from "formik";
 import { useIntl } from "react-intl";
 import { IFormikInput } from "../formik/IFormikInput";
-import Select, { ISelect } from "./Select";
+import { Select, ISelect } from "./Select";
 
-export default function FormikSelect(props: ISelect & IFormikInput) {
+export function FormikSelect(props: ISelect & IFormikInput) {
   const formikContext = useFormikContext();
   const fieldMeta = formikContext.getFieldMeta<string>(`${props.name}`);
   const intl = useIntl();

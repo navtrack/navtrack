@@ -7,7 +7,7 @@ interface IDeviceConfiguration {
   className?: string;
 }
 
-export default function DeviceConfiguration(props: IDeviceConfiguration) {
+export function DeviceConfiguration(props: IDeviceConfiguration) {
   return (
     <div className={classNames("text-sm", props.className)}>
       <h1 className="font-semibold">

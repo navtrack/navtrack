@@ -6,9 +6,13 @@ interface IModalContainer {
   className?: string;
 }
 
-export default function ModalContainer(props: IModalContainer) {
+export function ModalContainer(props: IModalContainer) {
   return (
-    <div className={classNames("bg-white rounded-md overflow-hidden", props.className)}>
+    <div
+      className={classNames(
+        "overflow-hidden rounded-md bg-white",
+        props.className
+      )}>
       {props.children}
     </div>
   );

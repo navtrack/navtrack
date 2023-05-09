@@ -1,8 +1,8 @@
 import { useFormikContext } from "formik";
 import { useIntl } from "react-intl";
-import TextInput, { ITextInput } from "./TextInput";
+import { TextInput, ITextInput } from "./TextInput";
 
-export default function FormikTextInput(props: ITextInput) {
+export function FormikTextInput(props: ITextInput) {
   const formikContext = useFormikContext();
   const fieldMeta = formikContext.getFieldMeta(`${props.name}`);
   const intl = useIntl();

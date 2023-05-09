@@ -1,18 +1,18 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import Button from "../../ui/shared/button/Button";
-import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
-import FormikSelectInput from "../../ui/shared/select/FormikSelectInput";
+import { Button } from "../../ui/shared/button/Button";
+import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
+import { FormikSelectInput } from "../../ui/shared/select/FormikSelectInput";
 import {
   AddAssetFormValues,
   DefaultAddAssetFormValues
 } from "./AddAssetFormValues";
-import useAddAsset from "./useAddAsset";
-import DeviceConfiguration from "./DeviceConfiguration";
+import { useAddAsset } from "./useAddAsset";
+import { DeviceConfiguration } from "./DeviceConfiguration";
 import { useState } from "react";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
 
-export default function AssetAddPage() {
+export function AssetAddPage() {
   const { deviceTypes, validationSchema, handleSubmit, loading } =
     useAddAsset();
   const [selectedDeviceType, setSelectedDeviceType] =

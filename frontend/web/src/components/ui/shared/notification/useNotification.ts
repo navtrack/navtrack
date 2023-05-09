@@ -3,10 +3,13 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { notificationAtom, showNotificationAtom } from "./state";
 import { Notification } from "./types";
 
-export default function useNotification() {
+export function useNotification() {
   const setNotification = useSetRecoilState(notificationAtom);
-  const [showNotificationState, setShowNotification] = useRecoilState(showNotificationAtom);
-  const [timeout, setLocalTimeout] = useState<NodeJS.Timeout | undefined>(undefined);
+  const [showNotificationState, setShowNotification] =
+    useRecoilState(showNotificationAtom);
+  const [timeout, setLocalTimeout] = useState<NodeJS.Timeout | undefined>(
+    undefined
+  );
 
   const displayNotification = useCallback(
     (notification: Notification) => {

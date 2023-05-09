@@ -1,40 +1,40 @@
 import { ReactNode, useMemo } from "react";
 import { faCog, faHdd, faUsers } from "@fortawesome/free-solid-svg-icons";
-import SidebarItem, { ISidebarItem } from "./SidebarItem";
+import { SidebarItem, ISidebarItem } from "./SidebarItem";
 import { generatePath } from "react-router";
 import Paths from "../../../../app/Paths";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
 interface IAssetSettingsLayout {
   children?: ReactNode;
 }
 
-export default function AssetSettingsLayout(props: IAssetSettingsLayout) {
+export function AssetSettingsLayout(props: IAssetSettingsLayout) {
   const currentAsset = useCurrentAsset();
 
   const routes: ISidebarItem[] = useMemo(
     () => [
       {
         label: "assets.settings.sidebar.settings",
-        href: generatePath(Paths.AssetsSettings, { id: currentAsset?.shortId }),
+        href: generatePath(Paths.AssetsSettings, { id: currentAsset.data?.id }),
         icon: faCog
       },
       {
         label: "assets.settings.sidebar.device",
         href: generatePath(Paths.AssetsSettingsDevice, {
-          id: currentAsset?.shortId
+          id: currentAsset.data?.id
         }),
         icon: faHdd
       },
       {
         label: "assets.settings.sidebar.access",
         href: generatePath(Paths.AssetsSettingsAccess, {
-          id: currentAsset?.shortId
+          id: currentAsset.data?.id
         }),
         icon: faUsers
       }
     ],
-    [currentAsset?.shortId]
+    [currentAsset.data?.id]
   );
 
   return (

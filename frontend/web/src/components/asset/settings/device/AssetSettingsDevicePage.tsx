@@ -1,16 +1,16 @@
-import AssetSettingsLayout from "../layout/AssetSettingsLayout";
+import { AssetSettingsLayout } from "../layout/AssetSettingsLayout";
 import { FormattedMessage, useIntl } from "react-intl";
-import Button from "../../../ui/shared/button/Button";
+import { Button } from "../../../ui/shared/button/Button";
 import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
-import FormikSelectInput from "../../../ui/shared/select/FormikSelectInput";
-import FormikTextInput from "../../../ui/shared/text-input/FormikTextInput";
-import DeviceConfiguration from "../../add/DeviceConfiguration";
-import DevicesTable from "./DevicesTable";
-import useNotification from "../../../ui/shared/notification/useNotification";
+import { FormikSelectInput } from "../../../ui/shared/select/FormikSelectInput";
+import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
+import { DeviceConfiguration } from "../../add/DeviceConfiguration";
+import { DevicesTable } from "./DevicesTable";
+import { useNotification } from "../../../ui/shared/notification/useNotification";
 import { object, ObjectSchema, string } from "yup";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useAddDeviceMutation } from "@navtrack/shared/hooks/mutations/useAddDeviceMutation";
 import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/useAssetDevicesQuery";
 import { useDevicesTypesQuery } from "@navtrack/shared/hooks/queries/useDevicesTypesQuery";
@@ -21,7 +21,7 @@ type ChangeDeviceFormValues = {
   deviceTypeId: string;
 };
 
-export default function AssetSettingsDevicePage() {
+export function AssetSettingsDevicePage() {
   const currentAsset = useCurrentAsset();
 
   const [selectedDeviceType, setSelectedDeviceType] =
@@ -31,7 +31,7 @@ export default function AssetSettingsDevicePage() {
   const { showNotification } = useNotification();
   const intl = useIntl();
 
-  const devices = useAssetDevicesQuery(currentAsset?.id);
+  const devices = useAssetDevicesQuery(currentAsset?.data?.id);
   const { deviceTypes } = useDevicesTypesQuery();
 
   const handleSubmit = useCallback(
@@ -41,7 +41,7 @@ export default function AssetSettingsDevicePage() {
     ) => {
       mutation.mutate(
         {
-          assetId: `${currentAsset?.id}`,
+          assetId: `${currentAsset.data?.id}`,
           data: {
             serialNumber: values.serialNumber,
             deviceTypeId: values.deviceTypeId
@@ -61,16 +61,22 @@ export default function AssetSettingsDevicePage() {
         }
       );
     },
-    [currentAsset?.id, devices, intl, mutation, showNotification]
+    [currentAsset.data?.id, devices, intl, mutation, showNotification]
   );
 
   useEffect(() => {
     if (!selectedDeviceType) {
       setSelectedDeviceType(
-        deviceTypes.find((x) => x.id === currentAsset?.device.deviceType.id)
+        deviceTypes.find(
+          (x) => x.id === currentAsset.data?.device.deviceType.id
+        )
       );
     }
-  }, [currentAsset?.device.deviceType.id, deviceTypes, selectedDeviceType]);
+  }, [
+    currentAsset.data?.device.deviceType.id,
+    deviceTypes,
+    selectedDeviceType
+  ]);
 
   const validationSchema: ObjectSchema<ChangeDeviceFormValues> = object({
     deviceTypeId: string().required(
@@ -83,7 +89,7 @@ export default function AssetSettingsDevicePage() {
 
   return (
     <>
-      {currentAsset && deviceTypes && (
+      {currentAsset.data && deviceTypes && (
         <AssetSettingsLayout>
           <h2 className="text-lg font-medium leading-6 text-gray-900">
             <FormattedMessage id="assets.settings.device.title" />
@@ -92,8 +98,8 @@ export default function AssetSettingsDevicePage() {
             <div className="col-span-3">
               <Formik<ChangeDeviceFormValues>
                 initialValues={{
-                  serialNumber: currentAsset?.device.serialNumber,
-                  deviceTypeId: currentAsset?.device.deviceType.id
+                  serialNumber: currentAsset.data.device.serialNumber,
+                  deviceTypeId: currentAsset.data.device.deviceType.id
                 }}
                 validationSchema={validationSchema}
                 enableReinitialize
@@ -143,7 +149,7 @@ export default function AssetSettingsDevicePage() {
             <FormattedMessage id="assets.settings.device.history" />
           </h2>
           <DevicesTable
-            assetId={currentAsset.id}
+            assetId={currentAsset.data.id}
             rows={devices.data?.items}
             loading={devices.isLoading}
             refresh={devices.refetch}

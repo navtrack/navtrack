@@ -1,13 +1,13 @@
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import FormikTextInput from "../../../../ui/shared/text-input/FormikTextInput";
-import Modal from "../../../../ui/shared/modal/Modal";
-import Slider from "../../../../ui/shared/slider/Slider";
-import TextInputRightAddon from "../../../../ui/shared/text-input/TextInputRightAddon";
-import FilterModal from "../FilterModal";
+import { FormikTextInput } from "../../../../ui/shared/text-input/FormikTextInput";
+import { Modal } from "../../../../ui/shared/modal/Modal";
+import { Slider } from "../../../../ui/shared/slider/Slider";
+import { TextInputRightAddon } from "../../../../ui/shared/text-input/TextInputRightAddon";
+import { FilterModal } from "../FilterModal";
 import { DEFAULT_MAX_SPEED, SpeedFilterFormValues } from "../types";
-import useSpeedFilter from "./useSpeedFilter";
+import { useSpeedFilter } from "./useSpeedFilter";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 
@@ -16,7 +16,7 @@ interface ISpeedFilterModal {
   filterKey: string;
 }
 
-export default function SpeedFilterModal(props: ISpeedFilterModal) {
+export function SpeedFilterModal(props: ISpeedFilterModal) {
   const units = useCurrentUnits();
   const {
     handleSubmit,

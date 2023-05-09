@@ -1,5 +1,5 @@
-import Button from "../../../ui/shared/button/Button";
-import Icon from "../../../ui/shared/icon/Icon";
+import { Button } from "../../../ui/shared/button/Button";
+import { Icon } from "../../../ui/shared/icon/Icon";
 import { ReactNode } from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 

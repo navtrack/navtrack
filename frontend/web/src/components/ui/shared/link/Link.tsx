@@ -8,7 +8,7 @@ export interface ILinkProps {
   className?: string;
 }
 
-export default function Link(props: ILinkProps) {
+export function Link(props: ILinkProps) {
   return (
     <RouterLink
       to={props.to}

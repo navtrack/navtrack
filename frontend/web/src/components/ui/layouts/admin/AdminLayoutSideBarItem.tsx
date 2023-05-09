@@ -1,19 +1,17 @@
 import classNames from "classnames";
 import { useHistory } from "react-router";
-import IconWithText from "../../shared/icon/IconWithText";
+import { IconWithText } from "../../shared/icon/IconWithText";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
-import useScrollToAsset from "./useScrollToAsset";
+import { useScrollToAsset } from "./useScrollToAsset";
 import { AssetModel } from "@navtrack/shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
 export interface IAdminLayoutSideBarItemProps {
   asset: AssetModel;
 }
 
-export default function AdminLayoutSideBarItem(
-  props: IAdminLayoutSideBarItemProps
-) {
+export function AdminLayoutSideBarItem(props: IAdminLayoutSideBarItemProps) {
   const currentAsset = useCurrentAsset();
   const history = useHistory();
   const { elementRef } = useScrollToAsset(props.asset);
@@ -21,16 +19,16 @@ export default function AdminLayoutSideBarItem(
   return (
     <a
       ref={elementRef}
-      href={`/assets/${props.asset.shortId}/live`}
+      href={`/assets/${props.asset.id}/live`}
       className={classNames(
-        currentAsset === props.asset
+        currentAsset.data === props.asset
           ? "bg-gray-900 text-white"
           : "text-gray-300 hover:bg-gray-700 hover:text-white",
         "flex cursor-pointer items-center rounded-md px-2 py-3 text-sm font-medium"
       )}
       onClick={(e) => {
         e.preventDefault();
-        history.push(`/assets/${props.asset.shortId}/live`);
+        history.push(`/assets/${props.asset.id}/live`);
       }}>
       <IconWithText
         icon={props.asset.online ? faCircle : faCircleRegular}

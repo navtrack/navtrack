@@ -1,10 +1,10 @@
 import { AssetUserModel } from "@navtrack/shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/shared/newHooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useDeleteUserFromAssetMutation } from "@navtrack/shared/hooks/mutations/useDeleteUserFromAssetMutation";
 import { getError } from "@navtrack/shared/utils/api";
 import { FormattedMessage } from "react-intl";
-import DeleteModal from "../../../ui/shared/modal/DeleteModal";
-import useNotification from "../../../ui/shared/notification/useNotification";
+import { DeleteModal } from "../../../ui/shared/modal/DeleteModal";
+import { useNotification } from "../../../ui/shared/notification/useNotification";
 
 interface IDeleteAssetModal {
   user?: AssetUserModel;
@@ -13,7 +13,7 @@ interface IDeleteAssetModal {
   refresh: () => void;
 }
 
-export default function DeleteUserFromAssetModal(props: IDeleteAssetModal) {
+export function DeleteUserFromAssetModal(props: IDeleteAssetModal) {
   const currentAsset = useCurrentAsset();
   const mutation = useDeleteUserFromAssetMutation();
   const { showNotification } = useNotification();
@@ -23,9 +23,9 @@ export default function DeleteUserFromAssetModal(props: IDeleteAssetModal) {
       open={props.show}
       close={props.close}
       onConfirm={() => {
-        if (currentAsset && props.user) {
+        if (currentAsset.data && props.user) {
           mutation.mutate(
-            { assetId: currentAsset?.id, userId: props.user.userId },
+            { assetId: currentAsset.data?.id, userId: props.user.userId },
             {
               onSuccess: () => {
                 props.refresh();
@@ -50,7 +50,9 @@ export default function DeleteUserFromAssetModal(props: IDeleteAssetModal) {
           id="assets.settings.access.delete-user.question"
           values={{
             email: <span className="font-bold">{props.user?.email}</span>,
-            assetName: <span className="font-bold">{currentAsset?.name}</span>
+            assetName: (
+              <span className="font-bold">{currentAsset.data?.name}</span>
+            )
           }}
         />
       </p>

@@ -1,20 +1,20 @@
 import { faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import GeofenceCircle from "../../../../ui/shared/map/geofence/GeofenceCircle";
+import { GeofenceCircle } from "../../../../ui/shared/map/geofence/GeofenceCircle";
 import { Map } from "../../../../ui/shared/map/Map";
-import MapMove from "../../../../ui/shared/map/MapMove";
+import { MapMove } from "../../../../ui/shared/map/MapMove";
 import { CircleGeofence, LatLng } from "../../../../ui/shared/map/types";
-import Modal from "../../../../ui/shared/modal/Modal";
-import FilterModal from "../FilterModal";
-import useGeofenceFilter from "./useGeofenceFilter";
+import { Modal } from "../../../../ui/shared/modal/Modal";
+import { FilterModal } from "../FilterModal";
+import { useGeofenceFilter } from "./useGeofenceFilter";
 
 interface IGeofenceFilterModal {
   initialMapCenter?: LatLng;
   filterKey: string;
 }
 
-export default function GeofenceFilterModal(props: IGeofenceFilterModal) {
+export function GeofenceFilterModal(props: IGeofenceFilterModal) {
   const {
     state,
     handleSubmit,

@@ -1,9 +1,9 @@
 import L from "leaflet";
 import { Marker } from "react-leaflet";
-import PinIcon from "./PinIcon";
+import { PinIcon } from "./PinIcon";
 import { renderToString } from "react-dom/server";
 import { useEffect, useMemo } from "react";
-import useMap from "./useMap";
+import { useMap } from "./useMap";
 
 interface IMapPin {
   latitude?: number;
@@ -14,7 +14,7 @@ interface IMapPin {
   zoom?: number;
 }
 
-export default function MapPin(props: IMapPin) {
+export function MapPin(props: IMapPin) {
   const map = useMap();
 
   const pin = useMemo(

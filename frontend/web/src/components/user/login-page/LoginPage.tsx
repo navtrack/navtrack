@@ -1,22 +1,22 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import Button from "../../ui/shared/button/Button";
-import Icon from "../../ui/shared/icon/Icon";
-import { InitialLoginFormValues } from "../../../../../shared/src/hs/user/login/LoginFormValues";
-import Card from "../../ui/shared/card/Card";
-import Link from "../../ui/shared/link/Link";
-import Copyright from "../../shared/Copyright";
+import { Button } from "../../ui/shared/button/Button";
+import { Icon } from "../../ui/shared/icon/Icon";
+import { InitialLoginFormValues } from "../../../../../shared/src/hooks/user/login/LoginFormValues";
+import { Card } from "../../ui/shared/card/Card";
+import { Link } from "../../ui/shared/link/Link";
+import { Copyright } from "../../shared/Copyright";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
-import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
+import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
+import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import LoadingIndicator from "../../ui/shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
 import Paths from "../../../app/Paths";
-import ExternalLogin from "./external-login/ExternalLogin";
-import Alert from "../../ui/shared/alert/Alert";
+import { ExternalLogin } from "./external-login/ExternalLogin";
+import { Alert } from "../../ui/shared/alert/Alert";
 import { AUTHENTICATION } from "../../../constants";
-import { useLogin } from "@navtrack/shared/hooks/authentication/useLogin";
-import { useLoginFormValidationSchema } from "@navtrack/shared/hs/user/login/useLoginFormValidationSchema";
+import { useLoginFormValidationSchema } from "@navtrack/shared/hooks/user/login/useLoginFormValidationSchema";
+import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 
 export const LoginPage = () => {
   const validationSchema = useLoginFormValidationSchema();

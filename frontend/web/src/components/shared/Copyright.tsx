@@ -1,4 +1,4 @@
-export default function Copyright() {
+export function Copyright() {
   return (
     <span>
       © {new Date().getFullYear()}{" "}

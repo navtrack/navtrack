@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useMap from "./useMap";
+import { useMap } from "./useMap";
 import L from "leaflet";
 import "@maplibre/maplibre-gl-leaflet";
 

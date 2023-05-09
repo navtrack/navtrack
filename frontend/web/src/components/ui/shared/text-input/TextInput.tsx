@@ -5,7 +5,7 @@ import {
   FocusEventHandler,
   MouseEventHandler,
   ReactNode,
-  RefObject,
+  RefObject
 } from "react";
 import { InputError } from "../input/InputError";
 
@@ -40,13 +40,12 @@ const StyledInput = styled("input")`
   -moz-appearance: textfield;
 `;
 
-export default function TextInput(props: ITextInput) {
+export function TextInput(props: ITextInput) {
   return (
     <div>
       <label
         htmlFor={props.name}
-        className="block text-sm font-medium text-gray-700"
-      >
+        className="block text-sm font-medium text-gray-700">
         {props.label}
       </label>
       <div className="relative mt-1 flex rounded-md shadow-sm">

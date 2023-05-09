@@ -1,17 +1,17 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import Button from "../../ui/shared/button/Button";
-import Card from "../../ui/shared/card/Card";
+import { Button } from "../../ui/shared/button/Button";
+import { Card } from "../../ui/shared/card/Card";
 import { InitialResetPasswordFormValues } from "./ResetPasswordFormValues";
 import { useResetPassword } from "./useResetPassword";
 import { useResetPasswordFormValidationSchema } from "./useResetPasswordFormValidationSchema";
-import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
-import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
-import Icon from "../../ui/shared/icon/Icon";
+import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
+import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
+import { Icon } from "../../ui/shared/icon/Icon";
 import Paths from "../../../app/Paths";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { ErrorMessage } from "../../../../../shared/src/components/ErrorMessage";
-import Link from "../../ui/shared/link/Link";
+import { Link } from "../../ui/shared/link/Link";
 
 export const ResetPasswordPage = () => {
   const validationSchema = useResetPasswordFormValidationSchema();
@@ -29,8 +29,7 @@ export const ResetPasswordPage = () => {
             resetPassword.resetPassword(values, formikHelpers)
           }
           validationSchema={() => validationSchema}
-          enableReinitialize
-        >
+          enableReinitialize>
           {({ values, status }) => (
             <>
               {resetPassword.success ? (
@@ -89,8 +88,7 @@ export const ResetPasswordPage = () => {
                         size="lg"
                         disabled={resetPassword.loading}
                         fullWidth
-                        loading={resetPassword.loading}
-                      >
+                        loading={resetPassword.loading}>
                         <FormattedMessage id="reset-password.button" />
                       </Button>
                     </div>

@@ -1,22 +1,22 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import Button from "../../ui/shared/button/Button";
-import Card from "../../ui/shared/card/Card";
-import { InitialRegisterFormValues } from "../../../../../shared/src/hs/user/register/RegisterFormValues";
-import FormikTextInput from "../../ui/shared/text-input/FormikTextInput";
-import Link from "../../ui/shared/link/Link";
+import { Button } from "../../ui/shared/button/Button";
+import { Card } from "../../ui/shared/card/Card";
+import { InitialRegisterFormValues } from "../../../../../shared/src/hooks/user/register/RegisterFormValues";
+import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
+import { Link } from "../../ui/shared/link/Link";
 import Paths from "../../../app/Paths";
-import TextInputLeftAddon from "../../ui/shared/text-input/TextInputLeftAddon";
-import Icon from "../../ui/shared/icon/Icon";
+import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
+import { Icon } from "../../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import ExternalLogin from "../login-page/external-login/ExternalLogin";
+import { ExternalLogin } from "../login-page/external-login/ExternalLogin";
 import { AUTHENTICATION } from "../../../constants";
-import { useLogin } from "@navtrack/shared/hooks/authentication/useLogin";
-import { useRegister } from "@navtrack/shared/hs/user/register/useRegister";
-import { useRegisterFormValidationSchema } from "@navtrack/shared/hs/user/register/useRegisterFormValidationSchema";
+import { useRegister } from "@navtrack/shared/hooks/user/register/useRegister";
+import { useRegisterFormValidationSchema } from "@navtrack/shared/hooks/user/register/useRegisterFormValidationSchema";
+import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 
-export default function RegisterPage() {
+export function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
   const register = useRegister();
   const { externalLogin } = useLogin({

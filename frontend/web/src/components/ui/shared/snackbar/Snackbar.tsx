@@ -8,7 +8,7 @@ import { Transition } from "@headlessui/react";
 import { c } from "@navtrack/shared/utils/tailwind";
 import classNames from "classnames";
 import { Fragment, useMemo } from "react";
-import Icon from "../icon/Icon";
+import { Icon } from "../icon/Icon";
 
 export type SnackbarType = "success" | "error" | "info";
 
@@ -20,7 +20,7 @@ type ISnackbar = {
   onCloseClick?: () => void;
 };
 
-export default function Snackbar(props: ISnackbar) {
+export function Snackbar(props: ISnackbar) {
   const icon = useMemo(() => {
     if (props.type === "error") {
       return faExclamationCircle;

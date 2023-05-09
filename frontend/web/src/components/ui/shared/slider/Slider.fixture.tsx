@@ -1,5 +1,5 @@
-import Slider from "./Slider";
+import { Slider } from "./Slider";
 
-export default function Fixture() {
+export function Fixture() {
   return <Slider />;
 }
