@@ -2,7 +2,6 @@ import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
 import { Button } from "../../ui/shared/button/Button";
 import { Card } from "../../ui/shared/card/Card";
-import { InitialRegisterFormValues } from "../../../../../shared/src/hooks/user/register/RegisterFormValues";
 import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
 import { Link } from "../../ui/shared/link/Link";
 import Paths from "../../../app/Paths";
@@ -15,6 +14,7 @@ import { AUTHENTICATION } from "../../../constants";
 import { useRegister } from "@navtrack/shared/hooks/user/register/useRegister";
 import { useRegisterFormValidationSchema } from "@navtrack/shared/hooks/user/register/useRegisterFormValidationSchema";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
+import { InitialRegisterFormValues } from "@navtrack/shared/hooks/user/register/RegisterFormValues";
 
 export function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();

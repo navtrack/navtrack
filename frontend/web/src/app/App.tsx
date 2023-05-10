@@ -3,12 +3,12 @@ import { BrowserRouterProvider } from "./BrowserRouterProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 import { SentryProvider } from "./SentryProvider";
-import { EnvironmentFetcher } from "../../../shared/src/components/EnvironmentFetcher";
 import { translations } from "@navtrack/shared/translations";
 import { ConfigProvider } from "@navtrack/shared/components/ConfigProvider";
 import { AuthenticationProvider } from "@navtrack/shared/components/AuthenticationProvider";
 import { AUTHENTICATION } from "../constants";
 import { SignalRProvider } from "@navtrack/shared/components/SignalRProvider";
+import { EnvironmentFetcher } from "@navtrack/shared/components/EnvironmentFetcher";
 
 const queryClient = new QueryClient();
 const config = {

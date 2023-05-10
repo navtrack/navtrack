@@ -10,8 +10,8 @@ import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddo
 import { Icon } from "../../ui/shared/icon/Icon";
 import Paths from "../../../app/Paths";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { ErrorMessage } from "../../../../../shared/src/components/ErrorMessage";
 import { Link } from "../../ui/shared/link/Link";
+import { ErrorMessage } from "@navtrack/shared/components/ErrorMessage";
 
 export const ResetPasswordPage = () => {
   const validationSchema = useResetPasswordFormValidationSchema();

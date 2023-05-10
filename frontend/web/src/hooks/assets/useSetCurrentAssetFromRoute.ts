@@ -1,7 +1,7 @@
+import { currentAssetIdAtom } from "@navtrack/shared/state/assets";
 import { useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { currentAssetIdAtom } from "../../../../shared/src/state/assets";
 
 export const useSetCurrentAssetFromRoute = () => {
   const [currentAssetId, setCurrentAssetId] =
