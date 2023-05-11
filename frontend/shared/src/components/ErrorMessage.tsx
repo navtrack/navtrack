@@ -5,8 +5,8 @@ type ErrorMessageProps = {
   code: string;
 };
 
-export const ErrorMessage = (props: ErrorMessageProps) => {
+export function ErrorMessage(props: ErrorMessageProps) {
   const id = isNumeric(props.code) ? `errors.${props.code}` : props.code;
 
   return <FormattedMessage id={id} />;
-};
+}

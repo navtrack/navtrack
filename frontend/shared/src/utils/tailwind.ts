@@ -1,3 +1,7 @@
-export const c = (check: boolean, value: string) => {
-  return check ? value : "";
-};
+export function c(check: boolean, trueValue: string, falseValue: string = "") {
+  return check ? trueValue : falseValue ?? "";
+}
+
+export function classNames(...classNames: string[]) {
+  return classNames.join(" ");
+}

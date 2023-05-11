@@ -2,8 +2,13 @@ import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import { assetConfigurationAtom, currentAssetIdAtom } from "../../state/assets";
 import { useGetAssetsSignalRQuery } from "../queries/useGetAssetsSignalRQuery";
+import { useOnChange } from "../util/useOnChange";
 
-export const useCurrentAsset = () => {
+type UseCurrentAssetProps = {
+  onChange?: (oldId?: string, newId?: string) => void;
+};
+
+export const useCurrentAsset = (props?: UseCurrentAssetProps) => {
   const currentAssetId = useRecoilValue(currentAssetIdAtom);
   const assets = useGetAssetsSignalRQuery();
   const assetConfiguration = useRecoilValue(
@@ -15,6 +20,8 @@ export const useCurrentAsset = () => {
 
     [assets, currentAssetId]
   );
+
+  useOnChange(currentAssetId, (prev, cur) => props?.onChange?.(prev, cur));
 
   return {
     isLoading: assets.isLoading,

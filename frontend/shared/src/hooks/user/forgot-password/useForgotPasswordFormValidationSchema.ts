@@ -5,7 +5,7 @@ export const useForgotPasswordFormValidationSchema = () => {
   const validationSchema: ObjectSchema<ForgotPasswordFormValues> = object({
     email: string()
       .email("generic.email.invalid")
-      .required("generic.email.required"),
+      .required("generic.email.required")
   }).defined();
 
   return validationSchema;

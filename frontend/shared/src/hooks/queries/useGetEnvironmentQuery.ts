@@ -4,8 +4,8 @@ export const useGetEnvironmentQuery = () => {
   const query = useGetEnvironment({
     query: {
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
+      refetchOnMount: false
+    }
   });
 
   return query;

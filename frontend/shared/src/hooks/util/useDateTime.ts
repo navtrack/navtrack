@@ -37,5 +37,9 @@ export const useDateTime = () => {
       : `${Math.round(minutes)}m`;
   }, []);
 
-  return { showDate, showTime, showDateTime, showDuration };
+  function getDate(dateTime: string) {
+    return moment(dateTime).toDate();
+  }
+
+  return { showDate, showTime, showDateTime, showDuration, getDate };
 };

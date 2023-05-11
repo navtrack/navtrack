@@ -28,5 +28,5 @@ export const useSignalR = () => {
     [signalr]
   );
 
-  return { invoke, on };
+  return { invoke, on, connectionState: signalr?.connectionState };
 };

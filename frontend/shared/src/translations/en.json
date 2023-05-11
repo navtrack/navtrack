@@ -97,6 +97,7 @@
   "generic.satellites": "Satellites",
   "generic.save": "Save",
   "generic.search": "Search",
+  "generic.select": "Select",
   "generic.serial-number.required": "The serial number is required.",
   "generic.serial-number": "Serial Number",
   "generic.speed": "Speed",

@@ -6,7 +6,7 @@ export const useLoginFormValidationSchema = () => {
     email: string()
       .email("generic.email.invalid")
       .required("generic.email.required"),
-    password: string().required("generic.password.required"),
+    password: string().required("generic.password.required")
   }).defined();
 
   return validationSchema;
