@@ -4,11 +4,11 @@ import { useMap } from "./useMap";
 import { MapPin } from "./MapPin";
 import { TripModel } from "@navtrack/shared/api/model/generated";
 
-interface MapTripProps {
+type MapTripProps = {
   trip?: TripModel;
-}
+};
 
-export const MapTrip = (props: MapTripProps) => {
+export function MapTrip(props: MapTripProps) {
   const map = useMap();
   const [polyline, setPolyline] = useState<Polyline | undefined>(undefined);
   const [polylineVisible, setPolylineVisible] = useState(false);
@@ -18,6 +18,7 @@ export const MapTrip = (props: MapTripProps) => {
       const latlngs = props.trip.locations.map(
         (x) => new LatLng(x.latitude, x.longitude)
       );
+
       const polyline = L.polyline(latlngs, { color: "red" }).addTo(map.map);
 
       map.map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
@@ -52,4 +53,4 @@ export const MapTrip = (props: MapTripProps) => {
   }
 
   return null;
-};
+}

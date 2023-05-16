@@ -12,5 +12,12 @@ export function useMap() {
     [map]
   );
 
-  return { map, setCenter };
+  const setZoom = useCallback(
+    (zoom: number) => {
+      map.setZoom(zoom);
+    },
+    [map]
+  );
+
+  return { map, setCenter, setZoom };
 }

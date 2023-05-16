@@ -5,7 +5,7 @@ import { renderToString } from "react-dom/server";
 import { useEffect, useMemo } from "react";
 import { useMap } from "./useMap";
 
-interface IMapPin {
+interface MapPinProps {
   latitude?: number;
   longitude?: number;
   follow?: boolean;
@@ -14,7 +14,7 @@ interface IMapPin {
   zoom?: number;
 }
 
-export function MapPin(props: IMapPin) {
+export function MapPin(props: MapPinProps) {
   const map = useMap();
 
   const pin = useMemo(
