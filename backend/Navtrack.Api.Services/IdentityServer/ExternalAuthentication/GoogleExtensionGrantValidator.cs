@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Flows;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
@@ -32,9 +35,23 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
     {
         GoogleAuthenticationSettings settings = await settingService.Get<GoogleAuthenticationSettings>();
 
+
+
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
+        {
+            ClientSecrets = new ClientSecrets
+            {
+                ClientId = settings.ClientId,
+                ClientSecret = settings.ClientSecret
+            }
+        });
+        
+        Google.Apis.Auth.OAuth2.Responses.TokenResponse tokenResponse =
+            await flow.ExchangeCodeForTokenAsync("", context.Request.Raw["code"], "postmessage", CancellationToken.None);
+        
         string? userId = await externalLoginHandler.HandleToken(new HandleTokenInput(settings)
         {
-            Token = context.Request.Raw["code"],
+            Token = tokenResponse.IdToken,
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
             GetUser = userDataService.GetByGoogleId,

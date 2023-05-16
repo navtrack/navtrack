@@ -4,11 +4,11 @@ import { FormattedMessage } from "react-intl";
 import { useMsal } from "@azure/msal-react";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
-import { ICustomExternalLoginButton } from "./types";
+import { CustomExternalLoginButtonProps } from "./types";
 import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 
 export function ExternalLoginButtonMicrosoft(
-  props: ICustomExternalLoginButton
+  props: CustomExternalLoginButtonProps
 ) {
   const settings = useRecoilValue(environmentSettingsSelector);
   const { instance } = useMsal();

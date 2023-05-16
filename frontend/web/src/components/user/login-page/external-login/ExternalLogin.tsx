@@ -7,6 +7,7 @@ import { ExternalLoginButtonGoogle } from "./ExternalLoginButtonGoogle";
 import { useRecoilValue } from "recoil";
 import { useMicrosoftLogin } from "./useMicrosoftLogin";
 import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 interface IExternalLogin {
   login: (code: string, grantType: "apple" | "microsoft" | "google") => void;
@@ -37,11 +38,16 @@ export function ExternalLogin(props: IExternalLogin) {
         <div className="grid grid-cols-3 gap-2">
           <ExternalLoginButtonApple login={props.login} />
           <ExternalLoginButtonMicrosoft login={props.login} />
-          <ExternalLoginButtonGoogle login={props.login} />
+          {!!settings["GoogleAuthentication.ClientId"] && (
+            <GoogleOAuthProvider
+              clientId={settings["GoogleAuthentication.ClientId"]}>
+              <ExternalLoginButtonGoogle login={props.login} />
+            </GoogleOAuthProvider>
+          )}
         </div>
       </>
     ),
-    [props.login]
+    [props.login, settings]
   );
 
   return hasExternalLogins ? (

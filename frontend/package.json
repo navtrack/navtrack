@@ -1,5 +1,5 @@
 {
-  "name": "@navtrack/ui",
+  "name": "@navtrack/frontend",
   "workspaces": [
     "web",
     "shared",
