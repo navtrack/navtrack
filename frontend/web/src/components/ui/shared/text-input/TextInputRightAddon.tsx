@@ -1,12 +1,12 @@
-import classNames from "classnames";
-import React, { ReactNode } from "react";
+import { classNames } from "@navtrack/shared/utils/tailwind";
+import { ReactNode } from "react";
 
-type ITextInputRightAddon = {
+type TextInputRightAddonProps = {
   children: ReactNode;
   className?: string;
 };
 
-export function TextInputRightAddon(props: ITextInputRightAddon) {
+export function TextInputRightAddon(props: TextInputRightAddonProps) {
   return (
     <div
       className={classNames(

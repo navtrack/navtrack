@@ -4,14 +4,7 @@
   "scripts": {
     "generate": "orval --config ./orval.config.js"
   },
-  "dependencies": {
-    "@microsoft/signalr": "^7.0.5",
-    "@react-native-async-storage/async-storage": "^1.18.1",
-    "orval": "^6.12.1",
-    "query-string": "^8.1.0",
-    "react-query": "^3.39.2",
-    "yup": "^1.0.2"
-  },
+  "dependencies": {},
   "eslintConfig": {
     "extends": [
       "react-app",

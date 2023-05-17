@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from "react";
 import { faCog, faHdd, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { SidebarItem, ISidebarItem } from "./SidebarItem";
+import { SidebarItem, SidebarItemProps } from "./SidebarItem";
 import { generatePath } from "react-router-dom";
 import Paths from "../../../../app/Paths";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
@@ -12,7 +12,7 @@ interface IAssetSettingsLayout {
 export function AssetSettingsLayout(props: IAssetSettingsLayout) {
   const currentAsset = useCurrentAsset();
 
-  const routes: ISidebarItem[] = useMemo(
+  const routes: SidebarItemProps[] = useMemo(
     () => [
       {
         label: "assets.settings.sidebar.settings",

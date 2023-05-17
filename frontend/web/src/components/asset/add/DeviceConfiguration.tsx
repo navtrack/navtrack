@@ -1,13 +1,13 @@
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
-import classNames from "classnames";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { FormattedMessage } from "react-intl";
 
-interface IDeviceConfiguration {
+type DeviceConfigurationProps = {
   deviceType?: DeviceTypeModel;
   className?: string;
-}
+};
 
-export function DeviceConfiguration(props: IDeviceConfiguration) {
+export function DeviceConfiguration(props: DeviceConfigurationProps) {
   return (
     <div className={classNames("text-sm", props.className)}>
       <h1 className="font-semibold">

@@ -1,12 +1,12 @@
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
-import classNames from "classnames";
 
-export interface ICard {
+export type CardProps = {
   children: ReactNode;
   className?: string;
-}
+};
 
-export function Card(props: ICard) {
+export function Card(props: CardProps) {
   return (
     <div className={classNames("rounded-lg bg-white shadow", props.className)}>
       {props.children}

@@ -1,11 +1,11 @@
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
-import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
 import useLog from "./useLog";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
-export default function LogTable() {
+export function LogTable() {
   const log = useLog();
   const { showDateTime } = useDateTime();
   const { showSpeed, showAltitude } = useDistance();

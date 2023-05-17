@@ -6,12 +6,12 @@ import {
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "../../shared/icon/Icon";
-import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import { IconWithText } from "../../shared/icon/IconWithText";
 import { useLogout } from "@navtrack/shared/hooks/app/authentication/useLogout";
 import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
 export type AdminLayoutNavBarProfileProps = {};
 

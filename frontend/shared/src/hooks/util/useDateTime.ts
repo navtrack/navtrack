@@ -1,6 +1,6 @@
-import moment from "moment";
-import { useCallback } from "react";
 import { useIntl } from "react-intl";
+import { useCallback } from "react";
+import { format, parseISO } from "date-fns";
 
 export const useDateTime = () => {
   const intl = useIntl();
@@ -8,7 +8,7 @@ export const useDateTime = () => {
   const showDate = useCallback(
     (date?: string): string =>
       date
-        ? moment(date).format("YYYY-MM-DD")
+        ? format(parseISO(date), "yyyy-MM-dd")
         : intl.formatMessage({ id: "generic.na" }),
     [intl]
   );
@@ -16,7 +16,7 @@ export const useDateTime = () => {
   const showTime = useCallback(
     (date?: string): string =>
       date
-        ? moment(date).format("HH:mm:ss")
+        ? format(parseISO(date), "HH:mm:ss")
         : intl.formatMessage({ id: "generic.na" }),
     [intl]
   );
@@ -38,7 +38,7 @@ export const useDateTime = () => {
   }, []);
 
   function getDate(dateTime: string) {
-    return moment(dateTime).toDate();
+    return parseISO(dateTime);
   }
 
   return { showDate, showTime, showDateTime, showDuration, getDate };

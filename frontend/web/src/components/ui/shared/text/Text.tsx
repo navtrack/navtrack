@@ -1,14 +1,13 @@
-import { c } from "@navtrack/shared/utils/tailwind";
-import classNames from "classnames";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 
-export interface ITextProps {
+export type TextProps = {
   children: ReactNode;
   padding?: number;
   type?: "h3";
-}
+};
 
-export function Text(props: ITextProps) {
+export function Text(props: TextProps) {
   return (
     <span
       className={classNames(

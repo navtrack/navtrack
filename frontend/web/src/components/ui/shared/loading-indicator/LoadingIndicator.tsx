@@ -1,7 +1,7 @@
 import { Icon } from "../icon/Icon";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames";
 import { SizeProp } from "@fortawesome/fontawesome-svg-core";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
 type LoadingIndicatorProps = {
   size?: SizeProp;

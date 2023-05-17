@@ -1,5 +1,4 @@
 import styled from "@mui/styled-engine";
-import classNames from "classnames";
 import {
   ChangeEventHandler,
   FocusEventHandler,
@@ -8,8 +7,9 @@ import {
   RefObject
 } from "react";
 import { InputError } from "../input/InputError";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
-export interface ITextInput {
+export type TextInputProps = {
   disabled?: boolean;
   leftAddon?: ReactNode;
   rightAddon?: ReactNode;
@@ -29,7 +29,7 @@ export interface ITextInput {
   ref?: RefObject<HTMLInputElement>;
   hideErrorMessage?: boolean;
   autoCompleteOff?: boolean;
-}
+};
 
 const StyledInput = styled("input")`
   ::-webkit-outer-spin-button,
@@ -40,7 +40,7 @@ const StyledInput = styled("input")`
   -moz-appearance: textfield;
 `;
 
-export function TextInput(props: ITextInput) {
+export function TextInput(props: TextInputProps) {
   return (
     <div>
       <label
@@ -56,8 +56,8 @@ export function TextInput(props: ITextInput) {
           name={props.name}
           type={props.type ?? "text"}
           className={classNames(
-            "w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm text-gray-700 placeholder-gray-400 shadow-sm",
-            { "border-red-600": props.error },
+            "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 placeholder-gray-400 shadow-sm",
+            c(!!props.error, "border-red-600"),
             props.className
           )}
           value={props.value}

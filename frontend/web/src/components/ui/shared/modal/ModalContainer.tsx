@@ -1,12 +1,12 @@
-import classNames from "classnames";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 
-interface IModalContainer {
+type ModalContainerProps = {
   children?: ReactNode;
   className?: string;
-}
+};
 
-export function ModalContainer(props: IModalContainer) {
+export function ModalContainer(props: ModalContainerProps) {
   return (
     <div
       className={classNames(

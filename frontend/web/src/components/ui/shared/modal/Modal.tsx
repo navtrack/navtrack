@@ -1,15 +1,15 @@
 import { Transition, Dialog } from "@headlessui/react";
-import classNames from "classnames";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Fragment, ReactNode } from "react";
 
-export interface IModal {
+export type ModalProps = {
   open: boolean;
   close: () => void;
   children?: ReactNode;
   className?: string;
-}
+};
 
-export function Modal(props: IModal) {
+export function Modal(props: ModalProps) {
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog

@@ -1,12 +1,12 @@
-import classNames from "classnames";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 
-interface IAlert {
+type AlertProps = {
   className?: string;
   children?: ReactNode;
-}
+};
 
-export function Alert(props: IAlert) {
+export function Alert(props: AlertProps) {
   return (
     <div
       className={classNames(

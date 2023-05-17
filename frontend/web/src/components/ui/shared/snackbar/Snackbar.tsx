@@ -5,14 +5,13 @@ import {
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
-import { c } from "@navtrack/shared/utils/tailwind";
-import classNames from "classnames";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { Fragment, useMemo } from "react";
 import { Icon } from "../icon/Icon";
 
 export type SnackbarType = "success" | "error" | "info";
 
-type ISnackbar = {
+type SnackbarProps = {
   type?: SnackbarType;
   title?: string;
   description?: string;
@@ -20,7 +19,7 @@ type ISnackbar = {
   onCloseClick?: () => void;
 };
 
-export function Snackbar(props: ISnackbar) {
+export function Snackbar(props: SnackbarProps) {
   const icon = useMemo(() => {
     if (props.type === "error") {
       return faExclamationCircle;

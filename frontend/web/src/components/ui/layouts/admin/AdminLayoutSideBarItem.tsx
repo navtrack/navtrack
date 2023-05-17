@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 import { IconWithText } from "../../shared/icon/IconWithText";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +5,7 @@ import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons
 import { useScrollToAsset } from "./useScrollToAsset";
 import { AssetModel } from "@navtrack/shared/api/model/generated";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
 export type AdminLayoutSideBarItemProps = {
   asset: AssetModel;

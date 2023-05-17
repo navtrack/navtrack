@@ -5,8 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Popover, Transition } from "@headlessui/react";
 
-import { c } from "@navtrack/shared/utils/tailwind";
-import classNames from "classnames";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { FocusEventHandler, Fragment, useMemo, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Icon } from "../icon/Icon";

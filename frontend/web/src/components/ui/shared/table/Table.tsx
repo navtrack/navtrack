@@ -1,5 +1,4 @@
 import { c } from "@navtrack/shared/utils/tailwind";
-import classNames from "classnames";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
@@ -9,13 +8,13 @@ export interface ITableColumn<T> {
   render: (row: T) => ReactNode;
 }
 
-interface ITable<T> {
+type TableProps<T> = {
   columns: ITableColumn<T>[];
   rows?: T[];
   loading?: boolean;
-}
+};
 
-export function Table<T>(props: ITable<T>) {
+export function Table<T>(props: TableProps<T>) {
   return (
     <table className="w-full border">
       <thead className="border bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500 ">

@@ -1,14 +1,14 @@
-import classNames from "classnames";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { FormattedMessage } from "react-intl";
 import { Link as RouterLink } from "react-router-dom";
 
-export interface ILinkProps {
+export type LinkProps = {
   to: string;
   text: string;
   className?: string;
-}
+};
 
-export function Link(props: ILinkProps) {
+export function Link(props: LinkProps) {
   return (
     <RouterLink
       to={props.to}

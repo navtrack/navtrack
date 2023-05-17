@@ -1,7 +1,6 @@
 import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons";
 import { RadioGroup } from "@headlessui/react";
 import { nameOf } from "@navtrack/shared/utils/typescript";
-import classNames from "classnames";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
 import { DatePicker } from "../../../../ui/shared/date-picker/DatePicker";
@@ -10,12 +9,13 @@ import { FilterModal } from "../FilterModal";
 import { DateFilter, DateRange } from "../types";
 import { dateOptions } from "./date-options";
 import { useDateFilter } from "./useDateFilter";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
-interface IDateFilterModal {
+type DateFilterModalProps = {
   filterKey: string;
-}
+};
 
-export function DateFilterModal(props: IDateFilterModal) {
+export function DateFilterModal(props: DateFilterModalProps) {
   const { state, close, handleSubmit } = useDateFilter(props);
 
   return (

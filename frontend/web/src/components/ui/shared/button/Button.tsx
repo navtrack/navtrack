@@ -1,9 +1,8 @@
 import React, { ReactNode } from "react";
-import classNames from "classnames";
 import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
-import { c } from "@navtrack/shared/utils/tailwind";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
-type Props = {
+type ButtonProps = {
   children: ReactNode;
   size?: "base" | "xs" | "sm" | "md" | "lg";
   color?: "primary" | "secondary" | "white" | "warn" | "green";
@@ -15,7 +14,7 @@ type Props = {
   loading?: boolean;
 };
 
-export function Button(props: Props) {
+export function Button(props: ButtonProps) {
   return (
     <button
       className={classNames(

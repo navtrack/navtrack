@@ -1,9 +1,9 @@
-import classNames from "classnames";
 import { FocusEventHandler } from "react";
 import { InputError } from "../input/InputError";
 import { ISelectOption } from "./types";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
-export interface ISelect {
+export type SelectProps = {
   name?: string;
   label?: string;
   placeholder?: string;
@@ -17,9 +17,9 @@ export interface ISelect {
   readOnly?: boolean;
   hideErrorMessage?: boolean;
   autoCompleteOff?: boolean;
-}
+};
 
-export function Select(props: ISelect) {
+export function Select(props: SelectProps) {
   return (
     <div>
       <label
@@ -32,7 +32,7 @@ export function Select(props: ISelect) {
           disabled={props.disabled}
           name={props.name}
           className={classNames(
-            "w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm text-gray-700 shadow-sm",
+            "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 shadow-sm",
             { "border-red-600": props.error },
             props.className
           )}

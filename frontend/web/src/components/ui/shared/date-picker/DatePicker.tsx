@@ -2,20 +2,19 @@ import { Popover } from "@headlessui/react";
 import { LocalizationProvider, StaticDatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { styled, TextField, TextFieldProps } from "@mui/material";
-import { c } from "@navtrack/shared/utils/tailwind";
-import classNames from "classnames";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { format } from "date-fns";
 import { useState } from "react";
 import { usePopper } from "react-popper";
 import { TextInput } from "../text-input/TextInput";
 
-interface IDatePicker {
+type DatePickerProps = {
   value: Date | null;
   onChange: (date: Date | null) => void;
   disabled?: boolean;
   placement?: "top-start" | "bottom-start";
   label?: string;
-}
+};
 
 const StyledDatePickerContainer = styled("div")`
   .PrivatePickersSlideTransition-root {
@@ -49,7 +48,7 @@ const StyledDatePickerContainer = styled("div")`
   }
 `;
 
-export function DatePicker(props: IDatePicker) {
+export function DatePicker(props: DatePickerProps) {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>();
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>();

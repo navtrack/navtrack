@@ -1,8 +1,8 @@
-import classNames from "classnames";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { Icon } from "../ui/shared/icon/Icon";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
 export type SettingsSidebarItemProps = {
   label: string;

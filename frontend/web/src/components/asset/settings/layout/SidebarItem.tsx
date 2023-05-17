@@ -1,16 +1,16 @@
-import classNames from "classnames";
 import { Icon } from "../../../ui/shared/icon/Icon";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FormattedMessage } from "react-intl";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
-export interface ISidebarItem {
+export type SidebarItemProps = {
   label: string;
   href: string;
   icon: IconProp;
-}
+};
 
-export function SidebarItem(props: ISidebarItem) {
+export function SidebarItem(props: SidebarItemProps) {
   const history = useHistory();
   const match = useRouteMatch(props.href);
 

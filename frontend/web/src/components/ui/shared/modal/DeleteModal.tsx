@@ -1,7 +1,7 @@
-import { Modal, IModal } from "./Modal";
+import { Modal, ModalProps } from "./Modal";
 import { DeleteModalContainer } from "./DeleteModalContainer";
 
-interface IDeleteModal extends IModal {
+interface IDeleteModal extends ModalProps {
   onConfirm?: () => void;
 }
 

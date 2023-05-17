@@ -1,12 +1,12 @@
-import classNames from "classnames";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 
-interface IModalBody {
+type ModalBodyProps = {
   children?: ReactNode;
   className?: string;
-}
+};
 
-export function ModalBody(props: IModalBody) {
+export function ModalBody(props: ModalBodyProps) {
   return (
     <div className={classNames("flex-grow p-4", props.className)}>
       {props.children}

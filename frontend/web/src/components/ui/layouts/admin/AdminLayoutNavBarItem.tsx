@@ -1,8 +1,8 @@
-import classNames from "classnames";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FormattedMessage } from "react-intl";
 import { IconWithText } from "../../shared/icon/IconWithText";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
 type AdminLayoutNavBarItemProps = {
   labelId: string;

@@ -1,9 +1,9 @@
 import { IconProp, SizeProp } from "@fortawesome/fontawesome-svg-core";
-import classNames from "classnames";
 import { ReactNode } from "react";
 import { Icon } from "./Icon";
+import { classNames } from "@navtrack/shared/utils/tailwind";
 
-interface IIconsWithText {
+type IconWithTextProps = {
   icon: IconProp;
   spin?: boolean;
   hidden?: boolean;
@@ -11,9 +11,9 @@ interface IIconsWithText {
   children: ReactNode;
   iconClassName?: string;
   className?: string;
-}
+};
 
-export function IconWithText(props: IIconsWithText) {
+export function IconWithText(props: IconWithTextProps) {
   return (
     <div className={classNames(props.className, "flex")}>
       <div
