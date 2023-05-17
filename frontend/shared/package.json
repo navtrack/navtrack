@@ -10,7 +10,6 @@
     "orval": "^6.12.1",
     "query-string": "^8.1.0",
     "react-query": "^3.39.2",
-    "recoil": "^0.7.7",
     "yup": "^1.0.2"
   },
   "eslintConfig": {

@@ -9,6 +9,8 @@
     "@types/react-dom": "^18.0.11",
     "@types/react": "^18.0.28",
     "react": "18.2.0",
+    "recoil": "^0.7.7",
+    "formik": "^2.2.9",
     "typescript": "^4.9.5"
   },
   "scripts": {
