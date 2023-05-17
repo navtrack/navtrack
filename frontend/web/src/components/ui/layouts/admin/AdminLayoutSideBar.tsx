@@ -1,6 +1,6 @@
 import { Copyright } from "../../../shared/Copyright";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import NavtrackLogo from "../../../../assets/images/navtrack.svg";
 import { AdminLayoutSideBarAssets } from "./AdminLayoutSideBarAssets";
 

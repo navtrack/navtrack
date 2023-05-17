@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { IconWithText } from "../../shared/icon/IconWithText";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
@@ -7,11 +7,11 @@ import { useScrollToAsset } from "./useScrollToAsset";
 import { AssetModel } from "@navtrack/shared/api/model/generated";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
-export interface IAdminLayoutSideBarItemProps {
+export type AdminLayoutSideBarItemProps = {
   asset: AssetModel;
-}
+};
 
-export function AdminLayoutSideBarItem(props: IAdminLayoutSideBarItemProps) {
+export function AdminLayoutSideBarItem(props: AdminLayoutSideBarItemProps) {
   const currentAsset = useCurrentAsset();
   const history = useHistory();
   const { elementRef } = useScrollToAsset(props.asset);

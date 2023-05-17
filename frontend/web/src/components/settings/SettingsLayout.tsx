@@ -1,50 +1,13 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
-import { useHistory, useRouteMatch } from "react-router";
-import { FormattedMessage } from "react-intl";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { Icon } from "../ui/shared/icon/Icon";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import Paths from "../../app/Paths";
+import {
+  SettingsSidebarItem,
+  SettingsSidebarItemProps
+} from "./SettingsSidebarItem";
 
-interface ISettingsSidebarItem {
-  label: string;
-  href: string;
-  icon: IconProp;
-}
-
-function SettingsSidebarItem(props: ISettingsSidebarItem) {
-  const history = useHistory();
-  const match = useRouteMatch(props.href);
-
-  return (
-    <div
-      key={props.label}
-      onClick={() => history.push(props.href)}
-      className={classNames(
-        match?.isExact
-          ? "bg-gray-50 text-gray-700 hover:bg-white hover:text-gray-700"
-          : "text-gray-900 hover:bg-gray-50 hover:text-gray-900",
-        "group flex cursor-pointer items-center rounded-md px-3 py-2 text-sm font-medium"
-      )}>
-      <Icon
-        icon={props.icon}
-        className={classNames(
-          match?.isExact
-            ? "text-gray-900 group-hover:text-gray-900"
-            : "text-gray-500 group-hover:text-gray-500",
-          "-ml-1 mr-3 h-6 w-6 flex-shrink-0"
-        )}
-      />
-      <span className="truncate">
-        <FormattedMessage id={props.label} />
-      </span>
-    </div>
-  );
-}
-
-const menuItems: ISettingsSidebarItem[] = [
+const menuItems: SettingsSidebarItemProps[] = [
   {
     label: "settings.menu.account",
     href: Paths.SettingsAccount,
@@ -57,14 +20,14 @@ const menuItems: ISettingsSidebarItem[] = [
   }
 ];
 
-export interface ISettingsLayout {
+type SettingsLayoutProps = {
   children?: ReactNode;
-}
+};
 
-export function SettingsLayout(props: ISettingsLayout) {
+export function SettingsLayout(props: SettingsLayoutProps) {
   return (
     <div className="grid grid-cols-12 gap-x-5">
-      <div className="py-6 px-2 sm:px-6 lg:col-span-3 lg:py-0 lg:px-0">
+      <div className="px-2 py-6 sm:px-6 lg:col-span-3 lg:px-0 lg:py-0">
         <div className="space-y-1">
           {menuItems.map((item) => (
             <SettingsSidebarItem

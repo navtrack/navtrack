@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Icon } from "../../../ui/shared/icon/Icon";
-import { useHistory, useRouteMatch } from "react-router";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FormattedMessage } from "react-intl";
 

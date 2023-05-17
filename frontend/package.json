@@ -8,7 +8,8 @@
   "dependencies": {
     "@types/react-dom": "^18.0.11",
     "@types/react": "^18.0.28",
-    "react-native": "0.71.3",
+    "react-native": "0.71.8",
+    "react": "18.2.0",
     "typescript": "^4.9.5"
   },
   "scripts": {
@@ -16,7 +17,8 @@
     "clean": "rm -rf node_modules && rm -rf shared/node_modules && rm -rf web/node_modules"
   },
   "overrides": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-native": "0.71.8",
+    "react": "18.2.0"
   }
 }

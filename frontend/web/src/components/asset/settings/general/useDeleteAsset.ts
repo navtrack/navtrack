@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { object, ObjectSchema, string } from "yup";
 import { DeleteAssetFormValues } from "./types";
 import { useNotification } from "../../../ui/shared/notification/useNotification";

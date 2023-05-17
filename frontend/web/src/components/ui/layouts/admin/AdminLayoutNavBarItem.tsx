@@ -2,15 +2,15 @@ import classNames from "classnames";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FormattedMessage } from "react-intl";
 import { IconWithText } from "../../shared/icon/IconWithText";
-import { useHistory, useRouteMatch } from "react-router";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
-interface IAdminLayoutNavBarItem {
+type AdminLayoutNavBarItemProps = {
   labelId: string;
   icon: IconProp;
   href: string;
-}
+};
 
-export function AdminLayoutNavBarItem(props: IAdminLayoutNavBarItem) {
+export function AdminLayoutNavBarItem(props: AdminLayoutNavBarItemProps) {
   const history = useHistory();
   const match = useRouteMatch({ path: props.href });
 

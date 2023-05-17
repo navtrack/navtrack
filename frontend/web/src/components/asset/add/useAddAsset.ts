@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
 import { AddAssetFormValues } from "./AddAssetFormValues";
 import { FormikHelpers } from "formik";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useScrollToAsset } from "../../ui/layouts/admin/useScrollToAsset";
 import { useNotification } from "../../ui/shared/notification/useNotification";
 import { useAddAssetMutation } from "@navtrack/shared/hooks/mutations/useAddAssetMutation";

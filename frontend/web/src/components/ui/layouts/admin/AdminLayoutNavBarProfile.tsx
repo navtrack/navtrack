@@ -8,14 +8,14 @@ import {
 import { Icon } from "../../shared/icon/Icon";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { IconWithText } from "../../shared/icon/IconWithText";
 import { useLogout } from "@navtrack/shared/hooks/app/authentication/useLogout";
 import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
 
-export interface IAdminLayoutNavBarProfile {}
+export type AdminLayoutNavBarProfileProps = {};
 
-export function AdminLayoutNavBarProfile(props: IAdminLayoutNavBarProfile) {
+export function AdminLayoutNavBarProfile(props: AdminLayoutNavBarProfileProps) {
   const currentUser = useCurrentUser();
   const logout = useLogout();
   const history = useHistory();

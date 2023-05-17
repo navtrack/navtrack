@@ -7,7 +7,7 @@ import {
 import { AdminLayoutNavBarProfile } from "./AdminLayoutNavBarProfile";
 import { AdminLayoutNavBarItem } from "./AdminLayoutNavBarItem";
 import { Button } from "../../shared/button/Button";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 

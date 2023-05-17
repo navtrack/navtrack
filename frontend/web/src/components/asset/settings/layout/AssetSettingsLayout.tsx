@@ -1,7 +1,7 @@
 import { ReactNode, useMemo } from "react";
 import { faCog, faHdd, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { SidebarItem, ISidebarItem } from "./SidebarItem";
-import { generatePath } from "react-router";
+import { generatePath } from "react-router-dom";
 import Paths from "../../../../app/Paths";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
@@ -40,7 +40,7 @@ export function AssetSettingsLayout(props: IAssetSettingsLayout) {
   return (
     <div className="relative">
       <div className="overflow-hidden rounded-lg bg-white shadow">
-        <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
+        <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-x lg:divide-y-0">
           <aside className="py-6 lg:col-span-3">
             <nav className="space-y-1">
               {routes.map((item) => (
