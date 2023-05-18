@@ -1,8 +1,4 @@
-export function c(
-  check: boolean | string | undefined,
-  trueValue: string,
-  falseValue: string = ""
-) {
+export function c(check: boolean | string | undefined, trueValue: string, falseValue: string = "") {
   return !!check ? trueValue : falseValue ?? "";
 }
 

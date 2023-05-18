@@ -2,8 +2,7 @@
   "name": "@navtrack/frontend",
   "workspaces": [
     "web",
-    "shared",
-    "mobile"
+    "shared"
   ],
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -29,7 +28,7 @@
     "prettier": "^2.5.1",
     "query-string": "^8.1.0",
     "react-dom": "18.2.0",
-    "react-intl": "^6.2.1",
+    "react-intl": "^6.4.2",
     "react-query": "^3.39.2",
     "react": "18.2.0",
     "recoil": "^0.7.7",

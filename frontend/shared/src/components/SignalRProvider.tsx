@@ -77,7 +77,7 @@ export function SignalRProvider(props: SignalRProviderProps) {
   const getConnection = useCallback(
     async (hubName: string): Promise<HubConnection | undefined> => {
       if (appContext.authentication.isAuthenticated) {
-        const hubUrl = `${appConfig?.apiUrl}/signalr/${hubName}`;
+        const hubUrl = `${appConfig?.apiUrl}/hubs/${hubName}`;
 
         const connection = hubConnections[hubUrl];
 
