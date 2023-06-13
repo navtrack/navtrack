@@ -5,6 +5,12 @@ namespace Navtrack.Core.Services.Util;
 
 public static class DistanceCalculator
 {
+    /// <summary>
+    /// Calculates the distance between two coordinates.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <returns>The distance in meters.</returns>
     public static int CalculateDistance(Coordinates source, Coordinates destination)
     {
         double d1 = source.Latitude * (Math.PI / 180.0);

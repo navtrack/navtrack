@@ -1,7 +1,7 @@
-import { usePostAssetsAssetIdUsers } from "../../api/index-generated";
+import { usePostAssetsAssetsAssetIdUsers } from "../../api/index-generated";
 
 export const useAddUserToAssetMutation = () => {
-  const mutation = usePostAssetsAssetIdUsers();
+  const mutation = usePostAssetsAssetsAssetIdUsers();
 
   return mutation;
 };

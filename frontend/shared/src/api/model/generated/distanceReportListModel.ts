@@ -4,13 +4,10 @@
  * Navtrack.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
  * OpenAPI spec version: 1.0
  */
-import type { TripModel } from './tripModel';
+import type { DistanceReportItemModel } from './distanceReportItemModel';
 
-export interface TripListModel {
-  items: TripModel[];
+export interface DistanceReportListModel {
+  items: DistanceReportItemModel[];
   readonly totalDistance: number;
   readonly totalDuration: number;
-  readonly totalLocations: number;
-  readonly totalAvgSpeed: number;
-  readonly totalAvgAltitude: number;
 }

@@ -14,14 +14,5 @@
     "react-query": "^3.39.3",
     "recoil": "^0.7.7",
     "yup": "^1.1.1"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "import/no-anonymous-default-export": "off"
-    }
   }
 }

@@ -5,7 +5,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface AddUserToAssetModel {
-  email: string;
-  role: string;
+export interface DistanceReportItemModel {
+  day: string;
+  trips: number;
+  distance: number;
+  duration: number;
 }

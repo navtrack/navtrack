@@ -1,7 +1,7 @@
-import { useDeleteAssetsAssetIdUsersUserId } from "../../api/index-generated";
+import { useDeleteAssetsAssetsAssetIdUsersUserId } from "../../api/index-generated";
 
 export const useDeleteUserFromAssetMutation = () => {
-  const mutation = useDeleteAssetsAssetIdUsersUserId();
+  const mutation = useDeleteAssetsAssetsAssetIdUsersUserId();
 
   return mutation;
 };

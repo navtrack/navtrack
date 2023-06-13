@@ -36,7 +36,10 @@ public static class TripsMapper
 
         foreach (LocationDocument locationDocument in source)
         {
-            if (lastLocation == null || locationDocument.DateTime > lastLocation.DateTime.AddMinutes(5))
+            if (lastLocation == null || 
+                locationDocument.DateTime > lastLocation.DateTime.AddMinutes(5) ||
+                DistanceCalculator.CalculateDistance(new Coordinates(lastLocation.Latitude, lastLocation.Longitude),
+                    new Coordinates(locationDocument.Latitude, locationDocument.Longitude)) > 1000)
             {
                 currentTrip = new Trip
                 {
