@@ -9,6 +9,9 @@ public class DistanceReportItemModel
     public DateTime Day { get; set; }
     
     [Required]
+    public int Trips { get; set; }
+    
+    [Required]
     public int Distance { get; set; }
 
     [Required]

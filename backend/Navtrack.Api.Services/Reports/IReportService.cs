@@ -5,5 +5,5 @@ namespace Navtrack.Api.Services.Reports;
 
 public interface IReportService
 {
-    Task<DistanceReportListModel> GetDistanceReport(string assetId, DistanceReportFilterModel tripFilter);
+    Task<DistanceReportListModel> GetDistanceReport(string assetId, DistanceReportFilterModel distanceReportFilter);
 }

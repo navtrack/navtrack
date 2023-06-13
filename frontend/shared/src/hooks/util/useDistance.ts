@@ -31,7 +31,7 @@ export const useDistance = () => {
         return `${distance} ${units.length}`;
       }
 
-      return "";
+      return `0 ${units.length}`;
     },
     [units.length, units.lengthK, units.unitsType]
   );

@@ -37,15 +37,6 @@
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "import/no-anonymous-default-export": "off"
-    }
-  },
   "browserslist": [
     "defaults"
   ]

@@ -6,10 +6,13 @@ export const useDateTime = () => {
   const intl = useIntl();
 
   const showDate = useCallback(
-    (date?: string): string =>
-      date
-        ? format(parseISO(date), "yyyy-MM-dd")
-        : intl.formatMessage({ id: "generic.na" }),
+    (date: string | Date): string => {
+      const d = typeof date === "string" ? parseISO(date) : date;
+
+      return date
+        ? format(d, "yyyy-MM-dd")
+        : intl.formatMessage({ id: "generic.na" });
+    },
     [intl]
   );
 
