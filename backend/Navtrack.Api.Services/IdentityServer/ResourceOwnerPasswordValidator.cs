@@ -24,7 +24,7 @@ public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
 
     public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
     {
-        UserDocument? user = await userDataService.GetUserByEmail(context.UserName);
+        UserDocument? user = await userDataService.GetByEmail(context.UserName);
 
         if (user != null && passwordHasher.CheckPassword(context.Password, user.Password.Hash, user.Password.Salt))
         {

@@ -35,7 +35,7 @@ public class TokenDataService : ITokenDataService
     public async Task<RefreshTokenDocument?> GetByUserId(string userId)
     {
         return ObjectId.TryParse(userId, out ObjectId objectId)
-            ? await repository.GetEntities<RefreshTokenDocument>().FirstOrDefaultAsync(x => x.Id == objectId)
+            ? await repository.GetQueryable<RefreshTokenDocument>().FirstOrDefaultAsync(x => x.Id == objectId)
             : null;
     }
 }

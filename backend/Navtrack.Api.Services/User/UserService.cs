@@ -3,6 +3,7 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Mappers;
+using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.Common.Passwords;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
@@ -25,32 +26,55 @@ public class UserService : IUserService
         this.userDataService = userDataService;
     }
 
-    public async Task<CurrentUserModel> GetCurrentUser()
+    public async Task<UserModel> GetCurrentUser()
     {
-        UserDocument entity = await currentUserAccessor.GetCurrentUser();
+        UserDocument entity = await currentUserAccessor.Get();
 
-        return CurrentUserMapper.Map(entity);
+        return UserModelMapper.Map(entity);
     }
 
-    public async Task UpdateUser(UpdateUserRequest model)
+    public async Task Update(UpdateUserRequest model)
     {
-        UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+        UserDocument currentUser = await currentUserAccessor.Get();
+        UpdateUser updateUser = new();
 
-        await userDataService.UpdateUser(currentUser, model.Email, model.UnitsType);
+        if (!string.IsNullOrEmpty(model.Email))
+        {
+            model.Email = model.Email.ToLower();
+
+            if (currentUser.Email != model.Email)
+            {
+                if (await userDataService.EmailIsUsed(model.Email))
+                {
+                    throw new ValidationException().AddValidationError(nameof(UpdateUserRequest.Email),
+                        ValidationErrorCodes.EmailAlreadyUsed);
+                }
+
+                updateUser.Email = model.Email;
+            }
+
+            if (model.UnitsType.HasValue && currentUser.UnitsType != model.UnitsType)
+            {
+                updateUser.UnitsType = model.UnitsType;
+            }
+
+            await userDataService.Update(currentUser.Id, updateUser);
+        }
     }
 
     public async Task Register(RegisterAccountRequest model)
     {
         ApiException apiException = new();
 
-        if (await userDataService.EmailExists(model.Email))
+        if (await userDataService.EmailIsUsed(model.Email))
         {
-            apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyExists);
+            apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyUsed);
         }
 
         if (model.Password != model.ConfirmPassword)
         {
-            apiException.AddValidationError(nameof(model.ConfirmPassword), ValidationErrorCodes.PasswordsDoNotMatch);
+            apiException.AddValidationError(nameof(model.ConfirmPassword),
+                ValidationErrorCodes.PasswordsDoNotMatch);
         }
 
         apiException.ThrowIfInvalid();

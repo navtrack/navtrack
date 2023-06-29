@@ -7,7 +7,6 @@ using Navtrack.Api.Services.User;
 using Navtrack.Core.Model.Trips;
 using Navtrack.Core.Services.Trips;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Locations;
@@ -46,7 +45,7 @@ public class ReportService : IReportService
             EndDate = distanceReportFilter.EndDate
         });
         
-        UserDocument user = await currentUserAccessor.GetCurrentUser();
+        UserDocument user = await currentUserAccessor.Get();
 
         DistanceReportListModel listModel = DistanceReportListModelMapper.Map(trips, user.UnitsType);
 

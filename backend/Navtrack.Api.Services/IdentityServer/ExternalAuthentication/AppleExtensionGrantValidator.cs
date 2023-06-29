@@ -6,6 +6,7 @@ using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Common.Settings;
+using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Library.DI;
 
@@ -37,10 +38,13 @@ public class AppleExtensionGrantValidator : IExtensionGrantValidator
             Token = context.Request.Raw["code"],
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userDataService.GetByAppleId,
+            GetUser = userDataService.GetByEmailOrAppleId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, appleId: id),
             ExternalId = user => user.AppleId,
-            SetId = userDataService.SetAppleId
+            SetId = (userDocumentId, id) => userDataService.Update(userDocumentId, new UpdateUser
+            {
+                AppleId = id
+            })
         });
 
         context.Result = !string.IsNullOrEmpty(userId)

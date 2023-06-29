@@ -364,17 +364,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddDeviceModel"
+                "$ref": "#/components/schemas/ChangeDeviceModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddDeviceModel"
+                "$ref": "#/components/schemas/ChangeDeviceModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddDeviceModel"
+                "$ref": "#/components/schemas/ChangeDeviceModel"
               }
             }
           }
@@ -1312,7 +1312,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CurrentUserModel"
+                  "$ref": "#/components/schemas/UserModel"
                 }
               }
             }
@@ -1403,24 +1403,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentUserModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentUserModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentUserModel"
-                }
-              }
-            }
+            "description": "Success"
           },
           "401": {
             "description": "Unauthorized",
@@ -1624,24 +1607,6 @@
         },
         "additionalProperties": false
       },
-      "AddDeviceModel": {
-        "required": [
-          "deviceTypeId",
-          "serialNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "serialNumber": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "deviceTypeId": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
       "AddUserToAssetModel": {
         "required": [
           "email",
@@ -1749,6 +1714,24 @@
         },
         "additionalProperties": false
       },
+      "ChangeDeviceModel": {
+        "required": [
+          "deviceTypeId",
+          "serialNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "serialNumber": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "deviceTypeId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "ChangePasswordRequest": {
         "required": [
           "confirmPassword",
@@ -1768,28 +1751,6 @@
           "currentPassword": {
             "minLength": 1,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CurrentUserModel": {
-        "required": [
-          "email",
-          "id",
-          "units"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "email": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "units": {
-            "$ref": "#/components/schemas/UnitsType"
           }
         },
         "additionalProperties": false
@@ -2305,9 +2266,32 @@
         "properties": {
           "email": {
             "type": "string",
+            "format": "email",
             "nullable": true
           },
           "unitsType": {
+            "$ref": "#/components/schemas/UnitsType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserModel": {
+        "required": [
+          "email",
+          "id",
+          "units"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "email": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "units": {
             "$ref": "#/components/schemas/UnitsType"
           }
         },

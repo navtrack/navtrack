@@ -50,7 +50,10 @@ public class ExternalLoginHandler : IExternalLoginHandler
                     }
                     if (!isPrivateEmailValue && userDocument.Email != email.Value)
                     {
-                        await userDataService.UpdateUser(userDocument, email.Value);
+                        await userDataService.Update(userDocument.Id, new UpdateUser
+                        {
+                            Email = email.Value
+                        });
                     }
                 }
 

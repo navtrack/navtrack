@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -23,35 +21,28 @@ public class DeviceDataService : IDeviceDataService
         this.repository = repository;
     }
 
-    public Task<bool> SerialNumberIsUsed(string serialNumber, int protocolPort, string excludeAssetId = null)
+    public Task<bool> SerialNumberIsUsed(string serialNumber, int protocolPort, string? excludeAssetId = null)
     {
-        Expression<Func<AssetDocument, bool>> filter = excludeAssetId == null
-            ? x =>
-                x.Device.SerialNumber == serialNumber &&
-                x.Device.ProtocolPort == protocolPort
-            : x =>
-                x.Device.SerialNumber == serialNumber &&
-                x.Device.ProtocolPort == protocolPort &&
-                (excludeAssetId != null || x.Id != ObjectId.Parse(excludeAssetId));
-
-        return repository.GetEntities<AssetDocument>()
-            .AnyAsync(filter);
+        return repository.GetQueryable<AssetDocument>()
+            .AnyAsync(x => x.Device.SerialNumber == serialNumber &&
+                           x.Device.ProtocolPort == protocolPort &&
+                           (excludeAssetId == null || x.Id != ObjectId.Parse(excludeAssetId)));
     }
 
     public Task<AssetDocument> GetActiveDeviceByDeviceId(string deviceId)
     {
-        return repository.GetEntities<AssetDocument>()
+        return repository.GetQueryable<AssetDocument>()
             .FirstOrDefaultAsync(x => x.Device.SerialNumber == deviceId);
     }
 
     public Task<List<DeviceDocument>> GetDevicesByAssetId(string assetId)
     {
-        return repository.GetEntities<DeviceDocument>().Where(x => x.AssetId == ObjectId.Parse(assetId)).ToListAsync();
+        return repository.GetQueryable<DeviceDocument>().Where(x => x.AssetId == ObjectId.Parse(assetId)).ToListAsync();
     }
 
     public Task<bool> DeviceHasLocations(ObjectId deviceId)
     {
-        return repository.GetEntities<LocationDocument>().AnyAsync(x => x.DeviceId == deviceId);
+        return repository.GetQueryable<LocationDocument>().AnyAsync(x => x.DeviceId == deviceId);
     }
 
     public Task Add(DeviceDocument document)
@@ -66,6 +57,6 @@ public class DeviceDataService : IDeviceDataService
 
     public Task<bool> IsActive(string id)
     {
-        return repository.GetEntities<AssetDocument>().AnyAsync(x => x.Device.Id == ObjectId.Parse(id));
+        return repository.GetQueryable<AssetDocument>().AnyAsync(x => x.Device.Id == ObjectId.Parse(id));
     }
 }

@@ -52,7 +52,7 @@ public class UserTests : BaseTest
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await repository.GetEntities<PasswordResetDocument>()
+        PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -80,7 +80,7 @@ public class UserTests : BaseTest
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await repository.GetEntities<PasswordResetDocument>()
+        PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -139,7 +139,7 @@ public class UserTests : BaseTest
         await repository.GetCollection<PasswordResetDocument>().UpdateOneAsync(x => x.Email == email,
             Builders<PasswordResetDocument>.Update.Set(x => x.Created.Date, DateTime.UtcNow.AddHours(-12)));
 
-        PasswordResetDocument passwordResetDocument = await repository.GetEntities<PasswordResetDocument>()
+        PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
@@ -182,7 +182,7 @@ public class UserTests : BaseTest
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await repository.GetEntities<PasswordResetDocument>()
+        PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
@@ -193,9 +193,9 @@ public class UserTests : BaseTest
                 ConfirmPassword = "new password"
             });
 
-        UserDocument? user = await repository.GetEntities<UserDocument>()
+        UserDocument? user = await repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.Id == passwordResetDocument.UserId);
-        passwordResetDocument = await repository.GetEntities<PasswordResetDocument>()
+        passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         Assert.True(passwordHasher.CheckPassword("new password", user.Password.Hash, user.Password.Salt));
@@ -230,7 +230,7 @@ public class UserTests : BaseTest
            });
 
         PasswordResetDocument passwordResetDocument = await repository
-            .GetEntities<PasswordResetDocument>()
+            .GetQueryable<PasswordResetDocument>()
             .Where(x => x.Email == email)
             .OrderBy(x => x.Created.Date)
             .FirstOrDefaultAsync();
@@ -275,7 +275,7 @@ public class UserTests : BaseTest
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await repository.GetEntities<PasswordResetDocument>()
+        PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         HttpResponseMessage firstResponse = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,

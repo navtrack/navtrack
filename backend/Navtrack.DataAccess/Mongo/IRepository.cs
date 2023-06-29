@@ -5,6 +5,6 @@ namespace Navtrack.DataAccess.Mongo;
 
 public interface IRepository
 {
-    IMongoQueryable<T> GetEntities<T>() where T : class;
+    IMongoQueryable<T> GetQueryable<T>() where T : class;
     IMongoCollection<T> GetCollection<T>() where T : class;
 }

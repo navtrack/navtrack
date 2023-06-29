@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Devices;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
@@ -51,7 +52,7 @@ public class AssetService : IAssetService
     public async Task<AssetModel> GetById(string assetId)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        UserDocument user = await currentUserAccessor.GetCurrentUser();
+        UserDocument user = await currentUserAccessor.Get();
         DeviceType deviceType = deviceTypeDataService.GetById(asset.Device.DeviceTypeId);
 
         return AssetModelMapper.Map(asset, user.UnitsType, deviceType);
@@ -59,7 +60,7 @@ public class AssetService : IAssetService
 
     public async Task<AssetsModel> GetAssets()
     {
-        UserDocument user = await currentUserAccessor.GetCurrentUser();
+        UserDocument user = await currentUserAccessor.Get();
         List<ObjectId> assetIds = user.AssetRoles?.Select(x => x.AssetId).ToList() ??
                                   Enumerable.Empty<ObjectId>().ToList();
         List<AssetDocument> assets = await assetDataService.GetAssetsByIds(assetIds);
@@ -78,18 +79,18 @@ public class AssetService : IAssetService
     public async Task Update(string assetId, UpdateAssetModel model)
     {
         AssetModel asset = await GetById(assetId);
-        asset.Throw404IfNull();
+        asset.Return404IfNull();
 
         if (!string.IsNullOrEmpty(model.Name) && asset.Name != model.Name)
         {
-            UserDocument user = await currentUserAccessor.GetCurrentUser();
+            UserDocument user = await currentUserAccessor.Get();
 
             bool nameIsUsed = await assetDataService.NameIsUsed(model.Name, user.Id, assetId);
 
             if (nameIsUsed)
             {
                 throw new ApiException()
-                    .AddValidationError(nameof(model.Name), "You already have an asset with this name.");
+                    .AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
             }
 
             await assetDataService.UpdateName(assetId, model.Name);
@@ -107,7 +108,7 @@ public class AssetService : IAssetService
 
     public async Task<AssetModel> Add(AddAssetModel model)
     {
-        UserDocument user = await currentUserAccessor.GetCurrentUser();
+        UserDocument user = await currentUserAccessor.Get();
 
         AdjustModel(model);
         await ValidateModel(model, user);
@@ -129,29 +130,25 @@ public class AssetService : IAssetService
     public async Task AddUserToAsset(string assetId, AddUserToAssetModel model)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        asset.Throw404IfNull();
+        asset.Return404IfNull();
 
-        UserDocument userDocument = await userDataService.GetUserByEmail(model.Email);
-        ApiException validationException = new();
+        UserDocument? userDocument = await userDataService.GetByEmail(model.Email);
 
         if (userDocument == null)
         {
-            validationException.AddValidationError(nameof(model.Email), "There is no user with that email.");
+            throw new ValidationException().AddValidationError(nameof(model.Email),
+                "There is no user with that email.");
         }
-        else if (asset.UserRoles.Any(x => x.UserId == userDocument.Id))
+
+        if (asset.UserRoles.Any(x => x.UserId == userDocument.Id))
         {
-            validationException.AddValidationError(nameof(model.Email),
+            throw new ValidationException().AddValidationError(nameof(model.Email),
                 "This user already has a role on this asset.");
         }
 
         if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType))
         {
-            validationException.AddValidationError(nameof(model.Role), "Invalid role.");
-        }
-
-        if (validationException.HasValidationErrors)
-        {
-            throw validationException;
+            throw new ValidationException().AddValidationError(nameof(model.Role), "Invalid role.");
         }
 
         await assetDataService.AddUserToAsset(asset, userDocument, assetRoleType);
@@ -160,7 +157,7 @@ public class AssetService : IAssetService
     public async Task RemoveUserFromAsset(string assetId, string userId)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        asset.Throw404IfNull();
+        asset.Return404IfNull();
 
         AssetUserRoleElement assetUserRole = asset.UserRoles.FirstOrDefault(x => x.UserId == ObjectId.Parse(userId));
 
@@ -176,7 +173,7 @@ public class AssetService : IAssetService
 
     private async Task<AssetDocument> AddDocuments(AddAssetModel model)
     {
-        UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+        UserDocument currentUser = await currentUserAccessor.Get();
         DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
 
         AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);
@@ -186,7 +183,7 @@ public class AssetService : IAssetService
         await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
 
         assetDocument.Device = ActiveDeviceElementMapper.Map(deviceDocument, deviceType);
-        
+
         await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == currentUser.Id,
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement
             {
@@ -205,31 +202,27 @@ public class AssetService : IAssetService
     {
         ApiException validationException = new();
 
-        if (!deviceTypeDataService.Exists(model.DeviceTypeId))
-        {
-            validationException.AddValidationError(nameof(model.DeviceTypeId), "The device type is not valid.");
-        }
-
         if (await assetDataService.NameIsUsed(model.Name, currentUser.Id))
         {
-            validationException.AddValidationError(nameof(model.Name),
-                "You already have an asset with this name.");
+            validationException.AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
+        }
+
+        if (!deviceTypeDataService.Exists(model.DeviceTypeId))
+        {
+            validationException.AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
         }
 
         if (await deviceService.SerialNumberIsUsed(model.SerialNumber, model.DeviceTypeId))
         {
             validationException.AddValidationError(nameof(model.SerialNumber),
-                "The serial number is already used by another device.");
+                ValidationErrorCodes.SerialNumberAlreadyUsed);
         }
 
-        if (validationException.HasValidationErrors)
-        {
-            throw validationException;
-        }
+        validationException.ThrowIfInvalid();
     }
 
     private static void AdjustModel(AddAssetModel model)
     {
-        model.Name = model.Name?.Trim();
+        model.Name = model.Name.Trim();
     }
 }

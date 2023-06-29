@@ -37,7 +37,7 @@ public class LocationService : ILocationService
         roleService.CheckRole(asset, AssetRoleType.Viewer);
 
         List<LocationDocument> locations = await locationDataService.GetLocations(assetId, locationFilter);
-        UserDocument user = await currentUserAccessor.GetCurrentUser();
+        UserDocument user = await currentUserAccessor.Get();
 
         return LocationListMapper.Map(locations, user.UnitsType);
     }

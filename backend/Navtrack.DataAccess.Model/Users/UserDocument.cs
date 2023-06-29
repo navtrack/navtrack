@@ -33,7 +33,7 @@ public class UserDocument
 
     [BsonElement("microsoftId")]
     public string? MicrosoftId { get; set; }
-
+    
     [BsonElement("appleId")]
     public string? AppleId { get; set; }
 }

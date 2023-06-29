@@ -22,7 +22,7 @@ public class SettingDataService : ISettingDataService
     public async Task<SettingDocument?> Get(string key)
     {
         SettingDocument? document =
-            await repository.GetEntities<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
+            await repository.GetQueryable<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
 
         return document;
     }
@@ -54,6 +54,6 @@ public class SettingDataService : ISettingDataService
 
     public Task<List<SettingDocument>> GetAll()
     {
-        return repository.GetEntities<SettingDocument>().ToListAsync();
+        return repository.GetQueryable<SettingDocument>().ToListAsync();
     }
 }

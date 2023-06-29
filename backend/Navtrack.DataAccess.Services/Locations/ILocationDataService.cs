@@ -12,4 +12,5 @@ public interface ILocationDataService
     Task<Dictionary<ObjectId, int>> GetLocationsCountByDeviceIds(IEnumerable<ObjectId> deviceIds);
     Task DeleteByAssetId(string assetId);
     Task AddRange(IEnumerable<LocationDocument> locations);
+    Task<bool> DeviceHasLocations(string deviceId);
 }

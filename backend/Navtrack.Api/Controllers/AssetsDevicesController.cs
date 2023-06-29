@@ -43,9 +43,9 @@ public class AssetsDevicesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public async Task<IActionResult> AddDevice([FromRoute] string assetId, [FromBody] AddDeviceModel model)
+    public async Task<IActionResult> ChangeDevice([FromRoute] string assetId, [FromBody] ChangeDeviceModel model)
     {
-        await deviceService.Add(assetId, model);
+        await deviceService.Change(assetId, model);
 
         return Ok();
     }

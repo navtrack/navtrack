@@ -53,7 +53,7 @@ public class LocationDataService : ILocationDataService
 
     public async Task<Dictionary<ObjectId, int>> GetLocationsCountByDeviceIds(IEnumerable<ObjectId> deviceIds)
     {
-        var counts = await repository.GetEntities<LocationDocument>()
+        var counts = await repository.GetQueryable<LocationDocument>()
             .Where(x => deviceIds.Contains(x.DeviceId))
             .GroupBy(x => x.DeviceId)
             .Select(x => new { DeviceId = x.Key, Count = x.Count() })
@@ -71,6 +71,12 @@ public class LocationDataService : ILocationDataService
     public Task AddRange(IEnumerable<LocationDocument> locations)
     {
         return repository.GetCollection<LocationDocument>().InsertManyAsync(locations);
+    }
+
+    public Task<bool> DeviceHasLocations(string deviceId)
+    {
+        return repository.GetQueryable<LocationDocument>()
+            .AnyAsync(x => x.DeviceId == ObjectId.Parse(deviceId));
     }
 
     private static FilterDefinition<LocationDocument> ApplyValidFilter(FilterDefinition<LocationDocument> filter,

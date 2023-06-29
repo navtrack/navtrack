@@ -14,7 +14,7 @@ public interface IAssetDataService
     Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string? assetId = null);
     Task UpdateName(string assetId, string name);
     Task Delete(string assetId);
-    Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole);
+    Task AddUserToAsset(AssetDocument assetDocument, UserDocument? userDocument, AssetRoleType modelRole);
     Task RemoveUserFromAsset(string assetId, string userId);
     Task UpdateLocation(ObjectId assetId, LocationDocument location);
     Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,

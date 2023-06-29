@@ -21,7 +21,7 @@ public class PasswordResetDataService : IPasswordResetDataService
 
     public Task<int> GetCountOfPasswordResets(string ipAddress, DateTime fromDate)
     {
-        return repository.GetEntities<PasswordResetDocument>()
+        return repository.GetQueryable<PasswordResetDocument>()
             .Where(x => x.IpAddress == ipAddress && x.Created.Date > fromDate)
             .CountAsync();
     }
@@ -33,11 +33,11 @@ public class PasswordResetDataService : IPasswordResetDataService
 
     public async Task<PasswordResetDocument?> GetLatestFromHash(string hash)
     {
-        PasswordResetDocument? documentByHash = await repository.GetEntities<PasswordResetDocument>().FirstOrDefaultAsync(x => x.Hash == hash);
+        PasswordResetDocument? documentByHash = await repository.GetQueryable<PasswordResetDocument>().FirstOrDefaultAsync(x => x.Hash == hash);
 
         if (documentByHash != null)
         {
-            PasswordResetDocument? latestUserDocument = await repository.GetEntities<PasswordResetDocument>()
+            PasswordResetDocument? latestUserDocument = await repository.GetQueryable<PasswordResetDocument>()
                 .Where(x => x.UserId == documentByHash.UserId)
                 .OrderByDescending(x => x.Created.Date)
                 .FirstOrDefaultAsync();

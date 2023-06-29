@@ -56,7 +56,7 @@ public class UserAccessService : IUserAccessService
             throw new ApiException(ApiErrorCodes.MaxPasswordResetsExceeded, HttpStatusCode.TooManyRequests);
         }
 
-        UserDocument? userDocument = await userDataService.GetUserByEmail(model.Email);
+        UserDocument? userDocument = await userDataService.GetByEmail(model.Email);
 
         if (userDocument == null)
         {
@@ -78,7 +78,7 @@ public class UserAccessService : IUserAccessService
 
     public async Task ChangePassword(ChangePasswordRequest model)
     {
-        UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+        UserDocument currentUser = await currentUserAccessor.Get();
 
         currentUser.ThrowApiExceptionIfNull(HttpStatusCode.Unauthorized);
 
@@ -96,7 +96,14 @@ public class UserAccessService : IUserAccessService
 
         (string hash, string salt) = passwordHasher.Hash(model.Password);
 
-        await userDataService.ChangePassword(currentUser.Id, hash, salt);
+        await userDataService.Update(currentUser.Id, new UpdateUser
+        {
+            Password = new PasswordElement
+            {
+                Hash = hash,
+                Salt = salt
+            }
+        });
     }
 
     public async Task ResetPassword(ResetPasswordRequest model)
@@ -121,7 +128,14 @@ public class UserAccessService : IUserAccessService
 
         (string hash, string salt) = passwordHasher.Hash(model.Password);
 
-        await userDataService.ChangePassword(passwordReset.UserId, hash, salt);
+        await userDataService.Update(passwordReset.UserId, new UpdateUser
+        {
+            Password = new PasswordElement
+            {
+                Hash = hash,
+                Salt = salt
+            }
+        });
         await passwordResetDataService.MarkAsInvalid(passwordReset.Id);
     }
 

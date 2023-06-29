@@ -36,7 +36,7 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
 
             if (!string.IsNullOrEmpty(assetId))
             {
-                UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+                UserDocument currentUser = await currentUserAccessor.Get();
                 bool hasRole = await assetAuthorizationService.CurrentUserHasRole(currentUser,
                     authorizePermissionAttribute.AssetRoleType, assetId);
 

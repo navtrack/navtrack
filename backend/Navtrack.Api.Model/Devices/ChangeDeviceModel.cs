@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Api.Model.Devices;
 
-public class AddDeviceModel
+public class ChangeDeviceModel
 {
     [Required]
     public string SerialNumber { get; set; }

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.Api.Model.Devices;
+using Navtrack.Api.Model.Errors;
+using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Devices;
@@ -48,7 +49,7 @@ public class DeviceService : IDeviceService
     public async Task<DevicesModel> Get(string assetId)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        asset.Throw404IfNull();
+        asset.Return404IfNull();
 
         List<DeviceDocument> devices = await deviceDataService.GetDevicesByAssetId(assetId);
         IEnumerable<DeviceType> deviceTypes = deviceTypeDataService.GetDeviceTypes()
@@ -61,30 +62,33 @@ public class DeviceService : IDeviceService
         return DeviceListModelMapper.Map(devices, deviceTypes, locationCount, asset);
     }
 
-    public async Task Add(string assetId, AddDeviceModel model)
+    public async Task Change(string assetId, ChangeDeviceModel model)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        asset.Throw404IfNull();
+        asset.Return404IfNull();
 
-        if (asset.Device.DeviceTypeId == model.DeviceTypeId &&
-            asset.Device.SerialNumber == model.SerialNumber)
+        if (asset.Device.DeviceTypeId == model.DeviceTypeId && asset.Device.SerialNumber == model.SerialNumber)
         {
             return;
         }
 
-        DeviceType? deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
-        deviceType.ThrowApiExceptionIfNull(HttpStatusCode.BadRequest, "Device type not found.");
+        if (!deviceTypeDataService.Exists(model.DeviceTypeId))
+        {
+            throw new ValidationException()
+                .AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
+        }
 
-        bool deviceUsed =
-            await deviceDataService.SerialNumberIsUsed(model.SerialNumber, deviceType.Protocol.Port, assetId);
-
-        deviceUsed.ThrowApiExceptionIfTrue(HttpStatusCode.BadRequest,
-            "Device with this serial number is already used.");
+        if (await SerialNumberIsUsed(model.SerialNumber, model.DeviceTypeId, assetId))
+        {
+            throw new ValidationException()
+                .AddValidationError(nameof(model.SerialNumber), ValidationErrorCodes.SerialNumberAlreadyUsed);
+        }
 
         List<DeviceDocument> devices = await deviceDataService.GetDevicesByAssetId(assetId);
 
         DeviceDocument? existingDevice = devices.FirstOrDefault(x =>
             x.DeviceTypeId == model.DeviceTypeId && x.SerialNumber == model.SerialNumber);
+        DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
 
         if (existingDevice != null)
         {
@@ -93,7 +97,7 @@ public class DeviceService : IDeviceService
         }
         else
         {
-            UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+            UserDocument currentUser = await currentUserAccessor.Get();
             DeviceDocument newDevice = DeviceDocumentMapper.Map(assetId, model, currentUser.Id);
 
             await deviceDataService.Add(newDevice);
@@ -105,9 +109,16 @@ public class DeviceService : IDeviceService
 
     public async Task Delete(string id)
     {
-        bool isActive = await deviceDataService.IsActive(id);
-        isActive.ThrowApiExceptionIfTrue(HttpStatusCode.BadRequest, "Device is active.");
+        if (await deviceDataService.IsActive(id))
+        {
+            throw new ValidationException(ValidationErrorCodes.DeviceIsActive);
+        }
         
+        if (await locationDataService.DeviceHasLocations(id))
+        {
+            throw new ValidationException(ValidationErrorCodes.DeviceIsActive);
+        }
+
         await deviceDataService.Delete(id);
     }
 }

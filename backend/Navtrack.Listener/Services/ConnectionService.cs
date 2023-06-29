@@ -64,7 +64,7 @@ public class ConnectionService : IConnectionService
         // TODO refactor this
         if (client.Device is { Entity: null } && !string.IsNullOrEmpty(client.Device.IMEI))
         {
-            client.Device.Entity = await repository.GetEntities<AssetDocument>()
+            client.Device.Entity = await repository.GetQueryable<AssetDocument>()
                 .FirstOrDefaultAsync(
                     x => x.Device.SerialNumber == client.Device.IMEI &&
                          x.Device.ProtocolPort == client.Protocol.Port);

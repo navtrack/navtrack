@@ -1,5 +1,5 @@
 using Navtrack.Api.Model.Protocols;
-using Protocol = Navtrack.DataAccess.Model.Protocols.Protocol;
+using Navtrack.DataAccess.Model.Protocols;
 
 namespace Navtrack.Api.Services.Mappers;
 

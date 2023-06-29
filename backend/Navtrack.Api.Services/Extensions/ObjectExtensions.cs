@@ -6,7 +6,7 @@ namespace Navtrack.Api.Services.Extensions;
 
 public static class ObjectExtensions
 {
-    public static void Throw404IfNull(this object @object)
+    public static void Return404IfNull(this object @object)
     {
         if (@object == null)
         {
@@ -45,6 +45,15 @@ public static class ObjectExtensions
         if (string.IsNullOrEmpty(value))
         {
             throw new ApiException(apiError);
+        }
+    }
+
+    public static void ThrowApiExceptionIfTrue(this bool boolean, HttpStatusCode httpStatusCode, ApiError apiError)
+    {
+        if (boolean)
+        {
+            throw new ApiException(apiError, httpStatusCode);
+            
         }
     }
 }

@@ -37,7 +37,7 @@ public class CurrentUserAccessor : ICurrentUserAccessor
         return currentUserId;
     }
 
-    public async Task<UserDocument> GetCurrentUser()
+    public async Task<UserDocument> Get()
     {
         if (currentUser == null)
         {

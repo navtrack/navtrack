@@ -26,7 +26,7 @@ public class AssetDataService : IAssetDataService
 
     public async Task<AssetDocument> GetById(string id)
     {
-        AssetDocument asset = await repository.GetEntities<AssetDocument>()
+        AssetDocument asset = await repository.GetQueryable<AssetDocument>()
             .FirstOrDefaultAsync(x => x.Id == ObjectId.Parse(id));
 
         return asset;
@@ -34,7 +34,7 @@ public class AssetDataService : IAssetDataService
 
     public Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids)
     {
-        return repository.GetEntities<AssetDocument>()
+        return repository.GetQueryable<AssetDocument>()
             .Where(x => ids.Contains(x.Id))
             .OrderBy(x => x.Name)
             .ToListAsync();
@@ -53,7 +53,7 @@ public class AssetDataService : IAssetDataService
                 x.Name.ToLower() == name &&
                 x.Id != ObjectId.Parse(assetId);
 
-        return repository.GetEntities<AssetDocument>()
+        return repository.GetQueryable<AssetDocument>()
             .AnyAsync(filter);
     }
 
@@ -70,7 +70,7 @@ public class AssetDataService : IAssetDataService
         return repository.GetCollection<AssetDocument>().DeleteOneAsync(x => x.Id == ObjectId.Parse(assetId));
     }
 
-    public async Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument,
+    public async Task AddUserToAsset(AssetDocument assetDocument, UserDocument? userDocument,
         AssetRoleType modelRole)
     {
         UserAssetRoleElement userAssetRoleElement = new()

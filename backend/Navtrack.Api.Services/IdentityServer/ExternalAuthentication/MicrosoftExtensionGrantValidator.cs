@@ -6,6 +6,7 @@ using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Common.Settings;
+using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Library.DI;
 
@@ -37,10 +38,13 @@ public class MicrosoftExtensionGrantValidator : IExtensionGrantValidator
             Token = context.Request.Raw["code"],
             IdClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier",
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userDataService.GetByMicrosoftId,
+            GetUser = userDataService.GetByEmailOrMicrosoftId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, id),
             ExternalId = user => user.MicrosoftId,
-            SetId = userDataService.SetMicrosoftId
+            SetId = (userId, id) => userDataService.Update(userId, new UpdateUser
+            {
+                MicrosoftId = id
+            })
         });
 
         context.Result = !string.IsNullOrEmpty(userId)

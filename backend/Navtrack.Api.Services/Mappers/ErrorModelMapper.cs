@@ -31,7 +31,7 @@ public static class ErrorModelMapper
             Message = "Validation failed.",
             ValidationErrors = contextModelState.Select(entry => new
                 {
-                    Key = entry.Key,
+                    entry.Key,
                     Errors = entry.Value?.Errors.Select(modelError => new ValidationErrorModel
                     {
                         PropertyName = entry.Key.ToCamelCase(),

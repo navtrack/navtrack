@@ -23,13 +23,13 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(ApiPaths.User)]
-    [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces(MediaTypeNames.Application.Json)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-    public async Task<CurrentUserModel> Get()
+    public async Task<UserModel> Get()
     {
-        CurrentUserModel currentUser = await userService.GetCurrentUser();
+        UserModel currentUser = await userService.GetCurrentUser();
 
         return currentUser;
     }
@@ -46,12 +46,12 @@ public class UserController : ControllerBase
 
 
     [HttpPatch(ApiPaths.User)]
-    [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<IActionResult> Update([FromBody] UpdateUserRequest model)
     {
-        await userService.UpdateUser(model);
+        await userService.Update(model);
 
         return Ok();
     }

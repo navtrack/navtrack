@@ -18,7 +18,7 @@ public class Repository : IRepository
         mongoDatabase = mongoDatabaseFactory.CreateMongoDatabase();
     }
 
-    public IMongoQueryable<T> GetEntities<T>() where T : class
+    public IMongoQueryable<T> GetQueryable<T>() where T : class
     {
         return GetCollection<T>().AsQueryable();
     }

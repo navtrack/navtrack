@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Core.Model;
+using Navtrack.Core.Model.Trips;
 using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.Api.Services.Mappers;
 
 public static class TripListMapper
 {
-    public static TripListModel Map(IEnumerable<Core.Model.Trips.Trip> source, UnitsType unitsType)
+    public static TripListModel Map(IEnumerable<Trip> source, UnitsType unitsType)
     {
         return new TripListModel
         {

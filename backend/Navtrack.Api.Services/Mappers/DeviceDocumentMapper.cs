@@ -1,4 +1,3 @@
-using System;
 using MongoDB.Bson;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Model.Devices;
@@ -20,7 +19,7 @@ public static class DeviceDocumentMapper
         };
     }
 
-    public static DeviceDocument Map(string assetId, AddDeviceModel model, ObjectId userId)
+    public static DeviceDocument Map(string assetId, ChangeDeviceModel model, ObjectId userId)
     {
         return new DeviceDocument
         {

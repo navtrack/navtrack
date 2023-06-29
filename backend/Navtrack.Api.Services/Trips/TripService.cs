@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.User;
+using Navtrack.Core.Model.Trips;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.Library.DI;
-using Trip = Navtrack.Core.Model.Trips.Trip;
 
 namespace Navtrack.Api.Services.Trips;
 
@@ -24,7 +24,7 @@ public class TripService : ITripService
     public async Task<TripListModel> GetTrips(string assetId, TripFilterModel tripFilter)
     {
         IEnumerable<Trip> trips = await tripService.GetTrips(assetId, tripFilter);
-        UserDocument user = await currentUserAccessor.GetCurrentUser();
+        UserDocument user = await currentUserAccessor.Get();
 
         TripListModel list = TripListMapper.Map(trips, user.UnitsType);
             

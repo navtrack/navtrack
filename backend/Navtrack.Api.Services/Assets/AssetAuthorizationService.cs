@@ -20,7 +20,7 @@ public class AssetAuthorizationService : IAssetAuthorizationService
 
     public async Task<bool> CurrentUserHasRole(UserDocument userDocument, AssetRoleType assetRoleType, string assetId)
     {
-        UserDocument currentUser = await currentUserAccessor.GetCurrentUser();
+        UserDocument currentUser = await currentUserAccessor.Get();
 
         AssetRoleType[] validRoles = assetRoleType == AssetRoleType.Viewer
             ? new[] { AssetRoleType.Owner, AssetRoleType.Viewer }

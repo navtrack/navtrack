@@ -4,11 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2.Responses;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Common.Settings;
+using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Library.DI;
 
@@ -46,7 +48,7 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
             }
         });
         
-        Google.Apis.Auth.OAuth2.Responses.TokenResponse tokenResponse =
+        TokenResponse tokenResponse =
             await flow.ExchangeCodeForTokenAsync("", context.Request.Raw["code"], "postmessage", CancellationToken.None);
         
         string? userId = await externalLoginHandler.HandleToken(new HandleTokenInput(settings)
@@ -54,10 +56,13 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
             Token = tokenResponse.IdToken,
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userDataService.GetByGoogleId,
+            GetUser = userDataService.GetByEmailOrGoogleId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, googleId: id),
             ExternalId = user => user.GoogleId,
-            SetId = userDataService.SetGoogleId
+            SetId = (userId, id) => userDataService.Update(userId, new UpdateUser
+            {
+                GoogleId = id
+            })
         });
 
         context.Result = !string.IsNullOrEmpty(userId)

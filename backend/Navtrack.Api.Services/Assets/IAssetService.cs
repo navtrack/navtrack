@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Assets;
-using Navtrack.DataAccess.Model.Assets;
 
 namespace Navtrack.Api.Services.Assets;
 

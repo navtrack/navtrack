@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Library.DI;
@@ -24,22 +22,32 @@ public class UserDataService : IUserDataService
 
     public Task<UserDocument> GetByObjectId(ObjectId id)
     {
-        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.Id == id);
+        return repository.GetQueryable<UserDocument>()
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<UserDocument> GetByAppleId(string email, string id)
+    public Task<UserDocument> GetByEmailOrAppleId(string email, string id)
     {
-        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.AppleId == id || x.Email == email);
+        email = email.ToLower();
+
+        return repository.GetQueryable<UserDocument>()
+            .FirstOrDefaultAsync(x => x.AppleId == id || x.Email == email);
     }
 
-    public Task<UserDocument> GetByGoogleId(string email, string id)
+    public Task<UserDocument> GetByEmailOrGoogleId(string email, string id)
     {
-        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.GoogleId == id || x.Email == email);
+        email = email.ToLower();
+
+        return repository.GetQueryable<UserDocument>()
+            .FirstOrDefaultAsync(x => x.GoogleId == id || x.Email == email);
     }
 
-    public Task<UserDocument> GetByMicrosoftId(string email, string id)
+    public Task<UserDocument> GetByEmailOrMicrosoftId(string email, string id)
     {
-        return repository.GetEntities<UserDocument>().FirstOrDefaultAsync(x => x.MicrosoftId == id || x.Email == email);
+        email = email.ToLower();
+
+        return repository.GetQueryable<UserDocument>()
+            .FirstOrDefaultAsync(x => x.MicrosoftId == id || x.Email == email);
     }
 
     public Task DeleteAssetRoles(string assetId)
@@ -50,67 +58,82 @@ public class UserDataService : IUserDataService
                 x => x.AssetId == ObjectId.Parse(assetId)));
     }
 
-    public async Task<UserDocument?> GetUserByEmail(string email)
+    public async Task<UserDocument?> GetByEmail(string email)
     {
         email = email.ToLower();
 
-        UserDocument? user = await repository.GetEntities<UserDocument>()
+        UserDocument? user = await repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         return user;
     }
 
-    public Task<bool> EmailExists(string email)
+    public Task<bool> EmailIsUsed(string email)
     {
         email = email.ToLower();
 
-        return repository.GetEntities<UserDocument>()
+        return repository.GetCollection<UserDocument>().AsQueryable()
             .AnyAsync(x => x.Email == email);
     }
 
     public Task<UserDocument> GetUserById(string id)
     {
-        return repository.GetEntities<UserDocument>()
+        return repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.Id == ObjectId.Parse(id));
     }
 
     public Task<List<UserDocument>> GetUsersByIds(IEnumerable<ObjectId> userIds)
     {
-        return repository.GetEntities<UserDocument>()
+        return repository.GetQueryable<UserDocument>()
             .Where(x => userIds.Contains(x.Id))
             .ToListAsync();
     }
 
-    public Task ChangePassword(ObjectId id, string hash, string salt)
-    {
-        return repository.GetCollection<UserDocument>().UpdateOneAsync(
-            x => x.Id == id,
-            Builders<UserDocument>.Update.Set(x => x.Password,
-                new PasswordElement
-                {
-                    Hash = hash,
-                    Salt = salt
-                }));
-    }
-
-    public async Task UpdateUser(UserDocument currentUser, string email, UnitsType? unitsType = null)
+    public async Task Update(ObjectId id, UpdateUser updateUser)
     {
         List<UpdateDefinition<UserDocument>> updateDefinitions = new();
 
-        if (!string.IsNullOrEmpty(email) &&
-            !string.Equals(currentUser.Email, email, StringComparison.CurrentCultureIgnoreCase))
+        if (!string.IsNullOrEmpty(updateUser.Email))
         {
-            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Email, email.ToLower()));
+            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Email, updateUser.Email.ToLower()));
         }
 
-        if (unitsType.HasValue && unitsType.Value != currentUser.UnitsType)
+        if (updateUser.UnitsType.HasValue)
         {
-            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.UnitsType, unitsType.Value));
+            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.UnitsType, updateUser.UnitsType.Value));
+        }
+        
+        if (updateUser.Password != null)
+        {
+            updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Password,
+                new PasswordElement
+                {
+                    Hash = updateUser.Password.Hash,
+                    Salt = updateUser.Password.Salt
+                }));
+        }
+
+        if (!string.IsNullOrEmpty(updateUser.AppleId))
+        {
+            updateDefinitions .Add(
+                Builders<UserDocument>.Update.Set(x => x.AppleId, updateUser.AppleId));
+        }
+        
+        if (!string.IsNullOrEmpty(updateUser.MicrosoftId))
+        {
+            updateDefinitions .Add(
+                Builders<UserDocument>.Update.Set(x => x.AppleId, updateUser.AppleId));
+        }
+        
+        if (!string.IsNullOrEmpty(updateUser.GoogleId))
+        {
+            updateDefinitions .Add(
+                Builders<UserDocument>.Update.Set(x => x.AppleId, updateUser.AppleId));
         }
 
         if (updateDefinitions.Any())
         {
-            await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == currentUser.Id,
+            await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == id,
                 Builders<UserDocument>.Update.Combine(updateDefinitions));
         }
     }
@@ -118,23 +141,5 @@ public class UserDataService : IUserDataService
     public Task Add(UserDocument user)
     {
         return repository.GetCollection<UserDocument>().InsertOneAsync(user);
-    }
-
-    public Task SetGoogleId(ObjectId userDocumentId, string id)
-    {
-        return repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == userDocumentId,
-            Builders<UserDocument>.Update.Set(x => x.GoogleId, id));
-    }
-
-    public Task SetMicrosoftId(ObjectId userDocumentId, string id)
-    {
-        return repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == userDocumentId,
-            Builders<UserDocument>.Update.Set(x => x.MicrosoftId, id));
-    }
-
-    public Task SetAppleId(ObjectId userDocumentId, string id)
-    {
-        return repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == userDocumentId,
-            Builders<UserDocument>.Update.Set(x => x.AppleId, id));
     }
 }
