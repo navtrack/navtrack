@@ -1,7 +1,7 @@
 import { usePostUserPasswordReset } from "../../../api/index-generated";
 
-export const useResetPasswordMutation = () => {
+export function useResetPasswordMutation() {
   const mutation = usePostUserPasswordReset();
 
   return mutation;
-};
+}

@@ -6,7 +6,7 @@
  */
 import type { UnitsType } from './unitsType';
 
-export interface CurrentUserModel {
+export interface UserModel {
   id: string;
   email: string;
   units: UnitsType;

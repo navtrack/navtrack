@@ -6,7 +6,7 @@ import {
   checkTokenIntervalAtom
 } from "../../../state/authentication";
 import { log, LogLevel } from "../../../utils/log";
-import { useGetTokenMutation } from "../../mutations/useGetTokenMutation";
+import { useGetTokenMutation } from "../../mutations/authentication/useGetTokenMutation";
 
 type UseAuthenticationProps = {
   clientId: string;

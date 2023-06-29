@@ -66,7 +66,7 @@ export function AdminLayoutNavBarProfile(props: AdminLayoutNavBarProfileProps) {
                     "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                   )}>
                   <IconWithText icon={faSignOutAlt}>
-                    <FormattedMessage id="navbar.profile.logout" />
+                    <FormattedMessage id="generic.log-out" />
                   </IconWithText>
                 </div>
               )}

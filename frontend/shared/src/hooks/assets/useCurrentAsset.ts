@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import { assetConfigurationAtom, currentAssetIdAtom } from "../../state/assets";
-import { useGetAssetsSignalRQuery } from "../queries/useGetAssetsSignalRQuery";
+import { useGetAssetsQuery } from "../queries/useGetAssetsQuery";
 import { useOnChange } from "../util/useOnChange";
 
 type UseCurrentAssetProps = {
@@ -10,7 +10,7 @@ type UseCurrentAssetProps = {
 
 export const useCurrentAsset = (props?: UseCurrentAssetProps) => {
   const currentAssetId = useRecoilValue(currentAssetIdAtom);
-  const assets = useGetAssetsSignalRQuery();
+  const assets = useGetAssetsQuery();
   const assetConfiguration = useRecoilValue(
     assetConfigurationAtom(currentAssetId)
   );

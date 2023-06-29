@@ -1,4 +1,4 @@
-import { c } from "@navtrack/shared/utils/tailwind";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";

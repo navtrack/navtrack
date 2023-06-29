@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useGetTokenMutation } from "../../mutations/useGetTokenMutation";
+import { useGetTokenMutation } from "../../mutations/authentication/useGetTokenMutation";
 import { useSetRecoilState } from "recoil";
 import { add } from "date-fns";
 import { authenticationAtom } from "../../../state/authentication";

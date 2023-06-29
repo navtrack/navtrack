@@ -1,10 +1,10 @@
 import { AdminLayoutSideBarItem } from "./AdminLayoutSideBarItem";
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
-import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
+import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
 
 export function AdminLayoutSideBarAssets() {
-  const assetsQuery = useGetAssetsSignalRQuery();
+  const assetsQuery = useGetAssetsQuery();
 
   return (
     <div className="flex flex-1 flex-col space-y-1 overflow-y-scroll px-2">

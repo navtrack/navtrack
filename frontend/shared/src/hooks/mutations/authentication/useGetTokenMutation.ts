@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import { useMutation, UseMutationOptions } from "react-query";
-import { axiosInstance } from "../../api/axiosInstance";
+import { axiosInstance } from "../../../api/axiosInstance";
 
 type TokenRequest = {
   grant_type: string;
@@ -25,9 +25,9 @@ type TokenError = {
   error_description: string;
 };
 
-export const useGetTokenMutation = (
+export function useGetTokenMutation(
   options: UseMutationOptions<TokenResponse, TokenError, TokenRequest>
-) => {
+) {
   const query = useMutation(
     "connect/token",
     async (data: TokenRequest) =>
@@ -36,11 +36,11 @@ export const useGetTokenMutation = (
         method: "post",
         data: queryString.stringify(data),
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
       }),
     options
   );
 
   return query;
-};
+}

@@ -1,4 +1,4 @@
 export enum UnitsType {
-  Metric = "Metric",
-  Imperial = "Imperial"
+  Metric = 0,
+  Imperial = 1
 }

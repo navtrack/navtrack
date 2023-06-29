@@ -1,6 +1,6 @@
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
-import { useRegisterAccountMutation } from "../../mutations/useRegisterAccountMutation";
+import { useRegisterAccountMutation } from "../../mutations/users/useRegisterAccountMutation";
 import { mapErrors } from "../../../utils/formik";
 import { RegisterFormValues } from "./RegisterFormValues";
 

@@ -4,14 +4,14 @@ import { object, ObjectSchema, string } from "yup";
 import { RenameAssetFormValues } from "./types";
 import { FormikHelpers } from "formik";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/useRenameAssetMutation";
-import { useGetAssetsSignalRQuery } from "@navtrack/shared/hooks/queries/useGetAssetsSignalRQuery";
+import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useRenameAssetMutation";
+import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 
 export function useRenameAsset() {
   const currentAsset = useCurrentAsset();
   const renameAssetMutation = useRenameAssetMutation();
-  const assetsQuery = useGetAssetsSignalRQuery();
+  const assetsQuery = useGetAssetsQuery();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const submit = useCallback(

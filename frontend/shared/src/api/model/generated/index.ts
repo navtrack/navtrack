@@ -6,14 +6,13 @@
  */
 
 export * from './addAssetModel';
-export * from './addDeviceModel';
 export * from './addUserToAssetModel';
 export * from './assetModel';
 export * from './assetUserListModel';
 export * from './assetUserModel';
 export * from './assetsModel';
+export * from './changeDeviceModel';
 export * from './changePasswordRequest';
-export * from './currentUserModel';
 export * from './deviceModel';
 export * from './deviceTypeModel';
 export * from './deviceTypesModel';
@@ -39,4 +38,5 @@ export * from './tripModel';
 export * from './unitsType';
 export * from './updateAssetModel';
 export * from './updateUserRequest';
+export * from './userModel';
 export * from './validationErrorModel';

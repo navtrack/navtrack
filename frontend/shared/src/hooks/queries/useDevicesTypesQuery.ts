@@ -5,5 +5,5 @@ export const useDevicesTypesQuery = () => {
     query: { refetchOnMount: false, refetchOnWindowFocus: false }
   });
 
-  return { deviceTypes: query.data?.items ?? [] };
+  return query;
 };

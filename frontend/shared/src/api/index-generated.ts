@@ -24,7 +24,7 @@ import type {
   AddAssetModel,
   UpdateAssetModel,
   DevicesModel,
-  AddDeviceModel,
+  ChangeDeviceModel,
   LocationListModel,
   GetAssetsAssetIdLocationsParams,
   DistanceReportListModel,
@@ -37,7 +37,7 @@ import type {
   GetEnvironment200,
   ProtocolsModel,
   GetSettings200,
-  CurrentUserModel,
+  UserModel,
   RegisterAccountRequest,
   UpdateUserRequest,
   ChangePasswordRequest,
@@ -335,12 +335,12 @@ export const useGetAssetsAssetIdDevices = <TData = Awaited<ReturnType<typeof get
 
 export const postAssetsAssetIdDevices = (
     assetId: string,
-    addDeviceModel: AddDeviceModel,
+    changeDeviceModel: ChangeDeviceModel,
  ) => {
       return authAxiosInstance<void>(
       {url: `/assets/${assetId}/devices`, method: 'post',
       headers: {'Content-Type': 'application/json', },
-      data: addDeviceModel
+      data: changeDeviceModel
     },
       );
     }
@@ -349,14 +349,14 @@ export const postAssetsAssetIdDevices = (
 
 export const getPostAssetsAssetIdDevicesMutationOptions = <TError = ProblemDetails,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, TError,{assetId: string;data: AddDeviceModel}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, TError,{assetId: string;data: AddDeviceModel}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, TError,{assetId: string;data: ChangeDeviceModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, TError,{assetId: string;data: ChangeDeviceModel}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, {assetId: string;data: AddDeviceModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, {assetId: string;data: ChangeDeviceModel}> = (props) => {
           const {assetId,data} = props ?? {};
 
           return  postAssetsAssetIdDevices(assetId,data,)
@@ -368,12 +368,12 @@ export const getPostAssetsAssetIdDevicesMutationOptions = <TError = ProblemDetai
    return  { mutationFn, ...mutationOptions }}
 
     export type PostAssetsAssetIdDevicesMutationResult = NonNullable<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>>
-    export type PostAssetsAssetIdDevicesMutationBody = AddDeviceModel
+    export type PostAssetsAssetIdDevicesMutationBody = ChangeDeviceModel
     export type PostAssetsAssetIdDevicesMutationError = ProblemDetails
 
     export const usePostAssetsAssetIdDevices = <TError = ProblemDetails,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, TError,{assetId: string;data: AddDeviceModel}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdDevices>>, TError,{assetId: string;data: ChangeDeviceModel}, TContext>, }
 ) => {
     
       const mutationOptions = getPostAssetsAssetIdDevicesMutationOptions(options);
@@ -963,7 +963,7 @@ export const getUser = (
     
  signal?: AbortSignal
 ) => {
-      return authAxiosInstance<CurrentUserModel>(
+      return authAxiosInstance<UserModel>(
       {url: `/user`, method: 'get', signal
     },
       );
@@ -1056,7 +1056,7 @@ export const getPostUserMutationOptions = <TError = ProblemDetails,
 export const patchUser = (
     updateUserRequest: UpdateUserRequest,
  ) => {
-      return authAxiosInstance<CurrentUserModel>(
+      return authAxiosInstance<void>(
       {url: `/user`, method: 'patch',
       headers: {'Content-Type': 'application/json', },
       data: updateUserRequest

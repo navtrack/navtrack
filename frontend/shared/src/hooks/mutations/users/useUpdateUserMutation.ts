@@ -1,7 +1,9 @@
 import { usePatchUser } from "../../../api/index-generated";
 
-export const useUpdateUserMutation = () => {
-  const mutation = usePatchUser();
+export function useUpdateUserMutation() {
+  const mutation = usePatchUser({
+    mutation: {}
+  });
 
   return mutation;
-};
+}

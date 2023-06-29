@@ -1,5 +1,5 @@
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useAddUserToAssetMutation } from "@navtrack/shared/hooks/mutations/useAddUserToAssetMutation";
+import { useAddUserToAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useAddUserToAssetMutation";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/useAssetUsersQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";

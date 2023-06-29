@@ -1,7 +1,7 @@
 export type DeleteAssetFormValues = {
-  name?: string;
+  name?: string; // TODO: make required
 };
 
 export type RenameAssetFormValues = {
-  name?: string;
+  name?: string; // TODO: make required
 };

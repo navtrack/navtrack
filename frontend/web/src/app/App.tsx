@@ -7,7 +7,6 @@ import { translations } from "@navtrack/shared/translations";
 import { ConfigProvider } from "@navtrack/shared/components/ConfigProvider";
 import { AuthenticationProvider } from "@navtrack/shared/components/AuthenticationProvider";
 import { AUTHENTICATION } from "../constants";
-import { SignalRProvider } from "@navtrack/shared/components/SignalRProvider";
 import { EnvironmentFetcher } from "@navtrack/shared/components/EnvironmentFetcher";
 
 const queryClient = new QueryClient();
@@ -23,11 +22,9 @@ export function App() {
           <EnvironmentFetcher>
             <SentryProvider>
               <AuthenticationProvider clientId={AUTHENTICATION.CLIENT_ID}>
-                <SignalRProvider>
-                  <IntlProvider locale="en" messages={translations["en"]}>
-                    <BrowserRouterProvider />
-                  </IntlProvider>
-                </SignalRProvider>
+                <IntlProvider locale="en" messages={translations["en"]}>
+                  <BrowserRouterProvider />
+                </IntlProvider>
               </AuthenticationProvider>
             </SentryProvider>
           </EnvironmentFetcher>

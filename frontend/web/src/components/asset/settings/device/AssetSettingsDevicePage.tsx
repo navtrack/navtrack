@@ -11,10 +11,10 @@ import { useNotification } from "../../../ui/shared/notification/useNotification
 import { object, ObjectSchema, string } from "yup";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useAddDeviceMutation } from "@navtrack/shared/hooks/mutations/useAddDeviceMutation";
+import { useChangeDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useChangeDeviceMutation";
 import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/useAssetDevicesQuery";
-import { useDevicesTypesQuery } from "@navtrack/shared/hooks/queries/useDevicesTypesQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
+import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -27,12 +27,12 @@ export function AssetSettingsDevicePage() {
   const [selectedDeviceType, setSelectedDeviceType] =
     useState<DeviceTypeModel>();
 
-  const mutation = useAddDeviceMutation();
+  const mutation = useChangeDeviceMutation();
   const { showNotification } = useNotification();
   const intl = useIntl();
 
   const devices = useAssetDevicesQuery(currentAsset?.data?.id);
-  const { deviceTypes } = useDevicesTypesQuery();
+  const { deviceTypes } = useDeviceTypes();
 
   const handleSubmit = useCallback(
     (
@@ -145,7 +145,7 @@ export function AssetSettingsDevicePage() {
               <DeviceConfiguration deviceType={selectedDeviceType} />
             </div>
           </div>
-          <h2 className="mt-6 mb-4 text-lg font-medium leading-6 text-gray-900">
+          <h2 className="mb-4 mt-6 text-lg font-medium leading-6 text-gray-900">
             <FormattedMessage id="assets.settings.device.history" />
           </h2>
           <DevicesTable

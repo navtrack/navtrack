@@ -1,20 +1,43 @@
 import { Form, Formik } from "formik";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Button } from "../../ui/shared/button/Button";
 import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
 import { FormikSelectInput } from "../../ui/shared/select/FormikSelectInput";
-import {
-  AddAssetFormValues,
-  DefaultAddAssetFormValues
-} from "./AddAssetFormValues";
-import { useAddAsset } from "./useAddAsset";
+import { useHistory } from "react-router-dom";
 import { DeviceConfiguration } from "./DeviceConfiguration";
 import { useState } from "react";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
+import {
+  AddAssetFormValues,
+  DefaultAddAssetFormValues
+} from "@navtrack/shared/hooks/assets/add-asset/AddAssetFormValues";
+import { useAddAssetValidationSchema } from "@navtrack/shared/hooks/assets/add-asset/useAddAssetValidationSchema";
+import { useAddAsset } from "@navtrack/shared/hooks/assets/add-asset/useAddAsset";
+import { useScrollToAsset } from "../../ui/layouts/admin/useScrollToAsset";
+import { useNotification } from "../../ui/shared/notification/useNotification";
+import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
+import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
 
 export function AssetAddPage() {
-  const { deviceTypes, validationSchema, handleSubmit, loading } =
-    useAddAsset();
+  const { deviceTypes } = useDeviceTypes();
+  const intl = useIntl();
+  const history = useHistory();
+  const { showNotification } = useNotification();
+  const assetsQuery = useGetAssetsQuery();
+  const { setScrollToAsset } = useScrollToAsset();
+  const addAsset = useAddAsset({
+    onSuccess: (asset) => {
+      showNotification({
+        type: "success",
+        description: intl.formatMessage({ id: "assets.add.success" })
+      });
+      assetsQuery.refetch().then(() => {
+        setScrollToAsset(asset.id);
+      });
+      history.push(`/assets/${asset.id}/live`);
+    }
+  });
+  const validationSchema = useAddAssetValidationSchema();
   const [selectedDeviceType, setSelectedDeviceType] =
     useState<DeviceTypeModel>();
 
@@ -25,7 +48,7 @@ export function AssetAddPage() {
         validationSchema={validationSchema}
         enableReinitialize
         onSubmit={(values, formikHelpers) =>
-          handleSubmit(values, formikHelpers)
+          addAsset.handleSubmit(values, formikHelpers)
         }>
         {() => (
           <Form>
@@ -72,7 +95,7 @@ export function AssetAddPage() {
                 <Button
                   color="primary"
                   type="submit"
-                  loading={loading}
+                  loading={addAsset.isLoading}
                   size="lg">
                   <FormattedMessage id="generic.save" />
                 </Button>
