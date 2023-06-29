@@ -13,11 +13,6 @@ export default defineConfig(() => {
       port: 3000,
       open: true
     },
-    define: {
-      "process.env": {
-        REACT_APP_API_URL: "http://localhost:3001"
-      }
-    },
     resolve: {
       alias: {
         "@navtrack/shared": path.resolve(__dirname, "../shared/src")

@@ -11,7 +11,7 @@ import { EnvironmentFetcher } from "@navtrack/shared/components/EnvironmentFetch
 
 const queryClient = new QueryClient();
 const config = {
-  apiUrl: `${process.env.REACT_APP_API_URL}`
+  apiUrl: `${import.meta.env.VITE_API_URL}`
 };
 
 export function App() {
