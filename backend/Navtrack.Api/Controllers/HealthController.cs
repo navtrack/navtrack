@@ -11,6 +11,6 @@ public class HealthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Get()
     {
-        return Ok("Choco say hi.");
+        return Ok("Choco says hi! :)");
     }
 }

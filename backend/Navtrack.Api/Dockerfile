@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS publish
 WORKDIR /src
 COPY . .
 RUN dotnet tool restore
-RUN dotnet publish "backend/Navtrack.Api/Navtrack.Api.csproj" -c Release -o /app
+RUN dotnet publish "public/backend/Navtrack.Api/Navtrack.Api.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
