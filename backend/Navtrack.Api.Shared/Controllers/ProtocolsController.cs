@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Protocols;
 using Navtrack.Api.Services.Protocols;
 
-namespace Navtrack.Api.Controllers;
+namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Route("protocols")]

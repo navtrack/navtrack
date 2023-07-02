@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.Assets;
 
-namespace Navtrack.Api.Hubs;
+namespace Navtrack.Api.Shared.Hubs;
 
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 public class AssetsHub : Hub

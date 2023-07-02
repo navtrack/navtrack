@@ -10,7 +10,7 @@ using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Assets;
 using Navtrack.DataAccess.Model.Assets;
 
-namespace Navtrack.Api.Controllers;
+namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]

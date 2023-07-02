@@ -8,7 +8,7 @@ using Navtrack.Api.Model;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.User;
 
-namespace Navtrack.Api.Controllers;
+namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 public class UserController : ControllerBase

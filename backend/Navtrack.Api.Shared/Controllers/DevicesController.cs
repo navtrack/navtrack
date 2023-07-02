@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Devices;
 
-namespace Navtrack.Api.Controllers;
+namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Route("devices")]

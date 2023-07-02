@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Services.Environment;
 
-namespace Navtrack.Api.Controllers;
+namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Route("settings")]
