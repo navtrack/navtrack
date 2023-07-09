@@ -2,46 +2,69 @@ import { useCallback } from "react";
 import { useCurrentUnits } from "./useCurrentUnits";
 import { UnitsType } from "../../api/model/custom/UnitsType";
 
-export const useDistance = () => {
+function convertMetersToKm(distance: number) {
+  return Math.round((distance / 1000) * 100) / 100;
+}
+
+function convertFeetToMiles(distance: number) {
+  return Math.round((distance / 5280) * 100) / 100;
+}
+
+function convertKphToMph(speed: number) {
+  return Math.round((speed / 0.621371192) * 100) / 100;
+}
+
+export function useDistance() {
   const units = useCurrentUnits();
 
+  const convertMetersToFeet = useCallback(
+    (distance?: number) => {
+      if (distance !== undefined) {
+        return units.unitsType === UnitsType.Metric
+          ? distance
+          : Math.round(distance * 3.2808399 * 100) / 100;
+      }
+
+      return 0;
+    },
+    [units.unitsType]
+  );
+
   const showSpeed = useCallback(
-    (speed?: number | null) =>
-      speed !== undefined && speed !== null
-        ? `${Math.round(speed)} ${units.speed}`
-        : "",
-    [units.speed]
+    (speed?: number | null) => {
+      const convertedSpeed =
+        units.unitsType === UnitsType.Imperial
+          ? convertKphToMph(speed ?? 0)
+          : speed ?? 0;
+
+      return `${Math.round(convertedSpeed)} ${units.speed}`;
+    },
+    [units.speed, units.unitsType]
   );
 
   const showDistance = useCallback(
     (distance?: number) => {
-      if (distance !== undefined) {
-        if (distance > 1000) {
-          if (units.unitsType === UnitsType.Metric) {
-            return `${Math.round((distance / 1000) * 100) / 100} ${
-              units.lengthK
-            }`;
-          }
+      const convertedDistance = convertMetersToFeet(distance);
 
-          return `${Math.round((distance / 5280) * 100) / 100} ${
-            units.lengthK
-          }`;
+      if (convertedDistance > 1000) {
+        if (units.unitsType === UnitsType.Metric) {
+          return `${convertMetersToKm(convertedDistance)} ${units.lengthK}`;
         }
 
-        return `${distance} ${units.length}`;
+        return `${convertFeetToMiles(convertedDistance)} ${units.lengthK}`;
       }
 
-      return `0 ${units.length}`;
+      return `${distance} ${units.length}`;
     },
-    [units.length, units.lengthK, units.unitsType]
+    [convertMetersToFeet, units.length, units.lengthK, units.unitsType]
   );
 
   const showAltitude = useCallback(
     (altitude?: number | null) =>
       altitude !== undefined && altitude !== null
-        ? `${altitude} ${units.length}`
+        ? `${convertMetersToFeet(altitude)} ${units.length}`
         : "",
-    [units.length]
+    [convertMetersToFeet, units.length]
   );
 
   const showHeading = useCallback(
@@ -51,4 +74,4 @@ export const useDistance = () => {
   );
 
   return { showSpeed, showDistance, showAltitude, showHeading };
-};
+}

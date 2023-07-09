@@ -52,14 +52,14 @@ public class UserService : IUserService
 
                 updateUser.Email = model.Email;
             }
-
-            if (model.UnitsType.HasValue && currentUser.UnitsType != model.UnitsType)
-            {
-                updateUser.UnitsType = model.UnitsType;
-            }
-
-            await userDataService.Update(currentUser.Id, updateUser);
         }
+        
+        if (model.UnitsType.HasValue && currentUser.UnitsType != model.UnitsType)
+        {
+            updateUser.UnitsType = model.UnitsType;
+        }
+
+        await userDataService.Update(currentUser.Id, updateUser);
     }
 
     public async Task Register(RegisterAccountRequest model)

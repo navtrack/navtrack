@@ -8,7 +8,7 @@ type CurrentUser = {
   units: UnitsType;
 };
 
-export const useCurrentUser = () => {
+export function useCurrentUser() {
   const query = useGetCurrentUserQuery();
 
   const user: CurrentUser | undefined = useMemo(() => {
@@ -21,5 +21,7 @@ export const useCurrentUser = () => {
     }
   }, [query.data]);
 
+  console.log(Date(), user);
+
   return user;
-};
+}

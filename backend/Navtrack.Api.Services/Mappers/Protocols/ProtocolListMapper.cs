@@ -3,7 +3,7 @@ using System.Linq;
 using Navtrack.Api.Model.Protocols;
 using Navtrack.DataAccess.Model.Protocols;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Protocols;
 
 public static class ProtocolListMapper
 {

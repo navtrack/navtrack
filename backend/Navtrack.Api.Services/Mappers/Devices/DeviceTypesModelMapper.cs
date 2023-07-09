@@ -3,7 +3,7 @@ using System.Linq;
 using Navtrack.Api.Model.Devices;
 using Navtrack.DataAccess.Model.Devices;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Devices;
 
 public class DeviceTypesModelMapper
 {

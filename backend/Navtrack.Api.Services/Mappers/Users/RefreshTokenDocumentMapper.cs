@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using Navtrack.Api.Services.IdentityServer;
 using Navtrack.DataAccess.Model.Users;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Users;
 
 public static class RefreshTokenDocumentMapper
 {

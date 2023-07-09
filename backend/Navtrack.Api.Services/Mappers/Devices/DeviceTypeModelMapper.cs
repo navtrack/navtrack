@@ -1,7 +1,8 @@
 using Navtrack.Api.Model.Devices;
+using Navtrack.Api.Services.Mappers.Protocols;
 using Navtrack.DataAccess.Model.Devices;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Devices;
 
 public class DeviceTypeModelMapper
 {

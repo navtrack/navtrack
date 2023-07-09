@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Mappers;
+using Navtrack.Api.Services.Mappers.Devices;
 using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Library.DI;

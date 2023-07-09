@@ -2,7 +2,7 @@ using System;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Common;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Common;
 
 public static class AuditElementMapper
 {

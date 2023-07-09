@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Exceptions;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Common;
 
 public static class ErrorModelMapper
 {

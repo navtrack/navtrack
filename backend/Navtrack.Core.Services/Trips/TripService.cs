@@ -154,6 +154,6 @@ public class TripService : ITripService
 
     private static IEnumerable<Trip> ApplyOrdering(IEnumerable<Trip> trips)
     {
-        return trips.OrderByDescending(x => x.StartLocation.DateTime).ToList();
+        return trips.OrderBy(x => x.StartLocation.DateTime).ToList();
     }
 }

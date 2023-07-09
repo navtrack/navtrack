@@ -12,6 +12,7 @@ using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Assets;
+using Navtrack.Api.Services.Mappers.Devices;
 using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
@@ -124,7 +125,7 @@ public class AssetService : IAssetService
         AssetDocument asset = await assetDataService.GetById(assetId);
         List<UserDocument> users = await userDataService.GetUsersByIds(asset.UserRoles?.Select(x => x.UserId));
 
-        return AssetUsersModelMapper.Map(asset, users);
+        return AssetUserListModelMapper.Map(asset, users);
     }
 
     public async Task AddUserToAsset(string assetId, AddUserToAssetModel model)
@@ -182,7 +183,7 @@ public class AssetService : IAssetService
         DeviceDocument deviceDocument = DeviceDocumentMapper.Map(model, assetDocument.Id, currentUser.Id);
         await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
 
-        assetDocument.Device = ActiveDeviceElementMapper.Map(deviceDocument, deviceType);
+        assetDocument.Device = AssetDeviceElementMapper.Map(deviceDocument, deviceType);
 
         await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == currentUser.Id,
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement

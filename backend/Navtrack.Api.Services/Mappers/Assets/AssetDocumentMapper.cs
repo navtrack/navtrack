@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using MongoDB.Bson;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Services.Mappers.Common;
+using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Users;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Assets;
 
 public static class AssetDocumentMapper
 {

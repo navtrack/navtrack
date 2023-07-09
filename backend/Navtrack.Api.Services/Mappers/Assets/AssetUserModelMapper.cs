@@ -2,7 +2,7 @@ using Navtrack.Api.Model.Assets;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Users;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Assets;
 
 public static class AssetUserModelMapper
 {

@@ -5,7 +5,7 @@ using Navtrack.Api.Model.Reports;
 using Navtrack.Core.Model.Trips;
 using Navtrack.DataAccess.Model.Common;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Reports;
 
 public static class DistanceReportListModelMapper
 {

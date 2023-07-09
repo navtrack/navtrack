@@ -7,6 +7,7 @@ using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers;
+using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.Common.Email;
 using Navtrack.Common.Email.Emails;
 using Navtrack.Common.Passwords;

@@ -1,7 +1,7 @@
 using IdentityServer4.Models;
 using Navtrack.DataAccess.Model.Users;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Users;
 
 internal static class RefreshTokenMapper
 {

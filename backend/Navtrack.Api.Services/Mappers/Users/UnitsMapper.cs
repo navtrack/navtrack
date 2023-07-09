@@ -1,7 +1,9 @@
+using System;
 using Navtrack.DataAccess.Model.Common;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Users;
 
+[Obsolete("To be removed.")]
 public static class UnitsMapper
 {
     public static float? MapSpeed(float? speed, UnitsType unitsType)

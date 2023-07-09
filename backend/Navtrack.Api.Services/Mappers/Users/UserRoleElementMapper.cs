@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Users;
 
 public static class UserRoleElementMapper
 {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Locations;
 using Navtrack.Api.Services.Mappers;
+using Navtrack.Api.Services.Mappers.Locations;
 using Navtrack.Api.Services.Roles;
 using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
@@ -39,6 +40,6 @@ public class LocationService : ILocationService
         List<LocationDocument> locations = await locationDataService.GetLocations(assetId, locationFilter);
         UserDocument user = await currentUserAccessor.Get();
 
-        return LocationListMapper.Map(locations, user.UnitsType);
+        return LocationListMapper.Map(locations);
     }
 }

@@ -2,16 +2,19 @@ import { useIntl } from "react-intl";
 import { useCallback } from "react";
 import { format, parseISO } from "date-fns";
 
-export const useDateTime = () => {
+export function useDateTime() {
   const intl = useIntl();
 
   const showDate = useCallback(
-    (date: string | Date): string => {
-      const d = typeof date === "string" ? parseISO(date) : date;
+    (date?: string | Date): string => {
+      if (date !== undefined) {
+        return format(
+          typeof date === "string" ? parseISO(date) : date,
+          "yyyy-MM-dd"
+        );
+      }
 
-      return date
-        ? format(d, "yyyy-MM-dd")
-        : intl.formatMessage({ id: "generic.na" });
+      return intl.formatMessage({ id: "generic.na" });
     },
     [intl]
   );
@@ -36,8 +39,8 @@ export const useDateTime = () => {
     minutes = minutes ?? 0;
 
     return minutes > 60
-      ? `${Math.floor(minutes / 60)}h ${Math.round(minutes % 60)}m`
-      : `${Math.round(minutes)}m`;
+      ? `${Math.floor(minutes / 60)} h ${Math.round(minutes % 60)} m`
+      : `${Math.round(minutes)} m`;
   }, []);
 
   function getDate(dateTime: string) {
@@ -45,4 +48,4 @@ export const useDateTime = () => {
   }
 
   return { showDate, showTime, showDateTime, showDuration, getDate };
-};
+}

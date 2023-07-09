@@ -1,18 +1,12 @@
 using Navtrack.Api.Model.Locations;
-using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Locations;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Locations;
 
 public static class LocationMapper
 {
-    public static LocationModel Map(LocationDocument source, UnitsType unitsType)
+    public static LocationModel Map(LocationDocument source)
     {
-        if (source == null)
-        {
-            return null;
-        }
-            
         LocationModel location = new()
         {
             Id = source.Id.ToString(),
@@ -20,9 +14,9 @@ public static class LocationMapper
             Longitude = source.Coordinates[0],
             Coordinates = source.Coordinates,
             DateTime = source.DateTime,
-            Speed = UnitsMapper.MapSpeed(source.Speed, unitsType),
+            Speed = source.Speed,
             Heading = source.Heading,
-            Altitude = UnitsMapper.MapDistance(source.Altitude, unitsType),
+            Altitude = source.Altitude,
             Satellites = source.Satellites,
             HDOP = source.HDOP,
             Valid = source.Valid,

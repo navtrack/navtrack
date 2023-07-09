@@ -1,7 +1,8 @@
+using Navtrack.Api.Services.Mappers.Common;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Users;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Users;
 
 public static class UserDocumentMapper
 {

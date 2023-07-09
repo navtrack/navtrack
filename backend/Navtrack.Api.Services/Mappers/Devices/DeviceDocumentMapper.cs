@@ -1,9 +1,10 @@
 using MongoDB.Bson;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Model.Devices;
+using Navtrack.Api.Services.Mappers.Common;
 using Navtrack.DataAccess.Model.Devices;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Devices;
 
 public static class DeviceDocumentMapper
 {

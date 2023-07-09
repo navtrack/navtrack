@@ -1,9 +1,9 @@
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
 
-namespace Navtrack.Api.Services.Mappers;
+namespace Navtrack.Api.Services.Mappers.Assets;
 
-public static class ActiveDeviceElementMapper
+public static class AssetDeviceElementMapper
 {
     public static AssetDeviceElement Map(DeviceDocument deviceDocument, DeviceType deviceType)
     {

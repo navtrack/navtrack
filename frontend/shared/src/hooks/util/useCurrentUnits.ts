@@ -10,7 +10,7 @@ type Units = {
   lengthK: string;
 };
 
-export const useCurrentUnits = () => {
+export function useCurrentUnits() {
   const currentUser = useCurrentUser();
   const intl = useIntl();
 
@@ -33,4 +33,4 @@ export const useCurrentUnits = () => {
   }, [currentUser?.units, intl]);
 
   return units;
-};
+}

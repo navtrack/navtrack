@@ -1,5 +1,6 @@
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.Mappers.Devices;
+using Navtrack.Api.Services.Mappers.Locations;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Devices;
@@ -14,7 +15,7 @@ public static class AssetModelMapper
         {
             Id = asset.Id.ToString(),
             Name = asset.Name,
-            Location = asset.Location != null ? LocationMapper.Map(asset.Location, unitsType) : null,
+            Location = asset.Location != null ? LocationMapper.Map(asset.Location) : null,
             Device = DeviceModelMapper.Map(asset, deviceType)
         };
     }
