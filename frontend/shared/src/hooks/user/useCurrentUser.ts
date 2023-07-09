@@ -21,7 +21,5 @@ export function useCurrentUser() {
     }
   }, [query.data]);
 
-  console.log(Date(), user);
-
   return user;
 }
