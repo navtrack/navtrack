@@ -1,12 +1,11 @@
 import { Copyright } from "../../../shared/Copyright";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
-import NavtrackLogo from "../../../../assets/images/navtrack.svg";
 import { AdminLayoutSideBarAssets } from "./AdminLayoutSideBarAssets";
+import { NavtrackLogo } from "../../NavtrackLogo";
 
 export function AdminLayoutSideBar() {
   const history = useHistory();
-  const intl = useIntl();
 
   return (
     <div className="fixed flex h-screen w-64 flex-col">
@@ -14,11 +13,9 @@ export function AdminLayoutSideBar() {
         <div
           className="flex cursor-pointer items-center"
           onClick={() => history.push("/")}>
-          <img
-            src={NavtrackLogo}
-            className="mr-1 w-10"
-            alt={intl.formatMessage({ id: "navtrack" })}
-          />
+          <div className="mr-1 w-10">
+            <NavtrackLogo />
+          </div>
           <span className="text-2xl font-semibold tracking-wide text-white">
             <FormattedMessage id="navtrack" />
           </span>

@@ -1,21 +1,18 @@
 import { ReactNode } from "react";
-import NavtrackLogo from "../../../assets/images/navtrack.svg";
-import { useIntl } from "react-intl";
+import { NavtrackLogo } from "../NavtrackLogo";
 
-interface ILoginLayoutProps {
+type LoginLayoutProps = {
   children: ReactNode;
-}
+};
 
-export function LoginLayout(props: ILoginLayoutProps) {
-  const intl = useIntl();
-
+export function LoginLayout(props: LoginLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100 p-8">
-      <img
-        className="mx-auto w-20 rounded-full bg-gray-800"
-        src={NavtrackLogo}
-        alt={intl.formatMessage({ id: "navtrack" })}
-      />
+      <div className="mx-auto flex">
+        <div className="flex w-28 rounded-full bg-gray-800">
+          <NavtrackLogo />
+        </div>
+      </div>
       {props.children}
     </div>
   );
