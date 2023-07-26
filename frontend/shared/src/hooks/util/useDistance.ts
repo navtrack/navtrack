@@ -17,7 +17,7 @@ function convertKphToMph(speed: number) {
 export function useDistance() {
   const units = useCurrentUnits();
 
-  const convertMetersToFeet = useCallback(
+  const convertToSelectedUnitsType = useCallback(
     (distance?: number) => {
       if (distance !== undefined) {
         return units.unitsType === UnitsType.Metric
@@ -44,7 +44,7 @@ export function useDistance() {
 
   const showDistance = useCallback(
     (distance?: number) => {
-      const convertedDistance = convertMetersToFeet(distance);
+      const convertedDistance = convertToSelectedUnitsType(distance);
 
       if (convertedDistance > 1000) {
         if (units.unitsType === UnitsType.Metric) {
@@ -54,17 +54,17 @@ export function useDistance() {
         return `${convertFeetToMiles(convertedDistance)} ${units.lengthK}`;
       }
 
-      return `${distance} ${units.length}`;
+      return `${convertedDistance} ${units.length}`;
     },
-    [convertMetersToFeet, units.length, units.lengthK, units.unitsType]
+    [convertToSelectedUnitsType, units.length, units.lengthK, units.unitsType]
   );
 
   const showAltitude = useCallback(
     (altitude?: number | null) =>
       altitude !== undefined && altitude !== null
-        ? `${convertMetersToFeet(altitude)} ${units.length}`
+        ? `${convertToSelectedUnitsType(altitude)} ${units.length}`
         : "",
-    [convertMetersToFeet, units.length]
+    [convertToSelectedUnitsType, units.length]
   );
 
   const showHeading = useCallback(
