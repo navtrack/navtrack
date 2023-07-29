@@ -46,7 +46,7 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
                 }
             }
 
-            throw new ApiException(HttpStatusCode.NotFound);
+            throw new ApiException(HttpStatusCode.Unauthorized);
         }
     }
 
