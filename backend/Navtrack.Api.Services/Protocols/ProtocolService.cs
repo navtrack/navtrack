@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Navtrack.Api.Model.Protocols;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Protocols;
 using Navtrack.DataAccess.Model.Protocols;
 using Navtrack.DataAccess.Services.Protocols;

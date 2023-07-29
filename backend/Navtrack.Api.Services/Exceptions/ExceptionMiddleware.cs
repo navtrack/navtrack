@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Navtrack.Api.Model.Common;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Common;
 
 namespace Navtrack.Api.Services.Exceptions;

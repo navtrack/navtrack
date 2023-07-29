@@ -10,7 +10,6 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Devices;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Assets;
 using Navtrack.Api.Services.Mappers.Devices;
 using Navtrack.Api.Services.User;
@@ -53,10 +52,10 @@ public class AssetService : IAssetService
     public async Task<AssetModel> GetById(string assetId)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        UserDocument user = await currentUserAccessor.Get();
         DeviceType deviceType = deviceTypeDataService.GetById(asset.Device.DeviceTypeId);
-
-        return AssetModelMapper.Map(asset, user.UnitsType, deviceType);
+        List<UserDocument>? users = await userDataService.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
+        
+        return AssetModelMapper.Map(asset, deviceType, users);
     }
 
     public async Task<AssetsModel> GetAssets()
@@ -117,13 +116,13 @@ public class AssetService : IAssetService
         AssetDocument assetDocument = await AddDocuments(model);
         DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
 
-        return AssetModelMapper.Map(assetDocument, user.UnitsType, deviceType);
+        return AssetModelMapper.Map(assetDocument, deviceType);
     }
 
     public async Task<AssetUserListModel> GetAssetUsers(string assetId)
     {
         AssetDocument asset = await assetDataService.GetById(assetId);
-        List<UserDocument> users = await userDataService.GetUsersByIds(asset.UserRoles?.Select(x => x.UserId));
+        List<UserDocument>? users = await userDataService.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
 
         return AssetUserListModelMapper.Map(asset, users);
     }

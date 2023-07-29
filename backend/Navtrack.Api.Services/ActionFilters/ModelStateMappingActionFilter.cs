@@ -1,7 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Common;
 
 namespace Navtrack.Api.Services.ActionFilters;

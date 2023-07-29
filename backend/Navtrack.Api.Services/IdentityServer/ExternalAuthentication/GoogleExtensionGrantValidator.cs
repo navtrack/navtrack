@@ -8,7 +8,6 @@ using Google.Apis.Auth.OAuth2.Responses;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.Common.Settings;
 using Navtrack.DataAccess.Model.Users;

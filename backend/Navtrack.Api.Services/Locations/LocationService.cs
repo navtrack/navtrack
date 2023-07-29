@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Locations;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Locations;
 using Navtrack.Api.Services.Roles;
 using Navtrack.Api.Services.User;

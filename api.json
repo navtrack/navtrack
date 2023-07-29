@@ -909,7 +909,7 @@
         }
       }
     },
-    "/assets/assets/{assetId}/users": {
+    "/assets/{assetId}/users": {
       "get": {
         "tags": [
           "AssetsUsers"
@@ -1087,7 +1087,7 @@
         }
       }
     },
-    "/assets/assets/{assetId}/users/{userId}": {
+    "/assets/{assetId}/users/{userId}": {
       "delete": {
         "tags": [
           "AssetsUsers"
@@ -1657,6 +1657,13 @@
           },
           "device": {
             "$ref": "#/components/schemas/DeviceModel"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetUserModel"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

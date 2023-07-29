@@ -19,7 +19,7 @@ public static class AssetListMapper
                 {
                     DeviceType deviceType = deviceTypes.First(y => y.Id == x.Device.DeviceTypeId.ToString());
 
-                    return AssetModelMapper.Map(x, unitsType, deviceType);
+                    return AssetModelMapper.Map(x, deviceType);
                 })
                 .ToList()
         };

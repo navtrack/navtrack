@@ -6,7 +6,6 @@ using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Devices;
 using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;

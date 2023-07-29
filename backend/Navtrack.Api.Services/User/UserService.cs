@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
-using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.Common.Passwords;
 using Navtrack.DataAccess.Model.Users;

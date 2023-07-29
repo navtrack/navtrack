@@ -12,7 +12,6 @@ using Navtrack.DataAccess.Model.Assets;
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
-[Route("assets")]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 public class AssetsUsersController : ControllerBase
 {

@@ -8,7 +8,7 @@ namespace Navtrack.Api.Services.Mappers.Assets;
 
 public static class AssetUserListModelMapper
 {
-    public static AssetUserListModel Map(AssetDocument asset, List<UserDocument> users)
+    public static AssetUserListModel Map(AssetDocument asset, List<UserDocument>? users)
     {
         AssetUserListModel list = new()
         {
