@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { AUTH_AXIOS_INSTANCE } from "../../../api/authAxiosInstance";
 import { isAuthenticatedAtom } from "../../../state/authentication";
 import { useAccessToken } from "../authentication/useAccessToken";
-import { LogLevel, log } from "../../../utils/log";
+import { log } from "../../../utils/log";
 import { AxiosError } from "axios";
 import { useAuthentication } from "../authentication/useAuthentication";
 import { AuthenticationErrorType } from "../authentication/authentication";
@@ -19,13 +19,16 @@ export function useAxiosAuthorization() {
   const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
   const token = useAccessToken();
   const authentication = useAuthentication();
+  const [configured, setConfigured] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
       if (interceptor !== undefined) {
         AUTH_AXIOS_INSTANCE.interceptors.request.eject(interceptor.requestId);
         AUTH_AXIOS_INSTANCE.interceptors.response.eject(interceptor.responseId);
-        log(LogLevel.DEBUG, "INTERCEPTOR REMOVED", interceptor?.requestId);
+
+        setConfigured(false);
+        log("AXIOS AUTH", "INTERCEPTORS REMOVED");
       }
 
       const requestInterceptorId = AUTH_AXIOS_INSTANCE.interceptors.request.use(
@@ -57,12 +60,16 @@ export function useAxiosAuthorization() {
             return Promise.reject(error);
           }
         );
-      log(LogLevel.DEBUG, "INTERCEPTOR SET");
 
       interceptor = {
         requestId: requestInterceptorId,
         responseId: responseInterceptorId
       };
+
+      setConfigured(true);
+      log("AXIOS AUTH", "INTERCEPTORS SET");
     }
   }, [authentication, isAuthenticated, token]);
+
+  return !isAuthenticated || configured;
 }

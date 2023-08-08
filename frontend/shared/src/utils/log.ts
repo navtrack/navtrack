@@ -1,14 +1,13 @@
-import { isDevEnv } from "./isDevEnv";
+let showDebug = false;
 
-export enum LogLevel {
-  DEBUG = "DEBUG",
-  INFO = "INFO",
-  WARN = "WARN",
-  ERROR = "ERROR"
-}
-
-export function log(logLevel: LogLevel, ...data: any[]) {
-  if (isDevEnv && logLevel === LogLevel.DEBUG) {
+export function log(...data: any[]) {
+  if (showDebug) {
     console.log(...data);
   }
 }
+
+// @ts-ignore
+window.toggleDebug = () => {
+  showDebug = !showDebug;
+  console.log("debug mode", showDebug);
+};

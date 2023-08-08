@@ -10,6 +10,7 @@ import {
   setInAsyncStorage
 } from "../../../utils/asyncStorage";
 import { Authentication } from "./authentication";
+import { log } from "../../../utils/log";
 
 type RefreshLock = {
   date: string;
@@ -54,6 +55,7 @@ export function useAccessToken() {
       !(await getFromAsyncStorage<RefreshLock>(refreshLockKey))
     ) {
       try {
+        log("TOKEN", "lock");
         await setInAsyncStorage<RefreshLock>(refreshLockKey, {
           date: new Date().toISOString()
         });
@@ -65,11 +67,12 @@ export function useAccessToken() {
         };
 
         const response = await tokenMutation.mutateAsync(data);
-        console.log("token refreshed");
+        log("TOKEN", "refresh");
 
         return response.access_token;
       } finally {
         await clearRefreshLock(true);
+        log("TOKEN", "unlock");
       }
     }
 

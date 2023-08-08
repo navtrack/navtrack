@@ -8,7 +8,7 @@ type AxiosConfiguratorProps = {
 
 export function AxiosConfigurator(props: AxiosConfiguratorProps) {
   const baseUrlsSet = useAxiosBaseUrls();
-  useAxiosAuthorization();
+  const configured = useAxiosAuthorization();
 
-  return <>{baseUrlsSet && props.children}</>;
+  return <>{baseUrlsSet && configured && props.children}</>;
 }

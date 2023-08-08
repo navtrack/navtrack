@@ -1,8 +1,9 @@
 import queryString from "query-string";
 import { useMutation } from "react-query";
 import { axiosInstance } from "../../../api/axiosInstance";
-import { AuthenticationErrorType, getExpiryDate } from "./authentication";
+import { AuthenticationErrorType } from "./authentication";
 import { useAuthentication } from "./useAuthentication";
+import { add } from "date-fns";
 
 type TokenRequest = {
   grant_type: string;
@@ -27,6 +28,14 @@ type TokenError = {
   error_description: string;
 };
 
+function getExpiryDate(expiresIn: number) {
+  const date = add(new Date(), {
+    seconds: expiresIn
+  }).toISOString();
+
+  return date;
+}
+
 export function useTokenMutation() {
   const authentication = useAuthentication();
 
@@ -42,20 +51,17 @@ export function useTokenMutation() {
         }
       }),
     {
-      onMutate: async () => {
-        await authentication.clearErrors();
-      },
-      onSuccess: async (data, variables) => {
-        await authentication.set({
+      onMutate: () => authentication.clearErrors(),
+      onSuccess: async (data) =>
+        authentication.set({
           token: {
             accessToken: data.access_token,
             refreshToken: data.refresh_token,
             expiryDate: getExpiryDate(data.expires_in),
             date: new Date().toISOString()
           }
-        });
-      },
-      onError: async (_, data) => {
+        }),
+      onError: (_, data) => {
         const error =
           data.grant_type === "password"
             ? AuthenticationErrorType.Internal
@@ -63,7 +69,7 @@ export function useTokenMutation() {
             ? AuthenticationErrorType.Other
             : AuthenticationErrorType.External;
 
-        authentication.clear(error);
+        return authentication.clear(error);
       }
     }
   );

@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { CustomExternalLoginButtonProps } from "./types";
 import { useGoogleLogin } from "@react-oauth/google";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
+import { log } from "@navtrack/shared/utils/log";
 
 export function ExternalLoginButtonGoogle(
   props: CustomExternalLoginButtonProps
@@ -14,7 +15,7 @@ export function ExternalLoginButtonGoogle(
   const login = useGoogleLogin({
     flow: "auth-code",
     onSuccess: (tokenResponse) => props.login(tokenResponse.code, "google"),
-    onError: (error) => console.log(error)
+    onError: (error) => log(error)
   });
 
   return (

@@ -1,4 +1,3 @@
-import { add } from "date-fns";
 import {
   getFromAsyncStorage,
   removeFromAsyncStorage,
@@ -30,11 +29,3 @@ export const Authentication = {
     setInAsyncStorage(authenticationAtomKey, value),
   clear: () => removeFromAsyncStorage(authenticationAtomKey)
 };
-
-export function getExpiryDate(expiresIn: number) {
-  const date = add(new Date(), {
-    seconds: expiresIn
-  }).toISOString();
-
-  return date;
-}

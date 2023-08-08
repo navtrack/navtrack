@@ -66,8 +66,6 @@ export function SettingsAccountPage() {
     [intl]
   );
 
-  console.log(user?.units);
-
   return (
     <SettingsLayout>
       {user && (
