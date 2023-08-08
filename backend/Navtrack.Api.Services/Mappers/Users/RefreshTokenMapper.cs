@@ -12,7 +12,7 @@ internal static class RefreshTokenMapper
             CreationTime = source.CreationTime,
             Lifetime = source.Lifetime,
             ConsumedTime = source.ConsumedTime,
-            AccessToken = TokenMapper.Map(source.AccessToken),
+            AccessToken = AccessTokenMapper.Map(source.AccessToken),
             Version = source.Version,
         };
     }

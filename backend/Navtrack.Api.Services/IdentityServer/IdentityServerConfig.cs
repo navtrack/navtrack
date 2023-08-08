@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -22,7 +23,8 @@ public static class IdentityServerConfig
             new()
             {
                 ClientId = "navtrack.web",
-                AllowedGrantTypes = new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple"},
+                AllowedGrantTypes =
+                    new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple" },
                 AllowedScopes =
                 {
                     IdentityServerConstants.LocalApi.ScopeName,
@@ -31,12 +33,16 @@ public static class IdentityServerConfig
                 RequireClientSecret = false,
                 AllowOfflineAccess = true,
                 AllowedCorsOrigins = new List<string>(),
-                AbsoluteRefreshTokenLifetime = 365 * 24 * 60 * 60 // 1 year,
+                RefreshTokenExpiration = TokenExpiration.Sliding,
+                AbsoluteRefreshTokenLifetime = (int)TimeSpan.FromDays(365).TotalSeconds,
+                SlidingRefreshTokenLifetime = (int)TimeSpan.FromDays(365).TotalSeconds,
+                AccessTokenLifetime = (int)TimeSpan.FromMinutes(60).TotalSeconds
             },
             new()
             {
                 ClientId = "navtrack.mobile",
-                AllowedGrantTypes = new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple"},
+                AllowedGrantTypes =
+                    new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple" },
                 AllowedScopes =
                 {
                     IdentityServerConstants.LocalApi.ScopeName,
@@ -45,7 +51,10 @@ public static class IdentityServerConfig
                 RequireClientSecret = false,
                 AllowOfflineAccess = true,
                 AllowedCorsOrigins = new List<string>(),
-                AbsoluteRefreshTokenLifetime = 365 * 24 * 60 * 60 // 1 year
+                RefreshTokenExpiration = TokenExpiration.Sliding,
+                AbsoluteRefreshTokenLifetime = (int)TimeSpan.FromDays(365).TotalSeconds,
+                SlidingRefreshTokenLifetime = (int)TimeSpan.FromDays(365).TotalSeconds,
+                AccessTokenLifetime = (int)TimeSpan.FromMinutes(60).TotalSeconds
             }
         };
     }

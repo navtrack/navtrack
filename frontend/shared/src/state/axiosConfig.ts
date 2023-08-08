@@ -1,13 +1,14 @@
 import { atom } from "recoil";
 
 type AxiosConfig = {
-  accessTokenInterceptorId?: number;
-  accessToken?: string;
-  accessTokenSet: boolean;
+  interceptor?: {
+    id: number;
+    accessToken: string;
+  };
   baseUrlSet: boolean;
 };
 
 export const axiosConfigAtom = atom<AxiosConfig>({
   key: "Navtrack:Axios",
-  default: { accessTokenSet: false, baseUrlSet: false }
+  default: { baseUrlSet: false }
 });

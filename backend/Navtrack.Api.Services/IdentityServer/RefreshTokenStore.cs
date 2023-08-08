@@ -11,32 +11,30 @@ namespace Navtrack.Api.Services.IdentityServer;
 [Service(typeof(IRefreshTokenStore))]
 public class RefreshTokenStore : IRefreshTokenStore
 {
-    private readonly ITokenDataService tokenDataService;
+    private readonly IRefreshTokenDataService refreshTokenDataService;
 
-    public RefreshTokenStore(ITokenDataService tokenDataService)
+    public RefreshTokenStore(IRefreshTokenDataService refreshTokenDataService)
     {
-        this.tokenDataService = tokenDataService;
+        this.refreshTokenDataService = refreshTokenDataService;
     }
 
     public async Task<string> StoreRefreshTokenAsync(RefreshToken refreshToken)
     {
         RefreshTokenDocument document = RefreshTokenDocumentMapper.Map(refreshToken);
+        
+        await refreshTokenDataService.Add(document);
 
-        await tokenDataService.Add(document);
-
-        return document.Id.ToString();
+        return document.Hash;
     }
 
-    public Task UpdateRefreshTokenAsync(string handle, RefreshToken refreshToken)
+    public Task UpdateRefreshTokenAsync(string? handle, RefreshToken refreshToken)
     {
-        RefreshTokenDocument document = RefreshTokenDocumentMapper.Map(refreshToken);
-
-        return tokenDataService.Add(document);
+        return Task.CompletedTask;
     }
 
     public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshTokenHandle)
     {
-        RefreshTokenDocument? document = await tokenDataService.GetByUserId(refreshTokenHandle);
+        RefreshTokenDocument? document = await refreshTokenDataService.Get(refreshTokenHandle);
 
         if (document != null)
         {
@@ -50,11 +48,11 @@ public class RefreshTokenStore : IRefreshTokenStore
 
     public Task RemoveRefreshTokenAsync(string refreshTokenHandle)
     {
-        return tokenDataService.Remove(refreshTokenHandle);
+        return refreshTokenDataService.Remove(refreshTokenHandle);
     }
 
     public Task RemoveRefreshTokensAsync(string subjectId, string clientId)
     {
-        return tokenDataService.Remove(subjectId);
+        return refreshTokenDataService.Remove(subjectId, clientId);
     }
 }

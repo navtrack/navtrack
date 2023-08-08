@@ -10,7 +10,6 @@ import { Icon } from "../../ui/shared/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { ExternalLogin } from "../login-page/external-login/ExternalLogin";
-import { AUTHENTICATION } from "../../../constants";
 import { useRegister } from "@navtrack/shared/hooks/user/register/useRegister";
 import { useRegisterFormValidationSchema } from "@navtrack/shared/hooks/user/register/useRegisterFormValidationSchema";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
@@ -19,9 +18,7 @@ import { InitialRegisterFormValues } from "@navtrack/shared/hooks/user/register/
 export function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
   const register = useRegister();
-  const { externalLogin } = useLogin({
-    clientId: AUTHENTICATION.CLIENT_ID
-  });
+  const { externalLogin } = useLogin();
 
   return (
     <>

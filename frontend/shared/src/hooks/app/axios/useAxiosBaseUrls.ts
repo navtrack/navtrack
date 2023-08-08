@@ -14,13 +14,13 @@ export function useAxiosBaseUrls() {
       const axiosInstanceInterceptorId =
         AXIOS_INSTANCE.interceptors.request.use((current) => ({
           ...current,
-          baseURL: appConfig.apiUrl
+          baseURL: appConfig.api.url
         }));
 
       const authAxiosInstanceInterceptorId =
         AUTH_AXIOS_INSTANCE.interceptors.request.use((current) => ({
           ...current,
-          baseURL: appConfig.apiUrl
+          baseURL: appConfig.api.url
         }));
 
       setAxiosConfig((x) => ({ ...x, baseUrlSet: true }));

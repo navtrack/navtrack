@@ -3,13 +3,13 @@ import { ExternalLoginButton } from "./ExternalLoginButton";
 import { FormattedMessage } from "react-intl";
 import { useRecoilValue } from "recoil";
 import { CustomExternalLoginButtonProps } from "./types";
-import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 import { useGoogleLogin } from "@react-oauth/google";
+import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 
 export function ExternalLoginButtonGoogle(
   props: CustomExternalLoginButtonProps
 ) {
-  const settings = useRecoilValue(environmentSettingsSelector);
+  const appConfig = useRecoilValue(appConfigAtom);
 
   const login = useGoogleLogin({
     flow: "auth-code",
@@ -19,7 +19,7 @@ export function ExternalLoginButtonGoogle(
 
   return (
     <>
-      {settings["GoogleAuthentication.ClientId"] && (
+      {appConfig?.authentication?.google?.clientId && (
         <ExternalLoginButton icon={faGoogle} onClick={login}>
           <FormattedMessage id="generic.google" />
         </ExternalLoginButton>

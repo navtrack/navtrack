@@ -13,22 +13,27 @@ import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndic
 import Paths from "../../../app/Paths";
 import { ExternalLogin } from "./external-login/ExternalLogin";
 import { Alert } from "../../ui/shared/alert/Alert";
-import { AUTHENTICATION } from "../../../constants";
 import { useLoginFormValidationSchema } from "@navtrack/shared/hooks/user/login/useLoginFormValidationSchema";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialLoginFormValues } from "@navtrack/shared/hooks/user/login/LoginFormValues";
+import { useMemo } from "react";
+import { AuthenticationErrorType } from "@navtrack/shared/hooks/app/authentication/authentication";
 
-export const LoginPage = () => {
+export function LoginPage() {
+  const login = useLogin();
   const validationSchema = useLoginFormValidationSchema();
-  const {
-    internalLogin,
-    externalLogin,
-    loading,
-    internalLoginError,
-    externalLoginError
-  } = useLogin({
-    clientId: AUTHENTICATION.CLIENT_ID
-  });
+
+  const errorMessage = useMemo(
+    () =>
+      login.error !== undefined
+        ? login.error === AuthenticationErrorType.Internal
+          ? "login.internal-login-error"
+          : login.error === AuthenticationErrorType.Other
+          ? "authentication.logged-out"
+          : "generic.error-message"
+        : undefined,
+    [login.error]
+  );
 
   return (
     <>
@@ -36,20 +41,18 @@ export const LoginPage = () => {
         <FormattedMessage id="login.title" />
       </h2>
       <Card className="mx-auto mt-8 w-full max-w-md p-8">
-        {internalLoginError && (
+        {errorMessage !== undefined && (
           <Alert className="mb-3">
-            <FormattedMessage id="login.internal-login-error" />
-          </Alert>
-        )}
-        {externalLoginError && (
-          <Alert className="mb-3">
-            <FormattedMessage id="generic.error-message" />
+            <FormattedMessage id={errorMessage} />
           </Alert>
         )}
         <Formik
           initialValues={InitialLoginFormValues}
           onSubmit={(values) =>
-            internalLogin({ username: values.email, password: values.password })
+            login.internalLogin({
+              username: values.email,
+              password: values.password
+            })
           }
           validationSchema={validationSchema}>
           {({ values }) => (
@@ -82,9 +85,9 @@ export const LoginPage = () => {
                   type="submit"
                   color="primary"
                   size="lg"
-                  disabled={loading}
+                  disabled={login.loading}
                   fullWidth>
-                  {loading ? (
+                  {login.loading ? (
                     <LoadingIndicator />
                   ) : (
                     <FormattedMessage id="login.button" />
@@ -99,11 +102,11 @@ export const LoginPage = () => {
           <span className="mx-2">•</span>
           <Link to={Paths.ForgotPassword} text="login.forgot" />
         </div>
-        <ExternalLogin login={externalLogin} />
+        <ExternalLogin login={login.externalLogin} />
       </Card>
       <div className="mt-4 text-center text-xs">
         <Copyright />
       </div>
     </>
   );
-};
+}

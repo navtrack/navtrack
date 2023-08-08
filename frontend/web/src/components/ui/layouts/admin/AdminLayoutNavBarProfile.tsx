@@ -9,15 +9,15 @@ import { Icon } from "../../shared/icon/Icon";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import { IconWithText } from "../../shared/icon/IconWithText";
-import { useLogout } from "@navtrack/shared/hooks/app/authentication/useLogout";
 import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
 import { classNames } from "@navtrack/shared/utils/tailwind";
+import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 
 export type AdminLayoutNavBarProfileProps = {};
 
 export function AdminLayoutNavBarProfile(props: AdminLayoutNavBarProfileProps) {
   const currentUser = useCurrentUser();
-  const logout = useLogout();
+  const { logout } = useLogin();
   const history = useHistory();
 
   return (

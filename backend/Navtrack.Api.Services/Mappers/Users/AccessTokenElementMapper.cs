@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using IdentityServer4.Models;
+using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers.Users;
@@ -16,6 +17,7 @@ internal static class AccessTokenElementMapper
             Confirmation = source.Confirmation,
             Audiences = source.Audiences,
             Issuer = source.Issuer,
+            SubjectId = ObjectId.Parse(source.SubjectId),
             CreationTime = source.CreationTime,
             Lifetime = source.Lifetime,
             Type = source.Type,

@@ -6,23 +6,23 @@ import { ExternalLoginButtonMicrosoft } from "./ExternalLoginButtonMicrosoft";
 import { ExternalLoginButtonGoogle } from "./ExternalLoginButtonGoogle";
 import { useRecoilValue } from "recoil";
 import { useMicrosoftLogin } from "./useMicrosoftLogin";
-import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 
-interface IExternalLogin {
+type ExternalLoginProps = {
   login: (code: string, grantType: "apple" | "microsoft" | "google") => void;
-}
+};
 
-export function ExternalLogin(props: IExternalLogin) {
+export function ExternalLogin(props: ExternalLoginProps) {
   const { publicClientApplication } = useMicrosoftLogin();
-  const settings = useRecoilValue(environmentSettingsSelector);
+  const appConfig = useRecoilValue(appConfigAtom);
 
   const hasExternalLogins = useMemo(
     () =>
-      !!settings["GoogleAuthentication.ClientId"] ||
-      !!settings["MicrosoftAuthentication.ClientId"] ||
-      !!settings["AppleAuthentication.ClientId"],
-    [settings]
+      !!appConfig?.authentication?.google?.clientId ||
+      !!appConfig?.authentication?.microsoft?.clientId ||
+      !!appConfig?.authentication?.apple?.clientId,
+    [appConfig?.authentication]
   );
 
   const buttons = useMemo(
@@ -38,16 +38,16 @@ export function ExternalLogin(props: IExternalLogin) {
         <div className="grid grid-cols-3 gap-2">
           <ExternalLoginButtonApple login={props.login} />
           <ExternalLoginButtonMicrosoft login={props.login} />
-          {!!settings["GoogleAuthentication.ClientId"] && (
+          {!!appConfig?.authentication?.google?.clientId && (
             <GoogleOAuthProvider
-              clientId={settings["GoogleAuthentication.ClientId"]}>
+              clientId={appConfig.authentication.google.clientId}>
               <ExternalLoginButtonGoogle login={props.login} />
             </GoogleOAuthProvider>
           )}
         </div>
       </>
     ),
-    [props.login, settings]
+    [appConfig?.authentication, props.login]
   );
 
   return hasExternalLogins ? (

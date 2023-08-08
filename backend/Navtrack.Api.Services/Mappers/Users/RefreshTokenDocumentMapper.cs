@@ -1,6 +1,7 @@
+using System;
+using System.Linq;
 using IdentityServer4.Models;
-using MongoDB.Bson;
-using Navtrack.Api.Services.IdentityServer;
+using Navtrack.Core.Services.Util;
 using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers.Users;
@@ -9,14 +10,18 @@ public static class RefreshTokenDocumentMapper
 {
     public static RefreshTokenDocument Map(RefreshToken source)
     {
+        string jwtId = source.AccessToken.Claims.First(x => x.Type == "jti").Value;
+        
         return new RefreshTokenDocument
         {
-            Id = ObjectId.Parse(source.Subject.GetId()),
+            Hash = HashUtil.GenerateSha256Hash(Guid.NewGuid().ToString()),
             CreationTime = source.CreationTime,
+            ExpiryTime = source.CreationTime.AddSeconds(source.Lifetime),
             Lifetime = source.Lifetime,
             ConsumedTime = source.ConsumedTime,
             AccessToken = AccessTokenElementMapper.Map(source.AccessToken),
-            Version = source.Version
+            Version = source.Version,
+            JwtId = jwtId
         };
     }
 }

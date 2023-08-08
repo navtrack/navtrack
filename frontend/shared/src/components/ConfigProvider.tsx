@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
-import { useConfig } from "../hooks/app/config/useConfig";
-import { useAxiosBaseUrls } from "../hooks/app/axios/useAxiosBaseUrls";
-import { AppConfig } from "../state/appConfig";
+import { ReactNode, useEffect } from "react";
+import { AppConfig, appConfigAtom } from "../state/appConfig";
+import { useRecoilState } from "recoil";
 
 type ConfigProviderProps = {
   children: ReactNode;
@@ -9,8 +8,13 @@ type ConfigProviderProps = {
 };
 
 export function ConfigProvider(props: ConfigProviderProps) {
-  const configSet = useConfig(props.config);
-  const baseUrlsSet = useAxiosBaseUrls();
+  const [state, setState] = useRecoilState(appConfigAtom);
 
-  return <>{configSet && baseUrlsSet && props.children}</>;
+  useEffect(() => {
+    if (state === undefined) {
+      setState(props.config);
+    }
+  }, [props.config, setState, state]);
+
+  return <>{state !== undefined && props.children}</>;
 }

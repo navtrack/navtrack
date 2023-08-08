@@ -6,7 +6,7 @@ using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers.Users;
 
-internal static class TokenMapper
+internal static class AccessTokenMapper
 {
     public static Token Map(AccessTokenElement source)
     {

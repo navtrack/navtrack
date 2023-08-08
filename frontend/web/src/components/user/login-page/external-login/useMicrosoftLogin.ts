@@ -1,26 +1,26 @@
 import { useRecoilValue } from "recoil";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { useMemo } from "react";
-import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
+import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 
 export function useMicrosoftLogin() {
-  const settings = useRecoilValue(environmentSettingsSelector);
+  const appConfig = useRecoilValue(appConfigAtom);
 
   const publicClientApplication = useMemo(
     () =>
-      !!settings["MicrosoftAuthentication.ClientId"] &&
-      !!settings["MicrosoftAuthentication.Authority"]
+      !!appConfig?.authentication?.microsoft?.clientId &&
+      !!appConfig.authentication.microsoft.authority
         ? new PublicClientApplication({
             auth: {
-              clientId: settings["MicrosoftAuthentication.ClientId"],
-              authority: settings["MicrosoftAuthentication.Authority"]
+              clientId: appConfig?.authentication.microsoft.clientId,
+              authority: appConfig?.authentication.microsoft.authority
             },
             cache: {
               cacheLocation: "sessionStorage"
             }
           })
         : undefined,
-    [settings]
+    [appConfig?.authentication?.microsoft]
   );
 
   return { publicClientApplication };

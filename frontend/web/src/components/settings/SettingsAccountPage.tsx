@@ -10,8 +10,8 @@ import { useNotification } from "../ui/shared/notification/useNotification";
 import { useUpdateUserMutation } from "@navtrack/shared/hooks/mutations/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
-import { UnitsType } from "@navtrack/shared/api/model/custom/UnitsType";
 import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
+import { UnitsType } from "@navtrack/shared/api/model/custom/UnitsType";
 
 type AccountSettingsFormValues = {
   email?: string;
@@ -33,7 +33,7 @@ export function SettingsAccountPage() {
         {
           data: {
             email: values.email,
-            unitsType: values.units === UnitsType.Metric ? 0 : 1
+            unitsType: values.units === `${UnitsType.Metric}` ? 0 : 1
           }
         },
         {
@@ -44,7 +44,6 @@ export function SettingsAccountPage() {
                 id: "settings.account.success"
               })
             });
-            formikHelpers.resetForm();
           },
           onError: (error) => mapErrors(error, formikHelpers)
         }
@@ -57,15 +56,17 @@ export function SettingsAccountPage() {
     () => [
       {
         label: intl.formatMessage({ id: "generic.units.metric" }),
-        value: UnitsType.Metric
+        value: `${UnitsType.Metric}`
       },
       {
         label: intl.formatMessage({ id: "generic.units.imperial" }),
-        value: UnitsType.Imperial
+        value: `${UnitsType.Imperial}`
       }
     ],
     [intl]
   );
+
+  console.log(user?.units);
 
   return (
     <SettingsLayout>
@@ -73,15 +74,16 @@ export function SettingsAccountPage() {
         <Formik<AccountSettingsFormValues>
           initialValues={{
             email: user?.email,
-            units: user?.units
+            units: `${user?.units}`
           }}
           onSubmit={(values, formikHelpers) =>
             handleSubmit(values, formikHelpers)
           }>
-          {() => (
+          {({ values }) => (
             <Form>
+              <>{console.log(values)}</>
               <div className="shadow sm:overflow-hidden sm:rounded-md">
-                <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
+                <div className="space-y-6 bg-white px-4 py-6 sm:p-6">
                   <div>
                     <h3 className="text-lg font-medium leading-6 text-gray-900">
                       <FormattedMessage id="settings.account.title" />

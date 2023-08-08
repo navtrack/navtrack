@@ -3,19 +3,19 @@ import { ExternalLoginButton } from "./ExternalLoginButton";
 import { FormattedMessage } from "react-intl";
 import { useRecoilValue } from "recoil";
 import AppleSignin from "react-apple-signin-auth";
-import { environmentSettingsSelector } from "@navtrack/shared/state/environment";
+import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 
 export function ExternalLoginButtonApple(props) {
-  const settings = useRecoilValue(environmentSettingsSelector);
+  const appConfig = useRecoilValue(appConfigAtom);
 
   return (
     <>
-      {settings["AppleAuthentication.ClientId"] && (
+      {appConfig?.authentication?.apple?.clientId && (
         <AppleSignin
           authOptions={{
-            clientId: settings["AppleAuthentication.ClientId"],
+            clientId: appConfig.authentication.apple.clientId,
             scope: "email",
-            redirectURI: settings["AppleAuthentication.RedirectUri"],
+            redirectURI: appConfig?.authentication.apple.redirectURI,
             usePopup: true
           }}
           onSuccess={(response) => props.login(response.authorization.id_token, "apple")} 

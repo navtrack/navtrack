@@ -83,7 +83,7 @@ public class BaseProgram
         app.UseRouting();
         app.UseSentryTracing();
 
-        app.UseSignalRQueryStringAuthentication();
+        // app.UseSignalRQueryStringAuthentication();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseIdentityServer();

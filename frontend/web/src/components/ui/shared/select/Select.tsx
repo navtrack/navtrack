@@ -1,7 +1,7 @@
 import { FocusEventHandler } from "react";
 import { InputError } from "../input/InputError";
 import { ISelectOption } from "./types";
-import { classNames } from "@navtrack/shared/utils/tailwind";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
 export type SelectProps = {
   name?: string;
@@ -33,7 +33,7 @@ export function Select(props: SelectProps) {
           name={props.name}
           className={classNames(
             "w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 shadow-sm",
-            { "border-red-600": props.error },
+            c(props.error, "border-red-600"),
             props.className
           )}
           value={props.value}

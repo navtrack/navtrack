@@ -1,49 +1,18 @@
-import { useCallback, useState } from "react";
-import { useGetTokenMutation } from "../../mutations/authentication/useGetTokenMutation";
-import { useSetRecoilState } from "recoil";
-import { add } from "date-fns";
-import { authenticationAtom } from "../../../state/authentication";
+import { useCallback } from "react";
+import { useRecoilValue } from "recoil";
+import { appConfigAtom } from "../../../state/appConfig";
+import { useTokenMutation } from "./useTokenMutation";
+import { useAuthentication } from "./useAuthentication";
 
 export type LoginValues = {
   username: string;
   password: string;
 };
 
-interface UseLoginProps {
-  clientId: string;
-  onSuccess?: () => void;
-}
-
-export const useLogin = (props: UseLoginProps) => {
-  const setState = useSetRecoilState(authenticationAtom);
-  const [internalLoginError, setInternalLoginError] = useState(false);
-  const [externalLoginError, setExternalLoginError] = useState(false);
-
-  const getTokenMutation = useGetTokenMutation({
-    onSuccess: (data, variables) => {
-      setState(() => ({
-        initialized: true,
-        isAuthenticated: true,
-        email: variables.username,
-        token: {
-          accessToken: data.access_token,
-          refreshToken: data.refresh_token,
-          expiryDate: add(new Date(), {
-            seconds: data.expires_in
-          }).toISOString()
-        }
-      }));
-
-      props.onSuccess?.();
-    },
-    onError: (_, data) => {
-      if (data.grant_type === "password") {
-        setInternalLoginError(true);
-      } else {
-        setExternalLoginError(true);
-      }
-    }
-  });
+export function useLogin() {
+  const appConfig = useRecoilValue(appConfigAtom);
+  const tokenMutation = useTokenMutation();
+  const authentication = useAuthentication();
 
   const internalLogin = useCallback(
     (values: LoginValues) => {
@@ -52,37 +21,33 @@ export const useLogin = (props: UseLoginProps) => {
         username: values.username,
         password: values.password,
         scope: "offline_access IdentityServerApi openid",
-        client_id: props.clientId
+        client_id: appConfig?.authentication?.clientId!
       };
 
-      setInternalLoginError(false);
-      setExternalLoginError(false);
-      getTokenMutation.mutate(data);
+      tokenMutation.mutate(data);
     },
-    [getTokenMutation, props.clientId]
+    [appConfig?.authentication?.clientId, tokenMutation]
   );
 
   const externalLogin = useCallback(
-    (code: string, grantType: "apple" | "microsoft" | "google") => {
+    (code: string, provider: "apple" | "microsoft" | "google") => {
       const data = {
-        grant_type: grantType,
+        grant_type: provider,
         code: code,
         scope: "offline_access IdentityServerApi openid",
-        client_id: props.clientId
+        client_id: appConfig?.authentication.clientId!
       };
 
-      setInternalLoginError(false);
-      setExternalLoginError(false);
-      getTokenMutation.mutate(data);
+      tokenMutation.mutate(data);
     },
-    [getTokenMutation, props.clientId]
+    [appConfig?.authentication.clientId, tokenMutation]
   );
 
   return {
     internalLogin,
     externalLogin,
-    loading: getTokenMutation.isLoading,
-    internalLoginError,
-    externalLoginError
+    logout: () => authentication.clear(),
+    loading: tokenMutation.isLoading,
+    error: authentication.error
   };
-};
+}

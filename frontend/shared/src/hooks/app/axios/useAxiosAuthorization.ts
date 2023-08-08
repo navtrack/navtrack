@@ -1,44 +1,68 @@
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { AUTH_AXIOS_INSTANCE } from "../../../api/authAxiosInstance";
-import { authenticationAtom } from "../../../state/authentication";
-import { axiosConfigAtom } from "../../../state/axiosConfig";
+import { isAuthenticatedAtom } from "../../../state/authentication";
+import { useAccessToken } from "../authentication/useAccessToken";
+import { LogLevel, log } from "../../../utils/log";
+import { AxiosError } from "axios";
+import { useAuthentication } from "../authentication/useAuthentication";
+import { AuthenticationErrorType } from "../authentication/authentication";
 
-export const useAxiosAuthorization = () => {
-  const authentication = useRecoilValue(authenticationAtom);
-  const [axiosAuthState, setAxiosAuthState] = useRecoilState(axiosConfigAtom);
+type AxiosInterceptor = {
+  requestId: number;
+  responseId: number;
+};
+
+let interceptor: AxiosInterceptor | undefined = undefined;
+
+export function useAxiosAuthorization() {
+  const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
+  const token = useAccessToken();
+  const authentication = useAuthentication();
 
   useEffect(() => {
-    if (
-      authentication.isAuthenticated &&
-      authentication.token?.accessToken !== undefined &&
-      authentication.token?.accessToken !== axiosAuthState?.accessToken
-    ) {
-      if (axiosAuthState.accessTokenInterceptorId !== undefined) {
-        AUTH_AXIOS_INSTANCE.interceptors.request.eject(
-          axiosAuthState.accessTokenInterceptorId
-        );
+    if (isAuthenticated) {
+      if (interceptor !== undefined) {
+        AUTH_AXIOS_INSTANCE.interceptors.request.eject(interceptor.requestId);
+        AUTH_AXIOS_INSTANCE.interceptors.response.eject(interceptor.responseId);
+        log(LogLevel.DEBUG, "INTERCEPTOR REMOVED", interceptor?.requestId);
       }
 
-      const newInterceptorId = AUTH_AXIOS_INSTANCE.interceptors.request.use(
-        (config) => {
-          config.headers.Authorization = `Bearer ${authentication.token?.accessToken}`;
+      const requestInterceptorId = AUTH_AXIOS_INSTANCE.interceptors.request.use(
+        async (config) => {
+          const accessToken = await token.getAccessToken();
+
+          if (accessToken === undefined) {
+            await authentication.clear();
+          }
+
+          config.headers.Authorization = `Bearer ${accessToken}`;
 
           return config;
         }
       );
+      const responseInterceptorId =
+        AUTH_AXIOS_INSTANCE.interceptors.response.use(
+          async (response) => {
+            return response;
+          },
+          async function (error: AxiosError) {
+            if (
+              error.response?.status === 401 ||
+              error.response?.status === 400
+            ) {
+              await authentication.clear(AuthenticationErrorType.Other);
+            }
 
-      setAxiosAuthState((x) => ({
-        ...x,
-        accessTokenInterceptorId: newInterceptorId,
-        accessToken: authentication.token?.accessToken,
-        accessTokenSet: true
-      }));
+            return Promise.reject(error);
+          }
+        );
+      log(LogLevel.DEBUG, "INTERCEPTOR SET");
+
+      interceptor = {
+        requestId: requestInterceptorId,
+        responseId: responseInterceptorId
+      };
     }
-  }, [
-    authentication.isAuthenticated,
-    authentication.token?.accessToken,
-    axiosAuthState,
-    setAxiosAuthState
-  ]);
-};
+  }, [authentication, isAuthenticated, token]);
+}
