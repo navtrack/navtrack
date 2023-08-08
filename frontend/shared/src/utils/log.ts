@@ -2,7 +2,7 @@ let showDebug = false;
 
 export function log(...data: any[]) {
   if (showDebug) {
-    console.log(...data);
+    console.log(`[${new Date().toISOString()}]`, ...data);
   }
 }
 
