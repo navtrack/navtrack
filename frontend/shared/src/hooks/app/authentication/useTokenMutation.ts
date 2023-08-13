@@ -4,6 +4,8 @@ import { axiosInstance } from "../../../api/axiosInstance";
 import { AuthenticationErrorType } from "./authentication";
 import { useAuthentication } from "./useAuthentication";
 import { add } from "date-fns";
+import { useSetRecoilState } from "recoil";
+import { isLoggingInAtom } from "../../../state/authentication";
 
 type TokenRequest = {
   grant_type: string;
@@ -38,6 +40,7 @@ function getExpiryDate(expiresIn: number) {
 
 export function useTokenMutation() {
   const authentication = useAuthentication();
+  const setIsLoggingIn = useSetRecoilState(isLoggingInAtom);
 
   const query = useMutation<TokenResponse, TokenError, TokenRequest>(
     "connect/token",
@@ -51,7 +54,10 @@ export function useTokenMutation() {
         }
       }),
     {
-      onMutate: () => authentication.clearErrors(),
+      onMutate: () => {
+        setIsLoggingIn(true);
+        authentication.clearErrors();
+      },
       onSuccess: async (data) =>
         authentication.set({
           token: {
@@ -70,6 +76,9 @@ export function useTokenMutation() {
             : AuthenticationErrorType.External;
 
         return authentication.clear(error);
+      },
+      onSettled: () => {
+        setIsLoggingIn(false);
       }
     }
   );

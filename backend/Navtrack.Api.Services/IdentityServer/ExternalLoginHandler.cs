@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -15,10 +16,12 @@ namespace Navtrack.Api.Services.IdentityServer;
 public class ExternalLoginHandler : IExternalLoginHandler
 {
     private readonly IUserDataService userDataService;
+    private readonly IHostEnvironment hostEnvironment;
 
-    public ExternalLoginHandler(IUserDataService userDataService)
+    public ExternalLoginHandler(IUserDataService userDataService, IHostEnvironment hostEnvironment)
     {
         this.userDataService = userDataService;
+        this.hostEnvironment = hostEnvironment;
     }
 
     public async Task<string?> HandleToken(HandleTokenInput input)
@@ -64,7 +67,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
         return null;
     }
 
-    private static async Task<ClaimsPrincipal?> GetClaimsPrincipal(HandleTokenInput input)
+    private async Task<ClaimsPrincipal?> GetClaimsPrincipal(HandleTokenInput input)
     {
         try
         {
@@ -78,7 +81,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
             {
                 RequireAudience = true,
                 RequireExpirationTime = true,
-                ValidateAudience = true,
+                ValidateAudience = !hostEnvironment.IsDevelopment(),
                 ValidateIssuer = true,
                 ValidateLifetime = true,
                 ValidAudiences = new[] { input.ValidAudience },

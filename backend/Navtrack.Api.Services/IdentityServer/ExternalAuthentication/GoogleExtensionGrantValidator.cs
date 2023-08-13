@@ -37,23 +37,11 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
     {
         GoogleAuthenticationSettings settings = await settingService.Get<GoogleAuthenticationSettings>();
 
-
-
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
-        {
-            ClientSecrets = new ClientSecrets
-            {
-                ClientId = settings.ClientId,
-                ClientSecret = settings.ClientSecret
-            }
-        });
-        
-        TokenResponse tokenResponse =
-            await flow.ExchangeCodeForTokenAsync("", context.Request.Raw["code"], "postmessage", CancellationToken.None);
+        string idToken = await GetIdToken(context, settings);
         
         string? userId = await externalLoginHandler.HandleToken(new HandleTokenInput(settings)
         {
-            Token = tokenResponse.IdToken,
+            Token = idToken,
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
             GetUser = userDataService.GetByEmailOrGoogleId,
@@ -68,5 +56,28 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
         context.Result = !string.IsNullOrEmpty(userId)
             ? new GrantValidationResult(userId, "google", new List<Claim>())
             : new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid token.");
+    }
+
+    private async Task<string> GetIdToken(ExtensionGrantValidationContext context,
+        GoogleAuthenticationSettings settings)
+    {
+        if (context.Request.Client.ClientId == IdentityServerConfig.NavtrackMobileClientId)
+        {
+            return context.Request.Raw["code"];
+        }
+        
+        GoogleAuthorizationCodeFlow flow = new(new GoogleAuthorizationCodeFlow.Initializer
+        {
+            ClientSecrets = new ClientSecrets
+            {
+                ClientId = settings.ClientId,
+                ClientSecret = settings.ClientSecret
+            }
+        });
+        
+        TokenResponse tokenResponse =
+            await flow.ExchangeCodeForTokenAsync("", context.Request.Raw["code"], "postmessage", CancellationToken.None);
+
+        return tokenResponse.IdToken;
     }
 }

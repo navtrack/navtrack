@@ -21,3 +21,8 @@ export const isAuthenticatedAtom = atom<boolean>({
   key: "Navtrack:Authentication:IsAuthenticated",
   default: isAuthenticatedDefault()
 });
+
+export const isLoggingInAtom = atom<boolean>({
+  key: "Navtrack:Authentication:IsLoggingIn",
+  default: false
+});

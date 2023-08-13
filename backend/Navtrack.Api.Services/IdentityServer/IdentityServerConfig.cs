@@ -7,6 +7,8 @@ namespace Navtrack.Api.Services.IdentityServer;
 
 public static class IdentityServerConfig
 {
+    public static string NavtrackMobileClientId  = "navtrack.mobile";
+
     public static IEnumerable<IdentityResource> GetIdentityResources()
     {
         return new List<IdentityResource>
@@ -40,7 +42,7 @@ public static class IdentityServerConfig
             },
             new()
             {
-                ClientId = "navtrack.mobile",
+                ClientId = NavtrackMobileClientId,
                 AllowedGrantTypes =
                     new List<string> { GrantType.ResourceOwnerPassword, "google", "microsoft", "apple" },
                 AllowedScopes =
