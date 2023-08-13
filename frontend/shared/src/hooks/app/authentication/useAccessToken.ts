@@ -17,6 +17,7 @@ type RefreshLock = {
 };
 
 const refreshLockKey = "Navtrack:Authentication:RefreshLock";
+let localRefreshLock: RefreshLock | undefined = undefined;
 
 async function clearRefreshLock(force?: boolean) {
   const refreshLock = await getFromAsyncStorage<RefreshLock>(refreshLockKey);
@@ -27,6 +28,7 @@ async function clearRefreshLock(force?: boolean) {
       isAfter(new Date(), add(parseISO(refreshLock.date), { seconds: 2 })))
   ) {
     await removeFromAsyncStorage(refreshLockKey);
+    localRefreshLock = undefined;
   }
 }
 
@@ -52,13 +54,15 @@ export function useAccessToken() {
     if (
       localStorageAuthentication?.token !== undefined &&
       tokenIsExpired(localStorageAuthentication.token.expiryDate) &&
-      !(await getFromAsyncStorage<RefreshLock>(refreshLockKey))
+      !(await getFromAsyncStorage<RefreshLock>(refreshLockKey)) &&
+      !localRefreshLock
     ) {
       try {
         log("TOKEN", "lock");
-        await setInAsyncStorage<RefreshLock>(refreshLockKey, {
+        localRefreshLock = {
           date: new Date().toISOString()
-        });
+        };
+        await setInAsyncStorage<RefreshLock>(refreshLockKey, localRefreshLock);
 
         const data = {
           grant_type: "refresh_token",
