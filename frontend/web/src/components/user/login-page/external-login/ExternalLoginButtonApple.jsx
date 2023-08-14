@@ -7,15 +7,18 @@ import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 
 export function ExternalLoginButtonApple(props) {
   const appConfig = useRecoilValue(appConfigAtom);
+  console.log(appConfig.authentication.apple)
 
   return (
+
+
     <>
       {appConfig?.authentication?.apple?.clientId && (
         <AppleSignin
           authOptions={{
             clientId: appConfig.authentication.apple.clientId,
             scope: "email",
-            redirectURI: appConfig?.authentication.apple.redirectURI,
+            redirectURI: appConfig?.authentication.apple.redirectUri,
             usePopup: true
           }}
           onSuccess={(response) => props.login(response.authorization.id_token, "apple")} 
