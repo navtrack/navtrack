@@ -58,7 +58,7 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
             : new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid token.");
     }
 
-    private async Task<string> GetIdToken(ExtensionGrantValidationContext context,
+    private static async Task<string> GetIdToken(ExtensionGrantValidationContext context,
         GoogleAuthenticationSettings settings)
     {
         if (context.Request.Client.ClientId == IdentityServerConfig.NavtrackMobileClientId)

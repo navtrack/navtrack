@@ -7,11 +7,8 @@ import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 
 export function ExternalLoginButtonApple(props) {
   const appConfig = useRecoilValue(appConfigAtom);
-  console.log(appConfig.authentication.apple)
 
   return (
-
-
     <>
       {appConfig?.authentication?.apple?.clientId && (
         <AppleSignin
