@@ -51,6 +51,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
                     {
                         await input.SetId(userDocument.Id, id.Value);
                     }
+
                     if (!isPrivateEmailValue && userDocument.Email != email.Value)
                     {
                         await userDataService.Update(userDocument.Id, new UpdateUser
@@ -71,7 +72,8 @@ public class ExternalLoginHandler : IExternalLoginHandler
     {
         try
         {
-            ConfigurationManager<OpenIdConnectConfiguration> openidConfigManaged = new(input.MetadataAddress,
+            ConfigurationManager<OpenIdConnectConfiguration> openidConfigManaged = new(
+                input.AuthenticationSettings.MetadataAddress,
                 new OpenIdConnectConfigurationRetriever(),
                 new HttpDocumentRetriever());
 
@@ -84,8 +86,8 @@ public class ExternalLoginHandler : IExternalLoginHandler
                 ValidateAudience = !hostEnvironment.IsDevelopment(),
                 ValidateIssuer = true,
                 ValidateLifetime = true,
-                ValidAudiences = new[] { input.ValidAudience },
-                ValidIssuers = new[] { input.ValidIssuer },
+                ValidAudiences = input.AuthenticationSettings.ValidAudiences,
+                ValidIssuers = input.AuthenticationSettings.ValidIssuers,
                 IssuerSigningKeys = config.SigningKeys
             };
 
