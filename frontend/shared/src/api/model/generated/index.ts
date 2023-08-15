@@ -24,8 +24,6 @@ export * from './forgotPasswordRequest';
 export * from './getAssetsAssetIdLocationsParams';
 export * from './getAssetsAssetIdReportsTimeDistanceParams';
 export * from './getAssetsAssetIdTripsParams';
-export * from './getEnvironment200';
-export * from './getSettings200';
 export * from './locationListModel';
 export * from './locationModel';
 export * from './problemDetails';

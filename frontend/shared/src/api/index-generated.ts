@@ -34,9 +34,7 @@ import type {
   AssetUserListModel,
   AddUserToAssetModel,
   DeviceTypesModel,
-  GetEnvironment200,
   ProtocolsModel,
-  GetSettings200,
   UserModel,
   RegisterAccountRequest,
   UpdateUserRequest,
@@ -771,53 +769,6 @@ export const useGetDevicesTypes = <TData = Awaited<ReturnType<typeof getDevicesT
 }
 
 
-export const getEnvironment = (
-    
- signal?: AbortSignal
-) => {
-      return authAxiosInstance<GetEnvironment200>(
-      {url: `/environment`, method: 'get', signal
-    },
-      );
-    }
-  
-
-export const getGetEnvironmentQueryKey = () => [`/environment`] as const;
-  
-
-    
-export const getGetEnvironmentQueryOptions = <TData = Awaited<ReturnType<typeof getEnvironment>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEnvironment>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getEnvironment>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetEnvironmentQueryKey();
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEnvironment>>> = ({ signal }) => getEnvironment(signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetEnvironmentQueryResult = NonNullable<Awaited<ReturnType<typeof getEnvironment>>>
-export type GetEnvironmentQueryError = unknown
-
-export const useGetEnvironment = <TData = Awaited<ReturnType<typeof getEnvironment>>, TError = unknown>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEnvironment>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetEnvironmentQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-
 export const getHealth = (
     
  signal?: AbortSignal
@@ -903,53 +854,6 @@ export const useGetProtocols = <TData = Awaited<ReturnType<typeof getProtocols>>
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getGetProtocolsQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-
-export const getSettings = (
-    
- signal?: AbortSignal
-) => {
-      return authAxiosInstance<GetSettings200>(
-      {url: `/settings`, method: 'get', signal
-    },
-      );
-    }
-  
-
-export const getGetSettingsQueryKey = () => [`/settings`] as const;
-  
-
-    
-export const getGetSettingsQueryOptions = <TData = Awaited<ReturnType<typeof getSettings>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSettings>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getSettings>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetSettingsQueryKey();
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSettings>>> = ({ signal }) => getSettings(signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getSettings>>>
-export type GetSettingsQueryError = unknown
-
-export const useGetSettings = <TData = Awaited<ReturnType<typeof getSettings>>, TError = unknown>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSettings>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetSettingsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
