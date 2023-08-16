@@ -83,5 +83,5 @@ export function useAccessToken() {
     return localStorageAuthentication?.token?.accessToken;
   }, [appConfig?.authentication?.clientId, tokenMutation]);
 
-  return { getAccessToken };
+  return { getAccessToken, isLoading: tokenMutation.isLoading };
 }
