@@ -7,6 +7,7 @@ import { AxiosConfigurator } from "@navtrack/shared/components/AxiosConfigurator
 import { ConfigProvider } from "@navtrack/shared/components/ConfigProvider";
 import { ReactNode, Suspense } from "react";
 import { BrowserRouterProvider } from "./BrowserRouterProvider";
+import { Authentication } from "@navtrack/shared/components/Authentication";
 
 const queryClient = new QueryClient();
 
@@ -26,10 +27,12 @@ export function BaseApp(props: BaseAppProps) {
             <SentryProvider>
               <AxiosConfigurator>
                 <IntlProvider locale="en" messages={props.translations}>
-                  <BrowserRouterProvider
-                    privateRoutes={props.privateRoutes}
-                    publicRoutes={props.publicRoutes}
-                  />
+                  <Authentication>
+                    <BrowserRouterProvider
+                      privateRoutes={props.privateRoutes}
+                      publicRoutes={props.publicRoutes}
+                    />
+                  </Authentication>
                 </IntlProvider>
               </AxiosConfigurator>
             </SentryProvider>
