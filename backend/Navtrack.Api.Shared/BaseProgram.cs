@@ -78,6 +78,8 @@ public class BaseProgram<T>
         builder.Services.AddLogging();
 
         builder.Services.AddOptions<MongoOptions>().Bind(builder.Configuration.GetSection(nameof(MongoOptions)));
+        
+        baseProgramOptions?.ConfigureServices?.Invoke(builder);
 
         WebApplication app = builder.Build();
 

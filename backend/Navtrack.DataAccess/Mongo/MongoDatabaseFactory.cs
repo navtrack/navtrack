@@ -6,12 +6,10 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Mongo;
 
 [Service(typeof(IMongoDatabaseFactory))]
-// ReSharper disable once InconsistentNaming
 public class MongoDatabaseFactory : IMongoDatabaseFactory
 {
     private readonly IOptions<MongoOptions> mongoOptions;
 
-    // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private IMongoClient mongoClient;
     private IMongoDatabase mongoDatabase;
 
