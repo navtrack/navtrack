@@ -9,24 +9,24 @@ using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
 using Navtrack.Api.Services.Mappers.Users;
-using Navtrack.Common.Settings;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Settings;
 
 namespace Navtrack.Api.Services.IdentityServer.ExternalAuthentication;
 
 [Service(typeof(IExtensionGrantValidator))]
 public class GoogleExtensionGrantValidator : IExtensionGrantValidator
 {
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
     private readonly IExternalLoginHandler externalLoginHandler;
     private readonly ISettingService settingService;
 
-    public GoogleExtensionGrantValidator(IUserDataService userDataService, IExternalLoginHandler externalLoginHandler,
+    public GoogleExtensionGrantValidator(IUserRepository userRepository, IExternalLoginHandler externalLoginHandler,
         ISettingService settingService)
     {
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
         this.externalLoginHandler = externalLoginHandler;
         this.settingService = settingService;
     }
@@ -44,10 +44,10 @@ public class GoogleExtensionGrantValidator : IExtensionGrantValidator
             Token = idToken,
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userDataService.GetByEmailOrGoogleId,
+            GetUser = userRepository.GetByEmailOrGoogleId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, googleId: id),
             ExternalId = user => user.GoogleId,
-            SetId = (userId, id) => userDataService.Update(userId, new UpdateUser
+            SetId = (userId, id) => userRepository.Update(userId, new UpdateUser
             {
                 GoogleId = id
             })

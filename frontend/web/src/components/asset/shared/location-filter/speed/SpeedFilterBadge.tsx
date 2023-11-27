@@ -2,8 +2,8 @@ import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useMemo } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { Badge } from "../../../../ui/shared/badge/Badge";
-import { IconWithText } from "../../../../ui/shared/icon/IconWithText";
+import { FilterBadge } from "../FilterBadge";
+import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { speedFilterAtom } from "../state";
 import { DEFAULT_MAX_SPEED, DEFAULT_MIN_SPEED } from "../types";
 
@@ -39,12 +39,12 @@ export function SpeedFilterBadge(props: ISpeedFilterBadge) {
   return (
     <>
       {state.enabled && (
-        <Badge
+        <FilterBadge
           order={state.order}
           onClick={() => setState((x) => ({ ...x, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faTachometerAlt}>{text}</IconWithText>
-        </Badge>
+        </FilterBadge>
       )}
     </>
   );

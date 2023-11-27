@@ -1,16 +1,13 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Navtrack.DataAccess.Model.Attributes;
 using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Users;
 
 [Collection("password_resets")]
-public class PasswordResetDocument
+public class PasswordResetDocument : BaseDocument
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
-    
     [BsonElement("email")]
     public string Email { get; set; }
     

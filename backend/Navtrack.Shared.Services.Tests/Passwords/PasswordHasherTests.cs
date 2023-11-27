@@ -1,7 +1,7 @@
-using Navtrack.Common.Passwords;
+using Navtrack.Shared.Services.Passwords;
 using NUnit.Framework;
 
-namespace Navtrack.Common.Tests.Passwords;
+namespace Navtrack.Shared.Services.Tests.Passwords;
 
 public class PasswordHasherTests
 {

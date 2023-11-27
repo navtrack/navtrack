@@ -2,15 +2,15 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../../ui/shared/button/Button";
-import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
-import { Modal } from "../../../ui/shared/modal/Modal";
-import { ModalActions } from "../../../ui/shared/modal/ModalActions";
-import { ModalBody } from "../../../ui/shared/modal/ModalBody";
-import { ModalContainer } from "../../../ui/shared/modal/ModalContainer";
-import { ModalContent } from "../../../ui/shared/modal/ModalContent";
-import { ModalIcon } from "../../../ui/shared/modal/ModalIcon";
-import { FormikSelectInput } from "../../../ui/shared/select/FormikSelectInput";
+import { Button } from "../../../ui/button-old/Button";
+import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
+import { Modal } from "../../../ui/modal/Modal";
+import { ModalActions } from "../../../ui/modal/ModalActions";
+import { ModalBody } from "../../../ui/modal/ModalBody";
+import { ModalContainer } from "../../../ui/modal/ModalContainer";
+import { ModalContent } from "../../../ui/modal/ModalContent";
+import { ModalIcon } from "../../../ui/modal/ModalIcon";
+import { FormikCustomSelect } from "../../../ui/form/select/FormikCustomSelect";
 import { AddUserToAssetFormValues } from "./types";
 import { useAddUserToAsset } from "./useAddUserToAsset";
 import { AssetRoleType } from "@navtrack/shared/api/model/custom/AssetRoleType";
@@ -63,14 +63,14 @@ export function AddUserToAssetModal(props: IAddUserToAssetModal) {
                     <FormikTextInput
                       name="email"
                       label="generic.email"
-                      autoCompleteOff
+                      autoComplete="off"
                     />
-                    <FormikSelectInput
+                    <FormikCustomSelect
                       name="role"
                       label="generic.role"
                       placeholder="Select a role"
-                      items={roles.map((x) => ({
-                        id: x.value,
+                      options={roles.map((x) => ({
+                        value: x.value,
                         label: x.label
                       }))}
                     />

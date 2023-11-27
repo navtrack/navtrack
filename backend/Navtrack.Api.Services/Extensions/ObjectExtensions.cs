@@ -52,8 +52,15 @@ public static class ObjectExtensions
     {
         if (boolean)
         {
-            throw new ApiException(apiError, httpStatusCode);
-            
+            throw new ApiException(apiError, httpStatusCode); 
+        }
+    }
+
+    public static void ThrowApiExceptionIfNull(this object @object, ApiError apiError)
+    {
+        if (@object == null)
+        {
+            throw new ApiException(apiError);
         }
     }
 }

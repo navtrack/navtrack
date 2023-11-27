@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.Crc;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Satellite;
 

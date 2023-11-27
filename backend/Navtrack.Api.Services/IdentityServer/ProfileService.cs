@@ -3,28 +3,27 @@ using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(IProfileService))]
 public class ProfileService : IProfileService
 {
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
 
-    public ProfileService(IUserDataService userDataService)
+    public ProfileService(IUserRepository userRepository)
     {
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
     }
 
     public async Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
         string? userId = context.Subject.GetId();
             
-        UserDocument user = await userDataService.GetByObjectId(ObjectId.Parse(userId));
+        UserDocument user = await userRepository.GetById(userId);
 
         context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email));
     }

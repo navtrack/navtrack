@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { IconWithText } from "../../../ui/shared/icon/IconWithText";
+import { IconWithText } from "../../../ui/icon/IconWithText";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface ILocationFilterAddButtonMenuItem {

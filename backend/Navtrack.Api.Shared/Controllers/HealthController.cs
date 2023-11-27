@@ -1,19 +1,19 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Navtrack.Api.Model;
 
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
-[Route("health")]
 public class HealthController : ControllerBase
 {
-    [HttpGet]
+    [HttpGet(ApiPaths.Health)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Get()
     {
         Version? version = GetType().Assembly.GetName().Version;
         
-        return Ok($"Choco says hi! :) v{version}");
+        return Ok($"Choco and Milk says hi! :) v{version}");
     }
 }

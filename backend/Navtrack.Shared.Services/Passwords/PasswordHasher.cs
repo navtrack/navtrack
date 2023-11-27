@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
-namespace Navtrack.Common.Passwords;
+namespace Navtrack.Shared.Services.Passwords;
 
 [Service(typeof(IPasswordHasher))]
 public class PasswordHasher : IPasswordHasher

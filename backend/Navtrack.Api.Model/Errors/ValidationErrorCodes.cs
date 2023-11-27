@@ -12,4 +12,5 @@ public static class ValidationErrorCodes
     public static readonly ApiError SerialNumberAlreadyUsed = new ("200009", "The serial number is already used by another device.");
     public static readonly ApiError DeviceIsActive = new ("200010", "A device that is active cannot be deleted.");
     public static readonly ApiError DeviceHasLocations = new ("200011", "A device that has locations cannot be deleted.");
+    public static readonly ApiError VatIdInvalid = new ("200012", "The Vat ID is invalid.");
 }

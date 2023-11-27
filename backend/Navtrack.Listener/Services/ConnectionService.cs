@@ -7,8 +7,8 @@ using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Mongo;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Models;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Services;
 

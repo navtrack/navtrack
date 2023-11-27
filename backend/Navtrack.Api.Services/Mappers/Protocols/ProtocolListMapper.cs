@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Protocols;
 using Navtrack.DataAccess.Model.Protocols;
 
@@ -7,9 +8,9 @@ namespace Navtrack.Api.Services.Mappers.Protocols;
 
 public static class ProtocolListMapper
 {
-    public static ProtocolsModel Map(IEnumerable<Protocol> protocols)
+    public static ListModel<ProtocolModel> Map(IEnumerable<Protocol> protocols)
     {
-        ProtocolsModel listModel = new()
+        ListModel<ProtocolModel> listModel = new()
         {
             Items = protocols.Select(ProtocolModelMapper.Map).ToList()
         };

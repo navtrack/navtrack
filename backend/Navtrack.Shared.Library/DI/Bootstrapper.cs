@@ -5,7 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using static System.String;
 
-namespace Navtrack.Library.DI;
+namespace Navtrack.Shared.Library.DI;
 
 public static class Bootstrapper
 {

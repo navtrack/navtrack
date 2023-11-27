@@ -2,12 +2,11 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { getGetAssetsAssetIdDevicesQueryKey } from "@navtrack/shared/api/index-generated";
 import { DeviceModel } from "@navtrack/shared/api/model/generated";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteDeviceMutation";
-
 import { FormattedMessage, useIntl } from "react-intl";
-import { useQueryClient } from "react-query";
-import { IconButton } from "../../../ui/shared/button/IconButton";
-import { useNotification } from "../../../ui/shared/notification/useNotification";
-import { Table, ITableColumn } from "../../../ui/shared/table/Table";
+import { IconButton } from "../../../ui/button-old/IconButton";
+import { useNotification } from "../../../ui/notification/useNotification";
+import { Table, ITableColumn } from "../../../ui/table/Table";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface IDevicesTable {
   assetId: string;

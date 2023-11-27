@@ -11,6 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj" />
+        <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj" />
     </ItemGroup>
 </Project>

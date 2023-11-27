@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Roles;
 

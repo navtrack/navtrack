@@ -2,7 +2,7 @@ import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
-import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../ui/loading-indicator/LoadingIndicator";
 import { useTrips } from "./useTrips";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 
@@ -47,7 +47,7 @@ export function TripsTable() {
               {trips.data?.items.length ? (
                 trips.data?.items.map((trip, index) => (
                   <div
-                    key={trip.startLocation.id}
+                    key={trip.startLocation?.id}
                     className={classNames(
                       "flex grid cursor-pointer grid-cols-12 flex-row",
                       trips.selectedTripIndex === index
@@ -59,10 +59,10 @@ export function TripsTable() {
                     ref={(el) => (trips.tripElements.current[index] = el)}
                     onClick={() => trips.setTripIndex(index)}>
                     <div className="col-span-2 py-1 pl-2">
-                      {showDateTime(trip.startLocation.dateTime)}
+                      {showDateTime(trip.startLocation?.dateTime)}
                     </div>
                     <div className="col-span-2 py-1 pl-2">
-                      {showDateTime(trip.endLocation.dateTime)}
+                      {showDateTime(trip.endLocation?.dateTime)}
                     </div>
                     <div className="col-span-2 py-1 pl-2">
                       {showDuration(trip.duration)}

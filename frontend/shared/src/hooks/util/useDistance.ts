@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useCurrentUnits } from "./useCurrentUnits";
-import { UnitsType } from "../../api/model/custom/UnitsType";
+import { UnitsType } from "../../api/model/generated";
 
 function convertMetersToKm(distance: number) {
   return Math.round((distance / 1000) * 100) / 100;

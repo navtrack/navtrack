@@ -5,8 +5,8 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Models;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Server;
 

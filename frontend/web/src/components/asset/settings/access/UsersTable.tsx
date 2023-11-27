@@ -1,8 +1,8 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { AssetUserModel } from "@navtrack/shared/api/model/generated";
 import { useState } from "react";
-import { IconButton } from "../../../ui/shared/button/IconButton";
-import { Table, ITableColumn } from "../../../ui/shared/table/Table";
+import { IconButton } from "../../../ui/button-old/IconButton";
+import { Table, ITableColumn } from "../../../ui/table/Table";
 import { DeleteUserFromAssetModal } from "./DeleteUserFromAssetModal";
 
 interface IUsersTable {

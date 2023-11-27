@@ -1,4 +1,4 @@
-namespace Navtrack.Common.Email.Emails;
+namespace Navtrack.Shared.Services.Email.Emails;
 
 public interface IEmail
 {

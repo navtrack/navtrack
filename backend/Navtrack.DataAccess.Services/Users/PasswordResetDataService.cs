@@ -5,18 +5,15 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.DataAccess.Services.Users;
 
-[Service(typeof(IPasswordResetDataService))]
-public class PasswordResetDataService : IPasswordResetDataService
+[Service(typeof(IPasswordResetRepository))]
+public class PasswordResetRepository : GenericRepository<PasswordResetDocument>, IPasswordResetRepository
 {
-    private readonly IRepository repository;
-
-    public PasswordResetDataService(IRepository repository)
+    public PasswordResetRepository(IRepository repository) : base(repository)
     {
-        this.repository = repository;
     }
 
     public Task<int> GetCountOfPasswordResets(string ipAddress, DateTime fromDate)
@@ -24,11 +21,6 @@ public class PasswordResetDataService : IPasswordResetDataService
         return repository.GetQueryable<PasswordResetDocument>()
             .Where(x => x.IpAddress == ipAddress && x.Created.Date > fromDate)
             .CountAsync();
-    }
-
-    public Task Add(PasswordResetDocument document)
-    {
-        return repository.GetCollection<PasswordResetDocument>().InsertOneAsync(document);
     }
 
     public async Task<PasswordResetDocument?> GetLatestFromHash(string hash)

@@ -1,4 +1,4 @@
-namespace Navtrack.Common.Passwords;
+namespace Navtrack.Shared.Services.Passwords;
 
 public interface IPasswordHasher
 {

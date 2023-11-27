@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Services;
 

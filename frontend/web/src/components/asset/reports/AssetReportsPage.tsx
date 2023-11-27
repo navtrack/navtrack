@@ -1,3 +1,7 @@
+import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
+
 export function AssetReportsPage() {
-  return <>reports page</>;
+  return (
+    <AuthenticatedLayoutTwoColumns>reports page</AuthenticatedLayoutTwoColumns>
+  );
 }

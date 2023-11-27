@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using IdentityServer4.Models;
-using Navtrack.Core.Services.Util;
+using Navtrack.Api.Services.Util;
 using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers.Users;

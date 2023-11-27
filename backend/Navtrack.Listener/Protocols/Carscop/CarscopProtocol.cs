@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Protocols.TkStar;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Carscop;
 

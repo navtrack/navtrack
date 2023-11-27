@@ -6,7 +6,7 @@ using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.IdentityServer;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.User;
 
@@ -14,13 +14,13 @@ namespace Navtrack.Api.Services.User;
 public class CurrentUserAccessor : ICurrentUserAccessor
 {
     private readonly IHttpContextAccessor httpContextAccessor;
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
     private UserDocument? currentUser;
 
-    public CurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IUserDataService userDataService)
+    public CurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
     {
         this.httpContextAccessor = httpContextAccessor;
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
     }
 
     public ObjectId GetId()
@@ -43,7 +43,7 @@ public class CurrentUserAccessor : ICurrentUserAccessor
         {
             ObjectId id = GetId();
 
-            currentUser = await userDataService.GetByObjectId(id);
+            currentUser = await userRepository.GetById(id);
         }
 
         return currentUser;

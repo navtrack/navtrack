@@ -1,10 +1,10 @@
 using System;
 using System.Text.RegularExpressions;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.StarLink;
 

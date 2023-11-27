@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Navtrack.Common.Email.Emails;
+using Navtrack.Shared.Services.Email.Emails;
 
-namespace Navtrack.Common.Email;
+namespace Navtrack.Shared.Services.Email;
 
 public interface IEmailService
 {

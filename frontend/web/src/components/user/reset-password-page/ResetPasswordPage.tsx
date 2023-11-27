@@ -1,17 +1,17 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/shared/button/Button";
-import { Card } from "../../ui/shared/card/Card";
+import { Button } from "../../ui/button-old/Button";
+import { Card } from "../../ui/card/Card";
 import { InitialResetPasswordFormValues } from "./ResetPasswordFormValues";
 import { useResetPassword } from "./useResetPassword";
 import { useResetPasswordFormValidationSchema } from "./useResetPasswordFormValidationSchema";
-import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
-import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
-import { Icon } from "../../ui/shared/icon/Icon";
-import Paths from "../../../app/Paths";
+import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
+import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
+import { Icon } from "../../ui/icon/Icon";
+import { Paths } from "../../../app/Paths";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "../../ui/shared/link/Link";
-import { ErrorMessage } from "@navtrack/shared/components/ErrorMessage";
+import { Link } from "../../ui/link/Link";
+import { ErrorMessage } from "@navtrack/shared/components/ui/ErrorMessage";
 
 export const ResetPasswordPage = () => {
   const validationSchema = useResetPasswordFormValidationSchema();
@@ -38,7 +38,7 @@ export const ResetPasswordPage = () => {
                     <FormattedMessage id="reset-password.success" />
                   </div>
                   <div className="mt-4 text-center text-sm font-medium">
-                    <Link to={Paths.Home} text="reset-password.go-home" />
+                    <Link to={Paths.Home} label="reset-password.go-home" />
                   </div>
                 </>
               ) : status?.code ? (
@@ -49,10 +49,10 @@ export const ResetPasswordPage = () => {
                   <div className="mt-4 text-center text-sm font-medium">
                     <Link
                       to={Paths.ForgotPassword}
-                      text="reset-password.forgot"
+                      label="reset-password.forgot"
                     />
                     <span className="mx-2">•</span>
-                    <Link to={Paths.Home} text="reset-password.go-home" />
+                    <Link to={Paths.Home} label="reset-password.go-home" />
                   </div>
                 </>
               ) : (
@@ -94,7 +94,7 @@ export const ResetPasswordPage = () => {
                     </div>
                   </Form>
                   <div className="mt-4 text-center text-sm font-medium">
-                    <Link to="/login" text="reset-password.existing.action" />
+                    <Link to="/login" label="reset-password.existing.action" />
                   </div>
                 </>
               )}

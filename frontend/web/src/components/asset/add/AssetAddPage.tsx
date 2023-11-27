@@ -1,11 +1,10 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button } from "../../ui/shared/button/Button";
-import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
-import { FormikSelectInput } from "../../ui/shared/select/FormikSelectInput";
-import { useHistory } from "react-router-dom";
+import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
+import { FormikCustomSelect } from "../../ui/form/select/FormikCustomSelect";
+import { generatePath, useNavigate } from "react-router-dom";
 import { DeviceConfiguration } from "./DeviceConfiguration";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
 import {
   AddAssetFormValues,
@@ -13,15 +12,25 @@ import {
 } from "@navtrack/shared/hooks/assets/add-asset/AddAssetFormValues";
 import { useAddAssetValidationSchema } from "@navtrack/shared/hooks/assets/add-asset/useAddAssetValidationSchema";
 import { useAddAsset } from "@navtrack/shared/hooks/assets/add-asset/useAddAsset";
-import { useScrollToAsset } from "../../ui/layouts/admin/useScrollToAsset";
-import { useNotification } from "../../ui/shared/notification/useNotification";
+import { useScrollToAsset } from "../../ui/layouts/authenticated/useScrollToAsset";
+import { useNotification } from "../../ui/notification/useNotification";
 import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
 import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
+import { Card } from "../../ui/card/Card";
+import { Paths } from "../../../app/Paths";
+import { Heading } from "../../ui/heading/Heading";
+import { CardHeader } from "../../ui/card/CardHeader";
+import { CardBody } from "../../ui/card/CardBody";
+import { CardFooter } from "../../ui/card/CardFooter";
+import { NewButton } from "../../ui/button/NewButton";
+import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
+import { SlotContext } from "../../../app/SlotContext";
 
 export function AssetAddPage() {
+  const slot = useContext(SlotContext);
   const { deviceTypes } = useDeviceTypes();
   const intl = useIntl();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { showNotification } = useNotification();
   const assetsQuery = useGetAssetsQuery();
   const { setScrollToAsset } = useScrollToAsset();
@@ -34,7 +43,7 @@ export function AssetAddPage() {
       assetsQuery.refetch().then(() => {
         setScrollToAsset(asset.id);
       });
-      history.push(`/assets/${asset.id}/live`);
+      navigate(generatePath(Paths.AssetsLive, { id: asset.id }));
     }
   });
   const validationSchema = useAddAssetValidationSchema();
@@ -42,36 +51,36 @@ export function AssetAddPage() {
     useState<DeviceTypeModel>();
 
   return (
-    <div>
-      <Formik<AddAssetFormValues>
-        initialValues={DefaultAddAssetFormValues}
-        validationSchema={validationSchema}
-        enableReinitialize
-        onSubmit={(values, formikHelpers) =>
-          addAsset.handleSubmit(values, formikHelpers)
-        }>
-        {() => (
-          <Form>
-            <div className="overflow-hidden rounded-lg shadow">
-              <div className="bg-white p-6 px-4 py-5">
-                <div>
-                  <h2 className="text-lg font-medium leading-6 text-gray-900">
-                    <FormattedMessage id="assets.add.title" />
-                  </h2>
-                </div>
-                <div className="mt-6 grid grid-cols-6 gap-6">
+    <AuthenticatedLayoutTwoColumns>
+      <Card>
+        <Formik<AddAssetFormValues>
+          initialValues={DefaultAddAssetFormValues}
+          validationSchema={validationSchema}
+          enableReinitialize
+          onSubmit={(values, formikHelpers) =>
+            addAsset.handleSubmit(values, formikHelpers)
+          }>
+          {() => (
+            <Form>
+              <CardHeader>
+                <Heading type="h2">
+                  <FormattedMessage id="assets.add.title" />
+                </Heading>
+              </CardHeader>
+              <CardBody>
+                <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-3 grid gap-6">
                     <FormikTextInput
                       name="name"
                       label="generic.name"
                       placeholder="assets.add.name.placeholder"
                     />
-                    <FormikSelectInput
+                    <FormikCustomSelect
                       name="deviceTypeId"
                       label="generic.device-type"
                       placeholder="Select a device type"
-                      items={deviceTypes.map((x) => ({
-                        id: x.id,
+                      options={deviceTypes.map((x) => ({
+                        value: x.id,
                         label: x.displayName
                       }))}
                       onChange={(value) => {
@@ -90,20 +99,17 @@ export function AssetAddPage() {
                     <DeviceConfiguration deviceType={selectedDeviceType} />
                   </div>
                 </div>
-              </div>
-              <div className="bg-gray-50 px-6 py-3 text-right">
-                <Button
-                  color="primary"
-                  type="submit"
-                  loading={addAsset.isLoading}
-                  size="lg">
+              </CardBody>
+              {slot?.assetAddFooterBlock}
+              <CardFooter className="text-right">
+                <NewButton type="submit" loading={addAsset.isLoading} size="lg">
                   <FormattedMessage id="generic.save" />
-                </Button>
-              </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
+                </NewButton>
+              </CardFooter>
+            </Form>
+          )}
+        </Formik>
+      </Card>
+    </AuthenticatedLayoutTwoColumns>
   );
 }

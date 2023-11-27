@@ -6,8 +6,8 @@ using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using Microsoft.IdentityModel.Tokens;
 using Navtrack.Api.Services.IdentityServer.Model;
-using Navtrack.Common.Settings;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Settings;
 
 namespace Navtrack.Api.Services.IdentityServer;
 

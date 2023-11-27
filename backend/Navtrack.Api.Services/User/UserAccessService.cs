@@ -7,14 +7,14 @@ using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers.Users;
-using Navtrack.Common.Email;
-using Navtrack.Common.Email.Emails;
-using Navtrack.Common.Passwords;
-using Navtrack.Common.Settings;
-using Navtrack.Common.Settings.Settings;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Email;
+using Navtrack.Shared.Services.Email.Emails;
+using Navtrack.Shared.Services.Passwords;
+using Navtrack.Shared.Services.Settings;
+using Navtrack.Shared.Services.Settings.Settings;
 
 namespace Navtrack.Api.Services.User;
 
@@ -26,57 +26,57 @@ public class UserAccessService : IUserAccessService
     private readonly IHttpContextAccessor httpContextAccessor;
     private readonly IEmailService emailService;
     private readonly ISettingService settingService;
-    private readonly IUserDataService userDataService;
-    private readonly IPasswordResetDataService passwordResetDataService;
+    private readonly IUserRepository userRepository;
+    private readonly IPasswordResetRepository passwordResetRepository;
 
     public UserAccessService(IPasswordHasher passwordHasher, ICurrentUserAccessor currentUserAccessor,
         IHttpContextAccessor httpContextAccessor, IEmailService emailService, ISettingService settingService,
-        IUserDataService userDataService, IPasswordResetDataService passwordResetDataService)
+        IUserRepository userRepository, IPasswordResetRepository passwordResetRepository)
     {
         this.passwordHasher = passwordHasher;
         this.currentUserAccessor = currentUserAccessor;
         this.httpContextAccessor = httpContextAccessor;
         this.emailService = emailService;
         this.settingService = settingService;
-        this.userDataService = userDataService;
-        this.passwordResetDataService = passwordResetDataService;
+        this.userRepository = userRepository;
+        this.passwordResetRepository = passwordResetRepository;
     }
 
-    public async Task ForgotPassword(ForgotPasswordRequest model)
+    public async Task ForgotPassword(ForgotPasswordModel model)
     {
         string? ipAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
 
         ipAddress.ThrowApiExceptionIfNullOrEmpty(ApiErrorCodes.InvalidIpAddress);
 
         int passwordResetsIn24H =
-            await passwordResetDataService.GetCountOfPasswordResets(ipAddress!, DateTime.UtcNow.AddDays(-1));
+            await passwordResetRepository.GetCountOfPasswordResets(ipAddress!, DateTime.UtcNow.AddDays(-1));
 
         if (passwordResetsIn24H >= ApiConstants.MaxPasswordResetIn24Hours)
         {
             throw new ApiException(ApiErrorCodes.MaxPasswordResetsExceeded, HttpStatusCode.TooManyRequests);
         }
 
-        UserDocument? userDocument = await userDataService.GetByEmail(model.Email);
+        UserDocument? userDocument = await userRepository.GetByEmail(model.Email);
 
         if (userDocument == null)
         {
             throw new ApiException(ApiErrorCodes.Validation)
-                .AddValidationError(nameof(ForgotPasswordRequest.Email), ValidationErrorCodes.EmailDoesNotExist);
+                .AddValidationError(nameof(ForgotPasswordModel.Email), ValidationErrorCodes.EmailDoesNotExist);
         }
 
-        await passwordResetDataService.MarkAsInvalidByUserId(userDocument.Id);
+        await passwordResetRepository.MarkAsInvalidByUserId(userDocument.Id);
         
         PasswordResetDocument document =
             PasswordResetMapper.Map(model.Email, userDocument.Id, ipAddress!);
 
-        await passwordResetDataService.Add(document);
+        await passwordResetRepository.Add(document);
 
         string url = await GetResetPasswordUrl(document);
 
         await emailService.Send(document.Email, new ResetPasswordEmail(url, 3));
     }
 
-    public async Task ChangePassword(ChangePasswordRequest model)
+    public async Task ChangePassword(ChangePasswordModel model)
     {
         UserDocument currentUser = await currentUserAccessor.Get();
 
@@ -96,7 +96,7 @@ public class UserAccessService : IUserAccessService
 
         (string hash, string salt) = passwordHasher.Hash(model.Password);
 
-        await userDataService.Update(currentUser.Id, new UpdateUser
+        await userRepository.Update(currentUser.Id, new UpdateUser
         {
             Password = new PasswordElement
             {
@@ -106,7 +106,7 @@ public class UserAccessService : IUserAccessService
         });
     }
 
-    public async Task ResetPassword(ResetPasswordRequest model)
+    public async Task ResetPassword(ResetPasswordModel model)
     {
         ApiException apiException = new();
 
@@ -114,7 +114,7 @@ public class UserAccessService : IUserAccessService
 
         apiException.ThrowIfInvalid();
 
-        PasswordResetDocument? passwordReset = await passwordResetDataService.GetLatestFromHash(model.Hash);
+        PasswordResetDocument? passwordReset = await passwordResetRepository.GetLatestFromHash(model.Hash);
 
         if (passwordReset == null || passwordReset.Invalid || passwordReset.Hash != model.Hash)
         {
@@ -128,7 +128,7 @@ public class UserAccessService : IUserAccessService
 
         (string hash, string salt) = passwordHasher.Hash(model.Password);
 
-        await userDataService.Update(passwordReset.UserId, new UpdateUser
+        await userRepository.Update(passwordReset.UserId, new UpdateUser
         {
             Password = new PasswordElement
             {
@@ -136,10 +136,10 @@ public class UserAccessService : IUserAccessService
                 Salt = salt
             }
         });
-        await passwordResetDataService.MarkAsInvalid(passwordReset.Id);
+        await passwordResetRepository.MarkAsInvalid(passwordReset.Id);
     }
 
-    private static void ValidatePasswords(BasePasswordRequest model, ApiException apiException,
+    private static void ValidatePasswords(BasePasswordModel model, ApiException apiException,
         string? currentPassword = null)
     {
         if (model.Password != model.ConfirmPassword)

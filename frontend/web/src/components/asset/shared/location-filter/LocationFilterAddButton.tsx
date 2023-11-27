@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
-import { Button } from "../../../ui/shared/button/Button";
+import { Button } from "../../../ui/button-old/Button";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {

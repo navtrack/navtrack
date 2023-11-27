@@ -1,7 +1,7 @@
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
-import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../ui/loading-indicator/LoadingIndicator";
 import useLog from "./useLog";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 

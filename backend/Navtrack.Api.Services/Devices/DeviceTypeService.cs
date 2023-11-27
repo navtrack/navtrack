@@ -1,25 +1,26 @@
 using System.Collections.Generic;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Mappers.Devices;
 using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Services.Devices;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Devices;
 
 [Service(typeof(IDeviceTypeService))]
 public class DeviceTypeService : IDeviceTypeService
 {
-    private readonly IDeviceTypeDataService deviceTypeDataService;
+    private readonly IDeviceTypeRepository deviceTypeRepository;
 
-    public DeviceTypeService(IDeviceTypeDataService deviceTypeDataService)
+    public DeviceTypeService(IDeviceTypeRepository deviceTypeRepository)
     {
-        this.deviceTypeDataService = deviceTypeDataService;
+        this.deviceTypeRepository = deviceTypeRepository;
     }
 
-    public DeviceTypesModel GetAll()
+    public ListModel<DeviceTypeModel> GetAll()
     {
-        IEnumerable<DeviceType> devicesTypes = deviceTypeDataService.GetDeviceTypes();
+        IEnumerable<DeviceType> devicesTypes = deviceTypeRepository.GetDeviceTypes();
 
         return DeviceTypesModelMapper.Map(devicesTypes);
     }

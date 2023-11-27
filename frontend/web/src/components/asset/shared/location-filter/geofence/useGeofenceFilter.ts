@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { DEFAULT_MAP_CENTER } from "../../../../../constants";
-import { CircleGeofence, LatLng } from "../../../../ui/shared/map/types";
+import { CircleGeofence, LatLng } from "../../../../ui/map/types";
 import { geofenceFilterAtom } from "../state";
 
 export function useGeofenceFilter(

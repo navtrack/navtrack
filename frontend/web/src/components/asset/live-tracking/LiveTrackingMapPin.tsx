@@ -1,4 +1,4 @@
-import { MapPin } from "../../ui/shared/map/MapPin";
+import { MapPin } from "../../ui/map/MapPin";
 import { useLiveTracking } from "./useLiveTracking";
 
 export function LiveTrackingMapPin() {

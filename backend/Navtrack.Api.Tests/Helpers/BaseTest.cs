@@ -1,3 +1,5 @@
+using System.Net.Http;
+
 namespace Navtrack.Api.Tests.Helpers;
 
 public class BaseTest

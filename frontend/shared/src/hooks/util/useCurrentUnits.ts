@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useIntl } from "react-intl";
-import { UnitsType } from "../../api/model/custom/UnitsType";
 import { useCurrentUser } from "../user/useCurrentUser";
+import { UnitsType } from "../../api/model/generated";
 
 type Units = {
   unitsType: UnitsType;

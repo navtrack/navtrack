@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Exceptions;
+using Navtrack.Api.Services.Util;
 
 namespace Navtrack.Api.Services.Mappers.Common;
 

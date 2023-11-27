@@ -1,14 +1,14 @@
 import colors from "tailwindcss/colors";
 
+type ClassName = string | undefined;
+
 export function c(
   check: boolean | string | undefined,
-  trueValue: string,
-  falseValue: string = ""
+  trueValue: ClassName,
+  falseValue: ClassName = ""
 ) {
   return !!check ? trueValue : falseValue ?? "";
 }
-
-type ClassName = string | undefined;
 
 export function classNames(...classNames: ClassName[]) {
   return classNames.join(" ");

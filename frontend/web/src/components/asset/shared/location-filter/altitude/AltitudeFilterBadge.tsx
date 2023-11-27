@@ -2,8 +2,8 @@ import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useMemo } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { Badge } from "../../../../ui/shared/badge/Badge";
-import { IconWithText } from "../../../../ui/shared/icon/IconWithText";
+import { FilterBadge } from "../FilterBadge";
+import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { altitudeFilterAtom } from "../state";
 
 interface IAltitudeFilterBadge {
@@ -28,12 +28,12 @@ export function AltitudeFilterBadge(props: IAltitudeFilterBadge) {
   return (
     <>
       {state.enabled && (
-        <Badge
+        <FilterBadge
           order={state.order}
           onClick={() => setState((x) => ({ ...x, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faMountain}>{text}</IconWithText>
-        </Badge>
+        </FilterBadge>
       )}
     </>
   );

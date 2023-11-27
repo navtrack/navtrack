@@ -4,25 +4,25 @@ using IdentityServer4.Stores;
 using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(IRefreshTokenStore))]
 public class RefreshTokenStore : IRefreshTokenStore
 {
-    private readonly IRefreshTokenDataService refreshTokenDataService;
+    private readonly IRefreshTokenRepository refreshTokenRepository;
 
-    public RefreshTokenStore(IRefreshTokenDataService refreshTokenDataService)
+    public RefreshTokenStore(IRefreshTokenRepository refreshTokenRepository)
     {
-        this.refreshTokenDataService = refreshTokenDataService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     public async Task<string> StoreRefreshTokenAsync(RefreshToken refreshToken)
     {
         RefreshTokenDocument document = RefreshTokenDocumentMapper.Map(refreshToken);
         
-        await refreshTokenDataService.Add(document);
+        await refreshTokenRepository.Add(document);
 
         return document.Hash;
     }
@@ -34,7 +34,7 @@ public class RefreshTokenStore : IRefreshTokenStore
 
     public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshTokenHandle)
     {
-        RefreshTokenDocument? document = await refreshTokenDataService.Get(refreshTokenHandle);
+        RefreshTokenDocument? document = await refreshTokenRepository.Get(refreshTokenHandle);
 
         if (document != null)
         {
@@ -48,11 +48,11 @@ public class RefreshTokenStore : IRefreshTokenStore
 
     public Task RemoveRefreshTokenAsync(string refreshTokenHandle)
     {
-        return refreshTokenDataService.Remove(refreshTokenHandle);
+        return refreshTokenRepository.Remove(refreshTokenHandle);
     }
 
     public Task RemoveRefreshTokensAsync(string subjectId, string clientId)
     {
-        return refreshTokenDataService.Remove(subjectId, clientId);
+        return refreshTokenRepository.Remove(subjectId, clientId);
     }
 }

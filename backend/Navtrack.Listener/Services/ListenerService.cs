@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Services;
 

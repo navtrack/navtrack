@@ -4,8 +4,13 @@ import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, ref, string } from "yup";
-import { useNotification } from "../ui/shared/notification/useNotification";
-import { ChangePasswordFormValues } from "./types";
+import { useNotification } from "../ui/notification/useNotification";
+
+export type ChangePasswordFormValues = {
+  currentPassword: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export function useChangePassword() {
   const intl = useIntl();

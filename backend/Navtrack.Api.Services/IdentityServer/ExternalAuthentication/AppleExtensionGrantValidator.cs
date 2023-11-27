@@ -5,24 +5,24 @@ using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
 using Navtrack.Api.Services.Mappers.Users;
-using Navtrack.Common.Settings;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Settings;
 
 namespace Navtrack.Api.Services.IdentityServer.ExternalAuthentication;
 
 [Service(typeof(IExtensionGrantValidator))]
 public class AppleExtensionGrantValidator : IExtensionGrantValidator
 {
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
     private readonly IExternalLoginHandler externalLoginHandler;
     private readonly ISettingService settingService;
 
-    public AppleExtensionGrantValidator(IUserDataService userDataService, IExternalLoginHandler externalLoginHandler,
+    public AppleExtensionGrantValidator(IUserRepository userRepository, IExternalLoginHandler externalLoginHandler,
         ISettingService settingService)
     {
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
         this.externalLoginHandler = externalLoginHandler;
         this.settingService = settingService;
     }
@@ -38,10 +38,10 @@ public class AppleExtensionGrantValidator : IExtensionGrantValidator
             Token = context.Request.Raw["code"],
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userDataService.GetByEmailOrAppleId,
+            GetUser = userRepository.GetByEmailOrAppleId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, appleId: id),
             ExternalId = user => user.AppleId,
-            SetId = (userDocumentId, id) => userDataService.Update(userDocumentId, new UpdateUser
+            SetId = (userDocumentId, id) => userRepository.Update(userDocumentId, new UpdateUser
             {
                 AppleId = id
             })

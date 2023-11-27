@@ -1,16 +1,19 @@
-import { AssetSettingsLayout } from "../layout/AssetSettingsLayout";
-import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
+import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { Form, Formik } from "formik";
 import { useRenameAsset } from "./useRenameAsset";
-import { Button } from "../../../ui/shared/button/Button";
 import { FormattedMessage } from "react-intl";
 import { DeleteAssetModal } from "./DeleteAssetModal";
 import { useState } from "react";
-import { Icon } from "../../../ui/shared/icon/Icon";
+import { Icon } from "../../../ui/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { LoadingIndicator } from "../../../ui/shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../../ui/loading-indicator/LoadingIndicator";
 import { RenameAssetFormValues } from "./types";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { Card } from "../../../ui/card/Card";
+import { CardBody } from "../../../ui/card/CardBody";
+import { Heading } from "../../../ui/heading/Heading";
+import { NewButton } from "../../../ui/button/NewButton";
+import { AssetSettingsLayout } from "../shared/AssetSettingsLayout";
 
 export function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
@@ -18,15 +21,15 @@ export function AssetSettingsGeneralPage() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <>
+    <AssetSettingsLayout>
       {currentAsset && (
-        <AssetSettingsLayout>
-          <div className="col-span-9 space-y-6 divide-y divide-gray-200">
+        <Card>
+          <CardBody>
             <div>
-              <h2 className="text-lg font-medium leading-6 text-gray-900">
+              <Heading type="h2">
                 <FormattedMessage id="assets.settings.general" />
-              </h2>
-              <div className="mt-6">
+              </Heading>
+              <div className="mt-4">
                 <Formik<RenameAssetFormValues>
                   initialValues={{ name: `${currentAsset.data?.name}` }}
                   onSubmit={(values, formikHelpers) =>
@@ -42,9 +45,12 @@ export function AssetSettingsGeneralPage() {
                           label="generic.name"
                           rightAddon={
                             <div className="ml-2 flex items-center">
-                              <Button color="white" type="submit" size="base">
+                              <NewButton
+                                color="secondary"
+                                type="submit"
+                                size="md">
                                 <FormattedMessage id="assets.settings.general.rename" />
-                              </Button>
+                              </NewButton>
                               <div className="ml-2 w-4">
                                 {renameAsset.loading && <LoadingIndicator />}
                                 {renameAsset.showSuccess && (
@@ -63,30 +69,30 @@ export function AssetSettingsGeneralPage() {
                 </Formik>
               </div>
             </div>
-            <div className="pt-6">
-              <h2 className="text-lg font-medium leading-6 text-gray-900">
+            <div className="mt-6">
+              <Heading type="h2">
                 <FormattedMessage id="assets.settings.general.delete-asset" />
-              </h2>
+              </Heading>
               <p className="mt-2 text-sm text-gray-500">
                 <FormattedMessage id="assets.settings.general.delete-asset.info" />
               </p>
               <div className="mt-4 text-right">
-                <Button
+                <NewButton
                   color="warn"
                   type="submit"
                   size="base"
                   onClick={() => setShowModal(true)}>
                   <FormattedMessage id="assets.settings.general.delete-asset" />
-                </Button>
+                </NewButton>
                 <DeleteAssetModal
                   show={showModal}
                   close={() => setShowModal(false)}
                 />
               </div>
             </div>
-          </div>
-        </AssetSettingsLayout>
+          </CardBody>
+        </Card>
       )}
-    </>
+    </AssetSettingsLayout>
   );
 }

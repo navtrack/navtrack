@@ -1,12 +1,12 @@
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Navtrack.Common.Email.Emails;
-using Navtrack.Common.Settings;
-using Navtrack.Common.Settings.Settings;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Email.Emails;
+using Navtrack.Shared.Services.Settings;
+using Navtrack.Shared.Services.Settings.Settings;
 
-namespace Navtrack.Common.Email;
+namespace Navtrack.Shared.Services.Email;
 
 [Service(typeof(IEmailService))]
 public class EmailService : IEmailService

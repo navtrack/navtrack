@@ -1,18 +1,18 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/shared/button/Button";
-import { Icon } from "../../ui/shared/icon/Icon";
-import { Card } from "../../ui/shared/card/Card";
-import { Link } from "../../ui/shared/link/Link";
+import { Button } from "../../ui/button-old/Button";
+import { Icon } from "../../ui/icon/Icon";
+import { Card } from "../../ui/card/Card";
+import { Link } from "../../ui/link/Link";
 import { Copyright } from "../../shared/Copyright";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
-import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
+import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
+import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { LoadingIndicator } from "../../ui/shared/loading-indicator/LoadingIndicator";
-import Paths from "../../../app/Paths";
+import { LoadingIndicator } from "../../ui/loading-indicator/LoadingIndicator";
+import { Paths } from "../../../app/Paths";
 import { ExternalLogin } from "./external-login/ExternalLogin";
-import { Alert } from "../../ui/shared/alert/Alert";
+import { Alert } from "../../ui/alert/Alert";
 import { useLoginFormValidationSchema } from "@navtrack/shared/hooks/user/login/useLoginFormValidationSchema";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialLoginFormValues } from "@navtrack/shared/hooks/user/login/LoginFormValues";
@@ -98,9 +98,9 @@ export function LoginPage() {
           )}
         </Formik>
         <div className="mt-4 text-center text-sm font-medium">
-          <Link to={Paths.Register} text="login.new.action" />
+          <Link to={Paths.Register} label="login.new.action" />
           <span className="mx-2">•</span>
-          <Link to={Paths.ForgotPassword} text="login.forgot" />
+          <Link to={Paths.ForgotPassword} label="login.forgot" />
         </div>
         <ExternalLogin login={login.externalLogin} />
       </Card>

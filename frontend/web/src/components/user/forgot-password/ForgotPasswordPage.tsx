@@ -1,16 +1,16 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
-import { Button } from "../../ui/shared/button/Button";
-import { Card } from "../../ui/shared/card/Card";
-import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
-import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
-import { Icon } from "../../ui/shared/icon/Icon";
+import { Button } from "../../ui/button-old/Button";
+import { Card } from "../../ui/card/Card";
+import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
+import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
+import { Icon } from "../../ui/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import Paths from "../../../app/Paths";
+import { Paths } from "../../../app/Paths";
 import { InitialForgotPasswordFormValues } from "@navtrack/shared/hooks/user/forgot-password/ForgotPasswordFormValues";
 import { useForgotPassword } from "@navtrack/shared/hooks/user/forgot-password/useForgotPassword";
 import { useForgotPasswordFormValidationSchema } from "@navtrack/shared/hooks/user/forgot-password/useForgotPasswordFormValidationSchema";
+import { Link } from "../../ui/link/Link";
 
 export function ForgotPasswordPage() {
   const validationSchema = useForgotPasswordFormValidationSchema();
@@ -39,9 +39,9 @@ export function ForgotPasswordPage() {
                   <div className="mt-4 text-center">
                     <Link
                       to={Paths.Home}
-                      className="ml-1 text-sm font-medium text-blue-600">
-                      <FormattedMessage id="forgot-password.go-home" />
-                    </Link>
+                      className="ml-1"
+                      label="forgot-password.go-home"
+                    />
                   </div>
                 </>
               ) : status?.code ? (
@@ -50,9 +50,11 @@ export function ForgotPasswordPage() {
                     <FormattedMessage id="forgot-password.error" />
                   </div>
                   <div className="mt-4 text-center text-sm font-medium">
-                    <Link to={Paths.Home} className="ml-1 text-blue-600">
-                      <FormattedMessage id="forgot-password.go-home" />
-                    </Link>
+                    <Link
+                      to={Paths.Home}
+                      className="ml-1"
+                      label="forgot-password.go-home"
+                    />
                   </div>
                 </>
               ) : (
@@ -84,9 +86,11 @@ export function ForgotPasswordPage() {
                     <span className="text-gray-600">
                       <FormattedMessage id="forgot-password.existing.question" />
                     </span>
-                    <Link to="/login" className="ml-1 text-blue-600">
-                      <FormattedMessage id="forgot-password.existing.action" />
-                    </Link>
+                    <Link
+                      to={Paths.Home}
+                      className="ml-1"
+                      label="forgot-password.existing.action"
+                    />
                   </div>
                 </>
               )}

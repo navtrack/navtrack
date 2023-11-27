@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -7,11 +12,11 @@ using MongoDB.Driver.Linq;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Tests.Helpers;
-using Navtrack.Common.Passwords;
-using Navtrack.Common.Settings.Settings;
 using Navtrack.DataAccess.Model.Settings;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
+using Navtrack.Shared.Services.Passwords;
+using Navtrack.Shared.Services.Settings.Settings;
 
 namespace Navtrack.Api.Tests;
 
@@ -23,7 +28,7 @@ public class UserTests : BaseTest
         using IServiceScope scope = factory.Services.CreateScope();
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = "nosuchemail@navtrack"
             });
@@ -47,7 +52,7 @@ public class UserTests : BaseTest
         await ConfigureAppUrl(repository);
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = email
             });
@@ -75,7 +80,7 @@ public class UserTests : BaseTest
         await ConfigureAppUrl(repository);
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = email
             });
@@ -105,7 +110,7 @@ public class UserTests : BaseTest
         for (int i = 0; i < 11; i++)
         {
             responseMessages.Add(await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-                new ForgotPasswordRequest
+                new ForgotPasswordModel
                 {
                     Email = email
                 }));
@@ -131,7 +136,7 @@ public class UserTests : BaseTest
         });
 
         await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = email
             });
@@ -143,7 +148,7 @@ public class UserTests : BaseTest
             .FirstOrDefaultAsync(x => x.Email == email);
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
-            new ResetPasswordRequest
+            new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -177,7 +182,7 @@ public class UserTests : BaseTest
         });
 
         await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = email
             });
@@ -186,7 +191,7 @@ public class UserTests : BaseTest
             .FirstOrDefaultAsync(x => x.Email == email);
 
         await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
-            new ResetPasswordRequest
+            new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -219,12 +224,12 @@ public class UserTests : BaseTest
         });
 
        await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = email
             });
        await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-           new ForgotPasswordRequest
+           new ForgotPasswordModel
            {
                Email = email
            });
@@ -236,7 +241,7 @@ public class UserTests : BaseTest
             .FirstOrDefaultAsync();
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
-            new ResetPasswordRequest
+            new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -270,7 +275,7 @@ public class UserTests : BaseTest
         });
 
         await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
-            new ForgotPasswordRequest
+            new ForgotPasswordModel
             {
                 Email = email
             });
@@ -279,7 +284,7 @@ public class UserTests : BaseTest
             .FirstOrDefaultAsync(x => x.Email == email);
 
         HttpResponseMessage firstResponse = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
-            new ResetPasswordRequest
+            new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -287,7 +292,7 @@ public class UserTests : BaseTest
             });
 
         HttpResponseMessage secondResponse = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
-            new ResetPasswordRequest
+            new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",

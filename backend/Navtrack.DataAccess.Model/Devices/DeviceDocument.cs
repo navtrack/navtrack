@@ -1,17 +1,14 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Navtrack.DataAccess.Model.Attributes;
 using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Devices;
 
 [Collection("devices")]
 [BsonIgnoreExtraElements]
-public class DeviceDocument
+public class DeviceDocument : BaseDocument
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
-
     [BsonElement("serialNumber")]
     public string SerialNumber { get; set; }
 

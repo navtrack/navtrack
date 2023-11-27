@@ -1,27 +1,22 @@
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Primitives;
 using Navtrack.Api.Services.Assets;
 using Navtrack.Api.Services.Exceptions;
-using Navtrack.Api.Services.User;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.ActionFilters;
 
+[Service(typeof(AuthorizeActionFilter))]
 public class AuthorizeActionFilter : IAsyncAuthorizationFilter
 {
-    private readonly ICurrentUserAccessor currentUserAccessor;
     private readonly IAssetAuthorizationService assetAuthorizationService;
 
-    public AuthorizeActionFilter(IAssetAuthorizationService assetAuthorizationService,
-        ICurrentUserAccessor currentUserAccessor)
+    public AuthorizeActionFilter(IAssetAuthorizationService assetAuthorizationService)
     {
         this.assetAuthorizationService = assetAuthorizationService;
-        this.currentUserAccessor = currentUserAccessor;
     }
 
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
@@ -32,13 +27,11 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
 
         if (authorizePermissionAttribute != null)
         {
-            string? assetId = GetId("assetId", context);
+            string? assetId = ActionFilterHelpers.GetId("assetId", context);
 
             if (!string.IsNullOrEmpty(assetId))
             {
-                UserDocument currentUser = await currentUserAccessor.Get();
-                bool hasRole = await assetAuthorizationService.CurrentUserHasRole(currentUser,
-                    authorizePermissionAttribute.AssetRoleType, assetId);
+                bool hasRole = await assetAuthorizationService.CurrentUserHasRole(authorizePermissionAttribute.AssetRoleType, assetId);
 
                 if (hasRole)
                 {
@@ -48,20 +41,5 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
 
             throw new ApiException(HttpStatusCode.Unauthorized);
         }
-    }
-
-    private static string? GetId(string key, ActionContext context)
-    {
-        if (context.RouteData.Values.TryGetValue(key, out object? routeValue))
-        {
-            return routeValue?.ToString();
-        }
-
-        if (context.HttpContext.Request.Query.TryGetValue(key, out StringValues queryValue))
-        {
-            return queryValue;
-        }
-
-        return null;
     }
 }

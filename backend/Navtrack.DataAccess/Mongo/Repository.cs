@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.DataAccess.Mongo;
 

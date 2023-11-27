@@ -4,7 +4,7 @@ using MongoDB.Bson;
 using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Assets;
 
@@ -18,7 +18,7 @@ public class AssetAuthorizationService : IAssetAuthorizationService
         this.currentUserAccessor = currentUserAccessor;
     }
 
-    public async Task<bool> CurrentUserHasRole(UserDocument userDocument, AssetRoleType assetRoleType, string assetId)
+    public async Task<bool> CurrentUserHasRole(AssetRoleType assetRoleType, string assetId)
     {
         UserDocument currentUser = await currentUserAccessor.Get();
 

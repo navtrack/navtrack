@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Navtrack.Core.Services.Util;
 
 namespace Navtrack.Api.Model.Locations;
 

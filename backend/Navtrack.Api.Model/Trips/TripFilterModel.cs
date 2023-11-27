@@ -1,34 +1,34 @@
 using System.Text.Json.Serialization;
-using Navtrack.Core.Model.Trips;
+using Navtrack.DataAccess.Model.Locations;
 
 namespace Navtrack.Api.Model.Trips;
 
-public class TripFilterModel : TripFilter
+public class TripFilterModel : DateFilter
 {
     [JsonPropertyName("minAvgAltitude")]
-    public override int? MinAvgAltitude { get; set; }
+    public int? MinAvgAltitude { get; set; }
 
     [JsonPropertyName("maxAvgAltitude")]
-    public override int? MaxAvgAltitude { get; set; }
+    public int? MaxAvgAltitude { get; set; }
 
     [JsonPropertyName("minAvgSpeed")]
-    public override int? MinAvgSpeed { get; set; }
+    public int? MinAvgSpeed { get; set; }
 
     [JsonPropertyName("maxAvgSpeed")]
-    public override int? MaxAvgSpeed { get; set; }
+    public int? MaxAvgSpeed { get; set; }
 
     [JsonPropertyName("minDuration")]
-    public override int? MinDuration { get; set; }
+    public int? MinDuration { get; set; }
 
     [JsonPropertyName("maxDuration")]
-    public override int? MaxDuration { get; set; }
+    public int? MaxDuration { get; set; }
 
     [JsonPropertyName("latitude")]
-    public override double? Latitude { get; set; }
+    public double? Latitude { get; set; }
 
     [JsonPropertyName("longitude")]
-    public override double? Longitude { get; set; }
+    public double? Longitude { get; set; }
 
     [JsonPropertyName("radius")]
-    public override int? Radius { get; set; }
+    public int? Radius { get; set; }
 }

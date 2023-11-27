@@ -1,11 +1,14 @@
-import { AssetSettingsLayout } from "../layout/AssetSettingsLayout";
 import { UsersTable } from "./UsersTable";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../../ui/shared/button/Button";
 import { useState } from "react";
 import { AddUserToAssetModal } from "./AddUserToAssetModal";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/useAssetUsersQuery";
+import { Card } from "../../../ui/card/Card";
+import { CardBody } from "../../../ui/card/CardBody";
+import { Heading } from "../../../ui/heading/Heading";
+import { NewButton } from "../../../ui/button/NewButton";
+import { AssetSettingsLayout } from "../shared/AssetSettingsLayout";
 
 export function AssetSettingsAccessPage() {
   const currentAsset = useCurrentAsset();
@@ -16,28 +19,30 @@ export function AssetSettingsAccessPage() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <>
+    <AssetSettingsLayout>
       {currentAsset && (
-        <AssetSettingsLayout>
-          <div className="flex items-center justify-between pb-4">
-            <h2 className="text-lg font-medium leading-6 text-gray-900">
-              <FormattedMessage id="assets.settings.access.manage" />
-            </h2>
-            <Button color="green" onClick={() => setShowModal(true)}>
-              Add user
-            </Button>
-          </div>
-          <UsersTable
-            rows={assetUsers.data?.items}
-            loading={assetUsers.isLoading}
-            refresh={assetUsers.refetch}
-          />
-          <AddUserToAssetModal
-            show={showModal}
-            close={() => setShowModal(false)}
-          />
-        </AssetSettingsLayout>
+        <Card>
+          <CardBody>
+            <div className="mb-4 flex justify-between">
+              <Heading type="h2">
+                <FormattedMessage id="assets.settings.access.manage" />
+              </Heading>
+              <NewButton onClick={() => setShowModal(true)}>
+                <FormattedMessage id="generic.add-user" />
+              </NewButton>
+            </div>
+            <UsersTable
+              rows={assetUsers.data?.items}
+              loading={assetUsers.isLoading}
+              refresh={assetUsers.refetch}
+            />
+            <AddUserToAssetModal
+              show={showModal}
+              close={() => setShowModal(false)}
+            />
+          </CardBody>
+        </Card>
       )}
-    </>
+    </AssetSettingsLayout>
   );
 }

@@ -16,7 +16,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetsModel"
+                  "$ref": "#/components/schemas/AssetModelListModel"
                 }
               }
             }
@@ -319,7 +319,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DevicesModel"
+                  "$ref": "#/components/schemas/DeviceModelListModel"
                 }
               }
             }
@@ -930,17 +930,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetUserListModel"
+                  "$ref": "#/components/schemas/AssetUserModelListModel"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetUserListModel"
+                  "$ref": "#/components/schemas/AssetUserModelListModel"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetUserListModel"
+                  "$ref": "#/components/schemas/AssetUserModelListModel"
                 }
               }
             }
@@ -1208,7 +1208,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceTypesModel"
+                  "$ref": "#/components/schemas/DeviceTypeModelListModel"
                 }
               }
             }
@@ -1249,7 +1249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProtocolsModel"
+                  "$ref": "#/components/schemas/ProtocolModelListModel"
                 }
               }
             }
@@ -1293,17 +1293,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterAccountRequest"
+                "$ref": "#/components/schemas/RegisterAccountModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterAccountRequest"
+                "$ref": "#/components/schemas/RegisterAccountModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterAccountRequest"
+                "$ref": "#/components/schemas/RegisterAccountModel"
               }
             }
           }
@@ -1342,17 +1342,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UpdateUserModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UpdateUserModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UpdateUserModel"
               }
             }
           }
@@ -1393,17 +1393,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePasswordRequest"
+                "$ref": "#/components/schemas/ChangePasswordModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePasswordRequest"
+                "$ref": "#/components/schemas/ChangePasswordModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePasswordRequest"
+                "$ref": "#/components/schemas/ChangePasswordModel"
               }
             }
           }
@@ -1444,17 +1444,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ResetPasswordRequest"
+                "$ref": "#/components/schemas/ResetPasswordModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ResetPasswordRequest"
+                "$ref": "#/components/schemas/ResetPasswordModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ResetPasswordRequest"
+                "$ref": "#/components/schemas/ResetPasswordModel"
               }
             }
           }
@@ -1495,17 +1495,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                "$ref": "#/components/schemas/ForgotPasswordModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                "$ref": "#/components/schemas/ForgotPasswordModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                "$ref": "#/components/schemas/ForgotPasswordModel"
               }
             }
           }
@@ -1624,7 +1624,7 @@
         },
         "additionalProperties": false
       },
-      "AssetUserListModel": {
+      "AssetModelListModel": {
         "required": [
           "items"
         ],
@@ -1633,7 +1633,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetUserModel"
+              "$ref": "#/components/schemas/AssetModel"
             }
           }
         },
@@ -1662,7 +1662,7 @@
         },
         "additionalProperties": false
       },
-      "AssetsModel": {
+      "AssetUserModelListModel": {
         "required": [
           "items"
         ],
@@ -1671,7 +1671,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetModel"
+              "$ref": "#/components/schemas/AssetUserModel"
             }
           }
         },
@@ -1695,7 +1695,7 @@
         },
         "additionalProperties": false
       },
-      "ChangePasswordRequest": {
+      "ChangePasswordModel": {
         "required": [
           "confirmPassword",
           "currentPassword",
@@ -1749,6 +1749,21 @@
         },
         "additionalProperties": false
       },
+      "DeviceModelListModel": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceModel"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "DeviceTypeModel": {
         "required": [
           "displayName",
@@ -1782,7 +1797,7 @@
         },
         "additionalProperties": false
       },
-      "DeviceTypesModel": {
+      "DeviceTypeModelListModel": {
         "required": [
           "items"
         ],
@@ -1792,21 +1807,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DeviceTypeModel"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "DevicesModel": {
-        "required": [
-          "items"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DeviceModel"
             }
           }
         },
@@ -1888,7 +1888,7 @@
         },
         "additionalProperties": false
       },
-      "ForgotPasswordRequest": {
+      "ForgotPasswordModel": {
         "required": [
           "email"
         ],
@@ -2052,7 +2052,7 @@
         },
         "additionalProperties": false
       },
-      "ProtocolsModel": {
+      "ProtocolModelListModel": {
         "required": [
           "items"
         ],
@@ -2067,7 +2067,7 @@
         },
         "additionalProperties": false
       },
-      "RegisterAccountRequest": {
+      "RegisterAccountModel": {
         "required": [
           "confirmPassword",
           "email",
@@ -2090,7 +2090,7 @@
         },
         "additionalProperties": false
       },
-      "ResetPasswordRequest": {
+      "ResetPasswordModel": {
         "required": [
           "confirmPassword",
           "hash",
@@ -2168,51 +2168,54 @@
         ],
         "type": "object",
         "properties": {
-          "startLocation": {
-            "$ref": "#/components/schemas/LocationModel"
-          },
-          "endLocation": {
-            "$ref": "#/components/schemas/LocationModel"
-          },
           "locations": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/LocationModel"
             }
           },
+          "startLocation": {
+            "$ref": "#/components/schemas/LocationModel"
+          },
+          "endLocation": {
+            "$ref": "#/components/schemas/LocationModel"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
           "distance": {
             "type": "integer",
             "format": "int32"
           },
-          "duration": {
-            "type": "number",
-            "format": "double"
-          },
           "maxSpeed": {
             "type": "number",
             "format": "float",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "averageSpeed": {
             "type": "number",
             "format": "float",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "averageAltitude": {
             "type": "number",
             "format": "float",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
       },
       "UnitsType": {
         "enum": [
-          0,
-          1
+          "Metric",
+          "Imperial"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "UpdateAssetModel": {
         "type": "object",
@@ -2224,7 +2227,7 @@
         },
         "additionalProperties": false
       },
-      "UpdateUserRequest": {
+      "UpdateUserModel": {
         "type": "object",
         "properties": {
           "email": {

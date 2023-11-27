@@ -3,12 +3,12 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
-import { Card } from "../../ui/shared/card/Card";
-import { Icon } from "../../ui/shared/icon/Icon";
-import { Map } from "../../ui/shared/map/Map";
-import { MapPin } from "../../ui/shared/map/MapPin";
-import { MapTrip } from "../../ui/shared/map/MapTrip";
-import { Slider } from "../../ui/shared/slider/Slider";
+import { Card } from "../../ui/card/Card";
+import { Icon } from "../../ui/icon/Icon";
+import { Map } from "../../ui/map/Map";
+import { MapPin } from "../../ui/map/MapPin";
+import { MapTrip } from "../../ui/map/MapTrip";
+import { Slider } from "../../ui/slider/Slider";
 import { LocationBar } from "../shared/location-bar/LocationBar";
 import {
   selectedTripLocationIndexAtom,
@@ -16,6 +16,7 @@ import {
   selectedTripSelector
 } from "./state";
 import { TripsTable } from "./TripsTable";
+import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 
 export function AssetTripsPage() {
   const selectedTrip = useRecoilValue(selectedTripSelector);
@@ -25,7 +26,7 @@ export function AssetTripsPage() {
   const [showPin, setShowPin] = useState(false);
 
   return (
-    <>
+    <AuthenticatedLayoutTwoColumns>
       <LocationFilter filterPage="trips" duration avgAltitude avgSpeed />
       <TripsTable />
       {selectedTrip !== undefined && (
@@ -87,6 +88,6 @@ export function AssetTripsPage() {
           </div>
         </>
       )}
-    </>
+    </AuthenticatedLayoutTwoColumns>
   );
 }

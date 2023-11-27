@@ -1,4 +1,4 @@
-namespace Navtrack.Library.Extensions;
+namespace Navtrack.Shared.Library.Extensions;
 
 public static class ArrayExtensions
 {

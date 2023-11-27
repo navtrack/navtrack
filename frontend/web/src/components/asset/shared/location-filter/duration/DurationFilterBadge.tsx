@@ -2,8 +2,8 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { useMemo } from "react";
 import { useIntl } from "react-intl";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { Badge } from "../../../../ui/shared/badge/Badge";
-import { IconWithText } from "../../../../ui/shared/icon/IconWithText";
+import { FilterBadge } from "../FilterBadge";
+import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { durationFilterAtom } from "../state";
 
 interface IDurationFilterBadge {
@@ -36,12 +36,12 @@ export function DurationFilterBadge(props: IDurationFilterBadge) {
   return (
     <>
       {state.enabled && (
-        <Badge
+        <FilterBadge
           order={state.order}
           onClick={() => setState((x) => ({ ...x, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faClock}>{text}</IconWithText>
-        </Badge>
+        </FilterBadge>
       )}
     </>
   );

@@ -3,8 +3,8 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useDeleteUserFromAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteUserFromAssetMutation";
 import { getError } from "@navtrack/shared/utils/api";
 import { FormattedMessage } from "react-intl";
-import { DeleteModal } from "../../../ui/shared/modal/DeleteModal";
-import { useNotification } from "../../../ui/shared/notification/useNotification";
+import { DeleteModal } from "../../../ui/modal/DeleteModal";
+import { useNotification } from "../../../ui/notification/useNotification";
 
 interface IDeleteAssetModal {
   user?: AssetUserModel;

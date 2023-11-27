@@ -8,19 +8,19 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(IExternalLoginHandler))]
 public class ExternalLoginHandler : IExternalLoginHandler
 {
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
     private readonly IHostEnvironment hostEnvironment;
 
-    public ExternalLoginHandler(IUserDataService userDataService, IHostEnvironment hostEnvironment)
+    public ExternalLoginHandler(IUserRepository userRepository, IHostEnvironment hostEnvironment)
     {
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
         this.hostEnvironment = hostEnvironment;
     }
 
@@ -43,7 +43,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
                 {
                     userDocument = input.Map(email.Value, id.Value);
 
-                    await userDataService.Add(userDocument);
+                    await userRepository.Add(userDocument);
                 }
                 else
                 {
@@ -54,7 +54,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
 
                     if (!isPrivateEmailValue && userDocument.Email != email.Value)
                     {
-                        await userDataService.Update(userDocument.Id, new UpdateUser
+                        await userRepository.Update(userDocument.Id, new UpdateUser
                         {
                             Email = email.Value
                         });

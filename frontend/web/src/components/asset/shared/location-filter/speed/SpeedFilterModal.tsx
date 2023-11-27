@@ -1,10 +1,10 @@
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { FormikTextInput } from "../../../../ui/shared/text-input/FormikTextInput";
-import { Modal } from "../../../../ui/shared/modal/Modal";
-import { Slider } from "../../../../ui/shared/slider/Slider";
-import { TextInputRightAddon } from "../../../../ui/shared/text-input/TextInputRightAddon";
+import { FormikTextInput } from "../../../../ui/form/text-input/FormikTextInput";
+import { Modal } from "../../../../ui/modal/Modal";
+import { Slider } from "../../../../ui/slider/Slider";
+import { TextInputRightAddon } from "../../../../ui/form/text-input/TextInputRightAddon";
 import { FilterModal } from "../FilterModal";
 import { DEFAULT_MAX_SPEED, SpeedFilterFormValues } from "../types";
 import { useSpeedFilter } from "./useSpeedFilter";

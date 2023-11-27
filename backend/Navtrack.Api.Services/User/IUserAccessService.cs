@@ -5,7 +5,7 @@ namespace Navtrack.Api.Services.User;
 
 public interface IUserAccessService
 {
-    Task ForgotPassword(ForgotPasswordRequest model);
-    Task ChangePassword(ChangePasswordRequest model);
-    Task ResetPassword(ResetPasswordRequest model);
+    Task ForgotPassword(ForgotPasswordModel model);
+    Task ChangePassword(ChangePasswordModel model);
+    Task ResetPassword(ResetPasswordModel model);
 }

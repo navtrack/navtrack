@@ -12,10 +12,12 @@ export type AppConfig = {
     };
     google?: {
       clientId: string;
+      redirectUri?: string;
     };
     microsoft?: {
       clientId: string;
       authority: string;
+      redirectUri?: string;
     };
   };
   sentry?: {

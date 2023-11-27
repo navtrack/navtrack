@@ -1,11 +1,11 @@
 import queryString from "query-string";
-import { useMutation } from "react-query";
 import { axiosInstance } from "../../../api/axiosInstance";
 import { AuthenticationErrorType } from "./authentication";
 import { useAuthentication } from "./useAuthentication";
 import { add } from "date-fns";
 import { useSetRecoilState } from "recoil";
 import { isLoggingInAtom } from "../../../state/authentication";
+import { useMutation } from "@tanstack/react-query";
 
 type TokenRequest = {
   grant_type: string;
@@ -43,7 +43,6 @@ export function useTokenMutation() {
   const setIsLoggingIn = useSetRecoilState(isLoggingInAtom);
 
   const query = useMutation<TokenResponse, TokenError, TokenRequest>(
-    "connect/token",
     async (data: TokenRequest) =>
       axiosInstance<TokenResponse>({
         url: `/connect/token`,

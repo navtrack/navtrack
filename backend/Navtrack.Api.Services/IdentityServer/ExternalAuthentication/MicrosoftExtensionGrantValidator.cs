@@ -5,24 +5,24 @@ using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Navtrack.Api.Services.IdentityServer.Model;
 using Navtrack.Api.Services.Mappers.Users;
-using Navtrack.Common.Settings;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Settings;
 
 namespace Navtrack.Api.Services.IdentityServer.ExternalAuthentication;
 
 [Service(typeof(IExtensionGrantValidator))]
 public class MicrosoftExtensionGrantValidator : IExtensionGrantValidator
 {
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
     private readonly IExternalLoginHandler externalLoginHandler;
     private readonly ISettingService settingService;
 
-    public MicrosoftExtensionGrantValidator(IUserDataService userDataService,
+    public MicrosoftExtensionGrantValidator(IUserRepository userRepository,
         IExternalLoginHandler externalLoginHandler, ISettingService settingService)
     {
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
         this.externalLoginHandler = externalLoginHandler;
         this.settingService = settingService;
     }
@@ -38,10 +38,10 @@ public class MicrosoftExtensionGrantValidator : IExtensionGrantValidator
             Token = context.Request.Raw["code"],
             IdClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier",
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userDataService.GetByEmailOrMicrosoftId,
+            GetUser = userRepository.GetByEmailOrMicrosoftId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, id),
             ExternalId = user => user.MicrosoftId,
-            SetId = (userId, id) => userDataService.Update(userId, new UpdateUser
+            SetId = (userId, id) => userRepository.Update(userId, new UpdateUser
             {
                 MicrosoftId = id
             })

@@ -1,19 +1,25 @@
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../ui/shared/button/Button";
-import { Card } from "../ui/shared/card/Card";
-import { FormikTextInput } from "../ui/shared/text-input/FormikTextInput";
-import { Text } from "../ui/shared/text/Text";
-import { SettingsLayout } from "./SettingsLayout";
-import { ChangePasswordFormValues } from "./types";
-import { useChangePassword } from "./useChangePassword";
+import { Card } from "../ui/card/Card";
+import { FormikTextInput } from "../ui/form/text-input/FormikTextInput";
+import { Text } from "../ui/text/Text";
+import {
+  ChangePasswordFormValues,
+  useChangePassword
+} from "./useChangePassword";
+import { NewButton } from "../ui/button/NewButton";
+import { CardHeader } from "../ui/card/CardHeader";
+import { Heading } from "../ui/heading/Heading";
+import { CardBody } from "../ui/card/CardBody";
+import { CardFooter } from "../ui/card/CardFooter";
+import { AccountSettingsLayout } from "./AccountSettingsLayout";
 
 export function SettingsPasswordPage() {
   const { validationSchema, handleSubmit } = useChangePassword();
 
   return (
-    <SettingsLayout>
+    <AccountSettingsLayout>
       <Formik<ChangePasswordFormValues>
         initialValues={{
           currentPassword: "",
@@ -27,11 +33,13 @@ export function SettingsPasswordPage() {
         {() => (
           <Form>
             <Card>
-              <div className="p-6">
-                <Text type="h3">
+              <CardHeader>
+                <Heading type="h2">
                   <FormattedMessage id="settings.password.title" />
-                </Text>
-                <div className="mt-6 grid grid-cols-6 gap-6">
+                </Heading>
+              </CardHeader>
+              <CardBody>
+                <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-3">
                     <FormikTextInput
                       type="password"
@@ -54,16 +62,16 @@ export function SettingsPasswordPage() {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="bg-gray-50 px-6 py-3 text-right">
-                <Button type="submit" size="lg">
+              </CardBody>
+              <CardFooter className="text-right">
+                <NewButton type="submit" size="lg">
                   <FormattedMessage id="generic.save" />
-                </Button>
-              </div>
+                </NewButton>
+              </CardFooter>
             </Card>
           </Form>
         )}
       </Formik>
-    </SettingsLayout>
+    </AccountSettingsLayout>
   );
 }

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Helpers.New2;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Navtelecom;
 

@@ -1,3 +1,7 @@
+import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
+
 export function AssetAlertsPage() {
-  return <>alerts page</>;
+  return (
+    <AuthenticatedLayoutTwoColumns>alerts page</AuthenticatedLayoutTwoColumns>
+  );
 }

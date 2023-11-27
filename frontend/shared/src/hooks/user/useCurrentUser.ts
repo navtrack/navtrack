@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { UnitsType } from "../../api/model/custom/UnitsType";
-import { useGetCurrentUserQuery } from "../queries/useGetCurrentUserQuery";
+import { useCurrentUserQuery } from "../queries/useCurrentUserQuery";
+import { UnitsType } from "../../api/model/generated";
 
 type CurrentUser = {
   id: string;
@@ -9,14 +9,14 @@ type CurrentUser = {
 };
 
 export function useCurrentUser() {
-  const query = useGetCurrentUserQuery();
+  const query = useCurrentUserQuery();
 
   const user: CurrentUser | undefined = useMemo(() => {
     if (query.data) {
       return {
         id: query.data.id,
         email: query.data.email,
-        units: query.data.units === 1 ? UnitsType.Imperial : UnitsType.Metric
+        units: query.data.units
       };
     }
   }, [query.data]);

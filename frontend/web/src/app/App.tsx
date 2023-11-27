@@ -2,8 +2,9 @@ import { translations } from "@navtrack/shared/translations";
 import { AUTHENTICATION } from "../constants";
 import { AppConfig } from "@navtrack/shared/state/appConfig";
 import { BaseApp } from "./BaseApp";
-import { RoutesUnauthenticated } from "./RoutesUnauthenticated";
-import { RoutesAuthenticated } from "./RoutesAuthenticated";
+import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
+import { UnauthenticatedRoutes } from "./UnauthenticatedRoutes";
+import { SlotProvider } from "./SlotProvider";
 
 const config: AppConfig = {
   api: {
@@ -20,10 +21,11 @@ const config: AppConfig = {
 export function App() {
   return (
     <BaseApp
-      publicRoutes={<RoutesUnauthenticated />}
-      privateRoutes={<RoutesAuthenticated />}
+      publicRoutes={<UnauthenticatedRoutes />}
+      privateRoutes={<AuthenticatedRoutes />}
       config={config}
       translations={translations["en"]}
+      slotProvider={(props) => <SlotProvider {...props} />}
     />
   );
 }

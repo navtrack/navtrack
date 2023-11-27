@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Navtrack.Common.Settings;
+namespace Navtrack.Shared.Services.Settings;
 
 public interface ISettingService
 {

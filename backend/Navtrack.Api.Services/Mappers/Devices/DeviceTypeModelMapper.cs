@@ -4,7 +4,7 @@ using Navtrack.DataAccess.Model.Devices;
 
 namespace Navtrack.Api.Services.Mappers.Devices;
 
-public class DeviceTypeModelMapper
+public static class DeviceTypeModelMapper
 {
     public static DeviceTypeModel Map(DeviceType source)
     {

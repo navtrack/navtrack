@@ -1,13 +1,12 @@
-import { AssetSettingsLayout } from "../layout/AssetSettingsLayout";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button } from "../../../ui/shared/button/Button";
+import { Button } from "../../../ui/button-old/Button";
 import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
-import { FormikSelectInput } from "../../../ui/shared/select/FormikSelectInput";
-import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
+import { FormikCustomSelect } from "../../../ui/form/select/FormikCustomSelect";
+import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { DeviceConfiguration } from "../../add/DeviceConfiguration";
 import { DevicesTable } from "./DevicesTable";
-import { useNotification } from "../../../ui/shared/notification/useNotification";
+import { useNotification } from "../../../ui/notification/useNotification";
 import { object, ObjectSchema, string } from "yup";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
@@ -15,6 +14,10 @@ import { useChangeDeviceMutation } from "@navtrack/shared/hooks/mutations/assets
 import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/useAssetDevicesQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
+import { Card } from "../../../ui/card/Card";
+import { CardBody } from "../../../ui/card/CardBody";
+import { Heading } from "../../../ui/heading/Heading";
+import { AssetSettingsLayout } from "../shared/AssetSettingsLayout";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -88,74 +91,80 @@ export function AssetSettingsDevicePage() {
   }).defined();
 
   return (
-    <>
+    <AssetSettingsLayout>
       {currentAsset.data && deviceTypes && (
-        <AssetSettingsLayout>
-          <h2 className="text-lg font-medium leading-6 text-gray-900">
-            <FormattedMessage id="assets.settings.device.title" />
-          </h2>
-          <div className="mt-6 grid grid-cols-6 space-x-6">
-            <div className="col-span-3">
-              <Formik<ChangeDeviceFormValues>
-                initialValues={{
-                  serialNumber: currentAsset.data.device.serialNumber,
-                  deviceTypeId: currentAsset.data.device.deviceType.id
-                }}
-                validationSchema={validationSchema}
-                enableReinitialize
-                onSubmit={(values, formikHelpers) =>
-                  handleSubmit(values, formikHelpers)
-                }>
-                {() => (
-                  <Form>
-                    <div className="col-span-3 space-y-3">
-                      <FormikSelectInput
-                        name="deviceTypeId"
-                        label="generic.device-type"
-                        placeholder="Select a device type"
-                        items={deviceTypes.map((x) => ({
-                          id: x.id,
-                          label: x.displayName
-                        }))}
-                        onChange={(value) => {
-                          setSelectedDeviceType(
-                            deviceTypes.find((x) => x.id === value)
-                          );
-                        }}
-                      />
-                      <FormikTextInput
-                        name="serialNumber"
-                        label="generic.serial-number"
-                        placeholder="assets.add.serial-number.placeholder"
-                      />
-                      <div className="text-right">
-                        <Button
-                          color="primary"
-                          type="submit"
-                          loading={mutation.isLoading}>
-                          <FormattedMessage id="generic.save" />
-                        </Button>
+        <Card>
+          <CardBody>
+            <Heading type="h2">
+              <FormattedMessage id="assets.settings.device.title" />
+            </Heading>
+            <div className="mt-4 grid grid-cols-6 space-x-6">
+              <div className="col-span-3">
+                <Formik<ChangeDeviceFormValues>
+                  initialValues={{
+                    serialNumber: currentAsset.data.device.serialNumber,
+                    deviceTypeId: currentAsset.data.device.deviceType.id
+                  }}
+                  validationSchema={validationSchema}
+                  enableReinitialize
+                  onSubmit={(values, formikHelpers) =>
+                    handleSubmit(values, formikHelpers)
+                  }>
+                  {() => (
+                    <Form>
+                      <div className="col-span-3 space-y-3">
+                        <FormikCustomSelect
+                          name="deviceTypeId"
+                          label="generic.device-type"
+                          placeholder="Select a device type"
+                          options={deviceTypes.map((x) => ({
+                            value: x.id,
+                            label: x.displayName
+                          }))}
+                          onChange={(value) => {
+                            setSelectedDeviceType(
+                              deviceTypes.find((x) => x.id === value)
+                            );
+                          }}
+                        />
+                        <FormikTextInput
+                          name="serialNumber"
+                          label="generic.serial-number"
+                          placeholder="assets.add.serial-number.placeholder"
+                        />
+                        <div className="text-right">
+                          <Button
+                            color="primary"
+                            type="submit"
+                            loading={mutation.isLoading}>
+                            <FormattedMessage id="generic.save" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+              <div className="col-span-3">
+                <DeviceConfiguration deviceType={selectedDeviceType} />
+              </div>
             </div>
-            <div className="col-span-3">
-              <DeviceConfiguration deviceType={selectedDeviceType} />
+            <div className="mt-6">
+              <Heading type="h2">
+                <FormattedMessage id="assets.settings.device.history" />
+              </Heading>
+              <div className="mt-4">
+                <DevicesTable
+                  assetId={currentAsset.data.id}
+                  rows={devices.data?.items}
+                  loading={devices.isLoading}
+                  refresh={devices.refetch}
+                />
+              </div>
             </div>
-          </div>
-          <h2 className="mb-4 mt-6 text-lg font-medium leading-6 text-gray-900">
-            <FormattedMessage id="assets.settings.device.history" />
-          </h2>
-          <DevicesTable
-            assetId={currentAsset.data.id}
-            rows={devices.data?.items}
-            loading={devices.isLoading}
-            refresh={devices.refetch}
-          />
-        </AssetSettingsLayout>
+          </CardBody>
+        </Card>
       )}
-    </>
+    </AssetSettingsLayout>
   );
 }

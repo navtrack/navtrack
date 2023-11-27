@@ -1,4 +1,4 @@
-namespace Navtrack.Common.Settings.Settings;
+namespace Navtrack.Shared.Services.Settings.Settings;
 
 public class MapSettings
 {

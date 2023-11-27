@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Navtrack.Library.DI;
+namespace Navtrack.Shared.Library.DI;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ServiceAttribute : Attribute

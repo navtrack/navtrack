@@ -1,17 +1,14 @@
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Navtrack.DataAccess.Model.Attributes;
 using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Users;
 
 [Collection("users")]
-public class UserDocument
+public class UserDocument : BaseDocument
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
-    
     [BsonElement("email")]
     public string Email { get; set; }
         

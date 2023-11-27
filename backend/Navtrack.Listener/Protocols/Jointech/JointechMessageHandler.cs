@@ -1,6 +1,6 @@
-using Navtrack.Library.DI;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Jointech;
 

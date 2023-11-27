@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="MongoDB.Bson" Version="2.20.0"/>
+    </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MongoDB.Bson" Version="2.20.0" />
+        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj"/>
     </ItemGroup>
 </Project>

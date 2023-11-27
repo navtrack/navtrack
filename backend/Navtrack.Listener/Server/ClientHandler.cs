@@ -2,9 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Services;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Server;
 

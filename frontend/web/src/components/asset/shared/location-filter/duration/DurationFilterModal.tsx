@@ -1,9 +1,9 @@
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { FormikTextInput } from "../../../../ui/shared/text-input/FormikTextInput";
-import { Modal } from "../../../../ui/shared/modal/Modal";
-import { TextInputRightAddon } from "../../../../ui/shared/text-input/TextInputRightAddon";
+import { FormikTextInput } from "../../../../ui/form/text-input/FormikTextInput";
+import { Modal } from "../../../../ui/modal/Modal";
+import { TextInputRightAddon } from "../../../../ui/form/text-input/TextInputRightAddon";
 import { FilterModal } from "../FilterModal";
 import { DurationFilterFormValues } from "../types";
 import { useDurationFilter } from "./useDurationFilter";

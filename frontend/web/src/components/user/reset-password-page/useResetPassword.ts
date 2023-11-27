@@ -17,7 +17,7 @@ export const useResetPassword = () => {
       changePasswordMutation.mutate(
         {
           data: {
-            hash: hash,
+            hash: hash!,
             password: values.password,
             confirmPassword: values.confirmPassword
           }

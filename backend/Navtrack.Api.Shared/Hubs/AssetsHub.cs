@@ -3,6 +3,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Assets;
 
 namespace Navtrack.Api.Shared.Hubs;
@@ -17,9 +18,9 @@ public class AssetsHub : Hub
         this.assetService = assetService;
     }
 
-    public async Task<AssetsModel> GetAll()
+    public async Task<ListModel<AssetModel>> GetAll()
     {
-        AssetsModel assets = await assetService.GetAssets();
+        ListModel<AssetModel> assets = await assetService.GetAssets();
 
         return assets;
     }

@@ -4,6 +4,6 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Shared.BaseProgram.Main(args);
+        Shared.BaseProgram<Program>.Main(args);
     }
 }

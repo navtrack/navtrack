@@ -3,10 +3,10 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Mappers.Users;
-using Navtrack.Common.Passwords;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Passwords;
 
 namespace Navtrack.Api.Services.User;
 
@@ -15,24 +15,24 @@ public class UserService : IUserService
 {
     private readonly IPasswordHasher passwordHasher;
     private readonly ICurrentUserAccessor currentUserAccessor;
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
 
     public UserService(IPasswordHasher passwordHasher, ICurrentUserAccessor currentUserAccessor,
-        IUserDataService userDataService)
+        IUserRepository userRepository)
     {
         this.passwordHasher = passwordHasher;
         this.currentUserAccessor = currentUserAccessor;
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
     }
 
-    public async Task<UserModel> GetCurrentUser()
+    public async Task<Model.User.UserModel> GetCurrentUser()
     {
         UserDocument entity = await currentUserAccessor.Get();
 
-        return UserModelMapper.Map(entity);
+        return UserMapper.Map(entity);
     }
 
-    public async Task Update(UpdateUserRequest model)
+    public async Task Update(UpdateUserModel model)
     {
         UserDocument currentUser = await currentUserAccessor.Get();
         UpdateUser updateUser = new();
@@ -43,9 +43,9 @@ public class UserService : IUserService
 
             if (currentUser.Email != model.Email)
             {
-                if (await userDataService.EmailIsUsed(model.Email))
+                if (await userRepository.EmailIsUsed(model.Email))
                 {
-                    throw new ValidationException().AddValidationError(nameof(UpdateUserRequest.Email),
+                    throw new ValidationException().AddValidationError(nameof(UpdateUserModel.Email),
                         ValidationErrorCodes.EmailAlreadyUsed);
                 }
 
@@ -58,14 +58,14 @@ public class UserService : IUserService
             updateUser.UnitsType = model.UnitsType;
         }
 
-        await userDataService.Update(currentUser.Id, updateUser);
+        await userRepository.Update(currentUser.Id, updateUser);
     }
 
-    public async Task Register(RegisterAccountRequest model)
+    public async Task Register(RegisterAccountModel model)
     {
         ApiException apiException = new();
 
-        if (await userDataService.EmailIsUsed(model.Email))
+        if (await userRepository.EmailIsUsed(model.Email))
         {
             apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyUsed);
         }
@@ -82,6 +82,6 @@ public class UserService : IUserService
 
         UserDocument userDocument = UserDocumentMapper.Map(model.Email, hash, salt);
 
-        await userDataService.Add(userDocument);
+        await userRepository.Add(userDocument);
     }
 }

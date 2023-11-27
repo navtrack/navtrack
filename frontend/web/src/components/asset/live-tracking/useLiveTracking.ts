@@ -3,7 +3,7 @@ import { assetConfigurationAtom } from "@navtrack/shared/state/assets";
 import { useEffect } from "react";
 import { useMapEvents } from "react-leaflet";
 import { useRecoilState } from "recoil";
-import { useMap } from "../../ui/shared/map/useMap";
+import { useMap } from "../../ui/map/useMap";
 
 export function useLiveTracking() {
   const currentAsset = useCurrentAsset();

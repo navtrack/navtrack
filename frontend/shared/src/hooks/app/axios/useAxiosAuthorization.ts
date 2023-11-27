@@ -50,12 +50,12 @@ export function useAxiosAuthorization() {
             return response;
           },
           async function (error: AxiosError) {
-            if (
-              error.response?.status === 401 ||
-              error.response?.status === 400
-            ) {
-              await authentication.clear(AuthenticationErrorType.Other);
-            }
+            // if (
+            //   error.response?.status === 401 ||
+            //   error.response?.status === 400
+            // ) {
+            //   await authentication.clear(AuthenticationErrorType.Other);
+            // }
 
             return Promise.reject(error);
           }

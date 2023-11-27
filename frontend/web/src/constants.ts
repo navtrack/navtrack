@@ -1,4 +1,4 @@
-import { LatLng } from "./components/ui/shared/map/types";
+import { LatLng } from "./components/ui/map/types";
 
 export const DEFAULT_MAP_CENTER: LatLng = {
   latitude: 46.770439,

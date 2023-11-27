@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
-using Navtrack.Common.Passwords;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Services.Passwords;
 
 namespace Navtrack.Api.Services.IdentityServer;
 
@@ -14,17 +14,17 @@ namespace Navtrack.Api.Services.IdentityServer;
 public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
 {
     private readonly IPasswordHasher passwordHasher;
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
 
-    public ResourceOwnerPasswordValidator(IPasswordHasher passwordHasher, IUserDataService userDataService)
+    public ResourceOwnerPasswordValidator(IPasswordHasher passwordHasher, IUserRepository userRepository)
     {
         this.passwordHasher = passwordHasher;
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
     }
 
     public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
     {
-        UserDocument? user = await userDataService.GetByEmail(context.UserName);
+        UserDocument? user = await userRepository.GetByEmail(context.UserName);
 
         if (user != null && passwordHasher.CheckPassword(context.Password, user.Password.Hash, user.Password.Salt))
         {

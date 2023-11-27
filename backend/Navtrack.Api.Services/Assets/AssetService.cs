@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Devices;
 using Navtrack.Api.Services.Exceptions;
@@ -21,59 +22,62 @@ using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.DataAccess.Services.Locations;
 using Navtrack.DataAccess.Services.Users;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Assets;
 
 [Service(typeof(IAssetService))]
 public class AssetService : IAssetService
 {
-    private readonly IAssetDataService assetDataService;
+    private readonly IAssetRepository assetRepository;
     private readonly ICurrentUserAccessor currentUserAccessor;
-    private readonly ILocationDataService locationDataService;
-    private readonly IDeviceTypeDataService deviceTypeDataService;
+    private readonly ILocationRepository locationRepository;
+    private readonly IDeviceTypeRepository deviceTypeRepository;
     private readonly IDeviceService deviceService;
     private readonly IRepository repository;
-    private readonly IUserDataService userDataService;
+    private readonly IUserRepository userRepository;
+    private readonly IPost post;
 
-    public AssetService(IAssetDataService assetDataService, ICurrentUserAccessor currentUserAccessor,
-        ILocationDataService locationDataService, IDeviceTypeDataService deviceTypeDataService,
-        IDeviceService deviceService, IRepository repository, IUserDataService userDataService)
+    public AssetService(IAssetRepository assetRepository, ICurrentUserAccessor currentUserAccessor,
+        ILocationRepository locationRepository, IDeviceTypeRepository deviceTypeRepository,
+        IDeviceService deviceService, IRepository repository, IUserRepository userRepository, IPost post)
     {
-        this.assetDataService = assetDataService;
+        this.assetRepository = assetRepository;
         this.currentUserAccessor = currentUserAccessor;
-        this.locationDataService = locationDataService;
-        this.deviceTypeDataService = deviceTypeDataService;
+        this.locationRepository = locationRepository;
+        this.deviceTypeRepository = deviceTypeRepository;
         this.deviceService = deviceService;
         this.repository = repository;
-        this.userDataService = userDataService;
+        this.userRepository = userRepository;
+        this.post = post;
     }
 
     public async Task<AssetModel> GetById(string assetId)
     {
-        AssetDocument asset = await assetDataService.GetById(assetId);
-        DeviceType deviceType = deviceTypeDataService.GetById(asset.Device.DeviceTypeId);
-        List<UserDocument>? users = await userDataService.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
+        AssetDocument asset = await assetRepository.GetById(assetId);
+        DeviceType deviceType = deviceTypeRepository.GetById(asset.Device.DeviceTypeId);
+        List<UserDocument> users = await userRepository.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
         
         return AssetModelMapper.Map(asset, deviceType, users);
     }
 
-    public async Task<AssetsModel> GetAssets()
+    public async Task<ListModel<AssetModel>> GetAssets()
     {
         UserDocument user = await currentUserAccessor.Get();
         List<ObjectId> assetIds = user.AssetRoles?.Select(x => x.AssetId).ToList() ??
                                   Enumerable.Empty<ObjectId>().ToList();
-        List<AssetDocument> assets = await assetDataService.GetAssetsByIds(assetIds);
+        List<AssetDocument> assets = await assetRepository.GetAssetsByIds(assetIds);
 
         List<string> assetDeviceTypes =
             assets.Select(x => x.Device.DeviceTypeId).Distinct().ToList();
 
         IEnumerable<DeviceType> deviceTypes =
-            deviceTypeDataService.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
+            deviceTypeRepository.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
 
-        AssetsModel assetList = AssetListMapper.Map(assets, user.UnitsType, deviceTypes);
+        ListModel<AssetModel> model = AssetListMapper.Map(assets, user.UnitsType, deviceTypes);
 
-        return assetList;
+        return model;
     }
 
     public async Task Update(string assetId, UpdateAssetModel model)
@@ -85,7 +89,7 @@ public class AssetService : IAssetService
         {
             UserDocument user = await currentUserAccessor.Get();
 
-            bool nameIsUsed = await assetDataService.NameIsUsed(model.Name, user.Id, assetId);
+            bool nameIsUsed = await assetRepository.NameIsUsed(model.Name, user.Id, assetId);
 
             if (nameIsUsed)
             {
@@ -93,17 +97,19 @@ public class AssetService : IAssetService
                     .AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
             }
 
-            await assetDataService.UpdateName(assetId, model.Name);
+            await assetRepository.UpdateName(assetId, model.Name);
         }
     }
 
     public async Task Delete(string assetId)
     {
-        Task deleteAssetTask = assetDataService.Delete(assetId);
-        Task deleteLocationsTask = locationDataService.DeleteByAssetId(assetId);
-        Task removeRoleTask = userDataService.DeleteAssetRoles(assetId);
+        Task deleteAssetTask = assetRepository.Delete(assetId);
+        Task deleteLocationsTask = locationRepository.DeleteByAssetId(assetId);
+        Task removeRoleTask = userRepository.DeleteAssetRoles(assetId);
 
         await Task.WhenAll(new List<Task> { deleteAssetTask, deleteLocationsTask, removeRoleTask });
+        
+        await post.Send(new AssetDeletedEvent(assetId));
     }
 
     public async Task<AssetModel> Add(AddAssetModel model)
@@ -114,25 +120,29 @@ public class AssetService : IAssetService
         await ValidateModel(model, user);
 
         AssetDocument assetDocument = await AddDocuments(model);
-        DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
+        DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
 
-        return AssetModelMapper.Map(assetDocument, deviceType);
+        AssetModel asset = AssetModelMapper.Map(assetDocument, deviceType);
+        
+        await post.Send(new AssetCreatedEvent(asset));
+        
+        return asset;
     }
 
-    public async Task<AssetUserListModel> GetAssetUsers(string assetId)
+    public async Task<ListModel<AssetUserModel>> GetAssetUsers(string assetId)
     {
-        AssetDocument asset = await assetDataService.GetById(assetId);
-        List<UserDocument>? users = await userDataService.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
+        AssetDocument asset = await assetRepository.GetById(assetId);
+        List<UserDocument> users = await userRepository.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
 
         return AssetUserListModelMapper.Map(asset, users);
     }
 
     public async Task AddUserToAsset(string assetId, AddUserToAssetModel model)
     {
-        AssetDocument asset = await assetDataService.GetById(assetId);
+        AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
 
-        UserDocument? userDocument = await userDataService.GetByEmail(model.Email);
+        UserDocument? userDocument = await userRepository.GetByEmail(model.Email);
 
         if (userDocument == null)
         {
@@ -151,12 +161,12 @@ public class AssetService : IAssetService
             throw new ValidationException().AddValidationError(nameof(model.Role), "Invalid role.");
         }
 
-        await assetDataService.AddUserToAsset(asset, userDocument, assetRoleType);
+        await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
     }
 
     public async Task RemoveUserFromAsset(string assetId, string userId)
     {
-        AssetDocument asset = await assetDataService.GetById(assetId);
+        AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
 
         AssetUserRoleElement assetUserRole = asset.UserRoles.FirstOrDefault(x => x.UserId == ObjectId.Parse(userId));
@@ -168,13 +178,13 @@ public class AssetService : IAssetService
             throw new ApiException(HttpStatusCode.BadRequest, "You cannot remove the only owner of the asset.");
         }
 
-        await assetDataService.RemoveUserFromAsset(assetId, userId);
+        await assetRepository.RemoveUserFromAsset(assetId, userId);
     }
 
     private async Task<AssetDocument> AddDocuments(AddAssetModel model)
     {
         UserDocument currentUser = await currentUserAccessor.Get();
-        DeviceType deviceType = deviceTypeDataService.GetById(model.DeviceTypeId);
+        DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
 
         AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);
         await repository.GetCollection<AssetDocument>().InsertOneAsync(assetDocument);
@@ -192,7 +202,7 @@ public class AssetService : IAssetService
                 AssetId = assetDocument.Id
             }));
 
-        await assetDataService.SetActiveDevice(assetDocument.Id, deviceDocument.Id, deviceDocument.SerialNumber,
+        await assetRepository.SetActiveDevice(assetDocument.Id, deviceDocument.Id, deviceDocument.SerialNumber,
             deviceDocument.DeviceTypeId, deviceType.Protocol.Port);
 
         return assetDocument;
@@ -202,12 +212,12 @@ public class AssetService : IAssetService
     {
         ApiException validationException = new();
 
-        if (await assetDataService.NameIsUsed(model.Name, currentUser.Id))
+        if (await assetRepository.NameIsUsed(model.Name, currentUser.Id))
         {
             validationException.AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
         }
 
-        if (!deviceTypeDataService.Exists(model.DeviceTypeId))
+        if (!deviceTypeRepository.Exists(model.DeviceTypeId))
         {
             validationException.AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
         }

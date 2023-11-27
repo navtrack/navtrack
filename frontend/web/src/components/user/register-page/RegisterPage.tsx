@@ -1,12 +1,12 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/shared/button/Button";
-import { Card } from "../../ui/shared/card/Card";
-import { FormikTextInput } from "../../ui/shared/text-input/FormikTextInput";
-import { Link } from "../../ui/shared/link/Link";
-import Paths from "../../../app/Paths";
-import { TextInputLeftAddon } from "../../ui/shared/text-input/TextInputLeftAddon";
-import { Icon } from "../../ui/shared/icon/Icon";
+import { Button } from "../../ui/button-old/Button";
+import { Card } from "../../ui/card/Card";
+import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
+import { Link } from "../../ui/link/Link";
+import { Paths } from "../../../app/Paths";
+import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
+import { Icon } from "../../ui/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { ExternalLogin } from "../login-page/external-login/ExternalLogin";
@@ -32,7 +32,7 @@ export function RegisterPage() {
               <FormattedMessage id="register.success" />
             </div>
             <div className="mt-4 text-center">
-              <Link to={Paths.Home} text="register.continue" />
+              <Link to={Paths.Home} label="register.continue" />
             </div>
           </>
         ) : (
@@ -101,7 +101,7 @@ export function RegisterPage() {
               </span>
               <Link
                 to={Paths.Home}
-                text="register.existing.action"
+                label="register.existing.action"
                 className="ml-1"
               />
             </div>

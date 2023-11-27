@@ -1,21 +1,27 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import { useCallback, useMemo } from "react";
-import { Button } from "../ui/shared/button/Button";
-import { FormikTextInput } from "../ui/shared/text-input/FormikTextInput";
-import { SettingsLayout } from "./SettingsLayout";
+import { FormikTextInput } from "../ui/form/text-input/FormikTextInput";
 import { FormattedMessage, useIntl } from "react-intl";
-import { FormikSelect } from "../ui/shared/select/FormikSelect";
-import { ISelectOption } from "../ui/shared/select/types";
-import { useNotification } from "../ui/shared/notification/useNotification";
+import { FormikSelect } from "../ui/form/select/FormikSelect";
+import { useNotification } from "../ui/notification/useNotification";
 import { useUpdateUserMutation } from "@navtrack/shared/hooks/mutations/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
-import { UnitsType } from "@navtrack/shared/api/model/custom/UnitsType";
+import { SelectOption } from "../ui/form/select/Select";
+import { UnitsType } from "@navtrack/shared/api/model/generated";
+import { NewButton } from "../ui/button/NewButton";
+import { Card } from "../ui/card/Card";
+import { CardHeader } from "../ui/card/CardHeader";
+import { Heading } from "../ui/heading/Heading";
+import { CardBody } from "../ui/card/CardBody";
+import { CardFooter } from "../ui/card/CardFooter";
+import { Skeleton } from "../ui/skeleton/Skeleton";
+import { AccountSettingsLayout } from "./AccountSettingsLayout";
 
 type AccountSettingsFormValues = {
   email?: string;
-  units?: string;
+  units?: UnitsType;
 };
 
 export function SettingsAccountPage() {
@@ -33,7 +39,7 @@ export function SettingsAccountPage() {
         {
           data: {
             email: values.email,
-            unitsType: values.units === `${UnitsType.Metric}` ? 0 : 1
+            unitsType: values.units
           }
         },
         {
@@ -52,7 +58,7 @@ export function SettingsAccountPage() {
     [intl, showNotification, updateUserMutation]
   );
 
-  const units: ISelectOption[] = useMemo(
+  const units: SelectOption[] = useMemo(
     () => [
       {
         label: intl.formatMessage({ id: "generic.units.metric" }),
@@ -67,26 +73,26 @@ export function SettingsAccountPage() {
   );
 
   return (
-    <SettingsLayout>
-      {user && (
+    <AccountSettingsLayout>
+      <Card>
+        <CardHeader>
+          <Heading type="h2">
+            <FormattedMessage id="settings.account.title" />
+          </Heading>
+        </CardHeader>
         <Formik<AccountSettingsFormValues>
           initialValues={{
             email: user?.email,
-            units: `${user?.units}`
+            units: user?.units
           }}
+          enableReinitialize
           onSubmit={(values, formikHelpers) =>
             handleSubmit(values, formikHelpers)
           }>
-          {({ values }) => (
+          {() => (
             <Form>
-              <>{console.log(values)}</>
-              <div className="shadow sm:overflow-hidden sm:rounded-md">
-                <div className="space-y-6 bg-white px-4 py-6 sm:p-6">
-                  <div>
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">
-                      <FormattedMessage id="settings.account.title" />
-                    </h3>
-                  </div>
+              <CardBody>
+                <Skeleton loading={!user}>
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-3">
                       <FormikTextInput
@@ -103,17 +109,17 @@ export function SettingsAccountPage() {
                       />
                     </div>
                   </div>
-                </div>
-                <div className="bg-gray-50 px-3 py-3 text-right">
-                  <Button size="lg" type="submit">
-                    <FormattedMessage id="generic.save" />
-                  </Button>
-                </div>
-              </div>
+                </Skeleton>
+              </CardBody>
+              <CardFooter className="text-right">
+                <NewButton size="lg" type="submit" disabled={!user}>
+                  <FormattedMessage id="generic.save" />
+                </NewButton>
+              </CardFooter>
             </Form>
           )}
         </Formik>
-      )}
-    </SettingsLayout>
+      </Card>
+    </AccountSettingsLayout>
   );
 }

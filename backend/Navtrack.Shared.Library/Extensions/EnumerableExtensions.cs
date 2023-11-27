@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Navtrack.Library.Extensions;
+namespace Navtrack.Shared.Library.Extensions;
 
 public static class EnumerableExtensions
 {

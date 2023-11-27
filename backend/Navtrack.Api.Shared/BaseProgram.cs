@@ -1,8 +1,11 @@
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Services;
@@ -11,13 +14,13 @@ using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.IdentityServer;
 using Navtrack.Api.Shared.Hubs;
 using Navtrack.DataAccess.Mongo;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Shared;
 
-public class BaseProgram
+public class BaseProgram<T>
 {
-    public static void Main(string[] args)
+    public static void Main(string[] args, BaseProgramOptions? baseProgramOptions = null)
     {
         const string defaultCorsPolicy = "defaultCorsPolicy";
 
@@ -25,7 +28,7 @@ public class BaseProgram
 
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-        Bootstrapper.ConfigureServices<BaseProgram>(builder.Services);
+        Bootstrapper.ConfigureServices<T>(builder.Services);
 
         builder.WebHost.UseSentry();
 
@@ -45,12 +48,22 @@ public class BaseProgram
             {
                 options.Filters.Add<AuthorizeActionFilter>();
                 options.Filters.Add<ModelStateMappingActionFilter>();
+                baseProgramOptions?.Filters?.ForEach(x => options.Filters.Add(x));
+            })
+            .ConfigureApplicationPartManager(x =>
+            {
+                IApplicationFeatureProvider applicationFeatureProvider =
+                    x.FeatureProviders.First(y => y.GetType() == typeof(ControllerFeatureProvider));
+
+                x.FeatureProviders[x.FeatureProviders.IndexOf(applicationFeatureProvider)] =
+                    new CustomControllerFeatureProvider();
             })
             .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
         builder.Services.AddSignalR().AddHubOptions<AssetsHub>(options => { options.EnableDetailedErrors = true; });
@@ -92,8 +105,6 @@ public class BaseProgram
 
         app.MapControllers();
         app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));
-
-        app.MapControllers();
 
         app.Run();
     }

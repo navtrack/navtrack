@@ -1,14 +1,15 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
-import { Map } from "../../ui/shared/map/Map";
-import { MapPin } from "../../ui/shared/map/MapPin";
+import { Map } from "../../ui/map/Map";
+import { MapPin } from "../../ui/map/MapPin";
 import { LogTable } from "./LogTable";
 import useLog from "./useLog";
+import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 
 export function AssetLogPage() {
   const log = useLog();
 
   return (
-    <>
+    <AuthenticatedLayoutTwoColumns>
       <LocationFilter
         filterPage="log"
         center={
@@ -39,6 +40,6 @@ export function AssetLogPage() {
           </div>
         </div>
       )}
-    </>
+    </AuthenticatedLayoutTwoColumns>
   );
 }

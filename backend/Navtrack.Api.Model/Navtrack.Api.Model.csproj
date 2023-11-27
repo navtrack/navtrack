@@ -5,6 +5,5 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj" />
-        <ProjectReference Include="..\Navtrack.Core.Services\Navtrack.Core.Services.csproj" />
     </ItemGroup>
 </Project>

@@ -1,8 +1,8 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../../ui/shared/button/Button";
-import { Icon } from "../../../ui/shared/icon/Icon";
+import { Button } from "../../../ui/button-old/Button";
+import { Icon } from "../../../ui/icon/Icon";
 
 interface IFilterModal {
   icon: IconProp;

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Reports;
-using Navtrack.Core.Model.Trips;
+using Navtrack.Api.Model.Trips;
 using Navtrack.DataAccess.Model.Common;
 
 namespace Navtrack.Api.Services.Mappers.Reports;
 
 public static class DistanceReportListModelMapper
 {
-    public static DistanceReportListModel Map(IEnumerable<Trip> source, UnitsType unitsType)
+    public static DistanceReportListModel Map(IEnumerable<TripModel> source, UnitsType unitsType)
     {
         DistanceReportListModel model = new DistanceReportListModel
         {

@@ -1,11 +1,11 @@
 import { faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { GeofenceCircle } from "../../../../ui/shared/map/geofence/GeofenceCircle";
-import { Map } from "../../../../ui/shared/map/Map";
-import { MapMove } from "../../../../ui/shared/map/MapMove";
-import { CircleGeofence, LatLng } from "../../../../ui/shared/map/types";
-import { Modal } from "../../../../ui/shared/modal/Modal";
+import { GeofenceCircle } from "../../../../ui/map/geofence/GeofenceCircle";
+import { Map } from "../../../../ui/map/Map";
+import { MapMove } from "../../../../ui/map/MapMove";
+import { CircleGeofence, LatLng } from "../../../../ui/map/types";
+import { Modal } from "../../../../ui/modal/Modal";
 import { FilterModal } from "../FilterModal";
 import { useGeofenceFilter } from "./useGeofenceFilter";
 

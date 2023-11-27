@@ -1,7 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Core.Model\Navtrack.Core.Model.csproj" />
-        <ProjectReference Include="..\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj" />
-        <ProjectReference Include="..\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj" />
-    </ItemGroup>
-</Project>

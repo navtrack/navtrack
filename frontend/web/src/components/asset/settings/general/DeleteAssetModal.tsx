@@ -1,15 +1,16 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { FormikTextInput } from "../../../ui/shared/text-input/FormikTextInput";
+import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { DeleteAssetFormValues } from "./types";
-import { Modal } from "../../../ui/shared/modal/Modal";
-import { DeleteModalContainer } from "../../../ui/shared/modal/DeleteModalContainer";
+import { Modal } from "../../../ui/modal/Modal";
+import { DeleteModalContainer } from "../../../ui/modal/DeleteModalContainer";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { useDeleteAssetValidationSchema } from "./useDeleteAssetValidationSchema";
 import { useDeleteAsset } from "@navtrack/shared/hooks/assets/delete-asset/useDeleteAsset";
-import { useNotification } from "../../../ui/shared/notification/useNotification";
-import { useHistory } from "react-router-dom";
+import { useNotification } from "../../../ui/notification/useNotification";
+import { useNavigate } from "react-router-dom";
+import { Paths } from "../../../../app/Paths";
 
 type DeleteAssetModalProps = {
   show: boolean;
@@ -19,12 +20,12 @@ type DeleteAssetModalProps = {
 export function DeleteAssetModal(props: DeleteAssetModalProps) {
   const currentAsset = useCurrentAsset();
   const validationSchema = useDeleteAssetValidationSchema();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { showNotification } = useNotification();
 
   const deleteAsset = useDeleteAsset({
     onSuccess: () => {
-      history.push("/");
+      navigate(Paths.Home);
       showNotification({
         type: "success",
         description: "assets.settings.general.delete-asset.success"

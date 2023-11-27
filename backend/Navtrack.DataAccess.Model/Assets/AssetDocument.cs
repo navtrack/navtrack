@@ -1,19 +1,15 @@
 using System.Collections.Generic;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Navtrack.DataAccess.Model.Attributes;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Locations;
+using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Assets;
 
 [Collection("assets")]
 [BsonIgnoreExtraElements]
-public class AssetDocument
+public class AssetDocument : BaseDocument
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
-
     [BsonElement("name")]
     public string Name { get; set; }
 

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Navtrack.Library.DI;
-using Navtrack.Library.Extensions;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
+using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Library.Extensions;
 using static System.String;
 
 namespace Navtrack.Listener.Protocols.Concox;

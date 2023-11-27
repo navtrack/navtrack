@@ -7,8 +7,8 @@ using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.DataAccess.Services.Locations;
-using Navtrack.Library.DI;
 using Navtrack.Listener.Mappers;
+using Navtrack.Shared.Library.DI;
 using Location = Navtrack.Listener.Models.Location;
 
 namespace Navtrack.Listener.Services;
@@ -16,16 +16,16 @@ namespace Navtrack.Listener.Services;
 [Service(typeof(ILocationService))]
 public class LocationService : ILocationService
 {
-    private readonly ILocationDataService locationDataService;
-    private readonly IDeviceDataService deviceDataService;
-    private readonly IAssetDataService assetDataService;
+    private readonly ILocationRepository locationRepository;
+    private readonly IDeviceRepository deviceRepository;
+    private readonly IAssetRepository assetRepository;
 
-    public LocationService(ILocationDataService locationDataService, IDeviceDataService deviceDataService,
-        IAssetDataService assetDataService)
+    public LocationService(ILocationRepository locationRepository, IDeviceRepository deviceRepository,
+        IAssetRepository assetRepository)
     {
-        this.locationDataService = locationDataService;
-        this.deviceDataService = deviceDataService;
-        this.assetDataService = assetDataService;
+        this.locationRepository = locationRepository;
+        this.deviceRepository = deviceRepository;
+        this.assetRepository = assetRepository;
     }
 
     public async Task AddRange(List<Location> locations, ObjectId connectionMessageId)
@@ -34,7 +34,7 @@ public class LocationService : ILocationService
         {
             string deviceId = locations.First().Device.IMEI;
 
-            AssetDocument asset = await deviceDataService.GetActiveDeviceByDeviceId(deviceId);
+            AssetDocument asset = await deviceRepository.GetActiveDeviceByDeviceId(deviceId);
 
             if (asset != null)
             {
@@ -42,13 +42,13 @@ public class LocationService : ILocationService
                     locations.Select(x => LocationDocumentMapper.Map(x, asset, connectionMessageId))
                         .ToList();
 
-                await locationDataService.AddRange(mapped);
+                await locationRepository.AddRange(mapped);
                 
                 LocationDocument latestLocation = mapped.OrderByDescending(x => x.DateTime).First();
 
                 if (asset.Location == null || latestLocation.DateTime > asset.Location.DateTime)
                 {
-                    await assetDataService.UpdateLocation(asset.Id, latestLocation);
+                    await assetRepository.UpdateLocation(asset.Id, latestLocation);
                 }
             }
         }

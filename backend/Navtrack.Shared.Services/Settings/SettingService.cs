@@ -4,25 +4,25 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using Navtrack.DataAccess.Model.Settings;
 using Navtrack.DataAccess.Services.Settings;
-using Navtrack.Library.DI;
+using Navtrack.Shared.Library.DI;
 
-namespace Navtrack.Common.Settings;
+namespace Navtrack.Shared.Services.Settings;
 
 [Service(typeof(ISettingService))]
 public class SettingService : ISettingService
 {
-    private readonly ISettingDataService settingDataService;
+    private readonly ISettingRepository settingRepository;
 
-    public SettingService(ISettingDataService settingDataService)
+    public SettingService(ISettingRepository settingRepository)
     {
-        this.settingDataService = settingDataService;
+        this.settingRepository = settingRepository;
     }
 
     public async Task<T?> Get<T>() where T : new()
     {
         string key = GetKey<T>();
 
-        SettingDocument? document = await settingDataService.Get(key);
+        SettingDocument? document = await settingRepository.Get(key);
 
         if (document != null)
         {
@@ -38,7 +38,7 @@ public class SettingService : ISettingService
     {
         string key = GetKey<T>();
 
-        await settingDataService.Save(key, settings.ToBsonDocument());
+        await settingRepository.Save(key, settings.ToBsonDocument());
     }
 
     private static string GetKey<T>()

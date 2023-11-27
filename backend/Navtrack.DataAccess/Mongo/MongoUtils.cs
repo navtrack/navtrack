@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Navtrack.DataAccess.Model.Attributes;
 
 namespace Navtrack.DataAccess.Mongo;
 

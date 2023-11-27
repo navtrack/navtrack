@@ -4,6 +4,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Listener\Navtrack.Listener.csproj"/>
+        <ProjectReference Include="..\Navtrack.Listener\Navtrack.Listener.csproj" />
     </ItemGroup>
 </Project>

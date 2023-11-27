@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,23 +9,39 @@ namespace Navtrack.Api.Model.Trips;
 public class TripModel
 {
     [Required]
+    public List<LocationModel> Locations { get; set; }
+
+    [Required]
     public LocationModel StartLocation => Locations.First();
 
     [Required]
     public LocationModel EndLocation => Locations.Last();
 
     [Required]
-    public List<LocationModel> Locations { get; set; }
+    public double Duration => Math.Ceiling((EndLocation.DateTime - StartLocation.DateTime).TotalMinutes);
 
     [Required]
     public int Distance { get; set; }
 
-    [Required]
-    public double Duration { get; set; }
+    public float? MaxSpeed => Locations.Max(x => x.Speed);
 
-    public float? MaxSpeed { get; set; }
+    public float? AverageSpeed
+    {
+        get
+        {
+            float? average = Locations.Where(x => x.Speed > 0).Average(x => x.Speed);
 
-    public float? AverageSpeed { get; set; }
+            return average.HasValue ? (float?)Math.Round(average.Value) : null;
+        }
+    }
 
-    public float? AverageAltitude { get; set; }
+    public float? AverageAltitude
+    {
+        get
+        {
+            float? average = Locations.Average(x => x.Altitude);
+
+            return average.HasValue ? (float?)Math.Round(average.Value) : null;
+        }
+    }
 }
