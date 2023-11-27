@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <PackageReference Include="MongoDB.Bson" Version="2.20.0"/>
+        <PackageReference Include="MongoDB.Bson" Version="2.22.0" />
     </ItemGroup>
 
     <ItemGroup>
