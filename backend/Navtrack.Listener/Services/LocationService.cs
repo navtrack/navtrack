@@ -8,8 +8,8 @@ using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.DataAccess.Services.Locations;
 using Navtrack.Listener.Mappers;
+using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
-using Location = Navtrack.Listener.Models.Location;
 
 namespace Navtrack.Listener.Services;
 

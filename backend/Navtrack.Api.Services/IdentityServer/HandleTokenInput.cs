@@ -11,7 +11,7 @@ public class HandleTokenInput
 
     public HandleTokenInput(ExternalAuthenticationSettings authenticationSettings)
     {
-        this.AuthenticationSettings = authenticationSettings;
+        AuthenticationSettings = authenticationSettings;
     }
 
     public readonly ExternalAuthenticationSettings AuthenticationSettings;

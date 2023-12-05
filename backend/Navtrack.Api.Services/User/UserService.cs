@@ -25,7 +25,7 @@ public class UserService : IUserService
         this.userRepository = userRepository;
     }
 
-    public async Task<Model.User.UserModel> GetCurrentUser()
+    public async Task<UserModel> GetCurrentUser()
     {
         UserDocument entity = await currentUserAccessor.Get();
 

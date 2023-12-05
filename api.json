@@ -2172,7 +2172,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/LocationModel"
-            }
+            },
+            "readOnly": true
           },
           "startLocation": {
             "$ref": "#/components/schemas/LocationModel"

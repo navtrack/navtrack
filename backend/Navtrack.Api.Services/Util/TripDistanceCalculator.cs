@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Navtrack.Api.Model;
 
 namespace Navtrack.Api.Services.Util;
 
 public static class TripDistanceCalculator
 {
-    public static int CalculateDistance(List<(Api.Model.Coordinates Coordinates, double? Odometer)> locations)
+    public static int CalculateDistance(List<(Coordinates Coordinates, double? Odometer)> locations)
     {
         int distance = 0;
 
@@ -31,8 +32,8 @@ public static class TripDistanceCalculator
         return distance;
     }
 
-    public static int CalculateDistance((Api.Model.Coordinates Coordinates, double? Odometer) fromLocation,
-        (Api.Model.Coordinates Coordinates, double? Odometer) toLocation)
+    public static int CalculateDistance((Coordinates Coordinates, double? Odometer) fromLocation,
+        (Coordinates Coordinates, double? Odometer) toLocation)
     {
         if (toLocation.Odometer.HasValue && fromLocation.Odometer.HasValue)
         {

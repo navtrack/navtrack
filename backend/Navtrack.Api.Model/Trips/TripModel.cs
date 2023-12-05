@@ -9,12 +9,13 @@ namespace Navtrack.Api.Model.Trips;
 public class TripModel
 {
     [Required]
-    public List<LocationModel> Locations { get; set; }
+    public List<LocationModel> Locations { get; } = new();    
 
     [Required]
     public LocationModel StartLocation => Locations.First();
 
     [Required]
+    // ReSharper disable once MemberCanBePrivate.Global
     public LocationModel EndLocation => Locations.Last();
 
     [Required]

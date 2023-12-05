@@ -2,7 +2,7 @@ using System;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Locations;
-using Location = Navtrack.Listener.Models.Location;
+using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Mappers;
 

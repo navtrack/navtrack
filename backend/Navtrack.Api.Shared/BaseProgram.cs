@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -24,7 +25,7 @@ public class BaseProgram<T>
     {
         const string defaultCorsPolicy = "defaultCorsPolicy";
 
-        Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

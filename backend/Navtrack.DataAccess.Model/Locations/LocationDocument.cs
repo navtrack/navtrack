@@ -60,7 +60,7 @@ public class LocationDocument
     public double? Odometer { get; set; }
 
     [BsonElement("cgi")]
-    public CellGlobalIdentityElement CellGlobalIdentity { get; set; }
+    public CellGlobalIdentityElement? CellGlobalIdentity { get; set; }
         
     [BsonElement("cId")]
     public ObjectId? DeviceConnectionMessageId { get; set; }

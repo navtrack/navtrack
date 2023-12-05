@@ -58,11 +58,7 @@ public class TripService : ITripService
                 DistanceCalculator.CalculateDistance(new Coordinates(lastLocation.Latitude, lastLocation.Longitude),
                     new Coordinates(locationDocument.Latitude, locationDocument.Longitude)) > 1000)
             {
-                currentTrip = new TripModel
-                {
-                    Locations = new List<LocationModel>()
-                };
-
+                currentTrip = new TripModel();
                 trips.Add(currentTrip);
             }
 
