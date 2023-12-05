@@ -11,12 +11,7 @@ namespace Navtrack.Api.Tests.Helpers;
 public class TestWebApplicationFactory<TProgram>
     : WebApplicationFactory<TProgram> where TProgram : class
 {
-    private readonly TestMongoDatabaseFactory mongoDatabaseFactory;
-
-    public TestWebApplicationFactory()
-    {
-        mongoDatabaseFactory = new TestMongoDatabaseFactory();
-    }
+    private readonly TestMongoDatabaseFactory mongoDatabaseFactory = new();
 
     protected override IHost CreateHost(IHostBuilder hostBuilder)
     {

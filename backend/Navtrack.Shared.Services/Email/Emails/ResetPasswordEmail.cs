@@ -1,16 +1,7 @@
 namespace Navtrack.Shared.Services.Email.Emails;
 
-public class ResetPasswordEmail : IEmail
+public class ResetPasswordEmail(string link, int hours) : IEmail
 {
-    private readonly string link;
-    private readonly int expirationHours;
-
-    public ResetPasswordEmail(string link, int expirationHours)
-    {
-        this.link = link;
-        this.expirationHours = expirationHours;
-    }
-
     public string Subject => "[Navtrack] Reset password";
 
     public string Body => $$"""
@@ -19,7 +10,7 @@ public class ResetPasswordEmail : IEmail
                 If you requested to reset your password, continue the process by clicking on the link below:<br />            
                 <a href="{{link}}">{{link}}</a><br /><br />
 
-                If you don't use the link within {{expirationHours}} hours, it will expire.<br /><br />
+                If you don't use the link within {{hours}} hours, it will expire.<br /><br />
 
                 Thanks,<br />
                 The Navtrack Team

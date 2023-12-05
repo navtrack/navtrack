@@ -5,14 +5,9 @@ using Navtrack.Api.Tests.Helpers;
 
 namespace Navtrack.Api.Tests;
 
-public class HealthTests : IClassFixture<TestWebApplicationFactory<Program>>
+public class HealthTests(TestWebApplicationFactory<Program> factory) : IClassFixture<TestWebApplicationFactory<Program>>
 {
-    private readonly HttpClient httpClient;
-
-    public HealthTests(TestWebApplicationFactory<Program> factory)
-    {
-        httpClient = factory.CreateClient();
-    }
+    private readonly HttpClient httpClient = factory.CreateClient();
 
     [Fact]
     public async Task Health_Get_ReturnsOk()

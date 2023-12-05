@@ -15,12 +15,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Assets;
 
 [Service(typeof(IAssetRepository))]
-public class AssetRepository : GenericRepository<AssetDocument>, IAssetRepository
+public class AssetRepository(IRepository repository) : GenericRepository<AssetDocument>(repository), IAssetRepository
 {
-    public AssetRepository(IRepository repository) : base(repository)
-    {
-    }
-
     public Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids)
     {
         return repository.GetQueryable<AssetDocument>()

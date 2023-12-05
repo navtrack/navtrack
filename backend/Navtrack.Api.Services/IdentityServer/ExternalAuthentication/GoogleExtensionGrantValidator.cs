@@ -17,37 +17,29 @@ using Navtrack.Shared.Services.Settings;
 namespace Navtrack.Api.Services.IdentityServer.ExternalAuthentication;
 
 [Service(typeof(IExtensionGrantValidator))]
-public class GoogleExtensionGrantValidator : IExtensionGrantValidator
+public class GoogleExtensionGrantValidator(
+    IUserRepository repository,
+    IExternalLoginHandler loginHandler,
+    ISettingService service)
+    : IExtensionGrantValidator
 {
-    private readonly IUserRepository userRepository;
-    private readonly IExternalLoginHandler externalLoginHandler;
-    private readonly ISettingService settingService;
-
-    public GoogleExtensionGrantValidator(IUserRepository userRepository, IExternalLoginHandler externalLoginHandler,
-        ISettingService settingService)
-    {
-        this.userRepository = userRepository;
-        this.externalLoginHandler = externalLoginHandler;
-        this.settingService = settingService;
-    }
-
     public string GrantType => "google";
 
     public async Task ValidateAsync(ExtensionGrantValidationContext context)
     {
-        GoogleAuthenticationSettings settings = await settingService.Get<GoogleAuthenticationSettings>();
+        GoogleAuthenticationSettings settings = await service.Get<GoogleAuthenticationSettings>();
 
         string idToken = await GetIdToken(context, settings);
         
-        string? userId = await externalLoginHandler.HandleToken(new HandleTokenInput(settings)
+        string? userId = await loginHandler.HandleToken(new HandleTokenInput(settings)
         {
             Token = idToken,
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userRepository.GetByEmailOrGoogleId,
+            GetUser = repository.GetByEmailOrGoogleId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, googleId: id),
             ExternalId = user => user.GoogleId,
-            SetId = (userId, id) => userRepository.Update(userId, new UpdateUser
+            SetId = (userId, id) => repository.Update(userId, new UpdateUser
             {
                 GoogleId = id
             })

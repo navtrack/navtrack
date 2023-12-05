@@ -9,15 +9,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Users;
 
 [Service(typeof(IRefreshTokenRepository))]
-public class RefreshTokenRepository : IRefreshTokenRepository
+public class RefreshTokenRepository(IRepository repository) : IRefreshTokenRepository
 {
-    private readonly IRepository repository;
-
-    public RefreshTokenRepository(IRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public Task Add(RefreshTokenDocument document)
     {
         return repository.GetCollection<RefreshTokenDocument>()

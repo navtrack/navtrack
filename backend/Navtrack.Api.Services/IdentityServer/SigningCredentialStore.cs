@@ -13,15 +13,8 @@ namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(ISigningCredentialStore))]
 [Service(typeof(IValidationKeysStore))]
-public class SigningCredentialStore : ISigningCredentialStore, IValidationKeysStore
+public class SigningCredentialStore(ISettingService service) : ISigningCredentialStore, IValidationKeysStore
 {
-    private readonly ISettingService settingService;
-
-    public SigningCredentialStore(ISettingService settingService)
-    {
-        this.settingService = settingService;
-    }
-
     public async Task<SigningCredentials> GetSigningCredentialsAsync()
     {
         SigningCredentials credentials = await GetSigningCredentials();
@@ -42,7 +35,7 @@ public class SigningCredentialStore : ISigningCredentialStore, IValidationKeysSt
 
     private async Task<SigningCredentials> GetSigningCredentials()
     {
-        IdentityServerSettings identityServerSettings = await settingService.Get<IdentityServerSettings>();
+        IdentityServerSettings identityServerSettings = await service.Get<IdentityServerSettings>();
 
         RsaSecurityKey rsaSecurityKey;
 
@@ -55,7 +48,7 @@ public class SigningCredentialStore : ISigningCredentialStore, IValidationKeysSt
                 SigningCredentials = CreateIdentityServerSigningCredentials(rsaSecurityKey)
             };
 
-            await settingService.Set(identityServerSettings);
+            await service.Set(identityServerSettings);
         }
 
         rsaSecurityKey = new RsaSecurityKey(RsaParametersMapper.Map(identityServerSettings.SigningCredentials.KeyParameters))

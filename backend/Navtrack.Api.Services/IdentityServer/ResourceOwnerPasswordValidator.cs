@@ -11,22 +11,14 @@ using Navtrack.Shared.Services.Passwords;
 namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(IResourceOwnerPasswordValidator))]
-public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
+public class ResourceOwnerPasswordValidator(IPasswordHasher hasher, IUserRepository repository)
+    : IResourceOwnerPasswordValidator
 {
-    private readonly IPasswordHasher passwordHasher;
-    private readonly IUserRepository userRepository;
-
-    public ResourceOwnerPasswordValidator(IPasswordHasher passwordHasher, IUserRepository userRepository)
-    {
-        this.passwordHasher = passwordHasher;
-        this.userRepository = userRepository;
-    }
-
     public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
     {
-        UserDocument? user = await userRepository.GetByEmail(context.UserName);
+        UserDocument? user = await repository.GetByEmail(context.UserName);
 
-        if (user != null && passwordHasher.CheckPassword(context.Password, user.Password.Hash, user.Password.Salt))
+        if (user != null && hasher.CheckPassword(context.Password, user.Password.Hash, user.Password.Salt))
         {
             context.Result = new GrantValidationResult($"{user.Id}",
                 "custom",

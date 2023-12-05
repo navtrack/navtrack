@@ -11,30 +11,22 @@ using Navtrack.Shared.Services.Passwords;
 namespace Navtrack.Api.Services.User;
 
 [Service(typeof(IUserService))]
-public class UserService : IUserService
+public class UserService(
+    IPasswordHasher hasher,
+    ICurrentUserAccessor userAccessor,
+    IUserRepository repository)
+    : IUserService
 {
-    private readonly IPasswordHasher passwordHasher;
-    private readonly ICurrentUserAccessor currentUserAccessor;
-    private readonly IUserRepository userRepository;
-
-    public UserService(IPasswordHasher passwordHasher, ICurrentUserAccessor currentUserAccessor,
-        IUserRepository userRepository)
-    {
-        this.passwordHasher = passwordHasher;
-        this.currentUserAccessor = currentUserAccessor;
-        this.userRepository = userRepository;
-    }
-
     public async Task<UserModel> GetCurrentUser()
     {
-        UserDocument entity = await currentUserAccessor.Get();
+        UserDocument entity = await userAccessor.Get();
 
         return UserMapper.Map(entity);
     }
 
     public async Task Update(UpdateUserModel model)
     {
-        UserDocument currentUser = await currentUserAccessor.Get();
+        UserDocument currentUser = await userAccessor.Get();
         UpdateUser updateUser = new();
 
         if (!string.IsNullOrEmpty(model.Email))
@@ -43,7 +35,7 @@ public class UserService : IUserService
 
             if (currentUser.Email != model.Email)
             {
-                if (await userRepository.EmailIsUsed(model.Email))
+                if (await repository.EmailIsUsed(model.Email))
                 {
                     throw new ValidationException().AddValidationError(nameof(UpdateUserModel.Email),
                         ValidationErrorCodes.EmailAlreadyUsed);
@@ -58,14 +50,14 @@ public class UserService : IUserService
             updateUser.UnitsType = model.UnitsType;
         }
 
-        await userRepository.Update(currentUser.Id, updateUser);
+        await repository.Update(currentUser.Id, updateUser);
     }
 
     public async Task Register(RegisterAccountModel model)
     {
         ApiException apiException = new();
 
-        if (await userRepository.EmailIsUsed(model.Email))
+        if (await repository.EmailIsUsed(model.Email))
         {
             apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyUsed);
         }
@@ -78,10 +70,10 @@ public class UserService : IUserService
 
         apiException.ThrowIfInvalid();
 
-        (string hash, string salt) = passwordHasher.Hash(model.Password);
+        (string hash, string salt) = hasher.Hash(model.Password);
 
         UserDocument userDocument = UserDocumentMapper.Map(model.Email, hash, salt);
 
-        await userRepository.Add(userDocument);
+        await repository.Add(userDocument);
     }
 }

@@ -9,18 +9,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Assets;
 
 [Service(typeof(IAssetAuthorizationService))]
-public class AssetAuthorizationService : IAssetAuthorizationService
+public class AssetAuthorizationService(ICurrentUserAccessor userAccessor) : IAssetAuthorizationService
 {
-    private readonly ICurrentUserAccessor currentUserAccessor;
-
-    public AssetAuthorizationService(ICurrentUserAccessor currentUserAccessor)
-    {
-        this.currentUserAccessor = currentUserAccessor;
-    }
-
     public async Task<bool> CurrentUserHasRole(AssetRoleType assetRoleType, string assetId)
     {
-        UserDocument currentUser = await currentUserAccessor.Get();
+        UserDocument currentUser = await userAccessor.Get();
 
         AssetRoleType[] validRoles = assetRoleType == AssetRoleType.Viewer
             ? new[] { AssetRoleType.Owner, AssetRoleType.Viewer }

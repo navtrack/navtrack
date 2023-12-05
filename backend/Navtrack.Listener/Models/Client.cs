@@ -7,11 +7,6 @@ namespace Navtrack.Listener.Models;
 
 public class Client
 {
-    public Client()
-    {
-        ClientCache = new Dictionary<string, object>();
-    }
-
     public TcpClient TcpClient { get; set; }
     public IProtocol Protocol { get; set; }
     public Device Device { get; private set; }
@@ -48,5 +43,5 @@ public class Client
         ClientCache[key] = value;
     }
 
-    private Dictionary<string, object> ClientCache { get; set; }
+    private Dictionary<string, object> ClientCache { get; set; } = new();
 }

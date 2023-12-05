@@ -11,12 +11,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Users;
 
 [Service(typeof(IUserRepository))]
-public class UserRepository : GenericRepository<UserDocument>, IUserRepository
+public class UserRepository(IRepository repository) : GenericRepository<UserDocument>(repository), IUserRepository
 {
-    public UserRepository(IRepository repository) : base(repository)
-    {
-    }
-
     public Task<UserDocument> GetByObjectId(ObjectId id)
     {
         return repository.GetQueryable<UserDocument>()

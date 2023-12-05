@@ -12,25 +12,17 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Locations;
 
 [Service(typeof(ILocationService))]
-public class LocationService : ILocationService
+public class LocationService(
+    IAssetRepository repository,
+    IRoleService service,
+    ILocationRepository locationRepository)
+    : ILocationService
 {
-    private readonly IAssetRepository assetRepository;
-    private readonly IRoleService roleService;
-    private readonly ILocationRepository locationRepository;
-
-    public LocationService(IAssetRepository assetRepository, IRoleService roleService,
-        ILocationRepository locationRepository)
-    {
-        this.assetRepository = assetRepository;
-        this.roleService = roleService;
-        this.locationRepository = locationRepository;
-    }
-
     public async Task<LocationListModel> GetLocations(string assetId, LocationFilterModel locationFilter, int page, int size)
     {
-        AssetDocument asset = await assetRepository.GetById(assetId);
+        AssetDocument asset = await repository.GetById(assetId);
 
-        roleService.CheckRole(asset, AssetRoleType.Viewer);
+        service.CheckRole(asset, AssetRoleType.Viewer);
 
         List<LocationDocument> locations = await locationRepository.GetLocations(assetId, locationFilter);
     

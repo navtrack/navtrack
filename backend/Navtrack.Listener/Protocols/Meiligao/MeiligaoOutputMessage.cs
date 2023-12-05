@@ -3,23 +3,12 @@ using static System.String;
 
 namespace Navtrack.Listener.Protocols.Meiligao;
 
-public class MeiligaoOutputMessage
+public class MeiligaoOutputMessage(MeiligaoCommands command, string[] deviceId, string data)
 {
-    private readonly MeiligaoCommands command;
-    private readonly string[] hexDeviceId;
-    private readonly string data;
-
     private const string PacketHeaderHex = "4040";
     private const string PacketEndHex = "0D0A";
-        
-    public MeiligaoOutputMessage(MeiligaoCommands command, string[] hexDeviceId, string data)
-    {
-        this.command = command;
-        this.hexDeviceId = hexDeviceId;
-        this.data = data;
-    }
 
-    public string PacketBody => $"{PacketHeaderHex}{PacketLength:X4}{Join(Empty, hexDeviceId)}{(int) command:X2}{data}";
+    public string PacketBody => $"{PacketHeaderHex}{PacketLength:X4}{Join(Empty, deviceId)}{(int) command:X2}{data}";
 
     public string PacketBodyWithChecksum => $"{PacketBody}{Checksum}{PacketEndHex}";
 

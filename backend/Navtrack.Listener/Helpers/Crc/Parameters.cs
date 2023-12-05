@@ -1,20 +1,15 @@
 ﻿namespace Navtrack.Listener.Helpers.Crc;
 
-public class Parameters
+public class Parameters(
+    string name,
+    int hashSize,
+    ulong poly,
+    ulong init,
+    bool refIn,
+    bool refOut,
+    ulong xorOut,
+    ulong check)
 {
-    public Parameters(string name, int hashSize, ulong poly, ulong init, bool refIn, bool refOut, ulong xorOut,
-        ulong check)
-    {
-        Name = name;
-        Check = check;
-        Init = init;
-        Poly = poly;
-        RefIn = refIn;
-        RefOut = refOut;
-        XorOut = xorOut;
-        HashSize = hashSize;
-    }
-
     /// <summary>
     /// This field is not strictly part of the definition, and, in
     /// the event of an inconsistency between this field and the other
@@ -24,12 +19,12 @@ public class Parameters
     /// ASCII string "123456789" is fed through the specified algorithm
     /// (i.e. 313233... (hexadecimal)).
     /// </summary>
-    public ulong Check { get; }
+    public ulong Check { get; } = check;
 
     /// <summary>
     /// This is hash size.
     /// </summary>
-    public int HashSize { get; }
+    public int HashSize { get; } = hashSize;
 
     /// <summary>
     /// This parameter specifies the initial value of the register
@@ -40,12 +35,12 @@ public class Parameters
     /// N'th bit iteration. This parameter should be specified as a
     /// hexadecimal number.
     /// </summary>
-    public ulong Init { get; }
+    public ulong Init { get; } = init;
 
     /// <summary>
     /// This is a name given to the algorithm. A string value.
     /// </summary>
-    public string Name { get; }
+    public string Name { get; } = name;
 
     /// <summary>
     /// This parameter is the poly. This is a binary value that
@@ -56,7 +51,7 @@ public class Parameters
     /// is always the LSB of the divisor during the division regardless of
     /// whether the algorithm being modelled is reflected.
     /// </summary>
-    public ulong Poly { get; }
+    public ulong Poly { get; } = poly;
 
     /// <summary>
     /// This is a boolean parameter. If it is FALSE, input bytes are
@@ -64,7 +59,7 @@ public class Parameters
     /// (MSB) and bit 0 being treated as the least significant bit.If this
     /// parameter is FALSE, each byte is reflected before being processed.
     /// </summary>
-    public bool RefIn { get; }
+    public bool RefIn { get; } = refIn;
 
     /// <summary>
     /// This is a boolean parameter. If it is set to FALSE, the
@@ -72,7 +67,7 @@ public class Parameters
     /// otherwise, if this parameter is TRUE, the final register value is
     /// reflected first.
     /// </summary>
-    public bool RefOut { get; }
+    public bool RefOut { get; } = refOut;
 
     /// <summary>
     /// This is an W-bit value that should be specified as a
@@ -80,5 +75,5 @@ public class Parameters
     /// the REFOUT) stage before the value is returned as the official
     /// checksum.
     /// </summary>
-    public ulong XorOut { get; }
+    public ulong XorOut { get; } = xorOut;
 }

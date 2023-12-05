@@ -14,22 +14,15 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsUsersControllerBase : ControllerBase
+public abstract class AssetsUsersControllerBase(IAssetService service) : ControllerBase
 {
-    private readonly IAssetService assetService;
-
-    protected AssetsUsersControllerBase(IAssetService assetService)
-    {
-        this.assetService = assetService;
-    }
-
     [HttpGet(ApiPaths.AssetsAssetUsers)]
     [ProducesResponseType(typeof(ListModel<AssetUserModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [AuthorizeAsset(AssetRoleType.Owner)]
     public virtual async Task<JsonResult> GetAssetUsers([FromRoute] string assetId)
     {
-        ListModel<AssetUserModel> assetUserList = await assetService.GetAssetUsers(assetId);
+        ListModel<AssetUserModel> assetUserList = await service.GetAssetUsers(assetId);
 
         return new JsonResult(assetUserList);
     }
@@ -43,7 +36,7 @@ public abstract class AssetsUsersControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public virtual async Task<IActionResult> AddUserToAsset([FromRoute] string assetId, [FromBody] AddUserToAssetModel model)
     {
-        await assetService.AddUserToAsset(assetId, model);
+        await service.AddUserToAsset(assetId, model);
 
         return Ok();
     }
@@ -57,7 +50,7 @@ public abstract class AssetsUsersControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public virtual async Task<IActionResult> DeleteUserFromAsset([FromRoute] string assetId, [FromRoute] string userId)
     {
-        await assetService.RemoveUserFromAsset(assetId, userId);
+        await service.RemoveUserFromAsset(assetId, userId);
 
         return Ok();
     }

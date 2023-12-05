@@ -11,13 +11,10 @@ using Navtrack.Api.Shared.Controllers;
 
 namespace Navtrack.Api.Controllers;
 
-public class UserController : UserControllerBase
-{
-    public UserController(IUserService userService, IUserAccessService userAccessService) : base(userService,
+public class UserController(IUserService userService, IUserAccessService userAccessService)
+    : UserControllerBase(userService,
         userAccessService)
-    {
-    }
-
+{
     [HttpGet(ApiPaths.User)]
     [ProducesResponseType(typeof(UserModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

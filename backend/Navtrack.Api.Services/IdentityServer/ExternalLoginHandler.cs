@@ -13,17 +13,9 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(IExternalLoginHandler))]
-public class ExternalLoginHandler : IExternalLoginHandler
+public class ExternalLoginHandler(IUserRepository repository, IHostEnvironment environment)
+    : IExternalLoginHandler
 {
-    private readonly IUserRepository userRepository;
-    private readonly IHostEnvironment hostEnvironment;
-
-    public ExternalLoginHandler(IUserRepository userRepository, IHostEnvironment hostEnvironment)
-    {
-        this.userRepository = userRepository;
-        this.hostEnvironment = hostEnvironment;
-    }
-
     public async Task<string?> HandleToken(HandleTokenInput input)
     {
         ClaimsPrincipal? claimPrincipal = await GetClaimsPrincipal(input);
@@ -43,7 +35,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
                 {
                     userDocument = input.Map(email.Value, id.Value);
 
-                    await userRepository.Add(userDocument);
+                    await repository.Add(userDocument);
                 }
                 else
                 {
@@ -54,7 +46,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
 
                     if (!isPrivateEmailValue && userDocument.Email != email.Value)
                     {
-                        await userRepository.Update(userDocument.Id, new UpdateUser
+                        await repository.Update(userDocument.Id, new UpdateUser
                         {
                             Email = email.Value
                         });
@@ -83,7 +75,7 @@ public class ExternalLoginHandler : IExternalLoginHandler
             {
                 RequireAudience = true,
                 RequireExpirationTime = true,
-                ValidateAudience = !hostEnvironment.IsDevelopment(),
+                ValidateAudience = !environment.IsDevelopment(),
                 ValidateIssuer = true,
                 ValidateLifetime = true,
                 ValidAudiences = input.AuthenticationSettings.ValidAudiences,

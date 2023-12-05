@@ -9,20 +9,13 @@ using Navtrack.Api.Services.Protocols;
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
-public abstract class ProtocolsControllerBase : ControllerBase
+public abstract class ProtocolsControllerBase(IProtocolService service) : ControllerBase
 {
-    private readonly IProtocolService protocolService;
-
-    protected ProtocolsControllerBase(IProtocolService protocolService)
-    {
-        this.protocolService = protocolService;
-    }
-
     [HttpGet(ApiPaths.Protocols)]
     [ProducesResponseType(typeof(ListModel<ProtocolModel>), StatusCodes.Status200OK)]
     [Produces(MediaTypeNames.Application.Json)]
     public ListModel<ProtocolModel> GetProtocols()
     {
-        return protocolService.GetProtocols();
+        return service.GetProtocols();
     }
 }

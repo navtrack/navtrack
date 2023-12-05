@@ -8,18 +8,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Shared.Library.Events;
 
 [Service(typeof(IPost))]
-public class Post : IPost
+public class Post(IServiceProvider provider) : IPost
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public Post(IServiceProvider serviceProvider)
-    {
-        this.serviceProvider = serviceProvider;
-    }
-
     public Task Send<T>(T payload)
     {
-        IEnumerable<IEventHandler<T>> eventHandlers = serviceProvider.GetServices<IEventHandler<T>>();
+        IEnumerable<IEventHandler<T>> eventHandlers = provider.GetServices<IEventHandler<T>>();
         
         return Task.WhenAll(eventHandlers.Select(x => x.Handle(payload)));
     }

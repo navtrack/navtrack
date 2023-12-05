@@ -15,15 +15,8 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsDevicesControllerBase : ControllerBase
+public abstract class AssetsDevicesControllerBase(IDeviceService service) : ControllerBase
 {
-    private readonly IDeviceService deviceService;
-
-    protected AssetsDevicesControllerBase(IDeviceService deviceService)
-    {
-        this.deviceService = deviceService;
-    }
-
     [HttpGet(ApiPaths.AssetsAssetDevices)]
     [ProducesResponseType(typeof(ListModel<DeviceModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -33,7 +26,7 @@ public abstract class AssetsDevicesControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<JsonResult> GetDevices([FromRoute] string assetId)
     {
-        ListModel<DeviceModel> model = await deviceService.Get(assetId);
+        ListModel<DeviceModel> model = await service.Get(assetId);
 
         return new JsonResult(model);
     }
@@ -47,7 +40,7 @@ public abstract class AssetsDevicesControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> ChangeDevice([FromRoute] string assetId, [FromBody] ChangeDeviceModel model)
     {
-        await deviceService.Change(assetId, model);
+        await service.Change(assetId, model);
 
         return Ok();
     }
@@ -61,7 +54,7 @@ public abstract class AssetsDevicesControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> DeleteDevice([FromRoute] string assetId, [FromRoute] string deviceId)
     {
-        await deviceService.Delete(assetId, deviceId);
+        await service.Delete(assetId, deviceId);
 
         return Ok();
     }

@@ -15,15 +15,8 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsControllerBase : ControllerBase
+public abstract class AssetsControllerBase(IAssetService service) : ControllerBase
 {
-    private readonly IAssetService assetService;
-
-    protected AssetsControllerBase(IAssetService assetService)
-    {
-        this.assetService = assetService;
-    }
-
     [HttpGet(ApiPaths.AssetsAsset)]
     [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -31,7 +24,7 @@ public abstract class AssetsControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Viewer)]
     public async Task<AssetModel> GetAsset(string assetId)
     {
-        AssetModel asset = await assetService.GetById(assetId);
+        AssetModel asset = await service.GetById(assetId);
 
         return asset;
     }
@@ -44,7 +37,7 @@ public abstract class AssetsControllerBase : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<AssetModel> AddAsset([FromBody] AddAssetModel model)
     {
-        AssetModel asset = await assetService.Add(model);
+        AssetModel asset = await service.Add(model);
 
         return asset;
     }
@@ -57,7 +50,7 @@ public abstract class AssetsControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> UpdateAsset(string assetId, [FromBody] UpdateAssetModel model)
     {
-        await assetService.Update(assetId, model);
+        await service.Update(assetId, model);
 
         return Ok();
     }
@@ -69,7 +62,7 @@ public abstract class AssetsControllerBase : ControllerBase
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> DeleteAsset(string assetId)
     {
-        await assetService.Delete(assetId);
+        await service.Delete(assetId);
 
         return Ok();
     }

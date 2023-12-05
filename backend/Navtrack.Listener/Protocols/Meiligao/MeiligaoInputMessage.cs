@@ -5,14 +5,9 @@ using static System.String;
 
 namespace Navtrack.Listener.Protocols.Meiligao;
 
-public class MeiligaoInputMessage
+public class MeiligaoInputMessage(DataMessage frame)
 {
-    public readonly DataMessage DataMessage;
-
-    public MeiligaoInputMessage(DataMessage frame)
-    {
-        DataMessage = frame;
-    }
+    public readonly DataMessage DataMessage = frame;
 
     private bool ContainsNewLine => DataMessage.Bytes[^2] == 0x0D && DataMessage.Bytes[^1] == 0x0A;
         

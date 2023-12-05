@@ -5,15 +5,8 @@ using Navtrack.Api.Services.Mappers.Common;
 
 namespace Navtrack.Api.Services.Exceptions;
 
-public class ExceptionMiddleware
+public class ExceptionMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate next;
-
-    public ExceptionMiddleware(RequestDelegate next)
-    {
-        this.next = next;
-    }
-
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try

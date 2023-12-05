@@ -1,13 +1,7 @@
 namespace Navtrack.Api.Model.Errors;
 
-public class ApiError
+public class ApiError(string code, string message)
 {
-    public readonly string Code;
-    public readonly string Message;
-    
-    public ApiError(string code, string message)
-    {
-        Code = code;
-        Message = message;
-    }
+    public readonly string Code = code;
+    public readonly string Message = message;
 }

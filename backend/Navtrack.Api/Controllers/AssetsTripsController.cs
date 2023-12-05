@@ -3,9 +3,4 @@ using Navtrack.Api.Shared.Controllers;
 
 namespace Navtrack.Api.Controllers;
 
-public class AssetsTripsController : AssetsTripsControllerBase
-{
-    public AssetsTripsController(ITripService tripService) : base(tripService)
-    {
-    }
-}
+public class AssetsTripsController(ITripService tripService) : AssetsTripsControllerBase(tripService);

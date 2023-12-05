@@ -11,21 +11,14 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.User;
 
 [Service(typeof(ICurrentUserAccessor))]
-public class CurrentUserAccessor : ICurrentUserAccessor
+public class CurrentUserAccessor(IHttpContextAccessor contextAccessor, IUserRepository repository)
+    : ICurrentUserAccessor
 {
-    private readonly IHttpContextAccessor httpContextAccessor;
-    private readonly IUserRepository userRepository;
     private UserDocument? currentUser;
-
-    public CurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
-    {
-        this.httpContextAccessor = httpContextAccessor;
-        this.userRepository = userRepository;
-    }
 
     public ObjectId GetId()
     {
-        string? id = httpContextAccessor.HttpContext?.User.GetId();
+        string? id = contextAccessor.HttpContext?.User.GetId();
 
         if (string.IsNullOrEmpty(id))
         {
@@ -43,7 +36,7 @@ public class CurrentUserAccessor : ICurrentUserAccessor
         {
             ObjectId id = GetId();
 
-            currentUser = await userRepository.GetById(id);
+            currentUser = await repository.GetById(id);
         }
 
         return currentUser;

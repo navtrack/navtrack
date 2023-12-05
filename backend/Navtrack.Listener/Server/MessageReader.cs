@@ -1,15 +1,8 @@
 namespace Navtrack.Listener.Server;
 
-public class MessageReader
+public class MessageReader(string message)
 {
-    private string message;
-    private int index;
-
-    public MessageReader(string message)
-    {
-        this.message = message;
-        index = 0;
-    }
+    private int index = 0;
 
     public string Get(int i)
     {

@@ -4,18 +4,9 @@ using System.Linq;
 
 namespace Navtrack.Listener.Server;
 
-public class ByteReader
+public class ByteReader(byte[] bytes, string[] hex)
 {
-    private byte[] bytes;
-    private readonly string[] hex;
-    public int Index;
-
-    public ByteReader(byte[] bytes, string[] hex)
-    {
-        this.bytes = bytes;
-        this.hex = hex;
-        Index = 0;
-    }
+    public int Index = 0;
 
     public byte GetOne()
     {

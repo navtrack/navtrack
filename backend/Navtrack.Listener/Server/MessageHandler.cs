@@ -13,22 +13,13 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Server;
 
 [Service(typeof(IMessageHandler))]
-public class MessageHandler : IMessageHandler
+public class MessageHandler(
+    IServiceProvider provider,
+    ILocationService service,
+    ILogger<MessageHandler> logger,
+    IConnectionService connectionService)
+    : IMessageHandler
 {
-    private readonly IServiceProvider serviceProvider;
-    private readonly ILocationService locationService;
-    private readonly ILogger<MessageHandler> logger;
-    private readonly IConnectionService connectionService;
-
-    public MessageHandler(IServiceProvider serviceProvider, ILocationService locationService,
-        ILogger<MessageHandler> logger, IConnectionService connectionService)
-    {
-        this.serviceProvider = serviceProvider;
-        this.locationService = locationService;
-        this.logger = logger;
-        this.connectionService = connectionService;
-    }
-
     public async Task HandleMessage(Client client, INetworkStreamWrapper networkStream, byte[] bytes)
     {
         ICustomMessageHandler customMessageHandler = GetMessageHandler(client.Protocol);
@@ -54,7 +45,7 @@ public class MessageHandler : IMessageHandler
                 // TODO refactor this
                 await connectionService.SetDeviceId(client);
                     
-                await locationService.AddRange(locations, connectionMessageId);
+                await service.AddRange(locations, connectionMessageId);
             }
         }
         catch (Exception e)
@@ -68,7 +59,7 @@ public class MessageHandler : IMessageHandler
     {
         Type type = typeof(ICustomMessageHandler<>).MakeGenericType(protocol.GetType());
 
-        IServiceScope serviceScope = serviceProvider.CreateScope();
+        IServiceScope serviceScope = provider.CreateScope();
         ICustomMessageHandler customMessageHandler = (ICustomMessageHandler) serviceScope.ServiceProvider.GetService(type);
 
         if (customMessageHandler == null)

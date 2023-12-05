@@ -1,11 +1,6 @@
 namespace Navtrack.Api.Services.Assets;
 
-public class AssetDeletedEvent
+public class AssetDeletedEvent(string assetId)
 {
-    public string AssetId { get; }
-
-    public AssetDeletedEvent(string assetId)
-    {
-        AssetId = assetId;
-    }
+    public string AssetId { get; } = assetId;
 }

@@ -12,12 +12,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Devices;
 
 [Service(typeof(IDeviceRepository))]
-public class DeviceRepository : GenericRepository<DeviceDocument>, IDeviceRepository
+public class DeviceRepository(IRepository repository) : GenericRepository<DeviceDocument>(repository), IDeviceRepository
 {
-    public DeviceRepository(IRepository repository) : base(repository)
-    {
-    }
-
     public Task<bool> SerialNumberIsUsed(string serialNumber, int protocolPort, string? excludeAssetId = null)
     {
         return repository.GetQueryable<AssetDocument>()

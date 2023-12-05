@@ -6,18 +6,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Roles;
 
 [Service(typeof(IRoleService))]
-public class RoleService : IRoleService
+public class RoleService(ICurrentUserAccessor userAccessor) : IRoleService
 {
-    private readonly ICurrentUserAccessor currentUserAccessor;
-
-    public RoleService(ICurrentUserAccessor currentUserAccessor)
-    {
-        this.currentUserAccessor = currentUserAccessor;
-    }
-
     public void CheckRole(AssetDocument asset, AssetRoleType assetRoleType)
     {
-        ObjectId currentUserId = currentUserAccessor.GetId();
+        ObjectId currentUserId = userAccessor.GetId();
             
         // if (asset.UserRoles.All(x => x.UserId != currentUserId))
         // {

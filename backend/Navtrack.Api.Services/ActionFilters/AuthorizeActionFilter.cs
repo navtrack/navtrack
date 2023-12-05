@@ -10,15 +10,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.ActionFilters;
 
 [Service(typeof(AuthorizeActionFilter))]
-public class AuthorizeActionFilter : IAsyncAuthorizationFilter
+public class AuthorizeActionFilter(IAssetAuthorizationService authorizationService) : IAsyncAuthorizationFilter
 {
-    private readonly IAssetAuthorizationService assetAuthorizationService;
-
-    public AuthorizeActionFilter(IAssetAuthorizationService assetAuthorizationService)
-    {
-        this.assetAuthorizationService = assetAuthorizationService;
-    }
-
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         AuthorizeAssetAttribute? authorizePermissionAttribute =
@@ -31,7 +24,7 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
 
             if (!string.IsNullOrEmpty(assetId))
             {
-                bool hasRole = await assetAuthorizationService.CurrentUserHasRole(authorizePermissionAttribute.AssetRoleType, assetId);
+                bool hasRole = await authorizationService.CurrentUserHasRole(authorizePermissionAttribute.AssetRoleType, assetId);
 
                 if (hasRole)
                 {

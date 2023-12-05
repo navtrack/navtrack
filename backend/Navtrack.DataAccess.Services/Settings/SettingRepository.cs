@@ -9,15 +9,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Settings;
 
 [Service(typeof(ISettingRepository))]
-public class SettingRepository : ISettingRepository
+public class SettingRepository(IRepository repository) : ISettingRepository
 {
-    private readonly IRepository repository;
-
-    public SettingRepository(IRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<SettingDocument?> Get(string key)
     {
         SettingDocument? document =

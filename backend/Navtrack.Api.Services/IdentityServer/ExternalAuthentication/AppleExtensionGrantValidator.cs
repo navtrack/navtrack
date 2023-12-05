@@ -13,35 +13,27 @@ using Navtrack.Shared.Services.Settings;
 namespace Navtrack.Api.Services.IdentityServer.ExternalAuthentication;
 
 [Service(typeof(IExtensionGrantValidator))]
-public class AppleExtensionGrantValidator : IExtensionGrantValidator
+public class AppleExtensionGrantValidator(
+    IUserRepository repository,
+    IExternalLoginHandler loginHandler,
+    ISettingService service)
+    : IExtensionGrantValidator
 {
-    private readonly IUserRepository userRepository;
-    private readonly IExternalLoginHandler externalLoginHandler;
-    private readonly ISettingService settingService;
-
-    public AppleExtensionGrantValidator(IUserRepository userRepository, IExternalLoginHandler externalLoginHandler,
-        ISettingService settingService)
-    {
-        this.userRepository = userRepository;
-        this.externalLoginHandler = externalLoginHandler;
-        this.settingService = settingService;
-    }
-
     public string GrantType => "apple";
 
     public async Task ValidateAsync(ExtensionGrantValidationContext context)
     {
-        AppleAuthenticationSettings settings = await settingService.Get<AppleAuthenticationSettings>();
+        AppleAuthenticationSettings settings = await service.Get<AppleAuthenticationSettings>();
 
-        string? userId = await externalLoginHandler.HandleToken(new HandleTokenInput(settings)
+        string? userId = await loginHandler.HandleToken(new HandleTokenInput(settings)
         {
             Token = context.Request.Raw["code"],
             IdClaimType = ClaimTypes.NameIdentifier,
             EmailClaimType = ClaimTypes.Email,
-            GetUser = userRepository.GetByEmailOrAppleId,
+            GetUser = repository.GetByEmailOrAppleId,
             Map = (email, id) => UserDocumentMapper.MapWithExternalId(email, appleId: id),
             ExternalId = user => user.AppleId,
-            SetId = (userDocumentId, id) => userRepository.Update(userDocumentId, new UpdateUser
+            SetId = (userDocumentId, id) => repository.Update(userDocumentId, new UpdateUser
             {
                 AppleId = id
             })

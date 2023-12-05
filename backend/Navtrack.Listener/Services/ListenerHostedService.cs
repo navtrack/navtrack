@@ -8,18 +8,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Services;
 
 [Service(typeof(IHostedService), ServiceLifetime.Singleton)]
-public class ListenerHostedService : BackgroundService
+public class ListenerHostedService(IServiceProvider provider) : BackgroundService
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public ListenerHostedService(IServiceProvider serviceProvider)
-    {
-        this.serviceProvider = serviceProvider;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        IServiceScope serviceScope = serviceProvider.CreateScope();
+        IServiceScope serviceScope = provider.CreateScope();
         IListenerService listenerService = serviceScope.ServiceProvider.GetService<IListenerService>();
             
         await listenerService.Execute(cancellationToken);

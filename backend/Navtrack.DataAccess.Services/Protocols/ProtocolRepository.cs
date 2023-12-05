@@ -8,19 +8,13 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Protocols;
 
 [Service(typeof(IProtocolRepository), ServiceLifetime.Singleton)]
-public class ProtocolRepository : IProtocolRepository
+public class ProtocolRepository(IDeviceTypeRepository typeRepository) : IProtocolRepository
 {
-    private readonly IDeviceTypeRepository deviceTypeRepository;
     private Protocol[]? protocols;
-
-    public ProtocolRepository(IDeviceTypeRepository deviceTypeRepository)
-    {
-        this.deviceTypeRepository = deviceTypeRepository;
-    }
 
     public IEnumerable<Protocol> GetProtocols()
     {
-        return protocols ??= deviceTypeRepository.GetDeviceTypes()
+        return protocols ??= typeRepository.GetDeviceTypes()
             .GroupBy(x => x.Protocol)
             .Select(x => x.Key)
             .OrderBy(x => x.Name)

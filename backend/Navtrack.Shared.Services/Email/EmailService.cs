@@ -9,18 +9,11 @@ using Navtrack.Shared.Services.Settings.Settings;
 namespace Navtrack.Shared.Services.Email;
 
 [Service(typeof(IEmailService))]
-public class EmailService : IEmailService
+public class EmailService(ISettingService service) : IEmailService
 {
-    private readonly ISettingService settingService;
-
-    public EmailService(ISettingService settingService)
-    {
-        this.settingService = settingService;
-    }
-
     public async Task Send(string destination, IEmail email)
     {
-        EmailSettings? emailSettings = await settingService.Get<EmailSettings>();
+        EmailSettings? emailSettings = await service.Get<EmailSettings>();
 
         if (!string.IsNullOrEmpty(emailSettings?.SmtpServer) && 
             !string.IsNullOrEmpty(emailSettings.SmtpUsername) &&

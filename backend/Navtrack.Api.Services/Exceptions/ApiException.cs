@@ -6,23 +6,16 @@ using Navtrack.Api.Model.Errors;
 
 namespace Navtrack.Api.Services.Exceptions;
 
-public class ApiException : Exception
+public class ApiException(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string? message = null)
+    : Exception(message)
 {
     public readonly string Code;
     public readonly List<ValidationError> ValidationErrors = new();
-    public readonly HttpStatusCode HttpStatusCode;
+    public readonly HttpStatusCode HttpStatusCode = httpStatusCode;
 
-    public ApiException(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string? message = null) :
-        base(message)
-    {
-        HttpStatusCode = httpStatusCode;
-    }
-
-    public ApiException(ApiError apiError, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest) : base(
-        apiError.Message)
+    public ApiException(ApiError apiError, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest) : this(httpStatusCode, apiError.Message)
     {
         Code = apiError.Code;
-        HttpStatusCode = httpStatusCode;
     }
 
     public ApiException AddValidationError(string propertyName, string errorMessage)

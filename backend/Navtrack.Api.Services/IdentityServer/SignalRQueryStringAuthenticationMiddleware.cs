@@ -5,15 +5,8 @@ using Microsoft.Extensions.Primitives;
 
 namespace Navtrack.Api.Services.IdentityServer;
 
-public class SignalRQueryStringAuthenticationMiddleware
+public class SignalRQueryStringAuthenticationMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate next;
-
-    public SignalRQueryStringAuthenticationMiddleware(RequestDelegate next)
-    {
-        this.next = next;
-    }
-
     public async Task Invoke(HttpContext context)
     {
         if (context.Request.Path.Value != null &&

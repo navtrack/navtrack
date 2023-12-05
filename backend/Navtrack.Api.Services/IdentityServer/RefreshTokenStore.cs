@@ -9,20 +9,13 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.IdentityServer;
 
 [Service(typeof(IRefreshTokenStore))]
-public class RefreshTokenStore : IRefreshTokenStore
+public class RefreshTokenStore(IRefreshTokenRepository tokenRepository) : IRefreshTokenStore
 {
-    private readonly IRefreshTokenRepository refreshTokenRepository;
-
-    public RefreshTokenStore(IRefreshTokenRepository refreshTokenRepository)
-    {
-        this.refreshTokenRepository = refreshTokenRepository;
-    }
-
     public async Task<string> StoreRefreshTokenAsync(RefreshToken refreshToken)
     {
         RefreshTokenDocument document = RefreshTokenDocumentMapper.Map(refreshToken);
         
-        await refreshTokenRepository.Add(document);
+        await tokenRepository.Add(document);
 
         return document.Hash;
     }
@@ -34,7 +27,7 @@ public class RefreshTokenStore : IRefreshTokenStore
 
     public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshTokenHandle)
     {
-        RefreshTokenDocument? document = await refreshTokenRepository.Get(refreshTokenHandle);
+        RefreshTokenDocument? document = await tokenRepository.Get(refreshTokenHandle);
 
         if (document != null)
         {
@@ -48,11 +41,11 @@ public class RefreshTokenStore : IRefreshTokenStore
 
     public Task RemoveRefreshTokenAsync(string refreshTokenHandle)
     {
-        return refreshTokenRepository.Remove(refreshTokenHandle);
+        return tokenRepository.Remove(refreshTokenHandle);
     }
 
     public Task RemoveRefreshTokensAsync(string subjectId, string clientId)
     {
-        return refreshTokenRepository.Remove(subjectId, clientId);
+        return tokenRepository.Remove(subjectId, clientId);
     }
 }

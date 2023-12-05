@@ -4,20 +4,12 @@ using static System.String;
 
 namespace Navtrack.Listener.Protocols.Concox;
 
-public class ConcoxOutputMessage
+public class ConcoxOutputMessage(ProtocolNumber number, string[] serialNumber)
 {
     private const string PacketHeaderHex = "7878";
     private const string PacketEndHex = "0D0A";
-    private readonly ProtocolNumber protocolNumber;
-    private readonly string[] serialNumber;
 
-    public ConcoxOutputMessage(ProtocolNumber protocolNumber, string[] serialNumber)
-    {
-        this.protocolNumber = protocolNumber;
-        this.serialNumber = serialNumber;
-    }
-
-    public string PacketBody => $"{PacketLength:X2}{(int) protocolNumber:X2}{Join(Empty, serialNumber)}";
+    public string PacketBody => $"{PacketLength:X2}{(int) number:X2}{Join(Empty, serialNumber)}";
 
     public string PacketFull => $"{PacketHeaderHex}{PacketBody}{Checksum}{PacketEndHex}";
 

@@ -10,16 +10,10 @@ using Navtrack.Api.Services.User;
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
-public abstract class UserControllerBase : ControllerBase
+public abstract class UserControllerBase(IUserService userService, IUserAccessService accessService)
+    : ControllerBase
 {
-    protected readonly IUserService userService;
-    private readonly IUserAccessService userAccessService;
-
-    protected UserControllerBase(IUserService userService, IUserAccessService userAccessService)
-    {
-        this.userService = userService;
-        this.userAccessService = userAccessService;
-    }
+    protected readonly IUserService userService = userService;
 
     [HttpPost(ApiPaths.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -49,7 +43,7 @@ public abstract class UserControllerBase : ControllerBase
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordModel model)
     {
-        await userAccessService.ChangePassword(model);
+        await accessService.ChangePassword(model);
 
         return Ok();
     }
@@ -59,7 +53,7 @@ public abstract class UserControllerBase : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
     {
-        await userAccessService.ResetPassword(model);
+        await accessService.ResetPassword(model);
 
         return Ok();
     }
@@ -69,7 +63,7 @@ public abstract class UserControllerBase : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ResetPassword([FromBody] ForgotPasswordModel model)
     {
-        await userAccessService.ForgotPassword(model);
+        await accessService.ForgotPassword(model);
 
         return Ok();
     }

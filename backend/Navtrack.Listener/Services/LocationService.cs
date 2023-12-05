@@ -14,20 +14,12 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Services;
 
 [Service(typeof(ILocationService))]
-public class LocationService : ILocationService
+public class LocationService(
+    ILocationRepository repository,
+    IDeviceRepository deviceRepository,
+    IAssetRepository assetRepository)
+    : ILocationService
 {
-    private readonly ILocationRepository locationRepository;
-    private readonly IDeviceRepository deviceRepository;
-    private readonly IAssetRepository assetRepository;
-
-    public LocationService(ILocationRepository locationRepository, IDeviceRepository deviceRepository,
-        IAssetRepository assetRepository)
-    {
-        this.locationRepository = locationRepository;
-        this.deviceRepository = deviceRepository;
-        this.assetRepository = assetRepository;
-    }
-
     public async Task AddRange(List<Location> locations, ObjectId connectionMessageId)
     {
         if (locations.Any())
@@ -42,7 +34,7 @@ public class LocationService : ILocationService
                     locations.Select(x => LocationDocumentMapper.Map(x, asset, connectionMessageId))
                         .ToList();
 
-                await locationRepository.AddRange(mapped);
+                await repository.AddRange(mapped);
                 
                 LocationDocument latestLocation = mapped.OrderByDescending(x => x.DateTime).First();
 

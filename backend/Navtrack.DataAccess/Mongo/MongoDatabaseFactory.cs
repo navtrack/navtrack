@@ -6,22 +6,15 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Mongo;
 
 [Service(typeof(IMongoDatabaseFactory))]
-public class MongoDatabaseFactory : IMongoDatabaseFactory
+public class MongoDatabaseFactory(IOptions<MongoOptions> options) : IMongoDatabaseFactory
 {
-    private readonly IOptions<MongoOptions> mongoOptions;
-
     private IMongoClient mongoClient;
     private IMongoDatabase mongoDatabase;
 
-    public MongoDatabaseFactory(IOptions<MongoOptions> mongoOptions)
-    {
-        this.mongoOptions = mongoOptions;
-    }
-
     public IMongoDatabase CreateMongoDatabase()
     {
-        mongoClient = new MongoClient(mongoOptions.Value.ConnectionString);
-        mongoDatabase = mongoClient.GetDatabase(mongoOptions.Value.Database);
+        mongoClient = new MongoClient(options.Value.ConnectionString);
+        mongoDatabase = mongoClient.GetDatabase(options.Value.Database);
             
         ConventionRegistry.Register(nameof(IgnoreIfNullConvention),
             new ConventionPack { new IgnoreIfNullConvention(true) }, t => true);

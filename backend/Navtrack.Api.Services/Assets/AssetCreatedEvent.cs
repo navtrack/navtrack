@@ -2,12 +2,7 @@ using Navtrack.Api.Model.Assets;
 
 namespace Navtrack.Api.Services.Assets;
 
-public class AssetCreatedEvent
+public class AssetCreatedEvent(AssetModel asset)
 {
-    public AssetModel Asset { get; }
-
-    public AssetCreatedEvent(AssetModel asset)
-    {
-        Asset = asset;
-    }
+    public AssetModel Asset { get; } = asset;
 }

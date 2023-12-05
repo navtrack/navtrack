@@ -9,20 +9,13 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Shared.Services.Settings;
 
 [Service(typeof(ISettingService))]
-public class SettingService : ISettingService
+public class SettingService(ISettingRepository repository) : ISettingService
 {
-    private readonly ISettingRepository settingRepository;
-
-    public SettingService(ISettingRepository settingRepository)
-    {
-        this.settingRepository = settingRepository;
-    }
-
     public async Task<T?> Get<T>() where T : new()
     {
         string key = GetKey<T>();
 
-        SettingDocument? document = await settingRepository.Get(key);
+        SettingDocument? document = await repository.Get(key);
 
         if (document != null)
         {
@@ -38,7 +31,7 @@ public class SettingService : ISettingService
     {
         string key = GetKey<T>();
 
-        await settingRepository.Save(key, settings.ToBsonDocument());
+        await repository.Save(key, settings.ToBsonDocument());
     }
 
     private static string GetKey<T>()

@@ -9,17 +9,9 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Server;
 
 [Service(typeof(IStreamHandler))]
-public class StreamHandler : IStreamHandler
+public class StreamHandler(ILogger<StreamHandler> logger, IMessageHandler handler)
+    : IStreamHandler
 {
-    private readonly ILogger<StreamHandler> logger;
-    private readonly IMessageHandler messageHandler;
-
-    public StreamHandler(ILogger<StreamHandler> logger, IMessageHandler messageHandler)
-    {
-        this.logger = logger;
-        this.messageHandler = messageHandler;
-    }
-
     public async Task HandleStream(CancellationToken cancellationToken, Client client,
         INetworkStreamWrapper networkStream)
     {
@@ -36,7 +28,7 @@ public class StreamHandler : IStreamHandler
 
                 int startIndex = GetStartIndex(buffer, length, client.Protocol);
 
-                await messageHandler.HandleMessage(client, networkStream, buffer[startIndex..length]);
+                await handler.HandleMessage(client, networkStream, buffer[startIndex..length]);
             }
         } while (!cancellationToken.IsCancellationRequested && length > 0 && networkStream.CanRead);
     }

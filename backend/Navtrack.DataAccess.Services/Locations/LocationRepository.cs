@@ -12,15 +12,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Locations;
 
 [Service(typeof(ILocationRepository))]
-public class LocationRepository : ILocationRepository
+public class LocationRepository(IRepository repository) : ILocationRepository
 {
-    private readonly IRepository repository;
-
-    public LocationRepository(IRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public Task<List<LocationDocument>> GetLocations(string assetId, LocationFilter locationFilter)
     {
         FilterDefinitionBuilder<LocationDocument> builder = Builders<LocationDocument>.Filter;

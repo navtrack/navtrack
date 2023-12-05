@@ -20,30 +20,19 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Devices;
 
 [Service(typeof(IDeviceService))]
-public class DeviceService : IDeviceService
+public class DeviceService(
+    IDeviceTypeRepository typeRepository,
+    IDeviceRepository repository,
+    IAssetRepository assetRepository,
+    ILocationRepository locationRepository,
+    ICurrentUserAccessor userAccessor)
+    : IDeviceService
 {
-    private readonly IDeviceTypeRepository deviceTypeRepository;
-    private readonly IDeviceRepository deviceRepository;
-    private readonly IAssetRepository assetRepository;
-    private readonly ILocationRepository locationRepository;
-    private readonly ICurrentUserAccessor currentUserAccessor;
-
-    public DeviceService(IDeviceTypeRepository deviceTypeRepository, IDeviceRepository deviceRepository,
-        IAssetRepository assetRepository, ILocationRepository locationRepository,
-        ICurrentUserAccessor currentUserAccessor)
-    {
-        this.deviceTypeRepository = deviceTypeRepository;
-        this.deviceRepository = deviceRepository;
-        this.assetRepository = assetRepository;
-        this.locationRepository = locationRepository;
-        this.currentUserAccessor = currentUserAccessor;
-    }
-
     public Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null)
     {
-        DeviceType deviceType = deviceTypeRepository.GetById(deviceTypeId);
+        DeviceType deviceType = typeRepository.GetById(deviceTypeId);
 
-        return deviceRepository.SerialNumberIsUsed(serialNumber, deviceType.Protocol.Port, excludeAssetId);
+        return repository.SerialNumberIsUsed(serialNumber, deviceType.Protocol.Port, excludeAssetId);
     }
 
     public async Task<ListModel<DeviceModel>> Get(string assetId)
@@ -51,8 +40,8 @@ public class DeviceService : IDeviceService
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
 
-        List<DeviceDocument> devices = await deviceRepository.GetDevicesByAssetId(assetId);
-        IEnumerable<DeviceType> deviceTypes = deviceTypeRepository.GetDeviceTypes()
+        List<DeviceDocument> devices = await repository.GetDevicesByAssetId(assetId);
+        IEnumerable<DeviceType> deviceTypes = typeRepository.GetDeviceTypes()
             .Where(x => devices.Any(y => y.DeviceTypeId == x.Id))
             .ToList();
 
@@ -72,7 +61,7 @@ public class DeviceService : IDeviceService
             return;
         }
 
-        if (!deviceTypeRepository.Exists(model.DeviceTypeId))
+        if (!typeRepository.Exists(model.DeviceTypeId))
         {
             throw new ValidationException()
                 .AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
@@ -84,11 +73,11 @@ public class DeviceService : IDeviceService
                 .AddValidationError(nameof(model.SerialNumber), ValidationErrorCodes.SerialNumberAlreadyUsed);
         }
 
-        List<DeviceDocument> devices = await deviceRepository.GetDevicesByAssetId(assetId);
+        List<DeviceDocument> devices = await repository.GetDevicesByAssetId(assetId);
 
         DeviceDocument? existingDevice = devices.FirstOrDefault(x =>
             x.DeviceTypeId == model.DeviceTypeId && x.SerialNumber == model.SerialNumber);
-        DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
+        DeviceType deviceType = typeRepository.GetById(model.DeviceTypeId);
 
         if (existingDevice != null)
         {
@@ -97,10 +86,10 @@ public class DeviceService : IDeviceService
         }
         else
         {
-            UserDocument currentUser = await currentUserAccessor.Get();
+            UserDocument currentUser = await userAccessor.Get();
             DeviceDocument newDevice = DeviceDocumentMapper.Map(assetId, model, currentUser.Id);
 
-            await deviceRepository.Add(newDevice);
+            await repository.Add(newDevice);
 
             await assetRepository.SetActiveDevice(asset.Id, newDevice.Id, newDevice.SerialNumber,
                 newDevice.DeviceTypeId, deviceType.Protocol.Port);
@@ -109,7 +98,7 @@ public class DeviceService : IDeviceService
 
     public async Task Delete(string assetId, string deviceId)
     {
-        if (await deviceRepository.IsActive(assetId, deviceId))
+        if (await repository.IsActive(assetId, deviceId))
         {
             throw new ValidationException(ValidationErrorCodes.DeviceIsActive);
         }
@@ -119,6 +108,6 @@ public class DeviceService : IDeviceService
             throw new ValidationException(ValidationErrorCodes.DeviceIsActive);
         }
 
-        await deviceRepository.Delete(deviceId);
+        await repository.Delete(deviceId);
     }
 }

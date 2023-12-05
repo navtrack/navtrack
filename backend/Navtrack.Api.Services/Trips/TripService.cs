@@ -14,15 +14,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Trips;
 
 [Service(typeof(ITripService))]
-public class TripService : ITripService
+public class TripService(ILocationRepository repository) : ITripService
 {
-    private readonly ILocationRepository locationRepository;
-
-    public TripService(ILocationRepository locationRepository)
-    {
-        this.locationRepository = locationRepository;
-    }
-
     public async Task<TripListModel> GetTrips(string assetId, TripFilterModel tripFilter)
     {
         IEnumerable<TripModel> trips = await GetInternalTrips(assetId, tripFilter);
@@ -89,7 +82,7 @@ public class TripService : ITripService
         };
 
         List<LocationDocument> locations =
-            await locationRepository.GetLocations(assetId, filter);
+            await repository.GetLocations(assetId, filter);
 
         List<LocationModel> mapped = locations.Select(LocationMapper.Map).ToList();
 

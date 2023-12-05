@@ -14,15 +14,8 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsLocationsControllerBase : ControllerBase
+public abstract class AssetsLocationsControllerBase(ILocationService service) : ControllerBase
 {
-    private readonly ILocationService locationService;
-
-    protected AssetsLocationsControllerBase(ILocationService locationService)
-    {
-        this.locationService = locationService;
-    }
-
     [HttpGet(ApiPaths.AssetsAssetLocations)]
     [ProducesResponseType(typeof(LocationListModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -34,7 +27,7 @@ public abstract class AssetsLocationsControllerBase : ControllerBase
         [FromQuery] int page = 0,
         [FromQuery] [Range(0, 1000)] int size = 1000)
     {
-        LocationListModel locations = await locationService.GetLocations(assetId, filter, page, size);
+        LocationListModel locations = await service.GetLocations(assetId, filter, page, size);
 
         return new JsonResult(locations);
     }

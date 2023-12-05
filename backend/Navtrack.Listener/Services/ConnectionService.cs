@@ -13,15 +13,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Services;
 
 [Service(typeof(IConnectionService))]
-public class ConnectionService : IConnectionService
+public class ConnectionService(IRepository repository) : IConnectionService
 {
-    private readonly IRepository repository;
-
-    public ConnectionService(IRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<DeviceConnectionDocument> NewConnection(string endPoint, int protocolPort)
     {
         DeviceConnectionDocument deviceConnection = new()

@@ -13,15 +13,8 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsReportsControllerBase : ControllerBase
+public abstract class AssetsReportsControllerBase(IReportService service) : ControllerBase
 {
-    private readonly IReportService reportService;
-
-    protected AssetsReportsControllerBase(IReportService reportService)
-    {
-        this.reportService = reportService;
-    }
-
     [HttpGet(ApiPaths.AssetsAssetReportsTimeDistance)]
     [ProducesResponseType(typeof(DistanceReportListModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -30,7 +23,7 @@ public abstract class AssetsReportsControllerBase : ControllerBase
         [FromRoute] string assetId,
         [FromQuery] DistanceReportFilterModel filter)
     {
-        DistanceReportListModel distanceReport = await reportService.GetDistanceReport(assetId, filter);
+        DistanceReportListModel distanceReport = await service.GetDistanceReport(assetId, filter);
 
         return new JsonResult(distanceReport);
     }

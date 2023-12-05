@@ -6,15 +6,9 @@ using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.IdentityServer;
 
-public class HandleTokenInput
+public class HandleTokenInput(ExternalAuthenticationSettings authenticationSettings)
 {
-
-    public HandleTokenInput(ExternalAuthenticationSettings authenticationSettings)
-    {
-        AuthenticationSettings = authenticationSettings;
-    }
-
-    public readonly ExternalAuthenticationSettings AuthenticationSettings;
+    public readonly ExternalAuthenticationSettings AuthenticationSettings = authenticationSettings;
     public string Token { get; set; }
     public string IdClaimType { get; set; }
     public string EmailClaimType { get; set; }

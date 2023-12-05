@@ -3,9 +3,4 @@ using Navtrack.Api.Shared.Controllers;
 
 namespace Navtrack.Api.Controllers;
 
-public class DevicesController : DevicesControllerBase
-{
-    public DevicesController(IDeviceTypeService deviceTypeService) : base(deviceTypeService)
-    {
-    }
-}
+public class DevicesController(IDeviceTypeService deviceTypeService) : DevicesControllerBase(deviceTypeService);

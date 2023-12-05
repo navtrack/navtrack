@@ -9,18 +9,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Protocols;
 
 [Service(typeof(IProtocolService))]
-public class ProtocolService : IProtocolService
+public class ProtocolService(IProtocolRepository repository) : IProtocolService
 {
-    private readonly IProtocolRepository protocolRepository;
-
-    public ProtocolService(IProtocolRepository protocolRepository)
-    {
-        this.protocolRepository = protocolRepository;
-    }
-
     public ListModel<ProtocolModel> GetProtocols()
     {
-        IEnumerable<Protocol> protocols = protocolRepository.GetProtocols();
+        IEnumerable<Protocol> protocols = repository.GetProtocols();
 
         return ProtocolListMapper.Map(protocols);
     }

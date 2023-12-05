@@ -13,28 +13,19 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Reports;
 
 [Service(typeof(IReportService))]
-public class ReportService : IReportService
+public class ReportService(
+    IAssetRepository repository,
+    IRoleService service,
+    ICurrentUserAccessor userAccessor,
+    ITripService tripService)
+    : IReportService
 {
-    private readonly IAssetRepository assetRepository;
-    private readonly IRoleService roleService;
-    private readonly ICurrentUserAccessor currentUserAccessor;
-    private readonly ITripService tripService;
-
-    public ReportService(IAssetRepository assetRepository, IRoleService roleService,
-        ICurrentUserAccessor currentUserAccessor, ITripService tripService)
-    {
-        this.assetRepository = assetRepository;
-        this.roleService = roleService;
-        this.currentUserAccessor = currentUserAccessor;
-        this.tripService = tripService;
-    }
-
     public async Task<DistanceReportListModel> GetDistanceReport(string assetId,
         DistanceReportFilterModel distanceReportFilter)
     {
-        AssetDocument asset = await assetRepository.GetById(assetId);
+        AssetDocument asset = await repository.GetById(assetId);
 
-        roleService.CheckRole(asset, AssetRoleType.Viewer);
+        service.CheckRole(asset, AssetRoleType.Viewer);
 
         TripListModel trips = await tripService.GetTrips(assetId, new TripFilterModel
         {
@@ -42,7 +33,7 @@ public class ReportService : IReportService
             EndDate = distanceReportFilter.EndDate
         });
 
-        UserDocument user = await currentUserAccessor.Get();
+        UserDocument user = await userAccessor.Get();
 
         DistanceReportListModel listModel = DistanceReportListModelMapper.Map(trips.Items, user.UnitsType);
 

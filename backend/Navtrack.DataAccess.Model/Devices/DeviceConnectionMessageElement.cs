@@ -5,13 +5,8 @@ namespace Navtrack.DataAccess.Model.Devices;
 
 public class DeviceConnectionMessageElement
 {
-    public DeviceConnectionMessageElement()
-    {
-        Id = ObjectId.GenerateNewId();
-    }
-
     [BsonId]
-    public ObjectId Id { get; set; }
+    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
     [BsonElement("hex")]
     public string Hex { get; set; }

@@ -11,17 +11,9 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Server;
 
 [Service(typeof(IProtocolHandler))]
-public class ProtocolHandler : IProtocolHandler
+public class ProtocolHandler(ILogger<ProtocolHandler> logger, IClientHandler handler)
+    : IProtocolHandler
 {
-    private readonly ILogger<ProtocolHandler> logger;
-    private readonly IClientHandler clientHandler;
-
-    public ProtocolHandler(ILogger<ProtocolHandler> logger, IClientHandler clientHandler)
-    {
-        this.logger = logger;
-        this.clientHandler = clientHandler;
-    }
-
     [SuppressMessage("ReSharper", "AssignmentIsFullyDiscarded")]
     public async Task HandleProtocol(CancellationToken cancellationToken, IProtocol protocol)
     {
@@ -44,7 +36,7 @@ public class ProtocolHandler : IProtocolHandler
                     Protocol = protocol
                 };
 
-                _ = clientHandler.HandleClient(cancellationToken, client);
+                _ = handler.HandleClient(cancellationToken, client);
             }
         }
         catch (Exception exception)

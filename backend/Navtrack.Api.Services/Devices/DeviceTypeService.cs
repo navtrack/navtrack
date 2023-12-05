@@ -9,18 +9,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Devices;
 
 [Service(typeof(IDeviceTypeService))]
-public class DeviceTypeService : IDeviceTypeService
+public class DeviceTypeService(IDeviceTypeRepository typeRepository) : IDeviceTypeService
 {
-    private readonly IDeviceTypeRepository deviceTypeRepository;
-
-    public DeviceTypeService(IDeviceTypeRepository deviceTypeRepository)
-    {
-        this.deviceTypeRepository = deviceTypeRepository;
-    }
-
     public ListModel<DeviceTypeModel> GetAll()
     {
-        IEnumerable<DeviceType> devicesTypes = deviceTypeRepository.GetDeviceTypes();
+        IEnumerable<DeviceType> devicesTypes = typeRepository.GetDeviceTypes();
 
         return DeviceTypesModelMapper.Map(devicesTypes);
     }

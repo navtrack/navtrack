@@ -3,12 +3,7 @@ using System;
 namespace Navtrack.DataAccess.Mongo;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class CollectionAttribute : Attribute
+public class CollectionAttribute(string name) : Attribute
 {
-    public string Name { get; }
-
-    public CollectionAttribute(string name)
-    {
-        Name = name;
-    }
+    public string Name { get; } = name;
 }

@@ -10,12 +10,9 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Services.Users;
 
 [Service(typeof(IPasswordResetRepository))]
-public class PasswordResetRepository : GenericRepository<PasswordResetDocument>, IPasswordResetRepository
+public class PasswordResetRepository(IRepository repository)
+    : GenericRepository<PasswordResetDocument>(repository), IPasswordResetRepository
 {
-    public PasswordResetRepository(IRepository repository) : base(repository)
-    {
-    }
-
     public Task<int> GetCountOfPasswordResets(string ipAddress, DateTime fromDate)
     {
         return repository.GetQueryable<PasswordResetDocument>()

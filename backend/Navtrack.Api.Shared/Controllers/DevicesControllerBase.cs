@@ -9,22 +9,15 @@ using Navtrack.Api.Services.Devices;
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
-public abstract class DevicesControllerBase : ControllerBase
+public abstract class DevicesControllerBase(IDeviceTypeService typeService) : ControllerBase
 {
-    private readonly IDeviceTypeService deviceTypeService;
-
-    protected DevicesControllerBase(IDeviceTypeService deviceTypeService)
-    {
-        this.deviceTypeService = deviceTypeService;
-    }
-
     [HttpGet(ApiPaths.DevicesTypes)]
     [ProducesResponseType(typeof(ListModel<DeviceTypeModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces(MediaTypeNames.Application.Json)]
     public IActionResult GetTypes()
     {
-        ListModel<DeviceTypeModel> model = deviceTypeService.GetAll();
+        ListModel<DeviceTypeModel> model = typeService.GetAll();
 
         return new JsonResult(model);
     }

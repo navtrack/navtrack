@@ -10,22 +10,15 @@ using Navtrack.Api.Shared.Controllers;
 
 namespace Navtrack.Api.Controllers;
 
-public class AssetsController : AssetsControllerBase
+public class AssetsController(IAssetService service) : AssetsControllerBase(service)
 {
-    private readonly IAssetService assetService;
-
-    public AssetsController(IAssetService assetService) : base(assetService)
-    {
-        this.assetService = assetService;
-    }
-
     [HttpGet(ApiPaths.Assets)]
     [ProducesResponseType(typeof(ListModel<AssetModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<IActionResult> GetAssets()
     {
-        ListModel<AssetModel> assets = await assetService.GetAssets();
+        ListModel<AssetModel> assets = await service.GetAssets();
 
         return new JsonResult(assets);
     }
