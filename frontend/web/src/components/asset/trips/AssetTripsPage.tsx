@@ -74,7 +74,7 @@ export function AssetTripsPage() {
                   latitude: selectedTrip.startLocation.latitude,
                   longitude: selectedTrip.startLocation.longitude
                 }}
-                zoom={16}>
+                initialZoom={16}>
                 <MapTrip trip={selectedTrip} />
                 {selectedTripLocation && showPin && (
                   <MapPin

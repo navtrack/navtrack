@@ -1,18 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMap } from "./useMap";
 
 type MapZoomProps = {
-  zoom?: number;
+  initialZoom?: number;
 };
 
 export function MapZoom(props: MapZoomProps) {
   const map = useMap();
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (props.zoom !== undefined && map.map !== undefined) {
-      map.map.setZoom(props.zoom);
+    if (
+      !initialized &&
+      props.initialZoom !== undefined &&
+      map.map !== undefined
+    ) {
+      map.map.setZoom(props.initialZoom);
+      setInitialized(true);
     }
-  }, [map, props.zoom]);
+  }, [initialized, map, props.initialZoom]);
 
   return null;
 }

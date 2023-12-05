@@ -1,21 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMap } from "./useMap";
+import { LatLng } from "./types";
 
-interface IMapCenter {
-  latitude?: number;
-  longitude?: number;
+type MapCenterProps = {
+  location?: LatLng;
   zoom?: number;
-}
+};
 
-export function MapCenter(props: IMapCenter) {
+export function MapCenter(props: MapCenterProps) {
   const map = useMap();
+  const [currentLocation, setCurrentLocation] = useState<LatLng>();
 
   useEffect(() => {
-    if (props.latitude && props.longitude) {
+    if (props.location && props.location !== currentLocation) {
       const zoom = props.zoom !== undefined ? props.zoom : map.map.getZoom();
-      map.setCenter([props.latitude, props.longitude], zoom);
+
+      map.setCenter([props.location.latitude, props.location.longitude], zoom);
+      setCurrentLocation(props.location);
     }
-  }, [map, props.latitude, props.longitude, props.zoom]);
+  }, [currentLocation, map, props.location, props.zoom]);
 
   return null;
 }

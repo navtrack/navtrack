@@ -8,7 +8,7 @@ import { MapZoom } from "./MapZoom";
 
 type MapProps = {
   center: LatLng;
-  zoom?: number;
+  initialZoom?: number;
   children?: ReactNode;
   hideZoomControl?: boolean;
   hideAttribution?: boolean;
@@ -35,11 +35,11 @@ export const Map = (props: MapProps) => {
       {props.center !== undefined && (
         <MapContainer
           center={[props.center.latitude, props.center.longitude]}
-          zoom={props.zoom ?? 13}
+          zoom={props.initialZoom ?? 13}
           className=" h-full w-full"
           zoomControl={!props.hideZoomControl}
           attributionControl={!props.hideAttribution}>
-          <MapZoom zoom={props.zoom} />
+          <MapZoom initialZoom={props.initialZoom} />
           <VectorTileLayer
             styleUrl="https://tiles.stadiamaps.com/styles/osm_bright.json"
             // attribution={

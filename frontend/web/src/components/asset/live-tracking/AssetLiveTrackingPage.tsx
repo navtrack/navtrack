@@ -3,11 +3,14 @@ import { FormattedMessage } from "react-intl";
 import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
 import { LocationBar } from "../shared/location-bar/LocationBar";
-import { LiveTrackingMapPin } from "./LiveTrackingMapPin";
 import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
+import { useLiveTracking } from "./useLiveTracking";
+import { MapPin } from "../../ui/map/MapPin";
+import { MapCenter } from "../../ui/map/MapCenter";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
+  // const { location } = useLiveTracking();
 
   return (
     <AuthenticatedLayoutTwoColumns>
@@ -22,8 +25,19 @@ export function AssetLiveTrackingPage() {
                 latitude: 0,
                 longitude: 0
               }}
-              zoom={16}>
-              <LiveTrackingMapPin />
+              initialZoom={16}>
+              {currentAsset.data.location && (
+                <>
+                  <MapPin
+                    latitude={currentAsset.data.location.latitude}
+                    longitude={currentAsset.data.location.longitude}
+                  />
+                  <MapCenter
+                    latitude={currentAsset.data.location.latitude}
+                    longitude={currentAsset.data.location.longitude}
+                  />
+                </>
+              )}
             </Map>
           </Card>
         </>

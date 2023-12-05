@@ -5,14 +5,14 @@ import { renderToString } from "react-dom/server";
 import { useEffect, useMemo } from "react";
 import { useMap } from "./useMap";
 
-interface MapPinProps {
+type MapPinProps = {
   latitude?: number;
   longitude?: number;
   follow?: boolean;
   color?: "primary" | "green" | "red";
   zIndexOffset?: number;
   zoom?: number;
-}
+};
 
 export function MapPin(props: MapPinProps) {
   const map = useMap();

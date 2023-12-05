@@ -30,7 +30,7 @@ export function AssetLogPage() {
                 latitude: log.location.latitude,
                 longitude: log.location.longitude
               }}
-              zoom={16}>
+              initialZoom={16}>
               <MapPin
                 latitude={log.location?.latitude}
                 longitude={log.location?.longitude}

@@ -43,7 +43,7 @@ export function GeofenceFilterModal(props: IGeofenceFilterModal) {
                 <FormattedMessage id="locations.filter.geofence.title" />
               </h3>
               <div className="mt-4 flex flex-grow" style={{ height: "400px" }}>
-                <Map center={center} zoom={zoom}>
+                <Map center={center} initialZoom={zoom}>
                   <MapMove onMove={handleMapMove} />
                   <GeofenceCircle geofence={values} onChange={setValues} />
                 </Map>
