@@ -9,7 +9,7 @@ namespace Navtrack.Api.Model.Trips;
 public class TripModel
 {
     [Required]
-    public List<LocationModel> Locations { get; } = new();    
+    public List<LocationModel> Locations { get; } = [];    
 
     [Required]
     public LocationModel StartLocation => Locations.First();

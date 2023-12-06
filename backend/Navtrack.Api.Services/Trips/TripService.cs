@@ -39,7 +39,7 @@ public class TripService(ILocationRepository repository) : ITripService
 
     private static List<TripModel> CreateTrips(IEnumerable<LocationModel> source)
     {
-        List<TripModel> trips = new();
+        List<TripModel> trips = [];
 
         TripModel? currentTrip = null;
         LocationModel? lastLocation = null;

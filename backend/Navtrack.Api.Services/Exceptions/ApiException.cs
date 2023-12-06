@@ -10,7 +10,7 @@ public class ApiException(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequ
     : Exception(message)
 {
     public readonly string Code;
-    public readonly List<ValidationError> ValidationErrors = new();
+    public readonly List<ValidationError> ValidationErrors = [];
     public readonly HttpStatusCode HttpStatusCode = httpStatusCode;
 
     public ApiException(ApiError apiError, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest) : this(httpStatusCode, apiError.Message)

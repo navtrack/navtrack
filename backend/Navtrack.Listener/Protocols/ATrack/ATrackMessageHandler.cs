@@ -45,7 +45,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
             
         input.Client.SetDevice($"{id}");
             
-        List<Location> positions = new();
+        List<Location> positions = [];
 
         while (input.DataMessage.ByteReader.BytesLeft > 40)
         {
@@ -92,7 +92,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
 
     private static void SendResponse(MessageInput input, in byte[] id, in byte[] index)
     {
-        List<byte> response = new() {0xFE, 0x02};
+        List<byte> response = [0xFE, 0x02];
         response.AddRange(id);
         response.AddRange(index);
             
@@ -310,7 +310,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
     {
         StringReader stringReader = new(input.DataMessage.String);
 
-        List<Location> locations = new();
+        List<Location> locations = [];
         string line;
 
         while (!string.IsNullOrEmpty(line = stringReader.ReadLine()))

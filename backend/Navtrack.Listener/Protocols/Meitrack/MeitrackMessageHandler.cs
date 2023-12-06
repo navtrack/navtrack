@@ -35,7 +35,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             short dataPackets = input.DataMessage.ByteReader.Get<short>();
             int cacheRecords = input.DataMessage.ByteReader.Get<int>();
 
-            List<Location> locations = new();
+            List<Location> locations = [];
 
             while (input.DataMessage.ByteReader.BytesLeft > 52)
             {
@@ -92,7 +92,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             int cacheRecords = input.DataMessage.ByteReader.Get<int>();
             short dataPackets = input.DataMessage.ByteReader.Get<short>();
 
-            List<Location> locations = new();
+            List<Location> locations = [];
 
             for (int i = 0; i < dataPackets; i++)
             {

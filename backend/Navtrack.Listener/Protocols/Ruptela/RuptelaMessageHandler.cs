@@ -26,7 +26,7 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
             byte recordsLeftInDevice = input.DataMessage.ByteReader.GetOne();
             byte records = input.DataMessage.ByteReader.GetOne();
 
-            List<Location> locations = new();
+            List<Location> locations = [];
 
             for (int i = 0; i < records; i++)
             {
@@ -81,7 +81,7 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
             ? input.DataMessage.ByteReader.GetLe<short>()
             : input.DataMessage.ByteReader.GetOne();
 
-        List<IOData> events = new();
+        List<IOData> events = [];
 
         events.AddRange(GetIOData(input.DataMessage.ByteReader, 1, extended)); // 1 byte IO data
         events.AddRange(GetIOData(input.DataMessage.ByteReader, 2, extended)); // 2 bytes IO data
@@ -93,7 +93,7 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
 
     private static IEnumerable<IOData> GetIOData(ByteReader input, int eventBytes, bool extended)
     {
-        List<IOData> data = new();
+        List<IOData> data = [];
 
         byte ioDataCount = input.GetOne();
 

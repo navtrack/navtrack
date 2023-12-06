@@ -42,7 +42,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 
     private static List<Location> GetLocations(MessageInput input)
     {
-        List<Location> locations = new();
+        List<Location> locations = [];
 
         Codec codec = (Codec) input.DataMessage.ByteReader.Skip(8).GetOne();
         CodecConfiguration codecConfiguration = CodecConfiguration.Dictionary[codec];
@@ -86,7 +86,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 
         byte[] totalEvents = input.DataMessage.ByteReader.Get(codecConfiguration.TotalEventsLength);
 
-        List<Event> events = new();
+        List<Event> events = [];
 
         events.AddRange(GetEvents(input.DataMessage.ByteReader, 1, codecConfiguration)); // 1 byte events
         events.AddRange(GetEvents(input.DataMessage.ByteReader, 2, codecConfiguration)); // 2 bytes events
@@ -114,7 +114,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
     private static IEnumerable<Event> GetEvents(ByteReader input, int eventBytes,
         CodecConfiguration codecConfiguration)
     {
-        List<Event> events = new();
+        List<Event> events = [];
 
         short numberOfEvents = codecConfiguration.EventsLength == 1
             ? input.GetOne()
@@ -136,7 +136,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 
     private static IEnumerable<Event> GetEvents(ByteReader input, CodecConfiguration codecConfiguration)
     {
-        List<Event> events = new();
+        List<Event> events = [];
 
         if (codecConfiguration.HasVariableSizeElements)
         {

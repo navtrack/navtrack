@@ -18,7 +18,7 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
         long id = input.DataMessage.ByteReader.Get<int>();
         short length = input.DataMessage.ByteReader.Get<short>();
 
-        List<Location> positions = new();
+        List<Location> positions = [];
 
         while (input.DataMessage.ByteReader.BytesLeft > 0)
         {

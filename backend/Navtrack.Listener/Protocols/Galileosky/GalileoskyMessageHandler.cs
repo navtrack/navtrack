@@ -15,10 +15,10 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
         input.DataMessage.ByteReader.Skip(1);
         int length = input.DataMessage.ByteReader.Get<short>() & 0x7fff;
 
-        List<Location> locations = new();
+        List<Location> locations = [];
         Location location = new();
 
-        HashSet<byte> tagsFound = new();
+        HashSet<byte> tagsFound = [];
 
         while (input.DataMessage.ByteReader.Index < input.DataMessage.Bytes.Length - 2)
         {

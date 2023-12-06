@@ -71,7 +71,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
     {
         int count = input.DataMessage.ByteReader.GetOne() & 0x0f;
         int totalCount = input.DataMessage.ByteReader.Get<short>();
-        List<Location> locations = new();
+        List<Location> locations = [];
 
         for (int i = 0; i < count; i++)
         {

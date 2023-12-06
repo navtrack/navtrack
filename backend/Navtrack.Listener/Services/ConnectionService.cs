@@ -22,7 +22,7 @@ public class ConnectionService(IRepository repository) : IConnectionService
             OpenedAt = DateTime.UtcNow,
             RemoteEndpoint = endPoint,
             ProtocolPort = protocolPort,
-            Messages = new List<DeviceConnectionMessageElement>()
+            Messages = []
         };
 
         await repository.GetCollection<DeviceConnectionDocument>().InsertOneAsync(deviceConnection);

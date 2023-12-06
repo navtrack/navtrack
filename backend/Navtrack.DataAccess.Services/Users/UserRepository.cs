@@ -84,7 +84,7 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
 
     public async Task Update(ObjectId id, UpdateUser updateUser)
     {
-        List<UpdateDefinition<UserDocument>> updateDefinitions = new();
+        List<UpdateDefinition<UserDocument>> updateDefinitions = [];
 
         if (!string.IsNullOrEmpty(updateUser.Email))
         {

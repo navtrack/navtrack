@@ -22,7 +22,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 
     private IEnumerable<Location> ParseLocationMessage(MessageInput input)
     {
-        List<Location> locations = new();
+        List<Location> locations = [];
 
         byte parcelNumber = input.DataMessage.ByteReader.Skip(1).GetOne();
 
@@ -101,7 +101,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 
     private static void SendResponse(MessageInput input, byte version, int index)
     {
-        List<byte> response = new() { 0x7B };
+        List<byte> response = [0x7B];
 
         if (version == (int)HeaderVersion.V1)
         {

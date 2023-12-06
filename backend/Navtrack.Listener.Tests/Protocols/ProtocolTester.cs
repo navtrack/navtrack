@@ -34,7 +34,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
     public ProtocolTester()
     {
         cancellationTokenSource = new CancellationTokenSource();
-        TotalParsedLocations = new List<Location>();
+        TotalParsedLocations = [];
 
         Client = new Client
         {

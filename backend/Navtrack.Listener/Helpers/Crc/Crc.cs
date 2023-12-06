@@ -124,7 +124,7 @@ public class Crc : HashAlgorithm
     {
         IEnumerable<Parameters> parameters = CrcStdParams.GetAll();
 
-        List<CheckResult> result = new();
+        List<CheckResult> result = [];
         foreach (Parameters parameter in parameters)
         {
             Crc crc = new(parameter);

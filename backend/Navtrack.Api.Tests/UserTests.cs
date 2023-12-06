@@ -105,7 +105,7 @@ public class UserTests : BaseTest
             Email = email
         });
 
-        List<HttpResponseMessage> responseMessages = new();
+        List<HttpResponseMessage> responseMessages = [];
 
         for (int i = 0; i < 11; i++)
         {

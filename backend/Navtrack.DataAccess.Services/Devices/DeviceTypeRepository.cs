@@ -30,7 +30,7 @@ public class DeviceTypeRepository : IDeviceTypeRepository
         {
             using StringReader stringReader = new(DeviceTypes.DeviceTypesCsv);
 
-            List<DeviceType> list = new();
+            List<DeviceType> list = [];
             Dictionary<int, Protocol> protocols = new();
 
             while (stringReader.ReadLine() is { } line)

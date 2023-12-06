@@ -135,7 +135,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         input.DataMessage.ByteReader.Skip(2);
         byte size = input.DataMessage.ByteReader.GetOne();
 
-        List<Location> locations = new();
+        List<Location> locations = [];
 
         for (int i = 0; i < size; i++)
         {

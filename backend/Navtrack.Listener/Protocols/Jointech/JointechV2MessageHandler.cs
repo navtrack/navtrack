@@ -90,7 +90,7 @@ public static class JointechV2MessageHandler
 
     private static List<byte> SendResponse(string phoneNumberHex, short sequenceNumber, short messageId, byte result)
     {
-        List<byte> data = new();
+        List<byte> data = [];
 
         data.AddRange(BitConverter.GetBytes(sequenceNumber).Reverse());
         data.AddRange(BitConverter.GetBytes(messageId).Reverse());
@@ -99,7 +99,7 @@ public static class JointechV2MessageHandler
         MemoryStream stream = new();
         using BinaryWriter writer = new(stream);
 
-        List<byte> bytes = new() { 0x7e };
+        List<byte> bytes = [0x7e];
 
         bytes.AddRange(BitConverter.GetBytes(JointechV2Constants.GeneralResponseMessageId).Take(2).Reverse());
         
