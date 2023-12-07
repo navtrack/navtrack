@@ -1,4 +1,4 @@
-import { CircleGeofence, LatLng } from "../../../ui/map/types";
+import { CircleGeofence, LongLat } from "../../../ui/map/types";
 
 export enum LocationFilterType {
   Date,
@@ -34,7 +34,7 @@ export type DateFilter = {
 export type CircleGeofenceFilter = FilterOptions & {
   geofence?: CircleGeofence;
   map?: {
-    center: LatLng;
+    center: LongLat;
     zoom: number;
   };
 };

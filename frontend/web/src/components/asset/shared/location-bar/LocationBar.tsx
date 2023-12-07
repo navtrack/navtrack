@@ -1,13 +1,11 @@
 import { LocationModel } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
-import { ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { LocationInfo } from "./LocationInfo";
 
 type LocationBarProps = {
   location?: LocationModel;
-  children?: ReactNode;
 };
 
 export function LocationBar(props: LocationBarProps) {
@@ -18,7 +16,7 @@ export function LocationBar(props: LocationBarProps) {
   return (
     <>
       {props.location && (
-        <div className="flex grid grid-cols-9 gap-x-4">
+        <div className="grid grid-cols-9 gap-x-4">
           <LocationInfo
             titleId={"generic.date"}
             hideMargin={true}

@@ -4,40 +4,23 @@ import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
 import { LocationBar } from "../shared/location-bar/LocationBar";
 import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
-import { useLiveTracking } from "./useLiveTracking";
 import { MapPin } from "../../ui/map/MapPin";
 import { MapCenter } from "../../ui/map/MapCenter";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
-  // const { location } = useLiveTracking();
+  const location = currentAsset.data?.location;
 
   return (
     <AuthenticatedLayoutTwoColumns>
-      {currentAsset.data?.location ? (
+      {location ? (
         <>
           <Card className="p-2">
-            <LocationBar location={currentAsset.data.location} />
+            <LocationBar location={location} />
           </Card>
           <Card className="flex flex-grow">
-            <Map
-              center={{
-                latitude: 0,
-                longitude: 0
-              }}
-              initialZoom={16}>
-              {currentAsset.data.location && (
-                <>
-                  <MapPin
-                    latitude={currentAsset.data.location.latitude}
-                    longitude={currentAsset.data.location.longitude}
-                  />
-                  <MapCenter
-                    latitude={currentAsset.data.location.latitude}
-                    longitude={currentAsset.data.location.longitude}
-                  />
-                </>
-              )}
+            <Map center={{ ...location }}>
+              <MapPin location={{ ...location }} follow />
             </Map>
           </Card>
         </>

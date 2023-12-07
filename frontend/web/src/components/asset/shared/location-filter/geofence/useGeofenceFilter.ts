@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { DEFAULT_MAP_CENTER } from "../../../../../constants";
-import { CircleGeofence, LatLng } from "../../../../ui/map/types";
+import { CircleGeofence, LongLat } from "../../../../ui/map/types";
 import { geofenceFilterAtom } from "../state";
 
 export function useGeofenceFilter(
   filterKey: string,
-  initialMapCenter?: LatLng
+  initialMapCenter?: LongLat
 ) {
   const [state, setState] = useRecoilState(geofenceFilterAtom(filterKey));
 
@@ -38,7 +38,7 @@ export function useGeofenceFilter(
   );
 
   const handleMapMove = useCallback(
-    (center: LatLng, zoom: number) => {
+    (center: LongLat, zoom: number) => {
       setState((current) => ({
         ...current,
         map: {

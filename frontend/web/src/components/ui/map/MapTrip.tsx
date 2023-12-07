@@ -38,16 +38,8 @@ export function MapTrip(props: MapTripProps) {
   if (props.trip) {
     return (
       <>
-        <MapPin
-          latitude={props.trip.startLocation.latitude}
-          longitude={props.trip.startLocation.longitude}
-          color="green"
-        />
-        <MapPin
-          latitude={props.trip.endLocation.latitude}
-          longitude={props.trip.endLocation.longitude}
-          color="red"
-        />
+        <MapPin location={{ ...props.trip.startLocation }} color="green" />
+        <MapPin location={{ ...props.trip.endLocation }} color="red" />
       </>
     );
   }

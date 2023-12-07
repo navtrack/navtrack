@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { HomePage } from "../components/home/HomePage";
-import { AssetLiveTrackingPage } from "../components/asset/live-tracking/AssetLiveTrackingPage";
+import { AssetLiveTrackingPage } from "../components/asset/live-tracking/LiveTrackingPage";
 import { AssetLogPage } from "../components/asset/log/AssetLogPage";
 import { AssetTripsPage } from "../components/asset/trips/AssetTripsPage";
 import { AssetAlertsPage } from "../components/asset/alerts/AssetAlertsPage";
