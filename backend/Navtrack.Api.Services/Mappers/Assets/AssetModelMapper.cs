@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Assets;
@@ -19,6 +20,7 @@ public static class AssetModelMapper
         model.Id = asset.Id.ToString();
         model.Name = asset.Name;
         model.Location = asset.Location != null ? LocationMapper.Map(asset.Location) : null;
+        model.Online = asset.Location?.CreatedDate > DateTime.UtcNow.AddMinutes(-1);
         model.Device = DeviceModelMapper.Map(asset, deviceType);
         model.Users = users != null
             ? asset.UserRoles

@@ -5,8 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface ChangePasswordRequest {
-  password: string;
-  confirmPassword: string;
-  currentPassword: string;
+export interface CreateAssetUserModel {
+  email: string;
+  role: string;
 }

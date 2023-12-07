@@ -18,7 +18,7 @@ public class LocationDocument
     public ObjectId AssetId { get; set; }
 
     /// <summary>
-    /// [longitude, latitude]
+    /// [Longitude, Latitude]
     /// </summary>
     [BsonElement("c")]
     public double[] Coordinates { get; set; }

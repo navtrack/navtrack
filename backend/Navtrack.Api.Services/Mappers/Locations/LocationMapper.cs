@@ -10,8 +10,6 @@ public static class LocationMapper
         LocationModel location = new()
         {
             Id = source.Id.ToString(),
-            Latitude = source.Coordinates[1],
-            Longitude = source.Coordinates[0],
             Coordinates = source.Coordinates,
             DateTime = source.DateTime,
             Speed = source.Speed,

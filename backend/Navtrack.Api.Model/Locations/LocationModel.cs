@@ -8,10 +8,11 @@ public class LocationModel
     public string Id { get; set; }
 
     [Required]
-    public double Latitude { get; set; }
-
+    public double Longitude => Coordinates[0];
+    
     [Required]
-    public double Longitude { get; set; }
+    public double Latitude => Coordinates[1];
+
 
     [Required]
     public double[] Coordinates { get; set; }

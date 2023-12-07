@@ -7,8 +7,8 @@
 
 export interface LocationModel {
   id?: string | null;
-  latitude: number;
-  longitude: number;
+  readonly longitude: number;
+  readonly latitude: number;
   coordinates: number[];
   readonly validCoordinates: boolean;
   dateTime: string;

@@ -41,17 +41,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssetModel"
+                "$ref": "#/components/schemas/CreateAssetModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssetModel"
+                "$ref": "#/components/schemas/CreateAssetModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssetModel"
+                "$ref": "#/components/schemas/CreateAssetModel"
               }
             }
           }
@@ -985,17 +985,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddUserToAssetModel"
+                "$ref": "#/components/schemas/CreateAssetUserModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddUserToAssetModel"
+                "$ref": "#/components/schemas/CreateAssetUserModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddUserToAssetModel"
+                "$ref": "#/components/schemas/CreateAssetUserModel"
               }
             }
           }
@@ -1540,47 +1540,6 @@
   },
   "components": {
     "schemas": {
-      "AddAssetModel": {
-        "required": [
-          "deviceTypeId",
-          "name",
-          "serialNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "deviceTypeId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "serialNumber": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddUserToAssetModel": {
-        "required": [
-          "email",
-          "role"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "role": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
       "AssetModel": {
         "required": [
           "device",
@@ -1600,8 +1559,7 @@
             "type": "string"
           },
           "online": {
-            "type": "boolean",
-            "readOnly": true
+            "type": "boolean"
           },
           "maxSpeed": {
             "type": "integer",
@@ -1712,6 +1670,47 @@
             "type": "string"
           },
           "currentPassword": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAssetModel": {
+        "required": [
+          "deviceTypeId",
+          "name",
+          "serialNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "deviceTypeId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "serialNumber": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAssetUserModel": {
+        "required": [
+          "email",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "role": {
             "minLength": 1,
             "type": "string"
           }
@@ -1942,13 +1941,15 @@
             "type": "string",
             "nullable": true
           },
-          "latitude": {
-            "type": "number",
-            "format": "double"
-          },
           "longitude": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "readOnly": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
           },
           "coordinates": {
             "type": "array",

@@ -10,8 +10,8 @@ public interface IAssetService
     Task<ListModel<AssetModel>> GetAssets();
     Task Update(string assetId, UpdateAssetModel model);
     Task Delete(string assetId);
-    Task<AssetModel> Add(AddAssetModel model);
+    Task<AssetModel> Create(CreateAssetModel model);
     Task<ListModel<AssetUserModel>> GetAssetUsers(string assetId);
-    Task AddUserToAsset(string assetId, AddUserToAssetModel model);
+    Task AddUserToAsset(string assetId, CreateAssetUserModel model);
     Task RemoveUserFromAsset(string assetId, string userId);
 }

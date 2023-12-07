@@ -5,8 +5,8 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface RegisterAccountRequest {
-  email: string;
-  password: string;
-  confirmPassword: string;
+export interface CreateAssetModel {
+  name: string;
+  deviceTypeId: string;
+  serialNumber: string;
 }

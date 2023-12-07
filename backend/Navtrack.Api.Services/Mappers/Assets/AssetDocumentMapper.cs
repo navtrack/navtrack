@@ -10,7 +10,7 @@ namespace Navtrack.Api.Services.Mappers.Assets;
 
 public static class AssetDocumentMapper
 {
-    public static AssetDocument Map(AddAssetModel source, UserDocument owner)
+    public static AssetDocument Map(CreateAssetModel source, UserDocument owner)
     {
         return new AssetDocument
         {

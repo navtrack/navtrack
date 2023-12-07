@@ -11,7 +11,7 @@ import type { AssetUserModel } from './assetUserModel';
 export interface AssetModel {
   id: string;
   name: string;
-  readonly online: boolean;
+  online: boolean;
   readonly maxSpeed: number;
   location?: LocationModel;
   device: DeviceModel;

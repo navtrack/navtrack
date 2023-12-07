@@ -8,7 +8,7 @@ namespace Navtrack.Api.Services.Mappers.Devices;
 
 public static class DeviceDocumentMapper
 {
-    public static DeviceDocument Map(AddAssetModel model, ObjectId assetId, ObjectId userId)
+    public static DeviceDocument Map(CreateAssetModel model, ObjectId assetId, ObjectId userId)
     {
         return new DeviceDocument
         {

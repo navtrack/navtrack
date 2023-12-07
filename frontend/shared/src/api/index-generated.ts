@@ -21,7 +21,7 @@ import type {
   ProblemDetails,
   AssetModel,
   ErrorModel,
-  AddAssetModel,
+  CreateAssetModel,
   UpdateAssetModel,
   DeviceModelListModel,
   ChangeDeviceModel,
@@ -32,7 +32,7 @@ import type {
   TripListModel,
   GetAssetsAssetIdTripsParams,
   AssetUserModelListModel,
-  AddUserToAssetModel,
+  CreateAssetUserModel,
   DeviceTypeModelListModel,
   ProtocolModelListModel,
   UserModel,
@@ -93,12 +93,12 @@ export const useGetAssets = <TData = Awaited<ReturnType<typeof getAssets>>, TErr
 
 
 export const postAssets = (
-    addAssetModel: AddAssetModel,
+    createAssetModel: CreateAssetModel,
  ) => {
       return authAxiosInstance<AssetModel>(
       {url: `/assets`, method: 'post',
       headers: {'Content-Type': 'application/json', },
-      data: addAssetModel
+      data: createAssetModel
     },
       );
     }
@@ -106,19 +106,19 @@ export const postAssets = (
 
 
     export type PostAssetsMutationResult = NonNullable<Awaited<ReturnType<typeof postAssets>>>
-    export type PostAssetsMutationBody = AddAssetModel
+    export type PostAssetsMutationBody = CreateAssetModel
     export type PostAssetsMutationError = ErrorModel
 
     export const usePostAssets = <TError = ErrorModel,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssets>>, TError,{data: AddAssetModel}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssets>>, TError,{data: CreateAssetModel}, TContext>, }
 ) => {
       const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAssets>>, {data: AddAssetModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAssets>>, {data: CreateAssetModel}> = (props) => {
           const {data} = props ?? {};
 
           return  postAssets(data,)
@@ -126,7 +126,7 @@ export const postAssets = (
 
         
 
-      return useMutation<Awaited<ReturnType<typeof postAssets>>, TError, {data: AddAssetModel}, TContext>(mutationFn, mutationOptions);
+      return useMutation<Awaited<ReturnType<typeof postAssets>>, TError, {data: CreateAssetModel}, TContext>(mutationFn, mutationOptions);
     }
     
 export const getAssetsAssetId = (
@@ -542,12 +542,12 @@ export const useGetAssetsAssetIdUsers = <TData = Awaited<ReturnType<typeof getAs
 
 export const postAssetsAssetIdUsers = (
     assetId: string,
-    addUserToAssetModel: AddUserToAssetModel,
+    createAssetUserModel: CreateAssetUserModel,
  ) => {
       return authAxiosInstance<void>(
       {url: `/assets/${assetId}/users`, method: 'post',
       headers: {'Content-Type': 'application/json', },
-      data: addUserToAssetModel
+      data: createAssetUserModel
     },
       );
     }
@@ -555,19 +555,19 @@ export const postAssetsAssetIdUsers = (
 
 
     export type PostAssetsAssetIdUsersMutationResult = NonNullable<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>>
-    export type PostAssetsAssetIdUsersMutationBody = AddUserToAssetModel
+    export type PostAssetsAssetIdUsersMutationBody = CreateAssetUserModel
     export type PostAssetsAssetIdUsersMutationError = ErrorModel
 
     export const usePostAssetsAssetIdUsers = <TError = ErrorModel,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>, TError,{assetId: string;data: AddUserToAssetModel}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>, TError,{assetId: string;data: CreateAssetUserModel}, TContext>, }
 ) => {
       const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>, {assetId: string;data: AddUserToAssetModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>, {assetId: string;data: CreateAssetUserModel}> = (props) => {
           const {assetId,data} = props ?? {};
 
           return  postAssetsAssetIdUsers(assetId,data,)
@@ -575,7 +575,7 @@ export const postAssetsAssetIdUsers = (
 
         
 
-      return useMutation<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>, TError, {assetId: string;data: AddUserToAssetModel}, TContext>(mutationFn, mutationOptions);
+      return useMutation<Awaited<ReturnType<typeof postAssetsAssetIdUsers>>, TError, {assetId: string;data: CreateAssetUserModel}, TContext>(mutationFn, mutationOptions);
     }
     
 export const deleteAssetsAssetIdUsersUserId = (

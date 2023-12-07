@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Api.Model.Assets;
 
-public class AddAssetModel
+public class CreateAssetModel
 {
     [Required]
     public string Name { get; set; }

@@ -34,7 +34,7 @@ public abstract class AssetsUsersControllerBase(IAssetService service) : Control
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public virtual async Task<IActionResult> AddUserToAsset([FromRoute] string assetId, [FromBody] AddUserToAssetModel model)
+    public virtual async Task<IActionResult> AddUserToAsset([FromRoute] string assetId, [FromBody] CreateAssetUserModel model)
     {
         await service.AddUserToAsset(assetId, model);
 

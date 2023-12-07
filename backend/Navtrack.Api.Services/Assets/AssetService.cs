@@ -98,16 +98,16 @@ public class AssetService(
         await post.Send(new AssetDeletedEvent(assetId));
     }
 
-    public async Task<AssetModel> Add(AddAssetModel model)
+    public async Task<AssetModel> Create(CreateAssetModel model)
     {
         UserDocument user = await userAccessor.Get();
 
-        AdjustModel(model);
+        CreateAssetModelMapper.Map(model);
         await ValidateModel(model, user);
 
         AssetDocument assetDocument = await AddDocuments(model);
+        
         DeviceType deviceType = typeRepository.GetById(model.DeviceTypeId);
-
         AssetModel asset = AssetModelMapper.Map(assetDocument, deviceType);
         
         await post.Send(new AssetCreatedEvent(asset));
@@ -123,7 +123,7 @@ public class AssetService(
         return AssetUserListModelMapper.Map(asset, users);
     }
 
-    public async Task AddUserToAsset(string assetId, AddUserToAssetModel model)
+    public async Task AddUserToAsset(string assetId, CreateAssetUserModel model)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
@@ -167,7 +167,7 @@ public class AssetService(
         await assetRepository.RemoveUserFromAsset(assetId, userId);
     }
 
-    private async Task<AssetDocument> AddDocuments(AddAssetModel model)
+    private async Task<AssetDocument> AddDocuments(CreateAssetModel model)
     {
         UserDocument currentUser = await userAccessor.Get();
         DeviceType deviceType = typeRepository.GetById(model.DeviceTypeId);
@@ -194,7 +194,7 @@ public class AssetService(
         return assetDocument;
     }
 
-    private async Task ValidateModel(AddAssetModel model, UserDocument currentUser)
+    private async Task ValidateModel(CreateAssetModel model, UserDocument currentUser)
     {
         ApiException validationException = new();
 
@@ -215,10 +215,5 @@ public class AssetService(
         }
 
         validationException.ThrowIfInvalid();
-    }
-
-    private static void AdjustModel(AddAssetModel model)
-    {
-        model.Name = model.Name.Trim();
     }
 }

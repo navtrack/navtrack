@@ -35,9 +35,9 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [Produces(MediaTypeNames.Application.Json)]
-    public async Task<AssetModel> AddAsset([FromBody] AddAssetModel model)
+    public async Task<AssetModel> CreateAsset([FromBody] CreateAssetModel model)
     {
-        AssetModel asset = await service.Add(model);
+        AssetModel asset = await service.Create(model);
 
         return asset;
     }
