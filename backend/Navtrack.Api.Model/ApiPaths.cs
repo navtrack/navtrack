@@ -2,10 +2,11 @@ namespace Navtrack.Api.Model;
 
 public static class ApiPaths
 {
+    public const string Account = "account";
+    public const string AccountPasswordForgot = "user/password/forgot";
+    public const string AccountPasswordChange = "user/password/change";
+    public const string AccountPasswordReset = "user/password/reset";
     public const string User = "user";
-    public const string UserPasswordForgot = "user/password/forgot";
-    public const string UserPasswordChange = "user/password/change";
-    public const string UserPasswordReset = "user/password/reset";
     public const string Assets = "assets";
     public const string AssetsAsset = "assets/{assetId}";
     public const string AssetsAssetTrips = "assets/{assetId}/trips";

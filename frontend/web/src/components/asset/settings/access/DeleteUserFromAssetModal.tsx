@@ -1,21 +1,21 @@
 import { AssetUserModel } from "@navtrack/shared/api/model/generated";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useDeleteUserFromAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteUserFromAssetMutation";
 import { getError } from "@navtrack/shared/utils/api";
 import { FormattedMessage } from "react-intl";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 import { useNotification } from "../../../ui/notification/useNotification";
+import { useAssetUserDeleteMutation } from "@navtrack/shared/hooks/mutations/assets/useAssetUserDeleteMutation";
 
-interface IDeleteAssetModal {
+type DeleteAssetModalProps = {
   user?: AssetUserModel;
   show: boolean;
   close: () => void;
   refresh: () => void;
-}
+};
 
-export function DeleteUserFromAssetModal(props: IDeleteAssetModal) {
+export function DeleteUserFromAssetModal(props: DeleteAssetModalProps) {
   const currentAsset = useCurrentAsset();
-  const mutation = useDeleteUserFromAssetMutation();
+  const mutation = useAssetUserDeleteMutation();
   const { showNotification } = useNotification();
 
   return (

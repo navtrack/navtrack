@@ -20,7 +20,7 @@ public static class DeviceDocumentMapper
         };
     }
 
-    public static DeviceDocument Map(string assetId, ChangeDeviceModel model, ObjectId userId)
+    public static DeviceDocument Map(string assetId, UpdateAssetDeviceModel model, ObjectId userId)
     {
         return new DeviceDocument
         {

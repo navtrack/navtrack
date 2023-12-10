@@ -1,32 +1,124 @@
 {
-  "openapi": "3.0.1",
+  "x-generator": "NSwag v14.0.0.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
   "info": {
-    "title": "Navtrack.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "version": "1.0"
+    "title": "My Title",
+    "version": "1.0.0"
   },
   "paths": {
+    "/account": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_Register",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterAccountModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/password/forgot": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_ForgotPassword",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/password/reset": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_ResetPassword",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/password/change": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_ChangePassword",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/assets": {
       "get": {
         "tags": [
           "Assets"
         ],
+        "operationId": "Assets_GetList",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetModelListModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/ListModelOfAssetModel"
                 }
               }
             }
@@ -37,62 +129,26 @@
         "tags": [
           "Assets"
         ],
+        "operationId": "Assets_Create",
         "requestBody": {
+          "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateAssetModel"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAssetModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAssetModel"
-              }
             }
-          }
+          },
+          "required": true,
+          "x-position": 1
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AssetModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -105,6 +161,7 @@
         "tags": [
           "Assets"
         ],
+        "operationId": "Assets_Get",
         "parameters": [
           {
             "name": "assetId",
@@ -112,12 +169,13 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -125,23 +183,14 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
           }
         }
       },
-      "patch": {
+      "post": {
         "tags": [
           "Assets"
         ],
+        "operationId": "Assets_Update",
         "parameters": [
           {
             "name": "assetId",
@@ -149,91 +198,25 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "requestBody": {
+          "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateAssetModel"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAssetModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAssetModel"
-              }
             }
-          }
+          },
+          "required": true,
+          "x-position": 2
         },
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": ""
           }
         }
       },
@@ -241,6 +224,7 @@
         "tags": [
           "Assets"
         ],
+        "operationId": "Assets_Delete",
         "parameters": [
           {
             "name": "assetId",
@@ -248,52 +232,13 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
@@ -303,6 +248,7 @@
         "tags": [
           "AssetsDevices"
         ],
+        "operationId": "AssetsDevices_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -310,36 +256,17 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceModelListModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/ListModelOfDeviceModel"
                 }
               }
             }
@@ -350,6 +277,7 @@
         "tags": [
           "AssetsDevices"
         ],
+        "operationId": "AssetsDevices_Update",
         "parameters": [
           {
             "name": "assetId",
@@ -357,91 +285,25 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "requestBody": {
+          "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangeDeviceModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangeDeviceModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangeDeviceModel"
+                "$ref": "#/components/schemas/UpdateAssetDeviceModel"
               }
             }
-          }
+          },
+          "required": true,
+          "x-position": 2
         },
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
@@ -451,6 +313,7 @@
         "tags": [
           "AssetsDevices"
         ],
+        "operationId": "AssetsDevices_Delete",
         "parameters": [
           {
             "name": "assetId",
@@ -458,7 +321,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           },
           {
             "name": "deviceId",
@@ -466,72 +330,13 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 2
           }
         ],
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
@@ -541,6 +346,7 @@
         "tags": [
           "AssetsLocations"
         ],
+        "operationId": "AssetsLocations_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -548,79 +354,98 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           },
           {
             "name": "StartDate",
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
+              "format": "date-time",
+              "nullable": true
+            },
+            "x-position": 2
           },
           {
             "name": "EndDate",
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
+              "format": "date-time",
+              "nullable": true
+            },
+            "x-position": 3
           },
           {
             "name": "MinAltitude",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 4
           },
           {
             "name": "MaxAltitude",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 5
           },
           {
             "name": "MinSpeed",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 6
           },
           {
             "name": "MaxSpeed",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 7
           },
           {
             "name": "Latitude",
             "in": "query",
             "schema": {
               "type": "number",
-              "format": "double"
-            }
+              "format": "double",
+              "nullable": true
+            },
+            "x-position": 8
           },
           {
             "name": "Longitude",
             "in": "query",
             "schema": {
               "type": "number",
-              "format": "double"
-            }
+              "format": "double",
+              "nullable": true
+            },
+            "x-position": 9
           },
           {
             "name": "Radius",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 10
           },
           {
             "name": "page",
@@ -629,57 +454,29 @@
               "type": "integer",
               "format": "int32",
               "default": 0
-            }
+            },
+            "x-position": 11
           },
           {
             "name": "size",
             "in": "query",
             "schema": {
-              "maximum": 1000,
-              "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1000
-            }
+              "default": 1000,
+              "maximum": 1000.0,
+              "minimum": 0.0
+            },
+            "x-position": 12
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationListModel"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LocationListModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationListModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -692,6 +489,7 @@
         "tags": [
           "AssetsReports"
         ],
+        "operationId": "AssetsReports_GetTimeDistanceReport",
         "parameters": [
           {
             "name": "assetId",
@@ -699,62 +497,37 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           },
           {
             "name": "StartDate",
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
+              "format": "date-time",
+              "nullable": true
+            },
+            "x-position": 2
           },
           {
             "name": "EndDate",
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
+              "format": "date-time",
+              "nullable": true
+            },
+            "x-position": 3
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DistanceReportListModel"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DistanceReportListModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DistanceReportListModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -767,6 +540,7 @@
         "tags": [
           "AssetsTrips"
         ],
+        "operationId": "AssetsTrips_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -774,134 +548,127 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           },
           {
             "name": "MinAvgAltitude",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
           },
           {
             "name": "MaxAvgAltitude",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 3
           },
           {
             "name": "MinAvgSpeed",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 4
           },
           {
             "name": "MaxAvgSpeed",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 5
           },
           {
             "name": "MinDuration",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 6
           },
           {
             "name": "MaxDuration",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 7
           },
           {
             "name": "Latitude",
             "in": "query",
             "schema": {
               "type": "number",
-              "format": "double"
-            }
+              "format": "double",
+              "nullable": true
+            },
+            "x-position": 8
           },
           {
             "name": "Longitude",
             "in": "query",
             "schema": {
               "type": "number",
-              "format": "double"
-            }
+              "format": "double",
+              "nullable": true
+            },
+            "x-position": 9
           },
           {
             "name": "Radius",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 10
           },
           {
             "name": "StartDate",
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
+              "format": "date-time",
+              "nullable": true
+            },
+            "x-position": 11
           },
           {
             "name": "EndDate",
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
+              "format": "date-time",
+              "nullable": true
+            },
+            "x-position": 12
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TripListModel"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TripListModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TripListModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -914,6 +681,7 @@
         "tags": [
           "AssetsUsers"
         ],
+        "operationId": "AssetsUsers_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -921,44 +689,25 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssetUserModelListModel"
-                }
-              },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetUserModelListModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssetUserModelListModel"
+                  "$ref": "#/components/schemas/ListModelOfAssetUserModel"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -971,6 +720,7 @@
         "tags": [
           "AssetsUsers"
         ],
+        "operationId": "AssetsUsers_Create",
         "parameters": [
           {
             "name": "assetId",
@@ -978,111 +728,25 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           }
         ],
         "requestBody": {
+          "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateAssetUserModel"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAssetUserModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAssetUserModel"
-              }
             }
-          }
+          },
+          "required": true,
+          "x-position": 2
         },
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
@@ -1092,6 +756,7 @@
         "tags": [
           "AssetsUsers"
         ],
+        "operationId": "AssetsUsers_Delete",
         "parameters": [
           {
             "name": "assetId",
@@ -1099,7 +764,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 1
           },
           {
             "name": "userId",
@@ -1107,92 +773,13 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "x-position": 2
           }
         ],
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
@@ -1202,38 +789,17 @@
         "tags": [
           "Devices"
         ],
+        "operationId": "Devices_GetList",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceTypeModelListModel"
+                  "$ref": "#/components/schemas/ListModelOfDeviceTypeModel"
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       }
@@ -1243,13 +809,14 @@
         "tags": [
           "Protocols"
         ],
+        "operationId": "Protocols_GetList",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProtocolModelListModel"
+                  "$ref": "#/components/schemas/ListModelOfProtocolModel"
                 }
               }
             }
@@ -1262,72 +829,14 @@
         "tags": [
           "User"
         ],
+        "operationId": "User_Get",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterAccountModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterAccountModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterAccountModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1338,201 +847,35 @@
         "tags": [
           "User"
         ],
+        "operationId": "User_Update",
         "requestBody": {
+          "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateUserModel"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUserModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUserModel"
-              }
             }
-          }
+          },
+          "required": true,
+          "x-position": 1
         },
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
     },
-    "/user/password/change": {
-      "post": {
+    "/health": {
+      "get": {
         "tags": [
-          "User"
+          "Health"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordModel"
-              }
-            }
-          }
-        },
+        "operationId": "Health_Get",
         "responses": {
           "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/password/reset": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResetPasswordModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResetPasswordModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResetPasswordModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/password/forgot": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": ""
           }
         }
       }
@@ -1540,53 +883,106 @@
   },
   "components": {
     "schemas": {
-      "AssetModel": {
-        "required": [
-          "device",
-          "id",
-          "maxSpeed",
-          "name",
-          "online"
-        ],
+      "RegisterAccountModel": {
         "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "password",
+          "confirmPassword"
+        ],
         "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
+          "email": {
+            "type": "string",
+            "minLength": 1
           },
-          "name": {
-            "minLength": 1,
-            "type": "string"
+          "password": {
+            "type": "string",
+            "minLength": 1
           },
-          "online": {
-            "type": "boolean"
-          },
-          "maxSpeed": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "location": {
-            "$ref": "#/components/schemas/LocationModel"
-          },
-          "device": {
-            "$ref": "#/components/schemas/DeviceModel"
-          },
-          "users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AssetUserModel"
-            },
-            "nullable": true
+          "confirmPassword": {
+            "type": "string",
+            "minLength": 1
           }
-        },
-        "additionalProperties": false
+        }
       },
-      "AssetModelListModel": {
+      "ForgotPasswordModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "ResetPasswordModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasePasswordModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "hash"
+            ],
+            "properties": {
+              "hash": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        ]
+      },
+      "BasePasswordModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "password",
+          "confirmPassword"
+        ],
+        "properties": {
+          "password": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confirmPassword": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "ChangePasswordModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasePasswordModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "currentPassword"
+            ],
+            "properties": {
+              "currentPassword": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        ]
+      },
+      "ListModelOfAssetModel": {
+        "type": "object",
+        "additionalProperties": false,
         "required": [
           "items"
         ],
-        "type": "object",
         "properties": {
           "items": {
             "type": "array",
@@ -1594,362 +990,75 @@
               "$ref": "#/components/schemas/AssetModel"
             }
           }
-        },
-        "additionalProperties": false
+        }
       },
-      "AssetUserModel": {
-        "required": [
-          "email",
-          "role",
-          "userId"
-        ],
+      "AssetModel": {
         "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "role": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "userId": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AssetUserModelListModel": {
+        "additionalProperties": false,
         "required": [
-          "items"
+          "id",
+          "name",
+          "online",
+          "maxSpeed",
+          "device"
         ],
-        "type": "object",
         "properties": {
-          "items": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "maxSpeed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "location": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocationModel"
+              }
+            ]
+          },
+          "device": {
+            "$ref": "#/components/schemas/DeviceModel"
+          },
+          "users": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/AssetUserModel"
             }
           }
-        },
-        "additionalProperties": false
-      },
-      "ChangeDeviceModel": {
-        "required": [
-          "deviceTypeId",
-          "serialNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "serialNumber": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "deviceTypeId": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChangePasswordModel": {
-        "required": [
-          "confirmPassword",
-          "currentPassword",
-          "password"
-        ],
-        "type": "object",
-        "properties": {
-          "password": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "confirmPassword": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "currentPassword": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateAssetModel": {
-        "required": [
-          "deviceTypeId",
-          "name",
-          "serialNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "deviceTypeId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "serialNumber": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateAssetUserModel": {
-        "required": [
-          "email",
-          "role"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "role": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeviceModel": {
-        "required": [
-          "active",
-          "deviceType",
-          "id",
-          "serialNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "serialNumber": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "deviceType": {
-            "$ref": "#/components/schemas/DeviceTypeModel"
-          },
-          "active": {
-            "type": "boolean"
-          },
-          "locations": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeviceModelListModel": {
-        "required": [
-          "items"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DeviceModel"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeviceTypeModel": {
-        "required": [
-          "displayName",
-          "id",
-          "manufacturer",
-          "model",
-          "protocol"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "manufacturer": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "model": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "displayName": {
-            "minLength": 1,
-            "type": "string",
-            "readOnly": true
-          },
-          "protocol": {
-            "$ref": "#/components/schemas/ProtocolModel"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeviceTypeModelListModel": {
-        "required": [
-          "items"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DeviceTypeModel"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "DistanceReportItemModel": {
-        "required": [
-          "day",
-          "distance",
-          "duration",
-          "trips"
-        ],
-        "type": "object",
-        "properties": {
-          "day": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "trips": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "distance": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "duration": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DistanceReportListModel": {
-        "required": [
-          "items",
-          "totalDistance",
-          "totalDuration"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DistanceReportItemModel"
-            }
-          },
-          "totalDistance": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "totalDuration": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ErrorModel": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "nullable": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "validationErrors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationErrorModel"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ForgotPasswordModel": {
-        "required": [
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LocationListModel": {
-        "required": [
-          "items"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LocationModel"
-            }
-          },
-          "averageSpeed": {
-            "type": "number",
-            "format": "float",
-            "nullable": true,
-            "readOnly": true
-          },
-          "averageAltitude": {
-            "type": "number",
-            "format": "float",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
+        }
       },
       "LocationModel": {
-        "required": [
-          "coordinates",
-          "dateTime",
-          "latitude",
-          "longitude",
-          "validCoordinates"
-        ],
         "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "longitude",
+          "latitude",
+          "coordinates",
+          "validCoordinates",
+          "dateTime"
+        ],
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "longitude": {
             "type": "number",
-            "format": "double",
-            "readOnly": true
+            "format": "double"
           },
           "latitude": {
             "type": "number",
-            "format": "double",
-            "readOnly": true
+            "format": "double"
           },
           "coordinates": {
             "type": "array",
@@ -1959,12 +1068,12 @@
             }
           },
           "validCoordinates": {
-            "type": "boolean",
-            "readOnly": true
+            "type": "boolean"
           },
           "dateTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "minLength": 1
           },
           "speed": {
             "type": "number",
@@ -1997,7 +1106,6 @@
           },
           "gsmSignal": {
             "type": "integer",
-            "format": "int32",
             "nullable": true
           },
           "odometer": {
@@ -2005,11 +1113,407 @@
             "format": "double",
             "nullable": true
           }
-        },
-        "additionalProperties": false
+        }
+      },
+      "DeviceModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "serialNumber",
+          "deviceType",
+          "active"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "serialNumber": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceTypeModel"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "locations": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "DeviceTypeModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "manufacturer",
+          "model",
+          "displayName",
+          "protocol"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "manufacturer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "model": {
+            "type": "string",
+            "minLength": 1
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/ProtocolModel"
+          }
+        }
+      },
+      "ProtocolModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "port",
+          "name"
+        ],
+        "properties": {
+          "port": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "AssetUserModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "role",
+          "userId"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "CreateAssetModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "deviceTypeId",
+          "serialNumber"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deviceTypeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "serialNumber": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "UpdateAssetModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ListModelOfDeviceModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceModel"
+            }
+          }
+        }
+      },
+      "UpdateAssetDeviceModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "serialNumber",
+          "deviceTypeId"
+        ],
+        "properties": {
+          "serialNumber": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deviceTypeId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "LocationListModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListModelOfLocationModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "averageSpeed": {
+                "type": "number",
+                "format": "float",
+                "nullable": true
+              },
+              "averageAltitude": {
+                "type": "number",
+                "format": "float",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "ListModelOfLocationModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationModel"
+            }
+          }
+        }
+      },
+      "DistanceReportListModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListModelOfDistanceReportItemModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "totalDistance",
+              "totalDuration"
+            ],
+            "properties": {
+              "totalDistance": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalDuration": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        ]
+      },
+      "ListModelOfDistanceReportItemModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DistanceReportItemModel"
+            }
+          }
+        }
+      },
+      "DistanceReportItemModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "day",
+          "trips",
+          "distance",
+          "duration"
+        ],
+        "properties": {
+          "day": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          },
+          "trips": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "TripListModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListModelOfTripModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "totalDistance",
+              "totalDuration",
+              "totalLocations",
+              "totalAvgSpeed",
+              "totalAvgAltitude"
+            ],
+            "properties": {
+              "totalDistance": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalDuration": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalLocations": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalAvgSpeed": {
+                "type": "number",
+                "format": "float"
+              },
+              "totalAvgAltitude": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          }
+        ]
+      },
+      "ListModelOfTripModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TripModel"
+            }
+          }
+        }
+      },
+      "TripModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "locations",
+          "startLocation",
+          "endLocation",
+          "duration",
+          "distance"
+        ],
+        "properties": {
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationModel"
+            }
+          },
+          "startLocation": {
+            "$ref": "#/components/schemas/LocationModel"
+          },
+          "endLocation": {
+            "$ref": "#/components/schemas/LocationModel"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSpeed": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "averageSpeed": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "averageAltitude": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "ListModelOfAssetUserModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetUserModel"
+            }
+          }
+        }
       },
       "ProblemDetails": {
         "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
         "properties": {
           "type": {
             "type": "string",
@@ -2032,32 +1536,47 @@
             "type": "string",
             "nullable": true
           }
-        },
-        "additionalProperties": { }
+        }
       },
-      "ProtocolModel": {
-        "required": [
-          "name",
-          "port"
-        ],
+      "CreateAssetUserModel": {
         "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "role"
+        ],
         "properties": {
-          "port": {
-            "type": "integer",
-            "format": "int32"
+          "email": {
+            "type": "string",
+            "minLength": 1
           },
-          "name": {
-            "minLength": 1,
-            "type": "string"
+          "role": {
+            "type": "string",
+            "minLength": 1
           }
-        },
-        "additionalProperties": false
+        }
       },
-      "ProtocolModelListModel": {
+      "ListModelOfDeviceTypeModel": {
+        "type": "object",
+        "additionalProperties": false,
         "required": [
           "items"
         ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceTypeModel"
+            }
+          }
+        }
+      },
+      "ListModelOfProtocolModel": {
         "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
         "properties": {
           "items": {
             "type": "array",
@@ -2065,172 +1584,45 @@
               "$ref": "#/components/schemas/ProtocolModel"
             }
           }
-        },
-        "additionalProperties": false
+        }
       },
-      "RegisterAccountModel": {
+      "UserModel": {
+        "type": "object",
+        "additionalProperties": false,
         "required": [
-          "confirmPassword",
+          "id",
           "email",
-          "password"
+          "units"
         ],
-        "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
           "email": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
-          "password": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "confirmPassword": {
-            "minLength": 1,
-            "type": "string"
+          "units": {
+            "$ref": "#/components/schemas/UnitsType"
           }
-        },
-        "additionalProperties": false
-      },
-      "ResetPasswordModel": {
-        "required": [
-          "confirmPassword",
-          "hash",
-          "password"
-        ],
-        "type": "object",
-        "properties": {
-          "password": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "confirmPassword": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "hash": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TripListModel": {
-        "required": [
-          "items",
-          "totalAvgAltitude",
-          "totalAvgSpeed",
-          "totalDistance",
-          "totalDuration",
-          "totalLocations"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TripModel"
-            }
-          },
-          "totalDistance": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "totalDuration": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalLocations": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalAvgSpeed": {
-            "type": "number",
-            "format": "float",
-            "readOnly": true
-          },
-          "totalAvgAltitude": {
-            "type": "number",
-            "format": "float",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TripModel": {
-        "required": [
-          "distance",
-          "duration",
-          "endLocation",
-          "locations",
-          "startLocation"
-        ],
-        "type": "object",
-        "properties": {
-          "locations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LocationModel"
-            },
-            "readOnly": true
-          },
-          "startLocation": {
-            "$ref": "#/components/schemas/LocationModel"
-          },
-          "endLocation": {
-            "$ref": "#/components/schemas/LocationModel"
-          },
-          "duration": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "distance": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "maxSpeed": {
-            "type": "number",
-            "format": "float",
-            "nullable": true,
-            "readOnly": true
-          },
-          "averageSpeed": {
-            "type": "number",
-            "format": "float",
-            "nullable": true,
-            "readOnly": true
-          },
-          "averageAltitude": {
-            "type": "number",
-            "format": "float",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
+        }
       },
       "UnitsType": {
-        "enum": [
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
           "Metric",
           "Imperial"
         ],
-        "type": "string"
-      },
-      "UpdateAssetModel": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
+        "enum": [
+          "Metric",
+          "Imperial"
+        ]
       },
       "UpdateUserModel": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "email": {
             "type": "string",
@@ -2238,53 +1630,14 @@
             "nullable": true
           },
           "unitsType": {
-            "$ref": "#/components/schemas/UnitsType"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UnitsType"
+              }
+            ]
           }
-        },
-        "additionalProperties": false
-      },
-      "UserModel": {
-        "required": [
-          "email",
-          "id",
-          "units"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "email": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "units": {
-            "$ref": "#/components/schemas/UnitsType"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ValidationErrorModel": {
-        "required": [
-          "propertyName"
-        ],
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "nullable": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "propertyName": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
+        }
       }
     }
   }

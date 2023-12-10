@@ -27,7 +27,7 @@ public class UserTests : BaseTest
     {
         using IServiceScope scope = factory.Services.CreateScope();
 
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = "nosuchemail@navtrack"
@@ -51,7 +51,7 @@ public class UserTests : BaseTest
         
         await ConfigureAppUrl(repository);
 
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = email
@@ -79,7 +79,7 @@ public class UserTests : BaseTest
         
         await ConfigureAppUrl(repository);
 
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = email
@@ -109,7 +109,7 @@ public class UserTests : BaseTest
 
         for (int i = 0; i < 11; i++)
         {
-            responseMessages.Add(await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+            responseMessages.Add(await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
                 new ForgotPasswordModel
                 {
                     Email = email
@@ -135,7 +135,7 @@ public class UserTests : BaseTest
             Email = email
         });
 
-        await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+        await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = email
@@ -147,7 +147,7 @@ public class UserTests : BaseTest
         PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
             new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
@@ -181,7 +181,7 @@ public class UserTests : BaseTest
             }
         });
 
-        await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+        await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = email
@@ -190,7 +190,7 @@ public class UserTests : BaseTest
         PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
+        await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
             new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
@@ -223,12 +223,12 @@ public class UserTests : BaseTest
             Email = email
         });
 
-       await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+       await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = email
             });
-       await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+       await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
            new ForgotPasswordModel
            {
                Email = email
@@ -240,7 +240,7 @@ public class UserTests : BaseTest
             .OrderBy(x => x.Created.Date)
             .FirstOrDefaultAsync();
 
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
             new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
@@ -274,7 +274,7 @@ public class UserTests : BaseTest
             }
         });
 
-        await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordForgot,
+        await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
             new ForgotPasswordModel
             {
                 Email = email
@@ -283,7 +283,7 @@ public class UserTests : BaseTest
         PasswordResetDocument passwordResetDocument = await repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        HttpResponseMessage firstResponse = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
+        HttpResponseMessage firstResponse = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
             new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,
@@ -291,7 +291,7 @@ public class UserTests : BaseTest
                 ConfirmPassword = "new password"
             });
 
-        HttpResponseMessage secondResponse = await httpClient.PostAsJsonAsync(ApiPaths.UserPasswordReset,
+        HttpResponseMessage secondResponse = await httpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
             new ResetPasswordModel
             {
                 Hash = passwordResetDocument.Hash,

@@ -35,7 +35,7 @@ public class DeviceService(
         return repository.SerialNumberIsUsed(serialNumber, deviceType.Protocol.Port, excludeAssetId);
     }
 
-    public async Task<ListModel<DeviceModel>> Get(string assetId)
+    public async Task<ListModel<DeviceModel>> GetList(string assetId)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
@@ -51,7 +51,7 @@ public class DeviceService(
         return DeviceListModelMapper.Map(devices, deviceTypes, locationCount, asset);
     }
 
-    public async Task Change(string assetId, ChangeDeviceModel model)
+    public async Task Change(string assetId, UpdateAssetDeviceModel model)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();

@@ -19,10 +19,9 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 {
     [HttpGet(ApiPaths.AssetsAsset)]
     [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces(MediaTypeNames.Application.Json)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
-    public async Task<AssetModel> GetAsset(string assetId)
+    public async Task<AssetModel> Get(string assetId)
     {
         AssetModel asset = await service.GetById(assetId);
 
@@ -31,24 +30,18 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 
     [HttpPost(ApiPaths.Assets)]
     [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [Produces(MediaTypeNames.Application.Json)]
-    public async Task<AssetModel> CreateAsset([FromBody] CreateAssetModel model)
+    public async Task<AssetModel> Create([FromBody] CreateAssetModel model)
     {
         AssetModel asset = await service.Create(model);
 
         return asset;
     }
 
-    [HttpPatch(ApiPaths.AssetsAsset)]
+    [HttpPost(ApiPaths.AssetsAsset)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public async Task<IActionResult> UpdateAsset(string assetId, [FromBody] UpdateAssetModel model)
+    public async Task<IActionResult> Update(string assetId, [FromBody] UpdateAssetModel model)
     {
         await service.Update(assetId, model);
 
@@ -57,10 +50,8 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 
     [HttpDelete(ApiPaths.AssetsAsset)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public async Task<IActionResult> DeleteAsset(string assetId)
+    public async Task<IActionResult> Delete(string assetId)
     {
         await service.Delete(assetId);
 

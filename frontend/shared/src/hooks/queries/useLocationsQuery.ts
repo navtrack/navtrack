@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdLocations } from "../../api/index-generated";
+import { useAssetsLocationsGetList } from "../../api/index-generated";
 
 export type IUseLocationsQuery = {
   assetId?: string;
@@ -14,7 +14,7 @@ export type IUseLocationsQuery = {
 };
 
 export const useLocationsQuery = (props: IUseLocationsQuery) => {
-  const query = useGetAssetsAssetIdLocations(
+  const query = useAssetsLocationsGetList(
     props.assetId as string,
     {
       StartDate: props.startDate,

@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdTrips } from "../../api/index-generated";
+import { useAssetsTripsGetList } from "../../api/index-generated";
 
 export type UseTripsQueryProps = {
   assetId?: string;
@@ -16,7 +16,7 @@ export type UseTripsQueryProps = {
 };
 
 export const useTripsQuery = (props: UseTripsQueryProps) => {
-  const query = useGetAssetsAssetIdTrips(
+  const query = useAssetsTripsGetList(
     props.assetId as string,
     {
       StartDate: props.startDate,

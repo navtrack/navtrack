@@ -19,7 +19,7 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Shared;
 
-public class BaseProgram<T>
+public abstract class BaseProgram<T>
 {
     public static void Main(string[] args, BaseProgramOptions? baseProgramOptions = null)
     {
@@ -34,12 +34,12 @@ public class BaseProgram<T>
         builder.WebHost.UseSentry();
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddOpenApiDocument();
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(defaultCorsPolicy, builder =>
+            options.AddPolicy(defaultCorsPolicy, policyBuilder =>
             {
-                builder.AllowAnyMethod()
+                policyBuilder.AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowAnyOrigin();
             });
@@ -87,8 +87,6 @@ public class BaseProgram<T>
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "Navtrack API"); });
         }
         else
         {
