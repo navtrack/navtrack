@@ -1,0 +1,19 @@
+name: Build check
+
+on:
+  push
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    if: github.repository == 'navtrack/navtrack'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker build
+        run: |
+          docker build -f Dockerfile.test .
