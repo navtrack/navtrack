@@ -11,5 +11,6 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesourc
 RUN apt-get update
 RUN apt-get install nodejs -y
 
+RUN cd frontend && npm install
 RUN dotnet build
 RUN dotnet test
