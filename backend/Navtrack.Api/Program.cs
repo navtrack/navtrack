@@ -6,6 +6,6 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        BaseProgram<Program>.Main(args);
+        BaseProgram<Program>.Main(args, typeof(Program).Assembly);
     }
 }

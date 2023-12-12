@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -21,7 +22,7 @@ namespace Navtrack.Api.Shared;
 
 public abstract class BaseProgram<T>
 {
-    public static void Main(string[] args, BaseProgramOptions? baseProgramOptions = null)
+    public static void Main(string[] args, Assembly assembly, BaseProgramOptions? baseProgramOptions = null)
     {
         const string defaultCorsPolicy = "defaultCorsPolicy";
 
@@ -34,7 +35,10 @@ public abstract class BaseProgram<T>
         builder.WebHost.UseSentry();
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddOpenApiDocument();
+        builder.Services.AddOpenApiDocument(c =>
+        {
+            c.Title = assembly.GetName().Name;
+        });
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(defaultCorsPolicy, policyBuilder =>
