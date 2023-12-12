@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  publish:
+  test:
     if: github.repository == 'navtrack/navtrack'
     runs-on: ubuntu-latest
     steps:
