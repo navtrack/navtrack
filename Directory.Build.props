@@ -5,5 +5,5 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)/backend/'))"/>
 </Project>
