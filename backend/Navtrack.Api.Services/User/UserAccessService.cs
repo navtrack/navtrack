@@ -32,11 +32,12 @@ public class UserAccessService(
     public async Task ForgotPassword(ForgotPasswordModel model)
     {
         string? ipAddress = contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+        model.Email = model.Email.Trim().ToLowerInvariant();
 
         ipAddress.ThrowApiExceptionIfNullOrEmpty(ApiErrorCodes.InvalidIpAddress);
 
         int passwordResetsIn24H =
-            await resetRepository.GetCountOfPasswordResets(ipAddress!, DateTime.UtcNow.AddDays(-1));
+            await resetRepository.GetCountOfPasswordResets(ipAddress!, model.Email, DateTime.UtcNow.AddDays(-1));
 
         if (passwordResetsIn24H >= ApiConstants.MaxPasswordResetIn24Hours)
         {

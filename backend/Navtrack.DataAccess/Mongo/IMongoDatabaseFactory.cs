@@ -5,4 +5,5 @@ namespace Navtrack.DataAccess.Mongo;
 public interface IMongoDatabaseFactory
 {
     IMongoDatabase CreateMongoDatabase();
+    void DropDatabase();
 }

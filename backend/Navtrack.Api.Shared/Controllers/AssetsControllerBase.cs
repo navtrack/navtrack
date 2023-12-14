@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Assets;
 using Navtrack.DataAccess.Model.Assets;
