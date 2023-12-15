@@ -1,16 +1,28 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-COPY . .
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 
-# Install Node.js
+# Install utilities
 RUN apt-get update
 RUN apt-get install -y ca-certificates curl gnupg
+
+# Install Node.js
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update
 RUN apt-get install nodejs -y
 
+# Install mongo
+RUN curl -fsSL https://pgp.mongodb.com/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+RUN apt-get update
+RUN apt-get install mongodb-org -y
+RUN mkdir -p /data/db
+
+WORKDIR /src
+COPY . .
+
 RUN cd frontend && npm install
 RUN dotnet build
-RUN dotnet test
+
+RUN chmod +x docker-test.sh
+RUN /src/docker-test.sh
