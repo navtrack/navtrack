@@ -31,7 +31,7 @@
         }
       }
     },
-    "/user/password/forgot": {
+    "/account/password/forgot": {
       "post": {
         "tags": [
           "Account"
@@ -56,7 +56,7 @@
         }
       }
     },
-    "/user/password/reset": {
+    "/account/password/reset": {
       "post": {
         "tags": [
           "Account"
@@ -81,7 +81,7 @@
         }
       }
     },
-    "/user/password/change": {
+    "/account/password/change": {
       "post": {
         "tags": [
           "Account"
@@ -843,7 +843,7 @@
           }
         }
       },
-      "patch": {
+      "post": {
         "tags": [
           "User"
         ],

@@ -91,6 +91,8 @@ public abstract class BaseProgram<T>
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            app.UseOpenApi();
+            app.UseSwaggerUi();
         }
         else
         {

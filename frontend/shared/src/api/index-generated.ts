@@ -90,7 +90,7 @@ export const accountForgotPassword = (
     forgotPasswordModel: ForgotPasswordModel,
  ) => {
       return authAxiosInstance<void>(
-      {url: `/user/password/forgot`, method: 'post',
+      {url: `/account/password/forgot`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: forgotPasswordModel
     },
@@ -127,7 +127,7 @@ export const accountResetPassword = (
     resetPasswordModel: ResetPasswordModel,
  ) => {
       return authAxiosInstance<void>(
-      {url: `/user/password/reset`, method: 'post',
+      {url: `/account/password/reset`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: resetPasswordModel
     },
@@ -164,7 +164,7 @@ export const accountChangePassword = (
     changePasswordModel: ChangePasswordModel,
  ) => {
       return authAxiosInstance<void>(
-      {url: `/user/password/change`, method: 'post',
+      {url: `/account/password/change`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: changePasswordModel
     },
@@ -891,7 +891,7 @@ export const userUpdate = (
     updateUserModel: UpdateUserModel,
  ) => {
       return authAxiosInstance<void>(
-      {url: `/user`, method: 'patch',
+      {url: `/user`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: updateUserModel
     },

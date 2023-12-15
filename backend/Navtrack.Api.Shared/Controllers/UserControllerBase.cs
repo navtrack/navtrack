@@ -12,7 +12,7 @@ namespace Navtrack.Api.Shared.Controllers;
 [ApiController]
 public abstract class UserControllerBase(IUserService userService) : ControllerBase
 {
-    [HttpPatch(ApiPaths.User)]
+    [HttpPost(ApiPaths.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<IActionResult> Update([FromBody] UpdateUserModel model)
