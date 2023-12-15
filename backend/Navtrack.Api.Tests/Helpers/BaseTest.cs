@@ -27,7 +27,7 @@ public class BaseTest : IClassFixture<BaseTestFixture>
         this.fixture = fixture;
         fixture.Initialize(new BaseTestFixtureOptions
         {
-            AuthenticatedUserId = AuthenticatedUser.Id.ToString()
+            AuthenticatedUserId = !DisableAuthentication ? AuthenticatedUser.Id.ToString() : null
         });
 
         InitializeSeedDatabase();
