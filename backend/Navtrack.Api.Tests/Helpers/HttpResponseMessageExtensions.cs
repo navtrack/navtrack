@@ -8,9 +8,9 @@ public static class HttpResponseMessageExtensions
 {
     public static async Task<T?> GetResult<T>(this HttpResponseMessage response)
     {
-        string responseContent = await response.Content.ReadAsStringAsync();
+        string content = await response.Content.ReadAsStringAsync();
         
-        T? result = JsonConvert.DeserializeObject<T>(responseContent);
+        T? result = JsonConvert.DeserializeObject<T>(content);
 
         return result;
     }

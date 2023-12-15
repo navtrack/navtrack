@@ -1,14 +1,6 @@
-using System;
 using System.Linq;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using IdentityModel;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,40 +9,10 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.Api.Tests.Helpers;
 
-public class FakePolicyEvaluator(string? userId) : IPolicyEvaluator
+public class TestWebApplicationFactory<TProgram>(TestWebApplicationFactoryOptions options)
+    : WebApplicationFactory<TProgram>
+    where TProgram : class
 {
-    public virtual async Task<AuthenticateResult> AuthenticateAsync(AuthorizationPolicy policy, HttpContext context)
-    {
-        ClaimsPrincipal claimsPrincipal = new(new ClaimsIdentity(new[]
-        {
-            new Claim(JwtClaimTypes.Subject, userId)
-        }, "TestScheme"));
-
-        return await Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal,
-            new AuthenticationProperties(), "TestScheme")));
-    }
-
-    public virtual async Task<PolicyAuthorizationResult> AuthorizeAsync(AuthorizationPolicy policy,
-        AuthenticateResult authenticationResult, HttpContext context, object resource)
-    {
-        return await Task.FromResult(PolicyAuthorizationResult.Success());
-    }
-}
-
-public class TestWebApplicationFactoryOptions
-{
-    public string? AuthenticatedUserId { get; set; }
-}
-
-public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
-{
-    private readonly TestWebApplicationFactoryOptions options;
-
-    public TestWebApplicationFactory(TestWebApplicationFactoryOptions options)
-    {
-        this.options = options;
-    }
-
     protected override IHost CreateHost(IHostBuilder hostBuilder)
     {
         hostBuilder.ConfigureServices(services =>
@@ -68,7 +30,7 @@ public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgra
         return base.CreateHost(hostBuilder);
     }
 
-    private static void ReplaceMongoOptions(IServiceCollection services)
+    private  void ReplaceMongoOptions(IServiceCollection services)
     {
         ServiceDescriptor? descriptor =
             services.SingleOrDefault(d => d.ServiceType == typeof(IOptions<MongoOptions>));
@@ -81,7 +43,7 @@ public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgra
         MongoOptions mongoOptions = new()
         {
             ConnectionString = "mongodb://localhost:27017",
-            Database = $"navtrack-test-{Guid.NewGuid():N}"
+            Database = options.DatabaseName
         };
         services.AddSingleton<IOptions<MongoOptions>>(new OptionsWrapper<MongoOptions>(mongoOptions));
     }

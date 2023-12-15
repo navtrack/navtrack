@@ -2,8 +2,8 @@ using MongoDB.Driver;
 
 namespace Navtrack.DataAccess.Mongo;
 
-public interface IMongoDatabaseFactory
+public interface IMongoDatabaseProvider
 {
-    IMongoDatabase CreateMongoDatabase();
+    IMongoDatabase GetMongoDatabase();
     void DropDatabase();
 }

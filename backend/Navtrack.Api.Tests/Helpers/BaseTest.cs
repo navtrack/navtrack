@@ -13,14 +13,7 @@ namespace Navtrack.Api.Tests.Helpers;
 public class BaseTest : IClassFixture<BaseTestFixture>
 {
     private readonly BaseTestFixture fixture;
-    protected HttpClient HttpClient => fixture.HttpClient;
-
-    private IServiceProvider? serviceProvider;
-
-    protected IServiceProvider ServiceProvider =>
-        serviceProvider ??= fixture.Factory.Services.CreateScope().ServiceProvider;
-
-    protected IRepository Repository => ServiceProvider.GetService<IRepository>()!;
+    protected bool DisableAuthentication { get; set; }
 
     protected BaseTest(BaseTestFixture fixture)
     {
@@ -32,6 +25,16 @@ public class BaseTest : IClassFixture<BaseTestFixture>
 
         InitializeSeedDatabase();
     }
+    
+    
+    private HttpClient? httpClient;
+    protected HttpClient HttpClient => httpClient ??= fixture.Factory.CreateClient();
+
+    private IServiceProvider? serviceProvider;
+    protected IServiceProvider ServiceProvider =>
+        serviceProvider ??= fixture.Factory.Services.CreateScope().ServiceProvider;
+
+    protected IRepository Repository => ServiceProvider.GetService<IRepository>()!;
 
     private void InitializeSeedDatabase()
     {
@@ -60,13 +63,16 @@ public class BaseTest : IClassFixture<BaseTestFixture>
     {
         Id = AuthenticatedUserId,
         Email = "choco@navtrack.com",
-        AssetRoles = new []{new UserAssetRoleElement
+        AssetRoles = new[]
         {
-            Role = AssetRoleType.Owner,
-            AssetId = AssetId
-        }}
+            new UserAssetRoleElement
+            {
+                Role = AssetRoleType.Owner,
+                AssetId = AssetId
+            }
+        }
     };
-    
+
     protected readonly AssetDocument Asset = new()
     {
         Id = AssetId,
@@ -85,8 +91,6 @@ public class BaseTest : IClassFixture<BaseTestFixture>
             }
         }
     };
-
-    protected bool DisableAuthentication { get; set; }
 
     protected static string GetUrl(string path, params KeyValuePair<string, string>[] values)
     {
