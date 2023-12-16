@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.User;
 
@@ -14,6 +15,7 @@ public abstract class UserControllerBase(IUserService userService) : ControllerB
 {
     [HttpPost(ApiPaths.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<IActionResult> Update([FromBody] UpdateUserModel model)
     {

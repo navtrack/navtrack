@@ -13,7 +13,6 @@ public abstract class DevicesControllerBase(IDeviceTypeService typeService) : Co
 {
     [HttpGet(ApiPaths.DevicesTypes)]
     [ProducesResponseType(typeof(ListModel<DeviceTypeModel>), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
     public IActionResult GetList()
     {
         ListModel<DeviceTypeModel> model = typeService.GetAll();

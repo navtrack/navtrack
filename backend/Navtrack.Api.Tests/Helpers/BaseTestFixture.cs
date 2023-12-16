@@ -8,14 +8,14 @@ public class BaseTestFixture : IDisposable
 {
     protected internal TestWebApplicationFactory<Program> Factory = null!;
     public bool DatabaseSeeded { get; set; }
-    private readonly string databaseGuid = Guid.NewGuid().ToString();
+    private readonly string databaseName = $"navtrack-test-{Guid.NewGuid():N}" ;
 
     public void Initialize(BaseTestFixtureOptions options)
     {
         Factory = new TestWebApplicationFactory<Program>(new TestWebApplicationFactoryOptions
         {
             AuthenticatedUserId = options.AuthenticatedUserId,
-            DatabaseName = $"navtrack-test-{databaseGuid:N}"
+            DatabaseName = databaseName
         });
     }
 

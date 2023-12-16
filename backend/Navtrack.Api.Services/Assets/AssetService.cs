@@ -44,7 +44,7 @@ public class AssetService(
         AssetDocument asset = await assetRepository.GetById(assetId);
         DeviceType deviceType = deviceTypeRepository.GetById(asset.Device.DeviceTypeId);
         List<UserDocument> users = await userRepository.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
-        
+
         return AssetModelMapper.Map(asset, deviceType, users);
     }
 
@@ -94,7 +94,7 @@ public class AssetService(
         Task removeRoleTask = userRepository.DeleteAssetRoles(assetId);
 
         await Task.WhenAll(new List<Task> { deleteAssetTask, deleteLocationsTask, removeRoleTask });
-        
+
         await post.Send(new AssetDeletedEvent(assetId));
     }
 
@@ -106,12 +106,12 @@ public class AssetService(
         await ValidateModel(model, user);
 
         AssetDocument assetDocument = await AddDocuments(model);
-        
+
         DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
         AssetModel asset = AssetModelMapper.Map(assetDocument, deviceType);
-        
+
         await post.Send(new AssetCreatedEvent(asset));
-        
+
         return asset;
     }
 
@@ -133,18 +133,18 @@ public class AssetService(
         if (userDocument == null)
         {
             throw new ValidationException().AddValidationError(nameof(model.Email),
-                "There is no user with that email.");
+                ValidationErrorCodes.NoUserWithEmail);
         }
 
         if (asset.UserRoles.Any(x => x.UserId == userDocument.Id))
         {
             throw new ValidationException().AddValidationError(nameof(model.Email),
-                "This user already has a role on this asset.");
+                ValidationErrorCodes.UserAlreadyOnAsset);
         }
 
         if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType))
         {
-            throw new ValidationException().AddValidationError(nameof(model.Role), "Invalid role.");
+            throw new ValidationException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
         }
 
         await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);

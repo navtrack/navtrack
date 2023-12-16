@@ -13,4 +13,7 @@ public static class ValidationErrorCodes
     public static readonly ApiError DeviceIsActive = new ("200010", "A device that is active cannot be deleted.");
     public static readonly ApiError DeviceHasLocations = new ("200011", "A device that has locations cannot be deleted.");
     public static readonly ApiError VatIdInvalid = new ("200012", "The Vat ID is invalid.");
+    public static readonly ApiError NoUserWithEmail = new ("200013", "There is no user with that email.");
+    public static readonly ApiError UserAlreadyOnAsset = new ("200013", "This user already has a role on this asset.");
+    public static readonly ApiError InvalidRole = new ("200013", "Invalid role.");
 }

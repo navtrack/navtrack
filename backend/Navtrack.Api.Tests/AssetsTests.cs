@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.Api.Model;
@@ -18,7 +19,7 @@ public class AssetsTests(BaseTestFixture fixture) : BaseTest(fixture)
             await HttpClient.GetAsync(
                 GetUrl(ApiPaths.AssetsAsset, new KeyValuePair<string, string>("assetId", Asset.Id.ToString())));
 
-        AssetModel? asset = await response.GetResult<AssetModel>();
+        AssetModel? asset = await response.Content.ReadFromJsonAsync<AssetModel>();
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(asset);

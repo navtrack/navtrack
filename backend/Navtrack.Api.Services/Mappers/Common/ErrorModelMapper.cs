@@ -1,8 +1,9 @@
+using System;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Exceptions;
-using Navtrack.Api.Services.Util;
 
 namespace Navtrack.Api.Services.Mappers.Common;
 
@@ -14,33 +15,36 @@ public static class ErrorModelMapper
         {
             Code = exception.Code,
             Message = string.IsNullOrEmpty(exception.Message) ? null : exception.Message,
-            ValidationErrors = exception.HasValidationErrors
-                ? exception.ValidationErrors.Select(x => new ValidationErrorModel
-                {
-                    Code = x.Code,
-                    Message = x.Message,
-                    PropertyName = x.PropertyName.ToCamelCase()
-                }).ToList()
-                : null
+            Errors = exception.ValidationErrors.GroupBy(x => x.PropertyName)
+                .ToDictionary(x => x.Key, x => x.Select(y => y.Code).ToArray())
         };
     }
 
-    public static ErrorModel Map(ModelStateDictionary contextModelState)
+    public static ErrorModel Map(Exception exception)
     {
         return new ErrorModel
         {
-            Message = "Validation failed.",
-            ValidationErrors = contextModelState.Select(entry => new
-                {
-                    entry.Key,
-                    Errors = entry.Value?.Errors.Select(modelError => new ValidationErrorModel
-                    {
-                        PropertyName = entry.Key.ToCamelCase(),
-                        Message = modelError.ErrorMessage
-                    }).ToList()
-                })
-                .SelectMany(x => x.Errors)
-                .ToList()
+            Code = StatusCodes.Status500InternalServerError.ToString(),
+            Message = exception.Message
+        };
+    }
+
+    public static ErrorModel Map(ValidationProblemDetails validationProblemDetails)
+    {
+        return new ErrorModel
+        {
+            Code = StatusCodes.Status400BadRequest.ToString(),
+            Message = validationProblemDetails.Title,
+            Errors = validationProblemDetails.Errors
+        };
+    }
+
+    public static ErrorModel Map(ProblemDetails problemDetails)
+    {
+        return new ErrorModel
+        {
+            Code = problemDetails.Status.ToString(),
+            Message = problemDetails.Title
         };
     }
 }

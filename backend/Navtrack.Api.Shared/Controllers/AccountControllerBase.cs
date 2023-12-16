@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.User;
 
@@ -15,6 +16,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
 {
     [HttpPost(ApiPaths.Account)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Register([FromBody] RegisterAccountModel model)
     {
         await accountService.Register(model);
@@ -24,6 +26,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
 
     [HttpPost(ApiPaths.AccountPasswordForgot)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
     {
         await accessService.ForgotPassword(model);
@@ -33,6 +36,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
     
     [HttpPost(ApiPaths.AccountPasswordReset)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
     {
         await accessService.ResetPassword(model);
@@ -42,6 +46,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
     
     [HttpPost(ApiPaths.AccountPasswordChange)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordModel model)
     {

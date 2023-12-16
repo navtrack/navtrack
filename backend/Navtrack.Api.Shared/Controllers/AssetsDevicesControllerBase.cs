@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +18,7 @@ public abstract class AssetsDevicesControllerBase(IDeviceService service) : Cont
 {
     [HttpGet(ApiPaths.AssetsAssetDevices)]
     [ProducesResponseType(typeof(ListModel<DeviceModel>), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<JsonResult> GetList([FromRoute] string assetId)
@@ -31,6 +30,8 @@ public abstract class AssetsDevicesControllerBase(IDeviceService service) : Cont
 
     [HttpPost(ApiPaths.AssetsAssetDevices)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> Update([FromRoute] string assetId, [FromBody] UpdateAssetDeviceModel model)
@@ -42,6 +43,8 @@ public abstract class AssetsDevicesControllerBase(IDeviceService service) : Cont
 
     [HttpDelete(ApiPaths.AssetsAssetDevicesDevice)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string deviceId)

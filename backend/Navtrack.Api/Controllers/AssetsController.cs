@@ -14,7 +14,6 @@ public class AssetsController(IAssetService service) : AssetsControllerBase(serv
 {
     [HttpGet(ApiPaths.Assets)]
     [ProducesResponseType(typeof(ListModel<AssetModel>), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
     public async Task<IActionResult> GetList()
     {
         ListModel<AssetModel> assets = await service.GetAssets();

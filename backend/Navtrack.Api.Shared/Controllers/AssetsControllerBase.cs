@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using IdentityServer4;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.Assets;
+using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Assets;
 using Navtrack.DataAccess.Model.Assets;
@@ -18,7 +20,8 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 {
     [HttpGet(ApiPaths.AssetsAsset)]
     [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
     public async Task<AssetModel> Get(string assetId)
     {
@@ -29,7 +32,7 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 
     [HttpPost(ApiPaths.Assets)]
     [ProducesResponseType(typeof(AssetModel), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     public async Task<AssetModel> Create([FromBody] CreateAssetModel model)
     {
         AssetModel asset = await service.Create(model);
@@ -39,6 +42,8 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 
     [HttpPost(ApiPaths.AssetsAsset)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> Update(string assetId, [FromBody] UpdateAssetModel model)
     {
@@ -49,6 +54,7 @@ public abstract class AssetsControllerBase(IAssetService service) : ControllerBa
 
     [HttpDelete(ApiPaths.AssetsAsset)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Owner)]
     public async Task<IActionResult> Delete(string assetId)
     {

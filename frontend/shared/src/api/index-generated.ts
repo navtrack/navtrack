@@ -17,6 +17,7 @@ import type {
   QueryKey
 } from '@tanstack/react-query'
 import type {
+  ErrorModel,
   RegisterAccountModel,
   ForgotPasswordModel,
   ResetPasswordModel,
@@ -24,6 +25,7 @@ import type {
   ListModelOfAssetModel,
   AssetModel,
   CreateAssetModel,
+  ProblemDetails,
   UpdateAssetModel,
   ListModelOfDeviceModel,
   UpdateAssetDeviceModel,
@@ -34,7 +36,6 @@ import type {
   TripListModel,
   AssetsTripsGetListParams,
   ListModelOfAssetUserModel,
-  ProblemDetails,
   CreateAssetUserModel,
   ListModelOfDeviceTypeModel,
   ListModelOfProtocolModel,
@@ -64,9 +65,9 @@ export const accountRegister = (
 
     export type AccountRegisterMutationResult = NonNullable<Awaited<ReturnType<typeof accountRegister>>>
     export type AccountRegisterMutationBody = RegisterAccountModel
-    export type AccountRegisterMutationError = unknown
+    export type AccountRegisterMutationError = ErrorModel
 
-    export const useAccountRegister = <TError = unknown,
+    export const useAccountRegister = <TError = ErrorModel,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountRegister>>, TError,{data: RegisterAccountModel}, TContext>, }
 ) => {
@@ -101,9 +102,9 @@ export const accountForgotPassword = (
 
     export type AccountForgotPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof accountForgotPassword>>>
     export type AccountForgotPasswordMutationBody = ForgotPasswordModel
-    export type AccountForgotPasswordMutationError = unknown
+    export type AccountForgotPasswordMutationError = ErrorModel
 
-    export const useAccountForgotPassword = <TError = unknown,
+    export const useAccountForgotPassword = <TError = ErrorModel,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountForgotPassword>>, TError,{data: ForgotPasswordModel}, TContext>, }
 ) => {
@@ -138,9 +139,9 @@ export const accountResetPassword = (
 
     export type AccountResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof accountResetPassword>>>
     export type AccountResetPasswordMutationBody = ResetPasswordModel
-    export type AccountResetPasswordMutationError = unknown
+    export type AccountResetPasswordMutationError = ErrorModel
 
-    export const useAccountResetPassword = <TError = unknown,
+    export const useAccountResetPassword = <TError = ErrorModel,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountResetPassword>>, TError,{data: ResetPasswordModel}, TContext>, }
 ) => {
@@ -175,9 +176,9 @@ export const accountChangePassword = (
 
     export type AccountChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof accountChangePassword>>>
     export type AccountChangePasswordMutationBody = ChangePasswordModel
-    export type AccountChangePasswordMutationError = unknown
+    export type AccountChangePasswordMutationError = ErrorModel
 
-    export const useAccountChangePassword = <TError = unknown,
+    export const useAccountChangePassword = <TError = ErrorModel,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountChangePassword>>, TError,{data: ChangePasswordModel}, TContext>, }
 ) => {
@@ -254,9 +255,9 @@ export const assetsCreate = (
 
     export type AssetsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof assetsCreate>>>
     export type AssetsCreateMutationBody = CreateAssetModel
-    export type AssetsCreateMutationError = unknown
+    export type AssetsCreateMutationError = ErrorModel
 
-    export const useAssetsCreate = <TError = unknown,
+    export const useAssetsCreate = <TError = ErrorModel,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsCreate>>, TError,{data: CreateAssetModel}, TContext>, }
 ) => {
@@ -291,9 +292,9 @@ export const getAssetsGetQueryKey = (assetId: string,) => [`/assets/${assetId}`]
 
     
 export type AssetsGetQueryResult = NonNullable<Awaited<ReturnType<typeof assetsGet>>>
-export type AssetsGetQueryError = unknown
+export type AssetsGetQueryError = ProblemDetails
 
-export const useAssetsGet = <TData = Awaited<ReturnType<typeof assetsGet>>, TError = unknown>(
+export const useAssetsGet = <TData = Awaited<ReturnType<typeof assetsGet>>, TError = ProblemDetails>(
  assetId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsGet>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -334,9 +335,9 @@ export const assetsUpdate = (
 
     export type AssetsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof assetsUpdate>>>
     export type AssetsUpdateMutationBody = UpdateAssetModel
-    export type AssetsUpdateMutationError = unknown
+    export type AssetsUpdateMutationError = ErrorModel | ProblemDetails
 
-    export const useAssetsUpdate = <TError = unknown,
+    export const useAssetsUpdate = <TError = ErrorModel | ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsUpdate>>, TError,{assetId: string;data: UpdateAssetModel}, TContext>, }
 ) => {
@@ -369,9 +370,9 @@ export const assetsDelete = (
 
     export type AssetsDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof assetsDelete>>>
     
-    export type AssetsDeleteMutationError = unknown
+    export type AssetsDeleteMutationError = ProblemDetails
 
-    export const useAssetsDelete = <TError = unknown,
+    export const useAssetsDelete = <TError = ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsDelete>>, TError,{assetId: string}, TContext>, }
 ) => {
@@ -406,9 +407,9 @@ export const getAssetsDevicesGetListQueryKey = (assetId: string,) => [`/assets/$
 
     
 export type AssetsDevicesGetListQueryResult = NonNullable<Awaited<ReturnType<typeof assetsDevicesGetList>>>
-export type AssetsDevicesGetListQueryError = unknown
+export type AssetsDevicesGetListQueryError = ProblemDetails
 
-export const useAssetsDevicesGetList = <TData = Awaited<ReturnType<typeof assetsDevicesGetList>>, TError = unknown>(
+export const useAssetsDevicesGetList = <TData = Awaited<ReturnType<typeof assetsDevicesGetList>>, TError = ProblemDetails>(
  assetId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsDevicesGetList>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -449,9 +450,9 @@ export const assetsDevicesUpdate = (
 
     export type AssetsDevicesUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof assetsDevicesUpdate>>>
     export type AssetsDevicesUpdateMutationBody = UpdateAssetDeviceModel
-    export type AssetsDevicesUpdateMutationError = unknown
+    export type AssetsDevicesUpdateMutationError = ErrorModel | ProblemDetails
 
-    export const useAssetsDevicesUpdate = <TError = unknown,
+    export const useAssetsDevicesUpdate = <TError = ErrorModel | ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsDevicesUpdate>>, TError,{assetId: string;data: UpdateAssetDeviceModel}, TContext>, }
 ) => {
@@ -485,9 +486,9 @@ export const assetsDevicesDelete = (
 
     export type AssetsDevicesDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof assetsDevicesDelete>>>
     
-    export type AssetsDevicesDeleteMutationError = unknown
+    export type AssetsDevicesDeleteMutationError = ErrorModel | ProblemDetails
 
-    export const useAssetsDevicesDelete = <TError = unknown,
+    export const useAssetsDevicesDelete = <TError = ErrorModel | ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsDevicesDelete>>, TError,{assetId: string;deviceId: string}, TContext>, }
 ) => {
@@ -525,9 +526,9 @@ export const getAssetsLocationsGetListQueryKey = (assetId: string,
 
     
 export type AssetsLocationsGetListQueryResult = NonNullable<Awaited<ReturnType<typeof assetsLocationsGetList>>>
-export type AssetsLocationsGetListQueryError = unknown
+export type AssetsLocationsGetListQueryError = ProblemDetails
 
-export const useAssetsLocationsGetList = <TData = Awaited<ReturnType<typeof assetsLocationsGetList>>, TError = unknown>(
+export const useAssetsLocationsGetList = <TData = Awaited<ReturnType<typeof assetsLocationsGetList>>, TError = ProblemDetails>(
  assetId: string,
     params?: AssetsLocationsGetListParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsLocationsGetList>>, TError, TData>, }
 
@@ -571,9 +572,9 @@ export const getAssetsReportsGetTimeDistanceReportQueryKey = (assetId: string,
 
     
 export type AssetsReportsGetTimeDistanceReportQueryResult = NonNullable<Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>>
-export type AssetsReportsGetTimeDistanceReportQueryError = unknown
+export type AssetsReportsGetTimeDistanceReportQueryError = ProblemDetails
 
-export const useAssetsReportsGetTimeDistanceReport = <TData = Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>, TError = unknown>(
+export const useAssetsReportsGetTimeDistanceReport = <TData = Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>, TError = ProblemDetails>(
  assetId: string,
     params?: AssetsReportsGetTimeDistanceReportParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>, TError, TData>, }
 
@@ -617,9 +618,9 @@ export const getAssetsTripsGetListQueryKey = (assetId: string,
 
     
 export type AssetsTripsGetListQueryResult = NonNullable<Awaited<ReturnType<typeof assetsTripsGetList>>>
-export type AssetsTripsGetListQueryError = unknown
+export type AssetsTripsGetListQueryError = ProblemDetails
 
-export const useAssetsTripsGetList = <TData = Awaited<ReturnType<typeof assetsTripsGetList>>, TError = unknown>(
+export const useAssetsTripsGetList = <TData = Awaited<ReturnType<typeof assetsTripsGetList>>, TError = ProblemDetails>(
  assetId: string,
     params?: AssetsTripsGetListParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsTripsGetList>>, TError, TData>, }
 
@@ -703,9 +704,9 @@ export const assetsUsersCreate = (
 
     export type AssetsUsersCreateMutationResult = NonNullable<Awaited<ReturnType<typeof assetsUsersCreate>>>
     export type AssetsUsersCreateMutationBody = CreateAssetUserModel
-    export type AssetsUsersCreateMutationError = unknown
+    export type AssetsUsersCreateMutationError = ErrorModel | ProblemDetails
 
-    export const useAssetsUsersCreate = <TError = unknown,
+    export const useAssetsUsersCreate = <TError = ErrorModel | ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsUsersCreate>>, TError,{assetId: string;data: CreateAssetUserModel}, TContext>, }
 ) => {
@@ -739,9 +740,9 @@ export const assetsUsersDelete = (
 
     export type AssetsUsersDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof assetsUsersDelete>>>
     
-    export type AssetsUsersDeleteMutationError = unknown
+    export type AssetsUsersDeleteMutationError = ErrorModel | ProblemDetails
 
-    export const useAssetsUsersDelete = <TError = unknown,
+    export const useAssetsUsersDelete = <TError = ErrorModel | ProblemDetails,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assetsUsersDelete>>, TError,{assetId: string;userId: string}, TContext>, }
 ) => {
@@ -902,9 +903,9 @@ export const userUpdate = (
 
     export type UserUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof userUpdate>>>
     export type UserUpdateMutationBody = UpdateUserModel
-    export type UserUpdateMutationError = unknown
+    export type UserUpdateMutationError = ErrorModel
 
-    export const useUserUpdate = <TError = unknown,
+    export const useUserUpdate = <TError = ErrorModel,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userUpdate>>, TError,{data: UpdateUserModel}, TContext>, }
 ) => {

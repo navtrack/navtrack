@@ -13,7 +13,6 @@ public abstract class ProtocolsControllerBase(IProtocolService service) : Contro
 {
     [HttpGet(ApiPaths.Protocols)]
     [ProducesResponseType(typeof(ListModel<ProtocolModel>), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
     public ListModel<ProtocolModel> GetList()
     {
         return service.GetProtocols();

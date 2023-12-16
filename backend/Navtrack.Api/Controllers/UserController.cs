@@ -15,7 +15,6 @@ public class UserController(IUserService userService) : UserControllerBase(userS
 {
     [HttpGet(ApiPaths.User)]
     [ProducesResponseType(typeof(UserModel), StatusCodes.Status200OK)]
-    [Produces(MediaTypeNames.Application.Json)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<UserModel> Get()
     {

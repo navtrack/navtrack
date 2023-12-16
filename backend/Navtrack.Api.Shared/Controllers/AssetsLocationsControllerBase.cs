@@ -18,6 +18,7 @@ public abstract class AssetsLocationsControllerBase(ILocationService service) : 
 {
     [HttpGet(ApiPaths.AssetsAssetLocations)]
     [ProducesResponseType(typeof(LocationListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
     public async Task<JsonResult> GetList(
