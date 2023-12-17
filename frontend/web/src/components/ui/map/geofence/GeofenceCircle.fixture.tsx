@@ -1,6 +1,8 @@
-import { GeofenceCircle } from "./GeofenceCircle";
-import { Map } from "../Map";
+import { useValue } from "react-cosmos/client";
 import { DEFAULT_MAP_CENTER } from "../../../../constants";
+import { Map } from "../Map";
+import { CircleGeofence } from "../types";
+import { GeofenceCircle } from "./GeofenceCircle";
 
 export default {
   Default: () => {
@@ -18,15 +20,18 @@ export default {
     );
   },
   "With geofence": () => {
+    const [geofence, setGeofence] = useValue<CircleGeofence>("geofence", {
+      defaultValue: {
+        latitude: 46.763266,
+        longitude: 23.555374,
+        radius: 319
+      }
+    });
     return (
       <Map center={DEFAULT_MAP_CENTER}>
         <GeofenceCircle
-          geofence={{
-            latitude: 46.763266,
-            longitude: 23.555374,
-            radius: 319
-          }}
-          onChange={(geofence) => console.log(geofence)}
+          geofence={geofence}
+          onChange={(geofence) => setGeofence(geofence)}
         />
       </Map>
     );
