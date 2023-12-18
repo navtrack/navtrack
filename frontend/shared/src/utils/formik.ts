@@ -6,11 +6,13 @@ export const mapErrors = <T>(error: any, formikHelpers: FormikHelpers<T>) => {
 
   formikHelpers.setSubmitting(false);
 
-  response.validationErrors?.forEach((x) => {
-    formikHelpers.setFieldError(x.propertyName, `${x.code}`);
-  });
+  if (response.errors !== undefined) {
+    Object.keys(response.errors).forEach((x) => {
+      formikHelpers.setFieldError(x, `${response.errors![x][0]}`);
+    });
+  }
 
-  if (!response.validationErrors?.length) {
+  if (!response.errors?.length) {
     formikHelpers.setStatus({ code: response.code, message: response.message });
   }
 };

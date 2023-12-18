@@ -48,7 +48,7 @@ public class UserAccessService(
 
         if (userDocument == null)
         {
-            throw new ApiException(ApiErrorCodes.Validation)
+            throw new ValidationApiException(ApiErrorCodes.Validation)
                 .AddValidationError(nameof(ForgotPasswordModel.Email), ValidationErrorCodes.EmailDoesNotExist);
         }
 
@@ -70,7 +70,7 @@ public class UserAccessService(
 
         currentUser.ThrowApiExceptionIfNull(HttpStatusCode.Unauthorized);
 
-        ApiException apiException = new();
+        ValidationApiException apiException = new();
 
         if (!hasher.CheckPassword(model.CurrentPassword, currentUser.Password.Hash,
                 currentUser.Password.Salt))
@@ -96,7 +96,7 @@ public class UserAccessService(
 
     public async Task ResetPassword(ResetPasswordModel model)
     {
-        ApiException apiException = new();
+        ValidationApiException apiException = new();
 
         ValidatePasswords(model, apiException);
 
@@ -127,7 +127,7 @@ public class UserAccessService(
         await resetRepository.MarkAsInvalid(passwordReset.Id);
     }
 
-    private static void ValidatePasswords(BasePasswordModel model, ApiException apiException,
+    private static void ValidatePasswords(BasePasswordModel model, ValidationApiException apiException,
         string? currentPassword = null)
     {
         if (model.Password != model.ConfirmPassword)

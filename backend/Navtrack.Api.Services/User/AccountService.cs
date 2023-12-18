@@ -11,48 +11,12 @@ using Navtrack.Shared.Services.Passwords;
 namespace Navtrack.Api.Services.User;
 
 [Service(typeof(IAccountService))]
-public class AccountService(IPasswordHasher hasher, ICurrentUserAccessor userAccessor, IUserRepository repository)
+public class AccountService(IPasswordHasher hasher, IUserRepository repository)
     : IAccountService
 {
-    public async Task<UserModel> GetCurrentUser()
-    {
-        UserDocument entity = await userAccessor.Get();
-
-        return UserMapper.Map(entity);
-    }
-
-    public async Task Update(UpdateUserModel model)
-    {
-        UserDocument currentUser = await userAccessor.Get();
-        UpdateUser updateUser = new();
-
-        if (!string.IsNullOrEmpty(model.Email))
-        {
-            model.Email = model.Email.ToLower();
-
-            if (currentUser.Email != model.Email)
-            {
-                if (await repository.EmailIsUsed(model.Email))
-                {
-                    throw new ValidationException().AddValidationError(nameof(UpdateUserModel.Email),
-                        ValidationErrorCodes.EmailAlreadyUsed);
-                }
-
-                updateUser.Email = model.Email;
-            }
-        }
-
-        if (model.UnitsType.HasValue && currentUser.UnitsType != model.UnitsType)
-        {
-            updateUser.UnitsType = model.UnitsType;
-        }
-
-        await repository.Update(currentUser.Id, updateUser);
-    }
-
     public async Task Register(RegisterAccountModel model)
     {
-        ApiException apiException = new();
+        ValidationApiException apiException = new();
 
         if (await repository.EmailIsUsed(model.Email))
         {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Exceptions;
+using Navtrack.Api.Services.Util;
 
 namespace Navtrack.Api.Services.Mappers.Common;
 
@@ -15,7 +16,7 @@ public static class ErrorModelMapper
         {
             Code = exception.Code,
             Message = string.IsNullOrEmpty(exception.Message) ? null : exception.Message,
-            Errors = exception.ValidationErrors.GroupBy(x => x.PropertyName)
+            Errors = exception.ValidationErrors.GroupBy(x => x.PropertyName.ToCamelCase())
                 .ToDictionary(x => x.Key, x => x.Select(y => y.Code).ToArray())
         };
     }

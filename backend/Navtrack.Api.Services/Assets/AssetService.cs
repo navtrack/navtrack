@@ -79,7 +79,7 @@ public class AssetService(
 
             if (nameIsUsed)
             {
-                throw new ApiException()
+                throw new ValidationApiException()
                     .AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
             }
 
@@ -132,19 +132,19 @@ public class AssetService(
 
         if (userDocument == null)
         {
-            throw new ValidationException().AddValidationError(nameof(model.Email),
+            throw new ValidationApiException().AddValidationError(nameof(model.Email),
                 ValidationErrorCodes.NoUserWithEmail);
         }
 
         if (asset.UserRoles.Any(x => x.UserId == userDocument.Id))
         {
-            throw new ValidationException().AddValidationError(nameof(model.Email),
+            throw new ValidationApiException().AddValidationError(nameof(model.Email),
                 ValidationErrorCodes.UserAlreadyOnAsset);
         }
 
         if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType))
         {
-            throw new ValidationException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
+            throw new ValidationApiException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
         }
 
         await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
@@ -196,7 +196,7 @@ public class AssetService(
 
     private async Task ValidateModel(CreateAssetModel model, UserDocument currentUser)
     {
-        ApiException validationException = new();
+        ValidationApiException validationException = new();
 
         if (await assetRepository.NameIsUsed(model.Name, currentUser.Id))
         {
