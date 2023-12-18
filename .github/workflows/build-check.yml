@@ -1,14 +1,13 @@
 name: Build check
 
-on:
-  push
+on: push
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  build:
     if: github.repository == 'navtrack/navtrack'
     runs-on: ubuntu-latest
     steps:
