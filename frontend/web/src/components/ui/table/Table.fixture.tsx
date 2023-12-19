@@ -26,13 +26,7 @@ const columns: ITableColumn<User>[] = [
 ];
 
 export default {
-  Default: () => {
-    return <Table columns={columns} rows={users} />;
-  },
-  Loading: () => {
-    return <Table columns={columns} rows={[]} loading />;
-  },
-  "No Items": () => {
-    return <Table columns={columns} rows={[]} />;
-  }
+  Default: <Table columns={columns} rows={users} />,
+  Loading: <Table columns={columns} rows={[]} loading />,
+  "No Items": <Table columns={columns} rows={[]} />
 };
