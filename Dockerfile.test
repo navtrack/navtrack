@@ -21,7 +21,7 @@ RUN mkdir -p /data/db
 WORKDIR /src
 COPY . .
 
-RUN cd frontend && npm install
+RUN cd frontend && npm install && npm run build:web
 RUN dotnet build
 
 RUN chmod +x docker-test.sh
