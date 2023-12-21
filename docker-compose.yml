@@ -1,6 +1,6 @@
 services:
   web:
-    image: navtrack/web:latest
+    image: ghcr.io/navtrack/navtrack/web:latest
     networks:
       - navtrack
     ports:
@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: navtrack/api:latest
+    image: ghcr.io/navtrack/navtrack/api:latest
     networks:
       - navtrack
     ports:
@@ -19,7 +19,7 @@ services:
       - "MongoOptions__ConnectionString=mongodb://database"
 
   listener:
-    image: navtrack/listener:latest
+    image: ghcr.io/navtrack/navtrack/listener:latest
     networks:
       - navtrack
     ports:
