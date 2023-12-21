@@ -12,6 +12,12 @@ jobs:
   publish:
     if: github.repository == 'navtrack/navtrack'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
