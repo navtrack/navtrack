@@ -1,3 +1,3 @@
-docker build -t navtrack/api -f backend/Navtrack.Api/Dockerfile .
-docker build -t navtrack/web -f frontend/Dockerfile frontend
-docker build -t navtrack/listener -f backend/Navtrack.Listener/Dockerfile .
+docker build -t navtrack/api --platform linux/amd64,linux/arm64 -f backend/Navtrack.Api/Dockerfile .
+docker build -t navtrack/web --platform linux/amd64,linux/arm64 -f frontend/Dockerfile frontend
+docker build -t navtrack/listener --platform linux/amd64,linux/arm64 -f backend/Navtrack.Listener/Dockerfile .
