@@ -1,11 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS publish
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
-RUN dotnet tool restore
-RUN dotnet publish "public/backend/Navtrack.Api/Navtrack.Api.csproj" -c Release -o /app
 
-FROM base AS final
+RUN dotnet restore
+RUN dotnet publish "backend/Navtrack.Api/Navtrack.Api.csproj" -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=build /app .
 ENTRYPOINT ["dotnet", "Navtrack.Api.dll"]

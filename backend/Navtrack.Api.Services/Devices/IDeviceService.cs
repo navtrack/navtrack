@@ -7,7 +7,7 @@ namespace Navtrack.Api.Services.Devices;
 public interface IDeviceService
 {
     Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null);
-    Task<ListModel<DeviceModel>> Get(string assetId);
-    Task Change(string assetId, ChangeDeviceModel model);
+    Task<ListModel<DeviceModel>> GetList(string assetId);
+    Task Change(string assetId, UpdateAssetDeviceModel model);
     Task Delete(string assetId, string deviceId);
 }

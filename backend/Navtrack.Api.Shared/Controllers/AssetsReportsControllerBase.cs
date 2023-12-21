@@ -17,7 +17,7 @@ public abstract class AssetsReportsControllerBase(IReportService service) : Cont
 {
     [HttpGet(ApiPaths.AssetsAssetReportsTimeDistance)]
     [ProducesResponseType(typeof(DistanceReportListModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
     public virtual async Task<JsonResult> GetTimeDistanceReport(
         [FromRoute] string assetId,

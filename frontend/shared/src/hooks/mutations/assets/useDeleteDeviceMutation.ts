@@ -1,7 +1,7 @@
-import { useDeleteAssetsAssetIdDevicesDeviceId } from "../../../api/index-generated";
+import { useAssetsDevicesDelete } from "../../../api/index-generated";
 
 export function useDeleteDeviceMutation() {
-  const mutation = useDeleteAssetsAssetIdDevicesDeviceId();
+  const mutation = useAssetsDevicesDelete();
 
   return mutation;
 }

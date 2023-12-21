@@ -13,9 +13,7 @@ public abstract class DevicesControllerBase(IDeviceTypeService typeService) : Co
 {
     [HttpGet(ApiPaths.DevicesTypes)]
     [ProducesResponseType(typeof(ListModel<DeviceTypeModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Produces(MediaTypeNames.Application.Json)]
-    public IActionResult GetTypes()
+    public IActionResult GetList()
     {
         ListModel<DeviceTypeModel> model = typeService.GetAll();
 

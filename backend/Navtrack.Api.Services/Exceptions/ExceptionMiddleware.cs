@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Mappers.Common;
@@ -20,6 +22,14 @@ public class ExceptionMiddleware(RequestDelegate next)
             ErrorModel model = ErrorModelMapper.Map(exception);
 
             await httpContext.Response.WriteAsJsonAsync(model);
+        }
+        catch (Exception exception)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            ErrorModel model = ErrorModelMapper.Map(exception);
+
+            await httpContext.Response.WriteJsonAsync(model);
         }
     }
 }

@@ -1,5 +1,5 @@
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useAddUserToAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useAddUserToAssetMutation";
+import { useAssetUserCreateMutation } from "@navtrack/shared/hooks/mutations/assets/useAssetUserCreateMutation";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/useAssetUsersQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";
@@ -14,7 +14,7 @@ interface IUseAddUserToAsset {
 
 export function useAddUserToAsset(props: IUseAddUserToAsset) {
   const intl = useIntl();
-  const mutation = useAddUserToAssetMutation();
+  const mutation = useAssetUserCreateMutation();
   const currentAsset = useCurrentAsset();
   const assetUsers = useAssetUsersQuery({
     assetId: currentAsset.data?.id ?? ""

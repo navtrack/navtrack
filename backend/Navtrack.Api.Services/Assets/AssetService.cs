@@ -32,7 +32,7 @@ public class AssetService(
     IAssetRepository assetRepository,
     ICurrentUserAccessor userAccessor,
     ILocationRepository locationRepository,
-    IDeviceTypeRepository typeRepository,
+    IDeviceTypeRepository deviceTypeRepository,
     IDeviceService service,
     IRepository repository,
     IUserRepository userRepository,
@@ -42,9 +42,9 @@ public class AssetService(
     public async Task<AssetModel> GetById(string assetId)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
-        DeviceType deviceType = typeRepository.GetById(asset.Device.DeviceTypeId);
+        DeviceType deviceType = deviceTypeRepository.GetById(asset.Device.DeviceTypeId);
         List<UserDocument> users = await userRepository.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
-        
+
         return AssetModelMapper.Map(asset, deviceType, users);
     }
 
@@ -59,7 +59,7 @@ public class AssetService(
             assets.Select(x => x.Device.DeviceTypeId).Distinct().ToList();
 
         IEnumerable<DeviceType> deviceTypes =
-            typeRepository.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
+            deviceTypeRepository.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
 
         ListModel<AssetModel> model = AssetListMapper.Map(assets, user.UnitsType, deviceTypes);
 
@@ -79,7 +79,7 @@ public class AssetService(
 
             if (nameIsUsed)
             {
-                throw new ApiException()
+                throw new ValidationApiException()
                     .AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
             }
 
@@ -94,7 +94,7 @@ public class AssetService(
         Task removeRoleTask = userRepository.DeleteAssetRoles(assetId);
 
         await Task.WhenAll(new List<Task> { deleteAssetTask, deleteLocationsTask, removeRoleTask });
-        
+
         await post.Send(new AssetDeletedEvent(assetId));
     }
 
@@ -106,12 +106,12 @@ public class AssetService(
         await ValidateModel(model, user);
 
         AssetDocument assetDocument = await AddDocuments(model);
-        
-        DeviceType deviceType = typeRepository.GetById(model.DeviceTypeId);
+
+        DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
         AssetModel asset = AssetModelMapper.Map(assetDocument, deviceType);
-        
+
         await post.Send(new AssetCreatedEvent(asset));
-        
+
         return asset;
     }
 
@@ -132,19 +132,19 @@ public class AssetService(
 
         if (userDocument == null)
         {
-            throw new ValidationException().AddValidationError(nameof(model.Email),
-                "There is no user with that email.");
+            throw new ValidationApiException().AddValidationError(nameof(model.Email),
+                ValidationErrorCodes.NoUserWithEmail);
         }
 
         if (asset.UserRoles.Any(x => x.UserId == userDocument.Id))
         {
-            throw new ValidationException().AddValidationError(nameof(model.Email),
-                "This user already has a role on this asset.");
+            throw new ValidationApiException().AddValidationError(nameof(model.Email),
+                ValidationErrorCodes.UserAlreadyOnAsset);
         }
 
         if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType))
         {
-            throw new ValidationException().AddValidationError(nameof(model.Role), "Invalid role.");
+            throw new ValidationApiException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
         }
 
         await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
@@ -170,7 +170,7 @@ public class AssetService(
     private async Task<AssetDocument> AddDocuments(CreateAssetModel model)
     {
         UserDocument currentUser = await userAccessor.Get();
-        DeviceType deviceType = typeRepository.GetById(model.DeviceTypeId);
+        DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
 
         AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);
         await repository.GetCollection<AssetDocument>().InsertOneAsync(assetDocument);
@@ -196,14 +196,14 @@ public class AssetService(
 
     private async Task ValidateModel(CreateAssetModel model, UserDocument currentUser)
     {
-        ApiException validationException = new();
+        ValidationApiException validationException = new();
 
         if (await assetRepository.NameIsUsed(model.Name, currentUser.Id))
         {
             validationException.AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
         }
 
-        if (!typeRepository.Exists(model.DeviceTypeId))
+        if (!deviceTypeRepository.Exists(model.DeviceTypeId))
         {
             validationException.AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
         }

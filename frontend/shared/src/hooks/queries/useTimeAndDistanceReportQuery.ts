@@ -1,4 +1,4 @@
-import { useGetAssetsAssetIdReportsTimeDistance } from "../../api/index-generated";
+import { useAssetsReportsGetTimeDistanceReport } from "../../api/index-generated";
 
 export type UseTimeAndDistanceReportQueryProps = {
   assetId?: string;
@@ -9,7 +9,7 @@ export type UseTimeAndDistanceReportQueryProps = {
 export const useTimeAndDistanceReportQuery = (
   props: UseTimeAndDistanceReportQueryProps
 ) => {
-  const query = useGetAssetsAssetIdReportsTimeDistance(
+  const query = useAssetsReportsGetTimeDistanceReport(
     props.assetId as string,
     {
       StartDate: props.startDate,

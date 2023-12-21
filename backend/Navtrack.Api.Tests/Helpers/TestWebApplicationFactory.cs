@@ -1,35 +1,50 @@
 using System.Linq;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.Api.Tests.Helpers;
 
-// ReSharper disable once ClassNeverInstantiated.Global
-public class TestWebApplicationFactory<TProgram>
-    : WebApplicationFactory<TProgram> where TProgram : class
+public class TestWebApplicationFactory<TProgram>(TestWebApplicationFactoryOptions options)
+    : WebApplicationFactory<TProgram>
+    where TProgram : class
 {
-    private readonly TestMongoDatabaseFactory mongoDatabaseFactory = new();
-
     protected override IHost CreateHost(IHostBuilder hostBuilder)
     {
         hostBuilder.ConfigureServices(services =>
         {
             services.AddSingleton<IStartupFilter, FakeRemoteIpAddressFilter>();
 
-            ServiceDescriptor? descriptor =
-                services.SingleOrDefault(d => d.ServiceType == typeof(IMongoDatabaseFactory));
+            ReplaceMongoOptions(services);
 
-            if (descriptor != null)
+            if (!string.IsNullOrEmpty(options.AuthenticatedUserId))
             {
-                services.Remove(descriptor);
+                services.AddSingleton<IPolicyEvaluator>(new FakePolicyEvaluator(options.AuthenticatedUserId));
             }
-
-            services.AddSingleton<IMongoDatabaseFactory>(mongoDatabaseFactory);
         });
 
         return base.CreateHost(hostBuilder);
+    }
+
+    private  void ReplaceMongoOptions(IServiceCollection services)
+    {
+        ServiceDescriptor? descriptor =
+            services.SingleOrDefault(d => d.ServiceType == typeof(IOptions<MongoOptions>));
+
+        if (descriptor != null)
+        {
+            services.Remove(descriptor);
+        }
+
+        MongoOptions mongoOptions = new()
+        {
+            ConnectionString = "mongodb://localhost:27017",
+            Database = options.DatabaseName
+        };
+        services.AddSingleton<IOptions<MongoOptions>>(new OptionsWrapper<MongoOptions>(mongoOptions));
     }
 }

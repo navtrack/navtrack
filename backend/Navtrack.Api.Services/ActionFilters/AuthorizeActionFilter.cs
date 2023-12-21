@@ -32,7 +32,7 @@ public class AuthorizeActionFilter(IAssetAuthorizationService authorizationServi
                 }
             }
 
-            throw new ApiException(HttpStatusCode.Unauthorized);
+            throw new ApiException(HttpStatusCode.NotFound);
         }
     }
 }

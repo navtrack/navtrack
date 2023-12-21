@@ -35,7 +35,7 @@ public class DeviceService(
         return repository.SerialNumberIsUsed(serialNumber, deviceType.Protocol.Port, excludeAssetId);
     }
 
-    public async Task<ListModel<DeviceModel>> Get(string assetId)
+    public async Task<ListModel<DeviceModel>> GetList(string assetId)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
@@ -51,7 +51,7 @@ public class DeviceService(
         return DeviceListModelMapper.Map(devices, deviceTypes, locationCount, asset);
     }
 
-    public async Task Change(string assetId, ChangeDeviceModel model)
+    public async Task Change(string assetId, UpdateAssetDeviceModel model)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
@@ -63,13 +63,13 @@ public class DeviceService(
 
         if (!typeRepository.Exists(model.DeviceTypeId))
         {
-            throw new ValidationException()
+            throw new ValidationApiException()
                 .AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
         }
 
         if (await SerialNumberIsUsed(model.SerialNumber, model.DeviceTypeId, assetId))
         {
-            throw new ValidationException()
+            throw new ValidationApiException()
                 .AddValidationError(nameof(model.SerialNumber), ValidationErrorCodes.SerialNumberAlreadyUsed);
         }
 
@@ -100,12 +100,12 @@ public class DeviceService(
     {
         if (await repository.IsActive(assetId, deviceId))
         {
-            throw new ValidationException(ValidationErrorCodes.DeviceIsActive);
+            throw new ValidationApiException(ValidationErrorCodes.DeviceIsActive);
         }
         
         if (await locationRepository.DeviceHasLocations(assetId, deviceId))
         {
-            throw new ValidationException(ValidationErrorCodes.DeviceIsActive);
+            throw new ValidationApiException(ValidationErrorCodes.DeviceIsActive);
         }
 
         await repository.Delete(deviceId);
