@@ -37,7 +37,7 @@ public class UserService(
             {
                 if (await repository.EmailIsUsed(model.Email))
                 {
-                    throw new ValidationException().AddValidationError(nameof(UpdateUserModel.Email),
+                    throw new ValidationApiException().AddValidationError(nameof(UpdateUserModel.Email),
                         ValidationErrorCodes.EmailAlreadyUsed);
                 }
 
@@ -55,7 +55,7 @@ public class UserService(
 
     public async Task Register(RegisterAccountModel model)
     {
-        ApiException apiException = new();
+        ValidationApiException apiException = new();
 
         if (await repository.EmailIsUsed(model.Email))
         {

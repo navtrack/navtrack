@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using Navtrack.Api.Model.Errors;
 
@@ -17,37 +16,4 @@ public class ApiException(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequ
     {
         Code = apiError.Code;
     }
-
-    public ApiException AddValidationError(string propertyName, string errorMessage)
-    {
-        ValidationErrors.Add(new ValidationError
-        {
-            PropertyName = propertyName,
-            Message = errorMessage
-        });
-
-        return this;
-    }
-
-    public ApiException AddValidationError(string propertyName, ApiError apiError)
-    {
-        ValidationErrors.Add(new ValidationError
-        {
-            PropertyName = propertyName,
-            Message = apiError.Message,
-            Code = apiError.Code
-        });
-
-        return this;
-    }
-
-    public void ThrowIfInvalid()
-    {
-        if (HasValidationErrors)
-        {
-            throw this;
-        }
-    }
-
-    public bool HasValidationErrors => ValidationErrors.Any();
 }

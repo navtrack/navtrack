@@ -3,7 +3,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+<!--        <ImplicitUsings>enable</ImplicitUsings>-->
     </PropertyGroup>
-    
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+
+    <Import Project="../Directory.Build.props" Condition="Exists('../Directory.Build.props')"/>
 </Project>

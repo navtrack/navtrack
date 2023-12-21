@@ -1,7 +1,7 @@
-import { usePostUser } from "../../../api/index-generated";
+import { useAccountRegister } from "../../../api/index-generated";
 
 export function useRegisterAccountMutation() {
-  const mutation = usePostUser();
+  const mutation = useAccountRegister();
 
   return mutation;
 }

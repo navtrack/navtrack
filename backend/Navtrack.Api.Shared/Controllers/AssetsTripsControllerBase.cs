@@ -17,9 +17,9 @@ public abstract class AssetsTripsControllerBase(ITripService service) : Controll
 {
     [HttpGet(ApiPaths.AssetsAssetTrips)]
     [ProducesResponseType(typeof(TripListModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
-    public virtual async Task<JsonResult> GetTrips([FromRoute] string assetId, [FromQuery] TripFilterModel filter)
+    public virtual async Task<JsonResult> GetList([FromRoute] string assetId, [FromQuery] TripFilterModel filter)
     {
         TripListModel locations = await service.GetTrips(assetId, filter);
 

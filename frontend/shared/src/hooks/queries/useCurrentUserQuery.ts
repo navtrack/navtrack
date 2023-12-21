@@ -1,7 +1,7 @@
-import { useGetUser } from "../../api/index-generated";
+import { useUserGet } from "../../api/index-generated";
 
 export const useCurrentUserQuery = () => {
-  const query = useGetUser({
+  const query = useUserGet({
     query: {
       refetchOnWindowFocus: false,
       refetchOnMount: false

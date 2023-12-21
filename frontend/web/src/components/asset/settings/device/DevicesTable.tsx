@@ -1,5 +1,4 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { getGetAssetsAssetIdDevicesQueryKey } from "@navtrack/shared/api/index-generated";
 import { DeviceModel } from "@navtrack/shared/api/model/generated";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteDeviceMutation";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -7,6 +6,7 @@ import { IconButton } from "../../../ui/button-old/IconButton";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { Table, ITableColumn } from "../../../ui/table/Table";
 import { useQueryClient } from "@tanstack/react-query";
+import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
 
 interface IDevicesTable {
   assetId: string;
@@ -71,7 +71,7 @@ export function DevicesTable(props: IDevicesTable) {
                   )
                   .then(() =>
                     queryClient.refetchQueries(
-                      getGetAssetsAssetIdDevicesQueryKey(props.assetId)
+                      getAssetsDevicesGetListQueryKey(props.assetId)
                     )
                   )
               }

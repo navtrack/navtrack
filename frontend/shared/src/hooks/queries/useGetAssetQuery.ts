@@ -1,11 +1,11 @@
-import { useGetAssetsAssetId } from "../../api/index-generated";
+import { useAssetsGet } from "../../api/index-generated";
 
 type UseGetAssetQueryProps = {
   assetId: string;
 };
 
 export function useGetAssetQuery(props: UseGetAssetQueryProps) {
-  const query = useGetAssetsAssetId(props.assetId, {
+  const query = useAssetsGet(props.assetId, {
     query: {
       refetchOnWindowFocus: true
     }

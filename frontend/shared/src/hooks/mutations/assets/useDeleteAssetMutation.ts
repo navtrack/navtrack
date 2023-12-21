@@ -1,17 +1,17 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  getGetAssetsQueryKey,
-  useDeleteAssetsAssetId
+  getAssetsGetListQueryKey,
+  useAssetsDelete
 } from "../../../api/index-generated";
 
 export function useDeleteAssetMutation() {
   const queryClient = useQueryClient();
 
-  const mutation = useDeleteAssetsAssetId({
+  const mutation = useAssetsDelete({
     mutation: {
       onSuccess: () => {
         return queryClient.refetchQueries({
-          queryKey: getGetAssetsQueryKey()
+          queryKey: getAssetsGetListQueryKey()
         });
       }
     }

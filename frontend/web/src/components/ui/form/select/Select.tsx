@@ -36,7 +36,7 @@ export function Select(props: SelectProps) {
             props.className
           )}
           value={props.value}
-          placeholder={props.placeholder}
+          //placeholder={props.placeholder} TODO
           disabled={props.disabled || props.isLoading}
           onChange={(e) => {
             const item = props.options.find((x) => x.value === e.target.value);

@@ -18,10 +18,10 @@ public abstract class AssetsLocationsControllerBase(ILocationService service) : 
 {
     [HttpGet(ApiPaths.AssetsAssetLocations)]
     [ProducesResponseType(typeof(LocationListModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
-    public async Task<JsonResult> GetLocations(
+    public async Task<JsonResult> GetList(
         [FromRoute] string assetId,
         [FromQuery] LocationFilterModel filter,
         [FromQuery] int page = 0,

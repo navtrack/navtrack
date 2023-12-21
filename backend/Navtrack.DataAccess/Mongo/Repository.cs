@@ -5,11 +5,11 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.DataAccess.Mongo;
 
 [Service(typeof(IRepository))]
-public class Repository(IMongoDatabaseFactory mongoDatabaseFactory) : IRepository
+public class Repository(IMongoDatabaseProvider mongoDatabaseProvider) : IRepository
 {
-    private readonly IMongoDatabase mongoDatabase = mongoDatabaseFactory.CreateMongoDatabase();
+    private readonly IMongoDatabase mongoDatabase = mongoDatabaseProvider.GetMongoDatabase();
 
-    private readonly IMongoDatabaseFactory mongoDatabaseFactory = mongoDatabaseFactory;
+    private readonly IMongoDatabaseProvider mongoDatabaseProvider = mongoDatabaseProvider;
     // private readonly IInterceptorService interceptorService;
 
     public IMongoQueryable<T> GetQueryable<T>() where T : class

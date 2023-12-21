@@ -13,10 +13,10 @@ namespace Navtrack.DataAccess.Services.Users;
 public class PasswordResetRepository(IRepository repository)
     : GenericRepository<PasswordResetDocument>(repository), IPasswordResetRepository
 {
-    public Task<int> GetCountOfPasswordResets(string ipAddress, DateTime fromDate)
+    public Task<int> GetCountOfPasswordResets(string ipAddress, string email, DateTime fromDate)
     {
         return repository.GetQueryable<PasswordResetDocument>()
-            .Where(x => x.IpAddress == ipAddress && x.Created.Date > fromDate)
+            .Where(x => x.IpAddress == ipAddress && x.Created.Date > fromDate && x.Email == email)
             .CountAsync();
     }
 

@@ -18,9 +18,9 @@ public abstract class AssetsUsersControllerBase(IAssetService service) : Control
 {
     [HttpGet(ApiPaths.AssetsAssetUsers)]
     [ProducesResponseType(typeof(ListModel<AssetUserModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public virtual async Task<JsonResult> GetAssetUsers([FromRoute] string assetId)
+    public virtual async Task<JsonResult> GetList([FromRoute] string assetId)
     {
         ListModel<AssetUserModel> assetUserList = await service.GetAssetUsers(assetId);
 
@@ -30,11 +30,9 @@ public abstract class AssetsUsersControllerBase(IAssetService service) : Control
     [HttpPost(ApiPaths.AssetsAssetUsers)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public virtual async Task<IActionResult> CreateAssetUser([FromRoute] string assetId, [FromBody] CreateAssetUserModel model)
+    public virtual async Task<IActionResult> Create([FromRoute] string assetId, [FromBody] CreateAssetUserModel model)
     {
         await service.AddUserToAsset(assetId, model);
 
@@ -44,11 +42,9 @@ public abstract class AssetsUsersControllerBase(IAssetService service) : Control
     [HttpDelete(ApiPaths.AssetsAssetUsersUser)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetRoleType.Owner)]
-    public virtual async Task<IActionResult> DeleteUserFromAsset([FromRoute] string assetId, [FromRoute] string userId)
+    public virtual async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string userId)
     {
         await service.RemoveUserFromAsset(assetId, userId);
 

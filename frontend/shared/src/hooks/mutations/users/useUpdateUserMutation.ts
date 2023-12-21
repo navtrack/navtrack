@@ -1,14 +1,17 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { getGetUserQueryKey, usePatchUser } from "../../../api/index-generated";
+import {
+  getUserGetQueryKey,
+  useUserUpdate
+} from "../../../api/index-generated";
 
 export function useUpdateUserMutation() {
   const queryClient = useQueryClient();
 
-  const mutation = usePatchUser({
+  const mutation = useUserUpdate({
     mutation: {
-      onSuccess: (_, variables) => {
+      onSuccess: () => {
         return queryClient.refetchQueries({
-          queryKey: getGetUserQueryKey()
+          queryKey: getUserGetQueryKey()
         });
       }
     }
