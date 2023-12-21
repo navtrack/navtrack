@@ -1,28 +1,25 @@
 services:
   web:
-    image: ghcr.io/navtrack/navtrack/web:latest
+    image: navtrack/web:latest
     networks:
       - navtrack
     ports:
       - 3000:3000
     restart: unless-stopped
-    environment:
-      - "ASPNETCORE_URLS=http://*:3000"
 
   api:
-    image: ghcr.io/navtrack/navtrack/api:latest
+    image: navtrack/api:latest
     networks:
       - navtrack
     ports:
-      - 3001:3001
+      - 3001:8080
     restart: unless-stopped
     environment:
-      - "ASPNETCORE_URLS=http://*:3001"
       - "MongoOptions__Database=navtrack"
       - "MongoOptions__ConnectionString=mongodb://database"
 
   listener:
-    image: ghcr.io/navtrack/navtrack/listener:latest
+    image: navtrack/listener:latest
     networks:
       - navtrack
     ports:
