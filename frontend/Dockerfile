@@ -1,10 +1,10 @@
-FROM node:alpine AS build
+FROM --platform=$BUILDPLATFORM node:alpine AS build
 WORKDIR /src
 COPY . .
 RUN npm install
 RUN npm run build:web
 
-FROM node:alpine
+FROM --platform=$BUILDPLATFORM node:alpine
 WORKDIR /app
 COPY --from=build /src/web/build .
 RUN npm install -g serve
