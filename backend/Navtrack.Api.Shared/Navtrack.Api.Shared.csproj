@@ -4,7 +4,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
+        <PackageReference Include="NSwag.AspNetCore" Version="14.0.1" />
         <PackageReference Include="Sentry.AspNetCore" Version="3.41.2" />
     </ItemGroup>
 
