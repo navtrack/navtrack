@@ -8,7 +8,7 @@ env:
   version: ${GITHUB_REF_NAME#v}
 
 concurrency:
-  group: main
+  group: tag
   cancel-in-progress: true
 
 jobs:

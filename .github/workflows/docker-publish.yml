@@ -9,7 +9,7 @@ env:
   version: ${GITHUB_REF_NAME#v}
 
 concurrency:
-  group: main
+  group: publish
   cancel-in-progress: true
 
 jobs:
