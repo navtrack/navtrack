@@ -1,11 +1,11 @@
 using Navtrack.Listener.Protocols.GoPass;
-using NUnit.Framework;
+using Xunit;
 
 namespace Navtrack.Listener.Tests.Protocols.GoPass;
 
 public class GlobalSatProtocolTests : BaseProtocolTests<GoPassProtocol, GoPassMessageHandler>
 {
-    [Test]
+    [Fact]
     public void DeviceSendsLocationV1_LocationIsParsed()
     {
         ProtocolTester.SendStringFromDevice(
@@ -14,6 +14,6 @@ public class GlobalSatProtocolTests : BaseProtocolTests<GoPassProtocol, GoPassMe
         ProtocolTester.SendStringFromDevice(
             "$GPRMC,204700,A,3403.868,N,11709.432,W,001.9,336.9,170698,013.6,E*6E");
 
-        Assert.IsNotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedLocation);
     }
 }

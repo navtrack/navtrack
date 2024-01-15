@@ -1,19 +1,18 @@
 using Navtrack.Shared.Services.Passwords;
-using NUnit.Framework;
+using Xunit;
 
 namespace Navtrack.Shared.Services.Tests.Passwords;
 
 public class PasswordHasherTests
 {
-    private IPasswordHasher passwordHasher;
-        
-    [SetUp]
-    public void Setup()
+    private readonly IPasswordHasher passwordHasher;
+
+    public PasswordHasherTests()
     {
         passwordHasher = new PasswordHasher();
     }
-
-    [Test]
+    
+    [Fact]
     public void CheckPassword_SaltHashWithCorrectPasswordGiven_VerificationPassed()
     {
         const string hash = "CYZPZEXIPw9z7L+hPk4WrztnTG9BIelD47GLqOMWK0YVhLtcdJSu5viexW/WeOj0bwyUazamLB8MDa+j5FqjwQ==";
@@ -22,10 +21,10 @@ public class PasswordHasherTests
 
         bool verified = passwordHasher.CheckPassword(password, hash, salt);
 
-        Assert.IsTrue(verified);
+        Assert.True(verified);
     }
         
-    [Test]
+    [Fact]
     public void CheckPassword_SaltHashWithWrongPasswordGiven_VerificationFailed()
     {
         const string hash = "CYZPZEXIPw9z7L+hPk4WrztnTG9BIelD47GLqOMWK0YVhLtcdJSu5viexW/WeOj0bwyUazamLB8MDa+j5FqjwQ==";
@@ -34,6 +33,6 @@ public class PasswordHasherTests
 
         bool verified = passwordHasher.CheckPassword(password, hash, salt);
 
-        Assert.IsFalse(verified);
+        Assert.False(verified);
     }
 }
