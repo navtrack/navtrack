@@ -1,6 +1,9 @@
 name: Build check
 
-on: push
+on:
+  push:
+    branches:
+      - "**"
 
 concurrency:
   group: ci-${{ github.ref }}
