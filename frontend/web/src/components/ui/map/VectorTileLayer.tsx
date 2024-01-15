@@ -7,7 +7,7 @@ type VectorTileLayerProps = {
   styleUrl: string;
 };
 
-export const VectorTileLayer = (props: VectorTileLayerProps) => {
+export function VectorTileLayer(props: VectorTileLayerProps) {
   const { map } = useMap();
   const [layer, setLayer] = useState<L.MaplibreGL>();
 
@@ -21,4 +21,4 @@ export const VectorTileLayer = (props: VectorTileLayerProps) => {
   }, [layer, map, props.styleUrl]);
 
   return null;
-};
+}
