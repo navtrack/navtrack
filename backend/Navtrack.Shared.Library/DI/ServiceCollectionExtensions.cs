@@ -7,9 +7,9 @@ using static System.String;
 
 namespace Navtrack.Shared.Library.DI;
 
-public static class Bootstrapper
+public static class ServiceCollectionExtensions
 {
-    public static void ConfigureServices<TEntry>(IServiceCollection serviceCollection)
+    public static void AddCustomServices<TEntry>(this IServiceCollection serviceCollection)
     {
         IEnumerable<Assembly> assemblies = GetAssemblies<TEntry>();
 
@@ -38,7 +38,7 @@ public static class Bootstrapper
 
     private static IEnumerable<Assembly> GetAssemblies(Assembly assembly)
     {
-        string namespacePrefix = typeof(Bootstrapper).Namespace?.Split(".")[0];
+        string? namespacePrefix = typeof(ServiceCollectionExtensions).Namespace?.Split(".")[0];
 
         foreach (Assembly referencedAssembly in assembly.GetReferencedAssemblies()
                      .Where(x => x.Name != null && x.Name.StartsWith(namespacePrefix ?? Empty)).Select(Assembly.Load)

@@ -5,7 +5,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-        <PackageReference Include="Sentry.AspNetCore" Version="3.41.2" />
+        <PackageReference Include="Sentry" Version="3.41.3" />
+        <PackageReference Include="Sentry.Extensions.Logging" Version="3.41.3" />
     </ItemGroup>
 
     <ItemGroup>

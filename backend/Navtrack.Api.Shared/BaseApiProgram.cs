@@ -33,9 +33,9 @@ public abstract class BaseApiProgram<T>
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-        Bootstrapper.ConfigureServices<T>(builder.Services);
-
+        
+        builder.Services.AddCustomServices<T>();
+        
         builder.WebHost.UseSentry();
 
         builder.Services.AddEndpointsApiExplorer();

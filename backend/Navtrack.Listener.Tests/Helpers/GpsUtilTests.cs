@@ -1,12 +1,12 @@
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
-using NUnit.Framework;
+using Xunit;
 
 namespace Navtrack.Listener.Tests.Helpers;
 
 public class GpsUtilTests
 {
-    [Test]
+    [Fact]
     public void ConvertDdmToDecimal_Latitude()
     {
         
@@ -23,10 +23,10 @@ public class GpsUtilTests
 
         double result = GpsUtil.ConvertDdmToDecimal(degrees, minutes, cardinalPoint);
         
-        Assert.AreEqual(result, 46.7712);
+        Assert.Equal(46.7712, result);
     }
     
-    [Test]
+    [Fact]
     public void ConvertDdmToDecimal_Longitude()
     {
         const int degrees = 23;
@@ -35,6 +35,6 @@ public class GpsUtilTests
 
         double result = GpsUtil.ConvertDdmToDecimal(degrees, minutes, cardinalPoint);
         
-        Assert.AreEqual(result, 23.6236);
+        Assert.Equal(23.6236, result);
     }
 }
