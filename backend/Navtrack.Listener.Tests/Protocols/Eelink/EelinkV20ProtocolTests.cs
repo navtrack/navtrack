@@ -12,8 +12,8 @@ public class EelinkV20ProtocolTests : BaseProtocolTests<EelinkProtocol, EelinkMe
 
         string hex = ProtocolTester.ReceiveHexInDevice();
             
-        Assert.True(hex.StartsWith("67670100090005"));
-        Assert.True(hex.EndsWith("000103"));
+        Assert.StartsWith("67670100090005", hex);
+        Assert.EndsWith("000103", hex);
     }
         
     [Fact]

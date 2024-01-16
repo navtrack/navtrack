@@ -19,7 +19,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "40501E58003301E000014104D8F19682525ECD5D525EE344525EE35EFFC88815026AB4D70000020000104403DE01000B0000000007D007D000000000000000");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "4050B5ED004A2523000310C83713F8C05A88B43E5A88B43F5A88B43F021E0AD5FFFDC0A800F3020003059100080000000000000007D007D046554C533A463D3230393120743D3137204E3D3039303100");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
         Assert.Equal("FE02000310C83713F8C02523", ProtocolTester.ReceiveHexInDevice());
     }
 
@@ -38,7 +38,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "0203B494003C00EB00014104D8DD3A3E07DE011B0B1F0307DE011B0B1F0307DE011B0B1F0300307F28030574D30000020000000600160100020000000007D007D000");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
         Assert.Equal("FE0200014104D8DD3A3E00EB", ProtocolTester.ReceiveHexInDevice());
     }
 
@@ -48,7 +48,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "405AD77C01670410000144A77A21281D5B74D2335B74D2335B74D233FABAF3BC02A38D3D010C0200030F8E000701001A0000000007D007D00025434925434525434E25475125475325464C254D4C25564E25504425464325454C254554254344254154254D46254D5625425625434D25445425474C25474E254756254C43254D4525524C25525025534125534D255452254941254D5000000000000004BBF41C0900003254314B523332453238433730363138350000000000004800543839303132363038383132313532343737353900000000EC06A50089002900011A2E3DA1882700687474703A2F2F6D6170732E676F6F676C652E636F6D2F6D6170733F713D34342E3237323935372C2D38382E34313132303120000075FF4903FB006FFF63040A004DFF5D04080030FFA10407003B001304060026000503F9001E002504020078FF6204000073FF7D03F9007AFF6903F3FFC0001804040000000144A77A21281D00073F0C001A182400");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "40503835003300070001441C3D8ED1C400000000000000C9000000C900000000000000000000020000000003DE0100000000000007D007D000");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "4050993F005C000200014104D8F19682525666C252568C3C52568C63FFC8338402698885000002000009CF03DE0100000000000007D007D000525666C252568C5A52568C63FFC8338402698885000002000009CF03DE0100000000000007D007D000");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
         ProtocolTester.SendHexFromDevice(
             "40501E58003301E000014104D8F19682525ECD5D525EE344525EE35EFFC88815026AB4D70000020000104403DE01000B0000000007D007D000");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
         
     [Fact]

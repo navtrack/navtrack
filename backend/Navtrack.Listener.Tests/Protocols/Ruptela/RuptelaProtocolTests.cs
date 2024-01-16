@@ -21,7 +21,7 @@ public class RuptelaProtocolTests : BaseProtocolTests<RuptelaProtocol, RuptelaMe
         ProtocolTester.SendHexFromDevice(
             "0050000310f5615f419c0100015613d8ed0000fff5b37a035af37801e700000900000d07071b0c020003001c01202cad000500064302a81d33e61e100116317cd3ffff174ad60241000077fa960000f232003c2e");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class RuptelaProtocolTests : BaseProtocolTests<RuptelaProtocol, RuptelaMe
         ProtocolTester.SendHexFromDevice(
             "00560003116e7438a7a50100015565cbb9000020fd21300f113f4600005f000600090d090805011b13cf00020003001c012029ad00041d31dd1e0ebd160000c50000047200000000d0000000004100016a2a960000a5a300c9ee");
 
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 
     [Fact]

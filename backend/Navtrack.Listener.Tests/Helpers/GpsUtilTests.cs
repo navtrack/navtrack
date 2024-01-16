@@ -23,7 +23,7 @@ public class GpsUtilTests
 
         double result = GpsUtil.ConvertDdmToDecimal(degrees, minutes, cardinalPoint);
         
-        Assert.Equal(result, 46.7712);
+        Assert.Equal(46.7712, result);
     }
     
     [Fact]
@@ -35,6 +35,6 @@ public class GpsUtilTests
 
         double result = GpsUtil.ConvertDdmToDecimal(degrees, minutes, cardinalPoint);
         
-        Assert.Equal(result, 23.6236);
+        Assert.Equal(23.6236, result);
     }
 }

@@ -95,6 +95,6 @@ public class NavtelecomProtocolV2Tests : BaseProtocolTests<NavtelecomProtocol, N
             "7E450127000A251900000011196A4BD45E0B6A4BD45E9BC155011CAAFB01140000000000E0410800000062433C");
 
         Assert.Equal("7E45015C", ProtocolTester.ReceiveHexInDevice());
-        Assert.Equal(1, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Single(ProtocolTester.TotalParsedLocations);
     }
 }
