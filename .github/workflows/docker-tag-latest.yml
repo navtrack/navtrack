@@ -26,12 +26,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker tag
         run: |
-          docker pull ghcr.io/navtrack/navtrack/web:${{ env.version }}
-          docker pull ghcr.io/navtrack/navtrack/api:${{ env.version }}
-          docker pull ghcr.io/navtrack/navtrack/listener:${{ env.version }}
-          docker tag ghcr.io/navtrack/navtrack/web:${{ env.version }} ghcr.io/navtrack/navtrack/web:latest
-          docker tag ghcr.io/navtrack/navtrack/api:${{ env.version }} ghcr.io/navtrack/navtrack/api:latest
-          docker tag ghcr.io/navtrack/navtrack/listener:${{ env.version }} ghcr.io/navtrack/navtrack/listener:latest
-          docker push ghcr.io/navtrack/navtrack/web -a
-          docker push ghcr.io/navtrack/navtrack/api -a
-          docker push ghcr.io/navtrack/navtrack/listener -a
+          docker pull ghcr.io/navtrack/web:${{ env.version }}
+          docker pull ghcr.io/navtrack/api:${{ env.version }}
+          docker pull ghcr.io/navtrack/listener:${{ env.version }}
+          docker tag ghcr.io/navtrack/web:${{ env.version }} ghcr.io/navtrack/web:latest
+          docker tag ghcr.io/navtrack/api:${{ env.version }} ghcr.io/navtrack/api:latest
+          docker tag ghcr.io/navtrack/listener:${{ env.version }} ghcr.io/navtrack/listener:latest
+          docker push ghcr.io/navtrack/web -a
+          docker push ghcr.io/navtrack/api -a
+          docker push ghcr.io/navtrack/listener -a
