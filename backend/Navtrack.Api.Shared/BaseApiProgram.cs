@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -36,8 +35,6 @@ public abstract class BaseApiProgram<T>
         
         builder.Services.AddCustomServices<T>();
         
-        builder.WebHost.UseSentry();
-
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApiDocument(c => { c.Title = assembly.GetName().Name; });
         builder.Services.AddCors(options =>
@@ -108,7 +105,6 @@ public abstract class BaseApiProgram<T>
 
         app.UseCors(defaultCorsPolicy);
         app.UseRouting();
-        app.UseSentryTracing();
 
         // app.UseSignalRQueryStringAuthentication();
         app.UseAuthentication();
