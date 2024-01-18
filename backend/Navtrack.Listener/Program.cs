@@ -17,8 +17,6 @@ public class Program
 
         HostApplicationBuilder hostApplicationBuilder = Host.CreateApplicationBuilder();
 
-        hostApplicationBuilder.Logging.AddSentry();
-
         hostApplicationBuilder.Services.AddOptions<MongoOptions>()
             .Bind(hostApplicationBuilder.Configuration.GetSection(nameof(MongoOptions)));
         
