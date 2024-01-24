@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
@@ -15,8 +16,8 @@ public class ConnectionDocument : BaseDocument
     public int ProtocolPort { get; set; }
 
     [BsonElement("ip")]
-    public string? RemoteEndpoint { get; set; }
+    public string? Ip { get; set; }
 
     [BsonElement("m")]
-    public List<string> Messages { get; set; }
+    public List<BsonBinaryData> Messages { get; set; }
 }

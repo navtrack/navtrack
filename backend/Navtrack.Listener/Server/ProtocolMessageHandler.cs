@@ -34,7 +34,7 @@ public class ProtocolMessageHandler(
             DataMessage = new DataMessage(bytes, connectionContext.Protocol.SplitMessageBy)
         };
         
-        await connectionRepository.AddMessage(connectionContext.ConnectionId, HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));
+        await connectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
 
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
             HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));

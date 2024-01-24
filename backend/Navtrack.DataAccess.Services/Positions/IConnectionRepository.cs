@@ -9,7 +9,7 @@ namespace Navtrack.DataAccess.Services.Positions;
 
 public interface IConnectionRepository : IGenericRepository<ConnectionDocument>
 {
-    Task AddMessage(ObjectId connectionId, string hex);
+    Task AddMessage(ObjectId connectionId, byte[] hex);
 }
 
 [Service(typeof(IConnectionRepository))]
@@ -19,7 +19,7 @@ public class ConnectionRepository : GenericRepository<ConnectionDocument>, IConn
     {
     }
 
-    public Task AddMessage(ObjectId connectionId, string hex)
+    public Task AddMessage(ObjectId connectionId, byte[] hex)
     {
         return repository.GetCollection<ConnectionDocument>()
             .UpdateOneAsync(x => x.Id == connectionId,

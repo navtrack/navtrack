@@ -52,7 +52,7 @@ public class ProtocolListener(
         ConnectionDocument connectionDocument = new()
         {
             ProtocolPort = protocol.Port,
-            RemoteEndpoint = networkStream.RemoteEndPoint,
+            Ip = networkStream.RemoteEndPoint,
             CreatedDate = DateTime.UtcNow
         };
         await connectionRepository.Add(connectionDocument);
