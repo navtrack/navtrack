@@ -1,36 +1,57 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Navtrack.DataAccess.Model.New;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Server;
 
-[Service(typeof(IStreamHandler))]
-public class StreamHandler(ILogger<StreamHandler> logger, IMessageHandler handler)
-    : IStreamHandler
+[Service(typeof(IProtocolConnectionHandler))]
+public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger, IProtocolMessageHandler handler)
+    : IProtocolConnectionHandler
 {
-    public async Task HandleStream(CancellationToken cancellationToken, Client client,
-        INetworkStreamWrapper networkStream)
+    public async Task HandleConnection(ProtocolConnectionContext connectionContext, CancellationToken cancellationToken)
     {
-        byte[] buffer = new byte[ServerVariables.BufferLength];
-        int length;
+        logger.LogDebug("{Protocol}: connected {EndPoint}", connectionContext.Protocol,
+            connectionContext.NetworkStream.RemoteEndPoint);
 
-        do
+        try
         {
-            length = ReadMessage(networkStream, buffer, client.Protocol, cancellationToken);
+            byte[] buffer = new byte[ServerVariables.BufferLength];
+            int length;
 
-            if (length > 0)
+            do
             {
-                logger.LogDebug($"{client.Protocol}: received {length} bytes");
+                length = ReadMessage(connectionContext.NetworkStream, buffer, connectionContext.Protocol,
+                    cancellationToken);
 
-                int startIndex = GetStartIndex(buffer, length, client.Protocol);
+                if (length > 0)
+                {
+                    logger.LogDebug("{ClientProtocol}: received {Length} bytes", connectionContext.Protocol, length);
 
-                await handler.HandleMessage(client, networkStream, buffer[startIndex..length]);
-            }
-        } while (!cancellationToken.IsCancellationRequested && length > 0 && networkStream.CanRead);
+                    int startIndex = GetStartIndex(buffer, length, connectionContext.Protocol);
+
+                    await handler.HandleMessage(connectionContext, connectionContext.NetworkStream,
+                        buffer[startIndex..length]);
+                }
+            } while (!cancellationToken.IsCancellationRequested && length > 0 &&
+                     connectionContext.NetworkStream.CanRead);
+        }
+        catch (Exception exception)
+        {
+            logger.LogCritical(exception, "{ClientProtocol}", connectionContext.Protocol);
+        }
+        finally
+        {
+            logger.LogDebug("{ClientProtocol}: disconnected {EndPoint}", connectionContext.Protocol,
+                connectionContext.NetworkStream.RemoteEndPoint);
+
+            await connectionContext.DisposeAsync();
+        }
     }
 
     private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
@@ -67,7 +88,7 @@ public class StreamHandler(ILogger<StreamHandler> logger, IMessageHandler handle
     {
         if (protocol.MessageStart.Length > 0)
         {
-            for (int i = 0; i < length-protocol.MessageStart.Length; i++)
+            for (int i = 0; i < length - protocol.MessageStart.Length; i++)
             {
                 int endIndex = i + protocol.MessageStart.Length;
 

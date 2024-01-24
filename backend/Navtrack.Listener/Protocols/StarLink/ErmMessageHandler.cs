@@ -27,11 +27,11 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device
+                Device = input.ConnectionContext.Device
             };
 
             SetData(locationMatch.Groups[4].Value, location);
@@ -76,7 +76,7 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
 
             if (dataKey[i] == "#EDT#")
             {
-                location.DateTime = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, data[i]);
+                location.Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, data[i]);
             }
         }
     }

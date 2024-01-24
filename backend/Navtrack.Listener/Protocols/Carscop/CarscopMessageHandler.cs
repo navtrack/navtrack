@@ -36,8 +36,8 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
         {
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(lgc[10].Value, lgc[11].Value, lgc[12].Value, lgc[1].Value, lgc[2].Value,
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(lgc[10].Value, lgc[11].Value, lgc[12].Value, lgc[1].Value, lgc[2].Value,
                     lgc[3].Value),
                 PositionStatus = lgc[2].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
@@ -62,7 +62,7 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
 
             if (command == "UB05")
             {
-                input.Client.SetDevice(input.DataMessage.String.Substring(17, 15));
+                input.ConnectionContext.SetDevice(input.DataMessage.String.Substring(17, 15));
                   
                 // ReSharper disable once UnreachableCode
                 const string validImei = true ? "1" : "0";

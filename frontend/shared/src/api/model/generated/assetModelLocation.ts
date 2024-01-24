@@ -4,6 +4,6 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { LocationModel } from './locationModel';
+import type { PositionModel } from './positionModel';
 
-export type AssetModelLocation = LocationModel | null;
+export type AssetModelLocation = PositionModel | null;

@@ -28,7 +28,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
 
     private const string FlexArrayKey = "FLEX_ARRAY";
 
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         IEnumerable<Location> location = ParseRange(input,
             Handle_S_Login,
@@ -44,13 +44,13 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
 
     private static IEnumerable<Location> Handle_S_Login(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             Match imeiMatch = new Regex("\\*>S:(\\d{15})").Match(input.DataMessage.String);
 
             if (imeiMatch.Success)
             {
-                input.Client.SetDevice(imeiMatch.Groups[1].Value);
+                input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
 
                 string hexReply = "*<S".ToHex();
                 SendResponseWithTitle(input, hexReply);
@@ -76,7 +76,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             int result = (int)Math.Ceiling((double)dataSize / 8);
             byte[] bytes = input.DataMessage.ByteReader.Get(result);
 
-            bool[] flexArray = new bool[dataSize];
+            bool[]? flexArray = new bool[dataSize];
             
             int byteIndex = 0;
             int bitIndex = 0;
@@ -95,7 +95,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             string hexReply =
                 $"{"*<FLEX".ToHex()}{protocol:X2}{protocolVersion:X2}{structVersion:X2}";
             SendResponseWithTitle(input, hexReply);
-            input.Client.SetClientCache(FlexArrayKey, flexArray);
+            input.ConnectionContext.SetClientCache(FlexArrayKey, flexArray);
         }
 
         return null;
@@ -208,10 +208,10 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
-        bool[] flexArray = input.Client.GetClientCache<bool[]>(FlexArrayKey);
+        bool[]? flexArray = input.ConnectionContext.GetClientCache<bool[]>(FlexArrayKey);
 
         for (int i = 1; i <= flexArray.Length; i++)
         {
@@ -220,7 +220,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
                 switch (i)
                 {
                     case 3:
-                        location.DateTime = DateTime.UnixEpoch.AddSeconds(reader.Get<int>());
+                        location.Date = DateTime.UnixEpoch.AddSeconds(reader.Get<int>());
                         break;
                     case 10:
                         location.Latitude = reader.Get<int>() / 600000.0;
@@ -255,7 +255,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
         short packageLength = reader.Get<short>();
@@ -264,7 +264,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         int packageNumber = reader.Get<int>();
         short eventCode = reader.Get<short>();
         int eventTime = reader.Get<int>();
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(eventTime);
+        location.Date = DateTime.UnixEpoch.AddSeconds(eventTime);
         byte navigationSensorState = reader.GetOne();
         int gpsTime = reader.Get<int>();
         location.Latitude = reader.Get<int>() / 600000.0;

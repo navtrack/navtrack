@@ -37,12 +37,12 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(locationMatch.Groups[17].Value, 
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(locationMatch.Groups[17].Value, 
                     locationMatch.Groups[16].Value,
                     locationMatch.Groups[15].Value, 
                     locationMatch.Groups[4].Value, 

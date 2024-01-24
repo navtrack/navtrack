@@ -1,17 +1,16 @@
 using Navtrack.Api.Model.Locations;
-using Navtrack.DataAccess.Model.Locations;
+using Navtrack.DataAccess.Model.New;
 
 namespace Navtrack.Api.Services.Mappers.Locations;
 
 public static class LocationMapper
 {
-    public static LocationModel Map(LocationDocument source)
+    public static PositionModel Map(PositionElement source)
     {
-        LocationModel location = new()
+        PositionModel position = new()
         {
-            Id = source.Id.ToString(),
             Coordinates = source.Coordinates,
-            DateTime = source.DateTime,
+            DateTime = source.Date,
             Speed = source.Speed,
             Heading = source.Heading,
             Altitude = source.Altitude,
@@ -22,6 +21,6 @@ public static class LocationMapper
             Odometer = source.Odometer
         };
 
-        return location;
+        return position;
     }
 }

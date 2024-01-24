@@ -21,18 +21,18 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
 
         if (imeiMatch.Success && locationMatch.Success)
         {
-            input.Client.SetDevice(imeiMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
+                Device = input.ConnectionContext.Device,
                 HDOP = locationMatch.Groups[2].Get<float?>(),
                 Speed = locationMatch.Groups[3].Get<float?>(),
                 Heading = locationMatch.Groups[4].Get<float?>(),
                 Altitude = locationMatch.Groups[5].Get<float?>(),
                 Longitude = locationMatch.Groups[6].Get<double>(),
                 Latitude = locationMatch.Groups[7].Get<double>(),
-                DateTime = DateTimeUtil.New(locationMatch.Groups[8].Value, locationMatch.Groups[9].Value,
+                Date = DateTimeUtil.New(locationMatch.Groups[8].Value, locationMatch.Groups[9].Value,
                     locationMatch.Groups[10].Value,
                     locationMatch.Groups[11].Value, locationMatch.Groups[12].Value, locationMatch.Groups[13].Value,
                     add2000Year: false),

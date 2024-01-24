@@ -24,7 +24,7 @@ public class VSunMessageHandler : BaseMessageHandler<VSunProtocol>
         {
             Location location = new(gprmc)
             {
-                Device = input.Client.Device
+                Device = input.ConnectionContext.Device
             };
 
             return location;
@@ -35,7 +35,7 @@ public class VSunMessageHandler : BaseMessageHandler<VSunProtocol>
 
     private static Location HandleImei(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             Match locationMatch =
                 new Regex("#(\\d{15})#" + // imei
@@ -44,7 +44,7 @@ public class VSunMessageHandler : BaseMessageHandler<VSunProtocol>
 
             if (locationMatch.Success)
             {
-                input.Client.SetDevice(locationMatch.Groups[1].Value);
+                input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
             }
         }
 

@@ -21,10 +21,10 @@ public static class JointechV2MessageHandler
 
         if (messageId == JointechV2Constants.LocationInformationReportMessageId)
         {
-            input.Client.SetDevice(phoneNumber);
+            input.ConnectionContext.SetDevice(phoneNumber);
             Location location = new()
             {
-                Device = input.Client.Device
+                Device = input.ConnectionContext.Device
             };
 
             int alarm = input.DataMessage.ByteReader.GetInt32Be();
@@ -52,7 +52,7 @@ public static class JointechV2MessageHandler
             int minute = input.DataMessage.ByteReader.GetFromHex<int>(1);
             int second = input.DataMessage.ByteReader.GetFromHex<int>(1);
 
-            location.DateTime = new DateTime(year + 2000, month, day, hour, minute, second)
+            location.Date = new DateTime(year + 2000, month, day, hour, minute, second)
                 // default is GMT+8 time zone so we subtract that to have GMT
                 .AddHours(-8);
 

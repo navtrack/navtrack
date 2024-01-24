@@ -26,12 +26,12 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
+                Device = input.ConnectionContext.Device,
+                Date = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
                 Longitude = locationMatch.Groups[3].Get<double>(),
                 Latitude = locationMatch.Groups[4].Get<double>(),
                 Speed = locationMatch.Groups[5].Get<float?>(),

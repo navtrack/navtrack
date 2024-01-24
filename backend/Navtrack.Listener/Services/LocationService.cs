@@ -24,7 +24,7 @@ public class LocationService(
     {
         if (locations.Any())
         {
-            string deviceId = locations.First().Device.IMEI;
+            string deviceId = locations.First().Device.SerialNumber;
 
             AssetDocument asset = await deviceRepository.GetActiveDeviceByDeviceId(deviceId);
 

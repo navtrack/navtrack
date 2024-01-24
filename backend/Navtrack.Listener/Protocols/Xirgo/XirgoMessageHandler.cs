@@ -12,12 +12,12 @@ public class XirgoMessageHandler : BaseMessageHandler<XirgoProtocol>
 {
     public override Location Parse(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.CommaSplit[0].Replace("$", Empty));
+        input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[0].Replace("$", Empty));
 
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = DateTime.Parse($"{input.DataMessage.CommaSplit[2]} {input.DataMessage.CommaSplit[3]}"),
+            Device = input.ConnectionContext.Device,
+            Date = DateTime.Parse($"{input.DataMessage.CommaSplit[2]} {input.DataMessage.CommaSplit[3]}"),
             Latitude = input.DataMessage.CommaSplit.Get<double>(4),
             Longitude = input.DataMessage.CommaSplit.Get<double>(5),
             Altitude = input.DataMessage.CommaSplit.Get<float?>(6),

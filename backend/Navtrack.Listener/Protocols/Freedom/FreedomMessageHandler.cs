@@ -25,12 +25,12 @@ public class FreedomMessageHandler : BaseMessageHandler<FreedomProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTime.Parse($"{locationMatch.Groups[2].Value} {locationMatch.Groups[3].Value}"),
+                Device = input.ConnectionContext.Device,
+                Date = DateTime.Parse($"{locationMatch.Groups[2].Value} {locationMatch.Groups[3].Value}"),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
                     locationMatch.Groups[4].Value),
                 Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value,

@@ -23,7 +23,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 
         if (imeiMatch.Success)
         {
-            input.Client.SetDevice(imeiMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
         }
 
         return null;
@@ -31,7 +31,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 
     private static Location HandleLocation(MessageInput input)
     {
-        if (input.Client.Device != null)
+        if (input.ConnectionContext.Device != null)
         {
             string locationRegex = "(\\d+\\/\\d+\\/\\d+)," + // date dd/mm/yy
                                    "(\\d+:\\d+:\\d+)," + // time hh:mm:ss
@@ -53,8 +53,8 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
             {
                 Location location = new()
                 {
-                    Device = input.Client.Device,
-                    DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
+                    Device = input.ConnectionContext.Device,
+                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
                         locationMatch.Groups[2].Value),
                     Latitude = locationMatch.Groups[3].Get<double>(),
                     Longitude = locationMatch.Groups[4].Get<double>(),

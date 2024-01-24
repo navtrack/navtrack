@@ -29,7 +29,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
 
             if (StringUtil.IsDigitsOnly(imei))
             {
-                input.Client.SetDevice(imei);
+                input.ConnectionContext.SetDevice(imei);
 
                 input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("LOAD"));
             }
@@ -55,12 +55,12 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
 
     private static Location Location(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
+        input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
 
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
+            Device = input.ConnectionContext.Device,
+            Date = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
             PositionStatus = input.DataMessage.CommaSplit.Get<string>(4) == "F",
             Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
                 input.DataMessage.CommaSplit[8]),

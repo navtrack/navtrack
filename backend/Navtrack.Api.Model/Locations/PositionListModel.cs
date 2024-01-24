@@ -4,7 +4,7 @@ using Navtrack.Api.Model.Common;
 
 namespace Navtrack.Api.Model.Locations;
 
-public class LocationListModel : ListModel<LocationModel>
+public class PositionListModel : ListModel<PositionModel>
 {
     public float? AverageSpeed
     {

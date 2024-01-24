@@ -28,12 +28,12 @@ public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[3].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[3].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
+                Device = input.ConnectionContext.Device,
+                Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
                 Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value, locationMatch.Groups[5].Value),
                 Longitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value, locationMatch.Groups[7].Value),
                 Speed = locationMatch.Groups[9].Get<float?>(),

@@ -15,7 +15,7 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
     {
         MeiligaoInputMessage inputMessage = new(input.DataMessage);
             
-        input.Client.SetDevice(inputMessage.DeviceIdTrimmed);
+        input.ConnectionContext.SetDevice(inputMessage.DeviceIdTrimmed);
 
         HandleMessage(input, inputMessage);
 
@@ -23,13 +23,13 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
         {
             Location location = new()
             {
-                Device = input.Client.Device,
+                Device = input.ConnectionContext.Device,
                 PositionStatus = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[2],
                     inputMessage.MeiligaoDataMessage.GPRMCArray[3]),
                 Longitude = GpsUtil.ConvertDmmLongToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[4],
                     inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
-                DateTime = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
+                Date = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
                     inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
                 Speed = SpeedUtil.KnotsToKph(inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float>(6)),
                 Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7),

@@ -1,6 +1,6 @@
 services:
   database:
-    image: mongo
+    image: mongo:6.0.13
     restart: unless-stopped
     volumes:
       - navtrack:/data/db

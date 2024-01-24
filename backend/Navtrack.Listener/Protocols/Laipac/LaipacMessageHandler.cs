@@ -56,12 +56,12 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                Device = input.ConnectionContext.Device,
+                Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                     $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[4].Value,
                     locationMatch.Groups[5].Value),

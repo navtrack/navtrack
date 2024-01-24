@@ -35,7 +35,7 @@ public class JointechV1MessageHandler
         {
             Location location = new()
             {
-                DateTime = DateTimeUtil.New(
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[7].Value,
                     locationMatch.Groups[6].Value,
                     locationMatch.Groups[5].Value,
@@ -52,8 +52,8 @@ public class JointechV1MessageHandler
                 PositionStatus = BitUtil.IsTrue(locationMatch.Groups[13].Value[0], 0)
             };
 
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
-            location.Device = input.Client.Device;
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
+            location.Device = input.ConnectionContext.Device;
 
             return location;
         }

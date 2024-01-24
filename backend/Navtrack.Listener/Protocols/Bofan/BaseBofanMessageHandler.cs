@@ -17,11 +17,11 @@ public class BaseBofanMessageHandler<T> : BaseMessageHandler<T>
 
             if (deviceIdMatch.Success)
             {
-                input.Client.SetDevice(deviceIdMatch.Groups[1].Value);
+                input.ConnectionContext.SetDevice(deviceIdMatch.Groups[1].Value);
                     
                 Location location = new(gprmc)
                 {
-                    Device = input.Client.Device
+                    Device = input.ConnectionContext.Device
                 };
 
                 return location;

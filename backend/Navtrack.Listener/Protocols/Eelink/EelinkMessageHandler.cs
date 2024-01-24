@@ -91,11 +91,11 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device,
+            Device = input.ConnectionContext.Device,
         };
 
         input.DataMessage.ByteReader.Skip(startIndex);
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
+        location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
         location.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
         location.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
         location.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
@@ -123,11 +123,11 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
 
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
         input.DataMessage.ByteReader.Skip(locationStartIndex);
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
+        location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
         string mask = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
 
         if (mask[^1] == '1')
@@ -154,7 +154,7 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
 
     private static void HandleLoginPackage(MessageInput input)
     {   
-        input.Client.SetDevice(input.DataMessage.Hex[7..15].StringJoin().TrimStart('0'));
+        input.ConnectionContext.SetDevice(input.DataMessage.Hex[7..15].StringJoin().TrimStart('0'));
             
         string extra = Empty;
 

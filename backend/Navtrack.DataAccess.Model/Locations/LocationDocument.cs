@@ -61,7 +61,10 @@ public class LocationDocument
 
     [BsonElement("cgi")]
     public CellGlobalIdentityElement? CellGlobalIdentity { get; set; }
-        
+    
+    [BsonElement("connectionId")]
+    public ObjectId? DeviceConnectionId { get; set; }
+    
     [BsonElement("cId")]
     public ObjectId? DeviceConnectionMessageId { get; set; }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Api.Model.Locations;
 
-public class LocationModel
+public class PositionModel
 {
     public string Id { get; set; }
 

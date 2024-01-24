@@ -71,8 +71,8 @@ export function AssetTripsPage() {
             <div className="flex flex-grow rounded-lg bg-white shadow">
               <Map
                 center={{
-                  latitude: selectedTrip.startLocation.latitude,
-                  longitude: selectedTrip.startLocation.longitude
+                  latitude: selectedTrip.startPosition.latitude,
+                  longitude: selectedTrip.startPosition.longitude
                 }}
                 initialZoom={16}>
                 <MapTrip trip={selectedTrip} />

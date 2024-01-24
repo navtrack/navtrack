@@ -14,11 +14,8 @@ public static class LocationDocumentMapper
         {
             DeviceId = source2.Device.Id,
             AssetId = source2.Id,
-            Coordinates = new[]
-            {
-                source1.Longitude, source1.Latitude
-            },
-            DateTime = source1.DateTime,
+            Coordinates = [source1.Longitude, source1.Latitude],
+            DateTime = source1.Date,
             Valid = source1.PositionStatus,
             Speed = source1.Speed,
             Heading = source1.Heading,

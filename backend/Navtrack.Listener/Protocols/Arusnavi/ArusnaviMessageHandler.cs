@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Arusnavi;
 [Service(typeof(ICustomMessageHandler<ArusnaviProtocol>))]
 public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         IEnumerable<Location> location =
             ParseRange(input, ParseTextMessage, ParseBinaryLogin, ParseLocationMessage);
@@ -46,8 +46,8 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = dateTime
+            Device = input.ConnectionContext.Device,
+            Date = dateTime
         };
 
         int bytesRead = 0;
@@ -91,7 +91,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
             byte headerVersion = input.DataMessage.ByteReader.GetOne();
             long imei = input.DataMessage.ByteReader.Get<long>();
 
-            input.Client.SetDevice($"{imei}");
+            input.ConnectionContext.SetDevice($"{imei}");
 
             SendResponse(input, headerVersion, 0);
         }
@@ -151,14 +151,14 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[3].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[3].Value);
 
             Location location = new()
             {
-                Device = input.Client.Device,
+                Device = input.ConnectionContext.Device,
                 Satellites = locationMatch.Groups[14].Get<short?>(),
                 Altitude = locationMatch.Groups[15].Get<float?>(),
-                DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                     $"{locationMatch.Groups[26].Value}{locationMatch.Groups[19].Value}"),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[20].Value,
                     locationMatch.Groups[21].Value),

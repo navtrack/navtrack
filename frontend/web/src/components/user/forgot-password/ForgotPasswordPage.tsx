@@ -11,13 +11,14 @@ import { InitialForgotPasswordFormValues } from "@navtrack/shared/hooks/user/for
 import { useForgotPassword } from "@navtrack/shared/hooks/user/forgot-password/useForgotPassword";
 import { useForgotPasswordFormValidationSchema } from "@navtrack/shared/hooks/user/forgot-password/useForgotPasswordFormValidationSchema";
 import { Link } from "../../ui/link/Link";
+import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 
 export function ForgotPasswordPage() {
   const validationSchema = useForgotPasswordFormValidationSchema();
   const forgotPassword = useForgotPassword();
 
   return (
-    <>
+    <UnauthenticatedLayout>
       <h2 className="mx-auto mt-4 text-3xl font-extrabold text-gray-900">
         <FormattedMessage id="forgot-password.title" />
       </h2>
@@ -98,6 +99,6 @@ export function ForgotPasswordPage() {
           )}
         </Formik>
       </Card>
-    </>
+    </UnauthenticatedLayout>
   );
 }

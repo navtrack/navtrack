@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Satellite;
 [Service(typeof(ICustomMessageHandler<SatelliteProtocol>))]
 public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         short checksum = input.DataMessage.ByteReader.Get<short>();
         short preamble = input.DataMessage.ByteReader.Get<short>();
@@ -49,14 +49,14 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
         short type = input.DataMessage.ByteReader.Get<short>();
         int length = input.DataMessage.ByteReader.Get<short>();
 
-        input.Client.SetDevice($"{id}");
+        input.ConnectionContext.SetDevice($"{id}");
             
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+        location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
         location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
         location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
         location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.01f;

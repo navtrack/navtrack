@@ -44,8 +44,8 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
 
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = DateTimeUtil.NewFromHex(input.DataMessage.Hex[GetIndex(4)], input.DataMessage.Hex[GetIndex(5)],
+            Device = input.ConnectionContext.Device,
+            Date = DateTimeUtil.NewFromHex(input.DataMessage.Hex[GetIndex(4)], input.DataMessage.Hex[GetIndex(5)],
                 input.DataMessage.Hex[GetIndex(6)], input.DataMessage.Hex[GetIndex(7)],
                 input.DataMessage.Hex[GetIndex(8)],
                 input.DataMessage.Hex[GetIndex(9)]),
@@ -78,7 +78,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
 
             if (StringUtil.IsDigitsOnly(imei))
             {
-                input.Client.SetDevice(imei);
+                input.ConnectionContext.SetDevice(imei);
 
                 ConcoxOutputMessage output = new(ProtocolNumber, serialNumber);
 

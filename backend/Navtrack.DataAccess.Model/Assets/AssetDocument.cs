@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Locations;
+using Navtrack.DataAccess.Model.New;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Assets;
@@ -21,6 +22,9 @@ public class AssetDocument : BaseDocument
         
     [BsonElement("location")]
     public LocationDocument? Location { get; set; }
+
+    [BsonElement("position")]
+    public PositionElement? Position { get; set; }
 
     [BsonElement("userRoles")]
     public IEnumerable<AssetUserRoleElement> UserRoles { get; set; }

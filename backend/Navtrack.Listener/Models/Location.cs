@@ -11,7 +11,7 @@ public class Location
 
     public Location(GPRMC gprmc)
     {
-        DateTime = gprmc.DateTime;
+        Date = gprmc.DateTime;
         Latitude = gprmc.Latitude;
         Longitude = gprmc.Longitude;
         PositionStatus = gprmc.PositionStatus;
@@ -22,7 +22,7 @@ public class Location
     public Device Device { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public DateTime DateTime { get; set; }
+    public DateTime Date { get; set; }
     public bool? PositionStatus { get; set; }
     public float? Speed { get; set; }
     public float? Heading { get; set; }

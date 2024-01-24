@@ -18,7 +18,7 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
 
         if (type == 0x03) // imei
         {
-            input.Client.SetDevice(StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15)));
+            input.ConnectionContext.SetDevice(StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15)));
         }
         else
         {
@@ -31,14 +31,14 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
 
     private static Location GetLocation(MessageInput input, int type)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             return null;
         }
 
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
         input.DataMessage.ByteReader.GetOne();
@@ -54,7 +54,7 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
         location.Altitude = input.DataMessage.ByteReader.Get<short>();
         location.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1f;
         location.Satellites = (short?)(input.DataMessage.ByteReader.GetOne() & 0x0f);
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+        location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
 
         MarkAsNull(location);
 

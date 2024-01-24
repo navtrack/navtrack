@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Meitrack;
 [Service(typeof(ICustomMessageHandler<MeitrackProtocol>))]
 public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         IEnumerable<Location> locations = ParseRange(input, ParseText, ParseBinary_CCC, ParseBinary_CCE);
 
@@ -27,7 +27,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
         string imei = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
         string command = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
 
-        input.Client.SetDevice(imei);
+        input.ConnectionContext.SetDevice(imei);
 
         if (command == "CCC")
         {
@@ -41,14 +41,14 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             {
                 Location location = new()
                 {
-                    Device = input.Client.Device
+                    Device = input.ConnectionContext.Device
                 };
 
                 byte eventCode = input.DataMessage.ByteReader.GetOne();
 
                 location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                 location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-                location.DateTime = new DateTime(2001, 1, 1)
+                location.Date = new DateTime(2001, 1, 1)
                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
                 location.PositionStatus = input.DataMessage.ByteReader.GetOne() == 0x01;
                 location.Satellites = input.DataMessage.ByteReader.GetOne();
@@ -85,7 +85,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
         string imei = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
         string command = StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.GetUntil(0x2C));
 
-        input.Client.SetDevice(imei);
+        input.ConnectionContext.SetDevice(imei);
 
         if (command == "CCE")
         {
@@ -101,7 +101,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
 
                 Location location = new()
                 {
-                    Device = input.Client.Device
+                    Device = input.ConnectionContext.Device
                 };
 
                 int[] sizes = {1, 2, 4};
@@ -123,7 +123,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                                 location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x04:
-                                location.DateTime = new DateTime(2001, 1, 1)
+                                location.Date = new DateTime(2001, 1, 1)
                                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
                                 break;
                             case 0x05:
@@ -178,14 +178,14 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
     {
         if (input.DataMessage.CommaSplit.Length > 14)
         {
-            input.Client.SetDevice(input.DataMessage.CommaSplit[1]);
+            input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
 
             Location location = new()
             {
-                Device = input.Client.Device,
+                Device = input.ConnectionContext.Device,
                 Latitude = input.DataMessage.CommaSplit.Get<double>(4),
                 Longitude = input.DataMessage.CommaSplit.Get<double>(5),
-                DateTime = ConvertDate(input.DataMessage.CommaSplit[6]),
+                Date = ConvertDate(input.DataMessage.CommaSplit[6]),
                 PositionStatus = input.DataMessage.CommaSplit.Get<string>(7) == "A",
                 Satellites = input.DataMessage.CommaSplit.Get<short>(8),
                 GsmSignal = GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9)),

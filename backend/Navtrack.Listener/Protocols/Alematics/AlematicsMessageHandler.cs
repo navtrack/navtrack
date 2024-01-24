@@ -31,12 +31,12 @@ public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(locationMatch.Groups[2].Value, locationMatch.Groups[3].Value,
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(locationMatch.Groups[2].Value, locationMatch.Groups[3].Value,
                     locationMatch.Groups[4].Value, locationMatch.Groups[5].Value, locationMatch.Groups[6].Value,
                     locationMatch.Groups[7].Value, add2000Year: false),
                 Latitude = locationMatch.Groups[14].Get<double>(),

@@ -11,7 +11,7 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         return null;
     }
 
-    public virtual IEnumerable<Location> ParseRange(MessageInput input)
+    public virtual IEnumerable<Location>? ParseRange(MessageInput input)
     {
         try
         {

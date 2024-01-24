@@ -11,12 +11,12 @@ public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
 {
     public override Location Parse(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.CommaSplit[1]);
+        input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
             
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
+            Device = input.ConnectionContext.Device,
+            Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
             PositionStatus = input.DataMessage.CommaSplit.Get<string>(6) == "A",
             Latitude = input.DataMessage.CommaSplit.Get<double>(7),
             Longitude = input.DataMessage.CommaSplit.Get<double>(8),

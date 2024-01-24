@@ -24,8 +24,8 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
 
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
+            Device = input.ConnectionContext.Device,
+            Date = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
                 int.Parse(input.DataMessage.Hex[10]),
                 int.Parse(input.DataMessage.Hex[11]),
                 int.Parse(input.DataMessage.Hex[12]),
@@ -69,7 +69,7 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
 
             input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(fullReply));
 
-            input.Client.SetDevice(int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber)
+            input.ConnectionContext.SetDevice(int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber)
                 .ToString());
         }
     }

@@ -19,7 +19,7 @@ public static class AssetModelMapper
         
         model.Id = asset.Id.ToString();
         model.Name = asset.Name;
-        model.Location = asset.Location != null ? LocationMapper.Map(asset.Location) : null;
+        model.Location = asset.Position != null ? LocationMapper.Map(asset.Position) : null;
         model.Online = asset.Location?.CreatedDate > DateTime.UtcNow.AddMinutes(-1);
         model.Device = DeviceModelMapper.Map(asset, deviceType);
         model.Users = users != null

@@ -9,17 +9,17 @@ namespace Navtrack.Api.Model.Trips;
 public class TripModel
 {
     [Required]
-    public List<LocationModel> Locations { get; } = [];    
+    public List<PositionModel> Locations { get; } = [];    
 
     [Required]
-    public LocationModel StartLocation => Locations.First();
+    public PositionModel StartPosition => Locations.First();
 
     [Required]
     // ReSharper disable once MemberCanBePrivate.Global
-    public LocationModel EndLocation => Locations.Last();
+    public PositionModel EndPosition => Locations.Last();
 
     [Required]
-    public double Duration => Math.Ceiling((EndLocation.DateTime - StartLocation.DateTime).TotalMinutes);
+    public double Duration => Math.Ceiling((EndPosition.DateTime - StartPosition.DateTime).TotalMinutes);
 
     [Required]
     public int Distance { get; set; }

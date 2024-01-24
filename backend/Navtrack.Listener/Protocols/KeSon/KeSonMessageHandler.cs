@@ -31,12 +31,12 @@ public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[16].Value,
                     locationMatch.Groups[15].Value,
                     locationMatch.Groups[14].Value,

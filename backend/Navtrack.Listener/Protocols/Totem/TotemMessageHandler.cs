@@ -18,12 +18,12 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 
     private static Location ParseLocation_AT07(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
+        input.ConnectionContext.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
             
         return new Location
         {
-            Device = input.Client.Device,
-            DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
+            Device = input.ConnectionContext.Device,
+            Date = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
             Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(16).Get(2)),
             GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),
             Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3)),
@@ -39,12 +39,12 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 
     private static Location ParseLocation_AT09(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
+        input.ConnectionContext.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
             
         return new Location
         {
-            Device = input.Client.Device,
-            DateTime = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
+            Device = input.ConnectionContext.Device,
+            Date = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
             Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(36).Get(2)),
             GsmSignal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2))),
             Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3)),

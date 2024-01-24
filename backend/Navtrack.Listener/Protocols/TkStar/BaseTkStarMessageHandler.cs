@@ -12,12 +12,12 @@ public class BaseTkStarMessageHandler<T> : BaseMessageHandler<T>
     {
         int timeIndex = input.DataMessage.CommaSplit[2] == "V1" || input.DataMessage.CommaSplit[2] == "V2" ? 3 : 5;
 
-        input.Client.SetDevice(input.DataMessage.CommaSplit.Get<string>(1));
+        input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit.Get<string>(1));
 
         Location location = new()
         {
-            Device = input.Client.Device,
-            DateTime = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),
+            Device = input.ConnectionContext.Device,
+            Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),
                 input.DataMessage.CommaSplit.Get<string>(timeIndex + 8)),
             PositionStatus = input.DataMessage.CommaSplit.Get<string>(timeIndex + 1) == "A",
             Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[timeIndex + 2],

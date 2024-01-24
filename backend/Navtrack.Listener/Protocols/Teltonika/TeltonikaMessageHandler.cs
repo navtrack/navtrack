@@ -12,15 +12,15 @@ namespace Navtrack.Listener.Protocols.Teltonika;
 [Service(typeof(ICustomMessageHandler<TeltonikaProtocol>))]
 public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             if (input.DataMessage.Bytes.Length > 16)
             {
                 string imei = Encoding.ASCII.GetString(input.DataMessage.Bytes[2..17]);
 
-                input.Client.SetDevice(imei);
+                input.ConnectionContext.SetDevice(imei);
 
                 input.NetworkStream.WriteByte(1);
             }
@@ -63,10 +63,10 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
-        location.DateTime = DateTime.UnixEpoch
+        location.Date = DateTime.UnixEpoch
             .AddMilliseconds(input.DataMessage.ByteReader.Get(8).ToInt64());
 
         byte priority = input.DataMessage.ByteReader.GetOne();

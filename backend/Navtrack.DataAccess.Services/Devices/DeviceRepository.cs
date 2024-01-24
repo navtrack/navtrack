@@ -22,6 +22,7 @@ public class DeviceRepository(IRepository repository) : GenericRepository<Device
                            (excludeAssetId == null || x.Id != ObjectId.Parse(excludeAssetId)));
     }
 
+    // TODO remove
     public Task<AssetDocument> GetActiveDeviceByDeviceId(string deviceId)
     {
         return repository.GetQueryable<AssetDocument>()

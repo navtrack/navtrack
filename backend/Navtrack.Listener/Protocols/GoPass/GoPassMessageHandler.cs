@@ -21,20 +21,20 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 
     private static void HandleImeiMessage(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             Match imeiMatch = new Regex("(\\d{15})").Match(input.DataMessage.String);
 
             if (imeiMatch.Success)
             {
-                input.Client.SetDevice(imeiMatch.Groups[1].Value);
+                input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
             }
         }
     }
 
     private static Location ParseLocation(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             return null;
         }
@@ -55,8 +55,8 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
         {
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[15].Value,
                     locationMatch.Groups[14].Value,
                     locationMatch.Groups[13].Value,

@@ -32,12 +32,12 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.NewFromHex(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.NewFromHex(
                     locationMatch.Groups[4].Value,
                     locationMatch.Groups[5].Value,
                     locationMatch.Groups[6].Value,

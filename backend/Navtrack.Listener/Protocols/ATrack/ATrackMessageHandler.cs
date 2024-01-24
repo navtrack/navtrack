@@ -14,7 +14,7 @@ namespace Navtrack.Listener.Protocols.ATrack;
 [Service(typeof(ICustomMessageHandler<ATrackProtocol>))]
 public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         IEnumerable<Location> locations =
             ParseRange(input, HandleKeepAlive, HandleTextMessage, HandleBinaryMessage);
@@ -43,7 +43,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         long id = input.DataMessage.ByteReader.GetLe<long>(false);
         byte[] idBytes = input.DataMessage.ByteReader.Get(8);
             
-        input.Client.SetDevice($"{id}");
+        input.ConnectionContext.SetDevice($"{id}");
             
         List<Location> positions = [];
 
@@ -51,13 +51,13 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         {
             Location position = new()
             {
-                Device = input.Client.Device
+                Device = input.ConnectionContext.Device
             };
 
             DateTime gpsDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime rtcDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime sendDate = GetDateTime(input.DataMessage.ByteReader, input);
-            position.DateTime = gpsDate;
+            position.Date = gpsDate;
             position.Longitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
             position.Latitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
             position.Heading = input.DataMessage.ByteReader.GetLe<short>();
@@ -356,12 +356,12 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[4].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[4].Value);
               
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = GetDateTime(locationMatch.Groups[5].Value),
+                Device = input.ConnectionContext.Device,
+                Date = GetDateTime(locationMatch.Groups[5].Value),
                 Longitude = locationMatch.Groups[8].Get<int>() * 0.000001,
                 Latitude = locationMatch.Groups[9].Get<int>() * 0.000001,
                 Heading = locationMatch.Groups[10].Get<float?>(),

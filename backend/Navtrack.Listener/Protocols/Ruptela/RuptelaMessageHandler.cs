@@ -12,12 +12,12 @@ namespace Navtrack.Listener.Protocols.Ruptela;
 [Service(typeof(ICustomMessageHandler<RuptelaProtocol>))]
 public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         short size = input.DataMessage.ByteReader.GetLe<short>();
         long imei = input.DataMessage.ByteReader.GetLe<long>();
 
-        input.Client.SetDevice($"{imei}");
+        input.ConnectionContext.SetDevice($"{imei}");
 
         byte command = input.DataMessage.ByteReader.GetOne();
 
@@ -61,10 +61,10 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
         // ReSharper disable once UseObjectOrCollectionInitializer
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.GetLe<int>());
+        location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.GetLe<int>());
         byte timestampExtension = input.DataMessage.ByteReader.GetOne();
         byte? recordExtension = extended
             ? input.DataMessage.ByteReader.GetOne()

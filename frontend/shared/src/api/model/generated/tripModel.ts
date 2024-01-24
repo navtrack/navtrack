@@ -4,12 +4,12 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { LocationModel } from './locationModel';
+import type { PositionModel } from './positionModel';
 
 export interface TripModel {
-  locations: LocationModel[];
-  startLocation: LocationModel;
-  endLocation: LocationModel;
+  locations: PositionModel[];
+  startPosition: PositionModel;
+  endPosition: PositionModel;
   duration: number;
   distance: number;
   maxSpeed?: number | null;

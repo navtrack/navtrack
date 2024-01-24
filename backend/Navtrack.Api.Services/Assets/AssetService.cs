@@ -20,7 +20,7 @@ using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
-using Navtrack.DataAccess.Services.Locations;
+using Navtrack.DataAccess.Services.Positions;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
@@ -31,7 +31,7 @@ namespace Navtrack.Api.Services.Assets;
 public class AssetService(
     IAssetRepository assetRepository,
     ICurrentUserAccessor userAccessor,
-    ILocationRepository locationRepository,
+    IPositionRepository locationRepository,
     IDeviceTypeRepository deviceTypeRepository,
     IDeviceService service,
     IRepository repository,

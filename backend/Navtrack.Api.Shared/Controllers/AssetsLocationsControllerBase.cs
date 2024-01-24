@@ -17,7 +17,7 @@ namespace Navtrack.Api.Shared.Controllers;
 public abstract class AssetsLocationsControllerBase(ILocationService service) : ControllerBase
 {
     [HttpGet(ApiPaths.AssetsAssetLocations)]
-    [ProducesResponseType(typeof(LocationListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PositionListModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
@@ -27,8 +27,8 @@ public abstract class AssetsLocationsControllerBase(ILocationService service) : 
         [FromQuery] int page = 0,
         [FromQuery] [Range(0, 1000)] int size = 1000)
     {
-        LocationListModel locations = await service.GetLocations(assetId, filter, page, size);
+        PositionListModel positions = await service.GetLocations(assetId, filter, page, size);
 
-        return new JsonResult(locations);
+        return new JsonResult(positions);
     }
 }

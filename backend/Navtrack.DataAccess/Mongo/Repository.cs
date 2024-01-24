@@ -9,9 +9,6 @@ public class Repository(IMongoDatabaseProvider mongoDatabaseProvider) : IReposit
 {
     private readonly IMongoDatabase mongoDatabase = mongoDatabaseProvider.GetMongoDatabase();
 
-    private readonly IMongoDatabaseProvider mongoDatabaseProvider = mongoDatabaseProvider;
-    // private readonly IInterceptorService interceptorService;
-
     public IMongoQueryable<T> GetQueryable<T>() where T : class
     {
         return GetCollection<T>().AsQueryable();

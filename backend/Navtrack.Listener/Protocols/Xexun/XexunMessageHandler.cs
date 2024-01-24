@@ -22,12 +22,12 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
 
         if (lgc.Count == 19)
         {
-            input.Client.SetDevice(lgc[18].Value);
+            input.ConnectionContext.SetDevice(lgc[18].Value);
                 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(lgc[12].Value, lgc[13].Value, lgc[14].Value, lgc[1].Value, lgc[2].Value,
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(lgc[12].Value, lgc[13].Value, lgc[14].Value, lgc[1].Value, lgc[2].Value,
                     lgc[3].Value, lgc[4].Value),
                 PositionStatus = lgc[16].Value == "F",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[6].Value, lgc[7].Value),

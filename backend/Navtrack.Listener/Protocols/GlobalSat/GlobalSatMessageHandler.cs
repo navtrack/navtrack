@@ -38,12 +38,12 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[6].Value,
                     locationMatch.Groups[5].Value,
                     locationMatch.Groups[4].Value,
@@ -87,12 +87,12 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
             Location location = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[6].Value,
                     locationMatch.Groups[5].Value,
                     locationMatch.Groups[4].Value,

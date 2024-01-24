@@ -29,7 +29,7 @@ import type {
   UpdateAssetModel,
   ListModelOfDeviceModel,
   UpdateAssetDeviceModel,
-  LocationListModel,
+  PositionListModel,
   AssetsLocationsGetListParams,
   DistanceReportListModel,
   AssetsReportsGetTimeDistanceReportParams,
@@ -513,7 +513,7 @@ export const assetsLocationsGetList = (
     params?: AssetsLocationsGetListParams,
  signal?: AbortSignal
 ) => {
-      return authAxiosInstance<LocationListModel>(
+      return authAxiosInstance<PositionListModel>(
       {url: `/assets/${assetId}/locations`, method: 'get',
         params, signal
     },

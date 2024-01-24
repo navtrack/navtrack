@@ -5,5 +5,5 @@ namespace Navtrack.Api.Services.Locations;
 
 public interface ILocationService
 {
-    Task<LocationListModel> GetLocations(string assetId, LocationFilterModel locationFilter, int page, int size);
+    Task<PositionListModel> GetLocations(string assetId, LocationFilterModel locationFilter, int page, int size);
 }

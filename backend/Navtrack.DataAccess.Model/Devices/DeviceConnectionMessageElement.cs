@@ -9,5 +9,5 @@ public class DeviceConnectionMessageElement
     public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
     [BsonElement("hex")]
-    public string Hex { get; set; }
+    public string? Hex { get; set; }
 }

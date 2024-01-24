@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Autofon;
 [Service(typeof(ICustomMessageHandler<AutofonProtocol>))]
 public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         MessageType type = (MessageType) input.DataMessage.ByteReader.GetOne();
 
@@ -34,7 +34,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
             input.DataMessage.ByteReader.Skip(2);
         }
 
-        input.Client.SetDevice(HexUtil.ConvertByteArrayToHexStringArray(input.DataMessage.ByteReader.Get(8))
+        input.ConnectionContext.SetDevice(HexUtil.ConvertByteArrayToHexStringArray(input.DataMessage.ByteReader.Get(8))
             .StringJoin().Substring(1));
             
         SendLoginResponse(input);
@@ -46,7 +46,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
         input.DataMessage.ByteReader.Skip(history ? 18 : 53);
@@ -54,7 +54,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         int valid = input.DataMessage.ByteReader.GetOne();
         location.PositionStatus = (valid & 0xc0) != 0;
         location.Satellites = (short?) (valid & 0x3f);
-        location.DateTime = GetDateTime(input);
+        location.Date = GetDateTime(input);
         location.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
         location.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
         location.Altitude = input.DataMessage.ByteReader.GetLe<short>();
@@ -85,7 +85,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
     {
         Location location = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
         input.DataMessage.ByteReader.Skip(14);
@@ -93,7 +93,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         int valid = input.DataMessage.ByteReader.GetOne();
         location.PositionStatus = BitUtil.ShiftRight(valid, 6) != 0;
         location.Satellites = (short?) BitUtil.ShiftRight(valid, 6);
-        location.DateTime = GetDateTimeV2(input);
+        location.Date = GetDateTimeV2(input);
         location.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
             input.DataMessage.ByteReader.GetMediumIntLe());
         location.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),

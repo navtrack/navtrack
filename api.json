@@ -626,7 +626,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LocationListModel"
+                  "$ref": "#/components/schemas/PositionListModel"
                 }
               }
             }
@@ -1274,7 +1274,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LocationModel"
+                "$ref": "#/components/schemas/PositionModel"
               }
             ]
           },
@@ -1290,7 +1290,7 @@
           }
         }
       },
-      "LocationModel": {
+      "PositionModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1565,10 +1565,10 @@
           }
         }
       },
-      "LocationListModel": {
+      "PositionListModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfLocationModel"
+            "$ref": "#/components/schemas/ListModelOfPositionModel"
           },
           {
             "type": "object",
@@ -1588,7 +1588,7 @@
           }
         ]
       },
-      "ListModelOfLocationModel": {
+      "ListModelOfPositionModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1598,7 +1598,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LocationModel"
+              "$ref": "#/components/schemas/PositionModel"
             }
           }
         }
@@ -1732,8 +1732,8 @@
         "additionalProperties": false,
         "required": [
           "locations",
-          "startLocation",
-          "endLocation",
+          "startPosition",
+          "endPosition",
           "duration",
           "distance"
         ],
@@ -1741,14 +1741,14 @@
           "locations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LocationModel"
+              "$ref": "#/components/schemas/PositionModel"
             }
           },
-          "startLocation": {
-            "$ref": "#/components/schemas/LocationModel"
+          "startPosition": {
+            "$ref": "#/components/schemas/PositionModel"
           },
-          "endLocation": {
-            "$ref": "#/components/schemas/LocationModel"
+          "endPosition": {
+            "$ref": "#/components/schemas/PositionModel"
           },
           "duration": {
             "type": "number",

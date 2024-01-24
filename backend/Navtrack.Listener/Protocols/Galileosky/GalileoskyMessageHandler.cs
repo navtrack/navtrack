@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Galileosky;
 [Service(typeof(ICustomMessageHandler<GalileoskyProtocol>))]
 public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Location>? ParseRange(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(1);
         int length = input.DataMessage.ByteReader.Get<short>() & 0x7fff;
@@ -37,12 +37,12 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
             {
                 case 0x03:
                     byte[] bytes = input.DataMessage.ByteReader.Get(tagLength.GetValueOrDefault());
-                    input.Client.SetDevice(StringUtil.ConvertByteArrayToString(
+                    input.ConnectionContext.SetDevice(StringUtil.ConvertByteArrayToString(
                         bytes));
                     break;
 
                 case 0x20:
-                    location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+                    location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
                     break;
 
                 case 0x30:
@@ -75,7 +75,7 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
         string checksum = input.DataMessage.Hex[^2..].StringJoin();
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray($"02{checksum}"));
 
-        locations.ForEach(x => x.Device = input.Client.Device);
+        locations.ForEach(x => x.Device = input.ConnectionContext.Device);
 
         return locations;
     }
