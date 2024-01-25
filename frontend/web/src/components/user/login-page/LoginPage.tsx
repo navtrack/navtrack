@@ -18,6 +18,7 @@ import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialLoginFormValues } from "@navtrack/shared/hooks/user/login/LoginFormValues";
 import { useMemo } from "react";
 import { AuthenticationErrorType } from "@navtrack/shared/hooks/app/authentication/authentication";
+import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 
 export function LoginPage() {
   const login = useLogin();
@@ -36,7 +37,7 @@ export function LoginPage() {
   );
 
   return (
-    <>
+    <UnauthenticatedLayout>
       <h2 className="mx-auto mt-4 text-3xl font-extrabold text-gray-900">
         <FormattedMessage id="login.title" />
       </h2>
@@ -107,6 +108,6 @@ export function LoginPage() {
       <div className="mt-4 text-center text-xs">
         <Copyright />
       </div>
-    </>
+    </UnauthenticatedLayout>
   );
 }

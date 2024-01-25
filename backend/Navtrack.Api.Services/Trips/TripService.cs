@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model;
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Api.Services.Mappers.Locations;
+using Navtrack.Api.Services.Mappers.Positions;
 using Navtrack.Api.Services.Mappers.Trips;
 using Navtrack.Api.Services.Util;
-using Navtrack.DataAccess.Model.Locations;
-using Navtrack.DataAccess.Services.Locations;
+using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Trips;
 
 [Service(typeof(ITripService))]
-public class TripService(ILocationRepository repository) : ITripService
+public class TripService(IPositionRepository repository) : ITripService
 {
     public async Task<TripListModel> GetTrips(string assetId, TripFilterModel tripFilter)
     {
@@ -27,9 +27,9 @@ public class TripService(ILocationRepository repository) : ITripService
 
     private async Task<IEnumerable<TripModel>> GetInternalTrips(string assetId, TripFilterModel tripFilter)
     {
-        List<LocationModel> locations = await GetLocations(assetId, tripFilter);
+        List<PositionModel> positionGroups = await GetLocationGroups(assetId, tripFilter);
 
-        List<TripModel> trips = CreateTrips(locations);
+        List<TripModel> trips = CreateTrips(positionGroups);
 
         trips = ApplyFiltering(trips, tripFilter);
         trips = ApplyOrdering(trips);
@@ -37,14 +37,14 @@ public class TripService(ILocationRepository repository) : ITripService
         return trips;
     }
 
-    private static List<TripModel> CreateTrips(IEnumerable<LocationModel> source)
+    private static List<TripModel> CreateTrips(List<PositionModel> source)
     {
         List<TripModel> trips = [];
 
         TripModel? currentTrip = null;
-        LocationModel? lastLocation = null;
+        PositionModel? lastLocation = null;
 
-        foreach (LocationModel locationDocument in source)
+        foreach (PositionModel locationDocument in source)
         {
             if (lastLocation == null || 
                 locationDocument.DateTime > lastLocation.DateTime.AddMinutes(5) ||
@@ -55,7 +55,7 @@ public class TripService(ILocationRepository repository) : ITripService
                 trips.Add(currentTrip);
             }
 
-            currentTrip.Locations.Add(locationDocument);
+            currentTrip.Positions.Add(locationDocument);
             lastLocation = locationDocument;
         }
         
@@ -64,16 +64,17 @@ public class TripService(ILocationRepository repository) : ITripService
         return trips;
     }
 
+
     private static void AddDistance(List<TripModel> trips)
     {
         foreach (TripModel trip in trips)
         {
-            trip.Distance = TripDistanceCalculator.CalculateDistance(trip.Locations
+            trip.Distance = TripDistanceCalculator.CalculateDistance(trip.Positions
                 .Select(x => (new Coordinates(x.Latitude, x.Longitude), x.Odometer)).ToList());
         }
     }
 
-    private async Task<List<LocationModel>> GetLocations(string assetId, DateFilter dateFilter)
+    private async Task<List<PositionModel>> GetLocationGroups(string assetId, DateFilter dateFilter)
     {
         DateFilter filter = new()
         {
@@ -81,11 +82,12 @@ public class TripService(ILocationRepository repository) : ITripService
             EndDate = dateFilter.EndDate?.AddDays(1) ?? dateFilter.EndDate
         };
 
-        List<LocationDocument> locations =
-            await repository.GetLocations(assetId, filter);
-
-        List<LocationModel> mapped = locations.Select(LocationMapper.Map).ToList();
-
+        List<PositionGroupDocument> groups = await repository.GetPositions(assetId, filter);
+        
+        List<PositionModel> mapped = groups.SelectMany(x => x.Positions)
+            .OrderBy(x => x.Date)
+            .Select(PositionMapper.Map).ToList();
+        
         return mapped;
     }
 
@@ -108,7 +110,7 @@ public class TripService(ILocationRepository repository) : ITripService
         filteredTrips = filteredTrips
             .Where(x => x.Distance > 0)
             .ToList();
-        
+
         return filteredTrips;
     }
 
@@ -117,7 +119,7 @@ public class TripService(ILocationRepository repository) : ITripService
         if (tripFilter is { Latitude: not null, Longitude: not null, Radius: not null })
         {
             filteredTrips = filteredTrips
-                .Where(x => x.Locations
+                .Where(x => x.Positions
                     .Any(y => DistanceCalculator.IsInRadius(
                         new Coordinates(y.Latitude, y.Longitude),
                         new Coordinates(tripFilter.Latitude.Value, tripFilter.Longitude.Value),
@@ -184,13 +186,13 @@ public class TripService(ILocationRepository repository) : ITripService
         if (dateFilter.StartDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartLocation.DateTime.Date >= dateFilter.StartDate.Value.Date).ToList();
+                .Where(x => x.StartPosition.DateTime.Date >= dateFilter.StartDate.Value.Date).ToList();
         }
 
         if (dateFilter.EndDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartLocation.DateTime.Date <= dateFilter.EndDate.Value.Date).ToList();
+                .Where(x => x.StartPosition.DateTime.Date <= dateFilter.EndDate.Value.Date).ToList();
         }
 
         return filteredTrips;
@@ -198,6 +200,6 @@ public class TripService(ILocationRepository repository) : ITripService
 
     private static List<TripModel> ApplyOrdering(IEnumerable<TripModel> trips)
     {
-        return trips.OrderBy(x => x.StartLocation.DateTime).ToList();
+        return trips.OrderBy(x => x.StartPosition.DateTime).ToList();
     }
 }

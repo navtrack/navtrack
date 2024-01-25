@@ -491,12 +491,12 @@
         }
       }
     },
-    "/assets/{assetId}/locations": {
+    "/assets/{assetId}/positions": {
       "get": {
         "tags": [
-          "AssetsLocations"
+          "AssetsPositions"
         ],
-        "operationId": "AssetsLocations_GetList",
+        "operationId": "AssetsPositions_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -626,7 +626,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LocationListModel"
+                  "$ref": "#/components/schemas/PositionListModel"
                 }
               }
             }
@@ -1270,11 +1270,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "location": {
+          "position": {
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LocationModel"
+                "$ref": "#/components/schemas/PositionModel"
               }
             ]
           },
@@ -1290,7 +1290,7 @@
           }
         }
       },
-      "LocationModel": {
+      "PositionModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1301,9 +1301,6 @@
           "dateTime"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "longitude": {
             "type": "number",
             "format": "double"
@@ -1391,7 +1388,7 @@
           "active": {
             "type": "boolean"
           },
-          "locations": {
+          "positions": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1565,10 +1562,10 @@
           }
         }
       },
-      "LocationListModel": {
+      "PositionListModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfLocationModel"
+            "$ref": "#/components/schemas/ListModelOfPositionModel"
           },
           {
             "type": "object",
@@ -1588,7 +1585,7 @@
           }
         ]
       },
-      "ListModelOfLocationModel": {
+      "ListModelOfPositionModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1598,7 +1595,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LocationModel"
+              "$ref": "#/components/schemas/PositionModel"
             }
           }
         }
@@ -1683,7 +1680,7 @@
             "required": [
               "totalDistance",
               "totalDuration",
-              "totalLocations",
+              "totalPositions",
               "totalAvgSpeed",
               "totalAvgAltitude"
             ],
@@ -1696,7 +1693,7 @@
                 "type": "number",
                 "format": "double"
               },
-              "totalLocations": {
+              "totalPositions": {
                 "type": "number",
                 "format": "double"
               },
@@ -1731,24 +1728,24 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "locations",
-          "startLocation",
-          "endLocation",
+          "positions",
+          "startPosition",
+          "endPosition",
           "duration",
           "distance"
         ],
         "properties": {
-          "locations": {
+          "positions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LocationModel"
+              "$ref": "#/components/schemas/PositionModel"
             }
           },
-          "startLocation": {
-            "$ref": "#/components/schemas/LocationModel"
+          "startPosition": {
+            "$ref": "#/components/schemas/PositionModel"
           },
-          "endLocation": {
-            "$ref": "#/components/schemas/LocationModel"
+          "endPosition": {
+            "$ref": "#/components/schemas/PositionModel"
           },
           "duration": {
             "type": "number",

@@ -16,7 +16,7 @@ export function TripsTable() {
     <div
       className="flex flex-grow flex-col overflow-hidden rounded-lg shadow"
       style={{ flexBasis: 0, minHeight: "190px" }}>
-      <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500">
+      <div className="grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500">
         <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.start-date" />
         </div>
@@ -47,9 +47,9 @@ export function TripsTable() {
               {trips.data?.items.length ? (
                 trips.data?.items.map((trip, index) => (
                   <div
-                    key={trip.startLocation?.id}
+                    key={index}
                     className={classNames(
-                      "flex grid cursor-pointer grid-cols-12 flex-row",
+                      "grid cursor-pointer grid-cols-12 flex-row",
                       trips.selectedTripIndex === index
                         ? "bg-gray-300 hover:bg-gray-300"
                         : index % 2 === 0
@@ -59,10 +59,10 @@ export function TripsTable() {
                     ref={(el) => (trips.tripElements.current[index] = el)}
                     onClick={() => trips.setTripIndex(index)}>
                     <div className="col-span-2 py-1 pl-2">
-                      {showDateTime(trip.startLocation?.dateTime)}
+                      {showDateTime(trip.startPosition?.dateTime)}
                     </div>
                     <div className="col-span-2 py-1 pl-2">
-                      {showDateTime(trip.endLocation?.dateTime)}
+                      {showDateTime(trip.endPosition?.dateTime)}
                     </div>
                     <div className="col-span-2 py-1 pl-2">
                       {showDuration(trip.duration)}
@@ -88,7 +88,7 @@ export function TripsTable() {
         </div>
       </div>
       {trips.data?.items?.length && (
-        <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
+        <div className="grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
           <div className="py-1 pl-2"></div>
           <div className="py-1 pl-2"></div>
           <div className="py-1 pl-2"></div>

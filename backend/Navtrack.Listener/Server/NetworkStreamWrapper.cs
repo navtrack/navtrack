@@ -4,28 +4,31 @@ using System.Threading.Tasks;
 
 namespace Navtrack.Listener.Server;
 
-public class NetworkStreamWrapper(Stream stream) : INetworkStreamWrapper
+public class NetworkStreamWrapper(TcpClient tcpClient) : INetworkStreamWrapper
 {
-    private readonly NetworkStream networkStream = stream as NetworkStream;
+    private readonly NetworkStream networkStream = tcpClient.GetStream();
+    public TcpClient TcpClient { get; } = tcpClient;
+    public string? RemoteEndPoint => TcpClient.Client.RemoteEndPoint?.ToString();
 
     public ValueTask DisposeAsync()
     {
-        return stream.DisposeAsync();
+        TcpClient.Dispose();
+        return networkStream.DisposeAsync();
     }
 
     public void Close()
     {
-        stream.Close();
+        networkStream.Close();
     }
 
-    public bool CanRead => stream.CanRead;
-    public bool DataAvailable => networkStream != null && networkStream.DataAvailable;
+    public bool CanRead => networkStream.CanRead;
+    public bool DataAvailable => networkStream.DataAvailable;
 
     public int Read(byte[] buffer, int offset, int size)
     {
         try
         {
-            return stream.Read(buffer, offset, size);
+            return networkStream.Read(buffer, offset, size);
         }
         catch (IOException)
         {
@@ -35,11 +38,12 @@ public class NetworkStreamWrapper(Stream stream) : INetworkStreamWrapper
 
     public void WriteByte(byte value)
     {
-        stream.WriteByte(value);
+        networkStream.WriteByte(value);
     }
 
     public void Write(byte[] buffer)
     {
-        stream.Write(buffer);
+        networkStream.Write(buffer);
     }
+
 }

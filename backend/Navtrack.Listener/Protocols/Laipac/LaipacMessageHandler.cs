@@ -30,14 +30,14 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
         "(.*?)\\*" + // adc2
         "(..)"; // checksum
 
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, Authentication, Location);
+        Position position = Parse(input, Authentication, Location);
 
-        return location;
+        return position;
     }
 
-    private static Location Authentication(MessageInput input)
+    private static Position Authentication(MessageInput input)
     {
         if (input.DataMessage.String.Contains("$ECHK"))
         {
@@ -47,7 +47,7 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
         return null;
     }
 
-    private static Location Location(MessageInput input)
+    private static Position Location(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -56,12 +56,12 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                Device = input.ConnectionContext.Device,
+                Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                     $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[4].Value,
                     locationMatch.Groups[5].Value),
@@ -74,7 +74,7 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
             SendLocationAcknowledge(locationMatch.Groups[3].Value, locationMatch.Groups[11].Value,
                 locationMatch.Groups[17].Value, input);
 
-            return location;
+            return position;
         }
 
         return null;

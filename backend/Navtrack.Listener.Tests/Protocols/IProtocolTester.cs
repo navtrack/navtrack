@@ -10,8 +10,8 @@ public interface IProtocolTester
     void SendStringFromDevice(string value);
     string ReceiveHexInDevice();
     string ReceiveStringInDevice();
-    Client Client { get; }
-    List<Location> TotalParsedLocations { get; }
-    List<Location> LastParsedLocations { get; }
-    Location LastParsedLocation { get; }
+    ProtocolConnectionContext ConnectionContext { get; }
+    List<Position> TotalParsedPositions { get; }
+    List<Position?>? LastParsedPositions { get; }
+    Position? LastParsedPosition { get; }
 }

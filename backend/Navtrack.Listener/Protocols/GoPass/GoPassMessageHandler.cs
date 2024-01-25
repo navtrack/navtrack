@@ -10,31 +10,31 @@ namespace Navtrack.Listener.Protocols.GoPass;
 [Service(typeof(ICustomMessageHandler<GoPassProtocol>))]
 public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         HandleImeiMessage(input);
 
-        Location location = ParseLocation(input);
+        Position position = ParseLocation(input);
 
-        return location;
+        return position;
     }
 
     private static void HandleImeiMessage(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             Match imeiMatch = new Regex("(\\d{15})").Match(input.DataMessage.String);
 
             if (imeiMatch.Success)
             {
-                input.Client.SetDevice(imeiMatch.Groups[1].Value);
+                input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
             }
         }
     }
 
-    private static Location ParseLocation(MessageInput input)
+    private static Position ParseLocation(MessageInput input)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             return null;
         }
@@ -53,10 +53,10 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 
         if (locationMatch.Success)
         {
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[15].Value,
                     locationMatch.Groups[14].Value,
                     locationMatch.Groups[13].Value,
@@ -71,7 +71,7 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
                 Heading = locationMatch.Groups[12].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

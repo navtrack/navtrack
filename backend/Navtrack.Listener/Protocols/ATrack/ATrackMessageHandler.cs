@@ -14,15 +14,15 @@ namespace Navtrack.Listener.Protocols.ATrack;
 [Service(typeof(ICustomMessageHandler<ATrackProtocol>))]
 public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
 {
-    public override IEnumerable<Location> ParseRange(MessageInput input)
+    public override IEnumerable<Position>? ParseRange(MessageInput input)
     {
-        IEnumerable<Location> locations =
+        IEnumerable<Position> positions =
             ParseRange(input, HandleKeepAlive, HandleTextMessage, HandleBinaryMessage);
 
-        return locations;
+        return positions;
     }
 
-    private static IEnumerable<Location> HandleKeepAlive(MessageInput input)
+    private static IEnumerable<Position> HandleKeepAlive(MessageInput input)
     {
         if (input.DataMessage.Bytes[0] == 0xFE && input.DataMessage.Bytes[1] == 0x02)
         {
@@ -32,7 +32,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         return null;
     }
 
-    private static Location[] HandleBinaryMessage(MessageInput input)
+    private static Position[] HandleBinaryMessage(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(2); // prefix
         input.DataMessage.ByteReader.Skip(2); // checksum
@@ -43,21 +43,21 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         long id = input.DataMessage.ByteReader.GetLe<long>(false);
         byte[] idBytes = input.DataMessage.ByteReader.Get(8);
             
-        input.Client.SetDevice($"{id}");
+        input.ConnectionContext.SetDevice($"{id}");
             
-        List<Location> positions = [];
+        List<Position> positions = [];
 
         while (input.DataMessage.ByteReader.BytesLeft > 40)
         {
-            Location position = new()
+            Position position = new()
             {
-                Device = input.Client.Device
+                Device = input.ConnectionContext.Device
             };
 
             DateTime gpsDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime rtcDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime sendDate = GetDateTime(input.DataMessage.ByteReader, input);
-            position.DateTime = gpsDate;
+            position.Date = gpsDate;
             position.Longitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
             position.Latitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
             position.Heading = input.DataMessage.ByteReader.GetLe<short>();
@@ -99,7 +99,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         input.NetworkStream.Write(response.ToArray());
     }
 
-    private static void ReadCustomData(MessageInput input, string form, Location position)
+    private static void ReadCustomData(MessageInput input, string form, Position position)
     {
         string[] fieldIds = form.Split('%');
 
@@ -306,27 +306,27 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         return date;
     }
 
-    private static Location[] HandleTextMessage(MessageInput input)
+    private static Position[] HandleTextMessage(MessageInput input)
     {
         StringReader stringReader = new(input.DataMessage.String);
 
-        List<Location> locations = [];
+        List<Position> positions = [];
         string line;
 
         while (!string.IsNullOrEmpty(line = stringReader.ReadLine()))
         {
-            Location location = GetLocation(input, line);
+            Position position = GetLocation(input, line);
 
-            if (location != null)
+            if (position != null)
             {
-                locations.Add(location);
+                positions.Add(position);
             }
         }
 
-        return locations.Any() ? locations.ToArray() : null;
+        return positions.Any() ? positions.ToArray() : null;
     }
 
-    private static Location GetLocation(MessageInput input, string line)
+    private static Position GetLocation(MessageInput input, string line)
     {
         Match locationMatch =
             new Regex(
@@ -356,12 +356,12 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[4].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[4].Value);
               
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = GetDateTime(locationMatch.Groups[5].Value),
+                Device = input.ConnectionContext.Device,
+                Date = GetDateTime(locationMatch.Groups[5].Value),
                 Longitude = locationMatch.Groups[8].Get<int>() * 0.000001,
                 Latitude = locationMatch.Groups[9].Get<int>() * 0.000001,
                 Heading = locationMatch.Groups[10].Get<float?>(),
@@ -370,7 +370,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
                 Speed = locationMatch.Groups[15].Get<float>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

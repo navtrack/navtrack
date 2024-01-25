@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Sanav;
 [Service(typeof(ICustomMessageHandler<SanavProtocol>))]
 public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("imei(.)" +
@@ -27,12 +27,12 @@ public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[2].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[2].Value);
                 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[17].Value,
                     locationMatch.Groups[16].Value,
                     locationMatch.Groups[15].Value,
@@ -47,7 +47,7 @@ public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
                 Heading = locationMatch.Groups[15].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

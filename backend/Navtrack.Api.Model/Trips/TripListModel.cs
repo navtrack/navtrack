@@ -13,7 +13,7 @@ public class TripListModel : ListModel<TripModel>
     public double TotalDuration => Items.Sum(x => x.Duration);
 
     [Required]
-    public double TotalLocations => Items.Sum(x => x.Locations.Count);
+    public double TotalPositions => Items.Sum(x => x.Positions.Count);
 
     [Required]
     public float? TotalAvgSpeed => Items.Average(x => x.AverageSpeed);

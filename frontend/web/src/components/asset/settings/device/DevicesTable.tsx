@@ -46,7 +46,7 @@ export function DevicesTable(props: IDevicesTable) {
         </>
       )
     },
-    { labelId: "generic.locations", render: (device) => device.locations },
+    { labelId: "generic.locations", render: (device) => device.positions },
     {
       render: (device) => (
         <>

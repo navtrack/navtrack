@@ -14,6 +14,7 @@ import { useRegister } from "@navtrack/shared/hooks/user/register/useRegister";
 import { useRegisterFormValidationSchema } from "@navtrack/shared/hooks/user/register/useRegisterFormValidationSchema";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialRegisterFormValues } from "@navtrack/shared/hooks/user/register/RegisterFormValues";
+import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 
 export function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
@@ -21,7 +22,7 @@ export function RegisterPage() {
   const { externalLogin } = useLogin();
 
   return (
-    <>
+    <UnauthenticatedLayout>
       <h2 className="mx-auto mt-4 text-3xl font-extrabold text-gray-900">
         <FormattedMessage id="register.title" />
       </h2>
@@ -109,6 +110,6 @@ export function RegisterPage() {
           </>
         )}
       </Card>
-    </>
+    </UnauthenticatedLayout>
   );
 }

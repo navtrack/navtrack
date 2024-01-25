@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Neomatica;
 [Service(typeof(ICustomMessageHandler<NeomaticaProtocol>))]
 public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         input.DataMessage.ByteReader.Get<short>(); // device id
 
@@ -18,7 +18,7 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
 
         if (type == 0x03) // imei
         {
-            input.Client.SetDevice(StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15)));
+            input.ConnectionContext.SetDevice(StringUtil.ConvertByteArrayToString(input.DataMessage.ByteReader.Get(15)));
         }
         else
         {
@@ -29,47 +29,47 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
     }
 
 
-    private static Location GetLocation(MessageInput input, int type)
+    private static Position GetLocation(MessageInput input, int type)
     {
-        if (input.Client.Device == null)
+        if (input.ConnectionContext.Device == null)
         {
             return null;
         }
 
-        Location location = new()
+        Position position = new()
         {
-            Device = input.Client.Device
+            Device = input.ConnectionContext.Device
         };
 
         input.DataMessage.ByteReader.GetOne();
         input.DataMessage.ByteReader.Get<short>();
 
         short status = input.DataMessage.ByteReader.Get<short>();
-        location.PositionStatus = !BitUtil.IsTrue(status, 5);
-        location.Latitude = input.DataMessage.ByteReader.Get<float>();
-        location.Longitude = input.DataMessage.ByteReader.Get<float>();
-        location.Heading = input.DataMessage.ByteReader.Get<short>() * 0.1f;
-        location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+        position.PositionStatus = !BitUtil.IsTrue(status, 5);
+        position.Latitude = input.DataMessage.ByteReader.Get<float>();
+        position.Longitude = input.DataMessage.ByteReader.Get<float>();
+        position.Heading = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+        position.Speed = input.DataMessage.ByteReader.Get<short>() * 0.1f;
         input.DataMessage.ByteReader.GetOne();
-        location.Altitude = input.DataMessage.ByteReader.Get<short>();
-        location.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1f;
-        location.Satellites = (short?)(input.DataMessage.ByteReader.GetOne() & 0x0f);
-        location.DateTime = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+        position.Altitude = input.DataMessage.ByteReader.Get<short>();
+        position.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1f;
+        position.Satellites = (short?)(input.DataMessage.ByteReader.GetOne() & 0x0f);
+        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
 
-        MarkAsNull(location);
+        MarkAsNull(position);
 
-        return location;
+        return position;
     }
 
-    private static void MarkAsNull(Location location)
+    private static void MarkAsNull(Position position)
     {
-        if (!location.PositionStatus.GetValueOrDefault())
+        if (!position.PositionStatus.GetValueOrDefault())
         {
-            location.Heading = null;
-            location.Speed = null;
-            location.Altitude = null;
-            location.HDOP = null;
-            location.Satellites = null;
+            position.Heading = null;
+            position.Speed = null;
+            position.Altitude = null;
+            position.HDOP = null;
+            position.Satellites = null;
         }
     }
 }

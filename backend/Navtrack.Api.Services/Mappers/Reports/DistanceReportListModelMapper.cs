@@ -14,7 +14,7 @@ public static class DistanceReportListModelMapper
         DistanceReportListModel model = new DistanceReportListModel
         {
             Items = source.GroupBy(x => new
-                    { x.StartLocation.DateTime.Day, x.StartLocation.DateTime.Month, x.StartLocation.DateTime.Year })
+                    { x.StartPosition.DateTime.Day, x.StartPosition.DateTime.Month, x.StartPosition.DateTime.Year })
                 .Select(x => new DistanceReportItemModel
                 {
                     Day = new DateTime(x.Key.Year, x.Key.Month, x.Key.Day),

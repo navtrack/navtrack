@@ -22,11 +22,13 @@ public class DeviceConnectionDocument
     public int ProtocolPort { get; set; }
         
     [BsonElement("remoteEndpoint")]
-    public string RemoteEndpoint { get; set; }
+    public string? RemoteEndpoint { get; set; }
         
     [BsonElement("deviceId")]
     public ObjectId DeviceId { get; set; }
         
     [BsonElement("messages")]
     public List<DeviceConnectionMessageElement> Messages { get; set; }
+
+    public ObjectId? ConnectionId { get; set; }
 }

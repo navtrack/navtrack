@@ -35,7 +35,7 @@ export const selectedTripLocationSelector = selector({
     const selectedTripLocationIndex = get(selectedTripLocationIndexAtom);
 
     return selectedTrip !== undefined && selectedTripLocationIndex !== undefined
-      ? selectedTrip.locations[selectedTripLocationIndex - 1]
+      ? selectedTrip.positions[selectedTripLocationIndex - 1]
       : undefined;
   }
 });

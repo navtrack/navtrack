@@ -4,7 +4,7 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { AssetModelLocation } from './assetModelLocation';
+import type { AssetModelPosition } from './assetModelPosition';
 import type { DeviceModel } from './deviceModel';
 import type { AssetUserModel } from './assetUserModel';
 
@@ -13,7 +13,7 @@ export interface AssetModel {
   name: string;
   online: boolean;
   maxSpeed: number;
-  location?: AssetModelLocation;
+  position?: AssetModelPosition;
   device: DeviceModel;
   users?: AssetUserModel[] | null;
 }

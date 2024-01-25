@@ -15,7 +15,7 @@ export function MapTrip(props: MapTripProps) {
 
   useEffect(() => {
     if (props.trip && !polylineVisible) {
-      const latlngs = props.trip.locations.map(
+      const latlngs = props.trip.positions.map(
         (x) => new LatLng(x.latitude, x.longitude)
       );
 
@@ -38,8 +38,8 @@ export function MapTrip(props: MapTripProps) {
   if (props.trip) {
     return (
       <>
-        <MapPin location={{ ...props.trip.startLocation }} color="green" />
-        <MapPin location={{ ...props.trip.endLocation }} color="red" />
+        <MapPin location={{ ...props.trip.startPosition }} color="green" />
+        <MapPin location={{ ...props.trip.endPosition }} color="red" />
       </>
     );
   }

@@ -5,7 +5,6 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
-using Navtrack.DataAccess.Model.Locations;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
 
@@ -22,20 +21,9 @@ public class DeviceRepository(IRepository repository) : GenericRepository<Device
                            (excludeAssetId == null || x.Id != ObjectId.Parse(excludeAssetId)));
     }
 
-    public Task<AssetDocument> GetActiveDeviceByDeviceId(string deviceId)
-    {
-        return repository.GetQueryable<AssetDocument>()
-            .FirstOrDefaultAsync(x => x.Device.SerialNumber == deviceId);
-    }
-
     public Task<List<DeviceDocument>> GetDevicesByAssetId(string assetId)
     {
         return repository.GetQueryable<DeviceDocument>().Where(x => x.AssetId == ObjectId.Parse(assetId)).ToListAsync();
-    }
-
-    public Task<bool> DeviceHasLocations(ObjectId deviceId)
-    {
-        return repository.GetQueryable<LocationDocument>().AnyAsync(x => x.DeviceId == deviceId);
     }
 
     public Task<bool> IsActive(string assetId, string deviceId)

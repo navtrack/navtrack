@@ -31,7 +31,7 @@ export function AssetLogPage() {
                 longitude: log.location.longitude
               }}
               initialZoom={16}>
-              <MapPin location={{ ...log.location }} follow />
+              <MapPin location={log.location} follow />
             </Map>
           </div>
         </div>

@@ -6,18 +6,18 @@ namespace Navtrack.Listener.Server;
 
 public class BaseMessageHandler<T> : ICustomMessageHandler<T>
 {
-    public virtual Location Parse(MessageInput input)
+    public virtual Position Parse(MessageInput input)
     {
         return null;
     }
 
-    public virtual IEnumerable<Location> ParseRange(MessageInput input)
+    public virtual IEnumerable<Position>? ParseRange(MessageInput input)
     {
         try
         {
-            Location location = Parse(input);
+            Position position = Parse(input);
 
-            return location != null ? new[] {location} : null;
+            return position != null ? new[] {position} : null;
         }
         catch (Exception)
         {
@@ -25,19 +25,19 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         }
     }
 
-    protected Location Parse(MessageInput input, params Func<MessageInput, Location>[] parsers)
+    protected Position Parse(MessageInput input, params Func<MessageInput, Position>[] parsers)
     {
-        foreach (Func<MessageInput,Location> parse in parsers)
+        foreach (Func<MessageInput,Position> parse in parsers)
         {
             try
             {
                 input.DataMessage.Reader.Reset();
                 input.DataMessage.ByteReader.Reset();
-                Location location = parse(input);
+                Position position = parse(input);
 
-                if (location != null)
+                if (position != null)
                 {
-                    return location;
+                    return position;
                 }
             }
             catch (Exception)
@@ -49,15 +49,15 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         return null;
     }
         
-    protected IEnumerable<Location> ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<Location>>[] parsers)
+    protected IEnumerable<Position> ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<Position>>[] parsers)
     {
-        foreach (Func<MessageInput,IEnumerable<Location>> parse in parsers)
+        foreach (Func<MessageInput,IEnumerable<Position>> parse in parsers)
         {
             try
             {
                 input.DataMessage.Reader.Reset();
                 input.DataMessage.ByteReader.Reset();
-                IEnumerable<Location> location = parse(input);
+                IEnumerable<Position> location = parse(input);
 
                 if (location != null)
                 {

@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Jointech;
 
 public static class JointechV2MessageHandler
 {
-    public static Location Parse(MessageInput input)
+    public static Position Parse(MessageInput input)
     {
         byte startFlag = input.DataMessage.ByteReader.GetByte();
         short messageId = input.DataMessage.ByteReader.GetInt16Be();
@@ -21,28 +21,28 @@ public static class JointechV2MessageHandler
 
         if (messageId == JointechV2Constants.LocationInformationReportMessageId)
         {
-            input.Client.SetDevice(phoneNumber);
-            Location location = new()
+            input.ConnectionContext.SetDevice(phoneNumber);
+            Position position = new()
             {
-                Device = input.Client.Device
+                Device = input.ConnectionContext.Device
             };
 
             int alarm = input.DataMessage.ByteReader.GetInt32Be();
             int status = input.DataMessage.ByteReader.GetInt32Be();
-            location.Latitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
-            location.Longitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
-            location.Altitude = input.DataMessage.ByteReader.GetInt16Be();
-            location.Speed = (float?)(input.DataMessage.ByteReader.GetInt16Be() * 0.1);
-            location.Heading = input.DataMessage.ByteReader.GetInt16Be();
+            position.Latitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
+            position.Longitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
+            position.Altitude = input.DataMessage.ByteReader.GetInt16Be();
+            position.Speed = (float?)(input.DataMessage.ByteReader.GetInt16Be() * 0.1);
+            position.Heading = input.DataMessage.ByteReader.GetInt16Be();
 
             if (BitUtil.IsTrue(status, 2))
             {
-                location.Latitude = -location.Latitude;
+                position.Latitude = -position.Latitude;
             }
 
             if (BitUtil.IsTrue(status, 3))
             {
-                location.Longitude = -location.Longitude;
+                position.Longitude = -position.Longitude;
             }
 
             int year = input.DataMessage.ByteReader.GetFromHex<int>(1);
@@ -52,7 +52,7 @@ public static class JointechV2MessageHandler
             int minute = input.DataMessage.ByteReader.GetFromHex<int>(1);
             int second = input.DataMessage.ByteReader.GetFromHex<int>(1);
 
-            location.DateTime = new DateTime(year + 2000, month, day, hour, minute, second)
+            position.Date = new DateTime(year + 2000, month, day, hour, minute, second)
                 // default is GMT+8 time zone so we subtract that to have GMT
                 .AddHours(-8);
 
@@ -64,10 +64,10 @@ public static class JointechV2MessageHandler
                 switch (additionalInformationId)
                 {
                     case 0x30:
-                        location.GsmSignal = input.DataMessage.ByteReader.GetByte();
+                        position.GsmSignal = input.DataMessage.ByteReader.GetByte();
                         break;
                     case 0x31:
-                        location.Satellites = input.DataMessage.ByteReader.GetByte();
+                        position.Satellites = input.DataMessage.ByteReader.GetByte();
                         break;
                     default:
                         byte[] value = input.DataMessage.ByteReader.Get(additionalInformationLength);
@@ -82,7 +82,7 @@ public static class JointechV2MessageHandler
             
             input.NetworkStream.Write(response.ToArray());
 
-            return location;
+            return position;
         }
 
         return null;

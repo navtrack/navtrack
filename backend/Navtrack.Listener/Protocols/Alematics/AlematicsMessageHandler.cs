@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Alematics;
 [Service(typeof(ICustomMessageHandler<AlematicsProtocol>))]
 public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d{15})," + // IMEI
@@ -31,12 +31,12 @@ public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(locationMatch.Groups[2].Value, locationMatch.Groups[3].Value,
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(locationMatch.Groups[2].Value, locationMatch.Groups[3].Value,
                     locationMatch.Groups[4].Value, locationMatch.Groups[5].Value, locationMatch.Groups[6].Value,
                     locationMatch.Groups[7].Value, add2000Year: false),
                 Latitude = locationMatch.Groups[14].Get<double>(),
@@ -49,7 +49,7 @@ public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
                 Odometer = locationMatch.Groups[25].Get<double?>(),
             };
 
-            return location;
+            return position;
         }
 
         return null;

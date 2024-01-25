@@ -11,6 +11,6 @@ public class GPSMarkerProtocolTests : BaseProtocolTests<FreedomProtocol, Freedom
         ProtocolTester.SendStringFromDevice(
             "IMEI,353358011714362,2014/05/22, 20:49:32, N, Lat:4725.9624, E, Lon:01912.5483, Spd:5.05");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
 }

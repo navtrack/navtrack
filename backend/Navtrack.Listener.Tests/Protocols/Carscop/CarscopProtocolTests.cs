@@ -11,7 +11,7 @@ public class CarscopProtocolTests : BaseProtocolTests<CarscopProtocol, CarscopMe
     {
         ProtocolTester.SendStringFromDevice("*HQ,1400046168,V1,055600,A,2234.3066,N,11351.6829,E,000.0,000,080813,FFFFFBFF#");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
         
     [Fact]
@@ -19,6 +19,6 @@ public class CarscopProtocolTests : BaseProtocolTests<CarscopProtocol, CarscopMe
     {
         ProtocolTester.SendStringFromDevice("*HQ,1400046168,V1,055600,V,2234.3066,N,11351.6829,E,000.0,000,080813,FFFFFFFE#");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
 }

@@ -10,6 +10,6 @@ public class TkStarProtocolTests : BaseProtocolTests<TkStarProtocol, TkStarMessa
     {
         ProtocolTester.SendStringFromDevice("*HQ,9171133403,V1,091019,V,2234.9299,N,11354.3998,E,000.00,000,010520,FBFFBBFF,226,10,8600,19869#");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
 }

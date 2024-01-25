@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Arknav;
 [Service(typeof(ICustomMessageHandler<ArknavProtocol>))]
 public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d{15})," +  // imei
@@ -28,11 +28,11 @@ public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
+                Device = input.ConnectionContext.Device,
                 PositionStatus = locationMatch.Groups[5].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[6].Value,
                     locationMatch.Groups[7].Value),
@@ -41,12 +41,12 @@ public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
                 Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[10].Get<float>()),
                 Heading = locationMatch.Groups[11].Get<float?>(),
                 HDOP = locationMatch.Groups[12].Get<float?>(),
-                DateTime = DateTimeUtil.New(locationMatch.Groups[18].Value, locationMatch.Groups[17].Value,
+                Date = DateTimeUtil.New(locationMatch.Groups[18].Value, locationMatch.Groups[17].Value,
                     locationMatch.Groups[16].Value, locationMatch.Groups[13].Value, locationMatch.Groups[14].Value,
                     locationMatch.Groups[15].Value)
             };
 
-            return location;
+            return position;
         }
 
         return null;

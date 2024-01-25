@@ -11,5 +11,5 @@ export interface DeviceModel {
   serialNumber: string;
   deviceType: DeviceTypeModel;
   active: boolean;
-  locations?: number | null;
+  positions?: number | null;
 }

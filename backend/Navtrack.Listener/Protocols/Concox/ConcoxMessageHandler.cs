@@ -16,12 +16,12 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
     private bool ExtendedPacketLength { get; set; }
     private ProtocolNumber ProtocolNumber { get; set; }
 
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         ExtendedPacketLength = input.DataMessage.Bytes[0] == 0x79 && input.DataMessage.Bytes[1] == 0x79;
         ProtocolNumber = (ProtocolNumber)input.DataMessage.Bytes[GetIndex(3)];
 
-        Dictionary<ProtocolNumber, Func<MessageInput, Location>> methods =
+        Dictionary<ProtocolNumber, Func<MessageInput, Position>> methods =
             new()
             {
                 { ProtocolNumber.LoginInformation, LoginInformationHandler },
@@ -33,7 +33,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         return methods.ContainsKey(ProtocolNumber) ? methods[ProtocolNumber](input) : null;
     }
 
-    private Location PositioningDataHandler(MessageInput input)
+    private Position PositioningDataHandler(MessageInput input)
     {
         string courseAndStatus =
             Convert.ToString(input.DataMessage.Bytes[GetIndex(20)], 2).PadLeft(8, '0') +
@@ -42,10 +42,10 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         CardinalPoint longitudeCardinalPoint = courseAndStatus[4] == '0' ? CardinalPoint.East : CardinalPoint.West;
         CardinalPoint latitudeCardinalPoint = courseAndStatus[5] == '1' ? CardinalPoint.North : CardinalPoint.South;
 
-        Location location = new()
+        Position position = new()
         {
-            Device = input.Client.Device,
-            DateTime = DateTimeUtil.NewFromHex(input.DataMessage.Hex[GetIndex(4)], input.DataMessage.Hex[GetIndex(5)],
+            Device = input.ConnectionContext.Device,
+            Date = DateTimeUtil.NewFromHex(input.DataMessage.Hex[GetIndex(4)], input.DataMessage.Hex[GetIndex(5)],
                 input.DataMessage.Hex[GetIndex(6)], input.DataMessage.Hex[GetIndex(7)],
                 input.DataMessage.Hex[GetIndex(8)],
                 input.DataMessage.Hex[GetIndex(9)]),
@@ -66,10 +66,10 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
                 NumberStyles.HexNumber)
         };
 
-        return location;
+        return position;
     }
 
-    private Location LoginInformationHandler(MessageInput input)
+    private Position LoginInformationHandler(MessageInput input)
     {
         try
         {
@@ -78,7 +78,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
 
             if (StringUtil.IsDigitsOnly(imei))
             {
-                input.Client.SetDevice(imei);
+                input.ConnectionContext.SetDevice(imei);
 
                 ConcoxOutputMessage output = new(ProtocolNumber, serialNumber);
 
@@ -94,7 +94,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         return null;
     }
 
-    private Location HeartbeatHandler(MessageInput input)
+    private Position HeartbeatHandler(MessageInput input)
     {
         try
         {

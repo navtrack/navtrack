@@ -9,14 +9,14 @@ namespace Navtrack.Listener.Protocols.Suntech;
 [Service(typeof(ICustomMessageHandler<SuntechProtocol>))]
 public class SuntechMessageHandler : BaseMessageHandler<SuntechProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.Split.Get<string>(1));
+        input.ConnectionContext.SetDevice(input.DataMessage.Split.Get<string>(1));
             
-        Location location = new()
+        Position position = new()
         {
-            Device = input.Client.Device,
-            DateTime = ConvertDate(input.DataMessage.Split.Get<string>(3),
+            Device = input.ConnectionContext.Device,
+            Date = ConvertDate(input.DataMessage.Split.Get<string>(3),
                 input.DataMessage.Split.Get<string>(4)),
             Latitude = input.DataMessage.Split.Get<double>(6),
             Longitude = input.DataMessage.Split.Get<double>(7),
@@ -27,7 +27,7 @@ public class SuntechMessageHandler : BaseMessageHandler<SuntechProtocol>
             Odometer = input.DataMessage.Split.Get<double?>(12)
         };
 
-        return location;
+        return position;
     }
 
     private static DateTime ConvertDate(string date, string time)

@@ -29,8 +29,8 @@ import type {
   UpdateAssetModel,
   ListModelOfDeviceModel,
   UpdateAssetDeviceModel,
-  LocationListModel,
-  AssetsLocationsGetListParams,
+  PositionListModel,
+  AssetsPositionsGetListParams,
   DistanceReportListModel,
   AssetsReportsGetTimeDistanceReportParams,
   TripListModel,
@@ -508,45 +508,45 @@ export const assetsDevicesDelete = (
       return useMutation<Awaited<ReturnType<typeof assetsDevicesDelete>>, TError, {assetId: string;deviceId: string}, TContext>(mutationFn, mutationOptions);
     }
     
-export const assetsLocationsGetList = (
+export const assetsPositionsGetList = (
     assetId: string,
-    params?: AssetsLocationsGetListParams,
+    params?: AssetsPositionsGetListParams,
  signal?: AbortSignal
 ) => {
-      return authAxiosInstance<LocationListModel>(
-      {url: `/assets/${assetId}/locations`, method: 'get',
+      return authAxiosInstance<PositionListModel>(
+      {url: `/assets/${assetId}/positions`, method: 'get',
         params, signal
     },
       );
     }
   
 
-export const getAssetsLocationsGetListQueryKey = (assetId: string,
-    params?: AssetsLocationsGetListParams,) => [`/assets/${assetId}/locations`, ...(params ? [params]: [])];
+export const getAssetsPositionsGetListQueryKey = (assetId: string,
+    params?: AssetsPositionsGetListParams,) => [`/assets/${assetId}/positions`, ...(params ? [params]: [])];
 
     
-export type AssetsLocationsGetListQueryResult = NonNullable<Awaited<ReturnType<typeof assetsLocationsGetList>>>
-export type AssetsLocationsGetListQueryError = ProblemDetails
+export type AssetsPositionsGetListQueryResult = NonNullable<Awaited<ReturnType<typeof assetsPositionsGetList>>>
+export type AssetsPositionsGetListQueryError = ProblemDetails
 
-export const useAssetsLocationsGetList = <TData = Awaited<ReturnType<typeof assetsLocationsGetList>>, TError = ProblemDetails>(
+export const useAssetsPositionsGetList = <TData = Awaited<ReturnType<typeof assetsPositionsGetList>>, TError = ProblemDetails>(
  assetId: string,
-    params?: AssetsLocationsGetListParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsLocationsGetList>>, TError, TData>, }
+    params?: AssetsPositionsGetListParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof assetsPositionsGetList>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getAssetsLocationsGetListQueryKey(assetId,params);
+  const queryKey =  queryOptions?.queryKey ?? getAssetsPositionsGetListQueryKey(assetId,params);
 
   
 
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof assetsLocationsGetList>>> = ({ signal }) => assetsLocationsGetList(assetId,params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof assetsPositionsGetList>>> = ({ signal }) => assetsPositionsGetList(assetId,params, signal);
 
 
   
 
-  const query = useQuery<Awaited<ReturnType<typeof assetsLocationsGetList>>, TError, TData>({ queryKey, queryFn, enabled: !!(assetId), ...queryOptions}) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery<Awaited<ReturnType<typeof assetsPositionsGetList>>, TError, TData>({ queryKey, queryFn, enabled: !!(assetId), ...queryOptions}) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   query.queryKey = queryKey;
 

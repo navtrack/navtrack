@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.KeSon;
 [Service(typeof(ICustomMessageHandler<KeSonProtocol>))]
 public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("#(\\d+)#" + //imei
@@ -31,12 +31,12 @@ public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(
                     locationMatch.Groups[16].Value,
                     locationMatch.Groups[15].Value,
                     locationMatch.Groups[14].Value,
@@ -53,7 +53,7 @@ public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
                 PositionStatus = locationMatch.Groups[7].Value != "V"
             };
 
-            return location;
+            return position;
         }
 
         return null;

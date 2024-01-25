@@ -83,6 +83,7 @@ export function AuthenticatedLayoutNavbar(
                   slots?.assetNavbarMenuItem ?? defaultAssetNavbarMenuItems
                 ).map((item) => (
                   <AuthenticatedLayoutNavbarItem
+                    key={item.label}
                     labelId={item.label}
                     icon={item.icon}
                     to={generatePath(item.path, {

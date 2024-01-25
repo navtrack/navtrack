@@ -5,11 +5,10 @@ import { Map } from "../../ui/map/Map";
 import { LocationBar } from "../shared/location-bar/LocationBar";
 import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { MapPin } from "../../ui/map/MapPin";
-import { MapCenter } from "../../ui/map/MapCenter";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
-  const location = currentAsset.data?.location;
+  const location = currentAsset.data?.position;
 
   return (
     <AuthenticatedLayoutTwoColumns>

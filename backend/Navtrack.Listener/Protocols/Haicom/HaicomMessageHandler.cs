@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Haicom;
 [Service(typeof(ICustomMessageHandler<HaicomProtocol>))]
 public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("GPRS(\\d{15})," + // imei
@@ -34,12 +34,12 @@ public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
         {
             int flags = locationMatch.Groups[9].Get<int>();
                 
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,
                     locationMatch.Groups[5].Value, locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
                     locationMatch.Groups[8].Value),
                 Latitude = GetCoordinate(locationMatch, 10, 11, flags, 2),
@@ -48,7 +48,7 @@ public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
                 Heading = locationMatch.Groups[15].Get<float?>() / 10
             };
            
-            return location;
+            return position;
         }
 
         return null;

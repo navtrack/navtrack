@@ -9,16 +9,16 @@ namespace Navtrack.Listener.Protocols.VjoyCar;
 
 public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         HandleLoginMessage(input);
 
-        Location location = ParseLocation(input);
+        Position position = ParseLocation(input);
 
-        return location;
+        return position;
     }
 
-    private static Location ParseLocation(MessageInput input)
+    private static Position ParseLocation(MessageInput input)
     {
         GroupCollection lgc =
             new Regex(
@@ -27,10 +27,10 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 
         if (lgc.Count == 17)
         {
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
+                Device = input.ConnectionContext.Device,
+                Date = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
                     lgc[12].Value),
                 PositionStatus = lgc[4].Value == "F",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
@@ -40,7 +40,7 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
                 Odometer = long.Parse(lgc[15].Value, NumberStyles.HexNumber)
             };
 
-            return location;
+            return position;
         }
 
         return null;
@@ -60,7 +60,7 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
         {
             string imei = input.DataMessage.String[17..32];
                 
-            input.Client.SetDevice(imei);
+            input.ConnectionContext.SetDevice(imei);
                 
             string reply =
                 $"({string.Join(string.Empty, input.DataMessage.String[1..13])}{loginCommandResponse[command]})";

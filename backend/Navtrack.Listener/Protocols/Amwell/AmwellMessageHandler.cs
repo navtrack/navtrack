@@ -11,21 +11,21 @@ namespace Navtrack.Listener.Protocols.Amwell;
 [Service(typeof(ICustomMessageHandler<AmwellProtocol>))]
 public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         LoginHandler(input);
 
         return GetLocation(input);
     }
 
-    private static Location GetLocation(MessageInput input)
+    private static Position GetLocation(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(9);
 
-        Location location = new()
+        Position position = new()
         {
-            Device = input.Client.Device,
-            DateTime = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
+            Device = input.ConnectionContext.Device,
+            Date = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
                 int.Parse(input.DataMessage.Hex[10]),
                 int.Parse(input.DataMessage.Hex[11]),
                 int.Parse(input.DataMessage.Hex[12]),
@@ -37,7 +37,7 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
             Heading = float.Parse(input.DataMessage.Hex[25..27].StringJoin())
         };
 
-        return location;
+        return position;
     }
 
     private static double GetCoordinate(string[] input, byte highestByte)
@@ -69,7 +69,7 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
 
             input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(fullReply));
 
-            input.Client.SetDevice(int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber)
+            input.ConnectionContext.SetDevice(int.Parse(input.DataMessage.Hex[5..9].StringJoin(), NumberStyles.HexNumber)
                 .ToString());
         }
     }

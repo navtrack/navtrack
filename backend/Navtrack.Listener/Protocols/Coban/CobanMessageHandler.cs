@@ -12,14 +12,14 @@ namespace Navtrack.Listener.Protocols.Coban;
 [Service(typeof(ICustomMessageHandler<CobanProtocol>))]
 public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, Authentication, Heartbeat, Location);
+        Position position = Parse(input, Authentication, Heartbeat, Location);
 
-        return location;
+        return position;
     }
 
-    private static Location Authentication(MessageInput input)
+    private static Position Authentication(MessageInput input)
     {
         try
         {
@@ -29,7 +29,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
 
             if (StringUtil.IsDigitsOnly(imei))
             {
-                input.Client.SetDevice(imei);
+                input.ConnectionContext.SetDevice(imei);
 
                 input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("LOAD"));
             }
@@ -43,7 +43,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
         return null;
     }
 
-    private static Location Heartbeat(MessageInput input)
+    private static Position Heartbeat(MessageInput input)
     {
         if (StringUtil.IsDigitsOnly(input.DataMessage.String))
         {
@@ -53,14 +53,14 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
         return null;
     }
 
-    private static Location Location(MessageInput input)
+    private static Position Location(MessageInput input)
     {
-        input.Client.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
+        input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
 
-        Location location = new()
+        Position position = new()
         {
-            Device = input.Client.Device,
-            DateTime = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
+            Device = input.ConnectionContext.Device,
+            Date = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
             PositionStatus = input.DataMessage.CommaSplit.Get<string>(4) == "F",
             Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
                 input.DataMessage.CommaSplit[8]),
@@ -73,7 +73,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
             Altitude = input.DataMessage.CommaSplit.Get<float?>(13),
         };
 
-        return location;
+        return position;
     }
 
     private static DateTime GetDate(string date)

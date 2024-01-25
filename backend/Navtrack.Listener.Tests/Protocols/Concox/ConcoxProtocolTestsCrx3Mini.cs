@@ -31,7 +31,7 @@ public class ConcoxProtocolTestsCrx3Mini : BaseProtocolTests<ConcoxProtocol, Con
         ProtocolTester.SendHexFromDevice(
             "787822220F010100001EC50045712704BC5EF800493702D40B17D2003B1C000E000007169A0D0A");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
 
 
@@ -51,6 +51,6 @@ public class ConcoxProtocolTestsCrx3Mini : BaseProtocolTests<ConcoxProtocol, Con
         ProtocolTester.SendHexFromDevice(
             "78782222150C0E0F1C0FC300C62C7003DA22B800C94102D402512F00001F010E0000154E870D0A");
 
-        Assert.Equal(3, ProtocolTester.TotalParsedLocations.Count);
+        Assert.Equal(3, ProtocolTester.TotalParsedPositions.Count);
     }
 }

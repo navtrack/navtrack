@@ -1,19 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Mongo;
+using Navtrack.DataAccess.Services.Assets;
 using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Services;
 
 [Service(typeof(IConnectionService))]
-public class ConnectionService(IRepository repository) : IConnectionService
+public class ConnectionService(IRepository repository, IAssetRepository assetRepository) : IConnectionService
 {
     public async Task<DeviceConnectionDocument> NewConnection(string endPoint, int protocolPort)
     {
@@ -52,22 +51,16 @@ public class ConnectionService(IRepository repository) : IConnectionService
         return deviceConnectionMessageElement.Id;
     }
 
-    public async Task SetDeviceId(Client client)
+    public async Task SetDeviceId(Device? device, int protocolPort)
     {
-        // TODO refactor this
-        if (client.Device is { Entity: null } && !string.IsNullOrEmpty(client.Device.IMEI))
+        if (device?.AssetId == null && !string.IsNullOrEmpty(device?.SerialNumber))
         {
-            client.Device.Entity = await repository.GetQueryable<AssetDocument>()
-                .FirstOrDefaultAsync(
-                    x => x.Device.SerialNumber == client.Device.IMEI &&
-                         x.Device.ProtocolPort == client.Protocol.Port);
-
-            if (client.Device.Entity != null)
+            AssetDocument? asset = await assetRepository.Get(device.SerialNumber, protocolPort);
+            
+            if (asset != null)
             {
-                await repository.GetCollection<DeviceConnectionDocument>()
-                    .UpdateOneAsync(x => x.Id == client.DeviceConnection.Id,
-                        Builders<DeviceConnectionDocument>.Update.Set(x => x.DeviceId,
-                            client.Device.Entity.Device.Id));
+                device.AssetId = asset.Id;
+                device.DeviceId = asset.Device.Id;
             }
         }
     }

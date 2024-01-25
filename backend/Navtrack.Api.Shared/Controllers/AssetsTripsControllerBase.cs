@@ -13,7 +13,7 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsTripsControllerBase(ITripService service) : ControllerBase
+public abstract class AssetsTripsControllerBase(ITripService tripService) : ControllerBase
 {
     [HttpGet(ApiPaths.AssetsAssetTrips)]
     [ProducesResponseType(typeof(TripListModel), StatusCodes.Status200OK)]
@@ -21,7 +21,7 @@ public abstract class AssetsTripsControllerBase(ITripService service) : Controll
     [AuthorizeAsset(AssetRoleType.Viewer)]
     public virtual async Task<JsonResult> GetList([FromRoute] string assetId, [FromQuery] TripFilterModel filter)
     {
-        TripListModel locations = await service.GetTrips(assetId, filter);
+        TripListModel locations = await tripService.GetTrips(assetId, filter);
 
         return new JsonResult(locations);
     }

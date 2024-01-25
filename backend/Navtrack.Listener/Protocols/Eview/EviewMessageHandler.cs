@@ -10,28 +10,28 @@ namespace Navtrack.Listener.Protocols.Eview;
 [Service(typeof(ICustomMessageHandler<EviewProtocol>))]
 public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, HandleLogin, HandleLocation);
+        Position position = Parse(input, HandleLogin, HandleLocation);
 
-        return location;
+        return position;
     }
 
-    private static Location HandleLogin(MessageInput input)
+    private static Position HandleLogin(MessageInput input)
     {
         Match imeiMatch = new Regex("!1,(\\d{15})").Match(input.DataMessage.String);
 
         if (imeiMatch.Success)
         {
-            input.Client.SetDevice(imeiMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
         }
 
         return null;
     }
 
-    private static Location HandleLocation(MessageInput input)
+    private static Position HandleLocation(MessageInput input)
     {
-        if (input.Client.Device != null)
+        if (input.ConnectionContext.Device != null)
         {
             string locationRegex = "(\\d+\\/\\d+\\/\\d+)," + // date dd/mm/yy
                                    "(\\d+:\\d+:\\d+)," + // time hh:mm:ss
@@ -51,10 +51,10 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 
             if (locationMatch.Success)
             {
-                Location location = new()
+                Position position = new()
                 {
-                    Device = input.Client.Device,
-                    DateTime = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
+                    Device = input.ConnectionContext.Device,
+                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
                         locationMatch.Groups[2].Value),
                     Latitude = locationMatch.Groups[3].Get<double>(),
                     Longitude = locationMatch.Groups[4].Get<double>(),
@@ -64,7 +64,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
                     Satellites = locationMatch.Groups[11].Get<short?>()
                 };
 
-                return location;
+                return position;
             }
         }
 

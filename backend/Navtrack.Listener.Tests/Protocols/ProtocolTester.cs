@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Moq;
-using Navtrack.DataAccess.Model.Devices;
+using Navtrack.DataAccess.Services.Assets;
+using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
@@ -18,40 +21,36 @@ namespace Navtrack.Listener.Tests.Protocols;
 public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
     where TProtocol : IProtocol, new() where TMessageHandler : new()
 {
-    private MemoryStream sendStream;
-    private MemoryStream receiveStream;
-    private IStreamHandler streamHandler;
+    private MemoryStream sendStream = new();
+    private MemoryStream receiveStream = new();
+
+    private readonly ProtocolConnectionHandler protocolConnectionHandler;
+    private readonly Mock<INetworkStreamWrapper> networkStreamWrapperMock;
+    private readonly Mock<IPositionService> locationServiceMock;
     private readonly CancellationTokenSource cancellationTokenSource;
-    private Mock<INetworkStreamWrapper> networkStreamWrapperMock;
-    private Mock<ILocationService> locationServiceMock;
 
-    public Client Client { get; }
+    public ProtocolConnectionContext ConnectionContext { get; }
 
-    public List<Location> LastParsedLocations { get; private set; }
-    public List<Location> TotalParsedLocations { get; }
-    public Location LastParsedLocation => LastParsedLocations?.FirstOrDefault();
+    public List<Position>? LastParsedPositions { get; private set; }
+    public List<Position> TotalParsedPositions { get; }
+    public Position? LastParsedPosition => LastParsedPositions?.FirstOrDefault();
 
     public ProtocolTester()
     {
         cancellationTokenSource = new CancellationTokenSource();
-        TotalParsedLocations = [];
+        TotalParsedPositions = [];
 
-        Client = new Client
-        {
-            Protocol = new TProtocol(),
-            DeviceConnection = new DeviceConnectionDocument()
-        };
-
-        SetupLocationService();
-        SetupStreamHandler();
-        SetupNetworkStreamMock();
+        locationServiceMock = GetPositionService();
+        protocolConnectionHandler = GetProtocolClientHandler();
+        networkStreamWrapperMock = SetupNetworkStreamMock();
+        ConnectionContext = GetProtocolClient();
     }
 
     public void SendBytesFromDevice(byte[] value)
     {
         sendStream = new MemoryStream(value);
 
-        CallStreamHandler();
+        CallStreamHandler().Wait();
     }
 
     public void SendStringFromDevice(string value)
@@ -82,63 +81,86 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         return StringUtil.ConvertByteArrayToString(buffer[..length]);
     }
 
-    private void CallStreamHandler()
+    private async Task CallStreamHandler()
     {
-        streamHandler.HandleStream(cancellationTokenSource.Token, Client, networkStreamWrapperMock.Object);
+        await protocolConnectionHandler.HandleConnection(ConnectionContext, cancellationTokenSource.Token);
     }
 
-    private void SetupLocationService()
+    private Mock<IPositionService> GetPositionService()
     {
-        locationServiceMock = new Mock<ILocationService>();
+        Mock<IPositionService> mock = new();
 
-        locationServiceMock.Setup(x => x.AddRange(It.IsAny<List<Location>>(), It.IsAny<ObjectId>()))
-            .Callback<List<Location>, ObjectId>((x, _) =>
+        mock.Setup(x =>
+                x.Save(It.IsAny<Device>(), It.IsAny<DateTime>(), It.IsAny<ObjectId>(), It.IsAny<List<Position>>()))
+            .Returns<Device, DateTime, ObjectId, IEnumerable<Position>>((_, _, _, locations) => Task.FromResult(new SavePositionsResult
             {
-                LastParsedLocations = x;
-                TotalParsedLocations.AddRange(x);
+                Success = true,
+                MaxDate = locations.Max(x => x.Date)
+            }))
+            .Callback<Device, DateTime, ObjectId, IEnumerable<Position>>((_, _, _, locations) =>
+            {
+                List<Position> locationsList = locations.ToList();
+                LastParsedPositions = locationsList;
+                TotalParsedPositions.AddRange(locationsList);
             });
+
+        return mock;
     }
 
-    private void SetupStreamHandler()
+    private ProtocolConnectionHandler GetProtocolClientHandler()
     {
-        Mock<IServiceProvider> serviceProviderMock = new();
-        serviceProviderMock.Setup(x => x.GetService(It.IsAny<Type>()))
+        Mock<IServiceProvider> mock = new();
+
+        mock.Setup(x => x.GetService(It.IsAny<Type>()))
             .Returns(() => new TMessageHandler());
+
         Mock<IServiceScope> serviceScopeMock = new();
-        serviceScopeMock.Setup(x => x.ServiceProvider).Returns(serviceProviderMock.Object);
+        serviceScopeMock.Setup(x => x.ServiceProvider).Returns(mock.Object);
+
         Mock<IServiceScopeFactory> serviceScopeFactoryMock = new();
         serviceScopeFactoryMock.Setup(x => x.CreateScope())
             .Returns(serviceScopeMock.Object);
-        serviceProviderMock.Setup(x => x.GetService(typeof(IServiceScopeFactory)))
+        mock.Setup(x => x.GetService(typeof(IServiceScopeFactory)))
             .Returns(serviceScopeFactoryMock.Object);
 
-        IMessageHandler messageHandler = new MessageHandler(
-            serviceProviderMock.Object,
+        IProtocolMessageHandler protocolMessageHandler = new ProtocolMessageHandler(
+            new Mock<ILogger<ProtocolMessageHandler>>().Object,
+            mock.Object,
             locationServiceMock.Object,
-            new Mock<ILogger<MessageHandler>>().Object,
-            new Mock<IConnectionService>().Object);
+            new Mock<IAssetRepository>().Object,
+            new Mock<IConnectionRepository>().Object);
 
-        streamHandler =
-            new StreamHandler(new Mock<ILogger<StreamHandler>>().Object, messageHandler);
+        ProtocolConnectionHandler handler = new(new Mock<ILogger<ProtocolConnectionHandler>>().Object,
+            protocolMessageHandler);
+
+        return handler;
     }
 
-    private void SetupNetworkStreamMock()
+    private Mock<INetworkStreamWrapper> SetupNetworkStreamMock()
     {
-        networkStreamWrapperMock = new Mock<INetworkStreamWrapper>();
+        Mock<INetworkStreamWrapper> mock = new();
 
-        networkStreamWrapperMock
+        mock
             .Setup(x => x.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns<byte[], int, int>((x, y, z) => sendStream.Read(x, y, z));
-        networkStreamWrapperMock
+        mock
             .Setup(x => x.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns<byte[], int, int>((x, y, z) => sendStream.Read(x, y, z));
-        networkStreamWrapperMock
+        mock
             .Setup(x => x.Write(It.IsAny<byte[]>()))
             .Callback<byte[]>(x => { receiveStream = new MemoryStream(x); });
-        networkStreamWrapperMock
+        mock
             .Setup(x => x.WriteByte(It.IsAny<byte>()))
             .Callback<byte>(x => { receiveStream = new MemoryStream(new[] { x }); });
-        networkStreamWrapperMock.Setup(x => x.CanRead).Returns(true);
-        networkStreamWrapperMock.Setup(x => x.DataAvailable).Returns(true);
+        mock.Setup(x => x.CanRead).Returns(true);
+        mock.Setup(x => x.DataAvailable).Returns(true);
+        mock.Setup(x => x.TcpClient).Returns(new TcpClient());
+
+        return mock;
+    }
+
+    private ProtocolConnectionContext GetProtocolClient()
+    {
+        return new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(), ObjectId.GenerateNewId());
     }
 }

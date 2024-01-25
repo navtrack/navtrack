@@ -10,6 +10,6 @@ public class JointechV1ProtocolTests : BaseProtocolTests<JointechProtocol, Joint
     {
         ProtocolTester.SendHexFromDevice("24608111888821001B09060908045322564025113242329F0598000001003F0000002D00AB");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
 }

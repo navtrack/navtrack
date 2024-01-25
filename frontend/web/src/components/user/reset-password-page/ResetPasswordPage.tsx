@@ -12,13 +12,14 @@ import { Paths } from "../../../app/Paths";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "../../ui/link/Link";
 import { ErrorMessage } from "@navtrack/shared/components/ui/ErrorMessage";
+import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 
 export const ResetPasswordPage = () => {
   const validationSchema = useResetPasswordFormValidationSchema();
   const resetPassword = useResetPassword();
 
   return (
-    <>
+    <UnauthenticatedLayout>
       <h2 className="mx-auto mt-4 text-3xl font-extrabold text-gray-900">
         <FormattedMessage id="reset-password.title" />
       </h2>
@@ -102,6 +103,6 @@ export const ResetPasswordPage = () => {
           )}
         </Formik>
       </Card>
-    </>
+    </UnauthenticatedLayout>
   );
 };

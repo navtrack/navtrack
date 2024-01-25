@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.ManPower;
 [Service(typeof(ICustomMessageHandler<ManPowerProtocol>))]
 public class ManPowerMessageHandler : BaseMessageHandler<ManPowerProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -25,12 +25,12 @@ public class ManPowerMessageHandler : BaseMessageHandler<ManPowerProtocol>
 
         if (locationMatch.Success)
         {
-            input.Client.SetDevice(locationMatch.Groups[1].Value);
+            input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Location location = new()
+            Position position = new()
             {
-                Device = input.Client.Device,
-                DateTime = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
+                Device = input.ConnectionContext.Device,
+                Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
                 PositionStatus = locationMatch.Groups[4].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
                     locationMatch.Groups[6].Value),
@@ -39,7 +39,7 @@ public class ManPowerMessageHandler : BaseMessageHandler<ManPowerProtocol>
                 Speed = locationMatch.Groups[9].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

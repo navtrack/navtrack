@@ -14,7 +14,7 @@ using Navtrack.DataAccess.Model.Devices;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
-using Navtrack.DataAccess.Services.Locations;
+using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Devices;
@@ -24,8 +24,8 @@ public class DeviceService(
     IDeviceTypeRepository typeRepository,
     IDeviceRepository repository,
     IAssetRepository assetRepository,
-    ILocationRepository locationRepository,
-    ICurrentUserAccessor userAccessor)
+    ICurrentUserAccessor userAccessor,
+    IPositionRepository positionRepository)
     : IDeviceService
 {
     public Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null)
@@ -46,7 +46,7 @@ public class DeviceService(
             .ToList();
 
         Dictionary<ObjectId, int> locationCount =
-            await locationRepository.GetLocationsCountByDeviceIds(devices.Select(x => x.Id));
+            await positionRepository.GetLocationsCountByDeviceIds(devices.Select(x => x.Id));
 
         return DeviceListModelMapper.Map(devices, deviceTypes, locationCount, asset);
     }
@@ -103,7 +103,7 @@ public class DeviceService(
             throw new ValidationApiException(ValidationErrorCodes.DeviceIsActive);
         }
         
-        if (await locationRepository.DeviceHasLocations(assetId, deviceId))
+        if (await positionRepository.DeviceHasLocations(assetId, deviceId))
         {
             throw new ValidationApiException(ValidationErrorCodes.DeviceIsActive);
         }

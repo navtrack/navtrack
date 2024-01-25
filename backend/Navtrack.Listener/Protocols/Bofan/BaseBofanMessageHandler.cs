@@ -7,7 +7,7 @@ namespace Navtrack.Listener.Protocols.Bofan;
 
 public class BaseBofanMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         GPRMC gprmc = GPRMC.Parse(input.DataMessage.String);
 
@@ -17,14 +17,14 @@ public class BaseBofanMessageHandler<T> : BaseMessageHandler<T>
 
             if (deviceIdMatch.Success)
             {
-                input.Client.SetDevice(deviceIdMatch.Groups[1].Value);
+                input.ConnectionContext.SetDevice(deviceIdMatch.Groups[1].Value);
                     
-                Location location = new(gprmc)
+                Position position = new(gprmc)
                 {
-                    Device = input.Client.Device
+                    Device = input.ConnectionContext.Device
                 };
 
-                return location;
+                return position;
             }
         }
 

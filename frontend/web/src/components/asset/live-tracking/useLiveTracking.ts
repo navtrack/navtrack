@@ -13,11 +13,11 @@ export function useLiveTracking() {
   const { map, setCenter } = useMap();
 
   useEffect(() => {
-    if (configuration.liveTracking.follow && currentAsset.data?.location) {
+    if (configuration.liveTracking.follow && currentAsset.data?.position) {
       setCenter(
         [
-          currentAsset.data.location.latitude,
-          currentAsset.data.location.longitude
+          currentAsset.data.position.latitude,
+          currentAsset.data.position.longitude
         ],
         configuration.liveTracking.zoom
       );
@@ -25,7 +25,7 @@ export function useLiveTracking() {
   }, [
     configuration.liveTracking.follow,
     configuration.liveTracking.zoom,
-    currentAsset.data?.location,
+    currentAsset.data?.position,
     map,
     setCenter
   ]);
@@ -39,5 +39,5 @@ export function useLiveTracking() {
     }
   });
 
-  return { location: currentAsset.data?.location };
+  return { location: currentAsset.data?.position };
 }

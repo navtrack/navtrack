@@ -3,13 +3,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/state";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-import { useLocationsQuery } from "@navtrack/shared/hooks/queries/useLocationsQuery";
+import { usePositionsQuery } from "@navtrack/shared/hooks/queries/usePositionsQuery";
 
 export default function useLog() {
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("log");
   const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
-  const query = useLocationsQuery({
+  const query = usePositionsQuery({
     assetId: currentAsset.data?.id,
     ...filters
   });
@@ -27,7 +27,7 @@ export default function useLog() {
   const setLocationIndex = useCallback(
     (index: number) => {
       let location = query.data?.items[index];
-      if (location) {
+      if (location !== undefined) {
         setSelectedLocationIndex(index);
       }
     },

@@ -7,7 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Locations;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
@@ -17,6 +17,12 @@ namespace Navtrack.DataAccess.Services.Assets;
 [Service(typeof(IAssetRepository))]
 public class AssetRepository(IRepository repository) : GenericRepository<AssetDocument>(repository), IAssetRepository
 {
+    public Task<AssetDocument?> Get(string serialNumber, int protocolPort)
+    {
+        return repository.GetQueryable<AssetDocument>()
+            .FirstOrDefaultAsync(x => x.Device.SerialNumber == serialNumber && x.Device.ProtocolPort == protocolPort);
+    }
+
     public Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids)
     {
         return repository.GetQueryable<AssetDocument>()
@@ -90,13 +96,6 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
                 Builders<UserDocument>.Update.PullFilter(x => x.AssetRoles, x => x.AssetId == assetObjectId));
     }
 
-    public Task UpdateLocation(ObjectId assetId, LocationDocument location)
-    {
-        return repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetId,
-                Builders<AssetDocument>.Update.Set(x => x.Location, location));
-    }
-
     public Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
         int protocolPort)
     {
@@ -106,5 +105,18 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
                     .Set(x => x.Device.SerialNumber, serialNumber)
                     .Set(x => x.Device.ProtocolPort, protocolPort)
                     .Set(x => x.Device.DeviceTypeId, deviceTypeId));
+    }
+
+    public Task SetPosition(ObjectId assetId, PositionElement position)
+    {
+        return repository.GetCollection<AssetDocument>()
+            .UpdateOneAsync(x => x.Id == assetId,
+                Builders<AssetDocument>.Update.Set(x => x.Position, position));
+    }
+
+    public Task<bool> IsNewerPositionDate(ObjectId assetId, DateTime date)
+    {
+        return repository.GetQueryable<AssetDocument>()
+            .AnyAsync(x => x.Id == assetId && (x.Position == null || x.Position.Date < date));
     }
 }

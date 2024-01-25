@@ -15,7 +15,7 @@ public static class DeviceModelMapper
             SerialNumber = deviceDocument.SerialNumber,
             DeviceType = DeviceTypeModelMapper.Map(deviceType),
             Active = assetDocument.Device.Id == deviceDocument.Id,
-            Locations = locationCount
+            Positions = locationCount
         };
     }
 

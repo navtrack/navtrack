@@ -23,12 +23,12 @@ public class ListenerHostedService : IHostedService
     {
         using IServiceScope scope = serviceScopeFactory.CreateScope();
 
-        IProtocolHandler protocolHandler = scope.ServiceProvider.GetRequiredService<IProtocolHandler>();
+        IProtocolListener protocolListener = scope.ServiceProvider.GetRequiredService<IProtocolListener>();
         List<IProtocol> protocols = scope.ServiceProvider.GetServices<IProtocol>().OrderBy(x => x.Port).ToList();
 
         foreach (IProtocol protocol in protocols)
         {
-            _ = protocolHandler.HandleProtocol(cancellationToken, protocol);
+            _ = protocolListener.Start(protocol, cancellationToken);
         }
 
         await Task.Delay(Timeout.Infinite, cancellationToken);
