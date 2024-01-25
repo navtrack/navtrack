@@ -1,18 +1,18 @@
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Navtrack.DataAccess.Model.Locations;
+namespace Navtrack.DataAccess.Model.Positions;
 
-public class CellGlobalIdentityElement
+public class NewCellGlobalIdentityElement
 {
-    [BsonElement("c")]
+    [BsonElement("mcc")]
     public int? MobileCountryCode { get; set; }
 
-    [BsonElement("n")]
+    [BsonElement("mnc")]
     public int? MobileNetworkCode { get; set; }
 
-    [BsonElement("a")]
+    [BsonElement("lac")]
     public int? LocationAreaCode { get; set; }
 
-    [BsonElement("i")]
+    [BsonElement("ci")]
     public int? CellId { get; set; }
 }

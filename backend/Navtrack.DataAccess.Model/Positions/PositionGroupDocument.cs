@@ -5,7 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
-namespace Navtrack.DataAccess.Model.New;
+namespace Navtrack.DataAccess.Model.Positions;
 
 [Collection("positions")]
 public class PositionGroupDocument : BaseDocument

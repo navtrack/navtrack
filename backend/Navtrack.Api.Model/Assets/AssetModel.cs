@@ -20,7 +20,7 @@ public class AssetModel
     [Required]
     public int MaxSpeed => 400; // TODO update this property
 
-    public PositionModel? Location { get; set; }
+    public PositionModel? Position { get; set; }
 
     [Required]
     public DeviceModel Device { get; set; }

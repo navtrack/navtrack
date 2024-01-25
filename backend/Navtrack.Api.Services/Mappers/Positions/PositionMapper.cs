@@ -1,9 +1,9 @@
 using Navtrack.Api.Model.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 
-namespace Navtrack.Api.Services.Mappers.Locations;
+namespace Navtrack.Api.Services.Mappers.Positions;
 
-public static class LocationMapper
+public static class PositionMapper
 {
     public static PositionModel Map(PositionElement source)
     {

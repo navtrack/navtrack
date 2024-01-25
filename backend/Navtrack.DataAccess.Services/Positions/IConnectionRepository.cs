@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
 

@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.Locations;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Api.Services.Mappers.Locations;
+using Navtrack.Api.Services.Mappers.Positions;
 using Navtrack.Api.Services.Mappers.Trips;
 using Navtrack.Api.Services.Util;
-using Navtrack.DataAccess.Model.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
 
@@ -87,7 +86,7 @@ public class TripService(IPositionRepository repository) : ITripService
         
         List<PositionModel> mapped = groups.SelectMany(x => x.Positions)
             .OrderBy(x => x.Date)
-            .Select(LocationMapper.Map).ToList();
+            .Select(PositionMapper.Map).ToList();
         
         return mapped;
     }

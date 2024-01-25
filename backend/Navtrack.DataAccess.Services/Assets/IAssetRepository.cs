@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 
@@ -18,7 +17,6 @@ public interface IAssetRepository : IGenericRepository<AssetDocument>
     Task UpdateName(string assetId, string name);
     Task AddUserToAsset(AssetDocument assetDocument, UserDocument? userDocument, AssetRoleType modelRole);
     Task RemoveUserFromAsset(string assetId, string userId);
-    Task UpdateLocation(ObjectId assetId, LocationDocument location);
     Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
         int protocolPort);
     Task SetPosition(ObjectId assetId, PositionElement position);

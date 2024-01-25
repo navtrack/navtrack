@@ -1,4 +1,4 @@
-namespace Navtrack.DataAccess.Model.Locations;
+namespace Navtrack.DataAccess.Model.Positions;
 
 public class LocationFilter : DateFilter
 {

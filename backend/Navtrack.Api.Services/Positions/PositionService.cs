@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Locations;
-using Navtrack.Api.Services.Mappers.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.Api.Services.Mappers.Positions;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
 
@@ -15,7 +15,7 @@ public class PositionService(IPositionRepository positionRepository) : IPosition
     {
         List<PositionElement> positions = await positionRepository.GetPositions(assetId, positionFilter);
 
-        PositionListModel model = LocationListMapper.Map(positions);
+        PositionListModel model = PositionListMapper.Map(positions);
     
         return model;
     }

@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using Navtrack.DataAccess.Model.Locations;
+using Navtrack.DataAccess.Model.Positions;
 
 namespace Navtrack.Api.Model.Trips;
 

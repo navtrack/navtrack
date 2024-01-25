@@ -1,8 +1,7 @@
 using System;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver.GeoJsonObjectModel;
 
-namespace Navtrack.DataAccess.Model.New;
+namespace Navtrack.DataAccess.Model.Positions;
 
 public class PositionElement
 {

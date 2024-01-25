@@ -6,8 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
 using MongoDB.Driver.Linq;
-using Navtrack.DataAccess.Model.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
 
@@ -97,13 +96,13 @@ public class PositionRepository(IRepository repository)
 
     public Task DeleteByAssetId(string assetId)
     {
-        return repository.GetCollection<LocationDocument>()
+        return repository.GetCollection<PositionGroupDocument>()
             .DeleteManyAsync(x => x.AssetId == ObjectId.Parse(assetId));
     }
 
-    public Task AddRange(IEnumerable<LocationDocument> locations)
+    public Task AddRange(IEnumerable<PositionGroupDocument> locations)
     {
-        return repository.GetCollection<LocationDocument>().InsertManyAsync(locations);
+        return repository.GetCollection<PositionGroupDocument>().InsertManyAsync(locations);
     }
 
     public Task<bool> DeviceHasLocations(string assetId, string deviceId)

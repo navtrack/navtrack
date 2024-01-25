@@ -1,5 +1,6 @@
 export * from './assetModel';
 export * from './assetModelLocation';
+export * from './assetModelPosition';
 export * from './assetUserModel';
 export * from './assetsLocationsGetListParams';
 export * from './assetsPositionsGetListParams';

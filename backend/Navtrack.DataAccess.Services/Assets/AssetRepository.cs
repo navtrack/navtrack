@@ -7,8 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
@@ -95,13 +94,6 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
         await repository.GetCollection<UserDocument>()
             .UpdateOneAsync(x => x.Id == userObjectId,
                 Builders<UserDocument>.Update.PullFilter(x => x.AssetRoles, x => x.AssetId == assetObjectId));
-    }
-
-    public Task UpdateLocation(ObjectId assetId, LocationDocument location)
-    {
-        return repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetId,
-                Builders<AssetDocument>.Update.Set(x => x.Location, location));
     }
 
     public Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,

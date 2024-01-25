@@ -1,6 +1,6 @@
 using System;
 
-namespace Navtrack.DataAccess.Model.Locations;
+namespace Navtrack.DataAccess.Model.Positions;
 
 public class DateFilter
 {

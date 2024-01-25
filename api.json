@@ -1270,7 +1270,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "location": {
+          "position": {
             "nullable": true,
             "oneOf": [
               {

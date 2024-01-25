@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Locations;
-using Navtrack.DataAccess.Model.New;
+using Navtrack.DataAccess.Model.Positions;
 
-namespace Navtrack.Api.Services.Mappers.Locations;
+namespace Navtrack.Api.Services.Mappers.Positions;
 
-public static class LocationListMapper
+public static class PositionListMapper
 {
     public static PositionListModel Map(IEnumerable<PositionElement> source)
     {
         PositionListModel listModel = new()
         {
-            Items = source.Select(LocationMapper.Map).ToList()
+            Items = source.Select(PositionMapper.Map).ToList()
         };
 
         return listModel;
