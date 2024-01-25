@@ -23,11 +23,11 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where T
     {
         foreach (Position location in ProtocolTester.TotalParsedPositions)
         {
-            LocationIsValid(location);
+            PositionIsValid(location);
         }
     }
 
-    private static void LocationIsValid(Position position)
+    private static void PositionIsValid(Position position)
     {
         Assert.True(GpsUtil.IsValidLatitude(position.Latitude));
         Assert.True(GpsUtil.IsValidLongitude(position.Longitude));
