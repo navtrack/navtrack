@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Tests.Protocols;
 public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where TProtocol : IProtocol, new()
     where TMessageHandler : ICustomMessageHandler , new()
 {
-    private protected IProtocolTester ProtocolTester;
+    protected internal IProtocolTester ProtocolTester;
 
     public BaseProtocolTests()
     {

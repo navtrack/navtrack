@@ -92,6 +92,11 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
         mock.Setup(x =>
                 x.Save(It.IsAny<Device>(), It.IsAny<DateTime>(), It.IsAny<ObjectId>(), It.IsAny<List<Location>>()))
+            .Returns<Device, DateTime, ObjectId, IEnumerable<Location>>((_, _, _, locations) => Task.FromResult(new SavePositionsResult
+            {
+                Success = true,
+                MaxDate = locations.Max(x => x.Date)
+            }))
             .Callback<Device, DateTime, ObjectId, IEnumerable<Location>>((_, _, _, locations) =>
             {
                 List<Location> locationsList = locations.ToList();
