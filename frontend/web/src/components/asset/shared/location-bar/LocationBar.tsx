@@ -1,11 +1,11 @@
-import { LocationModel } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useIntl } from "react-intl";
 import { LocationInfo } from "./LocationInfo";
+import { PositionModel } from "@navtrack/shared/api/model/generated";
 
 type LocationBarProps = {
-  location?: LocationModel;
+  location?: PositionModel;
 };
 
 export function LocationBar(props: LocationBarProps) {
