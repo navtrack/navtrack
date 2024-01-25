@@ -8,7 +8,7 @@
 export type TripListModelAllOf = {
   totalDistance: number;
   totalDuration: number;
-  totalLocations: number;
+  totalPositions: number;
   totalAvgSpeed: number;
   totalAvgAltitude: number;
 };

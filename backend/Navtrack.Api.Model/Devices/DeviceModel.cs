@@ -16,5 +16,5 @@ public class DeviceModel
     [Required]
     public bool Active { get; set; }
 
-    public int? Locations { get; set; }
+    public int? Positions { get; set; }
 }

@@ -21,23 +21,23 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where T
 
     public void Dispose()
     {
-        foreach (Location location in ProtocolTester.TotalParsedLocations)
+        foreach (Position location in ProtocolTester.TotalParsedPositions)
         {
             LocationIsValid(location);
         }
     }
 
-    private static void LocationIsValid(Location location)
+    private static void LocationIsValid(Position position)
     {
-        Assert.True(GpsUtil.IsValidLatitude(location.Latitude));
-        Assert.True(GpsUtil.IsValidLongitude(location.Longitude));
-        Assert.True(location.Date >= DateTime.UnixEpoch);
-        Assert.True(!location.Speed.HasValue || location.Speed >= 0 && location.Speed <= 1000);
-        Assert.True(!location.Heading.HasValue || location.Heading.Value >= 0 && location.Heading.Value <= 360);
-        Assert.True(!location.Satellites.HasValue || location.Satellites >= 0 && location.Satellites <= 50);
-        Assert.True(!location.HDOP.HasValue || location.HDOP >= 0 && location.HDOP <= 100);
-        Assert.True(!location.Odometer.HasValue || location.Odometer >= 0);
-        Assert.NotNull(location.Device);
-        Assert.NotEmpty(location.Device.SerialNumber);
+        Assert.True(GpsUtil.IsValidLatitude(position.Latitude));
+        Assert.True(GpsUtil.IsValidLongitude(position.Longitude));
+        Assert.True(position.Date >= DateTime.UnixEpoch);
+        Assert.True(!position.Speed.HasValue || position.Speed >= 0 && position.Speed <= 1000);
+        Assert.True(!position.Heading.HasValue || position.Heading.Value >= 0 && position.Heading.Value <= 360);
+        Assert.True(!position.Satellites.HasValue || position.Satellites >= 0 && position.Satellites <= 50);
+        Assert.True(!position.HDOP.HasValue || position.HDOP >= 0 && position.HDOP <= 100);
+        Assert.True(!position.Odometer.HasValue || position.Odometer >= 0);
+        Assert.NotNull(position.Device);
+        Assert.NotEmpty(position.Device.SerialNumber);
     }
 }

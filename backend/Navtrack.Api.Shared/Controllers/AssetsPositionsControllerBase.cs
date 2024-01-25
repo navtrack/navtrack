@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Positions;
 using Navtrack.DataAccess.Model.Assets;

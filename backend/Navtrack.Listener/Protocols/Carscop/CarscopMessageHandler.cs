@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Carscop;
 [Service(typeof(ICustomMessageHandler<CarscopProtocol>))]
 public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         if (input.DataMessage.Bytes[^1] == 0x23)
         {
@@ -20,12 +20,12 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
 
         HandleLoginMessage(input);
 
-        Location location = ParseLocation(input);
+        Position position = ParseLocation(input);
 
-        return location;
+        return position;
     }
 
-    private static Location ParseLocation(MessageInput input)
+    private static Position ParseLocation(MessageInput input)
     {
         GroupCollection lgc =
             new Regex(
@@ -34,7 +34,7 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
 
         if (lgc.Count == 17)
         {
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(lgc[10].Value, lgc[11].Value, lgc[12].Value, lgc[1].Value, lgc[2].Value,
@@ -47,7 +47,7 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
                 Odometer = double.Parse(lgc[16].Value)
             };
 
-            return location;
+            return position;
         }
 
         return null;

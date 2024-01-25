@@ -9,16 +9,16 @@ namespace Navtrack.Listener.Protocols.VjoyCar;
 
 public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         HandleLoginMessage(input);
 
-        Location location = ParseLocation(input);
+        Position position = ParseLocation(input);
 
-        return location;
+        return position;
     }
 
-    private static Location ParseLocation(MessageInput input)
+    private static Position ParseLocation(MessageInput input)
     {
         GroupCollection lgc =
             new Regex(
@@ -27,7 +27,7 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 
         if (lgc.Count == 17)
         {
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
@@ -40,7 +40,7 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
                 Odometer = long.Parse(lgc[15].Value, NumberStyles.HexNumber)
             };
 
-            return location;
+            return position;
         }
 
         return null;

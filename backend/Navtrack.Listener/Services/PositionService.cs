@@ -17,7 +17,7 @@ public class PositionService(IPositionRepository positionRepository, IAssetRepos
     : IPositionService
 {
     public async Task<SavePositionsResult> Save(Device device, DateTime maxEndDate,
-        ObjectId connectionId, IEnumerable<Location> locations)
+        ObjectId connectionId, IEnumerable<Position> locations)
     {
         SavePositionsResult result = new();
 

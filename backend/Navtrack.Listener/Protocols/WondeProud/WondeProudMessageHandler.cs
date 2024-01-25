@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.WondeProud;
 [Service(typeof(ICustomMessageHandler<WondeProudProtocol>))]
 public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -28,7 +28,7 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
@@ -40,7 +40,7 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
                 Satellites = locationMatch.Groups[8].Get<short?>(),
             };
 
-            return location;
+            return position;
         }
 
         return null;

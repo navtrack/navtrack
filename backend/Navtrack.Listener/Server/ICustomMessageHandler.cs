@@ -5,8 +5,8 @@ namespace Navtrack.Listener.Server;
 
 public interface ICustomMessageHandler
 {
-    Location Parse(MessageInput input);
-    IEnumerable<Location>? ParseRange(MessageInput input);
+    Position Parse(MessageInput input);
+    IEnumerable<Position>? ParseRange(MessageInput input);
 }
 
 public interface ICustomMessageHandler<T> : ICustomMessageHandler

@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Topfly;
 [Service(typeof(ICustomMessageHandler<TopflyProtocol>))]
 public class TopflyMessageHandler : BaseMessageHandler<TopflyProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("\\((\\d+)" + // imei
@@ -26,7 +26,7 @@ public class TopflyMessageHandler : BaseMessageHandler<TopflyProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
@@ -39,7 +39,7 @@ public class TopflyMessageHandler : BaseMessageHandler<TopflyProtocol>
                 Heading = locationMatch.Groups[10].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

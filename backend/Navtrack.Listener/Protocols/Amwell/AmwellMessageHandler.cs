@@ -11,18 +11,18 @@ namespace Navtrack.Listener.Protocols.Amwell;
 [Service(typeof(ICustomMessageHandler<AmwellProtocol>))]
 public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         LoginHandler(input);
 
         return GetLocation(input);
     }
 
-    private static Location GetLocation(MessageInput input)
+    private static Position GetLocation(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(9);
 
-        Location location = new()
+        Position position = new()
         {
             Device = input.ConnectionContext.Device,
             Date = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
@@ -37,7 +37,7 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
             Heading = float.Parse(input.DataMessage.Hex[25..27].StringJoin())
         };
 
-        return location;
+        return position;
     }
 
     private static double GetCoordinate(string[] input, byte highestByte)

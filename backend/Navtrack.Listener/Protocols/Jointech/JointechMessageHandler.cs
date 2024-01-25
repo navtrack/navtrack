@@ -7,12 +7,12 @@ namespace Navtrack.Listener.Protocols.Jointech;
 [Service(typeof(ICustomMessageHandler<JointechProtocol>))]
 public class JointechMessageHandler : BaseMessageHandler<JointechProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input,
+        Position position = Parse(input,
             JointechV1MessageHandler.Parse,
             JointechV2MessageHandler.Parse);
 
-        return location;
+        return position;
     }
 }

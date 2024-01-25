@@ -11,7 +11,7 @@ public interface IProtocolTester
     string ReceiveHexInDevice();
     string ReceiveStringInDevice();
     ProtocolConnectionContext ConnectionContext { get; }
-    List<Location> TotalParsedLocations { get; }
-    List<Location?>? LastParsedLocations { get; }
-    Location? LastParsedLocation { get; }
+    List<Position> TotalParsedPositions { get; }
+    List<Position?>? LastParsedPositions { get; }
+    Position? LastParsedPosition { get; }
 }

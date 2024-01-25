@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Queclink;
 [Service(typeof(ICustomMessageHandler<QueclinkProtocol>))]
 public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match imeiMatch = new Regex(@",(\d{15}),").Match(input.DataMessage.String);
 
@@ -23,7 +23,7 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
         {
             input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 HDOP = locationMatch.Groups[2].Get<float?>(),
@@ -42,7 +42,7 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
                 CellId = int.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber)
             };
 
-            return location;
+            return position;
         }
 
         return null;

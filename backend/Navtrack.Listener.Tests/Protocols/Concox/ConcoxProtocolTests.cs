@@ -31,6 +31,6 @@ public class ConcoxProtocolTests : BaseProtocolTests<ConcoxProtocol, ConcoxMessa
         ProtocolTester.SendHexFromDevice(
             "78781F120B081D112E10CC027AC7EB0C46584900148F01CC00287D001FB8000380810D0A");
 
-        Assert.NotNull(ProtocolTester.LastParsedLocation);
+        Assert.NotNull(ProtocolTester.LastParsedPosition);
     }
 }

@@ -10,14 +10,14 @@ namespace Navtrack.Listener.Protocols.Eview;
 [Service(typeof(ICustomMessageHandler<EviewProtocol>))]
 public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, HandleLogin, HandleLocation);
+        Position position = Parse(input, HandleLogin, HandleLocation);
 
-        return location;
+        return position;
     }
 
-    private static Location HandleLogin(MessageInput input)
+    private static Position HandleLogin(MessageInput input)
     {
         Match imeiMatch = new Regex("!1,(\\d{15})").Match(input.DataMessage.String);
 
@@ -29,7 +29,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
         return null;
     }
 
-    private static Location HandleLocation(MessageInput input)
+    private static Position HandleLocation(MessageInput input)
     {
         if (input.ConnectionContext.Device != null)
         {
@@ -51,7 +51,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 
             if (locationMatch.Success)
             {
-                Location location = new()
+                Position position = new()
                 {
                     Device = input.ConnectionContext.Device,
                     Date = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
@@ -64,7 +64,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
                     Satellites = locationMatch.Groups[11].Get<short?>()
                 };
 
-                return location;
+                return position;
             }
         }
 

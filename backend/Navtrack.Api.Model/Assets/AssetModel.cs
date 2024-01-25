@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Navtrack.Api.Model.Devices;
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 
 namespace Navtrack.Api.Model.Assets;
 

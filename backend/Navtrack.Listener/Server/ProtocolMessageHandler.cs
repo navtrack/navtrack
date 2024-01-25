@@ -41,7 +41,7 @@ public class ProtocolMessageHandler(
 
         try
         {
-            List<Location>? locations = customMessageHandler.ParseRange(messageInput)?.ToList();
+            List<Position>? locations = customMessageHandler.ParseRange(messageInput)?.ToList();
 
             if (locations != null && locations.Count != 0 && connectionContext.Device != null)
             {
@@ -62,7 +62,7 @@ public class ProtocolMessageHandler(
         }
     }
 
-    private async Task PrepareContext(ProtocolConnectionContext context, IEnumerable<Location> locations)
+    private async Task PrepareContext(ProtocolConnectionContext context, IEnumerable<Position> locations)
     {
         if (context.Device?.AssetId == null && !string.IsNullOrEmpty(context.Device?.SerialNumber))
         {

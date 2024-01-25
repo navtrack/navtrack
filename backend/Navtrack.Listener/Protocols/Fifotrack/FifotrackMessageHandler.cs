@@ -9,11 +9,11 @@ namespace Navtrack.Listener.Protocols.Fifotrack;
 [Service(typeof(ICustomMessageHandler<FifotrackProtocol>))]
 public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
             
-        Location location = new()
+        Position position = new()
         {
             Device = input.ConnectionContext.Device,
             Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
@@ -26,7 +26,7 @@ public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
             Odometer = input.DataMessage.CommaSplit.Get<double?>(12),
         };
 
-        return location;
+        return position;
     }
 
     private static DateTime ConvertDate(string date) => DateTimeUtil.New(date[..2], date[2..4], date[4..6],

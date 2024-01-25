@@ -3,13 +3,13 @@ using Navtrack.Listener.Helpers;
 
 namespace Navtrack.Listener.Models;
 
-public class Location
+public class Position
 {
-    public Location()
+    public Position()
     {
     }
 
-    public Location(GPRMC gprmc)
+    public Position(GPRMC gprmc)
     {
         Date = gprmc.DateTime;
         Latitude = gprmc.Latitude;

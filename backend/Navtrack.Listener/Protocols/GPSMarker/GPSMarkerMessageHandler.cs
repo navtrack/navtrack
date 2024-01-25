@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.GPSMarker;
 [Service(typeof(ICustomMessageHandler<GPSMarkerProtocol>))]
 public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -30,7 +30,7 @@ public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[3].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
@@ -41,7 +41,7 @@ public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
                 Satellites = short.Parse(locationMatch.Groups[11].Value, NumberStyles.HexNumber)
             };
 
-            return location;
+            return position;
         }
 
         return null;

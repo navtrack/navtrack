@@ -7,7 +7,7 @@ namespace Navtrack.Listener.Protocols.Gosafe;
 
 public class BaseGosafeMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {
@@ -30,7 +30,7 @@ public class BaseGosafeMessageHandler<T> : BaseMessageHandler<T>
 
             if (dateMatch.Success && locationMatch.Success && locationMatch.Groups.Count >= 9)
             {
-                Location location = new()
+                Position position = new()
                 {
                     Device = input.ConnectionContext.Device,
                     Date = DateTimeUtil.New(dateMatch.Groups[7].Value, dateMatch.Groups[6].Value,
@@ -48,7 +48,7 @@ public class BaseGosafeMessageHandler<T> : BaseMessageHandler<T>
                     HDOP = locationMatch.Groups.Count == 13 ? locationMatch.Groups[11].Get<float?>() : null
                 };
 
-                return location;
+                return position;
             }
         }
 

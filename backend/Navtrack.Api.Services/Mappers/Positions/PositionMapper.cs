@@ -1,4 +1,4 @@
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 using Navtrack.DataAccess.Model.Positions;
 
 namespace Navtrack.Api.Services.Mappers.Positions;

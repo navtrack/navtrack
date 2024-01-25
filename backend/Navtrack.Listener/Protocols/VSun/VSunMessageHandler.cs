@@ -9,31 +9,31 @@ namespace Navtrack.Listener.Protocols.VSun;
 [Service(typeof(ICustomMessageHandler<VSunProtocol>))]
 public class VSunMessageHandler : BaseMessageHandler<VSunProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, HandleImei, HandleLocation);
+        Position position = Parse(input, HandleImei, HandleLocation);
 
-        return location;
+        return position;
     }
 
-    private static Location HandleLocation(MessageInput input)
+    private static Position HandleLocation(MessageInput input)
     {
         GPRMC gprmc = GPRMC.Parse(input.DataMessage.String);
 
         if (gprmc != null)
         {
-            Location location = new(gprmc)
+            Position position = new(gprmc)
             {
                 Device = input.ConnectionContext.Device
             };
 
-            return location;
+            return position;
         }
             
         return null;
     }
 
-    private static Location HandleImei(MessageInput input)
+    private static Position HandleImei(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {

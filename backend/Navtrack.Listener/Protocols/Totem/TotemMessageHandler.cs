@@ -9,18 +9,18 @@ namespace Navtrack.Listener.Protocols.Totem;
 [Service(typeof(ICustomMessageHandler<TotemProtocol>))]
 public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, ParseLocation_AT07, ParseLocation_AT09);
+        Position position = Parse(input, ParseLocation_AT07, ParseLocation_AT09);
 
-        return location;
+        return position;
     }
 
-    private static Location ParseLocation_AT07(MessageInput input)
+    private static Position ParseLocation_AT07(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
             
-        return new Location
+        return new Position
         {
             Device = input.ConnectionContext.Device,
             Date = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),
@@ -37,11 +37,11 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
         };
     }
 
-    private static Location ParseLocation_AT09(MessageInput input)
+    private static Position ParseLocation_AT09(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
             
-        return new Location
+        return new Position
         {
             Device = input.ConnectionContext.Device,
             Date = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12)),

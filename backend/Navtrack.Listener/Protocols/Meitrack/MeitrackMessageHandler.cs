@@ -10,14 +10,14 @@ namespace Navtrack.Listener.Protocols.Meitrack;
 [Service(typeof(ICustomMessageHandler<MeitrackProtocol>))]
 public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
 {
-    public override IEnumerable<Location>? ParseRange(MessageInput input)
+    public override IEnumerable<Position>? ParseRange(MessageInput input)
     {
-        IEnumerable<Location> locations = ParseRange(input, ParseText, ParseBinary_CCC, ParseBinary_CCE);
+        IEnumerable<Position> locations = ParseRange(input, ParseText, ParseBinary_CCC, ParseBinary_CCE);
 
         return locations;
     }
 
-    private static IEnumerable<Location> ParseBinary_CCC(MessageInput input)
+    private static IEnumerable<Position> ParseBinary_CCC(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(2); // header
         input.DataMessage.ByteReader.Skip(1); // data identifier
@@ -35,38 +35,38 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             short dataPackets = input.DataMessage.ByteReader.Get<short>();
             int cacheRecords = input.DataMessage.ByteReader.Get<int>();
 
-            List<Location> locations = [];
+            List<Position> locations = [];
 
             while (input.DataMessage.ByteReader.BytesLeft > 52)
             {
-                Location location = new()
+                Position position = new()
                 {
                     Device = input.ConnectionContext.Device
                 };
 
                 byte eventCode = input.DataMessage.ByteReader.GetOne();
 
-                location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-                location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-                location.Date = new DateTime(2001, 1, 1)
+                position.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                position.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                position.Date = new DateTime(2001, 1, 1)
                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
-                location.PositionStatus = input.DataMessage.ByteReader.GetOne() == 0x01;
-                location.Satellites = input.DataMessage.ByteReader.GetOne();
-                location.GsmSignal = input.DataMessage.ByteReader.GetOne();
-                location.Speed = input.DataMessage.ByteReader.Get<short>();
-                location.Heading = input.DataMessage.ByteReader.Get<short>();
-                location.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
-                location.Altitude = input.DataMessage.ByteReader.Get<short>();
-                location.Odometer = input.DataMessage.ByteReader.Get<int>();
+                position.PositionStatus = input.DataMessage.ByteReader.GetOne() == 0x01;
+                position.Satellites = input.DataMessage.ByteReader.GetOne();
+                position.GsmSignal = input.DataMessage.ByteReader.GetOne();
+                position.Speed = input.DataMessage.ByteReader.Get<short>();
+                position.Heading = input.DataMessage.ByteReader.Get<short>();
+                position.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+                position.Altitude = input.DataMessage.ByteReader.Get<short>();
+                position.Odometer = input.DataMessage.ByteReader.Get<int>();
                 int runTime = input.DataMessage.ByteReader.Get<int>();
-                location.MobileCountryCode = input.DataMessage.ByteReader.Get<short>();
-                location.MobileNetworkCode = input.DataMessage.ByteReader.Get<short>();
-                location.LocationAreaCode = input.DataMessage.ByteReader.Get<short>();
-                location.CellId = input.DataMessage.ByteReader.Get<short>();
+                position.MobileCountryCode = input.DataMessage.ByteReader.Get<short>();
+                position.MobileNetworkCode = input.DataMessage.ByteReader.Get<short>();
+                position.LocationAreaCode = input.DataMessage.ByteReader.Get<short>();
+                position.CellId = input.DataMessage.ByteReader.Get<short>();
 
                 input.DataMessage.ByteReader.Skip(12);
 
-                locations.Add(location);
+                locations.Add(position);
             }
 
             return locations;
@@ -75,7 +75,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
         return null;
     }
 
-    private IEnumerable<Location> ParseBinary_CCE(MessageInput input)
+    private IEnumerable<Position> ParseBinary_CCE(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(2); // header
         input.DataMessage.ByteReader.Skip(1); // data identifier
@@ -92,14 +92,14 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             int cacheRecords = input.DataMessage.ByteReader.Get<int>();
             short dataPackets = input.DataMessage.ByteReader.Get<short>();
 
-            List<Location> locations = [];
+            List<Position> locations = [];
 
             for (int i = 0; i < dataPackets; i++)
             {
                 short dataPacketLength = input.DataMessage.ByteReader.Get<short>();
                 short dataPacketId = input.DataMessage.ByteReader.Get<short>();
 
-                Location location = new()
+                Position position = new()
                 {
                     Device = input.ConnectionContext.Device
                 };
@@ -117,38 +117,38 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                         switch (id)
                         {
                             case 0x02:
-                                location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                                position.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x03:
-                                location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                                position.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x04:
-                                location.Date = new DateTime(2001, 1, 1)
+                                position.Date = new DateTime(2001, 1, 1)
                                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
                                 break;
                             case 0x05:
-                                location.PositionStatus = input.DataMessage.ByteReader.GetOne() == 0x01;
+                                position.PositionStatus = input.DataMessage.ByteReader.GetOne() == 0x01;
                                 break;
                             case 0x06:
-                                location.Satellites = input.DataMessage.ByteReader.GetOne();
+                                position.Satellites = input.DataMessage.ByteReader.GetOne();
                                 break;
                             case 0x07:
-                                location.GsmSignal = input.DataMessage.ByteReader.GetOne();
+                                position.GsmSignal = input.DataMessage.ByteReader.GetOne();
                                 break;
                             case 0x08:
-                                location.Speed = input.DataMessage.ByteReader.Get<short>();
+                                position.Speed = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x09:
-                                location.Heading = input.DataMessage.ByteReader.Get<short>();
+                                position.Heading = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x0A:
-                                location.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+                                position.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
                                 break;
                             case 0x0B:
-                                location.Altitude = input.DataMessage.ByteReader.Get<short>();
+                                position.Altitude = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x0C:
-                                location.Odometer = input.DataMessage.ByteReader.Get<int>();
+                                position.Odometer = input.DataMessage.ByteReader.Get<int>();
                                 break;
                             default:
                                 byte[] value = input.DataMessage.ByteReader.Get(size);
@@ -165,7 +165,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                     input.DataMessage.ByteReader.Skip(size);
                 }
 
-                locations.Add(location);
+                locations.Add(position);
             }
 
             return locations;
@@ -174,13 +174,13 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
         return null;
     }
 
-    private static IEnumerable<Location> ParseText(MessageInput input)
+    private static IEnumerable<Position> ParseText(MessageInput input)
     {
         if (input.DataMessage.CommaSplit.Length > 14)
         {
             input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Latitude = input.DataMessage.CommaSplit.Get<double>(4),
@@ -196,7 +196,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                 Odometer = input.DataMessage.CommaSplit.Get<uint>(14)
             };
 
-            return new[] {location};
+            return new[] {position};
         }
 
         return null;

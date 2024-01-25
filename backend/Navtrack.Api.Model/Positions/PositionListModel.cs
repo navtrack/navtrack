@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Navtrack.Api.Model.Common;
 
-namespace Navtrack.Api.Model.Locations;
+namespace Navtrack.Api.Model.Positions;
 
 public class PositionListModel : ListModel<PositionModel>
 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 
 namespace Navtrack.Api.Model.Trips;
 

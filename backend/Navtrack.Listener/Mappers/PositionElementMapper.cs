@@ -6,7 +6,7 @@ namespace Navtrack.Listener.Mappers;
 
 public static class PositionElementMapper
 {
-    public static PositionElement Map(Location source1)
+    public static PositionElement Map(Position source1)
     {
         PositionElement destination = new()
         {

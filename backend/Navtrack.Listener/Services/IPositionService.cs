@@ -9,5 +9,5 @@ namespace Navtrack.Listener.Services;
 public interface IPositionService
 {
     Task<SavePositionsResult> Save(Device device, DateTime maxEndDate, ObjectId connectionId,
-        IEnumerable<Location> locations);
+        IEnumerable<Position> locations);
 }

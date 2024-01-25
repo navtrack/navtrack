@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Pretrace;
 [Service(typeof(ICustomMessageHandler<PretraceProtocol>))]
 public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\()" +
@@ -36,7 +36,7 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[2].Value);
 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 PositionStatus = locationMatch.Groups[5].Value == "A",
@@ -56,7 +56,7 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
                 GsmSignal = locationMatch.Groups[22].Get<short?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using Navtrack.DataAccess.Model.Positions;
 
-namespace Navtrack.Api.Model.Locations;
+namespace Navtrack.Api.Model.Positions;
 
 public class PositionFilterModel : LocationFilter
 {

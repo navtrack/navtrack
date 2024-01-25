@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.KingSword;
 [Service(typeof(ICustomMessageHandler<KingSwordProtocol>))]
 public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d{15})," + // imei
@@ -34,7 +34,7 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.NewFromHex(
@@ -54,7 +54,7 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
                 Altitude = locationMatch.Groups[22].Get<float?>(),
             };
 
-            return location;
+            return position;
         }
 
         return null;

@@ -5,7 +5,7 @@ namespace Navtrack.Listener.Mappers;
 
 public static class CellGlobalIdentityElementMapper
 {
-    public static NewCellGlobalIdentityElement? Map(Location source)
+    public static NewCellGlobalIdentityElement? Map(Position source)
     {
         if (source.MobileCountryCode.HasValue || source.MobileNetworkCode.HasValue ||
             source.LocationAreaCode.HasValue || source.CellId.HasValue)

@@ -11,18 +11,18 @@ namespace Navtrack.Listener.Protocols.Satellite;
 [Service(typeof(ICustomMessageHandler<SatelliteProtocol>))]
 public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
 {
-    public override IEnumerable<Location>? ParseRange(MessageInput input)
+    public override IEnumerable<Position>? ParseRange(MessageInput input)
     {
         short checksum = input.DataMessage.ByteReader.Get<short>();
         short preamble = input.DataMessage.ByteReader.Get<short>();
         long id = input.DataMessage.ByteReader.Get<int>();
         short length = input.DataMessage.ByteReader.Get<short>();
 
-        List<Location> positions = [];
+        List<Position> positions = [];
 
         while (input.DataMessage.ByteReader.BytesLeft > 0)
         {
-            Location position = Position(input, id);
+            Position position = Position(input, id);
 
             positions.Add(position);
         }
@@ -42,7 +42,7 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(response));
     }
 
-    private static Location Position(MessageInput input, long id)
+    private static Position Position(MessageInput input, long id)
     {
         short checksum = input.DataMessage.ByteReader.Get<short>();
         short preamble = input.DataMessage.ByteReader.Get<short>();
@@ -51,25 +51,25 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
 
         input.ConnectionContext.SetDevice($"{id}");
             
-        Location location = new()
+        Position position = new()
         {
             Device = input.ConnectionContext.Device
         };
 
-        location.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
-        location.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-        location.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-        location.Speed = input.DataMessage.ByteReader.Get<short>() * 0.01f;
-        location.Altitude = input.DataMessage.ByteReader.Get<short>();
-        location.Heading = input.DataMessage.ByteReader.Get<short>();
-        location.PositionStatus = input.DataMessage.ByteReader.GetOne() > 0;
-        location.Satellites = input.DataMessage.ByteReader.GetOne();
+        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+        position.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+        position.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+        position.Speed = input.DataMessage.ByteReader.Get<short>() * 0.01f;
+        position.Altitude = input.DataMessage.ByteReader.Get<short>();
+        position.Heading = input.DataMessage.ByteReader.Get<short>();
+        position.PositionStatus = input.DataMessage.ByteReader.GetOne() > 0;
+        position.Satellites = input.DataMessage.ByteReader.GetOne();
 
         byte @event = input.DataMessage.ByteReader.GetOne();
 
         input.DataMessage.ByteReader.GetOne();
         input.DataMessage.ByteReader.Skip(length);
             
-        return location;
+        return position;
     }
 }

@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Xexun;
 [Service(typeof(ICustomMessageHandler<XexunProtocol>))]
 public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         // TODO: join patterns
         GroupCollection lgc =
@@ -24,7 +24,7 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
         {
             input.ConnectionContext.SetDevice(lgc[18].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(lgc[12].Value, lgc[13].Value, lgc[14].Value, lgc[1].Value, lgc[2].Value,
@@ -46,16 +46,16 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
 
                 if (match.Count == 14)
                 {
-                    location.Satellites = short.Parse(match[3].Value);
-                    location.Altitude = float.Parse(match[4].Value);
-                    location.MobileCountryCode = int.Parse(match[10].Value);
-                    location.MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber);
-                    location.LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber);
-                    location.CellId = int.Parse(match[13].Value, NumberStyles.HexNumber);
+                    position.Satellites = short.Parse(match[3].Value);
+                    position.Altitude = float.Parse(match[4].Value);
+                    position.MobileCountryCode = int.Parse(match[10].Value);
+                    position.MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber);
+                    position.LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber);
+                    position.CellId = int.Parse(match[13].Value, NumberStyles.HexNumber);
                 }
             }
 
-            return location;
+            return position;
         }
 
         return null;

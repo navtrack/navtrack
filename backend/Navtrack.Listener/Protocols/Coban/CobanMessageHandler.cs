@@ -12,14 +12,14 @@ namespace Navtrack.Listener.Protocols.Coban;
 [Service(typeof(ICustomMessageHandler<CobanProtocol>))]
 public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, Authentication, Heartbeat, Location);
+        Position position = Parse(input, Authentication, Heartbeat, Location);
 
-        return location;
+        return position;
     }
 
-    private static Location Authentication(MessageInput input)
+    private static Position Authentication(MessageInput input)
     {
         try
         {
@@ -43,7 +43,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
         return null;
     }
 
-    private static Location Heartbeat(MessageInput input)
+    private static Position Heartbeat(MessageInput input)
     {
         if (StringUtil.IsDigitsOnly(input.DataMessage.String))
         {
@@ -53,11 +53,11 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
         return null;
     }
 
-    private static Location Location(MessageInput input)
+    private static Position Location(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
 
-        Location location = new()
+        Position position = new()
         {
             Device = input.ConnectionContext.Device,
             Date = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
@@ -73,7 +73,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
             Altitude = input.DataMessage.CommaSplit.Get<float?>(13),
         };
 
-        return location;
+        return position;
     }
 
     private static DateTime GetDate(string date)

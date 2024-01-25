@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Meiligao;
 [Service(typeof(ICustomMessageHandler<MeiligaoProtocol>))]
 public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         MeiligaoInputMessage inputMessage = new(input.DataMessage);
             
@@ -21,7 +21,7 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
 
         if (inputMessage.MeiligaoDataMessage != null)
         {
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 PositionStatus = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
@@ -38,7 +38,7 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
                 Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7)
             };
 
-            return location;
+            return position;
         }
 
         return null;

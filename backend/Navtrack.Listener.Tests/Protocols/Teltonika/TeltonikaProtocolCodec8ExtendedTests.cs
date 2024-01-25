@@ -25,7 +25,7 @@ public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaP
             "000000000000004A8E010000016B412CEE000100000000000000000000000000000000010005000100010100010011001D00010010015E2C880002000B000000003544C87A000E000000001DD7E06A00000100002994");
 
         Assert.Equal("00000001", ProtocolTester.ReceiveHexInDevice());
-        Assert.Single(ProtocolTester.LastParsedLocations);
+        Assert.Single(ProtocolTester.LastParsedPositions);
     }
         
     [Fact]
@@ -40,6 +40,6 @@ public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaP
             "000000000000002808010000016B40D9AD80010000000000000000000000000000000103021503010101425E100000010000F22A");
 
         Assert.Equal("00000001", ProtocolTester.ReceiveHexInDevice());
-        Assert.Single(ProtocolTester.LastParsedLocations);
+        Assert.Single(ProtocolTester.LastParsedPositions);
     }
 }

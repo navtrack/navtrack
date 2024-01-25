@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Freedom;
 [Service(typeof(ICustomMessageHandler<FreedomProtocol>))]
 public class FreedomMessageHandler : BaseMessageHandler<FreedomProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -27,7 +27,7 @@ public class FreedomMessageHandler : BaseMessageHandler<FreedomProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTime.Parse($"{locationMatch.Groups[2].Value} {locationMatch.Groups[3].Value}"),
@@ -38,7 +38,7 @@ public class FreedomMessageHandler : BaseMessageHandler<FreedomProtocol>
                 Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<float>())
             };
 
-            return location;
+            return position;
         }
 
         return null;

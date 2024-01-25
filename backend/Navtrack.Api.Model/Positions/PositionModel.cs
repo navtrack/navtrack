@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Navtrack.Api.Model.Locations;
+namespace Navtrack.Api.Model.Positions;
 
 public class PositionModel
 {

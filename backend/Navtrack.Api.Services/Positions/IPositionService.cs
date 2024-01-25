@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 
 namespace Navtrack.Api.Services.Positions;
 

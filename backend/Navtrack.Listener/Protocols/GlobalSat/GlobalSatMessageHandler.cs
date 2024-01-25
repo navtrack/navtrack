@@ -10,14 +10,14 @@ namespace Navtrack.Listener.Protocols.GlobalSat;
 [Service(typeof(ICustomMessageHandler<GlobalSatProtocol>))]
 public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
-        Location location = Parse(input, ParseFormat0, ParseFormatAlternative);
+        Position position = Parse(input, ParseFormat0, ParseFormatAlternative);
 
-        return location;
+        return position;
     }
 
-    private static Location ParseFormat0(MessageInput input)
+    private static Position ParseFormat0(MessageInput input)
     {
         input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("ACK\r"));
 
@@ -40,7 +40,7 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(
@@ -62,13 +62,13 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
                 HDOP = locationMatch.Groups[18].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;
     }
 
-    private static Location ParseFormatAlternative(MessageInput input)
+    private static Position ParseFormatAlternative(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d+)," + // imei
@@ -89,7 +89,7 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(
@@ -111,7 +111,7 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
                 HDOP = locationMatch.Groups[18].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

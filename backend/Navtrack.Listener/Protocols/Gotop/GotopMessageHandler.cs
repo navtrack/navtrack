@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Gotop;
 [Service(typeof(ICustomMessageHandler<GotopProtocol>))]
 public class GotopMessageHandler : BaseMessageHandler<GotopProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d{15})" + // imei
@@ -28,7 +28,7 @@ public class GotopMessageHandler : BaseMessageHandler<GotopProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(
@@ -45,7 +45,7 @@ public class GotopMessageHandler : BaseMessageHandler<GotopProtocol>
                 Heading = locationMatch.Groups[16].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

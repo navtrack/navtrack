@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Arknav;
 [Service(typeof(ICustomMessageHandler<ArknavProtocol>))]
 public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d{15})," +  // imei
@@ -30,7 +30,7 @@ public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 PositionStatus = locationMatch.Groups[5].Value == "A",
@@ -46,7 +46,7 @@ public class ArknavMessageHandler : BaseMessageHandler<ArknavProtocol>
                     locationMatch.Groups[15].Value)
             };
 
-            return location;
+            return position;
         }
 
         return null;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model;
-using Navtrack.Api.Model.Locations;
+using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Mappers.Positions;
 using Navtrack.Api.Services.Mappers.Trips;

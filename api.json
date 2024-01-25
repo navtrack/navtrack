@@ -1388,7 +1388,7 @@
           "active": {
             "type": "boolean"
           },
-          "locations": {
+          "positions": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1680,7 +1680,7 @@
             "required": [
               "totalDistance",
               "totalDuration",
-              "totalLocations",
+              "totalPositions",
               "totalAvgSpeed",
               "totalAvgAltitude"
             ],
@@ -1693,7 +1693,7 @@
                 "type": "number",
                 "format": "double"
               },
-              "totalLocations": {
+              "totalPositions": {
                 "type": "number",
                 "format": "double"
               },

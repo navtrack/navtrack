@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.CarTrackGPS;
 [Service(typeof(ICustomMessageHandler<CarTrackGPSProtocol>))]
 public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("\\$\\$" + // header
@@ -39,7 +39,7 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(locationMatch.Groups[17].Value, 
@@ -58,7 +58,7 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
                 Odometer = GetOdometer(locationMatch.Groups[22].Value)
             };
            
-            return location;
+            return position;
         }
 
         return null;

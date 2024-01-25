@@ -31,14 +31,14 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     public ProtocolConnectionContext ConnectionContext { get; }
 
-    public List<Location>? LastParsedLocations { get; private set; }
-    public List<Location> TotalParsedLocations { get; }
-    public Location? LastParsedLocation => LastParsedLocations?.FirstOrDefault();
+    public List<Position>? LastParsedPositions { get; private set; }
+    public List<Position> TotalParsedPositions { get; }
+    public Position? LastParsedPosition => LastParsedPositions?.FirstOrDefault();
 
     public ProtocolTester()
     {
         cancellationTokenSource = new CancellationTokenSource();
-        TotalParsedLocations = [];
+        TotalParsedPositions = [];
 
         locationServiceMock = GetPositionService();
         protocolConnectionHandler = GetProtocolClientHandler();
@@ -91,17 +91,17 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         Mock<IPositionService> mock = new();
 
         mock.Setup(x =>
-                x.Save(It.IsAny<Device>(), It.IsAny<DateTime>(), It.IsAny<ObjectId>(), It.IsAny<List<Location>>()))
-            .Returns<Device, DateTime, ObjectId, IEnumerable<Location>>((_, _, _, locations) => Task.FromResult(new SavePositionsResult
+                x.Save(It.IsAny<Device>(), It.IsAny<DateTime>(), It.IsAny<ObjectId>(), It.IsAny<List<Position>>()))
+            .Returns<Device, DateTime, ObjectId, IEnumerable<Position>>((_, _, _, locations) => Task.FromResult(new SavePositionsResult
             {
                 Success = true,
                 MaxDate = locations.Max(x => x.Date)
             }))
-            .Callback<Device, DateTime, ObjectId, IEnumerable<Location>>((_, _, _, locations) =>
+            .Callback<Device, DateTime, ObjectId, IEnumerable<Position>>((_, _, _, locations) =>
             {
-                List<Location> locationsList = locations.ToList();
-                LastParsedLocations = locationsList;
-                TotalParsedLocations.AddRange(locationsList);
+                List<Position> locationsList = locations.ToList();
+                LastParsedPositions = locationsList;
+                TotalParsedPositions.AddRange(locationsList);
             });
 
         return mock;

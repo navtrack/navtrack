@@ -10,13 +10,13 @@ namespace Navtrack.Listener.Protocols.GoPass;
 [Service(typeof(ICustomMessageHandler<GoPassProtocol>))]
 public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 {
-    public override Location Parse(MessageInput input)
+    public override Position Parse(MessageInput input)
     {
         HandleImeiMessage(input);
 
-        Location location = ParseLocation(input);
+        Position position = ParseLocation(input);
 
-        return location;
+        return position;
     }
 
     private static void HandleImeiMessage(MessageInput input)
@@ -32,7 +32,7 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
         }
     }
 
-    private static Location ParseLocation(MessageInput input)
+    private static Position ParseLocation(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {
@@ -53,7 +53,7 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 
         if (locationMatch.Success)
         {
-            Location location = new()
+            Position position = new()
             {
                 Device = input.ConnectionContext.Device,
                 Date = DateTimeUtil.New(
@@ -71,7 +71,7 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
                 Heading = locationMatch.Groups[12].Get<float?>()
             };
 
-            return location;
+            return position;
         }
 
         return null;

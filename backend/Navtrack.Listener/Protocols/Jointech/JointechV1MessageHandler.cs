@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Jointech;
 
 public class JointechV1MessageHandler
 {
-    public static Location Parse(MessageInput input)
+    public static Position Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("24" + // header
@@ -33,7 +33,7 @@ public class JointechV1MessageHandler
 
         if (locationMatch.Success)
         {
-            Location location = new()
+            Position position = new()
             {
                 Date = DateTimeUtil.New(
                     locationMatch.Groups[7].Value,
@@ -53,9 +53,9 @@ public class JointechV1MessageHandler
             };
 
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
-            location.Device = input.ConnectionContext.Device;
+            position.Device = input.ConnectionContext.Device;
 
-            return location;
+            return position;
         }
 
         return null;
