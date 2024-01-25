@@ -48,5 +48,5 @@ public class PositionElement
     public double? Odometer { get; set; }
 
     [BsonElement("cgi")]
-    public NewCellGlobalIdentityElement? CellGlobalIdentity { get; set; }
+    public CellGlobalIdentityElement? CellGlobalIdentity { get; set; }
 }

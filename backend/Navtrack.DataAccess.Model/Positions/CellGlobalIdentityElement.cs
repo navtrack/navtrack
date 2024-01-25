@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Navtrack.DataAccess.Model.Positions;
 
-public class NewCellGlobalIdentityElement
+public class CellGlobalIdentityElement
 {
     [BsonElement("mcc")]
     public int? MobileCountryCode { get; set; }
