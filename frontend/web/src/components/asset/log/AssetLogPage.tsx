@@ -8,8 +8,6 @@ import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/Au
 export function AssetLogPage() {
   const log = useLog();
 
-  console.log(log.location);
-
   return (
     <AuthenticatedLayoutTwoColumns>
       <LocationFilter
