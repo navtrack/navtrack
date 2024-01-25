@@ -1,6 +1,6 @@
-import { useAssetsLocationsGetList } from "../../api/index-generated";
+import { useAssetsPositionsGetList } from "../../api/index-generated";
 
-export type IUseLocationsQuery = {
+export type UsePositionsQueryProps = {
   assetId?: string;
   startDate?: string;
   endDate?: string;
@@ -13,8 +13,8 @@ export type IUseLocationsQuery = {
   radius?: number;
 };
 
-export const useLocationsQuery = (props: IUseLocationsQuery) => {
-  const query = useAssetsLocationsGetList(
+export function usePositionsQuery(props: UsePositionsQueryProps) {
+  const query = useAssetsPositionsGetList(
     props.assetId as string,
     {
       StartDate: props.startDate,
@@ -36,4 +36,4 @@ export const useLocationsQuery = (props: IUseLocationsQuery) => {
   );
 
   return query;
-};
+}

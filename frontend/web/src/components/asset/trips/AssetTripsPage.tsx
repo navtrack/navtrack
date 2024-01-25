@@ -49,7 +49,7 @@ export function AssetTripsPage() {
                   step={1}
                   marks
                   min={1}
-                  max={selectedTrip?.locations.length}
+                  max={selectedTrip?.positions.length}
                   displayValueLabel="auto"
                   value={selectedTripLocationIndex}
                   onChange={(_, index) => {

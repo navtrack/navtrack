@@ -6,7 +6,6 @@
  */
 
 export interface PositionModel {
-  id?: string;
   longitude: number;
   latitude: number;
   coordinates: number[];

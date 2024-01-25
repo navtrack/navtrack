@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
@@ -29,4 +30,10 @@ public class PositionGroupDocument : BaseDocument
     
     [BsonElement("p")]
     public required List<PositionElement> Positions { get; set; }
+    
+    [BsonIgnore]
+    public PositionElement FirstPosition => Positions.First();
+    
+    [BsonIgnore]
+    public PositionElement LastPosition => Positions.Last();
 }

@@ -2,6 +2,7 @@ export * from './assetModel';
 export * from './assetModelLocation';
 export * from './assetUserModel';
 export * from './assetsLocationsGetListParams';
+export * from './assetsPositionsGetListParams';
 export * from './assetsReportsGetTimeDistanceReportParams';
 export * from './assetsTripsGetListParams';
 export * from './basePasswordModel';

@@ -4,7 +4,7 @@ using Navtrack.DataAccess.Model.Locations;
 
 namespace Navtrack.Api.Model.Locations;
 
-public class LocationFilterModel : LocationFilter
+public class PositionFilterModel : LocationFilter
 {
     [JsonPropertyName("startDate")]
     public override DateTime? StartDate { get; set; }

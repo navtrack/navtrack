@@ -5,14 +5,11 @@ namespace Navtrack.Api.Model.Locations;
 
 public class PositionModel
 {
-    public string Id { get; set; }
-
     [Required]
     public double Longitude => Coordinates[0];
     
     [Required]
     public double Latitude => Coordinates[1];
-
 
     [Required]
     public double[] Coordinates { get; set; }

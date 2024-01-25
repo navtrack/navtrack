@@ -19,8 +19,8 @@ export const useTripsQuery = (props: UseTripsQueryProps) => {
   const query = useAssetsTripsGetList(
     props.assetId as string,
     {
-      StartDate: props.startDate,
-      EndDate: props.endDate,
+      StartDate: "2024-01-21",
+      EndDate: "2024-01-21",
       MinAvgSpeed: props.minSpeed,
       MaxAvgSpeed: props.maxSpeed,
       MinAvgAltitude: props.minAltitude,

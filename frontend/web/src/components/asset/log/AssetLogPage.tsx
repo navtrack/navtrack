@@ -8,6 +8,8 @@ import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/Au
 export function AssetLogPage() {
   const log = useLog();
 
+  console.log(log.location);
+
   return (
     <AuthenticatedLayoutTwoColumns>
       <LocationFilter
@@ -31,7 +33,7 @@ export function AssetLogPage() {
                 longitude: log.location.longitude
               }}
               initialZoom={16}>
-              <MapPin location={{ ...log.location }} follow />
+              <MapPin location={log.location} follow />
             </Map>
           </div>
         </div>

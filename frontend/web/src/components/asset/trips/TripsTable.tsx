@@ -47,7 +47,7 @@ export function TripsTable() {
               {trips.data?.items.length ? (
                 trips.data?.items.map((trip, index) => (
                   <div
-                    key={trip.startPosition?.id}
+                    key={index}
                     className={classNames(
                       "grid cursor-pointer grid-cols-12 flex-row",
                       trips.selectedTripIndex === index

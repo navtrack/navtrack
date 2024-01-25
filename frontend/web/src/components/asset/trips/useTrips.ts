@@ -26,6 +26,7 @@ export function useTrips() {
 
   const setTripIndex = useCallback(
     (index: number) => {
+      console.log(index);
       setSelectedTripIndex(index);
       setSelectedTripLocationIndex(1);
     },
@@ -47,6 +48,8 @@ export function useTrips() {
       block: "center"
     });
   }, []);
+
+  console.log(query.data?.items);
 
   const setPreviousTrip = useCallback(() => {
     if (selectedTripIndex !== undefined) {

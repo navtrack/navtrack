@@ -491,12 +491,12 @@
         }
       }
     },
-    "/assets/{assetId}/locations": {
+    "/assets/{assetId}/positions": {
       "get": {
         "tags": [
-          "AssetsLocations"
+          "AssetsPositions"
         ],
-        "operationId": "AssetsLocations_GetList",
+        "operationId": "AssetsPositions_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -1301,9 +1301,6 @@
           "dateTime"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "longitude": {
             "type": "number",
             "format": "double"
@@ -1731,14 +1728,14 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "locations",
+          "positions",
           "startPosition",
           "endPosition",
           "duration",
           "distance"
         ],
         "properties": {
-          "locations": {
+          "positions": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PositionModel"

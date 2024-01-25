@@ -14,7 +14,7 @@ export function LogTable() {
     <div
       className="flex flex-grow flex-col overflow-hidden rounded-lg shadow"
       style={{ flexBasis: 0 }}>
-      <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500">
+      <div className="grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500">
         <div className="col-span-2 py-2 pl-2">
           <FormattedMessage id="generic.date" />
         </div>
@@ -48,9 +48,9 @@ export function LogTable() {
               {log.data?.items.length ? (
                 log.data?.items.map((location, index) => (
                   <div
-                    key={location.id}
+                    key={index}
                     className={classNames(
-                      "flex grid cursor-pointer grid-cols-12 flex-row",
+                      "grid cursor-pointer grid-cols-12 flex-row",
                       log.selectedLocationIndex === index
                         ? "bg-gray-300 hover:bg-gray-300"
                         : index % 2 === 0
@@ -82,7 +82,7 @@ export function LogTable() {
         </div>
       </div>
       {log.data?.items.length && (
-        <div className="flex grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
+        <div className="grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
           <div className="py-1 pl-2">
             <span className="mr-1">{log.data?.items.length ?? 0}</span>
             <FormattedMessage id="assets.log.table.locations" />

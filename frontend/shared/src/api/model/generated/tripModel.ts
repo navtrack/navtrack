@@ -7,7 +7,7 @@
 import type { PositionModel } from './positionModel';
 
 export interface TripModel {
-  locations: PositionModel[];
+  positions: PositionModel[];
   startPosition: PositionModel;
   endPosition: PositionModel;
   duration: number;

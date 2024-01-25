@@ -26,43 +26,59 @@ public class PositionRepository(IRepository repository)
                     .Set(x => x.EndDate, maxEndDate));
     }
 
-    public Task<List<PositionGroupDocument>> GetLocations(string assetId, LocationFilter locationFilter)
+    public async Task<List<PositionElement>> GetPositions(string assetId, LocationFilter locationFilter)
     {
         FilterDefinition<PositionElement> filter = Builders<PositionElement>.Filter.Empty;
 
+        filter = ApplyDateFilter(locationFilter, filter);
         filter = ApplyAltitudeFilter(locationFilter, filter);
         filter = ApplySpeedFilter(locationFilter, filter);
         filter = ApplyGeofenceFilter(locationFilter, filter);
         filter = ApplyValidFilter(filter);
-        
+
         FilterDefinition<PositionGroupDocument> positionGroupFilter = Builders<PositionGroupDocument>.Filter
             .Eq(x => x.AssetId, ObjectId.Parse(assetId));
-        
-        positionGroupFilter &= ApplyDateFilter(locationFilter, positionGroupFilter);
+
         positionGroupFilter &= Builders<PositionGroupDocument>.Filter.ElemMatch(x => x.Positions, filter);
 
-        return repository.GetCollection<PositionGroupDocument>()
+        List<PositionGroupDocument> positionGroups = await repository.GetCollection<PositionGroupDocument>()
             .Find(positionGroupFilter)
             .SortBy(x => x.StartDate)
             .ToListAsync();
+
+        List<PositionElement> positions = positionGroups.SelectMany(x => x.Positions)
+            .Where(x => (!locationFilter.StartDate.HasValue || x.Date >= locationFilter.StartDate.Value) &&
+                        (!locationFilter.EndDate.HasValue || x.Date <= locationFilter.EndDate))
+            .OrderByDescending(x => x.Date)
+            .Take(1000)
+            .ToList();
+
+        return positions;
     }
 
-    public Task<List<PositionGroupDocument>> GetLocations(string assetId, DateFilter dateFilter)
+    private FilterDefinition<PositionElement> ApplyDateFilter(LocationFilter locationFilter,
+        FilterDefinition<PositionElement> filter)
     {
-        FilterDefinitionBuilder<PositionGroupDocument> positionGroupFilterBuilder =
-            Builders<PositionGroupDocument>.Filter;
+        if (locationFilter.StartDate.HasValue)
+        {
+            filter &= Builders<PositionElement>.Filter.Gte(x => x.Date, locationFilter.StartDate.Value);
+        }
 
-        FilterDefinitionBuilder<PositionElement> positionFilterBuilder = Builders<PositionElement>.Filter;
-        FilterDefinition<PositionElement> filter = positionFilterBuilder.Empty;
+        if (locationFilter.EndDate.HasValue)
+        {
+            filter &= Builders<PositionElement>.Filter.Lte(x => x.Date, locationFilter.EndDate.Value);
+        }
 
+        return filter;
+    }
+
+    public async Task<List<PositionGroupDocument>> GetPositions(string assetId, DateFilter dateFilter)
+    {
         FilterDefinition<PositionGroupDocument> positionGroupFilter =
-            positionGroupFilterBuilder.Eq(x => x.AssetId, ObjectId.Parse(assetId));
-
+            Builders<PositionGroupDocument>.Filter.Eq(x => x.AssetId, ObjectId.Parse(assetId));
         positionGroupFilter = ApplyDateFilter(dateFilter, positionGroupFilter);
 
-        positionGroupFilter &= Builders<PositionGroupDocument>.Filter.ElemMatch(x => x.Positions, filter);
-
-        return repository.GetCollection<PositionGroupDocument>()
+        return await repository.GetCollection<PositionGroupDocument>()
             .Find(positionGroupFilter)
             .SortBy(x => x.StartDate)
             .ToListAsync();
@@ -137,16 +153,18 @@ public class PositionRepository(IRepository repository)
     private static FilterDefinition<PositionGroupDocument> ApplyDateFilter(DateFilter locationFilter,
         FilterDefinition<PositionGroupDocument> filter)
     {
-        if (locationFilter.StartDate.HasValue)
+        if (locationFilter.StartDate != null)
         {
-            filter &= Builders<PositionGroupDocument>.Filter.Gte(x => x.StartDate, locationFilter.StartDate.Value);
+            filter &= Builders<PositionGroupDocument>.Filter.Gte(x => x.StartDate, locationFilter.StartDate.Value) |
+                      Builders<PositionGroupDocument>.Filter.Lte(x => x.EndDate, locationFilter.StartDate.Value);
         }
 
-        if (locationFilter.EndDate.HasValue)
+        if (locationFilter.EndDate != null)
         {
-            filter &= Builders<PositionGroupDocument>.Filter.Lte(x => x.EndDate, locationFilter.EndDate.Value);
+            filter &= Builders<PositionGroupDocument>.Filter.Lte(x => x.StartDate, locationFilter.EndDate.Value) |
+                      Builders<PositionGroupDocument>.Filter.Gte(x => x.EndDate, locationFilter.EndDate.Value);
         }
-
+        
         return filter;
     }
 
