@@ -19,5 +19,5 @@ public class ConnectionDocument : BaseDocument
     public string? Ip { get; set; }
 
     [BsonElement("m")]
-    public List<BsonBinaryData> Messages { get; set; }
+    public List<BsonBinaryData>? Messages { get; set; }
 }
