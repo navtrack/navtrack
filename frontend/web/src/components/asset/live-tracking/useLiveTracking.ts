@@ -10,11 +10,11 @@ export function useLiveTracking() {
   const [configuration, setConfiguration] = useRecoilState(
     assetConfigurationAtom(currentAsset.data?.id)
   );
-  const { map, setCenter } = useMap();
+  const map = useMap();
 
   useEffect(() => {
     if (configuration.liveTracking.follow && currentAsset.data?.position) {
-      setCenter(
+      map.setCenter(
         [
           currentAsset.data.position.latitude,
           currentAsset.data.position.longitude
@@ -22,13 +22,7 @@ export function useLiveTracking() {
         configuration.liveTracking.zoom
       );
     }
-  }, [
-    configuration.liveTracking.follow,
-    configuration.liveTracking.zoom,
-    currentAsset.data?.position,
-    map,
-    setCenter
-  ]);
+  }, [configuration.liveTracking.follow, configuration.liveTracking.zoom, currentAsset.data?.position, map]);
 
   const mapEvents = useMapEvents({
     zoomend: () => {

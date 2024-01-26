@@ -23,16 +23,16 @@ export const selectedTripSelector = selector({
   }
 });
 
-export const selectedTripLocationIndexAtom = atom<number | undefined>({
-  key: "Trips:SelectedTrip:SelectedLocation:Index",
+export const selectedTripPositionIndexAtom = atom<number | undefined>({
+  key: "Trips:SelectedTrip:SelectedPosition:Index",
   default: 1
 });
 
-export const selectedTripLocationSelector = selector({
-  key: "Trips:SelectedTrip:SelectedLocation",
+export const selectedTripPositionSelector = selector({
+  key: "Trips:SelectedTrip:SelectedPosition",
   get: ({ get }) => {
     const selectedTrip = get(selectedTripSelector);
-    const selectedTripLocationIndex = get(selectedTripLocationIndexAtom);
+    const selectedTripLocationIndex = get(selectedTripPositionIndexAtom);
 
     return selectedTrip !== undefined && selectedTripLocationIndex !== undefined
       ? selectedTrip.positions[selectedTripLocationIndex - 1]

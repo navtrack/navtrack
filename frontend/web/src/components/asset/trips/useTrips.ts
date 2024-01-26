@@ -5,9 +5,9 @@ import { locationFiltersSelector } from "../shared/location-filter/state";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import {
   selectedTripIndexAtom,
-  selectedTripLocationIndexAtom,
+  selectedTripPositionIndexAtom,
   tripsAtom
-} from "./state";
+} from "./tripsState";
 import { useTripsQuery } from "@navtrack/shared/hooks/queries/useTripsQuery";
 
 export function useTrips() {
@@ -20,7 +20,7 @@ export function useTrips() {
     selectedTripIndexAtom
   );
   const setSelectedTripLocationIndex = useSetRecoilState(
-    selectedTripLocationIndexAtom
+    selectedTripPositionIndexAtom
   );
   const setTrips = useSetRecoilState(tripsAtom);
 

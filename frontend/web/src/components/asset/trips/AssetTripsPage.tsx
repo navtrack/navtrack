@@ -11,19 +11,24 @@ import { MapTrip } from "../../ui/map/MapTrip";
 import { Slider } from "../../ui/slider/Slider";
 import { LocationBar } from "../shared/location-bar/LocationBar";
 import {
-  selectedTripLocationIndexAtom,
-  selectedTripLocationSelector,
+  selectedTripPositionIndexAtom,
+  selectedTripPositionSelector,
   selectedTripSelector
-} from "./state";
+} from "./tripsState";
 import { TripsTable } from "./TripsTable";
 import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
+import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 
 export function AssetTripsPage() {
   const selectedTrip = useRecoilValue(selectedTripSelector);
-  const selectedTripLocation = useRecoilValue(selectedTripLocationSelector);
+  const selectedTripLocation = useRecoilValue(selectedTripPositionSelector);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
-    useRecoilState(selectedTripLocationIndexAtom);
+    useRecoilState(selectedTripPositionIndexAtom);
   const [showPin, setShowPin] = useState(false);
+
+  useOnChange(selectedTrip, () => {
+    setShowPin(false);
+  });
 
   return (
     <AuthenticatedLayoutTwoColumns>

@@ -13,9 +13,9 @@ export function MapZoom(props: MapZoomProps) {
     if (
       !initialized &&
       props.initialZoom !== undefined &&
-      map.map !== undefined
+      map.leafletMap !== undefined
     ) {
-      map.map.setZoom(props.initialZoom);
+      map.leafletMap.setZoom(props.initialZoom);
       setInitialized(true);
     }
   }, [initialized, map, props.initialZoom]);

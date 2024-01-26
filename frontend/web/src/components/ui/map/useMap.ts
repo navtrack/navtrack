@@ -19,5 +19,5 @@ export function useMap() {
     [map]
   );
 
-  return { map, setCenter, setZoom };
+  return { leafletMap: map, setCenter, setZoom };
 }

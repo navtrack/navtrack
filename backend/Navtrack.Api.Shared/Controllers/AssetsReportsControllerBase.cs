@@ -13,7 +13,7 @@ namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsReportsControllerBase(IReportService service) : ControllerBase
+public abstract class AssetsReportsControllerBase(IReportService reportService) : ControllerBase
 {
     [HttpGet(ApiPaths.AssetsAssetReportsTimeDistance)]
     [ProducesResponseType(typeof(DistanceReportListModel), StatusCodes.Status200OK)]
@@ -23,7 +23,7 @@ public abstract class AssetsReportsControllerBase(IReportService service) : Cont
         [FromRoute] string assetId,
         [FromQuery] DistanceReportFilterModel filter)
     {
-        DistanceReportListModel distanceReport = await service.GetDistanceReport(assetId, filter);
+        DistanceReportListModel distanceReport = await reportService.GetDistanceReport(assetId, filter);
 
         return new JsonResult(distanceReport);
     }

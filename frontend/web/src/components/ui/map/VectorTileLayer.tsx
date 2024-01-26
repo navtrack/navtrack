@@ -8,13 +8,13 @@ type VectorTileLayerProps = {
 };
 
 export function VectorTileLayer(props: VectorTileLayerProps) {
-  const { map } = useMap();
+  const map = useMap();
   const [layer, setLayer] = useState<L.MaplibreGL>();
 
   useEffect(() => {
     if (!layer) {
       //@ts-ignore TODO
-      const l = L.maplibreGL({ style: props.styleUrl }).addTo(map);
+      const l = L.maplibreGL({ style: props.styleUrl }).addTo(map.leafletMap);
 
       setLayer(l);
     }

@@ -10,30 +10,29 @@ type MapTripProps = {
 
 export function MapTrip(props: MapTripProps) {
   const map = useMap();
+  const [trip, setTrip] = useState(props.trip);
   const [polyline, setPolyline] = useState<Polyline | undefined>(undefined);
-  const [polylineVisible, setPolylineVisible] = useState(false);
 
   useEffect(() => {
-    if (props.trip && !polylineVisible) {
-      const latlngs = props.trip.positions.map(
-        (x) => new LatLng(x.latitude, x.longitude)
-      );
-
-      const polyline = L.polyline(latlngs, { color: "red" }).addTo(map.map);
-
-      map.map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
-
-      setPolyline(polyline);
-      setPolylineVisible(true);
-    }
-
-    return () => {
-      if (polyline && polylineVisible) {
-        polyline.removeFrom(map.map);
-        setPolylineVisible(false);
+    if (trip !== props.trip) {
+      if (polyline !== undefined) {
+        polyline.removeFrom(map.leafletMap);
       }
-    };
-  }, [map, polyline, polylineVisible, props.trip]);
+
+      if (props.trip !== undefined) {
+        const latlngs = props.trip.positions.map(
+          (x) => new LatLng(x.latitude, x.longitude)
+        );
+
+        const pl = L.polyline(latlngs, { color: "red" });
+        pl.addTo(map.leafletMap);
+        map.leafletMap.fitBounds(pl.getBounds(), { padding: [30, 30] });
+        setPolyline(pl);
+      }
+
+      setTrip(props.trip);
+    }
+  }, [map.leafletMap, polyline, props.trip, trip]);
 
   if (props.trip) {
     return (
