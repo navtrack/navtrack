@@ -9,7 +9,7 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@geoman-io/leaflet-geoman-free": "^2.11.4",
-    "@headlessui/react": "^1.7.13",
+    "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.0.12",
     "@maplibre/maplibre-gl-leaflet": "^0.0.20",
     "@mui/lab": "^5.0.0-alpha.122",

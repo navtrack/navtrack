@@ -18,15 +18,15 @@ import {
   useLocationFilterKey
 } from "./useLocationFilterKey";
 
-interface ILocationFilter {
+type LocationFilterProps = {
   center?: LongLat;
   duration?: boolean;
   avgSpeed?: boolean;
   avgAltitude?: boolean;
   filterPage: LocationFilterPage;
-}
+};
 
-export function LocationFilter(props: ILocationFilter) {
+export function LocationFilter(props: LocationFilterProps) {
   const filterKey = useLocationFilterKey(props.filterPage);
 
   return (

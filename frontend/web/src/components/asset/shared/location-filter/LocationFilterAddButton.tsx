@@ -18,14 +18,14 @@ import {
 import { LocationFilterAddButtonMenuItem } from "./LocationFilterAddButtonMenuItem";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 
-interface ILocationFilterAddButton {
+type LocationFilterAddButtonProps = {
   duration?: boolean;
   avgAltitude?: boolean;
   avgSpeed?: boolean;
   filterKey: string;
-}
+};
 
-export function LocationFilterAddButton(props: ILocationFilterAddButton) {
+export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
   const filtersEnabled = useRecoilValue(
     filtersEnabledSelector(props.filterKey)
   );
