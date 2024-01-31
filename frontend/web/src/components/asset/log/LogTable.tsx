@@ -2,11 +2,19 @@ import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../../ui/loading-indicator/LoadingIndicator";
-import useLog from "./useLog";
 import { classNames } from "@navtrack/shared/utils/tailwind";
+import { PositionListModel } from "@navtrack/shared/api/model/generated";
+import { MutableRefObject } from "react";
 
-export function LogTable() {
-  const log = useLog();
+type LogTableProps = {
+  data?: PositionListModel;
+  isLoading: boolean;
+  selectedPositionIndex?: number;
+  setSelectedPositionIndex: (index: number) => void;
+  positionElements: MutableRefObject<(HTMLDivElement | null)[]>;
+};
+
+export function LogTable(props: LogTableProps) {
   const { showDateTime } = useDateTime();
   const { showSpeed, showAltitude } = useDistance();
 
@@ -39,26 +47,26 @@ export function LogTable() {
       </div>
       <div className="flex flex-grow overflow-hidden bg-gray-50">
         <div className="flex-grow flex-col overflow-y-scroll border-b border-gray-200 text-xs text-gray-600">
-          {log.isLoading ? (
+          {props.isLoading ? (
             <div className="py-1">
               <LoadingIndicator className="text-base" />
             </div>
           ) : (
             <>
-              {log.data?.items.length ? (
-                log.data?.items.map((location, index) => (
+              {props.data?.items.length ? (
+                props.data?.items.map((location, index) => (
                   <div
                     key={index}
                     className={classNames(
                       "grid cursor-pointer grid-cols-12 flex-row",
-                      log.selectedLocationIndex === index
+                      props.selectedPositionIndex === index
                         ? "bg-gray-300 hover:bg-gray-300"
                         : index % 2 === 0
                         ? "bg-white hover:bg-gray-200"
                         : "bg-gray-50 hover:bg-gray-200"
                     )}
-                    ref={(el) => (log.locationElements.current[index] = el)}
-                    onClick={() => log.setSelectedLocationIndex(index)}>
+                    ref={(el) => (props.positionElements.current[index] = el)}
+                    onClick={() => props.setSelectedPositionIndex(index)}>
                     <div className="col-span-2 py-1 pl-2">
                       {showDateTime(location.dateTime)}
                     </div>
@@ -81,10 +89,10 @@ export function LogTable() {
           )}
         </div>
       </div>
-      {log.data?.items.length && (
+      {props.data?.items.length && (
         <div className="grid grid-cols-12 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600">
           <div className="py-1 pl-2">
-            <span className="mr-1">{log.data?.items.length ?? 0}</span>
+            <span className="mr-1">{props.data?.items.length ?? 0}</span>
             <FormattedMessage id="assets.log.table.locations" />
           </div>
           <div className="py-1 pl-2"></div>
@@ -93,9 +101,9 @@ export function LogTable() {
             <FormattedMessage id="generic.average" />
           </div>
           <div className="py-1 pl-2">
-            {showAltitude(log.data.averageAltitude)}
+            {showAltitude(props.data.averageAltitude)}
           </div>
-          <div className="py-1 pl-2">{showSpeed(log.data.averageSpeed)}</div>
+          <div className="py-1 pl-2">{showSpeed(props.data.averageSpeed)}</div>
         </div>
       )}
     </div>

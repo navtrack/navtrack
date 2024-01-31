@@ -83,7 +83,7 @@ export function AssetTripsPage() {
                 <MapTrip trip={selectedTrip} />
                 {selectedTripLocation && showPin && (
                   <MapPin
-                    location={{ ...selectedTripLocation }}
+                    position={{ ...selectedTripLocation }}
                     zIndexOffset={1}
                   />
                 )}

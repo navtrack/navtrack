@@ -9,7 +9,7 @@ export default {
   WithPin: () => {
     return (
       <Map center={DEFAULT_MAP_CENTER}>
-        <MapPin location={{ latitude: 46.770439, longitude: 23.591423 }} />
+        <MapPin position={{ latitude: 46.770439, longitude: 23.591423 }} />
       </Map>
     );
   }

@@ -7,7 +7,7 @@ import { LongLat } from "./types";
 import { MapCenter } from "./MapCenter";
 
 type MapPinProps = {
-  location?: LongLat;
+  position?: LongLat;
   follow?: boolean;
   color?: "primary" | "green" | "red";
   zIndexOffset?: number;
@@ -25,15 +25,15 @@ export function MapPin(props: MapPinProps) {
     [props.color]
   );
 
-  if (props.location !== undefined) {
+  if (props.position !== undefined) {
     return (
       <>
         <Marker
-          position={[props.location.latitude, props.location.longitude]}
+          position={[props.position.latitude, props.position.longitude]}
           icon={pin}
           zIndexOffset={props.zIndexOffset}
         />
-        {props.follow && <MapCenter location={props.location} />}
+        {props.follow && <MapCenter location={props.position} />}
       </>
     );
   }

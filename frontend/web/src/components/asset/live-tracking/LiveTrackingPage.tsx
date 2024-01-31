@@ -19,7 +19,7 @@ export function AssetLiveTrackingPage() {
           </Card>
           <Card className="flex flex-grow">
             <Map center={{ ...location }}>
-              <MapPin location={{ ...location }} follow />
+              <MapPin position={{ ...location }} follow />
             </Map>
           </Card>
         </>

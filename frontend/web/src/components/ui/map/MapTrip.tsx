@@ -37,8 +37,8 @@ export function MapTrip(props: MapTripProps) {
   if (props.trip) {
     return (
       <>
-        <MapPin location={{ ...props.trip.startPosition }} color="green" />
-        <MapPin location={{ ...props.trip.endPosition }} color="red" />
+        <MapPin position={{ ...props.trip.startPosition }} color="green" />
+        <MapPin position={{ ...props.trip.endPosition }} color="red" />
       </>
     );
   }
