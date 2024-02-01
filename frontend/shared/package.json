@@ -2,7 +2,7 @@
   "name": "@navtrack/shared",
   "version": "0.1.0",
   "scripts": {
-    "generate": "orval --config ./orval.config.js"
+    "generate": "orval --config ./orval.config.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.2",
