@@ -6,9 +6,6 @@ namespace Navtrack.DataAccess.Model.Users;
 
 public class UserAssetRoleElement
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
-
     [BsonElement("assetId")]
     public ObjectId AssetId { get; set; }
 

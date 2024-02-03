@@ -9,7 +9,6 @@ public static class UserRoleElementMapper
     {
         return new AssetUserRoleElement
         {
-            Id = ObjectId.GenerateNewId(),
             Role = assetRoleType,
             UserId = userId
         };

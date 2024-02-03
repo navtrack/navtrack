@@ -61,14 +61,12 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
     {
         UserAssetRoleElement userAssetRoleElement = new()
         {
-            Id = ObjectId.GenerateNewId(),
             AssetId = assetDocument.Id,
             Role = modelRole
         };
 
         AssetUserRoleElement assetUserRoleElement = new()
         {
-            Id = userAssetRoleElement.Id,
             UserId = userDocument.Id,
             Role = modelRole
         };

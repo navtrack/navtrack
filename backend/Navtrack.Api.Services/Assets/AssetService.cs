@@ -183,7 +183,6 @@ public class AssetService(
         await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == currentUser.Id,
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement
             {
-                Id = ObjectId.GenerateNewId(),
                 Role = AssetRoleType.Owner,
                 AssetId = assetDocument.Id
             }));
