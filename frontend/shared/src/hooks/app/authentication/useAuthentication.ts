@@ -8,8 +8,10 @@ import {
   AuthenticationErrorType,
   AuthenticationState
 } from "./authentication";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function useAuthentication() {
+  const queryClient = useQueryClient();
   const setIsAuthenticated = useSetRecoilState(isAuthenticatedAtom);
   const [error, setAuthenticationError] = useRecoilState(
     authenticationErrorAtom
@@ -23,6 +25,7 @@ export function useAuthentication() {
     },
     clear: async (error?: AuthenticationErrorType) => {
       await Authentication.clear();
+      queryClient.clear();
       setAuthenticationError(error);
       setIsAuthenticated(false);
     },
