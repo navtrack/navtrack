@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
 import { LocationBar } from "../shared/location-bar/LocationBar";
-import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { MapPin } from "../../ui/map/MapPin";
 
 export function AssetLiveTrackingPage() {
@@ -11,7 +10,7 @@ export function AssetLiveTrackingPage() {
   const location = currentAsset.data?.position;
 
   return (
-    <AuthenticatedLayoutTwoColumns>
+    <>
       {location ? (
         <>
           <Card className="p-2">
@@ -28,6 +27,6 @@ export function AssetLiveTrackingPage() {
           <FormattedMessage id="no-location-data" />
         </Card>
       )}
-    </AuthenticatedLayoutTwoColumns>
+    </>
   );
 }

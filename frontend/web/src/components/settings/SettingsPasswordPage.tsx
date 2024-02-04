@@ -3,7 +3,6 @@ import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
 import { Card } from "../ui/card/Card";
 import { FormikTextInput } from "../ui/form/text-input/FormikTextInput";
-import { Text } from "../ui/text/Text";
 import {
   ChangePasswordFormValues,
   useChangePassword
@@ -13,13 +12,12 @@ import { CardHeader } from "../ui/card/CardHeader";
 import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
-import { AccountSettingsLayout } from "./AccountSettingsLayout";
 
 export function SettingsPasswordPage() {
   const { validationSchema, handleSubmit } = useChangePassword();
 
   return (
-    <AccountSettingsLayout>
+    <>
       <Formik<ChangePasswordFormValues>
         initialValues={{
           currentPassword: "",
@@ -72,6 +70,6 @@ export function SettingsPasswordPage() {
           </Form>
         )}
       </Formik>
-    </AccountSettingsLayout>
+    </>
   );
 }

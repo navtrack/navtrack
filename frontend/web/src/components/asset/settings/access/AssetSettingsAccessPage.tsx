@@ -8,7 +8,6 @@ import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
 import { NewButton } from "../../../ui/button/NewButton";
-import { AssetSettingsLayout } from "../shared/AssetSettingsLayout";
 
 export function AssetSettingsAccessPage() {
   const currentAsset = useCurrentAsset();
@@ -19,7 +18,7 @@ export function AssetSettingsAccessPage() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <AssetSettingsLayout>
+    <>
       {currentAsset && (
         <Card>
           <CardBody>
@@ -43,6 +42,6 @@ export function AssetSettingsAccessPage() {
           </CardBody>
         </Card>
       )}
-    </AssetSettingsLayout>
+    </>
   );
 }

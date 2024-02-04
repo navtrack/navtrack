@@ -13,7 +13,6 @@ import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
 import { NewButton } from "../../../ui/button/NewButton";
-import { AssetSettingsLayout } from "../shared/AssetSettingsLayout";
 
 export function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
@@ -21,7 +20,7 @@ export function AssetSettingsGeneralPage() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <AssetSettingsLayout>
+    <>
       {currentAsset && (
         <Card>
           <CardBody>
@@ -93,6 +92,6 @@ export function AssetSettingsGeneralPage() {
           </CardBody>
         </Card>
       )}
-    </AssetSettingsLayout>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
@@ -16,7 +16,6 @@ import {
   selectedTripSelector
 } from "./tripsState";
 import { TripsTable } from "./TripsTable";
-import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 
 export function AssetTripsPage() {
@@ -31,7 +30,7 @@ export function AssetTripsPage() {
   });
 
   return (
-    <AuthenticatedLayoutTwoColumns>
+    <>
       <LocationFilter filterPage="trips" duration avgAltitude avgSpeed />
       <TripsTable />
       {selectedTrip !== undefined && (
@@ -92,6 +91,6 @@ export function AssetTripsPage() {
           </div>
         </>
       )}
-    </AuthenticatedLayoutTwoColumns>
+    </>
   );
 }

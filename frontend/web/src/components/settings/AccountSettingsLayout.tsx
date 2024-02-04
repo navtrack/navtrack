@@ -5,6 +5,7 @@ import { Paths } from "../../app/Paths";
 import { SettingsMenuItemProps } from "../ui/layouts/settings/SettingsMenuItem";
 import { SlotContext } from "../../app/SlotContext";
 import { AuthenticatedLayoutOneColumn } from "../ui/layouts/authenticated/AuthenticatedLayoutOneColumn";
+import { Outlet } from "react-router-dom";
 
 export const defaultAccountSettingsMenuItem: SettingsMenuItemProps[] = [
   {
@@ -21,11 +22,7 @@ export const defaultAccountSettingsMenuItem: SettingsMenuItemProps[] = [
   }
 ];
 
-type AccountSettingsLayoutProps = {
-  children?: React.ReactNode;
-};
-
-export function AccountSettingsLayout(props: AccountSettingsLayoutProps) {
+export function AccountSettingsLayout() {
   const slotContext = useContext(SlotContext);
 
   return (
@@ -36,7 +33,7 @@ export function AccountSettingsLayout(props: AccountSettingsLayoutProps) {
             slotContext?.accountSettingsMenuItems ??
             defaultAccountSettingsMenuItem
           }>
-          {props.children}
+          <Outlet />
         </SettingsLayout>
       </div>
     </AuthenticatedLayoutOneColumn>

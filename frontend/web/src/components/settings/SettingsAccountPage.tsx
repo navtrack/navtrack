@@ -16,7 +16,6 @@ import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
 import { Skeleton } from "../ui/skeleton/Skeleton";
-import { AccountSettingsLayout } from "./AccountSettingsLayout";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
 
 type AccountSettingsFormValues = {
@@ -73,7 +72,7 @@ export function SettingsAccountPage() {
   );
 
   return (
-    <AccountSettingsLayout>
+    <>
       <Card>
         <CardHeader>
           <Heading type="h2">
@@ -120,6 +119,6 @@ export function SettingsAccountPage() {
           )}
         </Formik>
       </Card>
-    </AccountSettingsLayout>
+    </>
   );
 }

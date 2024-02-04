@@ -14,7 +14,7 @@ export type SettingsMenuItemProps = {
 
 export function SettingsMenuItem(props: SettingsMenuItemProps) {
   return (
-    <NavLink to={props.path} key={props.label} className="block">
+    <NavLink to={props.path} key={props.label} className="block" end>
       {({ isActive }) => (
         <div>
           <div

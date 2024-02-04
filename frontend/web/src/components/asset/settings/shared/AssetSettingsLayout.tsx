@@ -1,16 +1,12 @@
-import { ReactNode, useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { faCog, faHdd, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { generatePath } from "react-router-dom";
+import { Outlet, generatePath } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { SettingsLayout } from "../../../ui/layouts/settings/SettingsLayout";
 import { SettingsMenuItemProps } from "../../../ui/layouts/settings/SettingsMenuItem";
 import { AuthenticatedLayoutTwoColumns } from "../../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { SlotContext } from "../../../../app/SlotContext";
-
-type AssetSettingsLayoutProps = {
-  children?: ReactNode;
-};
 
 export const defaultAssetSettingsMenuItems: SettingsMenuItemProps[] = [
   {
@@ -33,7 +29,7 @@ export const defaultAssetSettingsMenuItems: SettingsMenuItemProps[] = [
   }
 ];
 
-export function AssetSettingsLayout(props: AssetSettingsLayoutProps) {
+export function AssetSettingsLayout() {
   const currentAsset = useCurrentAsset();
   const slots = useContext(SlotContext);
 
@@ -53,7 +49,9 @@ export function AssetSettingsLayout(props: AssetSettingsLayoutProps) {
   return (
     <AuthenticatedLayoutTwoColumns>
       <div className="flex gap-x-6">
-        <SettingsLayout menuItems={menuItems}>{props.children}</SettingsLayout>
+        <SettingsLayout menuItems={menuItems}>
+          <Outlet />
+        </SettingsLayout>
       </div>
     </AuthenticatedLayoutTwoColumns>
   );

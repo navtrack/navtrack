@@ -17,7 +17,6 @@ import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
-import { AssetSettingsLayout } from "../shared/AssetSettingsLayout";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -91,7 +90,7 @@ export function AssetSettingsDevicePage() {
   }).defined();
 
   return (
-    <AssetSettingsLayout>
+    <>
       {currentAsset.data && deviceTypes && (
         <Card>
           <CardBody>
@@ -165,6 +164,6 @@ export function AssetSettingsDevicePage() {
           </CardBody>
         </Card>
       )}
-    </AssetSettingsLayout>
+    </>
   );
 }

@@ -23,7 +23,6 @@ import { CardHeader } from "../../ui/card/CardHeader";
 import { CardBody } from "../../ui/card/CardBody";
 import { CardFooter } from "../../ui/card/CardFooter";
 import { NewButton } from "../../ui/button/NewButton";
-import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { SlotContext } from "../../../app/SlotContext";
 
 export function AssetAddPage() {
@@ -51,7 +50,7 @@ export function AssetAddPage() {
     useState<DeviceTypeModel>();
 
   return (
-    <AuthenticatedLayoutTwoColumns>
+    <>
       <Card>
         <Formik<AddAssetFormValues>
           initialValues={DefaultAddAssetFormValues}
@@ -110,6 +109,6 @@ export function AssetAddPage() {
           )}
         </Formik>
       </Card>
-    </AuthenticatedLayoutTwoColumns>
+    </>
   );
 }

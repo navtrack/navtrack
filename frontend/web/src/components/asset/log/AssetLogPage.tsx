@@ -2,11 +2,9 @@ import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
 import { LogTable } from "./LogTable";
-import { AuthenticatedLayoutTwoColumns } from "../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { usePositionsQuery } from "@navtrack/shared/hooks/queries/usePositionsQuery";
-import { log } from "@navtrack/shared/utils/log";
 import { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/state";
@@ -74,7 +72,7 @@ export function AssetLogPage() {
   useKeyPress("ArrowUp", setPreviousLocation);
 
   return (
-    <AuthenticatedLayoutTwoColumns>
+    <>
       <LocationFilter
         filterPage="log"
         center={
@@ -109,6 +107,6 @@ export function AssetLogPage() {
           </Map>
         </div>
       </div>
-    </AuthenticatedLayoutTwoColumns>
+    </>
   );
 }
