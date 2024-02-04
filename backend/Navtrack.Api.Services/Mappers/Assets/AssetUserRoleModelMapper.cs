@@ -4,13 +4,12 @@ using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers.Assets;
 
-public static class AssetUserModelMapper
+public static class AssetUserRoleModelMapper
 {
-    public static AssetUserModel Map(UserDocument user, AssetUserRoleElement source)
+    public static AssetUserRoleModel Map(AssetUserRoleElement source)
     {
-        return new AssetUserModel
+        return new AssetUserRoleModel
         {
-            Email = user.Email,
             UserId = source.UserId.ToString(),
             Role = source.Role
         };

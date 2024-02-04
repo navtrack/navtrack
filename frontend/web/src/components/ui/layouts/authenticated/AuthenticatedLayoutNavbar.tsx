@@ -14,9 +14,11 @@ import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
 import { AuthenticatedLayoutNavbarItem } from "./AuthenticatedLayoutNavbarItem";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { FormattedMessage } from "react-intl";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { SlotContext } from "../../../../app/SlotContext";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useAssetAuthorize } from "@navtrack/shared/hooks/assets/useAssetAuthorize";
+import { AssetRoleType } from "@navtrack/shared/api/model/generated";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
@@ -27,6 +29,7 @@ export type AssetNavbarMenuItem = {
   path: string;
   icon: IconProp;
   priority: number;
+  role: AssetRoleType;
 };
 
 export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
@@ -34,25 +37,29 @@ export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
     label: "navbar.asset.live-tracking",
     path: Paths.AssetsLive,
     icon: faMapMarkerAlt,
-    priority: 1
+    priority: 1,
+    role: AssetRoleType.Viewer
   },
   {
     label: "navbar.asset.log",
     path: Paths.AssetsLog,
     icon: faDatabase,
-    priority: 2
+    priority: 2,
+    role: AssetRoleType.Viewer
   },
   {
     label: "navbar.asset.trips",
     path: Paths.AssetsTrips,
     icon: faRoute,
-    priority: 3
+    priority: 3,
+    role: AssetRoleType.Viewer
   },
   {
     label: "navbar.asset.settings",
     path: Paths.AssetsSettings,
     icon: faCog,
-    priority: 4
+    priority: 4,
+    role: AssetRoleType.Owner
   }
 ];
 
@@ -61,6 +68,16 @@ export function AuthenticatedLayoutNavbar(
 ) {
   const slots = useContext(SlotContext);
   const currentAsset = useCurrentAsset();
+  const assetAuthorize = useAssetAuthorize();
+
+  const menuItmes = useMemo(
+    () =>
+      (slots?.assetNavbarMenuItems ?? defaultAssetNavbarMenuItems).filter(
+        (x) =>
+          currentAsset.data && assetAuthorize(currentAsset.data?.id, x.role)
+      ),
+    [assetAuthorize, currentAsset.data, slots?.assetNavbarMenuItems]
+  );
 
   return (
     <nav className="relative bg-white px-4 shadow">
@@ -79,9 +96,7 @@ export function AuthenticatedLayoutNavbar(
           <div className="flex space-x-8">
             {currentAsset.data?.id !== undefined && (
               <>
-                {(
-                  slots?.assetNavbarMenuItem ?? defaultAssetNavbarMenuItems
-                ).map((item) => (
+                {menuItmes.map((item) => (
                   <AuthenticatedLayoutNavbarItem
                     key={item.label}
                     labelId={item.label}

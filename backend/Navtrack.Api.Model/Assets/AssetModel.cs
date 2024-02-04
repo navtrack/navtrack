@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Navtrack.Api.Model.Devices;
@@ -25,5 +24,5 @@ public class AssetModel
     [Required]
     public DeviceModel Device { get; set; }
 
-    public IEnumerable<AssetUserModel>? Users { get; set; }
+    public IEnumerable<AssetUserRoleModel>? UserRoles { get; set; }
 }

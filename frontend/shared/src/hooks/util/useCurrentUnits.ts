@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useIntl } from "react-intl";
-import { useCurrentUser } from "../user/useCurrentUser";
 import { UnitsType } from "../../api/model/generated";
+import { useCurrentUserQuery } from "../queries/useCurrentUserQuery";
 
 type Units = {
   unitsType: UnitsType;
@@ -11,11 +11,11 @@ type Units = {
 };
 
 export function useCurrentUnits() {
-  const currentUser = useCurrentUser();
+  const currentUser = useCurrentUserQuery();
   const intl = useIntl();
 
   const units = useMemo((): Units => {
-    if (currentUser?.units === UnitsType.Imperial) {
+    if (currentUser.data?.units === UnitsType.Imperial) {
       return {
         unitsType: UnitsType.Imperial,
         speed: intl.formatMessage({ id: "generic.units.mph" }),
@@ -30,7 +30,7 @@ export function useCurrentUnits() {
       length: intl.formatMessage({ id: "generic.units.m" }),
       lengthK: intl.formatMessage({ id: "generic.units.km" })
     };
-  }, [currentUser?.units, intl]);
+  }, [currentUser.data?.units, intl]);
 
   return units;
 }

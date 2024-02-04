@@ -30,7 +30,7 @@ namespace Navtrack.Api.Services.Assets;
 [Service(typeof(IAssetService))]
 public class AssetService(
     IAssetRepository assetRepository,
-    ICurrentUserAccessor userAccessor,
+    ICurrentUserAccessor currentUserAccessor,
     IPositionRepository positionRepository,
     IDeviceTypeRepository deviceTypeRepository,
     IDeviceService service,
@@ -43,15 +43,15 @@ public class AssetService(
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         DeviceType deviceType = deviceTypeRepository.GetById(asset.Device.DeviceTypeId);
-        List<UserDocument> users = await userRepository.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
-
-        return AssetModelMapper.Map(asset, deviceType, users);
+        UserDocument currentUser = await currentUserAccessor.Get();
+        
+        return AssetModelMapper.Map(currentUser, asset, deviceType);
     }
 
     public async Task<ListModel<AssetModel>> GetAssets()
     {
-        UserDocument user = await userAccessor.Get();
-        List<ObjectId> assetIds = user.AssetRoles?.Select(x => x.AssetId).ToList() ??
+        UserDocument currentUser = await currentUserAccessor.Get();
+        List<ObjectId> assetIds = currentUser.AssetRoles?.Select(x => x.AssetId).ToList() ??
                                   Enumerable.Empty<ObjectId>().ToList();
         List<AssetDocument> assets = await assetRepository.GetAssetsByIds(assetIds);
 
@@ -61,7 +61,7 @@ public class AssetService(
         IEnumerable<DeviceType> deviceTypes =
             deviceTypeRepository.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
 
-        ListModel<AssetModel> model = AssetListMapper.Map(assets, user.UnitsType, deviceTypes);
+        ListModel<AssetModel> model = AssetListMapper.Map(currentUser, assets, deviceTypes);
 
         return model;
     }
@@ -73,7 +73,7 @@ public class AssetService(
 
         if (!string.IsNullOrEmpty(model.Name) && asset.Name != model.Name)
         {
-            UserDocument user = await userAccessor.Get();
+            UserDocument user = await currentUserAccessor.Get();
 
             bool nameIsUsed = await assetRepository.NameIsUsed(model.Name, user.Id, assetId);
 
@@ -100,15 +100,15 @@ public class AssetService(
 
     public async Task<AssetModel> Create(CreateAssetModel model)
     {
-        UserDocument user = await userAccessor.Get();
+        UserDocument currentUser = await currentUserAccessor.Get();
 
         CreateAssetModelMapper.Map(model);
-        await ValidateModel(model, user);
+        await ValidateModel(model, currentUser);
 
         AssetDocument assetDocument = await AddDocuments(model);
 
         DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
-        AssetModel asset = AssetModelMapper.Map(assetDocument, deviceType);
+        AssetModel asset = AssetModelMapper.Map(currentUser, assetDocument, deviceType);
 
         await post.Send(new AssetCreatedEvent(asset));
 
@@ -155,7 +155,7 @@ public class AssetService(
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
 
-        AssetUserRoleElement assetUserRole = asset.UserRoles.FirstOrDefault(x => x.UserId == ObjectId.Parse(userId));
+        AssetUserRoleElement? assetUserRole = asset.UserRoles.FirstOrDefault(x => x.UserId == ObjectId.Parse(userId));
 
         asset.ThrowApiExceptionIfNull(HttpStatusCode.BadRequest);
 
@@ -169,7 +169,7 @@ public class AssetService(
 
     private async Task<AssetDocument> AddDocuments(CreateAssetModel model)
     {
-        UserDocument currentUser = await userAccessor.Get();
+        UserDocument currentUser = await currentUserAccessor.Get();
         DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
 
         AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);

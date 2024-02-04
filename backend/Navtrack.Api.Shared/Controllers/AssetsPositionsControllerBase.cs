@@ -21,7 +21,7 @@ public abstract class AssetsPositionsControllerBase(IPositionService service) : 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [AuthorizeAsset(AssetRoleType.Viewer)]
-    public async Task<JsonResult> GetList(
+    public virtual async Task<JsonResult> GetList(
         [FromRoute] string assetId,
         [FromQuery] PositionFilterModel filter,
         [FromQuery] int page = 0,

@@ -1,10 +1,10 @@
 import { AuthenticatedLayoutSidebarItem } from "./AuthenticatedLayoutSidebarItem";
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../../loading-indicator/LoadingIndicator";
-import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
+import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
 
 export function AuthenticatedLayoutSidebarAssets() {
-  const assetsQuery = useGetAssetsQuery();
+  const assetsQuery = useAssetsQuery();
 
   return (
     <div className="flex flex-1 flex-col space-y-1 px-2">

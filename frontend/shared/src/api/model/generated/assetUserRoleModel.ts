@@ -6,8 +6,7 @@
  */
 import type { AssetRoleType } from "./assetRoleType";
 
-export interface AssetUserModel {
-  email: string;
+export interface AssetUserRoleModel {
   role: AssetRoleType;
   userId: string;
 }

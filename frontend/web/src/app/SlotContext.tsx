@@ -3,7 +3,7 @@ import { SettingsMenuItemProps } from "../components/ui/layouts/settings/Setting
 import { AssetNavbarMenuItem } from "../components/ui/layouts/authenticated/AuthenticatedLayoutNavbar";
 
 export type AppSlots = {
-  assetNavbarMenuItem?: AssetNavbarMenuItem[];
+  assetNavbarMenuItems?: AssetNavbarMenuItem[];
   accountSettingsMenuItems?: SettingsMenuItemProps[];
   assetSettingsMenuItems?: SettingsMenuItemProps[];
   assetAddFooterBlock?: React.ReactNode;

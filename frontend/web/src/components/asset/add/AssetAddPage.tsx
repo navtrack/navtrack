@@ -15,7 +15,7 @@ import { useAddAsset } from "@navtrack/shared/hooks/assets/add-asset/useAddAsset
 import { useScrollToAsset } from "../../ui/layouts/authenticated/useScrollToAsset";
 import { useNotification } from "../../ui/notification/useNotification";
 import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
-import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
+import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
 import { Card } from "../../ui/card/Card";
 import { Paths } from "../../../app/Paths";
 import { Heading } from "../../ui/heading/Heading";
@@ -32,7 +32,7 @@ export function AssetAddPage() {
   const intl = useIntl();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
-  const assetsQuery = useGetAssetsQuery();
+  const assetsQuery = useAssetsQuery();
   const { setScrollToAsset } = useScrollToAsset();
   const addAsset = useAddAsset({
     onSuccess: (asset) => {

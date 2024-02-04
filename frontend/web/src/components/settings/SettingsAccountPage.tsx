@@ -7,7 +7,6 @@ import { useNotification } from "../ui/notification/useNotification";
 import { useUpdateUserMutation } from "@navtrack/shared/hooks/mutations/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
-import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
 import { SelectOption } from "../ui/form/select/Select";
 import { UnitsType } from "@navtrack/shared/api/model/generated";
 import { NewButton } from "../ui/button/NewButton";
@@ -18,6 +17,7 @@ import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
 import { Skeleton } from "../ui/skeleton/Skeleton";
 import { AccountSettingsLayout } from "./AccountSettingsLayout";
+import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
 
 type AccountSettingsFormValues = {
   email?: string;
@@ -25,7 +25,7 @@ type AccountSettingsFormValues = {
 };
 
 export function SettingsAccountPage() {
-  const user = useCurrentUser();
+  const user = useCurrentUserQuery();
   const updateUserMutation = useUpdateUserMutation();
   const { showNotification } = useNotification();
   const intl = useIntl();
@@ -82,8 +82,8 @@ export function SettingsAccountPage() {
         </CardHeader>
         <Formik<AccountSettingsFormValues>
           initialValues={{
-            email: user?.email,
-            units: user?.units
+            email: user.data?.email,
+            units: user.data?.units
           }}
           enableReinitialize
           onSubmit={(values, formikHelpers) =>

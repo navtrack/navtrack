@@ -5,13 +5,13 @@ import { RenameAssetFormValues } from "./types";
 import { FormikHelpers } from "formik";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useRenameAssetMutation";
-import { useGetAssetsQuery } from "@navtrack/shared/hooks/queries/useGetAssetsQuery";
+import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 
 export function useRenameAsset() {
   const currentAsset = useCurrentAsset();
   const renameAssetMutation = useRenameAssetMutation();
-  const assetsQuery = useGetAssetsQuery();
+  const assetsQuery = useAssetsQuery();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const submit = useCallback(

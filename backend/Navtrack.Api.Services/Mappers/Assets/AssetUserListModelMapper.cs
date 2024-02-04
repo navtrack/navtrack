@@ -9,15 +9,15 @@ namespace Navtrack.Api.Services.Mappers.Assets;
 
 public static class AssetUserListModelMapper
 {
-    public static ListModel<AssetUserModel> Map(AssetDocument asset, List<UserDocument>? users)
+    public static ListModel<AssetUserModel> Map(AssetDocument asset, List<UserDocument> users)
     {
         ListModel<AssetUserModel> list = new()
         {
             Items = asset.UserRoles
-                .Select(x => new { UserRole = x, User = users?.FirstOrDefault(y => x.UserId == y.Id) })
+                .Select(x => new { UserRole = x, User = users.FirstOrDefault(y => x.UserId == y.Id) })
                 .Where(x => x.User != null)
                 .Select(x =>
-                    AssetUserModelMapper.Map(x.UserRole, x.User))
+                    AssetUserModelMapper.Map(x.User!, x.UserRole))
                 .ToList()
         };
 

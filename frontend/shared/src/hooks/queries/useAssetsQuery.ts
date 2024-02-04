@@ -1,6 +1,6 @@
 import { useAssetsGetList } from "../../api/index-generated";
 
-export const useGetAssetsQuery = () => {
+export const useAssetsQuery = () => {
   const query = useAssetsGetList({
     query: {
       refetchIntervalInBackground: true,

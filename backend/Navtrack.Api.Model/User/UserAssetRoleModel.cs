@@ -1,16 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using Navtrack.DataAccess.Model.Assets;
 
-namespace Navtrack.Api.Model.Assets;
+namespace Navtrack.Api.Model.User;
 
-public class AssetUserModel
-{  
+public class UserAssetRoleModel
+{
     [Required]
-    public string Email { get; set; }
+    public string AssetId { get; set; }
     
     [Required]
     public AssetRoleType Role { get; set; }
-
-    [Required]
-    public string UserId { get; set; }
 }

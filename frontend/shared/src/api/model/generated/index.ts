@@ -7,7 +7,10 @@
 
 export * from "./assetModel";
 export * from "./assetModelPosition";
+export * from "./assetRoleModel";
+export * from "./assetRoleType";
 export * from "./assetUserModel";
+export * from "./assetUserRoleModel";
 export * from "./assetsPositionsGetListParams";
 export * from "./assetsReportsGetTimeDistanceReportParams";
 export * from "./assetsTripsGetListParams";
@@ -26,6 +29,7 @@ export * from "./errorModelErrors";
 export * from "./forgotPasswordModel";
 export * from "./listModelOfAssetModel";
 export * from "./listModelOfAssetUserModel";
+export * from "./listModelOfAssetUserRoleModel";
 export * from "./listModelOfDeviceModel";
 export * from "./listModelOfDeviceTypeModel";
 export * from "./listModelOfDistanceReportItemModel";
@@ -49,3 +53,4 @@ export * from "./updateAssetModel";
 export * from "./updateUserModel";
 export * from "./updateUserModelUnitsType";
 export * from "./userModel";
+export * from "./userAssetRoleModel";

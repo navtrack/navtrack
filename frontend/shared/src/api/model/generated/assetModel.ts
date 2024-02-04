@@ -6,7 +6,7 @@
  */
 import type { DeviceModel } from "./deviceModel";
 import type { AssetModelPosition } from "./assetModelPosition";
-import type { AssetUserModel } from "./assetUserModel";
+import type { AssetUserRoleModel } from "./assetUserRoleModel";
 
 export interface AssetModel {
   device: DeviceModel;
@@ -15,5 +15,5 @@ export interface AssetModel {
   name: string;
   online: boolean;
   position?: AssetModelPosition;
-  users?: AssetUserModel[] | null;
+  userRoles?: AssetUserRoleModel[] | null;
 }

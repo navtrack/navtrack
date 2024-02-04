@@ -4,15 +4,15 @@ import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Icon } from "../../icon/Icon";
 import { faSignOutAlt, faSlidersH } from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
-import { useCurrentUser } from "@navtrack/shared/hooks/user/useCurrentUser";
 import { IconWithText } from "../../icon/IconWithText";
 import { Link } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
 
 export function AuthenticatedLayoutNavbarProfile() {
-  const currentUser = useCurrentUser();
+  const currentUser = useCurrentUserQuery();
   const { logout } = useLogin();
 
   return (
@@ -35,7 +35,7 @@ export function AuthenticatedLayoutNavbarProfile() {
             <div className="py-1">
               <div className="cursor-default bg-white px-4 py-2 text-sm text-gray-700">
                 <FormattedMessage id="navbar.profile.logged-in-as" />{" "}
-                <span className="font-semibold">{currentUser?.email}</span>
+                <span className="font-semibold">{currentUser.data?.email}</span>
               </div>
             </div>
           </Menu.Item>

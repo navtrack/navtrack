@@ -5,13 +5,13 @@ import { IconButton } from "../../../ui/button-old/IconButton";
 import { Table, ITableColumn } from "../../../ui/table/Table";
 import { DeleteUserFromAssetModal } from "./DeleteUserFromAssetModal";
 
-interface IUsersTable {
+type UsersTableProps = {
   rows?: AssetUserModel[];
   loading: boolean;
   refresh: () => void;
-}
+};
 
-export function UsersTable(props: IUsersTable) {
+export function UsersTable(props: UsersTableProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [user, setUser] = useState<AssetUserModel | undefined>();
 

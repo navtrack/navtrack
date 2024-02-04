@@ -13,19 +13,19 @@ import { ModalIcon } from "../../../ui/modal/ModalIcon";
 import { FormikCustomSelect } from "../../../ui/form/select/FormikCustomSelect";
 import { AddUserToAssetFormValues } from "./types";
 import { useAddUserToAsset } from "./useAddUserToAsset";
-import { AssetRoleType } from "@navtrack/shared/api/model/custom/AssetRoleType";
+import { AssetRoleType } from "@navtrack/shared/api/model/generated";
 
-interface IAddUserToAssetModal {
+type AddUserToAssetModalProps = {
   show: boolean;
   close: () => void;
-}
+};
 
 type Role = {
   label: string;
   value: AssetRoleType;
 };
 
-export function AddUserToAssetModal(props: IAddUserToAssetModal) {
+export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
   const { validationSchema, handleSubmit, loading } = useAddUserToAsset({
     close: props.close
   });

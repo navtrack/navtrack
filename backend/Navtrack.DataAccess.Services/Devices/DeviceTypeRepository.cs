@@ -14,7 +14,7 @@ public class DeviceTypeRepository : IDeviceTypeRepository
 {
     private DeviceType[]? deviceTypes;
 
-    public DeviceType GetById(string deviceTypeId)
+    public DeviceType? GetById(string deviceTypeId)
     {
         return GetDeviceTypes().FirstOrDefault(x => x.Id == deviceTypeId);
     }

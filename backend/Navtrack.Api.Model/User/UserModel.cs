@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Navtrack.DataAccess.Model.Common;
 
@@ -13,4 +14,6 @@ public class UserModel
 
     [Required]
     public UnitsType Units { get; set; }
+
+    public IEnumerable<UserAssetRoleModel>? AssetRoles { get; set; }
 }

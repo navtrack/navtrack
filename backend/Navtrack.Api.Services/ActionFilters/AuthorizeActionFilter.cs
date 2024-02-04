@@ -24,7 +24,7 @@ public class AuthorizeActionFilter(IAssetAuthorizationService authorizationServi
 
             if (!string.IsNullOrEmpty(assetId))
             {
-                bool hasRole = await authorizationService.CurrentUserHasRole(authorizePermissionAttribute.AssetRoleType, assetId);
+                bool hasRole = await authorizationService.CurrentUserHasRole(assetId, authorizePermissionAttribute.AssetRoleType);
 
                 if (hasRole)
                 {

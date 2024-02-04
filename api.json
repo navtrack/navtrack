@@ -1281,11 +1281,11 @@
           "device": {
             "$ref": "#/components/schemas/DeviceModel"
           },
-          "users": {
+          "userRoles": {
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/AssetUserModel"
+              "$ref": "#/components/schemas/AssetUserRoleModel"
             }
           }
         }
@@ -1445,28 +1445,34 @@
           }
         }
       },
-      "AssetUserModel": {
+      "AssetUserRoleModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "email",
           "role",
           "userId"
         ],
         "properties": {
-          "email": {
-            "type": "string",
-            "minLength": 1
-          },
           "role": {
-            "type": "string",
-            "minLength": 1
+            "$ref": "#/components/schemas/AssetRoleType"
           },
           "userId": {
             "type": "string",
             "minLength": 1
           }
         }
+      },
+      "AssetRoleType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Owner",
+          "Viewer"
+        ],
+        "enum": [
+          "Owner",
+          "Viewer"
+        ]
       },
       "ProblemDetails": {
         "type": "object",
@@ -1787,6 +1793,28 @@
           }
         }
       },
+      "AssetUserModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "role",
+          "userId"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "$ref": "#/components/schemas/AssetRoleType"
+          },
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
       "CreateAssetUserModel": {
         "type": "object",
         "additionalProperties": false,
@@ -1854,6 +1882,13 @@
           },
           "units": {
             "$ref": "#/components/schemas/UnitsType"
+          },
+          "assetRoles": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/UserAssetRoleModel"
+            }
           }
         }
       },
@@ -1868,6 +1903,18 @@
           "Metric",
           "Imperial"
         ]
+      },
+      "UserAssetRoleModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assetId": {
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AssetRoleType"
+          }
+        }
       },
       "UpdateUserModel": {
         "type": "object",
