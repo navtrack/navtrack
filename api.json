@@ -1907,9 +1907,14 @@
       "UserAssetRoleModel": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "assetId",
+          "role"
+        ],
         "properties": {
           "assetId": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "role": {
             "$ref": "#/components/schemas/AssetRoleType"

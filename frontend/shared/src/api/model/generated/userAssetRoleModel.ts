@@ -7,6 +7,6 @@
 import type { AssetRoleType } from "./assetRoleType";
 
 export interface UserAssetRoleModel {
-  assetId?: string;
-  role?: AssetRoleType;
+  assetId: string;
+  role: AssetRoleType;
 }
