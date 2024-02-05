@@ -1,6 +1,5 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/button-old/Button";
 import { Card } from "../../ui/card/Card";
 import { InitialResetPasswordFormValues } from "./ResetPasswordFormValues";
 import { useResetPassword } from "./useResetPassword";
@@ -13,6 +12,7 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "../../ui/link/Link";
 import { ErrorMessage } from "@navtrack/shared/components/ui/ErrorMessage";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
+import { Button } from "../../ui/button/Button";
 
 export const ResetPasswordPage = () => {
   const validationSchema = useResetPasswordFormValidationSchema();
@@ -87,8 +87,7 @@ export const ResetPasswordPage = () => {
                       <Button
                         type="submit"
                         size="lg"
-                        disabled={resetPassword.loading}
-                        fullWidth
+                        full
                         loading={resetPassword.loading}>
                         <FormattedMessage id="reset-password.button" />
                       </Button>

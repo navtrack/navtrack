@@ -2,20 +2,20 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { DeviceModel } from "@navtrack/shared/api/model/generated";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteDeviceMutation";
 import { FormattedMessage, useIntl } from "react-intl";
-import { IconButton } from "../../../ui/button-old/IconButton";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { Table, ITableColumn } from "../../../ui/table/Table";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
+import { Button } from "../../../ui/button/Button";
 
-interface IDevicesTable {
+type DevicesTableProps = {
   assetId: string;
   rows?: DeviceModel[];
   loading: boolean;
   refresh: () => void;
-}
+};
 
-export function DevicesTable(props: IDevicesTable) {
+export function DevicesTable(props: DevicesTableProps) {
   const deleteDeviceMutation = useDeleteDeviceMutation();
   const queryClient = useQueryClient();
   const { showNotification } = useNotification();
@@ -51,9 +51,9 @@ export function DevicesTable(props: IDevicesTable) {
       render: (device) => (
         <>
           {!device.active && (
-            <IconButton
+            <Button
               icon={faTrashAlt}
-              className="text-red-500"
+              color="error"
               onClick={() =>
                 deleteDeviceMutation
                   .mutateAsync(

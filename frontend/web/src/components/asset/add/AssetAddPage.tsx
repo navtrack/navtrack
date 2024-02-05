@@ -22,8 +22,8 @@ import { Heading } from "../../ui/heading/Heading";
 import { CardHeader } from "../../ui/card/CardHeader";
 import { CardBody } from "../../ui/card/CardBody";
 import { CardFooter } from "../../ui/card/CardFooter";
-import { NewButton } from "../../ui/button/NewButton";
 import { SlotContext } from "../../../app/SlotContext";
+import { Button } from "../../ui/button/Button";
 
 export function AssetAddPage() {
   const slot = useContext(SlotContext);
@@ -101,9 +101,9 @@ export function AssetAddPage() {
               </CardBody>
               {slot?.assetAddFooterBlock}
               <CardFooter className="text-right">
-                <NewButton type="submit" loading={addAsset.isLoading} size="lg">
+                <Button type="submit" loading={addAsset.isLoading} size="lg">
                   <FormattedMessage id="generic.save" />
-                </NewButton>
+                </Button>
               </CardFooter>
             </Form>
           )}

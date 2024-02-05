@@ -1,9 +1,9 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { AssetUserModel } from "@navtrack/shared/api/model/generated";
 import { useState } from "react";
-import { IconButton } from "../../../ui/button-old/IconButton";
 import { Table, ITableColumn } from "../../../ui/table/Table";
 import { DeleteUserFromAssetModal } from "./DeleteUserFromAssetModal";
+import { Button } from "../../../ui/button/Button";
 
 type UsersTableProps = {
   rows?: AssetUserModel[];
@@ -20,9 +20,9 @@ export function UsersTable(props: UsersTableProps) {
     { labelId: "generic.role", render: (user) => user.role },
     {
       render: (user) => (
-        <IconButton
+        <Button
           icon={faTrashAlt}
-          className="text-red-500"
+          color="error"
           onClick={() => {
             setUser(user);
             setShowDeleteModal(true);

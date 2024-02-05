@@ -1,17 +1,17 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../../ui/button-old/Button";
 import { Icon } from "../../../ui/icon/Icon";
+import { Button } from "../../../ui/button/Button";
 
-interface IFilterModal {
+type FilterModalProps = {
   icon: IconProp;
   children?: ReactNode;
   className?: string;
   onCancel: () => void;
-}
+};
 
-export function FilterModal(props: IFilterModal) {
+export function FilterModal(props: FilterModalProps) {
   return (
     <div className={props.className}>
       <div className="flex flex-grow">

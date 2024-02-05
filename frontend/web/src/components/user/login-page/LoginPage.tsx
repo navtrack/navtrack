@@ -1,6 +1,5 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/button-old/Button";
 import { Icon } from "../../ui/icon/Icon";
 import { Card } from "../../ui/card/Card";
 import { Link } from "../../ui/link/Link";
@@ -9,7 +8,6 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
 import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { LoadingIndicator } from "../../ui/loading-indicator/LoadingIndicator";
 import { Paths } from "../../../app/Paths";
 import { ExternalLogin } from "./external-login/ExternalLogin";
 import { Alert } from "../../ui/alert/Alert";
@@ -19,6 +17,7 @@ import { InitialLoginFormValues } from "@navtrack/shared/hooks/user/login/LoginF
 import { useMemo } from "react";
 import { AuthenticationErrorType } from "@navtrack/shared/hooks/app/authentication/authentication";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
+import { Button } from "../../ui/button/Button";
 
 export function LoginPage() {
   const login = useLogin();
@@ -84,15 +83,11 @@ export function LoginPage() {
               <div className="pt-2">
                 <Button
                   type="submit"
-                  color="primary"
+                  color="secondary"
                   size="lg"
-                  disabled={login.loading}
-                  fullWidth>
-                  {login.loading ? (
-                    <LoadingIndicator />
-                  ) : (
-                    <FormattedMessage id="login.button" />
-                  )}
+                  loading={login.loading}
+                  full>
+                  <FormattedMessage id="login.button" />
                 </Button>
               </div>
             </Form>

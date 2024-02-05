@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../button-old/Button";
+import { Button } from "../button/Button";
 
 interface IModalActions {
   children?: ReactNode;

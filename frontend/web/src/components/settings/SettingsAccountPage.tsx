@@ -9,7 +9,7 @@ import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { SelectOption } from "../ui/form/select/Select";
 import { UnitsType } from "@navtrack/shared/api/model/generated";
-import { NewButton } from "../ui/button/NewButton";
+import { Button } from "../ui/button/Button";
 import { Card } from "../ui/card/Card";
 import { CardHeader } from "../ui/card/CardHeader";
 import { Heading } from "../ui/heading/Heading";
@@ -111,9 +111,13 @@ export function SettingsAccountPage() {
                 </Skeleton>
               </CardBody>
               <CardFooter className="text-right">
-                <NewButton size="lg" type="submit" disabled={!user}>
+                <Button
+                  size="lg"
+                  type="submit"
+                  disabled={!user}
+                  loading={updateUserMutation.isLoading}>
                   <FormattedMessage id="generic.save" />
-                </NewButton>
+                </Button>
               </CardFooter>
             </Form>
           )}

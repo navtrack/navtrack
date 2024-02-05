@@ -1,12 +1,12 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { Button } from "../button-old/Button";
 import { Modal } from "./Modal";
 import { ModalActions } from "./ModalActions";
 import { ModalBody } from "./ModalBody";
 import { ModalContainer } from "./ModalContainer";
 import { ModalContent } from "./ModalContent";
 import { ModalIcon } from "./ModalIcon";
+import { Button } from "../button/Button";
 
 export default {
   Open: () => {

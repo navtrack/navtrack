@@ -81,6 +81,7 @@ export function useChangePassword() {
 
   return {
     validationSchema,
-    handleSubmit
+    handleSubmit,
+    isLoading: changePasswordMutation.isLoading
   };
 }

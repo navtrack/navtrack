@@ -7,14 +7,14 @@ import {
   ChangePasswordFormValues,
   useChangePassword
 } from "./useChangePassword";
-import { NewButton } from "../ui/button/NewButton";
+import { Button } from "../ui/button/Button";
 import { CardHeader } from "../ui/card/CardHeader";
 import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
 
 export function SettingsPasswordPage() {
-  const { validationSchema, handleSubmit } = useChangePassword();
+  const changePassword = useChangePassword();
 
   return (
     <>
@@ -24,10 +24,8 @@ export function SettingsPasswordPage() {
           password: "",
           confirmPassword: ""
         }}
-        validationSchema={validationSchema}
-        onSubmit={(values, formikHelpers) =>
-          handleSubmit(values, formikHelpers)
-        }>
+        validationSchema={changePassword.validationSchema}
+        onSubmit={changePassword.handleSubmit}>
         {() => (
           <Form>
             <Card>
@@ -62,9 +60,12 @@ export function SettingsPasswordPage() {
                 </div>
               </CardBody>
               <CardFooter className="text-right">
-                <NewButton type="submit" size="lg">
+                <Button
+                  type="submit"
+                  size="lg"
+                  loading={changePassword.isLoading}>
                   <FormattedMessage id="generic.save" />
-                </NewButton>
+                </Button>
               </CardFooter>
             </Card>
           </Form>

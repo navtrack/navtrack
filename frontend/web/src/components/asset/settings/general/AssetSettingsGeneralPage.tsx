@@ -12,7 +12,7 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
-import { NewButton } from "../../../ui/button/NewButton";
+import { Button } from "../../../ui/button/Button";
 
 export function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
@@ -44,12 +44,9 @@ export function AssetSettingsGeneralPage() {
                           label="generic.name"
                           rightAddon={
                             <div className="ml-2 flex items-center">
-                              <NewButton
-                                color="secondary"
-                                type="submit"
-                                size="md">
+                              <Button color="secondary" type="submit" size="md">
                                 <FormattedMessage id="assets.settings.general.rename" />
-                              </NewButton>
+                              </Button>
                               <div className="ml-2 w-4">
                                 {renameAsset.loading && <LoadingIndicator />}
                                 {renameAsset.showSuccess && (
@@ -76,13 +73,13 @@ export function AssetSettingsGeneralPage() {
                 <FormattedMessage id="assets.settings.general.delete-asset.info" />
               </p>
               <div className="mt-4 text-right">
-                <NewButton
-                  color="warn"
+                <Button
+                  color="error"
                   type="submit"
                   size="base"
                   onClick={() => setShowModal(true)}>
                   <FormattedMessage id="assets.settings.general.delete-asset" />
-                </NewButton>
+                </Button>
                 <DeleteAssetModal
                   show={showModal}
                   close={() => setShowModal(false)}

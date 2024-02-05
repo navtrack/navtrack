@@ -1,6 +1,5 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/button-old/Button";
 import { Card } from "../../ui/card/Card";
 import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
 import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
@@ -12,6 +11,7 @@ import { useForgotPassword } from "@navtrack/shared/hooks/user/forgot-password/u
 import { useForgotPasswordFormValidationSchema } from "@navtrack/shared/hooks/user/forgot-password/useForgotPasswordFormValidationSchema";
 import { Link } from "../../ui/link/Link";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
+import { Button } from "../../ui/button/Button";
 
 export function ForgotPasswordPage() {
   const validationSchema = useForgotPasswordFormValidationSchema();
@@ -76,8 +76,8 @@ export function ForgotPasswordPage() {
                       <Button
                         type="submit"
                         size="lg"
-                        disabled={forgotPassword.loading}
-                        fullWidth
+                        color="secondary"
+                        full
                         loading={forgotPassword.loading}>
                         <FormattedMessage id="forgot-password.button" />
                       </Button>

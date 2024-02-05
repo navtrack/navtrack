@@ -7,7 +7,7 @@ import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/useAssetUsers
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
-import { NewButton } from "../../../ui/button/NewButton";
+import { Button } from "../../../ui/button/Button";
 
 export function AssetSettingsAccessPage() {
   const currentAsset = useCurrentAsset();
@@ -26,9 +26,9 @@ export function AssetSettingsAccessPage() {
               <Heading type="h2">
                 <FormattedMessage id="assets.settings.access.manage" />
               </Heading>
-              <NewButton onClick={() => setShowModal(true)}>
+              <Button onClick={() => setShowModal(true)}>
                 <FormattedMessage id="generic.add-user" />
-              </NewButton>
+              </Button>
             </div>
             <UsersTable
               rows={assetUsers.data?.items}

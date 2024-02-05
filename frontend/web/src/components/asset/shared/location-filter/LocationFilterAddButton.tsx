@@ -5,7 +5,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
-import { Button } from "../../../ui/button-old/Button";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -17,6 +16,7 @@ import {
 } from "./state";
 import { LocationFilterAddButtonMenuItem } from "./LocationFilterAddButtonMenuItem";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
+import { Button } from "../../../ui/button/Button";
 
 type LocationFilterAddButtonProps = {
   duration?: boolean;
@@ -54,7 +54,7 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
         <Menu as="div" className="relative order-last inline-block text-left">
           <Menu.Button as={Fragment}>
             <div>
-              <Button color="primary" size="xs">
+              <Button color="secondary" size="xs">
                 <FormattedMessage id="locations.filter.add" />
               </Button>
             </div>

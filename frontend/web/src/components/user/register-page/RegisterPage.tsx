@@ -1,6 +1,5 @@
 import { Formik, Form } from "formik";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../ui/button-old/Button";
 import { Card } from "../../ui/card/Card";
 import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
 import { Link } from "../../ui/link/Link";
@@ -15,6 +14,7 @@ import { useRegisterFormValidationSchema } from "@navtrack/shared/hooks/user/reg
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialRegisterFormValues } from "@navtrack/shared/hooks/user/register/RegisterFormValues";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
+import { Button } from "../../ui/button/Button";
 
 export function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
@@ -86,8 +86,8 @@ export function RegisterPage() {
                   <div className="pt-2">
                     <Button
                       type="submit"
-                      disabled={register.loading}
-                      fullWidth
+                      color="secondary"
+                      full
                       size="lg"
                       loading={register.loading}>
                       <FormattedMessage id="register.button" />

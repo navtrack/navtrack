@@ -1,5 +1,4 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button } from "../../../ui/button-old/Button";
 import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
 import { FormikCustomSelect } from "../../../ui/form/select/FormikCustomSelect";
@@ -17,6 +16,7 @@ import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
+import { Button } from "../../../ui/button/Button";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -133,7 +133,7 @@ export function AssetSettingsDevicePage() {
                         />
                         <div className="text-right">
                           <Button
-                            color="primary"
+                            color="secondary"
                             type="submit"
                             loading={mutation.isLoading}>
                             <FormattedMessage id="generic.save" />

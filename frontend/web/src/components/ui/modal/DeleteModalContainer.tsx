@@ -1,5 +1,4 @@
 import { FormattedMessage } from "react-intl";
-import { Button } from "../button-old/Button";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
 import { ModalContainer } from "./ModalContainer";
@@ -7,15 +6,16 @@ import { ModalContent } from "./ModalContent";
 import { ModalIcon } from "./ModalIcon";
 import { ModalBody } from "./ModalBody";
 import { ModalActions } from "./ModalActions";
+import { Button } from "../button/Button";
 
-interface IDeleteModalContainer {
+type DeleteModalContainerProps = {
   close: () => void;
   onConfirm?: () => void;
   children?: ReactNode;
   loading?: boolean;
-}
+};
 
-export function DeleteModalContainer(props: IDeleteModalContainer) {
+export function DeleteModalContainer(props: DeleteModalContainerProps) {
   return (
     <ModalContainer>
       <ModalContent>
@@ -24,7 +24,7 @@ export function DeleteModalContainer(props: IDeleteModalContainer) {
       </ModalContent>
       <ModalActions close={props.close}>
         <Button
-          color="warn"
+          color="error"
           type="submit"
           onClick={props.onConfirm}
           loading={props.loading}>

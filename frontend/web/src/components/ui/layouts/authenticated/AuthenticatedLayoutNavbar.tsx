@@ -1,4 +1,3 @@
-import { NewButton } from "../../button/NewButton";
 import { Icon } from "../../icon/Icon";
 import {
   faCog,
@@ -19,6 +18,7 @@ import { SlotContext } from "../../../../app/SlotContext";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useAssetAuthorize } from "@navtrack/shared/hooks/assets/useAssetAuthorize";
 import { AssetRoleType } from "@navtrack/shared/api/model/generated";
+import { Button } from "../../button/Button";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
@@ -112,12 +112,9 @@ export function AuthenticatedLayoutNavbar(
         </div>
         <div className="flex items-center space-x-3">
           <Link to={Paths.AssetsAdd}>
-            <NewButton size="md" color="secondary">
-              <div className="flex items-center justify-center">
-                <Icon icon={faPlus} className="mr-2" size="sm" />
-                <FormattedMessage id="generic.new-asset" />
-              </div>
-            </NewButton>
+            <Button size="md" color="white" icon={faPlus}>
+              <FormattedMessage id="generic.new-asset" />
+            </Button>
           </Link>
           {/* <button
             type="button"
