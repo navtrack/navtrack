@@ -18,7 +18,7 @@ export function AuthenticatedLayoutNavbarProfile() {
   return (
     <Menu as="div" className="relative">
       <div>
-        <Menu.Button className="relative flex h-8 w-8 rounded-full bg-white p-2 text-sm text-gray-900 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <Menu.Button className="relative flex h-8 w-8 rounded-full bg-white p-2 text-sm text-gray-900 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2">
           <Icon icon={faUser} size="lg" />
         </Menu.Button>
       </div>

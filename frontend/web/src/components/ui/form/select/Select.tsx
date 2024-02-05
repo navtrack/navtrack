@@ -30,7 +30,7 @@ export function Select(props: SelectProps) {
         <select
           name={props.name}
           className={classNames(
-            "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600",
+            "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-700",
             c(props.error, "ring-red-600"),
             c(props.isLoading, "animate-pulse bg-gray-50"),
             props.className

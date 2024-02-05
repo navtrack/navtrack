@@ -5,7 +5,8 @@ export enum BadgeColor {
   Red,
   Yellow,
   Green,
-  Indigo
+  Indigo,
+  Blue
 }
 
 export type BadgeProps = {
@@ -24,6 +25,8 @@ function getColor(color?: BadgeColor) {
       return "bg-green-50 text-green-700 ring-green-600/20";
     case BadgeColor.Indigo:
       return "bg-indigo-50 text-indigo-700 ring-indigo-700/10";
+    case BadgeColor.Blue:
+      return "bg-blue-50 text-blue-700 ring-blue-700/10";
     default:
       return "bg-gray-50 text-gray-600 ring-gray-500/10";
   }

@@ -31,7 +31,7 @@ export function NewButton(props: ButtonProps) {
         c(props.size === "lg", "rounded-md px-3.5 py-2.5 text-sm"),
         c(
           props.color === undefined || props.color === "primary",
-          "bg-indigo-600 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-500"
+          "bg-blue-700 font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:bg-blue-500"
         ),
 
         c(

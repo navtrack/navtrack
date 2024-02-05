@@ -45,7 +45,7 @@ export function Button(props: ButtonProps) {
         ),
         c(
           props.color === "warn",
-          "border-gray-300 bg-gray-50 text-red-700 hover:border-red-900 hover:bg-red-800 hover:text-white focus:ring-indigo-500"
+          "border-gray-300 bg-gray-50 text-red-700 hover:border-red-900 hover:bg-red-800 hover:text-white focus:ring-red-800"
         ),
         c(!!props.fullWidth, "w-full")
       )}

@@ -14,7 +14,7 @@ export function Link(props: LinkProps) {
       to={props.to}
       className={classNames(
         props.className,
-        "text-indigo-600 hover:text-indigo-900"
+        "text-blue-700 hover:text-blue-800"
       )}>
       <FormattedMessage id={props.label} />
     </RouterLink>

@@ -121,7 +121,7 @@ export function AuthenticatedLayoutNavbar(
           </Link>
           {/* <button
             type="button"
-            className="relative h-8 w-8 rounded-full bg-white p-1 text-gray-900 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            className="relative h-8 w-8 rounded-full bg-white p-1 text-gray-900 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2">
             <Icon icon={faBell} size="lg" />
           </button> */}
           <AuthenticatedLayoutNavbarProfile />
