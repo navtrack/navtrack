@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
-import { durationFilterAtom } from "../state";
-import { DurationFilterFormValues } from "../types";
+import { durationFilterAtom } from "../locationFilterState";
+import { DurationFilterFormValues } from "../locationFilterTypes";
 
 export function useDurationFilter(key: string) {
   const [state, setState] = useRecoilState(durationFilterAtom(key));

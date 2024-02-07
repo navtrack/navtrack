@@ -4,34 +4,23 @@ import { useMemo } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
-import { speedFilterAtom } from "../state";
-import { DEFAULT_MAX_SPEED, DEFAULT_MIN_SPEED } from "../types";
+import { speedFilterAtom } from "../locationFilterState";
 
-interface ISpeedFilterBadge {
+type SpeedFilterBadgeProps = {
   filterKey: string;
-}
+};
 
-export function SpeedFilterBadge(props: ISpeedFilterBadge) {
+export function SpeedFilterBadge(props: SpeedFilterBadgeProps) {
   const [state, setState] = useRecoilState(speedFilterAtom(props.filterKey));
   const reset = useResetRecoilState(speedFilterAtom(props.filterKey));
   const units = useCurrentUnits();
 
   const text = useMemo(() => {
-    if (
-      (state.minSpeed !== DEFAULT_MIN_SPEED &&
-        state.maxSpeed !== DEFAULT_MAX_SPEED) ||
-      (state.minSpeed === DEFAULT_MIN_SPEED &&
-        state.maxSpeed === DEFAULT_MAX_SPEED)
-    ) {
+    if (state.minSpeed !== undefined && state.maxSpeed !== undefined) {
       return `${state.minSpeed} - ${state.maxSpeed} (${units.speed})`;
-    } else if (
-      state.minSpeed !== DEFAULT_MIN_SPEED &&
-      state.maxSpeed !== DEFAULT_MAX_SPEED
-    ) {
-      return `${state.minSpeed} - ${state.maxSpeed} (${units.speed})`;
-    } else if (state.minSpeed) {
+    } else if (state.minSpeed !== undefined) {
       return `> ${state.minSpeed} (${units.speed})`;
-    } else if (state.maxSpeed) {
+    } else if (state.maxSpeed !== undefined) {
       return `< ${state.maxSpeed} (${units.speed})`;
     }
   }, [state.maxSpeed, state.minSpeed, units.speed]);

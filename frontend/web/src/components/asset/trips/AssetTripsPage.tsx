@@ -17,6 +17,7 @@ import {
 } from "./tripsState";
 import { TripsTable } from "./TripsTable";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
+import { MapContainer } from "../../ui/map/MapContainer";
 
 export function AssetTripsPage() {
   const selectedTrip = useRecoilValue(selectedTripSelector);
@@ -48,17 +49,13 @@ export function AssetTripsPage() {
               </div>
             </div>
             <div className="flex" style={{ flexBasis: 0 }}>
-              <div className="flex flex-grow bg-white  px-3">
+              <div className="flex flex-grow bg-white px-3">
                 <Slider
                   step={1}
-                  marks
                   min={1}
                   max={selectedTrip?.positions.length}
-                  displayValueLabel="auto"
                   value={selectedTripLocationIndex}
-                  onChange={(_, index) => {
-                    setSelectedTripLocationIndex(index as number);
-                  }}
+                  onChange={(value) => setSelectedTripLocationIndex(value)}
                   onMouseDown={() => {
                     if (!showPin) {
                       setShowPin(true);
@@ -71,8 +68,8 @@ export function AssetTripsPage() {
               <LocationBar location={selectedTripLocation} />
             </div>
           </Card>
-          <div className="flex" style={{ flexGrow: 2, minHeight: "200px" }}>
-            <div className="flex flex-grow rounded-lg bg-white shadow">
+          <Card className="flex flex-grow">
+            <MapContainer style={{ flexGrow: 2, minHeight: "200px" }}>
               <Map
                 center={{
                   latitude: selectedTrip.startPosition.latitude,
@@ -87,8 +84,8 @@ export function AssetTripsPage() {
                   />
                 )}
               </Map>
-            </div>
-          </div>
+            </MapContainer>
+          </Card>
         </>
       )}
     </>

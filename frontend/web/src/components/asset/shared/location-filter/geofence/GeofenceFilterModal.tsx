@@ -9,12 +9,12 @@ import { Modal } from "../../../../ui/modal/Modal";
 import { FilterModal } from "../FilterModal";
 import { useGeofenceFilter } from "./useGeofenceFilter";
 
-interface IGeofenceFilterModal {
+type GeofenceFilterModalProps = {
   initialMapCenter?: LongLat;
   filterKey: string;
-}
+};
 
-export function GeofenceFilterModal(props: IGeofenceFilterModal) {
+export function GeofenceFilterModal(props: GeofenceFilterModalProps) {
   const {
     state,
     handleSubmit,

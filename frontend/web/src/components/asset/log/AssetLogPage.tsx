@@ -7,9 +7,11 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { usePositionsQuery } from "@navtrack/shared/hooks/queries/usePositionsQuery";
 import { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { locationFiltersSelector } from "../shared/location-filter/state";
+import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
+import { MapContainer } from "../../ui/map/MapContainer";
+import { Card } from "../../ui/card/Card";
 
 export function AssetLogPage() {
   const currentAsset = useCurrentAsset();
@@ -91,8 +93,8 @@ export function AssetLogPage() {
         setSelectedPositionIndex={setSelectedPositionIndex}
         positionElements={locationElements}
       />
-      <div className="flex flex-grow" style={{ flexBasis: 0 }}>
-        <div className="flex flex-grow rounded-lg bg-white shadow">
+      <Card className="flex flex-grow">
+        <MapContainer>
           <Map
             center={
               position
@@ -105,8 +107,8 @@ export function AssetLogPage() {
             initialZoom={16}>
             <MapPin position={position} follow />
           </Map>
-        </div>
-      </div>
+        </MapContainer>
+      </Card>
     </>
   );
 }

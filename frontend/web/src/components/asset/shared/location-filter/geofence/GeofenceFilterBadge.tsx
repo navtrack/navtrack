@@ -2,13 +2,13 @@ import { faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
-import { geofenceFilterAtom } from "../state";
+import { geofenceFilterAtom } from "../locationFilterState";
 
-interface IGeofenceFilterBadge {
+type GeofenceFilterBadgeProps = {
   filterKey: string;
-}
+};
 
-export function GeofenceFilterBadge(props: IGeofenceFilterBadge) {
+export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
   const [state, setState] = useRecoilState(geofenceFilterAtom(props.filterKey));
   const reset = useResetRecoilState(geofenceFilterAtom(props.filterKey));
 

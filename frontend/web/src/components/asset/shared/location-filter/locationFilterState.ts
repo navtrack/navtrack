@@ -8,7 +8,7 @@ import {
   DurationFilter,
   LocationFilterType,
   SpeedFilter
-} from "./types";
+} from "./locationFilterTypes";
 
 export const altitudeFilterAtom = atomFamily<AltitudeFilter, string>({
   key: "Log:Filter:Altitude",
@@ -46,7 +46,7 @@ export const dateFilterAtom = atomFamily<DateFilter, string>({
   key: "Log:Filter:Date",
   default: {
     startDate: subDays(new Date(), 28),
-    endDate: undefined,
+    endDate: new Date(),
     range: DateRange.Last28Days,
     open: false
   }
@@ -83,7 +83,9 @@ export const locationFiltersSelector = selectorFamily({
       const date = get(dateFilterAtom(key));
 
       return {
-        startDate: date.startDate ? format(date.startDate, "yyyy-MM-dd") : undefined,
+        startDate: date.startDate
+          ? format(date.startDate, "yyyy-MM-dd")
+          : undefined,
         endDate: date.endDate ? format(date.endDate, "yyyy-MM-dd") : undefined,
         minAltitude: altitude?.enabled ? altitude.minAltitude : undefined,
         maxAltitude: altitude?.enabled ? altitude.maxAltitude : undefined,

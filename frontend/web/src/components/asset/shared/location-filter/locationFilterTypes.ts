@@ -25,8 +25,8 @@ type FilterOptions = {
 };
 
 export type DateFilter = {
-  startDate?: Date;
-  endDate?: Date;
+  startDate: Date;
+  endDate: Date;
   range: DateRange;
   open: boolean;
 };
@@ -38,9 +38,6 @@ export type CircleGeofenceFilter = FilterOptions & {
     zoom: number;
   };
 };
-
-export const DEFAULT_MIN_SPEED = 0;
-export const DEFAULT_MAX_SPEED = 500;
 
 export type SpeedFilter = FilterOptions & {
   minSpeed?: number;
@@ -58,8 +55,8 @@ export type AltitudeFilter = FilterOptions & {
 };
 
 export type AltitudeFilterFormValues = {
-  minAltitude: string;
-  maxAltitude: string;
+  minAltitude?: string;
+  maxAltitude?: string;
 };
 
 export type DurationFilter = FilterOptions & {

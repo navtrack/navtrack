@@ -4,13 +4,13 @@ import { useIntl } from "react-intl";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
-import { durationFilterAtom } from "../state";
+import { durationFilterAtom } from "../locationFilterState";
 
-interface IDurationFilterBadge {
+type DurationFilterBadgeProps = {
   filterKey: string;
-}
+};
 
-export function DurationFilterBadge(props: IDurationFilterBadge) {
+export function DurationFilterBadge(props: DurationFilterBadgeProps) {
   const [state, setState] = useRecoilState(durationFilterAtom(props.filterKey));
   const reset = useResetRecoilState(durationFilterAtom(props.filterKey));
   const intl = useIntl();

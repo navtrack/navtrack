@@ -13,7 +13,7 @@ import {
   filtersEnabledSelector,
   speedFilterAtom,
   durationFilterAtom
-} from "./state";
+} from "./locationFilterState";
 import { LocationFilterAddButtonMenuItem } from "./LocationFilterAddButtonMenuItem";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "../../../ui/button/Button";

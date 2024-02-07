@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
-import { altitudeFilterAtom } from "../state";
-import { AltitudeFilterFormValues } from "../types";
+import { altitudeFilterAtom } from "../locationFilterState";
+import { AltitudeFilterFormValues } from "../locationFilterTypes";
 
 export function useAltitudeFilter(key: string) {
   const [state, setState] = useRecoilState(altitudeFilterAtom(key));
@@ -16,12 +16,24 @@ export function useAltitudeFilter(key: string) {
 
   const handleSubmit = useCallback(
     (values: AltitudeFilterFormValues) => {
-      const minAltitude = parseInt(values.minAltitude);
-      const maxAltitude = parseInt(values.maxAltitude);
+      const minAltitude =
+        values.minAltitude !== undefined
+          ? parseInt(values.minAltitude)
+          : undefined;
+      const maxAltitude =
+        values.maxAltitude !== undefined
+          ? parseInt(values.maxAltitude)
+          : undefined;
       setState((x) => ({
         ...x,
-        minAltitude: isNaN(minAltitude) ? undefined : minAltitude,
-        maxAltitude: isNaN(maxAltitude) ? undefined : maxAltitude,
+        minAltitude:
+          minAltitude !== undefined && isNaN(minAltitude)
+            ? undefined
+            : minAltitude,
+        maxAltitude:
+          maxAltitude !== undefined && isNaN(maxAltitude)
+            ? undefined
+            : maxAltitude,
         enabled: !!values.minAltitude || !!values.maxAltitude,
         open: false
       }));

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
-import { altitudeFilterAtom } from "../state";
+import { altitudeFilterAtom } from "../locationFilterState";
 
 interface IAltitudeFilterBadge {
   filterKey: string;

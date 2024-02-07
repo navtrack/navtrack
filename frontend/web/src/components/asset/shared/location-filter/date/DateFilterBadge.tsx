@@ -2,18 +2,18 @@ import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import { useMemo } from "react";
 import { FilterBadge } from "../FilterBadge";
-import { dateFilterAtom } from "../state";
-import { DateRange } from "../types";
+import { dateFilterAtom } from "../locationFilterState";
+import { DateRange } from "../locationFilterTypes";
 import { useRecoilState } from "recoil";
 import { useIntl } from "react-intl";
-import { dateOptions } from "./date-options";
+import { dateOptions } from "./dateOptions";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 
-interface IDateFilterBadge {
+type DateFilterBadgeProps = {
   filterKey: string;
-}
+};
 
-export function DateFilterBadge(props: IDateFilterBadge) {
+export function DateFilterBadge(props: DateFilterBadgeProps) {
   const [state, setState] = useRecoilState(dateFilterAtom(props.filterKey));
   const intl = useIntl();
 

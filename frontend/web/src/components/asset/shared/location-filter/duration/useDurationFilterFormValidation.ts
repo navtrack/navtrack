@@ -1,8 +1,8 @@
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
-import { DurationFilterFormValues } from "../types";
+import { DurationFilterFormValues } from "../locationFilterTypes";
 
-export const useDurationFilterFormValuesValidation = () => {
+export const useDurationFilterFormValidation = () => {
   const intl = useIntl();
 
   const validationSchema: ObjectSchema<DurationFilterFormValues> = object({

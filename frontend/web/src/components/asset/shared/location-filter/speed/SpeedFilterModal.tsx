@@ -3,29 +3,22 @@ import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
 import { FormikTextInput } from "../../../../ui/form/text-input/FormikTextInput";
 import { Modal } from "../../../../ui/modal/Modal";
-import { Slider } from "../../../../ui/slider/Slider";
 import { TextInputRightAddon } from "../../../../ui/form/text-input/TextInputRightAddon";
 import { FilterModal } from "../FilterModal";
-import { DEFAULT_MAX_SPEED, SpeedFilterFormValues } from "../types";
+import { SpeedFilterFormValues } from "../locationFilterTypes";
 import { useSpeedFilter } from "./useSpeedFilter";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 
-interface ISpeedFilterModal {
+type SpeedFilterModalProps = {
   average?: boolean;
   filterKey: string;
-}
+};
 
-export function SpeedFilterModal(props: ISpeedFilterModal) {
+export function SpeedFilterModal(props: SpeedFilterModalProps) {
   const units = useCurrentUnits();
-  const {
-    handleSubmit,
-    getSliderValue,
-    close,
-    handleChange,
-    state,
-    initialValues
-  } = useSpeedFilter(props.filterKey);
+  const { handleSubmit, close, handleChange, state, initialValues } =
+    useSpeedFilter(props.filterKey);
 
   return (
     <Modal open={state.open} close={close}>
@@ -48,22 +41,6 @@ export function SpeedFilterModal(props: ISpeedFilterModal) {
                 />
               </h3>
               <div className="mt-2">
-                <Slider
-                  value={getSliderValue(values)}
-                  max={DEFAULT_MAX_SPEED} // TODO: get max speed from current asset
-                  onChange={(_, speed) => {
-                    if (Array.isArray(speed)) {
-                      setFieldValue(
-                        nameOf<SpeedFilterFormValues>("minSpeed"),
-                        speed[0]
-                      );
-                      setFieldValue(
-                        nameOf<SpeedFilterFormValues>("maxSpeed"),
-                        speed[1]
-                      );
-                    }
-                  }}
-                />
                 <div className="flex space-x-4">
                   <FormikTextInput
                     name={nameOf<SpeedFilterFormValues>("minSpeed")}

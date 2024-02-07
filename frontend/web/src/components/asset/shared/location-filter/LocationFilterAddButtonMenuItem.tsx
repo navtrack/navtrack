@@ -2,14 +2,14 @@ import { FormattedMessage } from "react-intl";
 import { IconWithText } from "../../../ui/icon/IconWithText";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-interface ILocationFilterAddButtonMenuItem {
+type LocationFilterAddButtonMenuItemProps = {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
   icon: IconProp;
   labelId: string;
-}
+};
 
 export function LocationFilterAddButtonMenuItem(
-  props: ILocationFilterAddButtonMenuItem
+  props: LocationFilterAddButtonMenuItemProps
 ) {
   return (
     <span

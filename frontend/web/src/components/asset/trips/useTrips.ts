@@ -1,7 +1,7 @@
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useCallback, useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { locationFiltersSelector } from "../shared/location-filter/state";
+import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import {
   selectedTripIndexAtom,

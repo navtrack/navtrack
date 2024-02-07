@@ -1,4 +1,4 @@
-import styled from "@mui/styled-engine";
+import styled from "@emotion/styled";
 import { ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { LongLat } from "./types";

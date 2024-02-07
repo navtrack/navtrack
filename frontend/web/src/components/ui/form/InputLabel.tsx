@@ -1,4 +1,4 @@
-export type InputLabelProps = {
+type InputLabelProps = {
   label?: string;
   name?: string;
 };

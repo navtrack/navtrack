@@ -6,7 +6,10 @@ export type LocationFilterPage = "trips" | "log";
 export const useLocationFilterKey = (page: LocationFilterPage) => {
   const currentAsset = useCurrentAsset();
 
-  const key = useMemo(() => `${page}:${currentAsset}`, [currentAsset, page]);
+  const key = useMemo(
+    () => `${page}:${currentAsset.data?.id}`,
+    [currentAsset, page]
+  );
 
   return key;
 };

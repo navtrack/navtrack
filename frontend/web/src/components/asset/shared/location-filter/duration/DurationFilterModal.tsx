@@ -5,19 +5,19 @@ import { FormikTextInput } from "../../../../ui/form/text-input/FormikTextInput"
 import { Modal } from "../../../../ui/modal/Modal";
 import { TextInputRightAddon } from "../../../../ui/form/text-input/TextInputRightAddon";
 import { FilterModal } from "../FilterModal";
-import { DurationFilterFormValues } from "../types";
+import { DurationFilterFormValues } from "../locationFilterTypes";
 import { useDurationFilter } from "./useDurationFilter";
-import { useDurationFilterFormValuesValidation } from "./useDurationFilterFormValuesValidation";
+import { useDurationFilterFormValidation } from "./useDurationFilterFormValidation";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 
-interface IDurationFilterModal {
+type DurationFilterModalProps = {
   filterKey: string;
-}
+};
 
-export function DurationFilterModal(props: IDurationFilterModal) {
+export function DurationFilterModal(props: DurationFilterModalProps) {
   const units = useCurrentUnits();
-  const validationSchema = useDurationFilterFormValuesValidation();
+  const validationSchema = useDurationFilterFormValidation();
   const { initialValues, state, close, handleSubmit } = useDurationFilter(
     props.filterKey
   );

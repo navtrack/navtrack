@@ -3,20 +3,39 @@ import { RadioGroup } from "@headlessui/react";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { Form, Formik } from "formik";
 import { FormattedMessage } from "react-intl";
-import { DatePicker } from "../../../../ui/date-picker/DatePicker";
 import { Modal } from "../../../../ui/modal/Modal";
 import { FilterModal } from "../FilterModal";
-import { DateFilter, DateRange } from "../types";
-import { dateOptions } from "./date-options";
-import { useDateFilter } from "./useDateFilter";
+import { DateFilter, DateRange } from "../locationFilterTypes";
+import { dateOptions } from "./dateOptions";
 import { classNames } from "@navtrack/shared/utils/tailwind";
+import { FormikDatePicker } from "../../../../ui/datepicker/FormikDatePicker";
+import { useCallback } from "react";
+import { useRecoilState } from "recoil";
+import { dateFilterAtom } from "../locationFilterState";
 
 type DateFilterModalProps = {
   filterKey: string;
 };
 
 export function DateFilterModal(props: DateFilterModalProps) {
-  const { state, close, handleSubmit } = useDateFilter(props);
+  const [state, setState] = useRecoilState(dateFilterAtom(props.filterKey));
+
+  const close = useCallback(
+    () => setState((x) => ({ ...x, open: false })),
+    [setState]
+  );
+
+  const handleSubmit = useCallback(
+    (values: DateFilter) => {
+      setState((x) => ({
+        startDate: values.startDate,
+        endDate: values.endDate,
+        range: values.range,
+        open: false
+      }));
+    },
+    [setState]
+  );
 
   return (
     <Modal open={state.open} close={close}>
@@ -31,9 +50,27 @@ export function DateFilterModal(props: DateFilterModalProps) {
                 <div className="inline-block">
                   <RadioGroup
                     value={values.range}
-                    onChange={(range) =>
-                      setFieldValue(nameOf<DateFilter>("range"), range)
-                    }
+                    onChange={(range) => {
+                      setFieldValue(nameOf<DateFilter>("range"), range);
+
+                      const dateOption = dateOptions.find(
+                        (x) => x.range === range
+                      );
+
+                      if (
+                        dateOption !== undefined &&
+                        dateOption?.range !== DateRange.Custom
+                      ) {
+                        setFieldValue(
+                          nameOf<DateFilter>("startDate"),
+                          dateOption.startDate
+                        );
+                        setFieldValue(
+                          nameOf<DateFilter>("endDate"),
+                          dateOption.endDate
+                        );
+                      }
+                    }}
                     className="flex w-40 flex-col -space-y-px rounded-md bg-white">
                     {dateOptions.map((setting, settingIdx) => (
                       <RadioGroup.Option
@@ -79,30 +116,36 @@ export function DateFilterModal(props: DateFilterModalProps) {
                     ))}
                   </RadioGroup>
                 </div>
-                <div className="flex gap-x-4">
-                  <DatePicker
-                    value={values.startDate ?? new Date()}
-                    disabled={values.range !== DateRange.Custom}
+                <div className="mt-2 flex gap-x-4">
+                  <FormikDatePicker
+                    name={nameOf<DateFilter>("startDate")}
+                    label="generic.from"
+                    key={`startDate-${values.startDate?.toString()}`}
                     onChange={(date) => {
-                      if (date) {
-                        setFieldValue(nameOf<DateFilter>("startDate"), date);
-
-                        if (
-                          values.startDate !== undefined &&
-                          date > values.startDate
-                        ) {
-                          setFieldValue(nameOf<DateFilter>("endDate"), date);
-                        }
+                      setFieldValue(
+                        nameOf<DateFilter>("range"),
+                        DateRange.Custom
+                      );
+                      setFieldValue(nameOf<DateFilter>("startDate"), date);
+                      if (
+                        values.startDate !== undefined &&
+                        date > values.startDate
+                      ) {
+                        setFieldValue(nameOf<DateFilter>("endDate"), date);
                       }
                     }}
                   />
-                  <DatePicker
-                    value={values.endDate ?? new Date()}
-                    disabled={values.range !== DateRange.Custom}
+                  <FormikDatePicker
+                    name={nameOf<DateFilter>("endDate")}
+                    label="generic.to"
+                    key={`endDate-${values.endDate?.toString()}`}
                     onChange={(date) => {
                       if (date) {
+                        setFieldValue(
+                          nameOf<DateFilter>("range"),
+                          DateRange.Custom
+                        );
                         setFieldValue(nameOf<DateFilter>("endDate"), date);
-
                         if (
                           values.startDate !== undefined &&
                           date < values.startDate

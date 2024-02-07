@@ -4,6 +4,7 @@ import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
 import { LocationBar } from "../shared/location-bar/LocationBar";
 import { MapPin } from "../../ui/map/MapPin";
+import { MapContainer } from "../../ui/map/MapContainer";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
@@ -17,9 +18,11 @@ export function AssetLiveTrackingPage() {
             <LocationBar location={location} />
           </Card>
           <Card className="flex flex-grow">
-            <Map center={{ ...location }}>
-              <MapPin position={{ ...location }} follow />
-            </Map>
+            <MapContainer>
+              <Map center={{ ...location }}>
+                <MapPin position={{ ...location }} follow />
+              </Map>
+            </MapContainer>
           </Card>
         </>
       ) : (

@@ -6,14 +6,12 @@
     "@azure/msal-browser": "^2.21.0",
     "@azure/msal-react": "^1.5.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.14.5",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@geoman-io/leaflet-geoman-free": "^2.11.4",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.0.12",
     "@maplibre/maplibre-gl-leaflet": "^0.0.20",
-    "@mui/lab": "^5.0.0-alpha.122",
-    "@mui/material": "^5.11.12",
     "@popperjs/core": "^2.11.0",
     "@react-oauth/google": "^0.11.0",
     "@sentry/react": "^7.41.0",
@@ -22,6 +20,8 @@
     "@types/leaflet": "^1.7.6",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.0.0",
+    "flowbite": "^2.2.1",
+    "flowbite-react": "^0.7.2",
     "google-auth-library": "^8.7.0",
     "leaflet": "^1.9.2",
     "react-apple-signin-auth": "^1.0.4",
@@ -38,7 +38,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "cosmos": "cosmos",
-    "cosmos:export": "cosmos-export"
+    "cosmos:export": "cosmos-export",
+    "watch": "tsc --noEmit --watch"
   },
   "browserslist": [
     "defaults"

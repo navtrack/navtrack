@@ -21,8 +21,8 @@ export function SettingsMenuItem(props: SettingsMenuItemProps) {
             className={classNames(
               c(
                 isActive,
-                "bg-gray-50 text-blue-700",
-                "text-gray-900 hover:bg-gray-50 hover:text-blue-700"
+                "bg-gray-50 text-gray-900",
+                "text-gray-900 hover:bg-gray-50 hover:text-gray-900"
               ),
               "group flex cursor-pointer items-center rounded-md px-3 py-3 text-sm font-medium"
             )}>
@@ -31,8 +31,8 @@ export function SettingsMenuItem(props: SettingsMenuItemProps) {
               className={classNames(
                 c(
                   isActive,
-                  "text-blue-700 group-hover:text-blue-700",
-                  "text-gray-500 group-hover:text-blue-700"
+                  "text-gray-900 group-hover:text-gray-900",
+                  "text-gray-500 group-hover:text-gray-900"
                 ),
                 "-ml-1 mr-3 h-6 w-6 flex-shrink-0"
               )}

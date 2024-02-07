@@ -1,41 +1,16 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
-import { speedFilterAtom } from "../state";
-import {
-  DEFAULT_MAX_SPEED,
-  DEFAULT_MIN_SPEED,
-  SpeedFilterFormValues
-} from "../types";
+import { speedFilterAtom } from "../locationFilterState";
+import { SpeedFilterFormValues } from "../locationFilterTypes";
+import { isNumeric } from "@navtrack/shared/utils/numbers";
 
 export function useSpeedFilter(key: string) {
   const [state, setState] = useRecoilState(speedFilterAtom(key));
 
-  const isValidNumber = useCallback((newValue: string) => {
-    const value = newValue as unknown as number;
-
-    return value >= DEFAULT_MIN_SPEED && value <= DEFAULT_MAX_SPEED;
-  }, []);
-
-  const getSliderValue = useCallback((values: SpeedFilterFormValues) => {
-    const minSpeed = parseInt(values.minSpeed);
-    const maxSpeed = parseInt(values.maxSpeed);
-
-    return [
-      isNaN(minSpeed) ? DEFAULT_MIN_SPEED : minSpeed,
-      isNaN(maxSpeed) ? DEFAULT_MAX_SPEED : maxSpeed
-    ];
-  }, []);
-
   const initialValues = useMemo(
     () => ({
-      minSpeed:
-        state.minSpeed === undefined
-          ? `${DEFAULT_MIN_SPEED}`
-          : `${state.minSpeed}`,
-      maxSpeed:
-        state.maxSpeed === undefined
-          ? `${DEFAULT_MAX_SPEED}`
-          : `${state.maxSpeed}`
+      minSpeed: state.minSpeed === undefined ? `` : `${state.minSpeed}`,
+      maxSpeed: state.maxSpeed === undefined ? `` : `${state.maxSpeed}`
     }),
     [state.maxSpeed, state.minSpeed]
   );
@@ -70,15 +45,14 @@ export function useSpeedFilter(key: string) {
         shouldValidate?: boolean | undefined
       ) => void
     ) => {
-      if (isValidNumber(e.target.value)) {
+      if (isNumeric(e.target.value)) {
         setFieldValue(field, e.target.value);
       }
     },
-    [isValidNumber]
+    []
   );
 
   return {
-    getSliderValue,
     handleSubmit,
     close,
     handleChange,

@@ -3,7 +3,7 @@ import { DatePicker } from "./DatePicker";
 
 export default {
   Default: () => {
-    const [value, setValue] = useState<Date | null>(new Date());
+    const [value, setValue] = useState(new Date());
 
     return <DatePicker value={value} onChange={setValue} />;
   }
