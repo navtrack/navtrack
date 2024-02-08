@@ -56,7 +56,7 @@ public class DeviceService(
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();
 
-        if (asset.Device.DeviceTypeId == model.DeviceTypeId && asset.Device.SerialNumber == model.SerialNumber)
+        if (asset.Device?.DeviceTypeId == model.DeviceTypeId && asset.Device.SerialNumber == model.SerialNumber)
         {
             return;
         }

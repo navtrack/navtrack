@@ -4,12 +4,12 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { DeviceModel } from "./deviceModel";
+import type { AssetModelDevice } from "./assetModelDevice";
 import type { AssetModelPosition } from "./assetModelPosition";
 import type { AssetUserRoleModel } from "./assetUserRoleModel";
 
 export interface AssetModel {
-  device: DeviceModel;
+  device?: AssetModelDevice;
   id: string;
   maxSpeed: number;
   name: string;

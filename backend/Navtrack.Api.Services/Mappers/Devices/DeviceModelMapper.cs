@@ -14,19 +14,24 @@ public static class DeviceModelMapper
             Id = deviceDocument.Id.ToString(),
             SerialNumber = deviceDocument.SerialNumber,
             DeviceType = DeviceTypeModelMapper.Map(deviceType),
-            Active = assetDocument.Device.Id == deviceDocument.Id,
+            Active = assetDocument.Device?.Id == deviceDocument.Id,
             Positions = locationCount
         };
     }
 
-    public static DeviceModel Map(AssetDocument asset, DeviceType deviceType)
+    public static DeviceModel? Map(AssetDocument asset, DeviceType? deviceType)
     {
-        return new DeviceModel
+        if (asset.Device != null && deviceType != null)
         {
-            Id = asset.Device.Id.ToString(),
-            SerialNumber = asset.Device.SerialNumber,
-            DeviceType = DeviceTypeModelMapper.Map(deviceType),
-            Active = true
-        };
+            return new DeviceModel
+            {
+                Id = asset.Device.Id.ToString(),
+                SerialNumber = asset.Device.SerialNumber,
+                DeviceType = DeviceTypeModelMapper.Map(deviceType),
+                Active = true
+            };
+        }
+
+        return null;
     }
 }

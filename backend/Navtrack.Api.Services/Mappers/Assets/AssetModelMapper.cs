@@ -12,7 +12,7 @@ namespace Navtrack.Api.Services.Mappers.Assets;
 
 public static class AssetModelMapper
 {
-    public static AssetModel Map(UserDocument currentUser, AssetDocument asset, DeviceType deviceType,
+    public static AssetModel Map(UserDocument currentUser, AssetDocument asset, DeviceType? deviceType,
         AssetModel? destination = null)
     {
         bool isOwner = AssetAuthorize.UserHasAssetRole(currentUser, asset.Id.ToString(), AssetRoleType.Owner);

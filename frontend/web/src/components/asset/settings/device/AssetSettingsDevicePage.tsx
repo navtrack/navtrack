@@ -70,12 +70,12 @@ export function AssetSettingsDevicePage() {
     if (!selectedDeviceType) {
       setSelectedDeviceType(
         deviceTypes.find(
-          (x) => x.id === currentAsset.data?.device.deviceType.id
+          (x) => x.id === currentAsset.data?.device?.deviceType.id
         )
       );
     }
   }, [
-    currentAsset.data?.device.deviceType.id,
+    currentAsset.data?.device?.deviceType?.id,
     deviceTypes,
     selectedDeviceType
   ]);
@@ -91,7 +91,7 @@ export function AssetSettingsDevicePage() {
 
   return (
     <>
-      {currentAsset.data && deviceTypes && (
+      {currentAsset.data?.device && deviceTypes && (
         <Card>
           <CardBody>
             <Heading type="h2">
@@ -101,8 +101,8 @@ export function AssetSettingsDevicePage() {
               <div className="col-span-3">
                 <Formik<ChangeDeviceFormValues>
                   initialValues={{
-                    serialNumber: currentAsset.data.device.serialNumber,
-                    deviceTypeId: currentAsset.data.device.deviceType.id
+                    serialNumber: currentAsset.data.device?.serialNumber,
+                    deviceTypeId: currentAsset.data.device?.deviceType.id
                   }}
                   validationSchema={validationSchema}
                   enableReinitialize

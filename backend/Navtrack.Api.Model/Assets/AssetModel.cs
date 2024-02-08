@@ -21,8 +21,7 @@ public class AssetModel
 
     public PositionModel? Position { get; set; }
 
-    [Required]
-    public DeviceModel Device { get; set; }
+    public DeviceModel? Device { get; set; }
 
     public IEnumerable<AssetUserRoleModel>? UserRoles { get; set; }
 }

@@ -54,3 +54,4 @@ export * from "./updateUserModel";
 export * from "./updateUserModelUnitsType";
 export * from "./userAssetRoleModel";
 export * from "./userModel";
+export * from "./assetModelDevice";

@@ -17,7 +17,7 @@ public class AssetDocument : BaseDocument
     public AuditElement Created { get; set; }
 
     [BsonElement("device")]
-    public AssetDeviceElement Device { get; set; }
+    public AssetDeviceElement? Device { get; set; }
 
     [BsonElement("position")]
     public PositionElement? Position { get; set; }

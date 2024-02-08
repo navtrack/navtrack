@@ -1251,8 +1251,7 @@
           "id",
           "name",
           "online",
-          "maxSpeed",
-          "device"
+          "maxSpeed"
         ],
         "properties": {
           "id": {
@@ -1279,7 +1278,12 @@
             ]
           },
           "device": {
-            "$ref": "#/components/schemas/DeviceModel"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DeviceModel"
+              }
+            ]
           },
           "userRoles": {
             "type": "array",
