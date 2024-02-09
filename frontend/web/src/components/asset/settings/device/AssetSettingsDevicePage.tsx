@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
-import { FormikCustomSelect } from "../../../ui/form/select/FormikCustomSelect";
+import { FormikAutocomplete } from "../../../ui/form/autocomplete/FormikAutocomplete";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { DeviceConfiguration } from "../../add/DeviceConfiguration";
 import { DevicesTable } from "./DevicesTable";
@@ -112,7 +112,7 @@ export function AssetSettingsDevicePage() {
                   {() => (
                     <Form>
                       <div className="col-span-3 space-y-3">
-                        <FormikCustomSelect
+                        <FormikAutocomplete
                           name="deviceTypeId"
                           label="generic.device-type"
                           placeholder="Select a device type"

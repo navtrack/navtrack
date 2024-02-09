@@ -55,9 +55,16 @@ export function Button(props: ButtonProps) {
         c(props.full, "w-full")
       )}>
       <div className="flex items-center justify-center">
-        {props.loading && <NtwLoadingIndicator className="mr-2" />}
+        {props.loading && (
+          <NtwLoadingIndicator
+            className={props.children !== undefined ? "mr-2" : undefined}
+          />
+        )}
         {props.icon && !props.loading && (
-          <Icon icon={props.icon} className="mr-2" />
+          <Icon
+            icon={props.icon}
+            className={props.children !== undefined ? "mr-2" : undefined}
+          />
         )}
         {props.children}
       </div>

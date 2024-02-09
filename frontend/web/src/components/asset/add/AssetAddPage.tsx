@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
 import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
-import { FormikCustomSelect } from "../../ui/form/select/FormikCustomSelect";
+import { FormikAutocomplete } from "../../ui/form/autocomplete/FormikAutocomplete";
 import { generatePath, useNavigate } from "react-router-dom";
 import { DeviceConfiguration } from "./DeviceConfiguration";
 import { useContext, useState } from "react";
@@ -74,7 +74,7 @@ export function AssetAddPage() {
                       label="generic.name"
                       placeholder="assets.add.name.placeholder"
                     />
-                    <FormikCustomSelect
+                    <FormikAutocomplete
                       name="deviceTypeId"
                       label="generic.device-type"
                       placeholder="Select a device type"

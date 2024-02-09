@@ -244,6 +244,6 @@
   "shared.delete-modal.title": "Delete confirmation",
   "sidebar.assets": "Assets",
   "sidebar.no-assets": "No assets, please add one.",
-  "ui.select.no-items": "No items found.",
+  "ui.autocomplete.no-items": "No items found.",
   "ui.table.no-items": "No items."
 }

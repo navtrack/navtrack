@@ -9,10 +9,7 @@ type ModalContainerProps = {
 export function ModalContainer(props: ModalContainerProps) {
   return (
     <div
-      className={classNames(
-        "overflow-hidden rounded-md bg-white",
-        props.className
-      )}>
+      className={classNames("overflow rounded-md bg-white", props.className)}>
       {props.children}
     </div>
   );

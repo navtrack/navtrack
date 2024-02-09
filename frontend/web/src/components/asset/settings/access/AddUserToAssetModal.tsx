@@ -9,11 +9,11 @@ import { ModalBody } from "../../../ui/modal/ModalBody";
 import { ModalContainer } from "../../../ui/modal/ModalContainer";
 import { ModalContent } from "../../../ui/modal/ModalContent";
 import { ModalIcon } from "../../../ui/modal/ModalIcon";
-import { FormikCustomSelect } from "../../../ui/form/select/FormikCustomSelect";
 import { AddUserToAssetFormValues } from "./types";
 import { useAddUserToAsset } from "./useAddUserToAsset";
 import { AssetRoleType } from "@navtrack/shared/api/model/generated";
 import { Button } from "../../../ui/button/Button";
+import { FormikSelect } from "../../../ui/form/select/FormikSelect";
 
 type AddUserToAssetModalProps = {
   show: boolean;
@@ -65,7 +65,7 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
                       label="generic.email"
                       autoComplete="off"
                     />
-                    <FormikCustomSelect
+                    <FormikSelect
                       name="role"
                       label="generic.role"
                       placeholder="Select a role"

@@ -21,7 +21,7 @@ export type TextInputProps = {
   rightAddon?: ReactNode;
   error?: string;
   autoComplete?: "off";
-  isLoading?: boolean;
+  loading?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onClick?: MouseEventHandler<HTMLInputElement>;
@@ -41,7 +41,7 @@ export function TextInput(props: TextInputProps) {
           className={classNames(
             "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500",
             c(!!props.error, "ring-red-600"),
-            c(props.isLoading, "animate-pulse bg-gray-50"),
+            c(props.loading, "animate-pulse bg-gray-50"),
             props.className
           )}
           value={props.value}
@@ -51,8 +51,8 @@ export function TextInput(props: TextInputProps) {
           onMouseEnter={props.onMouseEnter}
           onMouseLeave={props.onMouseLeave}
           placeholder={props.placeholder}
-          readOnly={props.readOnly || props.isLoading}
-          disabled={props.disabled || props.isLoading}
+          readOnly={props.readOnly || props.loading}
+          disabled={props.disabled || props.loading}
           autoComplete={props.autoComplete}
         />
         {props.rightAddon}
