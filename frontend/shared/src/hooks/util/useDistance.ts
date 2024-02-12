@@ -63,7 +63,7 @@ export function useDistance() {
     (altitude?: number | null) =>
       altitude !== undefined && altitude !== null
         ? `${convertToSelectedUnitsType(altitude)} ${units.length}`
-        : "",
+        : "-",
     [convertToSelectedUnitsType, units.length]
   );
 

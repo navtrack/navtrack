@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useMap } from "./useMap";
-import { LongLat } from "./types";
+import { LongLat } from "./mapTypes";
 
 type MapCenterProps = {
-  location?: LongLat;
+  position?: LongLat;
   zoom?: number;
 };
 
@@ -11,22 +11,23 @@ export function MapCenter(props: MapCenterProps) {
   const map = useMap();
 
   useEffect(() => {
-    if (props.location) {
+    if (props.position) {
       const currentCenter = map.leafletMap.getCenter();
 
       if (
-        currentCenter.lat !== props.location.latitude ||
-        currentCenter.lng !== props.location.longitude
+        currentCenter.lat !== props.position.latitude ||
+        currentCenter.lng !== props.position.longitude
       ) {
-        const zoom = props.zoom !== undefined ? props.zoom : map.leafletMap.getZoom();
+        const zoom =
+          props.zoom !== undefined ? props.zoom : map.leafletMap.getZoom();
 
         map.setCenter(
-          [props.location.latitude, props.location.longitude],
+          [props.position.latitude, props.position.longitude],
           zoom
         );
       }
     }
-  }, [map, props.location, props.zoom]);
+  }, [map, props.position, props.zoom]);
 
   return null;
 }

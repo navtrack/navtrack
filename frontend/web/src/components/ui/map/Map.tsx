@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
 import { ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { LongLat } from "./types";
 import { VectorTileLayer } from "./VectorTileLayer";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { MapZoom } from "./MapZoom";
 import { DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useRecoilValue } from "recoil";
+import { MapZoomControl } from "./MapZoomControl";
+import { LongLat } from "./mapTypes";
 
 type MapProps = {
   center: LongLat;
@@ -41,9 +42,10 @@ export function Map(props: MapProps) {
         center={[props.center.latitude, props.center.longitude]}
         zoom={props.initialZoom ?? DEFAULT_MAP_ZOOM}
         className="h-full w-full"
-        zoomControl={!props.hideZoomControl}
+        zoomControl={false}
         attributionControl={!props.hideAttribution}>
         <MapZoom initialZoom={props.initialZoom} />
+        <MapZoomControl />
         {appConfig?.map.tileUrl ? (
           <VectorTileLayer styleUrl={appConfig.map.tileUrl} />
         ) : (

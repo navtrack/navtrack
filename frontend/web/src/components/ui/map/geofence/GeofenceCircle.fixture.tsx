@@ -1,7 +1,7 @@
 import { useValue } from "react-cosmos/client";
 import { DEFAULT_MAP_CENTER } from "../../../../constants";
 import { Map } from "../Map";
-import { CircleGeofence } from "../types";
+import { CircleGeofence } from "../mapTypes";
 import { GeofenceCircle } from "./GeofenceCircle";
 
 export default {

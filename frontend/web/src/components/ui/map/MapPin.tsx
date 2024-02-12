@@ -3,7 +3,7 @@ import { Marker } from "react-leaflet";
 import { PinIcon } from "./PinIcon";
 import { renderToString } from "react-dom/server";
 import { useMemo } from "react";
-import { LongLat } from "./types";
+import { LongLat } from "./mapTypes";
 import { MapCenter } from "./MapCenter";
 
 type MapPinProps = {
@@ -33,7 +33,7 @@ export function MapPin(props: MapPinProps) {
           icon={pin}
           zIndexOffset={props.zIndexOffset}
         />
-        {props.follow && <MapCenter location={props.position} />}
+        {props.follow && <MapCenter position={props.position} />}
       </>
     );
   }

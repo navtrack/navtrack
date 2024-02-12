@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { IGeofenceCircle } from "../types";
+import { IGeofenceCircle } from "../mapTypes";
 import { useGeofenceCircle } from "./useGeofenceCircle";
 
 export function GeofenceCircle(props: IGeofenceCircle) {
@@ -7,7 +7,7 @@ export function GeofenceCircle(props: IGeofenceCircle) {
 
   return (
     <div className="relative z-20 flex w-full justify-center p-2 font-sans text-xs">
-      <div className="flex space-x-2 rounded bg-white py-1 px-2 text-left">
+      <div className="flex space-x-2 rounded bg-white px-2 py-1 text-left">
         {clicked ? (
           <>
             <div>

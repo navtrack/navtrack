@@ -9,7 +9,7 @@ import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
 import { MapTrip } from "../../ui/map/MapTrip";
 import { Slider } from "../../ui/slider/Slider";
-import { LocationBar } from "../shared/location-bar/LocationBar";
+import { PositionBar } from "../shared/position-bar/PositionBar";
 import {
   selectedTripPositionIndexAtom,
   selectedTripPositionSelector,
@@ -21,7 +21,7 @@ import { MapContainer } from "../../ui/map/MapContainer";
 
 export function AssetTripsPage() {
   const selectedTrip = useRecoilValue(selectedTripSelector);
-  const selectedTripLocation = useRecoilValue(selectedTripPositionSelector);
+  const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useRecoilState(selectedTripPositionIndexAtom);
   const [showPin, setShowPin] = useState(false);
@@ -64,9 +64,11 @@ export function AssetTripsPage() {
                 />
               </div>
             </div>
-            <div className="p-2">
-              <LocationBar location={selectedTripLocation} />
-            </div>
+            {selectedTripPosition && (
+              <div className="p-2">
+                <PositionBar position={selectedTripPosition} />
+              </div>
+            )}
           </Card>
           <Card className="flex flex-grow">
             <MapContainer style={{ flexGrow: 2, minHeight: "200px" }}>
@@ -77,9 +79,9 @@ export function AssetTripsPage() {
                 }}
                 initialZoom={16}>
                 <MapTrip trip={selectedTrip} />
-                {selectedTripLocation && showPin && (
+                {selectedTripPosition && showPin && (
                   <MapPin
-                    position={{ ...selectedTripLocation }}
+                    position={{ ...selectedTripPosition }}
                     zIndexOffset={1}
                   />
                 )}

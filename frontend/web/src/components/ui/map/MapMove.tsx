@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useMap } from "react-leaflet";
-import { LongLat } from "./types";
+import { LongLat } from "./mapTypes";
 
 interface IMapMove {
   onMove?: (center: LongLat, zoom: number) => void;

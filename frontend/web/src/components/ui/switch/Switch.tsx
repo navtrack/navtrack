@@ -1,4 +1,4 @@
-import { Switch as HeadlessSwitch } from "@headlessui/react";
+import { Switch as HeadlessSwitch, Label } from "@headlessui/react";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode, useState } from "react";
 
@@ -31,9 +31,9 @@ export function Switch(props: SwitchProps) {
           )}
         />
       </HeadlessSwitch>
-      <HeadlessSwitch.Label as="span" className="ml-3 text-sm">
+      <Label as="span" className="ml-3 text-sm">
         {props.children}
-      </HeadlessSwitch.Label>
+      </Label>
     </HeadlessSwitch.Group>
   );
 }

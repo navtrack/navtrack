@@ -9,7 +9,7 @@ import { SpeedFilterBadge } from "./speed/SpeedFilterBadge";
 import { AltitudeFilterBadge } from "./altitude/AltitudeFilterBadge";
 import { LocationFilterAddButton } from "./LocationFilterAddButton";
 import { Card } from "../../../ui/card/Card";
-import { LongLat } from "../../../ui/map/types";
+import { LongLat } from "../../../ui/map/mapTypes";
 import { Icon } from "../../../ui/icon/Icon";
 import { DurationFilterBadge } from "./duration/DurationFilterBadge";
 import { DurationFilterModal } from "./duration/DurationFilterModal";

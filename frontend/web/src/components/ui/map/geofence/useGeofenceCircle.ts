@@ -1,7 +1,7 @@
 import { circle } from "leaflet";
 import { Circle, Layer } from "leaflet";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { IGeofenceCircle } from "../types";
+import { IGeofenceCircle } from "../mapTypes";
 import { useMap } from "../useMap";
 
 // TODO refactor this
@@ -103,7 +103,8 @@ export function useGeofenceCircle(props: IGeofenceCircle) {
               setClicked(true);
             }
 
-            const geomanLayers = map.leafletMap.pm.getGeomanDrawLayers() as Layer[];
+            const geomanLayers =
+              map.leafletMap.pm.getGeomanDrawLayers() as Layer[];
             if (geomanLayers.length > 0) {
               const circle = geomanLayers[0];
               map.leafletMap.removeLayer(circle);

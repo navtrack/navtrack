@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { GeofenceCircle } from "../../../../ui/map/geofence/GeofenceCircle";
 import { Map } from "../../../../ui/map/Map";
 import { MapMove } from "../../../../ui/map/MapMove";
-import { CircleGeofence, LongLat } from "../../../../ui/map/types";
+import { CircleGeofence, LongLat } from "../../../../ui/map/mapTypes";
 import { Modal } from "../../../../ui/modal/Modal";
 import { FilterModal } from "../FilterModal";
 import { useGeofenceFilter } from "./useGeofenceFilter";
