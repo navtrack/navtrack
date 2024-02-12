@@ -7,6 +7,7 @@ export type AppSlots = {
   accountSettingsMenuItems?: SettingsMenuItemProps[];
   assetSettingsMenuItems?: SettingsMenuItemProps[];
   assetAddFooterBlock?: React.ReactNode;
+  externalLogin?: React.ReactNode;
 };
 
 export const SlotContext = React.createContext<AppSlots | undefined>({});

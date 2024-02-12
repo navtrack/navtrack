@@ -9,19 +9,20 @@ import { FormikTextInput } from "../../ui/form/text-input/FormikTextInput";
 import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { Paths } from "../../../app/Paths";
-import { ExternalLogin } from "./external-login/ExternalLogin";
 import { Alert } from "../../ui/alert/Alert";
 import { useLoginFormValidationSchema } from "@navtrack/shared/hooks/user/login/useLoginFormValidationSchema";
 import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialLoginFormValues } from "@navtrack/shared/hooks/user/login/LoginFormValues";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { AuthenticationErrorType } from "@navtrack/shared/hooks/app/authentication/authentication";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 import { Button } from "../../ui/button/Button";
+import { SlotContext } from "../../../app/SlotContext";
 
 export function LoginPage() {
   const login = useLogin();
   const validationSchema = useLoginFormValidationSchema();
+  const slots = useContext(SlotContext);
 
   const errorMessage = useMemo(
     () =>
@@ -98,7 +99,7 @@ export function LoginPage() {
           <span className="mx-2">•</span>
           <Link to={Paths.ForgotPassword} label="login.forgot" />
         </div>
-        <ExternalLogin login={login.externalLogin} />
+        {slots?.externalLogin}
       </Card>
       <div className="mt-4 text-center text-xs">
         <Copyright />

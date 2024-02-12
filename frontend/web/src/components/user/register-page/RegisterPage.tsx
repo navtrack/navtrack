@@ -8,18 +8,18 @@ import { TextInputLeftAddon } from "../../ui/form/text-input/TextInputLeftAddon"
 import { Icon } from "../../ui/icon/Icon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { ExternalLogin } from "../login-page/external-login/ExternalLogin";
 import { useRegister } from "@navtrack/shared/hooks/user/register/useRegister";
 import { useRegisterFormValidationSchema } from "@navtrack/shared/hooks/user/register/useRegisterFormValidationSchema";
-import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialRegisterFormValues } from "@navtrack/shared/hooks/user/register/RegisterFormValues";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 import { Button } from "../../ui/button/Button";
+import { SlotContext } from "../../../app/SlotContext";
+import { useContext } from "react";
 
 export function RegisterPage() {
   const validationSchema = useRegisterFormValidationSchema();
   const register = useRegister();
-  const { externalLogin } = useLogin();
+  const slots = useContext(SlotContext);
 
   return (
     <UnauthenticatedLayout>
@@ -46,7 +46,7 @@ export function RegisterPage() {
               validationSchema={() => validationSchema}
               initialErrors={undefined}
               enableReinitialize>
-              {({ values, status, errors }) => (
+              {({ values }) => (
                 <Form className="space-y-4">
                   <FormikTextInput
                     name="email"
@@ -106,7 +106,7 @@ export function RegisterPage() {
                 className="ml-1"
               />
             </div>
-            <ExternalLogin login={externalLogin} />
+        {slots?.externalLogin}
           </>
         )}
       </Card>

@@ -3,17 +3,5 @@
   "version": "0.1.0",
   "scripts": {
     "generate": "orval --config ./orval.config.ts"
-  },
-  "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.18.2",
-    "@tanstack/react-query": "^4.33.0",
-    "axios": "^1.4.0",
-    "date-fns": "^2.30.0",
-    "formik": "^2.2.9",
-    "query-string": "^8.1.0",
-    "react": "18.2.0",
-    "react-intl": "^6.4.2",
-    "recoil": "^0.7.7",
-    "yup": "^1.1.1"
   }
 }
