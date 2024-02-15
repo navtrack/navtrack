@@ -1,17 +1,24 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
-import { LogTable } from "./LogTable";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { usePositionsQuery } from "@navtrack/shared/hooks/queries/usePositionsQuery";
-import { useRef, useState, useMemo, useCallback, useEffect } from "react";
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
 import { MapContainer } from "../../ui/map/MapContainer";
 import { Card } from "../../ui/card/Card";
+import { TableV2 } from "../../ui/table/TableV2";
+import { PositionModel } from "@navtrack/shared/api/model/generated";
+import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
+import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
+import { FormattedMessage } from "react-intl";
+import {
+  showCoordinate,
+  showHeading
+} from "@navtrack/shared/utils/coordinates";
 
 export function AssetLogPage() {
   const currentAsset = useCurrentAsset();
@@ -21,57 +28,13 @@ export function AssetLogPage() {
     assetId: currentAsset.data?.id,
     ...filters
   });
-  const locationElements = useRef<Array<HTMLDivElement | null>>([]);
-  const [selectedPositionIndex, setSelectedPositionIndex] = useState<
-    number | undefined
-  >();
 
-  const position = useMemo(() => {
-    if (selectedPositionIndex !== undefined) {
-      return query.data?.items[selectedPositionIndex];
-    }
-  }, [query.data?.items, selectedPositionIndex]);
+  const { showDateTime } = useDateTime();
+  const { showSpeed, showAltitude } = useDistance();
 
-  useEffect(() => {
-    if (selectedPositionIndex === undefined && query.data?.items) {
-      setSelectedPositionIndex(0);
-    }
-  }, [query.data?.items, selectedPositionIndex, setSelectedPositionIndex]);
-
-  const scrollToElement = useCallback((locationIndex: number) => {
-    locationElements.current[locationIndex]?.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-  }, []);
-
-  const setPreviousLocation = useCallback(() => {
-    if (selectedPositionIndex !== undefined) {
-      const newLocationIndex = selectedPositionIndex - 1;
-      if (newLocationIndex >= 0) {
-        setSelectedPositionIndex(newLocationIndex);
-        scrollToElement(newLocationIndex);
-      }
-    }
-  }, [scrollToElement, selectedPositionIndex, setSelectedPositionIndex]);
-
-  const setNextLocation = useCallback(() => {
-    if (selectedPositionIndex !== undefined) {
-      const newLocationIndex = selectedPositionIndex + 1;
-      if (query.data?.items && newLocationIndex < query.data?.items.length) {
-        setSelectedPositionIndex(newLocationIndex);
-        scrollToElement(newLocationIndex);
-      }
-    }
-  }, [
-    query.data?.items,
-    scrollToElement,
-    selectedPositionIndex,
-    setSelectedPositionIndex
-  ]);
-
-  useKeyPress("ArrowDown", setNextLocation);
-  useKeyPress("ArrowUp", setPreviousLocation);
+  const [position, setPosition] = useState<PositionModel | undefined>(
+    undefined
+  );
 
   return (
     <>
@@ -86,12 +49,62 @@ export function AssetLogPage() {
             : undefined
         }
       />
-      <LogTable
-        data={query.data}
-        isLoading={query.isLoading}
-        selectedPositionIndex={selectedPositionIndex}
-        setSelectedPositionIndex={setSelectedPositionIndex}
-        positionElements={locationElements}
+      <TableV2<PositionModel>
+        columns={[
+          {
+            labelId: "generic.date",
+            rowClassName: "py-0.5",
+            footer: (rows) => (
+              <div className="h-4 lowercase">
+                {rows !== undefined ? (
+                  <>
+                    <span className="mr-1">{rows.length ?? 0}</span>
+                    <FormattedMessage id="generic.items" />
+                  </>
+                ) : null}
+              </div>
+            ),
+            sort: "desc",
+            value: (row) => row.dateTime,
+            render: (row) => showDateTime(row.dateTime),
+            sortable: true
+          },
+          {
+            labelId: "generic.latitude",
+            render: (row) => showCoordinate(row.latitude)
+          },
+          {
+            labelId: "generic.longitude",
+            render: (row) => showCoordinate(row.longitude)
+          },
+          {
+            labelId: "generic.altitude",
+            render: (row) => showAltitude(row.altitude),
+            value: (row) => row.altitude,
+            sortable: true
+          },
+          {
+            labelId: "generic.speed",
+            render: (row) => showSpeed(row.speed),
+            value: (row) => row.speed,
+            sortable: true
+          },
+          {
+            labelId: "generic.heading",
+            render: (row) => showHeading(row.heading),
+            value: (row) => row.heading,
+            sortable: true
+          },
+          {
+            labelId: "generic.satellites",
+            render: (row) => `${row.satellites}`,
+            value: (row) => row.satellites,
+            sortable: true
+          }
+        ]}
+        rows={query.data?.items}
+        setSelectedItem={setPosition}
+        className="flex h-44 flex-grow"
       />
       <Card className="flex flex-grow">
         <MapContainer>

@@ -6,6 +6,7 @@
  */
 
 export * from "./assetModel";
+export * from "./assetModelDevice";
 export * from "./assetModelPosition";
 export * from "./assetRoleModel";
 export * from "./assetRoleType";
@@ -54,4 +55,3 @@ export * from "./updateUserModel";
 export * from "./updateUserModelUnitsType";
 export * from "./userAssetRoleModel";
 export * from "./userModel";
-export * from "./assetModelDevice";

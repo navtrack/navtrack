@@ -45,7 +45,8 @@ public class PositionRepository(IRepository repository)
             .SortBy(x => x.StartDate)
             .ToListAsync();
 
-        List<PositionElement> positions = positionGroups.SelectMany(x => x.Positions)
+        List<PositionElement> positions = positionGroups
+            .SelectMany(x => x.Positions)
             .Where(x => (!locationFilter.StartDate.HasValue || x.Date >= locationFilter.StartDate.Value) &&
                         (!locationFilter.EndDate.HasValue || x.Date <= locationFilter.EndDate))
             .OrderByDescending(x => x.Date)
@@ -163,7 +164,7 @@ public class PositionRepository(IRepository repository)
             filter &= Builders<PositionGroupDocument>.Filter.Lte(x => x.StartDate, locationFilter.EndDate.Value) |
                       Builders<PositionGroupDocument>.Filter.Gte(x => x.EndDate, locationFilter.EndDate.Value);
         }
-        
+
         return filter;
     }
 

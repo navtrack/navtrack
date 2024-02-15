@@ -62,9 +62,9 @@ export function Autocomplete(props: AutocompleteProps) {
           }}
           loading={props.loading}
           rightAddon={
-            <TextInputRightAddon className="pointer-events-auto pr-0">
+            <TextInputRightAddon className="pointer-events-auto">
               <div
-                className="py-1 pl-1 pr-3 hover:cursor-pointer"
+                className="mr-2 px-1 py-1 hover:cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault();
                   e.nativeEvent.stopImmediatePropagation();

@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
 
-export function useKeyPress(code: string, callback: () => void) {
+export function useKeyPress(code: string, callback?: () => void) {
   const handleKeyPress = useCallback(
     (e: KeyboardEvent) => {
-      if (e.code === code) {
+      if (e.code === code && callback !== undefined) {
         e.preventDefault();
         callback();
       }
@@ -12,9 +12,11 @@ export function useKeyPress(code: string, callback: () => void) {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [handleKeyPress]);
+    if (callback !== undefined) {
+      window.addEventListener("keydown", handleKeyPress);
+      return () => {
+        window.removeEventListener("keydown", handleKeyPress);
+      };
+    }
+  }, [callback, handleKeyPress]);
 }

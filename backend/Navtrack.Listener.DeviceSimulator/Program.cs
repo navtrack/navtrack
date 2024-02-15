@@ -12,7 +12,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        SimulateTeltonika();
+        SimulateMeitrack();
     }
 
     private static void SimulateTeltonika()
@@ -43,8 +43,11 @@ class Program
 
             var location = GetRandomLocation();
 
+            var altitude = new Random().Next(0, 2000);
+            var heading = new Random().Next(0, 360);
+
             var text =
-                $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,147,2.5,475,56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*7E";
+                $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*7E";
 
             networkStream.Write(Encoding.UTF8.GetBytes(text));
 
