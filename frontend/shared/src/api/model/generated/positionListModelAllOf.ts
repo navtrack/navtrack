@@ -8,4 +8,5 @@
 export type PositionListModelAllOf = {
   averageAltitude?: number | null;
   averageSpeed?: number | null;
+  totalCount: number;
 };

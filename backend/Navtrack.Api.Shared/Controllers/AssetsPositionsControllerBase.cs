@@ -25,7 +25,7 @@ public abstract class AssetsPositionsControllerBase(IPositionService service) : 
         [FromRoute] string assetId,
         [FromQuery] PositionFilterModel filter,
         [FromQuery] int page = 0,
-        [FromQuery] [Range(0, 1000)] int size = 1000)
+        [FromQuery] [Range(0, 10000)] int size = 10000)
     {
         PositionListModel positions = await service.GetPositions(assetId, filter, page, size);
 

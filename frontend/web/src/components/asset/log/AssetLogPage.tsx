@@ -54,14 +54,35 @@ export function AssetLogPage() {
           {
             labelId: "generic.date",
             rowClassName: "py-0.5",
+            footerColSpan: 7,
             footer: (rows) => (
-              <div className="h-4 lowercase">
-                {rows !== undefined ? (
-                  <>
-                    <span className="mr-1">{rows.length ?? 0}</span>
-                    <FormattedMessage id="generic.items" />
-                  </>
-                ) : null}
+              <div className="h-4">
+                {rows !== undefined &&
+                  rows.length > 0 &&
+                  (query.data?.totalCount! > query.data?.items.length! ? (
+                    <FormattedMessage
+                      id="assets.log.table.positions-over"
+                      values={{
+                        count: (
+                          <span className="font-semibold">{rows.length}</span>
+                        ),
+                        total: (
+                          <span className="font-semibold">
+                            {query.data?.totalCount}
+                          </span>
+                        )
+                      }}
+                    />
+                  ) : (
+                    <FormattedMessage
+                      id="assets.log.table.positions"
+                      values={{
+                        count: (
+                          <span className="font-semibold">{rows.length}</span>
+                        )
+                      }}
+                    />
+                  ))}
               </div>
             ),
             sort: "desc",

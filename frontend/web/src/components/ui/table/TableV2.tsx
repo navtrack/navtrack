@@ -22,6 +22,7 @@ export interface ITableColumn<T> {
   footer?: (rows?: T[]) => ReactNode;
   sort?: "asc" | "desc";
   sortable?: boolean;
+  footerColSpan?: number;
 }
 
 type TableProps<T> = {
@@ -263,15 +264,16 @@ export function TableV2<T>(props: TableProps<T>) {
           {hasFooter && (
             <tfoot>
               <tr>
-                {props.columns.map((column, index) => (
-                  <td
-                    key={`footer${index}`}
-                    className="sticky bottom-0 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs font-medium text-gray-900">
-                    {column.footer !== undefined
-                      ? column.footer(props.rows)
-                      : null}
-                  </td>
-                ))}
+                {props.columns
+                  .filter((x) => x.footer !== undefined)
+                  .map((column, index) => (
+                    <td
+                      colSpan={column.footerColSpan}
+                      key={`footer${index}`}
+                      className="sticky bottom-0 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900">
+                      {column.footer?.(props.rows)}
+                    </td>
+                  ))}
               </tr>
             </tfoot>
           )}

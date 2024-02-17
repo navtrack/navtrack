@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Navtrack.Api.Model.Common;
 
@@ -25,4 +26,7 @@ public class PositionListModel : ListModel<PositionModel>
             return (float?)Math.Round(average.GetValueOrDefault());
         }
     }
+
+    [Required]
+    public long TotalCount { get; set; }
 }

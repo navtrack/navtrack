@@ -613,8 +613,8 @@
             "schema": {
               "type": "integer",
               "format": "int32",
-              "default": 1000,
-              "maximum": 1000.0,
+              "default": 10000,
+              "maximum": 10000.0,
               "minimum": 0.0
             },
             "x-position": 12
@@ -1580,6 +1580,9 @@
           {
             "type": "object",
             "additionalProperties": false,
+            "required": [
+              "totalCount"
+            ],
             "properties": {
               "averageSpeed": {
                 "type": "number",
@@ -1590,6 +1593,10 @@
                 "type": "number",
                 "format": "float",
                 "nullable": true
+              },
+              "totalCount": {
+                "type": "integer",
+                "format": "int64"
               }
             }
           }

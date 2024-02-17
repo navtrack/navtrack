@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
 using MongoDB.Driver.Linq;
@@ -25,7 +26,8 @@ public class PositionRepository(IRepository repository)
                     .Set(x => x.EndDate, maxEndDate));
     }
 
-    public async Task<List<PositionElement>> GetPositions(string assetId, LocationFilter locationFilter)
+    public async Task<GetPositionsResult> GetPositions(string assetId, LocationFilter locationFilter, int page,
+        int size)
     {
         FilterDefinition<PositionElement> filter = Builders<PositionElement>.Filter.Empty;
 
@@ -40,20 +42,54 @@ public class PositionRepository(IRepository repository)
 
         positionGroupFilter &= Builders<PositionGroupDocument>.Filter.ElemMatch(x => x.Positions, filter);
 
-        List<PositionGroupDocument> positionGroups = await repository.GetCollection<PositionGroupDocument>()
-            .Find(positionGroupFilter)
-            .SortBy(x => x.StartDate)
+        AggregateCountResult? count = await repository.GetCollection<PositionGroupDocument>()
+            .Aggregate()
+            .Match(positionGroupFilter)
+            .Unwind(x => x.Positions)
+            .Count()
+            .FirstOrDefaultAsync();
+
+        List<UnwindPositionGroupDocument>? positions = await repository.GetCollection<PositionGroupDocument>()
+            .Aggregate()
+            .Match(positionGroupFilter)
+            .Unwind<PositionGroupDocument, UnwindPositionGroupDocument>(x => x.Positions)
+            .SortByDescending(x => x.Position.Date)
+            .Skip(page * size)
+            .Limit(size)
             .ToListAsync();
+        
+        // TODO the queries above could probably be combined into one query with a facet
+        // AggregateFacetResults? aggregateFacetResults = await repository.GetCollection<PositionGroupDocument>()
+        //     .Aggregate()
+        //     .Match(positionGroupFilter)
+        //     .Unwind<PositionGroupDocument, UnwindPositionGroupDocument>(x => x.Positions)
+        //     .SortByDescending(x => x.Position.Date)
+        //     .Facet(AggregateFacet.Create("positions",
+        //             new PipelineStagePipelineDefinition<UnwindPositionGroupDocument, UnwindPositionGroupDocument>(
+        //                 new List<IPipelineStageDefinition>
+        //                 {
+        //                     PipelineStageDefinitionBuilder.Skip<UnwindPositionGroupDocument>(page*size),
+        //                     PipelineStageDefinitionBuilder.Limit<UnwindPositionGroupDocument>(size)
+        //                 })),
+        //         AggregateFacet.Create("count",
+        //             new PipelineStagePipelineDefinition<UnwindPositionGroupDocument, AggregateCountResult>(
+        //             [
+        //                 PipelineStageDefinitionBuilder.Count<UnwindPositionGroupDocument>()
+        //             ])))
+        //     .FirstOrDefaultAsync();
+        //
+        // List<UnwindPositionGroupDocument> unwindPositionGroups =
+        //     aggregateFacetResults.Facets.First(x => x.Name == "positions").Output<UnwindPositionGroupDocument>().ToList();
 
-        List<PositionElement> positions = positionGroups
-            .SelectMany(x => x.Positions)
-            .Where(x => (!locationFilter.StartDate.HasValue || x.Date >= locationFilter.StartDate.Value) &&
-                        (!locationFilter.EndDate.HasValue || x.Date <= locationFilter.EndDate))
-            .OrderByDescending(x => x.Date)
-            .Take(1000)
-            .ToList();
+        GetPositionsResult result = new()
+        {
+            TotalCount = count?.Count ?? 0,
+            Positions = positions
+                .Select(x => x.Position)
+                .ToList()
+        };
 
-        return positions;
+        return result;
     }
 
     private FilterDefinition<PositionElement> ApplyDateFilter(LocationFilter locationFilter,
@@ -61,11 +97,13 @@ public class PositionRepository(IRepository repository)
     {
         if (locationFilter.StartDate.HasValue)
         {
+            locationFilter.StartDate = locationFilter.StartDate.Value.AddHours(-24);
             filter &= Builders<PositionElement>.Filter.Gte(x => x.Date, locationFilter.StartDate.Value);
         }
 
         if (locationFilter.EndDate.HasValue)
         {
+            locationFilter.EndDate = locationFilter.EndDate.Value.AddHours(24);
             filter &= Builders<PositionElement>.Filter.Lte(x => x.Date, locationFilter.EndDate.Value);
         }
 
@@ -183,4 +221,10 @@ public class PositionRepository(IRepository repository)
 
         return filter;
     }
+}
+
+public class UnwindPositionGroupDocument
+{
+    [BsonElement("p")]
+    public PositionElement Position { get; set; }
 }
