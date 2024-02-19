@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Navtrack.DataAccess.Model.Positions;
 
-namespace Navtrack.DataAccess.Services.Positions;
+namespace Navtrack.DataAccess.Model.Positions;
 
 public class GetPositionsResult
 {

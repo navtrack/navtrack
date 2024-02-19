@@ -9,8 +9,8 @@ namespace Navtrack.Api.Model.Trips;
 public class TripModel
 {
     [Required]
-    public List<PositionModel> Positions { get; } = [];    
-
+    public List<PositionModel> Positions { get; set; } = [];   
+ 
     [Required]
     public PositionModel StartPosition => Positions.First();
 

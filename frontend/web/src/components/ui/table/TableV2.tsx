@@ -242,7 +242,7 @@ export function TableV2<T>(props: TableProps<T>) {
                       "bg-gray-200",
                       c(rowIndex % 2 !== 0, "bg-gray-50")
                     ),
-                    c(selectionEnabled, "hover:bg-gray-200")
+                    c(selectionEnabled, "cursor-pointer hover:bg-gray-100")
                   )}>
                   {props.columns.map((column, columnIndex) => (
                     <td

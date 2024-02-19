@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,10 @@ namespace Navtrack.Api.Services.Trips;
 [Service(typeof(ITripService))]
 public class TripService(IPositionRepository repository) : ITripService
 {
+    private const int MinTripDistanceInMeters = 300; // 1000 feet
+    private const int MaxDistanceBetweenPositionsInMeters = 1000;
+    private const double MaxTimeBetweenTripInMinutes = 5;
+
     public async Task<TripListModel> GetTrips(string assetId, TripFilterModel tripFilter)
     {
         IEnumerable<TripModel> trips = await GetInternalTrips(assetId, tripFilter);
@@ -27,9 +32,9 @@ public class TripService(IPositionRepository repository) : ITripService
 
     private async Task<IEnumerable<TripModel>> GetInternalTrips(string assetId, TripFilterModel tripFilter)
     {
-        List<PositionModel> positionGroups = await GetLocationGroups(assetId, tripFilter);
+        List<PositionModel> positions = await GetPositions(assetId, tripFilter);
 
-        List<TripModel> trips = CreateTrips(positionGroups);
+        List<TripModel> trips = CreateTrips(positions);
 
         trips = ApplyFiltering(trips, tripFilter);
         trips = ApplyOrdering(trips);
@@ -42,28 +47,72 @@ public class TripService(IPositionRepository repository) : ITripService
         List<TripModel> trips = [];
 
         TripModel? currentTrip = null;
-        PositionModel? lastLocation = null;
+        PositionModel? lastPosition = null;
 
-        foreach (PositionModel locationDocument in source)
+        foreach (PositionModel position in source)
         {
-            if (lastLocation == null || 
-                locationDocument.DateTime > lastLocation.DateTime.AddMinutes(5) ||
-                DistanceCalculator.CalculateDistance(new Coordinates(lastLocation.Latitude, lastLocation.Longitude),
-                    new Coordinates(locationDocument.Latitude, locationDocument.Longitude)) > 1000)
+            if (currentTrip == null ||
+                lastPosition == null ||
+                position.DateTime > lastPosition.DateTime.AddMinutes(MaxTimeBetweenTripInMinutes) ||
+                DistanceCalculator.CalculateDistance(new Coordinates(lastPosition.Latitude, lastPosition.Longitude),
+                    new Coordinates(position.Latitude, position.Longitude)) > MaxDistanceBetweenPositionsInMeters)
             {
                 currentTrip = new TripModel();
                 trips.Add(currentTrip);
             }
 
-            currentTrip.Positions.Add(locationDocument);
-            lastLocation = locationDocument;
+            lastPosition = position;
+            currentTrip.Positions.Add(position);
         }
-        
+
+        trips = trips.Where(x => x.Positions.Count > 0).ToList();
+
+        RemoveDuplicatePositions(trips);
+        TrimPositionsEnds(trips);
         AddDistance(trips);
 
         return trips;
     }
 
+    private static void TrimPositionsEnds(List<TripModel> trips)
+    {
+        foreach (TripModel trip in trips)
+        {
+            int firstMovingPosition = trip.Positions.FindIndex(x => x.Speed > 0);
+            int lastMovingPosition = trip.Positions.FindLastIndex(x => x.Speed > 0);
+
+            int firstPositionIndex = firstMovingPosition > 1 ? firstMovingPosition - 1 : 0;
+            int lastPositionIndex = lastMovingPosition != -1 && lastMovingPosition < trip.Positions.Count - 2
+                ? lastMovingPosition + 1
+                : trip.Positions.Count - 1;
+
+            trip.Positions = trip.Positions.GetRange(firstPositionIndex, lastPositionIndex - firstPositionIndex + 1);
+        }
+    }
+
+    private static void RemoveDuplicatePositions(List<TripModel> trips)
+    {
+        const double precision = 0.000001;
+
+        foreach (TripModel trip in trips)
+        {
+            List<PositionModel> positions = [];
+
+            PositionModel? lastPosition = null;
+
+            foreach (PositionModel position in trip.Positions)
+            {
+                if (lastPosition == null || Math.Abs(lastPosition.Latitude - position.Latitude) > precision ||
+                    Math.Abs(lastPosition.Longitude - position.Longitude) > precision)
+                {
+                    positions.Add(position);
+                    lastPosition = position;
+                }
+            }
+
+            trip.Positions = positions;
+        }
+    }
 
     private static void AddDistance(List<TripModel> trips)
     {
@@ -74,7 +123,7 @@ public class TripService(IPositionRepository repository) : ITripService
         }
     }
 
-    private async Task<List<PositionModel>> GetLocationGroups(string assetId, DateFilter dateFilter)
+    private async Task<List<PositionModel>> GetPositions(string assetId, DateFilter dateFilter)
     {
         DateFilter filter = new()
         {
@@ -82,12 +131,10 @@ public class TripService(IPositionRepository repository) : ITripService
             EndDate = dateFilter.EndDate?.AddDays(1) ?? dateFilter.EndDate
         };
 
-        List<PositionGroupDocument> groups = await repository.GetPositions(assetId, filter);
-        
-        List<PositionModel> mapped = groups.SelectMany(x => x.Positions)
-            .OrderBy(x => x.Date)
-            .Select(PositionMapper.Map).ToList();
-        
+        GetPositionsResult result = await repository.GetPositions(assetId, filter);
+
+        List<PositionModel> mapped = result.Positions.Select(PositionMapper.Map).ToList();
+
         return mapped;
     }
 
@@ -108,7 +155,7 @@ public class TripService(IPositionRepository repository) : ITripService
     private static List<TripModel> ApplyDistanceFilter(List<TripModel> filteredTrips)
     {
         filteredTrips = filteredTrips
-            .Where(x => x.Distance > 0)
+            .Where(x => x.Distance > MinTripDistanceInMeters)
             .ToList();
 
         return filteredTrips;
@@ -149,11 +196,10 @@ public class TripService(IPositionRepository repository) : ITripService
 
     private static List<TripModel> ApplyAvgSpeedFilter(TripFilterModel tripFilter, List<TripModel> filteredTrips)
     {
-        if (tripFilter.MinAvgSpeed.HasValue)
-        {
-            filteredTrips = filteredTrips.Where(x => x.AverageSpeed >= tripFilter.MinAvgSpeed.Value)
-                .ToList();
-        }
+        int minAvgSpeed = tripFilter.MinAvgSpeed ?? 1;
+
+        filteredTrips = filteredTrips.Where(x => x.AverageSpeed >= minAvgSpeed)
+            .ToList();
 
         if (tripFilter.MaxAvgSpeed.HasValue)
         {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
 using MongoDB.Driver.Linq;
@@ -92,7 +91,37 @@ public class PositionRepository(IRepository repository)
         return result;
     }
 
-    private FilterDefinition<PositionElement> ApplyDateFilter(LocationFilter locationFilter,
+    public async Task<GetPositionsResult> GetPositions(string assetId, DateFilter dateFilter)
+    {
+        FilterDefinition<PositionElement> filter = Builders<PositionElement>.Filter.Empty;
+
+        filter = ApplyDateFilter(dateFilter, filter);
+        filter = ApplyValidFilter(filter);
+
+        FilterDefinition<PositionGroupDocument> positionGroupFilter = Builders<PositionGroupDocument>.Filter
+            .Eq(x => x.AssetId, ObjectId.Parse(assetId));
+
+        positionGroupFilter &= Builders<PositionGroupDocument>.Filter.ElemMatch(x => x.Positions, filter);
+
+        List<UnwindPositionGroupDocument>? positions = await repository.GetCollection<PositionGroupDocument>()
+            .Aggregate()
+            .Match(positionGroupFilter)
+            .Unwind<PositionGroupDocument, UnwindPositionGroupDocument>(x => x.Positions)
+            .SortBy(x => x.Position.Date)
+            .ToListAsync();
+        
+        GetPositionsResult result = new()
+        {
+            TotalCount = positions.Count,
+            Positions = positions
+                .Select(x => x.Position)
+                .ToList()
+        };
+
+        return result;
+    }
+
+    private static FilterDefinition<PositionElement> ApplyDateFilter(DateFilter locationFilter,
         FilterDefinition<PositionElement> filter)
     {
         if (locationFilter.StartDate.HasValue)
@@ -110,16 +139,22 @@ public class PositionRepository(IRepository repository)
         return filter;
     }
 
-    public async Task<List<PositionGroupDocument>> GetPositions(string assetId, DateFilter dateFilter)
+    private static FilterDefinition<PositionGroupDocument> ApplyDateFilter(DateFilter locationFilter,
+        FilterDefinition<PositionGroupDocument> filter)
     {
-        FilterDefinition<PositionGroupDocument> positionGroupFilter =
-            Builders<PositionGroupDocument>.Filter.Eq(x => x.AssetId, ObjectId.Parse(assetId));
-        positionGroupFilter = ApplyDateFilter(dateFilter, positionGroupFilter);
+        if (locationFilter.StartDate != null)
+        {
+            filter &= Builders<PositionGroupDocument>.Filter.Gte(x => x.StartDate, locationFilter.StartDate.Value) |
+                      Builders<PositionGroupDocument>.Filter.Lte(x => x.EndDate, locationFilter.StartDate.Value);
+        }
 
-        return await repository.GetCollection<PositionGroupDocument>()
-            .Find(positionGroupFilter)
-            .SortBy(x => x.StartDate)
-            .ToListAsync();
+        if (locationFilter.EndDate != null)
+        {
+            filter &= Builders<PositionGroupDocument>.Filter.Lte(x => x.StartDate, locationFilter.EndDate.Value) |
+                      Builders<PositionGroupDocument>.Filter.Gte(x => x.EndDate, locationFilter.EndDate.Value);
+        }
+
+        return filter;
     }
 
     public async Task<Dictionary<ObjectId, int>> GetLocationsCountByDeviceIds(IEnumerable<ObjectId> deviceIds)
@@ -137,11 +172,6 @@ public class PositionRepository(IRepository repository)
     {
         return repository.GetCollection<PositionGroupDocument>()
             .DeleteManyAsync(x => x.AssetId == ObjectId.Parse(assetId));
-    }
-
-    public Task AddRange(IEnumerable<PositionGroupDocument> locations)
-    {
-        return repository.GetCollection<PositionGroupDocument>().InsertManyAsync(locations);
     }
 
     public Task<bool> DeviceHasLocations(string assetId, string deviceId)
@@ -188,24 +218,6 @@ public class PositionRepository(IRepository repository)
         return filter;
     }
 
-    private static FilterDefinition<PositionGroupDocument> ApplyDateFilter(DateFilter locationFilter,
-        FilterDefinition<PositionGroupDocument> filter)
-    {
-        if (locationFilter.StartDate != null)
-        {
-            filter &= Builders<PositionGroupDocument>.Filter.Gte(x => x.StartDate, locationFilter.StartDate.Value) |
-                      Builders<PositionGroupDocument>.Filter.Lte(x => x.EndDate, locationFilter.StartDate.Value);
-        }
-
-        if (locationFilter.EndDate != null)
-        {
-            filter &= Builders<PositionGroupDocument>.Filter.Lte(x => x.StartDate, locationFilter.EndDate.Value) |
-                      Builders<PositionGroupDocument>.Filter.Gte(x => x.EndDate, locationFilter.EndDate.Value);
-        }
-
-        return filter;
-    }
-
     private static FilterDefinition<PositionElement> ApplyAltitudeFilter(LocationFilter locationFilter,
         FilterDefinition<PositionElement> filter)
     {
@@ -221,10 +233,4 @@ public class PositionRepository(IRepository repository)
 
         return filter;
     }
-}
-
-public class UnwindPositionGroupDocument
-{
-    [BsonElement("p")]
-    public PositionElement Position { get; set; }
 }
