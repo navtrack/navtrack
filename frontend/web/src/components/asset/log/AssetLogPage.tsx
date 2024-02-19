@@ -56,7 +56,7 @@ export function AssetLogPage() {
             rowClassName: "py-0.5",
             footerColSpan: 7,
             footer: (rows) => (
-              <div className="h-4">
+              <>
                 {rows !== undefined &&
                   rows.length > 0 &&
                   (query.data?.totalCount! > query.data?.items.length! ? (
@@ -83,43 +83,43 @@ export function AssetLogPage() {
                       }}
                     />
                   ))}
-              </div>
+              </>
             ),
             sort: "desc",
-            value: (row) => row.dateTime,
-            render: (row) => showDateTime(row.dateTime),
+            sortValue: (row) => row.dateTime,
+            row: (row) => showDateTime(row.dateTime),
             sortable: true
           },
           {
             labelId: "generic.latitude",
-            render: (row) => showCoordinate(row.latitude)
+            row: (row) => showCoordinate(row.latitude)
           },
           {
             labelId: "generic.longitude",
-            render: (row) => showCoordinate(row.longitude)
+            row: (row) => showCoordinate(row.longitude)
           },
           {
             labelId: "generic.altitude",
-            render: (row) => showAltitude(row.altitude),
-            value: (row) => row.altitude,
+            row: (row) => showAltitude(row.altitude),
+            sortValue: (row) => row.altitude,
             sortable: true
           },
           {
             labelId: "generic.speed",
-            render: (row) => showSpeed(row.speed),
-            value: (row) => row.speed,
+            row: (row) => showSpeed(row.speed),
+            sortValue: (row) => row.speed,
             sortable: true
           },
           {
             labelId: "generic.heading",
-            render: (row) => showHeading(row.heading),
-            value: (row) => row.heading,
+            row: (row) => showHeading(row.heading),
+            sortValue: (row) => row.heading,
             sortable: true
           },
           {
             labelId: "generic.satellites",
-            render: (row) => `${row.satellites}`,
-            value: (row) => row.satellites,
+            row: (row) => `${row.satellites}`,
+            sortValue: (row) => row.satellites,
             sortable: true
           }
         ]}

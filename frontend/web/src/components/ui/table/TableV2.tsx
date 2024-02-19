@@ -16,13 +16,14 @@ import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
 
 export interface ITableColumn<T> {
   labelId?: string;
+  row: (row: T) => ReactNode;
   rowClassName?: string;
-  value?: (row: T) => string | number | null | undefined;
-  render: (row: T) => ReactNode;
   footer?: (rows?: T[]) => ReactNode;
-  sort?: "asc" | "desc";
-  sortable?: boolean;
+  footerClassName?: string;
   footerColSpan?: number;
+  sort?: "asc" | "desc";
+  sortValue?: (row: T) => string | number | null | undefined;
+  sortable?: boolean;
 }
 
 type TableProps<T> = {
@@ -85,9 +86,9 @@ export function TableV2<T>(props: TableProps<T>) {
     sorted.sort((a, b) => {
       const column = props.columns[sort.column];
 
-      if (column.value !== undefined) {
-        const aValue = column.value(a);
-        const bValue = column.value(b);
+      if (column.sortValue !== undefined) {
+        const aValue = column.sortValue(a);
+        const bValue = column.sortValue(b);
 
         if (
           aValue !== null &&
@@ -254,7 +255,7 @@ export function TableV2<T>(props: TableProps<T>) {
                           "border-b border-gray-900/5"
                         )
                       )}>
-                      {column.render(row)}
+                      {column.row(row)}
                     </td>
                   ))}
                 </tr>
@@ -265,12 +266,18 @@ export function TableV2<T>(props: TableProps<T>) {
             <tfoot>
               <tr>
                 {props.columns
-                  .filter((x) => x.footer !== undefined)
+                  .filter(
+                    (x) =>
+                      x.footer !== undefined || x.footerColSpan !== undefined
+                  )
                   .map((column, index) => (
                     <td
                       colSpan={column.footerColSpan}
                       key={`footer${index}`}
-                      className="sticky bottom-0 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900">
+                      className={classNames(
+                        "sticky bottom-0 h-6 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
+                        column.footerClassName
+                      )}>
                       {column.footer?.(props.rows)}
                     </td>
                   ))}

@@ -41,6 +41,7 @@ export function AssetTripsPage() {
   const locationFilterKey = useLocationFilterKey("trips");
   const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
   const query = useTripsQuery({ assetId: currentAsset.data?.id, ...filters });
+  const hasTrips = (query.data?.items.length ?? 0) > 0;
 
   useOnChange(selectedTrip, () => {
     setShowPin(false);
@@ -55,44 +56,56 @@ export function AssetTripsPage() {
           {
             labelId: "generic.start-date",
             sort: "desc",
-            value: (row) => row.startPosition.dateTime,
-            render: (row) => showDateTime(row.startPosition.dateTime),
+            sortValue: (row) => row.startPosition.dateTime,
+            row: (row) => showDateTime(row.startPosition.dateTime),
             sortable: true
           },
           {
             labelId: "generic.end-date",
-            value: (row) => row.endPosition.dateTime,
-            render: (row) => showDateTime(row.endPosition.dateTime),
-            sortable: true
+            sortValue: (row) => row.endPosition.dateTime,
+            row: (row) => showDateTime(row.endPosition.dateTime),
+            sortable: true,
+            footerColSpan: 2
           },
           {
             labelId: "generic.duration",
-            render: (row) => showDuration(row.duration),
-            value: (row) => row.duration,
+            row: (row) => showDuration(row.duration),
+            sortValue: (row) => row.duration,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && showDuration(query.data?.totalDuration),
             sortable: true
           },
           {
             labelId: "generic.distance",
-            render: (row) => showDistance(row.distance),
-            value: (row) => row.distance,
+            row: (row) => showDistance(row.distance),
+            sortValue: (row) => row.distance,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && showDistance(query.data?.totalDistance),
             sortable: true
           },
           {
             labelId: "generic.avg-speed",
-            render: (row) => showSpeed(row.averageSpeed),
-            value: (row) => row.averageSpeed,
+            row: (row) => showSpeed(row.averageSpeed),
+            sortValue: (row) => row.averageSpeed,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && showSpeed(query.data?.totalAvgSpeed),
             sortable: true
           },
           {
             labelId: "generic.avg-altitude",
-            render: (row) => showAltitude(row.averageAltitude),
-            value: (row) => row.averageAltitude,
+            row: (row) => showAltitude(row.averageAltitude),
+            sortValue: (row) => row.averageAltitude,
+            footerClassName: "font-semibold",
+            footer: () =>
+              hasTrips && showAltitude(query.data?.totalAvgAltitude),
             sortable: true
           },
           {
             labelId: "generic.positions",
-            render: (row) => row.positions.length,
-            value: (row) => row.positions.length,
+            row: (row) => row.positions.length,
+            sortValue: (row) => row.positions.length,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && query.data?.totalPositions,
             sortable: true
           }
         ]}

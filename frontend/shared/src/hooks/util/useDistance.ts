@@ -54,7 +54,7 @@ export function useDistance() {
         return `${convertFeetToMiles(convertedDistance)} ${units.lengthK}`;
       }
 
-      return `${convertedDistance} ${units.length}`;
+      return `${Math.round(convertedDistance * 100) / 100} ${units.length}`;
     },
     [convertToSelectedUnitsType, units.length, units.lengthK, units.unitsType]
   );
@@ -62,7 +62,7 @@ export function useDistance() {
   const showAltitude = useCallback(
     (altitude?: number | null) =>
       altitude !== undefined && altitude !== null
-        ? `${convertToSelectedUnitsType(altitude)} ${units.length}`
+        ? `${Math.round(convertToSelectedUnitsType(altitude))} ${units.length}`
         : "-",
     [convertToSelectedUnitsType, units.length]
   );
