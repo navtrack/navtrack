@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Model.Trips;
@@ -125,13 +126,18 @@ public class TripService(IPositionRepository repository) : ITripService
 
     private async Task<List<PositionModel>> GetPositions(string assetId, DateFilter dateFilter)
     {
-        DateFilter filter = new()
+        GetPositionsOptions options = new()
         {
-            StartDate = dateFilter.StartDate?.AddDays(-1) ?? dateFilter.StartDate,
-            EndDate = dateFilter.EndDate?.AddDays(1) ?? dateFilter.EndDate
+            AssetId = assetId,
+            PositionFilter = new PositionFilter
+            {
+                StartDate = dateFilter.StartDate?.AddHours(-12) ?? dateFilter.StartDate,
+                EndDate = dateFilter.EndDate?.AddHours(12) ?? dateFilter.EndDate
+            },
+            OrderFunc = x => x.SortBy(y => y.Position.Date)
         };
 
-        GetPositionsResult result = await repository.GetPositions(assetId, filter);
+        GetPositionsResult result = await repository.GetPositions(options);
 
         List<PositionModel> mapped = result.Positions.Select(PositionMapper.Map).ToList();
 

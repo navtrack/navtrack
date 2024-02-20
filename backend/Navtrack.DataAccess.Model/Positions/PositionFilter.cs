@@ -1,6 +1,6 @@
 namespace Navtrack.DataAccess.Model.Positions;
 
-public class LocationFilter : DateFilter
+public class PositionFilter : DateFilter
 {
     public virtual int? MinAltitude { get; set; }
     public virtual int? MaxAltitude { get; set; }

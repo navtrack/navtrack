@@ -10,12 +10,19 @@ namespace Navtrack.Api.Services.Positions;
 [Service(typeof(IPositionService))]
 public class PositionService(IPositionRepository positionRepository) : IPositionService
 {
-    public async Task<PositionListModel> GetPositions(string assetId, PositionFilterModel positionFilter, int page, int size)
+    public async Task<PositionListModel> GetPositions(string assetId, PositionFilterModel positionFilter, int page,
+        int size)
     {
-        GetPositionsResult positions = await positionRepository.GetPositions(assetId, positionFilter, page, size);
+        GetPositionsResult positions = await positionRepository.GetPositions(new GetPositionsOptions
+        {
+            AssetId = assetId,
+            PositionFilter = positionFilter,
+            Page = page,
+            Size = size
+        });
 
         PositionListModel model = PositionListMapper.Map(positions);
-    
+
         return model;
     }
 }

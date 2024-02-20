@@ -10,8 +10,7 @@ namespace Navtrack.DataAccess.Services.Positions;
 public interface IPositionRepository : IGenericRepository<PositionGroupDocument>
 {
     Task AddPositions(ObjectId positionGroupId, DateTime maxEndDate, IEnumerable<PositionElement> positions);
-    Task<GetPositionsResult> GetPositions(string assetId, LocationFilter locationFilter, int page, int size);
-    Task<GetPositionsResult> GetPositions(string assetId, DateFilter dateFilter);
+    Task<GetPositionsResult> GetPositions(GetPositionsOptions options);
     Task<Dictionary<ObjectId, int>> GetLocationsCountByDeviceIds(IEnumerable<ObjectId> deviceIds);
     Task DeleteByAssetId(string assetId);
     Task<bool> DeviceHasLocations(string assetId, string deviceId);

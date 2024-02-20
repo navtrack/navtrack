@@ -25,64 +25,47 @@ public class PositionRepository(IRepository repository)
                     .Set(x => x.EndDate, maxEndDate));
     }
 
-    public async Task<GetPositionsResult> GetPositions(string assetId, LocationFilter locationFilter, int page,
-        int size)
+    public async Task<GetPositionsResult> GetPositions(GetPositionsOptions options)
     {
-        FilterDefinition<PositionElement> filter = Builders<PositionElement>.Filter.Empty;
+        bool hasPagination = options is { Page: not null, Size: not null };
 
-        filter = ApplyDateFilter(locationFilter, filter);
-        filter = ApplyAltitudeFilter(locationFilter, filter);
-        filter = ApplySpeedFilter(locationFilter, filter);
-        filter = ApplyGeofenceFilter(locationFilter, filter);
+        FilterDefinition<UnwindPositionGroupDocument> filter = Builders<UnwindPositionGroupDocument>.Filter
+            .Eq(x => x.AssetId, ObjectId.Parse(options.AssetId));
+
+        filter = ApplyDateFilter(options.PositionFilter, filter);
+        filter = ApplyAltitudeFilter(options.PositionFilter, filter);
+        filter = ApplySpeedFilter(options.PositionFilter, filter);
+        filter = ApplyGeofenceFilter(options.PositionFilter, filter);
         filter = ApplyValidFilter(filter);
 
-        FilterDefinition<PositionGroupDocument> positionGroupFilter = Builders<PositionGroupDocument>.Filter
-            .Eq(x => x.AssetId, ObjectId.Parse(assetId));
-
-        positionGroupFilter &= Builders<PositionGroupDocument>.Filter.ElemMatch(x => x.Positions, filter);
-
-        AggregateCountResult? count = await repository.GetCollection<PositionGroupDocument>()
+        IAggregateFluent<UnwindPositionGroupDocument> aggregateFluent = repository
+            .GetCollection<PositionGroupDocument>()
             .Aggregate()
-            .Match(positionGroupFilter)
-            .Unwind(x => x.Positions)
-            .Count()
-            .FirstOrDefaultAsync();
-
-        List<UnwindPositionGroupDocument>? positions = await repository.GetCollection<PositionGroupDocument>()
-            .Aggregate()
-            .Match(positionGroupFilter)
             .Unwind<PositionGroupDocument, UnwindPositionGroupDocument>(x => x.Positions)
-            .SortByDescending(x => x.Position.Date)
-            .Skip(page * size)
-            .Limit(size)
-            .ToListAsync();
-        
+            .Match(filter);
+
         // TODO the queries above could probably be combined into one query with a facet
-        // AggregateFacetResults? aggregateFacetResults = await repository.GetCollection<PositionGroupDocument>()
-        //     .Aggregate()
-        //     .Match(positionGroupFilter)
-        //     .Unwind<PositionGroupDocument, UnwindPositionGroupDocument>(x => x.Positions)
-        //     .SortByDescending(x => x.Position.Date)
-        //     .Facet(AggregateFacet.Create("positions",
-        //             new PipelineStagePipelineDefinition<UnwindPositionGroupDocument, UnwindPositionGroupDocument>(
-        //                 new List<IPipelineStageDefinition>
-        //                 {
-        //                     PipelineStageDefinitionBuilder.Skip<UnwindPositionGroupDocument>(page*size),
-        //                     PipelineStageDefinitionBuilder.Limit<UnwindPositionGroupDocument>(size)
-        //                 })),
-        //         AggregateFacet.Create("count",
-        //             new PipelineStagePipelineDefinition<UnwindPositionGroupDocument, AggregateCountResult>(
-        //             [
-        //                 PipelineStageDefinitionBuilder.Count<UnwindPositionGroupDocument>()
-        //             ])))
-        //     .FirstOrDefaultAsync();
-        //
-        // List<UnwindPositionGroupDocument> unwindPositionGroups =
-        //     aggregateFacetResults.Facets.First(x => x.Name == "positions").Output<UnwindPositionGroupDocument>().ToList();
+        AggregateCountResult? count = hasPagination
+            ? await aggregateFluent
+                .Count()
+                .FirstOrDefaultAsync()
+            : null;
+
+        IOrderedAggregateFluent<UnwindPositionGroupDocument>? sortedAggregateFluent = options.OrderFunc != null
+            ? options.OrderFunc(aggregateFluent)
+            : aggregateFluent
+                .SortByDescending(x => x.Position.Date);
+
+        List<UnwindPositionGroupDocument>? positions = hasPagination
+            ? await sortedAggregateFluent
+                .Skip(options.Page!.Value * options.Size!.Value)
+                .Limit(options.Size.Value)
+                .ToListAsync()
+            : await sortedAggregateFluent.ToListAsync();
 
         GetPositionsResult result = new()
         {
-            TotalCount = count?.Count ?? 0,
+            TotalCount = count?.Count ?? positions.Count,
             Positions = positions
                 .Select(x => x.Position)
                 .ToList()
@@ -91,67 +74,20 @@ public class PositionRepository(IRepository repository)
         return result;
     }
 
-    public async Task<GetPositionsResult> GetPositions(string assetId, DateFilter dateFilter)
-    {
-        FilterDefinition<PositionElement> filter = Builders<PositionElement>.Filter.Empty;
-
-        filter = ApplyDateFilter(dateFilter, filter);
-        filter = ApplyValidFilter(filter);
-
-        FilterDefinition<PositionGroupDocument> positionGroupFilter = Builders<PositionGroupDocument>.Filter
-            .Eq(x => x.AssetId, ObjectId.Parse(assetId));
-
-        positionGroupFilter &= Builders<PositionGroupDocument>.Filter.ElemMatch(x => x.Positions, filter);
-
-        List<UnwindPositionGroupDocument>? positions = await repository.GetCollection<PositionGroupDocument>()
-            .Aggregate()
-            .Match(positionGroupFilter)
-            .Unwind<PositionGroupDocument, UnwindPositionGroupDocument>(x => x.Positions)
-            .SortBy(x => x.Position.Date)
-            .ToListAsync();
-        
-        GetPositionsResult result = new()
-        {
-            TotalCount = positions.Count,
-            Positions = positions
-                .Select(x => x.Position)
-                .ToList()
-        };
-
-        return result;
-    }
-
-    private static FilterDefinition<PositionElement> ApplyDateFilter(DateFilter locationFilter,
-        FilterDefinition<PositionElement> filter)
+    private static FilterDefinition<UnwindPositionGroupDocument> ApplyDateFilter(DateFilter locationFilter,
+        FilterDefinition<UnwindPositionGroupDocument> filter)
     {
         if (locationFilter.StartDate.HasValue)
         {
-            locationFilter.StartDate = locationFilter.StartDate.Value.AddHours(-24);
-            filter &= Builders<PositionElement>.Filter.Gte(x => x.Date, locationFilter.StartDate.Value);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Gte(x => x.Position.Date,
+                locationFilter.StartDate.Value);
         }
 
         if (locationFilter.EndDate.HasValue)
         {
-            locationFilter.EndDate = locationFilter.EndDate.Value.AddHours(24);
-            filter &= Builders<PositionElement>.Filter.Lte(x => x.Date, locationFilter.EndDate.Value);
-        }
-
-        return filter;
-    }
-
-    private static FilterDefinition<PositionGroupDocument> ApplyDateFilter(DateFilter locationFilter,
-        FilterDefinition<PositionGroupDocument> filter)
-    {
-        if (locationFilter.StartDate != null)
-        {
-            filter &= Builders<PositionGroupDocument>.Filter.Gte(x => x.StartDate, locationFilter.StartDate.Value) |
-                      Builders<PositionGroupDocument>.Filter.Lte(x => x.EndDate, locationFilter.StartDate.Value);
-        }
-
-        if (locationFilter.EndDate != null)
-        {
-            filter &= Builders<PositionGroupDocument>.Filter.Lte(x => x.StartDate, locationFilter.EndDate.Value) |
-                      Builders<PositionGroupDocument>.Filter.Gte(x => x.EndDate, locationFilter.EndDate.Value);
+            locationFilter.EndDate = locationFilter.EndDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Lte(x => x.Position.Date,
+                locationFilter.EndDate.Value);
         }
 
         return filter;
@@ -180,55 +116,61 @@ public class PositionRepository(IRepository repository)
             .AnyAsync(x => x.DeviceId == ObjectId.Parse(deviceId) && x.AssetId == ObjectId.Parse(assetId));
     }
 
-    private static FilterDefinition<PositionElement> ApplyValidFilter(FilterDefinition<PositionElement> filter)
+    private static FilterDefinition<UnwindPositionGroupDocument> ApplyValidFilter(
+        FilterDefinition<UnwindPositionGroupDocument> filter)
     {
-        filter &= Builders<PositionElement>.Filter.Exists(x => x.Valid, false) |
-                  Builders<PositionElement>.Filter.Eq(x => x.Valid, true);
+        filter &= Builders<UnwindPositionGroupDocument>.Filter.Exists(x => x.Position.Valid, false) |
+                  Builders<UnwindPositionGroupDocument>.Filter.Eq(x => x.Position.Valid, true);
 
         return filter;
     }
 
-    private static FilterDefinition<PositionElement> ApplyGeofenceFilter(LocationFilter locationFilter,
-        FilterDefinition<PositionElement> filter)
+    private static FilterDefinition<UnwindPositionGroupDocument> ApplyGeofenceFilter(PositionFilter positionFilter,
+        FilterDefinition<UnwindPositionGroupDocument> filter)
     {
-        if (locationFilter is { Latitude: not null, Longitude: not null, Radius: not null })
+        if (positionFilter is { Latitude: not null, Longitude: not null, Radius: not null })
         {
             GeoJsonPoint<GeoJson2DGeographicCoordinates> center = GeoJson.Point(
-                new GeoJson2DGeographicCoordinates(locationFilter.Longitude.Value, locationFilter.Latitude.Value));
+                new GeoJson2DGeographicCoordinates(positionFilter.Longitude.Value, positionFilter.Latitude.Value));
 
-            filter &= Builders<PositionElement>.Filter.Near(x => x.Coordinates, center, locationFilter.Radius);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Near(x => x.Position.Coordinates, center,
+                positionFilter.Radius);
         }
 
         return filter;
     }
 
-    private static FilterDefinition<PositionElement> ApplySpeedFilter(LocationFilter locationFilter,
-        FilterDefinition<PositionElement> filter)
+    private static FilterDefinition<UnwindPositionGroupDocument> ApplySpeedFilter(PositionFilter positionFilter,
+        FilterDefinition<UnwindPositionGroupDocument> filter)
     {
-        if (locationFilter.MinSpeed.HasValue)
+        if (positionFilter.MinSpeed.HasValue)
         {
-            filter &= Builders<PositionElement>.Filter.Gte(x => x.Speed, locationFilter.MinSpeed.Value);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Gte(x => x.Position.Speed,
+                positionFilter.MinSpeed.Value);
         }
 
-        if (locationFilter.MaxSpeed.HasValue)
+        if (positionFilter.MaxSpeed.HasValue)
         {
-            filter &= Builders<PositionElement>.Filter.Lte(x => x.Speed, locationFilter.MaxSpeed.Value);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Lte(x => x.Position.Speed,
+                positionFilter.MaxSpeed.Value);
         }
 
         return filter;
     }
 
-    private static FilterDefinition<PositionElement> ApplyAltitudeFilter(LocationFilter locationFilter,
-        FilterDefinition<PositionElement> filter)
+    private static FilterDefinition<UnwindPositionGroupDocument> ApplyAltitudeFilter(PositionFilter positionFilter,
+        FilterDefinition<UnwindPositionGroupDocument> filter)
     {
-        if (locationFilter.MinAltitude.HasValue)
+        if (positionFilter.MinAltitude.HasValue)
         {
-            filter &= Builders<PositionElement>.Filter.Gte(x => x.Altitude, locationFilter.MinAltitude.Value);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Gte(x => x.Position.Altitude,
+                positionFilter.MinAltitude.Value);
         }
 
-        if (locationFilter.MaxAltitude.HasValue)
+        if (positionFilter.MaxAltitude.HasValue)
         {
-            filter &= Builders<PositionElement>.Filter.Lte(x => x.Altitude, locationFilter.MaxAltitude.Value);
+            filter &= Builders<UnwindPositionGroupDocument>.Filter.Lte(x => x.Position.Altitude,
+                positionFilter.MaxAltitude.Value);
         }
 
         return filter;
