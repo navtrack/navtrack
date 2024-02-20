@@ -90,80 +90,84 @@ export function AssetSettingsDevicePage() {
   }).defined();
 
   return (
-    <>
-      {currentAsset.data?.device && deviceTypes && (
-        <Card>
-          <CardBody>
-            <Heading type="h2">
-              <FormattedMessage id="assets.settings.device.title" />
-            </Heading>
-            <div className="mt-4 grid grid-cols-6 space-x-6">
-              <div className="col-span-3">
-                <Formik<ChangeDeviceFormValues>
-                  initialValues={{
-                    serialNumber: currentAsset.data.device?.serialNumber,
-                    deviceTypeId: currentAsset.data.device?.deviceType.id
-                  }}
-                  validationSchema={validationSchema}
-                  enableReinitialize
-                  onSubmit={(values, formikHelpers) =>
-                    handleSubmit(values, formikHelpers)
-                  }>
-                  {() => (
-                    <Form>
-                      <div className="col-span-3 space-y-3">
-                        <FormikAutocomplete
-                          name="deviceTypeId"
-                          label="generic.device-type"
-                          placeholder="Select a device type"
-                          options={deviceTypes.map((x) => ({
-                            value: x.id,
-                            label: x.displayName
-                          }))}
-                          onChange={(value) => {
-                            setSelectedDeviceType(
-                              deviceTypes.find((x) => x.id === value)
-                            );
-                          }}
-                        />
-                        <FormikTextInput
-                          name="serialNumber"
-                          label="generic.serial-number"
-                          placeholder="assets.add.serial-number.placeholder"
-                        />
-                        <div className="text-right">
-                          <Button
-                            color="secondary"
-                            type="submit"
-                            loading={mutation.isLoading}>
-                            <FormattedMessage id="generic.save" />
-                          </Button>
-                        </div>
-                      </div>
-                    </Form>
-                  )}
-                </Formik>
-              </div>
-              <div className="col-span-3">
-                <DeviceConfiguration deviceType={selectedDeviceType} />
-              </div>
-            </div>
-            <div className="mt-6">
-              <Heading type="h2">
-                <FormattedMessage id="assets.settings.device.history" />
-              </Heading>
-              <div className="mt-4">
-                <DevicesTable
-                  assetId={currentAsset.data.id}
-                  rows={devices.data?.items}
-                  loading={devices.isLoading}
-                  refresh={devices.refetch}
-                />
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      )}
-    </>
+    <Card>
+      <CardBody>
+        <Heading type="h2">
+          <FormattedMessage id="assets.settings.device.title" />
+        </Heading>
+        <div className="mt-4 grid grid-cols-6 space-x-6">
+          <div className="col-span-3">
+            <Formik<ChangeDeviceFormValues>
+              initialValues={{
+                serialNumber: currentAsset.data?.device?.serialNumber ?? "",
+                deviceTypeId: currentAsset.data?.device?.deviceType.id ?? ""
+              }}
+              validationSchema={validationSchema}
+              enableReinitialize
+              onSubmit={(values, formikHelpers) =>
+                handleSubmit(values, formikHelpers)
+              }>
+              {() => (
+                <Form>
+                  <div className="col-span-3 space-y-3">
+                    <FormikAutocomplete
+                      name="deviceTypeId"
+                      label="generic.device-type"
+                      placeholder="Select a device type"
+                      loading={
+                        deviceTypes === undefined ||
+                        currentAsset.data === undefined
+                      }
+                      options={deviceTypes.map((x) => ({
+                        value: x.id,
+                        label: x.displayName
+                      }))}
+                      onChange={(value) => {
+                        setSelectedDeviceType(
+                          deviceTypes.find((x) => x.id === value)
+                        );
+                      }}
+                    />
+                    <FormikTextInput
+                      name="serialNumber"
+                      label="generic.serial-number"
+                      placeholder="assets.add.serial-number.placeholder"
+                      loading={currentAsset.data === undefined}
+                    />
+                    <div className="text-right">
+                      <Button
+                        color="secondary"
+                        type="submit"
+                        disabled={
+                          deviceTypes === undefined ||
+                          currentAsset.data === undefined
+                        }
+                        loading={mutation.isLoading}>
+                        <FormattedMessage id="generic.save" />
+                      </Button>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+          <div className="col-span-3">
+            <DeviceConfiguration deviceType={selectedDeviceType} />
+          </div>
+        </div>
+        <div className="mt-6">
+          <Heading type="h2">
+            <FormattedMessage id="assets.settings.device.history" />
+          </Heading>
+          <div className="mt-4">
+            <DevicesTable
+              rows={devices.data?.items}
+              loading={devices.isLoading}
+              refresh={devices.refetch}
+            />
+          </div>
+        </div>
+      </CardBody>
+    </Card>
   );
 }

@@ -30,7 +30,7 @@ export function AssetSettingsGeneralPage() {
               </Heading>
               <div className="mt-4">
                 <Formik<RenameAssetFormValues>
-                  initialValues={{ name: `${currentAsset.data?.name}` }}
+                  initialValues={{ name: currentAsset.data?.name ?? "" }}
                   onSubmit={(values, formikHelpers) =>
                     renameAsset.submit(values, formikHelpers)
                   }
@@ -42,9 +42,14 @@ export function AssetSettingsGeneralPage() {
                         <FormikTextInput
                           name="name"
                           label="generic.name"
+                          loading={currentAsset.data === undefined}
                           rightAddon={
                             <div className="ml-2 flex items-center">
-                              <Button color="secondary" type="submit" size="md">
+                              <Button
+                                color="secondary"
+                                type="submit"
+                                size="md"
+                                disabled={currentAsset.data === undefined}>
                                 <FormattedMessage id="assets.settings.general.rename" />
                               </Button>
                               <div className="ml-2 w-4">

@@ -7,9 +7,9 @@ import { Table, ITableColumn } from "../../../ui/table/Table";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
 import { Button } from "../../../ui/button/Button";
+import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 
 type DevicesTableProps = {
-  assetId: string;
   rows?: DeviceModel[];
   loading: boolean;
   refresh: () => void;
@@ -20,6 +20,7 @@ export function DevicesTable(props: DevicesTableProps) {
   const queryClient = useQueryClient();
   const { showNotification } = useNotification();
   const intl = useIntl();
+  const currentAsset = useCurrentAsset();
 
   const columns: ITableColumn<DeviceModel>[] = [
     {
@@ -54,27 +55,31 @@ export function DevicesTable(props: DevicesTableProps) {
             <Button
               icon={faTrashAlt}
               color="error"
-              onClick={() =>
-                deleteDeviceMutation
-                  .mutateAsync(
-                    { assetId: props.assetId, deviceId: device.id },
-                    {
-                      onSuccess: () => {
-                        showNotification({
-                          type: "success",
-                          description: intl.formatMessage({
-                            id: "assets.settings.device.delete.success"
-                          })
-                        });
+              onClick={() => {
+                if (currentAsset.data) {
+                  deleteDeviceMutation
+                    .mutateAsync(
+                      { assetId: currentAsset.data.id, deviceId: device.id },
+                      {
+                        onSuccess: () => {
+                          showNotification({
+                            type: "success",
+                            description: intl.formatMessage({
+                              id: "assets.settings.device.delete.success"
+                            })
+                          });
+                        }
                       }
-                    }
-                  )
-                  .then(() =>
-                    queryClient.refetchQueries(
-                      getAssetsDevicesGetListQueryKey(props.assetId)
                     )
-                  )
-              }
+                    .then(() => {
+                      if (currentAsset.data) {
+                        queryClient.refetchQueries(
+                          getAssetsDevicesGetListQueryKey(currentAsset.data.id)
+                        );
+                      }
+                    });
+                }
+              }}
             />
           )}
         </>

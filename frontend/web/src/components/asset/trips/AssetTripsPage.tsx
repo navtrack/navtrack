@@ -51,68 +51,80 @@ export function AssetTripsPage() {
   return (
     <>
       <LocationFilter filterPage="trips" duration avgAltitude avgSpeed />
-      <TableV2<TripModel>
-        columns={[
-          {
-            labelId: "generic.start-date",
-            sort: "desc",
-            sortValue: (row) => row.startPosition.dateTime,
-            row: (row) => showDateTime(row.startPosition.dateTime),
-            sortable: true
-          },
-          {
-            labelId: "generic.end-date",
-            sortValue: (row) => row.endPosition.dateTime,
-            row: (row) => showDateTime(row.endPosition.dateTime),
-            sortable: true,
-            footerColSpan: 2
-          },
-          {
-            labelId: "generic.duration",
-            row: (row) => showDuration(row.duration),
-            sortValue: (row) => row.duration,
-            footerClassName: "font-semibold",
-            footer: () => hasTrips && showDuration(query.data?.totalDuration),
-            sortable: true
-          },
-          {
-            labelId: "generic.distance",
-            row: (row) => showDistance(row.distance),
-            sortValue: (row) => row.distance,
-            footerClassName: "font-semibold",
-            footer: () => hasTrips && showDistance(query.data?.totalDistance),
-            sortable: true
-          },
-          {
-            labelId: "generic.avg-speed",
-            row: (row) => showSpeed(row.averageSpeed),
-            sortValue: (row) => row.averageSpeed,
-            footerClassName: "font-semibold",
-            footer: () => hasTrips && showSpeed(query.data?.totalAvgSpeed),
-            sortable: true
-          },
-          {
-            labelId: "generic.avg-altitude",
-            row: (row) => showAltitude(row.averageAltitude),
-            sortValue: (row) => row.averageAltitude,
-            footerClassName: "font-semibold",
-            footer: () =>
-              hasTrips && showAltitude(query.data?.totalAvgAltitude),
-            sortable: true
-          },
-          {
-            labelId: "generic.positions",
-            row: (row) => row.positions.length,
-            sortValue: (row) => row.positions.length,
-            footerClassName: "font-semibold",
-            footer: () => hasTrips && query.data?.totalPositions,
-            sortable: true
-          }
-        ]}
-        rows={query.data?.items}
-        setSelectedItem={setSelectedTrip}
-        className="flex h-44 flex-grow"
-      />
+      <div>
+        <TableV2<TripModel>
+          columns={[
+            {
+              labelId: "generic.start-date",
+              sort: "desc",
+              sortValue: (row) => row.startPosition.dateTime,
+              row: (row) => showDateTime(row.startPosition.dateTime),
+              sortable: true
+            },
+            {
+              labelId: "generic.end-date",
+              sortValue: (row) => row.endPosition.dateTime,
+              row: (row) => showDateTime(row.endPosition.dateTime),
+              sortable: true,
+              footerColSpan: 2
+            },
+            {
+              labelId: "generic.duration",
+              row: (row) => showDuration(row.duration),
+              sortValue: (row) => row.duration,
+              footerClassName: "font-semibold",
+              footer: () => hasTrips && showDuration(query.data?.totalDuration),
+              sortable: true
+            },
+            {
+              labelId: "generic.distance",
+              row: (row) => showDistance(row.distance),
+              sortValue: (row) => row.distance,
+              footerClassName: "font-semibold",
+              footer: () => hasTrips && showDistance(query.data?.totalDistance),
+              sortable: true
+            },
+            {
+              labelId: "generic.avg-speed",
+              row: (row) => showSpeed(row.averageSpeed),
+              sortValue: (row) => row.averageSpeed,
+              footerClassName: "font-semibold",
+              footer: () => hasTrips && showSpeed(query.data?.totalAvgSpeed),
+              sortable: true
+            },
+            {
+              labelId: "generic.avg-altitude",
+              row: (row) => showAltitude(row.averageAltitude),
+              sortValue: (row) => row.averageAltitude,
+              footerClassName: "font-semibold",
+              footer: () =>
+                hasTrips && showAltitude(query.data?.totalAvgAltitude),
+              sortable: true
+            },
+            {
+              labelId: "generic.positions",
+              row: (row) => row.positions.length,
+              sortValue: (row) => row.positions.length,
+              footerClassName: "font-semibold",
+              footer: () => hasTrips && query.data?.totalPositions,
+              sortable: true
+            }
+          ]}
+          rows={query.data?.items}
+          setSelectedItem={setSelectedTrip}
+          className="flex h-44 flex-grow"
+        />
+      </div>
+      <Card className="flex flex-grow">
+        <MapContainer style={{ flexGrow: 2, minHeight: 250 }}>
+          <Map center={DEFAULT_MAP_CENTER} initialZoom={16}>
+            <MapTrip trip={selectedTrip} />
+            {selectedTripPosition && showPin && (
+              <MapPin position={{ ...selectedTripPosition }} zIndexOffset={1} />
+            )}
+          </Map>
+        </MapContainer>
+      </Card>
       {selectedTrip !== undefined && (
         <>
           <Card>
@@ -151,16 +163,6 @@ export function AssetTripsPage() {
           </Card>
         </>
       )}
-      <Card className="flex flex-grow">
-        <MapContainer style={{ flexGrow: 2, minHeight: "200px" }}>
-          <Map center={DEFAULT_MAP_CENTER} initialZoom={16}>
-            <MapTrip trip={selectedTrip} />
-            {selectedTripPosition && showPin && (
-              <MapPin position={{ ...selectedTripPosition }} zIndexOffset={1} />
-            )}
-          </Map>
-        </MapContainer>
-      </Card>
     </>
   );
 }
