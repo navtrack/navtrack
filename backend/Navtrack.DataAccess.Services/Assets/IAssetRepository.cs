@@ -19,6 +19,6 @@ public interface IAssetRepository : IGenericRepository<AssetDocument>
     Task RemoveUserFromAsset(string assetId, string userId);
     Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
         int protocolPort);
-    Task SetPosition(ObjectId assetId, PositionElement position);
+    Task SetPosition(ObjectId assetId, PositionDocument position);
     Task<bool> IsNewerPositionDate(ObjectId assetId, DateTime date);
 }

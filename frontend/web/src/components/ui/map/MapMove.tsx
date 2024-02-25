@@ -2,11 +2,11 @@ import { useCallback, useEffect } from "react";
 import { useMap } from "react-leaflet";
 import { LongLat } from "./mapTypes";
 
-interface IMapMove {
+type MapMoveProps = {
   onMove?: (center: LongLat, zoom: number) => void;
-}
+};
 
-export function MapMove(props: IMapMove) {
+export function MapMove(props: MapMoveProps) {
   const map = useMap();
 
   const onMove = useCallback(() => {

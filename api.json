@@ -1305,6 +1305,9 @@
           "dateTime"
         ],
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "longitude": {
             "type": "number",
             "format": "double"

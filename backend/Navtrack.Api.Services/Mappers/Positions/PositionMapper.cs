@@ -5,10 +5,11 @@ namespace Navtrack.Api.Services.Mappers.Positions;
 
 public static class PositionMapper
 {
-    public static PositionModel Map(PositionElement source)
+    public static PositionModel Map(PositionDocument source)
     {
         PositionModel position = new()
         {
+            Id = source.Id.ToString(),
             Coordinates = source.Coordinates,
             DateTime = source.Date,
             Speed = source.Speed,

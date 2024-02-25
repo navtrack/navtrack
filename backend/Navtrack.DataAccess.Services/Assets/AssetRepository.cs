@@ -105,7 +105,7 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
                     .Set(x => x.Device.DeviceTypeId, deviceTypeId));
     }
 
-    public Task SetPosition(ObjectId assetId, PositionElement position)
+    public Task SetPosition(ObjectId assetId, PositionDocument position)
     {
         return repository.GetCollection<AssetDocument>()
             .UpdateOneAsync(x => x.Id == assetId,

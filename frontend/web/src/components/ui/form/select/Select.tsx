@@ -14,7 +14,7 @@ export type SelectProps = {
   error?: string;
   disabled?: boolean;
   className?: string;
-  isLoading?: boolean;
+  loading?: boolean;
 };
 
 export type SelectOption = {
@@ -32,19 +32,19 @@ export function Select(props: SelectProps) {
           className={classNames(
             "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-700",
             c(props.error, "ring-red-600"),
-            c(props.isLoading, "animate-pulse bg-gray-50"),
+            c(props.loading, "animate-pulse bg-gray-50"),
             props.className
           )}
           value={props.value}
           //placeholder={props.placeholder} TODO
-          disabled={props.disabled || props.isLoading}
+          disabled={props.disabled || props.loading}
           onChange={(e) => {
             const item = props.options.find((x) => x.value === e.target.value);
             if (item) {
               props.onChange?.(item.value);
             }
           }}>
-          {!props.isLoading &&
+          {!props.loading &&
             props.options.map((x) => (
               <option key={x.value} value={x.value}>
                 {x.label}

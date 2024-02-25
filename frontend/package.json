@@ -13,7 +13,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@geoman-io/leaflet-geoman-free": "^2.11.4",
+    "@geoman-io/leaflet-geoman-free": "2.16.0",
     "@headlessui/react": "^0.0.0-insiders.08baf09",
     "@heroicons/react": "^2.1.1",
     "@maplibre/maplibre-gl-leaflet": "^0.0.20",

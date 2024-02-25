@@ -12,6 +12,7 @@ export interface PositionModel {
   gsmSignal?: number | null;
   hdop?: number | null;
   heading?: number | null;
+  id?: string;
   latitude: number;
   longitude: number;
   odometer?: number | null;

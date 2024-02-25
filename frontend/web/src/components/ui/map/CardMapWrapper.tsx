@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-type MapContainerProps = {
+type CardMapWrapperProps = {
   children?: ReactNode;
   style?: React.CSSProperties;
 };
 
-export function MapContainer(props: MapContainerProps) {
+export function CardMapWrapper(props: CardMapWrapperProps) {
   return (
     <div
       className="flex flex-grow overflow-hidden rounded-md"

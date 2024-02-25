@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -8,6 +7,5 @@ namespace Navtrack.Listener.Services;
 
 public interface IPositionService
 {
-    Task<SavePositionsResult> Save(Device device, DateTime maxEndDate, ObjectId connectionId,
-        IEnumerable<Position> locations);
+    Task Save(ObjectId connectionId, Device device, IEnumerable<Position> positions);
 }

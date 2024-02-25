@@ -4,7 +4,8 @@ import { TextInputRightAddon } from "./TextInputRightAddon";
 
 export default {
   Basic: <TextInput name="basic" />,
-  BasicDisabled: <TextInput name="basic" disabled value="1234" />,
+  Loading: <TextInput name="basic" loading />,
+  Disabled: <TextInput name="basic" disabled value="1234" />,
   WithLabel: <TextInput name="basic" label="Email" />,
   WithPlaceholder: <TextInput name="basic" placeholder="placeholder" />,
   WithLeftAddon: (

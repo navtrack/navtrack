@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,53 +15,23 @@ namespace Navtrack.Listener.Services;
 public class PositionService(IPositionRepository positionRepository, IAssetRepository assetRepository)
     : IPositionService
 {
-    public async Task<SavePositionsResult> Save(Device device, DateTime maxEndDate,
-        ObjectId connectionId, IEnumerable<Position> locations)
+    public async Task Save(ObjectId connectionId, Device device, IEnumerable<Position> positions)
     {
-        SavePositionsResult result = new();
-
         if (device is { AssetId: not null, DeviceId: not null })
         {
-            List<PositionElement> mapped = locations.Select(PositionElementMapper.Map)
+            List<PositionDocument> mappedPositions = positions.Select(x => PositionDocumentMapper.Map(x, device, connectionId))
                 .OrderBy(x => x.Date)
                 .ToList();
 
-            PositionElement startPosition = mapped.First();
-            PositionElement endPosition = mapped.Last();
+            await positionRepository.AddRange(mappedPositions);
 
-            if (device.PositionGroupId == null)
+            PositionDocument? latestPosition = mappedPositions.MaxBy(x => x.Date);
+
+            if (latestPosition != null && (device.MaxDate == null || device.MaxDate < latestPosition.Date))
             {
-                PositionGroupDocument positionGroupDocument = new()
-                {
-                    DeviceId = device.DeviceId.Value,
-                    AssetId = device.AssetId.Value,
-                    CreatedDate = DateTime.UtcNow,
-                    Positions = mapped,
-                    ConnectionId = connectionId,
-                    StartDate = startPosition.Date,
-                    EndDate = endPosition.Date
-                };
-
-                await positionRepository.Add(positionGroupDocument);
-
-                result.PositionGroupId = positionGroupDocument.Id;
+                await assetRepository.SetPosition(device.AssetId.Value, latestPosition);
+                device.MaxDate = latestPosition.Date;
             }
-            else
-            {
-                await positionRepository.AddPositions(device.PositionGroupId.Value, maxEndDate, mapped);
-            }
-
-            bool shouldUpdateAsset = await assetRepository.IsNewerPositionDate(device.AssetId.Value, endPosition.Date);
-
-            if (shouldUpdateAsset)
-            {
-                await assetRepository.SetPosition(device.AssetId.Value, endPosition);
-            }
-
-            result.Success = true;
-            result.MaxDate = endPosition.Date;
         }
-
-        return result;
     }
 }

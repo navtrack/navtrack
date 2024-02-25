@@ -6,13 +6,13 @@ using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Models;
 
-public class ProtocolConnectionContext(INetworkStreamWrapper networkStream, IProtocol protocol, ObjectId connectionId) : IAsyncDisposable
+public class ProtocolConnectionContext(INetworkStreamWrapper networkStream, IProtocol protocol, ObjectId connectionId)
+    : IAsyncDisposable
 {
     public IProtocol Protocol { get; } = protocol;
     public ObjectId ConnectionId { get; } = connectionId;
     public Device? Device { get; private set; }
     public INetworkStreamWrapper NetworkStream { get; } = networkStream;
-    public DateTime? MaxDate { get; set; }
 
     public void SetDevice(string serialNumber)
     {

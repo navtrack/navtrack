@@ -17,8 +17,6 @@ export const selectedTripPositionSelector = selector({
     const selectedTrip = get(selectedTripAtom);
     const selectedTripLocationIndex = get(selectedTripPositionIndexAtom);
 
-    console.log(selectedTrip, selectedTripLocationIndex);
-
     return selectedTrip !== undefined && selectedTripLocationIndex !== undefined
       ? selectedTrip.positions[selectedTripLocationIndex - 1]
       : undefined;

@@ -1,10 +1,19 @@
 using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Positions;
 
-public class PositionElement
+[Collection("positions2")]
+public class PositionDocument : BaseDocument
 {
+    [BsonElement("md")]
+    public PositionMetadataElement Metadata { get; set; }
+
+    [BsonElement("cId")]
+    public ObjectId? ConnectionId { get; set; }
+
     /// <summary>
     /// [Longitude, Latitude]
     /// </summary>
@@ -13,10 +22,10 @@ public class PositionElement
 
     [BsonIgnore]
     public double Latitude => Coordinates[1];
-        
+
     [BsonIgnore]
     public double Longitude => Coordinates[0];
-    
+
     [BsonElement("cd")]
     public DateTime CreatedDate { get; set; }
 

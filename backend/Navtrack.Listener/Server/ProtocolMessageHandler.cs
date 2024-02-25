@@ -33,7 +33,7 @@ public class ProtocolMessageHandler(
             NetworkStream = networkStream,
             DataMessage = new DataMessage(bytes, connectionContext.Protocol.SplitMessageBy)
         };
-        
+
         await connectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
 
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
@@ -41,18 +41,13 @@ public class ProtocolMessageHandler(
 
         try
         {
-            List<Position>? locations = customMessageHandler.ParseRange(messageInput)?.ToList();
+            List<Position>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
 
-            if (locations != null && locations.Count != 0 && connectionContext.Device != null)
+            if (positions is { Count: > 0 } && connectionContext.Device != null)
             {
-                await PrepareContext(connectionContext, locations);
+                await PrepareContext(connectionContext);
 
-                SavePositionsResult result = await positionService.Save(connectionContext.Device,
-                    connectionContext.MaxDate!.Value,
-                    connectionContext.ConnectionId,
-                    locations);
-
-                SetPositionGroupId(result, connectionContext);
+                await positionService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
             }
         }
         catch (Exception e)
@@ -62,32 +57,18 @@ public class ProtocolMessageHandler(
         }
     }
 
-    private async Task PrepareContext(ProtocolConnectionContext context, IEnumerable<Position> locations)
+    private async Task PrepareContext(ProtocolConnectionContext context)
     {
         if (context.Device?.AssetId == null && !string.IsNullOrEmpty(context.Device?.SerialNumber))
         {
             AssetDocument? asset = await assetRepository.Get(context.Device.SerialNumber, context.Protocol.Port);
 
-            if (asset != null)
+            if (asset is { Device: not null })
             {
-                context.Device.AssetId = asset.Id;
                 context.Device.DeviceId = asset.Device.Id;
+                context.Device.AssetId = asset.Id;
+                context.Device.MaxDate = asset.Position?.Date;
             }
-        }
-
-        DateTime maxDate = locations.Max(x => x.Date);
-
-        if (context.MaxDate == null || context.MaxDate < maxDate)
-        {
-            context.MaxDate = maxDate;
-        }
-    }
-
-    private static void SetPositionGroupId(SavePositionsResult result, ProtocolConnectionContext connectionContext)
-    {
-        if (result.PositionGroupId != null && connectionContext.Device is { PositionGroupId: null })
-        {
-            connectionContext.Device.PositionGroupId = result.PositionGroupId;
         }
     }
 

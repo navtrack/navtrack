@@ -91,24 +91,24 @@ export function SettingsAccountPage() {
           {() => (
             <Form>
               <CardBody>
-                <Skeleton loading={!user}>
-                  <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-3">
-                      <FormikTextInput
-                        name={nameOf<AccountSettingsFormValues>("email")}
-                        label="generic.email"
-                      />
-                    </div>
-                    <div className="col-span-3"></div>
-                    <div className="col-span-3">
-                      <FormikSelect
-                        name={nameOf<AccountSettingsFormValues>("units")}
-                        label="generic.units"
-                        options={units}
-                      />
-                    </div>
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-3">
+                    <FormikTextInput
+                      name={nameOf<AccountSettingsFormValues>("email")}
+                      label="generic.email"
+                      loading={user.isLoading}
+                    />
                   </div>
-                </Skeleton>
+                  <div className="col-span-3"></div>
+                  <div className="col-span-3">
+                    <FormikSelect
+                      name={nameOf<AccountSettingsFormValues>("units")}
+                      label="generic.units"
+                      options={units}
+                      loading={user.isLoading}
+                    />
+                  </div>
+                </div>
               </CardBody>
               <CardFooter className="text-right">
                 <Button

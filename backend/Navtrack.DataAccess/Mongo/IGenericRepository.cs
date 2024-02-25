@@ -12,6 +12,7 @@ public interface IGenericRepository<T> where T : class
     IMongoQueryable<T> GetQueryable();
     IMongoCollection<T> GetCollection();
     Task Add(T document);
+    Task AddRange(IEnumerable<T> documents);
     Task<T> GetById(string id);
     Task<T> GetById(ObjectId id);
     Task Delete(string id);

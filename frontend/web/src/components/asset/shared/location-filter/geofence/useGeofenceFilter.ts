@@ -1,8 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
-import { DEFAULT_MAP_CENTER } from "../../../../../constants";
-import { CircleGeofence, LongLat } from "../../../../ui/map/mapTypes";
+import {
+  DEFAULT_MAP_CENTER,
+  GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM
+} from "../../../../../constants";
+import { LongLat } from "../../../../ui/map/mapTypes";
 import { geofenceFilterAtom } from "../locationFilterState";
+import { CircleGeofence } from "../../../../ui/map/geofence/GeofenceCircle";
 
 export function useGeofenceFilter(
   filterKey: string,
@@ -27,18 +31,9 @@ export function useGeofenceFilter(
     [setState]
   );
 
-  const initialValues = useMemo<CircleGeofence>(
-    () =>
-      state.geofence ?? {
-        latitude: 0,
-        longitude: 0,
-        radius: 0
-      },
-    [state.geofence]
-  );
-
   const handleMapMove = useCallback(
     (center: LongLat, zoom: number) => {
+      console.log("center", center, zoom);
       setState((current) => ({
         ...current,
         map: {
@@ -60,17 +55,12 @@ export function useGeofenceFilter(
 
   const zoom = useMemo(
     () =>
-      state.map?.zoom
-        ? state.map?.zoom
-        : center === DEFAULT_MAP_CENTER
-        ? 2
-        : undefined,
-    [center, state.map?.zoom]
+      state.map?.zoom ? state.map?.zoom : GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM,
+    [state.map?.zoom]
   );
 
   return {
     state,
-    initialValues,
     center,
     zoom,
     close,

@@ -1,8 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useValue } from "react-cosmos/client";
 import { DEFAULT_MAP_CENTER } from "../../../../constants";
 import { Map } from "../Map";
-import { CircleGeofence } from "../mapTypes";
-import { GeofenceCircle } from "./GeofenceCircle";
+import { CircleGeofence, GeofenceCircle } from "./GeofenceCircle";
+import { useSetRecoilState } from "recoil";
+import { appConfigAtom } from "@navtrack/shared/state/appConfig";
+import { Modal } from "../../modal/Modal";
+import { Card } from "../../card/Card";
+import { MapContainer } from "react-leaflet";
 
 export default {
   Default: () => {
@@ -10,6 +15,39 @@ export default {
       <Map center={DEFAULT_MAP_CENTER}>
         <GeofenceCircle />
       </Map>
+    );
+  },
+  "With vector tiles": () => {
+    const setAppConfig = useSetRecoilState(appConfigAtom);
+
+    setAppConfig((prev) => ({
+      ...prev,
+      authentication: {
+        clientId: "test"
+      },
+      api: {
+        url: "test"
+      },
+      map: {
+        tileUrl: "https://tiles.stadiamaps.com/styles/osm_bright.json"
+      }
+    }));
+
+    return (
+      <Map center={DEFAULT_MAP_CENTER}>
+        <GeofenceCircle />
+      </Map>
+    );
+  },
+  "In modal": () => {
+    return (
+      <Modal open close={() => {}}>
+        <div className="flex" style={{ width: 400, height: 400 }}>
+          <Map center={DEFAULT_MAP_CENTER}>
+            <GeofenceCircle onChange={(geofence) => console.log(geofence)} />
+          </Map>
+        </div>
+      </Modal>
     );
   },
   "With event handler": () => {
@@ -27,6 +65,7 @@ export default {
         radius: 319
       }
     });
+
     return (
       <Map center={DEFAULT_MAP_CENTER}>
         <GeofenceCircle

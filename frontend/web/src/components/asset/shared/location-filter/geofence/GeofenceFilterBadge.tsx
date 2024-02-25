@@ -3,6 +3,9 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { geofenceFilterAtom } from "../locationFilterState";
+import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
+import { FormattedMessage } from "react-intl";
+import { showCoordinate } from "@navtrack/shared/utils/coordinates";
 
 type GeofenceFilterBadgeProps = {
   filterKey: string;
@@ -11,6 +14,7 @@ type GeofenceFilterBadgeProps = {
 export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
   const [state, setState] = useRecoilState(geofenceFilterAtom(props.filterKey));
   const reset = useResetRecoilState(geofenceFilterAtom(props.filterKey));
+  const distance = useDistance();
 
   return (
     <>
@@ -20,8 +24,14 @@ export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
           onClick={() => setState((x) => ({ ...x, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faMapMarkedAlt}>
-            {state.geofence?.latitude}, {state.geofence?.longitude} -{" "}
-            {state.geofence?.radius}m radius
+            <FormattedMessage
+              id="locations.filter.geofence.badge"
+              values={{
+                latitude: showCoordinate(state.geofence?.latitude),
+                longitude: showCoordinate(state.geofence?.longitude),
+                distance: distance.showDistance(state.geofence?.radius)
+              }}
+            />
           </IconWithText>
         </FilterBadge>
       )}

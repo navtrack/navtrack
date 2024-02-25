@@ -35,6 +35,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseDocument
         return repository.GetCollection<T>().InsertOneAsync(document);
     }
 
+    public Task AddRange(IEnumerable<T> documents)
+    {
+        return repository.GetCollection<T>().InsertManyAsync(documents);
+    }
+
     public Task<T> GetById(string id)
     {
         return repository.GetQueryable<T>().FirstOrDefaultAsync(x => x.Id == ObjectId.Parse(id));

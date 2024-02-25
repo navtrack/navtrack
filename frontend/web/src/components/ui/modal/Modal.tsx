@@ -14,7 +14,7 @@ export function Modal(props: ModalProps) {
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-30 overflow-y-auto"
+        className="fixed inset-0 z-20 overflow-y-auto"
         onClose={() => props.close()}>
         <div className="flex min-h-screen items-center justify-center p-4">
           <Transition.Child

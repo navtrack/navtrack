@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -7,9 +6,8 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Positions;
 
-public interface IPositionRepository : IGenericRepository<PositionGroupDocument>
+public interface IPositionRepository : IGenericRepository<PositionDocument>
 {
-    Task AddPositions(ObjectId positionGroupId, DateTime maxEndDate, IEnumerable<PositionElement> positions);
     Task<GetPositionsResult> GetPositions(GetPositionsOptions options);
     Task<Dictionary<ObjectId, int>> GetLocationsCountByDeviceIds(IEnumerable<ObjectId> deviceIds);
     Task DeleteByAssetId(string assetId);

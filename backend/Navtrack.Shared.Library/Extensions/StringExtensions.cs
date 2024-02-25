@@ -1,6 +1,6 @@
-namespace Navtrack.Api.Services.Util;
+namespace Navtrack.Shared.Library.Extensions;
 
-public static class StringUtil
+public static class StringExtensions
 {
     public static string ToCamelCase(this string value)
     {

@@ -91,13 +91,8 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         Mock<IPositionService> mock = new();
 
         mock.Setup(x =>
-                x.Save(It.IsAny<Device>(), It.IsAny<DateTime>(), It.IsAny<ObjectId>(), It.IsAny<List<Position>>()))
-            .Returns<Device, DateTime, ObjectId, IEnumerable<Position>>((_, _, _, locations) => Task.FromResult(new SavePositionsResult
-            {
-                Success = true,
-                MaxDate = locations.Max(x => x.Date)
-            }))
-            .Callback<Device, DateTime, ObjectId, IEnumerable<Position>>((_, _, _, locations) =>
+                x.Save(It.IsAny<ObjectId>(), It.IsAny<Device>(), It.IsAny<List<Position>>()))
+            .Callback<ObjectId, Device, IEnumerable<Position>>((_, _, locations) =>
             {
                 List<Position> locationsList = locations.ToList();
                 LastParsedPositions = locationsList;
@@ -161,6 +156,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     private ProtocolConnectionContext GetProtocolClient()
     {
-        return new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(), ObjectId.GenerateNewId());
+        return new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(),
+            ObjectId.GenerateNewId());
     }
 }

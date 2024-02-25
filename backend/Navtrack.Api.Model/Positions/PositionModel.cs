@@ -5,6 +5,8 @@ namespace Navtrack.Api.Model.Positions;
 
 public class PositionModel
 {
+    public string Id { get; set; }
+    
     [Required]
     public double Longitude => Coordinates[0];
     

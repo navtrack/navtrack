@@ -2,7 +2,7 @@ import { format, subDays } from "date-fns";
 import { atomFamily, selectorFamily } from "recoil";
 import {
   AltitudeFilter,
-  CircleGeofenceFilter as GeofenceFilter,
+  CircleGeofenceFilter,
   DateFilter,
   DateRange,
   DurationFilter,
@@ -34,7 +34,7 @@ export const speedFilterAtom = atomFamily<SpeedFilter, string>({
   }
 });
 
-export const geofenceFilterAtom = atomFamily<GeofenceFilter, string>({
+export const geofenceFilterAtom = atomFamily<CircleGeofenceFilter, string>({
   key: "Log:Filter:Geofence",
   default: {
     open: false,

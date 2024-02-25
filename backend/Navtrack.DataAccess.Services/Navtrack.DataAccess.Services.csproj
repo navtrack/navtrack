@@ -3,5 +3,6 @@
         <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj" />
         <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
         <ProjectReference Include="..\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj" />
+        <ProjectReference Include="..\Navtrack.Shared.Utils\Navtrack.Shared.Utils.csproj" />
     </ItemGroup>
 </Project>

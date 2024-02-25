@@ -16,7 +16,7 @@ import {
   selectedTripPositionSelector
 } from "./tripsState";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
-import { MapContainer } from "../../ui/map/MapContainer";
+import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
 import { TripModel } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
@@ -116,14 +116,14 @@ export function AssetTripsPage() {
         />
       </div>
       <Card className="flex flex-grow">
-        <MapContainer style={{ flexGrow: 2, minHeight: 250 }}>
+        <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map center={DEFAULT_MAP_CENTER} initialZoom={16}>
             <MapTrip trip={selectedTrip} />
             {selectedTripPosition && showPin && (
               <MapPin position={{ ...selectedTripPosition }} zIndexOffset={1} />
             )}
           </Map>
-        </MapContainer>
+        </CardMapWrapper>
       </Card>
       {selectedTrip !== undefined && (
         <>

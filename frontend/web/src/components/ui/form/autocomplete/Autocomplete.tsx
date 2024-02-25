@@ -1,5 +1,5 @@
 import { Popover } from "@headlessui/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { SelectOption } from "../select/Select";
 import { TextInput } from "../text-input/TextInput";
 import { Icon } from "../../icon/Icon";
@@ -75,7 +75,7 @@ export function Autocomplete(props: AutocompleteProps) {
           }}
           loading={props.loading}
           rightAddon={
-            <TextInputRightAddon className="pointer-events-auto">
+            <TextInputRightAddon className="pointer-events-auto mr-0">
               <div
                 className="mr-2 px-1 py-1 hover:cursor-pointer"
                 onClick={(e) => {
@@ -92,7 +92,7 @@ export function Autocomplete(props: AutocompleteProps) {
         />
         <Popover.Panel static={open}>
           <div
-            className="absolute left-0 right-0 z-20 mt-1 max-h-60 overflow-y-scroll rounded-md bg-white py-1 text-sm font-medium shadow-md ring-1 ring-inset ring-gray-300"
+            className="absolute left-0 right-0 z-10 mt-1 max-h-60 overflow-y-scroll rounded-md bg-white py-1 text-sm font-medium shadow-md ring-1 ring-inset ring-gray-300"
             ref={ref}>
             {filteredOptions.map((option) => (
               <div

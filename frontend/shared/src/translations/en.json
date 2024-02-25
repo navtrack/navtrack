@@ -196,6 +196,7 @@
   "locations.filter.duration": "Duration",
   "locations.filter.geofence.select-center": "Select a center and draw a circle to apply filtering.",
   "locations.filter.geofence.title": "Geofence filter",
+  "locations.filter.geofence.badge": "{latitude}, {longitude} - {distance} radius",
   "locations.filter.geofence": "Geofence",
   "locations.filter.speed.title": "Speed filter",
   "locations.filter.speed": "Speed",

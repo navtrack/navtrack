@@ -20,16 +20,7 @@ type MapProps = {
 
 const StyledDiv = styled("div")`
   .leaflet-pane {
-    z-index: 10;
-  }
-  .leaflet-control {
-    z-index: 11;
-  }
-  .leaflet-top {
-    z-index: 11;
-  }
-  .leaflet-bottom {
-    z-index: 11;
+    z-index: 0;
   }
 `;
 
@@ -44,7 +35,6 @@ export function Map(props: MapProps) {
         className="h-full w-full"
         zoomControl={false}
         attributionControl={!props.hideAttribution}>
-        <MapZoom initialZoom={props.initialZoom} />
         <MapZoomControl />
         {appConfig?.map.tileUrl ? (
           <VectorTileLayer styleUrl={appConfig.map.tileUrl} />

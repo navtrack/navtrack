@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Navtrack.Api.Model;
 using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Mappers.Positions;
 using Navtrack.Api.Services.Mappers.Trips;
-using Navtrack.Api.Services.Util;
 using Navtrack.DataAccess.Model.Positions;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
+using Navtrack.Shared.Utils.Coordinates;
 
 namespace Navtrack.Api.Services.Trips;
 
@@ -119,7 +118,7 @@ public class TripService(IPositionRepository repository) : ITripService
     {
         foreach (TripModel trip in trips)
         {
-            trip.Distance = TripDistanceCalculator.CalculateDistance(trip.Positions
+            trip.Distance = DistanceCalculator.CalculateDistance(trip.Positions
                 .Select(x => (new Coordinates(x.Latitude, x.Longitude), x.Odometer)).ToList());
         }
     }
@@ -134,7 +133,7 @@ public class TripService(IPositionRepository repository) : ITripService
                 StartDate = dateFilter.StartDate?.AddHours(-12) ?? dateFilter.StartDate,
                 EndDate = dateFilter.EndDate?.AddHours(12) ?? dateFilter.EndDate
             },
-            OrderFunc = x => x.SortBy(y => y.Position.Date)
+            OrderFunc = Builders<PositionDocument>.Sort.Ascending(x => x.Date)
         };
 
         GetPositionsResult result = await repository.GetPositions(options);

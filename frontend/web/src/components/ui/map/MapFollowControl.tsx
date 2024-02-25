@@ -23,7 +23,7 @@ export function MapFollowControl(props: MapFollowControlProps) {
   }, [follow, props.follow]);
 
   return (
-    <div className="absolute bottom-0 z-20 mx-auto flex w-full justify-center">
+    <div className="absolute bottom-0 z-10 mx-auto flex w-full justify-center">
       <div
         onClick={() => {
           setFollow(!follow);

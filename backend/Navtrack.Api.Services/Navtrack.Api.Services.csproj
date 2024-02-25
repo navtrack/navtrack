@@ -5,6 +5,7 @@
         <ProjectReference Include="..\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj" />
         <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
         <ProjectReference Include="..\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj" />
+        <ProjectReference Include="..\Navtrack.Shared.Utils\Navtrack.Shared.Utils.csproj" />
     </ItemGroup>
 
     <ItemGroup>

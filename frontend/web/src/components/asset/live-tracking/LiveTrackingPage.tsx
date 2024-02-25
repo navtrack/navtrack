@@ -4,7 +4,7 @@ import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
 import { PositionBar } from "../shared/position-bar/PositionBar";
 import { MapPin } from "../../ui/map/MapPin";
-import { MapContainer } from "../../ui/map/MapContainer";
+import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapFollowControl } from "../../ui/map/MapFollowControl";
 
 export function AssetLiveTrackingPage() {
@@ -19,12 +19,12 @@ export function AssetLiveTrackingPage() {
             <PositionBar position={location} />
           </Card>
           <Card className="flex flex-grow">
-            <MapContainer>
+            <CardMapWrapper>
               <Map center={{ ...location }}>
                 <MapPin position={{ ...location }} />
                 <MapFollowControl position={{ ...location }} />
               </Map>
-            </MapContainer>
+            </CardMapWrapper>
           </Card>
         </>
       ) : (

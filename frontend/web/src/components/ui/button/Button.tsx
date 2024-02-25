@@ -19,7 +19,7 @@ type ButtonProps = {
 export function Button(props: ButtonProps) {
   return (
     <button
-      type={props.type}
+      type={props.type ?? "button"}
       onClick={props.onClick}
       disabled={props.loading || props.disabled}
       className={classNames(

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-import { MapContainer } from "../../ui/map/MapContainer";
+
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
 import { PositionModel } from "@navtrack/shared/api/model/generated";
@@ -19,6 +19,7 @@ import {
   showCoordinate,
   showHeading
 } from "@navtrack/shared/utils/coordinates";
+import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 
 export function AssetLogPage() {
   const currentAsset = useCurrentAsset();
@@ -128,7 +129,7 @@ export function AssetLogPage() {
         className="flex h-44 flex-grow"
       />
       <Card className="flex flex-grow">
-        <MapContainer>
+        <CardMapWrapper>
           <Map
             center={
               position
@@ -138,10 +139,10 @@ export function AssetLogPage() {
                   }
                 : DEFAULT_MAP_CENTER
             }
-            initialZoom={16}>
+            initialZoom={14}>
             <MapPin position={position} follow />
           </Map>
-        </MapContainer>
+        </CardMapWrapper>
       </Card>
     </>
   );

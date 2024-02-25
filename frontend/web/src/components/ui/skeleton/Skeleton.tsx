@@ -12,12 +12,13 @@ export function Skeleton(props: SkeletonProps) {
   if (props.loading) {
     return (
       <div className={classNames("relative overflow-hidden", props.className)}>
-        <div className="absolute z-10 h-full w-full rounded-md bg-white"></div>
+        <div className="absolute h-full w-full rounded-md bg-white" />
         <div
           className={classNames(
-            "absolute z-10 h-full w-full animate-pulse rounded-md",
+            "absolute h-full w-full animate-pulse rounded-md",
             c(!!props.background, props.background, "bg-gray-100")
-          )}></div>
+          )}
+        />
         {props.children}
       </div>
     );

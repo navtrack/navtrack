@@ -20,7 +20,7 @@ public class AssetDocument : BaseDocument
     public AssetDeviceElement? Device { get; set; }
 
     [BsonElement("position")]
-    public PositionElement? Position { get; set; }
+    public PositionDocument? Position { get; set; }
 
     [BsonElement("userRoles")]
     public IEnumerable<AssetUserRoleElement> UserRoles { get; set; }

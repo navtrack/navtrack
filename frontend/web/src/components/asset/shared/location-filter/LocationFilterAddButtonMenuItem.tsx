@@ -1,6 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { IconWithText } from "../../../ui/icon/IconWithText";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { Ref, forwardRef } from "react";
 
 type LocationFilterAddButtonMenuItemProps = {
   onClick: React.MouseEventHandler<HTMLSpanElement>;
@@ -8,8 +9,9 @@ type LocationFilterAddButtonMenuItemProps = {
   labelId: string;
 };
 
-export function LocationFilterAddButtonMenuItem(
-  props: LocationFilterAddButtonMenuItemProps
+function InternalLocationFilterAddButtonMenuItem(
+  props: LocationFilterAddButtonMenuItemProps,
+  ref: Ref<HTMLSpanElement>
 ) {
   return (
     <span
@@ -23,3 +25,7 @@ export function LocationFilterAddButtonMenuItem(
     </span>
   );
 }
+
+export const LocationFilterAddButtonMenuItem = forwardRef(
+  InternalLocationFilterAddButtonMenuItem
+);
