@@ -5,7 +5,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Positions;
 
-[Collection("positions2")]
+[Collection("positions")]
 public class PositionDocument : BaseDocument
 {
     [BsonElement("md")]
