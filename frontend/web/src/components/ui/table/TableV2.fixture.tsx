@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useInput } from "react-cosmos/client";
 import { ITableColumn, TableV2 } from "./TableV2";
 

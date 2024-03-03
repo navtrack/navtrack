@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useInput } from "react-cosmos/client";
 import { useSetRecoilState } from "recoil";
