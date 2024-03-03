@@ -46,9 +46,9 @@
     "prettier-plugin-tailwindcss": "^0.3.0",
     "prettier": "^2.5.1",
     "query-string": "^8.1.0",
-    "react-cosmos-plugin-open-fixture": "6.0.3",
-    "react-cosmos-plugin-vite": "6.0.3",
-    "react-cosmos": "6.0.3",
+    "react-cosmos-plugin-open-fixture": "6.0.4-canary.84a35da.0",
+    "react-cosmos-plugin-vite": "6.0.4-canary.84a35da.0",
+    "react-cosmos": "6.0.4-canary.84a35da.0",
     "react-dom": "18.2.0",
     "react-intl": "^6.4.2",
     "react-leaflet": "^4.1.0",
@@ -64,7 +64,8 @@
   "scripts": {
     "start:web": "cd web && npm run start",
     "build:web": "cd web && npm run build",
-    "clean": "rm -rf node_modules && rm -rf shared/node_modules && rm -rf web/node_modules && rm -rf package-lock.json"
+    "clean": "rm -rf node_modules && rm -rf shared/node_modules && rm -rf web/node_modules && rm -rf package-lock.json",
+    "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "overrides": {
     "react-dom": "18.2.0",

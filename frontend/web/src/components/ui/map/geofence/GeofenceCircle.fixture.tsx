@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useValue } from "react-cosmos/client";
-import { DEFAULT_MAP_CENTER } from "../../../../constants";
-import { Map } from "../Map";
-import { CircleGeofence, GeofenceCircle } from "./GeofenceCircle";
-import { useSetRecoilState } from "recoil";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
+import { useInput } from "react-cosmos/client";
+import { useSetRecoilState } from "recoil";
+import { DEFAULT_MAP_CENTER } from "../../../../constants";
 import { Modal } from "../../modal/Modal";
-import { Card } from "../../card/Card";
-import { MapContainer } from "react-leaflet";
+import { Map } from "../Map";
+import { GeofenceCircle } from "./GeofenceCircle";
 
 export default {
   Default: () => {
@@ -58,12 +56,10 @@ export default {
     );
   },
   "With geofence": () => {
-    const [geofence, setGeofence] = useValue<CircleGeofence>("geofence", {
-      defaultValue: {
-        latitude: 46.763266,
-        longitude: 23.555374,
-        radius: 319
-      }
+    const [geofence, setGeofence] = useInput("geofence", {
+      latitude: 46.763266,
+      longitude: 23.555374,
+      radius: 319
     });
 
     return (
