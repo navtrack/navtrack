@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useInput } from "react-cosmos/client";
+import { useFixtureInput } from "react-cosmos/client";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { Map } from "./Map";
 import { MapFollowControl } from "./MapFollowControl";
@@ -112,8 +112,8 @@ export default {
     return <Map center={DEFAULT_MAP_CENTER} />;
   },
   WithPin: () => {
-    const [latitude] = useInput("latitude", 46.770439);
-    const [longitude] = useInput("longitude", 23.591423);
+    const [latitude] = useFixtureInput("latitude", 46.770439);
+    const [longitude] = useFixtureInput("longitude", 23.591423);
 
     return (
       <Map center={DEFAULT_MAP_CENTER}>
@@ -125,9 +125,9 @@ export default {
     );
   },
   WithFollow: () => {
-    const [latitude, setLatitude] = useInput("latitude", 46.770439);
-    const [longitude, setLongitude] = useInput("longitude", 23.591423);
-    const [follow, setFollow] = useInput("follow", true);
+    const [latitude, setLatitude] = useFixtureInput("latitude", 46.770439);
+    const [longitude, setLongitude] = useFixtureInput("longitude", 23.591423);
+    const [follow, setFollow] = useFixtureInput("follow", true);
 
     const [interval, setLocalInterval] = useState<NodeJS.Timeout>();
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useInput } from "react-cosmos/client";
+import { useFixtureInput } from "react-cosmos/client";
 import { SelectOption } from "../select/Select";
 import { Autocomplete } from "./Autocomplete";
 
@@ -10,12 +10,12 @@ const assets: SelectOption[] = Array.from(Array(1000).keys()).map((x) => ({
 
 export default {
   Basic: () => {
-    const [value, setValue] = useInput("option", assets[10].value);
+    const [value, setValue] = useFixtureInput("option", assets[10].value);
 
     return <Autocomplete options={assets} value={value} onChange={setValue} />;
   },
   WithInterval: () => {
-    const [value, setValue] = useInput("option", "");
+    const [value, setValue] = useFixtureInput("option", "");
 
     useEffect(() => {
       if (!value) {

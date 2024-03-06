@@ -1,5 +1,5 @@
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
-import { useInput } from "react-cosmos/client";
+import { useFixtureInput } from "react-cosmos/client";
 import { useSetRecoilState } from "recoil";
 import { DEFAULT_MAP_CENTER } from "../../../../constants";
 import { Modal } from "../../modal/Modal";
@@ -55,7 +55,7 @@ export default {
     );
   },
   "With geofence": () => {
-    const [geofence, setGeofence] = useInput("geofence", {
+    const [geofence, setGeofence] = useFixtureInput("geofence", {
       latitude: 46.763266,
       longitude: 23.555374,
       radius: 319
