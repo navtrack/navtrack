@@ -133,14 +133,13 @@ public class TripService(IMessageRepository repository) : ITripService
                 StartDate = dateFilter.StartDate?.AddHours(-12) ?? dateFilter.StartDate,
                 EndDate = dateFilter.EndDate?.AddHours(12) ?? dateFilter.EndDate
             },
-            OrderFunc = Builders<MessageDocument>.Sort.Ascending(x => x.Date)
+            OrderFunc = Builders<MessageDocument>.Sort.Ascending(x => x.Position.Date)
         };
 
         GetMessagesResult result = await repository.GetMessages(options);
 
         List<PositionModel> mapped = result.Messages
             .Select(PositionModelMapper.Map)
-            .OfType<PositionModel>()
             .ToList();
 
         return mapped;

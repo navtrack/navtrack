@@ -5,7 +5,7 @@ using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Services;
 
-public interface IPositionService
+public interface IMessageService
 {
     Task Save(ObjectId connectionId, Device device, IEnumerable<Position> positions);
 }

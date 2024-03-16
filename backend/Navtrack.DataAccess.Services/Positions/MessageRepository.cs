@@ -25,7 +25,7 @@ public class MessageRepository(IRepository repository)
 
         long count = await query.CountDocumentsAsync();
 
-        query = query.Sort(options.OrderFunc ?? Builders<MessageDocument>.Sort.Descending(x => x.Date));
+        query = query.Sort(options.OrderFunc ?? Builders<MessageDocument>.Sort.Descending(x => x.Position.Date));
 
         IFindFluent<MessageDocument, MessageDocument> paginatedQuery = hasPagination
             ? query.Skip(options.Page!.Value * options.Size!.Value).Limit(options.Size.Value)

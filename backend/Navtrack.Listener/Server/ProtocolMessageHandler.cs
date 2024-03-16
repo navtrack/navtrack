@@ -18,7 +18,7 @@ namespace Navtrack.Listener.Server;
 public class ProtocolMessageHandler(
     ILogger<ProtocolMessageHandler> logger,
     IServiceProvider provider,
-    IPositionService positionService,
+    IMessageService messageService,
     IAssetRepository assetRepository,
     IConnectionRepository connectionRepository) : IProtocolMessageHandler
 {
@@ -47,7 +47,7 @@ public class ProtocolMessageHandler(
             {
                 await PrepareContext(connectionContext);
 
-                await positionService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
+                await messageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
             }
         }
         catch (Exception e)

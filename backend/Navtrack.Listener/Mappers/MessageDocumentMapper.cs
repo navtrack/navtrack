@@ -12,9 +12,9 @@ public static class MessageDocumentMapper
         MessageDocument destination = new()
         {
             ConnectionId = connectionId,
+            Date = DateTime.UtcNow,
             Metadata = PositionMetadataElementMapper.Map(device),
             Position = PositionElementMapper.Map(source),
-            Date = DateTime.UtcNow,
             Gsm = GsmElementMapper.Map(source)
         };
 
