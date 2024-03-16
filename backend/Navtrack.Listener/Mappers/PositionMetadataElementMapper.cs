@@ -5,9 +5,9 @@ namespace Navtrack.Listener.Mappers;
 
 public static class PositionMetadataElementMapper
 {
-    public static PositionMetadataElement Map(Device source)
+    public static MessageMetadataElement Map(Device source)
     {
-        PositionMetadataElement destination = new()
+        MessageMetadataElement destination = new()
         {
             AssetId = source.AssetId!.Value,
             DeviceId = source.DeviceId!.Value,

@@ -57,14 +57,14 @@ export function AssetTripsPage() {
             {
               labelId: "generic.start-date",
               sort: "desc",
-              sortValue: (row) => row.startPosition.dateTime,
-              row: (row) => showDateTime(row.startPosition.dateTime),
+              sortValue: (row) => row.startPosition.date,
+              row: (row) => showDateTime(row.startPosition.date),
               sortable: true
             },
             {
               labelId: "generic.end-date",
-              sortValue: (row) => row.endPosition.dateTime,
-              row: (row) => showDateTime(row.endPosition.dateTime),
+              sortValue: (row) => row.endPosition.date,
+              row: (row) => showDateTime(row.endPosition.date),
               sortable: true,
               footerColSpan: 2
             },

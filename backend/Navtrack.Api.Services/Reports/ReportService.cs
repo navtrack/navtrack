@@ -35,7 +35,7 @@ public class ReportService(
 
         UserDocument user = await userAccessor.Get();
 
-        DistanceReportListModel listModel = DistanceReportListModelMapper.Map(trips.Items, user.UnitsType);
+        DistanceReportListModel listModel = DistanceReportListModelMapper.Map(trips.Items);
 
         return listModel;
     }

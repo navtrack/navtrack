@@ -1,4 +1,5 @@
-import { CircleGeofence, LongLat } from "../../../ui/map/mapTypes";
+import { CircleGeofence } from "../../../ui/map/geofence/GeofenceCircle";
+import { LongLat } from "../../../ui/map/mapTypes";
 
 export enum LocationFilterType {
   Date,

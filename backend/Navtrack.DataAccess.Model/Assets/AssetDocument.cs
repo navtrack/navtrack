@@ -19,8 +19,8 @@ public class AssetDocument : BaseDocument
     [BsonElement("device")]
     public AssetDeviceElement? Device { get; set; }
 
-    [BsonElement("position")]
-    public PositionDocument? Position { get; set; }
+    [BsonElement("lastPositionMessage")]
+    public MessageDocument? LastPositionMessage { get; set; }
 
     [BsonElement("userRoles")]
     public IEnumerable<AssetUserRoleElement> UserRoles { get; set; }

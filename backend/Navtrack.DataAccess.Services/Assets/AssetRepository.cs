@@ -17,10 +17,15 @@ namespace Navtrack.DataAccess.Services.Assets;
 [Service(typeof(IAssetRepository))]
 public class AssetRepository(IRepository repository) : GenericRepository<AssetDocument>(repository), IAssetRepository
 {
-    public Task<AssetDocument?> Get(string serialNumber, int protocolPort)
+    public Task<AssetDocument> Get(string serialNumber, int protocolPort)
     {
-        return repository.GetQueryable<AssetDocument>()
-            .FirstOrDefaultAsync(x => x.Device.SerialNumber == serialNumber && x.Device.ProtocolPort == protocolPort);
+        Task<AssetDocument>? asset = repository.GetQueryable<AssetDocument>()
+            .FirstOrDefaultAsync(x =>
+                x.Device != null &&
+                x.Device.SerialNumber == serialNumber &&
+                x.Device.ProtocolPort == protocolPort);
+
+        return asset;
     }
 
     public Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids)
@@ -38,10 +43,11 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
         Expression<Func<AssetDocument, bool>> filter = assetId == null
             ? x =>
                 x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
-                x.Name.ToLower() == name
+                x.Name.Equals(name
+                    , StringComparison.InvariantCultureIgnoreCase)
             : x =>
                 x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
-                x.Name.ToLower() == name &&
+                x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) &&
                 x.Id != ObjectId.Parse(assetId);
 
         return repository.GetQueryable<AssetDocument>()
@@ -56,8 +62,7 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
             .UpdateOneAsync(x => x.Id == ObjectId.Parse(assetId), update);
     }
 
-    public async Task AddUserToAsset(AssetDocument assetDocument, UserDocument? userDocument,
-        AssetRoleType modelRole)
+    public async Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole)
     {
         UserAssetRoleElement userAssetRoleElement = new()
         {
@@ -99,22 +104,23 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
     {
         return repository.GetCollection<AssetDocument>()
             .UpdateOneAsync(x => x.Id == assetId,
-                Builders<AssetDocument>.Update.Set(x => x.Device.Id, deviceId)
-                    .Set(x => x.Device.SerialNumber, serialNumber)
-                    .Set(x => x.Device.ProtocolPort, protocolPort)
-                    .Set(x => x.Device.DeviceTypeId, deviceTypeId));
+                Builders<AssetDocument>.Update.Set(x => x.Device!.Id, deviceId)
+                    .Set(x => x.Device!.SerialNumber, serialNumber)
+                    .Set(x => x.Device!.ProtocolPort, protocolPort)
+                    .Set(x => x.Device!.DeviceTypeId, deviceTypeId));
     }
 
-    public Task SetPosition(ObjectId assetId, PositionDocument position)
+    public Task SetLastPositionMessage(ObjectId assetId, MessageDocument message)
     {
         return repository.GetCollection<AssetDocument>()
             .UpdateOneAsync(x => x.Id == assetId,
-                Builders<AssetDocument>.Update.Set(x => x.Position, position));
+                Builders<AssetDocument>.Update.Set(x => x.LastPositionMessage, message));
     }
 
     public Task<bool> IsNewerPositionDate(ObjectId assetId, DateTime date)
     {
         return repository.GetQueryable<AssetDocument>()
-            .AnyAsync(x => x.Id == assetId && (x.Position == null || x.Position.Date < date));
+            .AnyAsync(x =>
+                x.Id == assetId && (x.LastPositionMessage == null || x.LastPositionMessage.Position.Date < date));
     }
 }

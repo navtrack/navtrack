@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Navtrack.DataAccess.Model.Positions;
 
-public class PositionMetadataElement
+public class MessageMetadataElement
 {
     [BsonElement("aId")]
     public ObjectId AssetId { get; set; }

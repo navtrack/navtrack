@@ -1302,7 +1302,7 @@
           "latitude",
           "coordinates",
           "validCoordinates",
-          "dateTime"
+          "date"
         ],
         "properties": {
           "id": {
@@ -1326,7 +1326,7 @@
           "validCoordinates": {
             "type": "boolean"
           },
-          "dateTime": {
+          "date": {
             "type": "string",
             "format": "date-time",
             "minLength": 1
@@ -1360,13 +1360,27 @@
             "type": "boolean",
             "nullable": true
           },
-          "gsmSignal": {
-            "type": "integer",
-            "nullable": true
+          "gsm": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GsmModel"
+              }
+            ]
           },
           "odometer": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "GsmModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gsmSignal": {
+            "type": "integer",
             "nullable": true
           }
         }

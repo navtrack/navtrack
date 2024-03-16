@@ -31,7 +31,7 @@ namespace Navtrack.Api.Services.Assets;
 public class AssetService(
     IAssetRepository assetRepository,
     ICurrentUserAccessor currentUserAccessor,
-    IPositionRepository positionRepository,
+    IMessageRepository messageRepository,
     IDeviceTypeRepository deviceTypeRepository,
     IDeviceService service,
     IRepository repository,
@@ -90,7 +90,7 @@ public class AssetService(
     public async Task Delete(string assetId)
     {
         Task deleteAssetTask = assetRepository.Delete(assetId);
-        Task deleteLocationsTask = positionRepository.DeleteByAssetId(assetId);
+        Task deleteLocationsTask = messageRepository.DeleteByAssetId(assetId);
         Task removeRoleTask = userRepository.DeleteAssetRoles(assetId);
 
         await Task.WhenAll(new List<Task> { deleteAssetTask, deleteLocationsTask, removeRoleTask });

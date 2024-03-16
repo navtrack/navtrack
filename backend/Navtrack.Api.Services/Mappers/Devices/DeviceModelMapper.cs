@@ -19,9 +19,9 @@ public static class DeviceModelMapper
         };
     }
 
-    public static DeviceModel? Map(AssetDocument asset, DeviceType? deviceType)
+    public static DeviceModel? Map(AssetDocument asset, DeviceType deviceType)
     {
-        if (asset.Device != null && deviceType != null)
+        if (asset.Device != null)
         {
             return new DeviceModel
             {

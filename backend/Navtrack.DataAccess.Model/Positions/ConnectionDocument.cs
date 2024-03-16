@@ -6,7 +6,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Positions;
 
-[Collection("connections")]
+[Collection("device_connections")]
 public class ConnectionDocument : BaseDocument
 {
     [BsonElement("cd")]

@@ -67,7 +67,7 @@ public class ProtocolMessageHandler(
             {
                 context.Device.DeviceId = asset.Device.Id;
                 context.Device.AssetId = asset.Id;
-                context.Device.MaxDate = asset.Position?.Date;
+                context.Device.MaxDate = asset.LastPositionMessage?.Position.Date;
             }
         }
     }

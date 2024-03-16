@@ -48,7 +48,7 @@ export function PositionBar(props: PositionBarProps) {
       </thead>
       <tbody>
         <tr className="text-sm font-medium">
-          <td className="min-w-40">{showDateTime(props.position.dateTime)}</td>
+          <td className="min-w-40">{showDateTime(props.position.date)}</td>
           <td className="min-w-24">
             {showCoordinate(props.position.latitude)}
           </td>

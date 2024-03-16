@@ -1,17 +1,16 @@
 using System.Linq;
 using Navtrack.Api.Model.Positions;
 using Navtrack.DataAccess.Model.Positions;
-using Navtrack.DataAccess.Services.Positions;
 
 namespace Navtrack.Api.Services.Mappers.Positions;
 
 public static class PositionListMapper
 {
-    public static PositionListModel Map(GetPositionsResult source)
+    public static PositionListModel Map(GetMessagesResult source)
     {
         PositionListModel model = new()
         {
-            Items = source.Positions.Select(PositionMapper.Map).ToList(),
+            Items = source.Messages.Select(PositionModelMapper.Map).ToList(),
             TotalCount = source.TotalCount
         };
 

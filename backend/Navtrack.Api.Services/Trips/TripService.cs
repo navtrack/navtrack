@@ -15,7 +15,7 @@ using Navtrack.Shared.Utils.Coordinates;
 namespace Navtrack.Api.Services.Trips;
 
 [Service(typeof(ITripService))]
-public class TripService(IPositionRepository repository) : ITripService
+public class TripService(IMessageRepository repository) : ITripService
 {
     private const int MinTripDistanceInMeters = 300; // 1000 feet
     private const int MaxDistanceBetweenPositionsInMeters = 1000;
@@ -53,7 +53,7 @@ public class TripService(IPositionRepository repository) : ITripService
         {
             if (currentTrip == null ||
                 lastPosition == null ||
-                position.DateTime > lastPosition.DateTime.AddMinutes(MaxTimeBetweenTripInMinutes) ||
+                position.Date > lastPosition.Date.AddMinutes(MaxTimeBetweenTripInMinutes) ||
                 DistanceCalculator.CalculateDistance(new Coordinates(lastPosition.Latitude, lastPosition.Longitude),
                     new Coordinates(position.Latitude, position.Longitude)) > MaxDistanceBetweenPositionsInMeters)
             {
@@ -125,7 +125,7 @@ public class TripService(IPositionRepository repository) : ITripService
 
     private async Task<List<PositionModel>> GetPositions(string assetId, DateFilter dateFilter)
     {
-        GetPositionsOptions options = new()
+        GetMessagesOptions options = new()
         {
             AssetId = assetId,
             PositionFilter = new PositionFilter
@@ -133,12 +133,15 @@ public class TripService(IPositionRepository repository) : ITripService
                 StartDate = dateFilter.StartDate?.AddHours(-12) ?? dateFilter.StartDate,
                 EndDate = dateFilter.EndDate?.AddHours(12) ?? dateFilter.EndDate
             },
-            OrderFunc = Builders<PositionDocument>.Sort.Ascending(x => x.Date)
+            OrderFunc = Builders<MessageDocument>.Sort.Ascending(x => x.Date)
         };
 
-        GetPositionsResult result = await repository.GetPositions(options);
+        GetMessagesResult result = await repository.GetMessages(options);
 
-        List<PositionModel> mapped = result.Positions.Select(PositionMapper.Map).ToList();
+        List<PositionModel> mapped = result.Messages
+            .Select(PositionModelMapper.Map)
+            .OfType<PositionModel>()
+            .ToList();
 
         return mapped;
     }
@@ -237,13 +240,13 @@ public class TripService(IPositionRepository repository) : ITripService
         if (dateFilter.StartDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartPosition.DateTime.Date >= dateFilter.StartDate.Value.Date).ToList();
+                .Where(x => x.StartPosition.Date.Date >= dateFilter.StartDate.Value.Date).ToList();
         }
 
         if (dateFilter.EndDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartPosition.DateTime.Date <= dateFilter.EndDate.Value.Date).ToList();
+                .Where(x => x.StartPosition.Date.Date <= dateFilter.EndDate.Value.Date).ToList();
         }
 
         return filteredTrips;
@@ -251,6 +254,6 @@ public class TripService(IPositionRepository repository) : ITripService
 
     private static List<TripModel> ApplyOrdering(IEnumerable<TripModel> trips)
     {
-        return trips.OrderBy(x => x.StartPosition.DateTime).ToList();
+        return trips.OrderBy(x => x.StartPosition.Date).ToList();
     }
 }

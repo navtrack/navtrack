@@ -5,7 +5,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Users;
 
-[Collection("passwordResets")]
+[Collection("user_password_resets")]
 public class PasswordResetDocument : BaseDocument
 {
     [BsonElement("email")]

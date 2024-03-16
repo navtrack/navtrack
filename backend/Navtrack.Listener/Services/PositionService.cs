@@ -12,24 +12,24 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Services;
 
 [Service(typeof(IPositionService))]
-public class PositionService(IPositionRepository positionRepository, IAssetRepository assetRepository)
+public class PositionService(IMessageRepository messageRepository, IAssetRepository assetRepository)
     : IPositionService
 {
     public async Task Save(ObjectId connectionId, Device device, IEnumerable<Position> positions)
     {
         if (device is { AssetId: not null, DeviceId: not null })
         {
-            List<PositionDocument> mappedPositions = positions.Select(x => PositionDocumentMapper.Map(x, device, connectionId))
+            List<MessageDocument> mappedPositions = positions.Select(x => MessageDocumentMapper.Map(x, device, connectionId))
                 .OrderBy(x => x.Date)
                 .ToList();
 
-            await positionRepository.AddRange(mappedPositions);
+            await messageRepository.AddRange(mappedPositions);
 
-            PositionDocument? latestPosition = mappedPositions.MaxBy(x => x.Date);
+            MessageDocument? latestPosition = mappedPositions.MaxBy(x => x.Date);
 
             if (latestPosition != null && (device.MaxDate == null || device.MaxDate < latestPosition.Date))
             {
-                await assetRepository.SetPosition(device.AssetId.Value, latestPosition);
+                await assetRepository.SetLastPositionMessage(device.AssetId.Value, latestPosition);
                 device.MaxDate = latestPosition.Date;
             }
         }

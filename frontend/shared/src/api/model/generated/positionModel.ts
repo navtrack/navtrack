@@ -4,12 +4,13 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
+import type { PositionModelGsm } from "./positionModelGsm";
 
 export interface PositionModel {
   altitude?: number | null;
   coordinates: number[];
-  dateTime: string;
-  gsmSignal?: number | null;
+  date: string;
+  gsm?: PositionModelGsm;
   hdop?: number | null;
   heading?: number | null;
   id?: string;
