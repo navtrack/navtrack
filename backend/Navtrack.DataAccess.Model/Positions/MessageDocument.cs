@@ -5,7 +5,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Positions;
 
-[Collection("device_messages")]
+[Collection("devices_messages")]
 public class MessageDocument : BaseDocument
 {
     [BsonElement("md")]

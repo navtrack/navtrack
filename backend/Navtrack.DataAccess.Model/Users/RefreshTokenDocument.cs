@@ -5,7 +5,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Users;
 
-[Collection("user_refresh_tokens")]
+[Collection("users_refresh_tokens")]
 public class RefreshTokenDocument
 {
     [BsonId]
