@@ -8,7 +8,6 @@ using Navtrack.DataAccess.Mongo;
 namespace Navtrack.DataAccess.Model.Assets;
 
 [Collection("assets")]
-[BsonIgnoreExtraElements]
 public class AssetDocument : BaseDocument
 {
     [BsonElement("name")]

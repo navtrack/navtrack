@@ -6,7 +6,6 @@ using Navtrack.DataAccess.Mongo;
 namespace Navtrack.DataAccess.Model.Devices;
 
 [Collection("devices")]
-[BsonIgnoreExtraElements]
 public class DeviceDocument : BaseDocument
 {
     [BsonElement("serialNumber")]
