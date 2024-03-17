@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
