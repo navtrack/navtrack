@@ -43,11 +43,10 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
         Expression<Func<AssetDocument, bool>> filter = assetId == null
             ? x =>
                 x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
-                x.Name.Equals(name
-                    , StringComparison.InvariantCultureIgnoreCase)
+                x.Name.ToLower().Equals(name.ToLower())
             : x =>
                 x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
-                x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) &&
+                x.Name.ToLower().Equals(name.ToLower()) &&
                 x.Id != ObjectId.Parse(assetId);
 
         return repository.GetQueryable<AssetDocument>()
