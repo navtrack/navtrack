@@ -16,16 +16,11 @@ public class CurrentUserAccessor(IHttpContextAccessor contextAccessor, IUserRepo
 {
     private UserDocument? currentUser;
 
-    public ObjectId GetId()
+    public ObjectId? GetId()
     {
         string? id = contextAccessor.HttpContext?.User.GetId();
 
-        if (string.IsNullOrEmpty(id))
-        {
-            throw new ApiException(HttpStatusCode.Unauthorized);
-        }
-            
-        ObjectId currentUserId = ObjectId.Parse(id);
+        ObjectId? currentUserId = string.IsNullOrEmpty(id) ? null : ObjectId.Parse(id);
 
         return currentUserId;
     }
@@ -34,9 +29,14 @@ public class CurrentUserAccessor(IHttpContextAccessor contextAccessor, IUserRepo
     {
         if (currentUser == null)
         {
-            ObjectId id = GetId();
+            ObjectId? id = GetId();
 
-            currentUser = await repository.GetById(id);
+            if (id == null)
+            {
+                throw new ApiException(HttpStatusCode.Unauthorized);
+            }
+
+            currentUser = await repository.GetById(id.Value);
         }
 
         return currentUser;

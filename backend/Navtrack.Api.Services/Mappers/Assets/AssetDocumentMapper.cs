@@ -16,6 +16,7 @@ public static class AssetDocumentMapper
         {
             Id = ObjectId.GenerateNewId(),
             Name = source.Name,
+            OwnerId = owner.Id,
             UserRoles = new List<AssetUserRoleElement>
             {
                 UserRoleElementMapper.Map(owner.Id, AssetRoleType.Owner)

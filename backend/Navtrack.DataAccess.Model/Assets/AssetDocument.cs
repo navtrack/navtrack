@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Positions;
@@ -16,6 +17,9 @@ public class AssetDocument : BaseDocument
     [BsonElement("created")]
     public AuditElement Created { get; set; }
 
+    [BsonElement("ownerId")]
+    public ObjectId OwnerId { get; set; }
+    
     [BsonElement("device")]
     public AssetDeviceElement? Device { get; set; }
 

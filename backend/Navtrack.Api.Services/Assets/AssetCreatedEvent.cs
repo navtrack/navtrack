@@ -1,8 +1,8 @@
-using Navtrack.Api.Model.Assets;
+using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Assets;
 
-public class AssetCreatedEvent(AssetModel asset)
+public class AssetCreatedEvent(string assetId) : IEvent
 {
-    public AssetModel Asset { get; } = asset;
+    public string AssetId { get; } = assetId;
 }

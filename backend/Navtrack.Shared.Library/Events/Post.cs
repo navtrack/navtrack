@@ -10,10 +10,17 @@ namespace Navtrack.Shared.Library.Events;
 [Service(typeof(IPost))]
 public class Post(IServiceProvider provider) : IPost
 {
-    public Task Send<T>(T payload)
+    public Task Send<T>(T payload) where T : IEvent
     {
         IEnumerable<IEventHandler<T>> eventHandlers = provider.GetServices<IEventHandler<T>>();
-        
-        return Task.WhenAll(eventHandlers.Select(x => x.Handle(payload)));
+        IEnumerable<IEventHandler> globalEventHandlers = provider.GetServices<IEventHandler>();
+
+        Task[] tasks =
+        [
+            ..eventHandlers.Select(x => x.Handle(payload)),
+            ..globalEventHandlers.Select(x => x.Handle(typeof(T).Name, payload))
+        ];
+
+        return Task.WhenAll(tasks);
     }
 }

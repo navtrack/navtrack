@@ -110,7 +110,7 @@ public class AssetService(
         DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
         AssetModel asset = AssetModelMapper.Map(currentUser, assetDocument, deviceType);
 
-        await post.Send(new AssetCreatedEvent(asset));
+        await post.Send(new AssetCreatedEvent(asset.Id));
 
         return asset;
     }

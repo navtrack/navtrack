@@ -4,7 +4,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Settings;
 
-[Collection("settings")]
+[Collection("system_settings")]
 public class SettingDocument
 {
     [BsonId]
