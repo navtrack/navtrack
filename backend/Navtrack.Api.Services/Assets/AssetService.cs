@@ -148,6 +148,8 @@ public class AssetService(
         }
 
         await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
+        
+        await post.Send(new AssetUserAddedEvent(assetId, userDocument.Id.ToString()));
     }
 
     public async Task RemoveUserFromAsset(string assetId, string userId)
@@ -165,6 +167,8 @@ public class AssetService(
         }
 
         await assetRepository.RemoveUserFromAsset(assetId, userId);
+        
+        await post.Send(new AssetUserDeletedEvent(assetId, userId));
     }
 
     private async Task<AssetDocument> AddDocuments(CreateAssetModel model)
