@@ -35,7 +35,7 @@ export function Map(props: MapProps) {
         className="h-full w-full"
         zoomControl={false}
         attributionControl={!props.hideAttribution}>
-        <MapZoomControl />
+        {!props.hideZoomControl && <MapZoomControl />}
         {appConfig?.map.tileUrl ? (
           <VectorTileLayer styleUrl={appConfig.map.tileUrl} />
         ) : (
