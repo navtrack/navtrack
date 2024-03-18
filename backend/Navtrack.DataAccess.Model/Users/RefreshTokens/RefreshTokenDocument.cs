@@ -9,7 +9,6 @@ namespace Navtrack.DataAccess.Model.Users.RefreshTokens;
 public class RefreshTokenDocument
 {
     [BsonId]
-    [BsonIgnoreIfDefault]
     public ObjectId Id { get; set; }
     public DateTime CreationTime { get; set; }
     public int Lifetime { get; set; }

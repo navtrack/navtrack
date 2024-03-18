@@ -6,7 +6,7 @@ using Navtrack.DataAccess.Mongo;
 namespace Navtrack.DataAccess.Model.Devices.Messages;
 
 [Collection("devices_messages")]
-public class MessageDocument : BaseDocument
+public class DeviceMessageDocument : BaseDocument
 {
     [BsonElement("md")]
     public MessageMetadataElement Metadata { get; set; }

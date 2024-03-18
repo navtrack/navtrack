@@ -109,11 +109,11 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
                     .Set(x => x.Device!.DeviceTypeId, deviceTypeId));
     }
 
-    public Task SetLastPositionMessage(ObjectId assetId, MessageDocument message)
+    public Task SetLastPositionMessage(ObjectId assetId, DeviceMessageDocument deviceMessage)
     {
         return repository.GetCollection<AssetDocument>()
             .UpdateOneAsync(x => x.Id == assetId,
-                Builders<AssetDocument>.Update.Set(x => x.LastPositionMessage, message));
+                Builders<AssetDocument>.Update.Set(x => x.LastPositionMessage, deviceMessage));
     }
 
     public Task<bool> IsNewerPositionDate(ObjectId assetId, DateTime date)

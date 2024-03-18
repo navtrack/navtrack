@@ -7,9 +7,9 @@ namespace Navtrack.Listener.Mappers;
 
 public static class MessageDocumentMapper
 {
-    public static MessageDocument Map(Position source, Device device, ObjectId connectionId)
+    public static DeviceMessageDocument Map(Position source, Device device, ObjectId connectionId)
     {
-        MessageDocument destination = new()
+        DeviceMessageDocument destination = new()
         {
             ConnectionId = connectionId,
             CreatedDate = DateTime.UtcNow,

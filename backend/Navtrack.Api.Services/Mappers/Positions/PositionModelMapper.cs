@@ -5,7 +5,7 @@ namespace Navtrack.Api.Services.Mappers.Positions;
 
 public static class PositionModelMapper
 {
-    public static PositionModel Map(MessageDocument source)
+    public static PositionModel Map(DeviceMessageDocument source)
     {
         PositionModel position = new()
         {

@@ -5,7 +5,7 @@ namespace Navtrack.Api.Services.Mappers.Positions;
 
 public static class GsmModelMapper
 {
-    public static GsmModel? Map(MessageDocument source)
+    public static GsmModel? Map(DeviceMessageDocument source)
     {
         if (source.Gsm != null)
         {

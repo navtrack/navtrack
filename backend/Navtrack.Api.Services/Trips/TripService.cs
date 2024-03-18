@@ -133,7 +133,7 @@ public class TripService(IMessageRepository repository) : ITripService
                 StartDate = dateFilter.StartDate?.AddHours(-12) ?? dateFilter.StartDate,
                 EndDate = dateFilter.EndDate?.AddHours(12) ?? dateFilter.EndDate
             },
-            OrderFunc = Builders<MessageDocument>.Sort.Ascending(x => x.Position.Date)
+            OrderFunc = Builders<DeviceMessageDocument>.Sort.Ascending(x => x.Position.Date)
         };
 
         GetMessagesResult result = await repository.GetMessages(options);

@@ -6,7 +6,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Positions;
 
-public interface IMessageRepository : IGenericRepository<MessageDocument>
+public interface IMessageRepository : IGenericRepository<DeviceMessageDocument>
 {
     Task<GetMessagesResult> GetMessages(GetMessagesOptions options);
     Task<Dictionary<ObjectId, int>> GetMessagesCountByDeviceIds(IEnumerable<ObjectId> deviceIds);

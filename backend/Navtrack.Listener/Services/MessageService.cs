@@ -19,13 +19,13 @@ public class MessageService(IMessageRepository messageRepository, IAssetReposito
     {
         if (device is { AssetId: not null, DeviceId: not null })
         {
-            List<MessageDocument> messages = positions.Select(x => MessageDocumentMapper.Map(x, device, connectionId))
+            List<DeviceMessageDocument> messages = positions.Select(x => MessageDocumentMapper.Map(x, device, connectionId))
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 
             await messageRepository.AddRange(messages);
 
-            MessageDocument? latestPosition = messages.MaxBy(x => x.Position.Date);
+            DeviceMessageDocument? latestPosition = messages.MaxBy(x => x.Position.Date);
 
             if (latestPosition != null && (device.MaxDate == null || device.MaxDate < latestPosition.Position.Date))
             {

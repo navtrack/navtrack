@@ -2,7 +2,6 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Model.Users.PasswordResets;
 
 namespace Navtrack.Api.Services.Mappers.Users;
