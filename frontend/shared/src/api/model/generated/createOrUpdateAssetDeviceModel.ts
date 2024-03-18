@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface UpdateAssetDeviceModel {
+export interface CreateOrUpdateAssetDeviceModel {
   deviceTypeId: string;
   serialNumber: string;
 }

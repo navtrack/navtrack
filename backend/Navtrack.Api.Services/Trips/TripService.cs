@@ -7,7 +7,7 @@ using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Mappers.Positions;
 using Navtrack.Api.Services.Mappers.Trips;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Utils.Coordinates;

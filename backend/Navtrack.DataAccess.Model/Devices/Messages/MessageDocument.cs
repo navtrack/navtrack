@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
-namespace Navtrack.DataAccess.Model.Positions;
+namespace Navtrack.DataAccess.Model.Devices.Messages;
 
 [Collection("devices_messages")]
 public class MessageDocument : BaseDocument
@@ -14,8 +14,8 @@ public class MessageDocument : BaseDocument
     [BsonElement("cId")]
     public ObjectId? ConnectionId { get; set; }
 
-    [BsonElement("d")]
-    public DateTime Date { get; set; }
+    [BsonElement("cd")]
+    public DateTime CreatedDate { get; set; }
 
     [BsonElement("p")]
     public PositionElement Position { get; set; }

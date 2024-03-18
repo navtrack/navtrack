@@ -3,6 +3,7 @@ using System.Linq;
 using IdentityServer4.Models;
 using Navtrack.Api.Services.Util;
 using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 namespace Navtrack.Api.Services.Mappers.Users;
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Positions;

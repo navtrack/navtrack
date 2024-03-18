@@ -179,7 +179,7 @@ public class AssetService(
         AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);
         await repository.GetCollection<AssetDocument>().InsertOneAsync(assetDocument);
 
-        DeviceDocument deviceDocument = DeviceDocumentMapper.Map(model, assetDocument.Id, currentUser.Id);
+        DeviceDocument deviceDocument = DeviceDocumentMapper.Map(assetDocument.Id, model, currentUser.Id);
         await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
 
         assetDocument.Device = AssetDeviceElementMapper.Map(deviceDocument, deviceType);

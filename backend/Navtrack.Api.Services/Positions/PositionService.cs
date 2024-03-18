@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Positions;
 using Navtrack.Api.Services.Mappers.Positions;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
 

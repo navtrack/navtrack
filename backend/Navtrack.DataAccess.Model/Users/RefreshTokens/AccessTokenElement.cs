@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 
-namespace Navtrack.DataAccess.Model.Users;
+namespace Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 public class AccessTokenElement
 {

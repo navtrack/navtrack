@@ -1,5 +1,6 @@
 using IdentityServer4.Models;
 using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 namespace Navtrack.Api.Services.Mappers.Users;
 

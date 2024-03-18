@@ -1,4 +1,4 @@
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Mappers;

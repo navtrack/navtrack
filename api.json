@@ -387,7 +387,7 @@
         "tags": [
           "AssetsDevices"
         ],
-        "operationId": "AssetsDevices_Update",
+        "operationId": "AssetsDevices_CreateOrUpdate",
         "parameters": [
           {
             "name": "assetId",
@@ -404,7 +404,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssetDeviceModel"
+                "$ref": "#/components/schemas/CreateOrUpdateAssetDeviceModel"
               }
             }
           },
@@ -1571,7 +1571,7 @@
           }
         }
       },
-      "UpdateAssetDeviceModel": {
+      "CreateOrUpdateAssetDeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [

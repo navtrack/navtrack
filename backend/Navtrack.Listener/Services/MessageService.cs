@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Listener.Mappers;
@@ -20,7 +20,7 @@ public class MessageService(IMessageRepository messageRepository, IAssetReposito
         if (device is { AssetId: not null, DeviceId: not null })
         {
             List<MessageDocument> messages = positions.Select(x => MessageDocumentMapper.Map(x, device, connectionId))
-                .OrderBy(x => x.Date)
+                .OrderBy(x => x.CreatedDate)
                 .ToList();
 
             await messageRepository.AddRange(messages);

@@ -11,8 +11,7 @@ using Navtrack.Shared.Services.Passwords;
 namespace Navtrack.Api.Services.User;
 
 [Service(typeof(IAccountService))]
-public class AccountService(IPasswordHasher hasher, IUserRepository repository)
-    : IAccountService
+public class AccountService(IPasswordHasher hasher, IUserRepository repository) : IAccountService
 {
     public async Task Register(RegisterAccountModel model)
     {

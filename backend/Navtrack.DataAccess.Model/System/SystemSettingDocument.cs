@@ -2,10 +2,10 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
-namespace Navtrack.DataAccess.Model.Settings;
+namespace Navtrack.DataAccess.Model.System;
 
 [Collection("system_settings")]
-public class SettingDocument
+public class SystemSettingDocument
 {
     [BsonId]
     public ObjectId Id { get; set; }

@@ -1,4 +1,4 @@
-namespace Navtrack.DataAccess.Model.Positions;
+namespace Navtrack.DataAccess.Model.Devices.Messages;
 
 public class PositionFilter : DateFilter
 {

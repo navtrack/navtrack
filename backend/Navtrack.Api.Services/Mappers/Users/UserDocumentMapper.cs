@@ -1,4 +1,4 @@
-using Navtrack.Api.Services.Mappers.Common;
+using System;
 using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Model.Users;
 
@@ -35,7 +35,7 @@ public static class UserDocumentMapper
         {
             Email = email.ToLower(),
             UnitsType = UnitsType.Metric,
-            Created = AuditElementMapper.Map(),
+            CreatedDate = DateTime.UtcNow
         };
     }
 }

@@ -2,13 +2,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   getAssetsGetListQueryKey,
   getAssetsGetQueryKey,
-  useAssetsDevicesUpdate
+  useAssetsDevicesCreateOrUpdate
 } from "../../../api/index-generated";
 
 export function useChangeDeviceMutation() {
   const queryClient = useQueryClient();
 
-  const mutation = useAssetsDevicesUpdate({
+  const mutation = useAssetsDevicesCreateOrUpdate({
     mutation: {
       onSuccess: (_, variables) => {
         return Promise.all([

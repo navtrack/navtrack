@@ -4,10 +4,10 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
-namespace Navtrack.DataAccess.Model.Positions;
+namespace Navtrack.DataAccess.Model.Devices.Connections;
 
 [Collection("devices_connections")]
-public class ConnectionDocument : BaseDocument
+public class DeviceConnectionDocument : BaseDocument
 {
     [BsonElement("cd")]
     public DateTime CreatedDate { get; set; }

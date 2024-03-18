@@ -12,8 +12,9 @@ using MongoDB.Driver.Linq;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Tests.Helpers;
-using Navtrack.DataAccess.Model.Settings;
+using Navtrack.DataAccess.Model.System;
 using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.PasswordResets;
 using Navtrack.Shared.Services.Passwords;
 using Navtrack.Shared.Services.Settings.Settings;
 
@@ -120,7 +121,7 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             });
         
         await Repository.GetCollection<PasswordResetDocument>().UpdateOneAsync(x => x.Email == email,
-            Builders<PasswordResetDocument>.Update.Set(x => x.Created.Date, DateTime.UtcNow.AddHours(-12)));
+            Builders<PasswordResetDocument>.Update.Set(x => x.CreatedDate, DateTime.UtcNow.AddHours(-12)));
 
         PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
@@ -173,7 +174,7 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             });
 
         UserDocument? user = await Repository.GetQueryable<UserDocument>()
-            .FirstOrDefaultAsync(x => x.Id == passwordResetDocument.UserId);
+            .FirstOrDefaultAsync(x => x.Id == passwordResetDocument.CreatedBy);
         passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
@@ -205,7 +206,7 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
         PasswordResetDocument passwordResetDocument = await Repository
             .GetQueryable<PasswordResetDocument>()
             .Where(x => x.Email == email)
-            .OrderBy(x => x.Created.Date)
+            .OrderBy(x => x.CreatedDate)
             .FirstOrDefaultAsync();
 
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
@@ -269,7 +270,7 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
 
     protected override void SeedDatabase()
     {
-        Repository.GetCollection<SettingDocument>().InsertOne(new SettingDocument
+        Repository.GetCollection<SystemSettingDocument>().InsertOne(new SystemSettingDocument
         {
             Key = "App",
             Value = new AppSettings { AppUrl = "http://test.navtrack.com" }.ToBsonDocument()

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Navtrack.DataAccess.Model.Positions;
+namespace Navtrack.DataAccess.Model.Devices.Messages;
 
 public class GetMessagesResult
 {

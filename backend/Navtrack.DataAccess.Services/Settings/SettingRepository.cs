@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Navtrack.DataAccess.Model.Settings;
+using Navtrack.DataAccess.Model.System;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
 
@@ -11,21 +11,21 @@ namespace Navtrack.DataAccess.Services.Settings;
 [Service(typeof(ISettingRepository))]
 public class SettingRepository(IRepository repository) : ISettingRepository
 {
-    public async Task<SettingDocument?> Get(string key)
+    public async Task<SystemSettingDocument?> Get(string key)
     {
-        SettingDocument? document =
-            await repository.GetQueryable<SettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
+        SystemSettingDocument? document =
+            await repository.GetQueryable<SystemSettingDocument>().FirstOrDefaultAsync(x => x.Key == key);
 
         return document;
     }
 
     public async Task Save(string key, BsonDocument value)
     {
-        SettingDocument? document = await Get(key);
+        SystemSettingDocument? document = await Get(key);
 
         if (document == null)
         {
-            document = new SettingDocument
+            document = new SystemSettingDocument
             {
                 Id = ObjectId.GenerateNewId(),
                 Key = key,
@@ -37,7 +37,7 @@ public class SettingRepository(IRepository repository) : ISettingRepository
             document.Value = value;
         }
 
-        await repository.GetCollection<SettingDocument>()
+        await repository.GetCollection<SystemSettingDocument>()
             .ReplaceOneAsync(x => x.Id == document.Id, document, new ReplaceOptions
             {
                 IsUpsert = true

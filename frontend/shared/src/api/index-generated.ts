@@ -21,6 +21,7 @@ import type {
   ChangePasswordModel,
   CreateAssetModel,
   CreateAssetUserModel,
+  CreateOrUpdateAssetDeviceModel,
   DistanceReportListModel,
   ErrorModel,
   ForgotPasswordModel,
@@ -34,7 +35,6 @@ import type {
   RegisterAccountModel,
   ResetPasswordModel,
   TripListModel,
-  UpdateAssetDeviceModel,
   UpdateAssetModel,
   UpdateUserModel,
   UserModel
@@ -689,66 +689,70 @@ export const useAssetsDevicesGetList = <
   return query;
 };
 
-export const assetsDevicesUpdate = (
+export const assetsDevicesCreateOrUpdate = (
   assetId: string,
-  updateAssetDeviceModel: UpdateAssetDeviceModel
+  createOrUpdateAssetDeviceModel: CreateOrUpdateAssetDeviceModel
 ) => {
   return authAxiosInstance<void>({
     url: `/assets/${assetId}/devices`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: updateAssetDeviceModel
+    data: createOrUpdateAssetDeviceModel
   });
 };
 
-export const getAssetsDevicesUpdateMutationOptions = <
+export const getAssetsDevicesCreateOrUpdateMutationOptions = <
   TError = ErrorModel | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assetsDevicesUpdate>>,
+    Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
     TError,
-    { assetId: string; data: UpdateAssetDeviceModel },
+    { assetId: string; data: CreateOrUpdateAssetDeviceModel },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof assetsDevicesUpdate>>,
+  Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
   TError,
-  { assetId: string; data: UpdateAssetDeviceModel },
+  { assetId: string; data: CreateOrUpdateAssetDeviceModel },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof assetsDevicesUpdate>>,
-    { assetId: string; data: UpdateAssetDeviceModel }
+    Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
+    { assetId: string; data: CreateOrUpdateAssetDeviceModel }
   > = (props) => {
     const { assetId, data } = props ?? {};
 
-    return assetsDevicesUpdate(assetId, data);
+    return assetsDevicesCreateOrUpdate(assetId, data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type AssetsDevicesUpdateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof assetsDevicesUpdate>>
+export type AssetsDevicesCreateOrUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>
 >;
-export type AssetsDevicesUpdateMutationBody = UpdateAssetDeviceModel;
-export type AssetsDevicesUpdateMutationError = ErrorModel | ProblemDetails;
+export type AssetsDevicesCreateOrUpdateMutationBody =
+  CreateOrUpdateAssetDeviceModel;
+export type AssetsDevicesCreateOrUpdateMutationError =
+  | ErrorModel
+  | ProblemDetails;
 
-export const useAssetsDevicesUpdate = <
+export const useAssetsDevicesCreateOrUpdate = <
   TError = ErrorModel | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assetsDevicesUpdate>>,
+    Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
     TError,
-    { assetId: string; data: UpdateAssetDeviceModel },
+    { assetId: string; data: CreateOrUpdateAssetDeviceModel },
     TContext
   >;
 }) => {
-  const mutationOptions = getAssetsDevicesUpdateMutationOptions(options);
+  const mutationOptions =
+    getAssetsDevicesCreateOrUpdateMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

@@ -1,6 +1,6 @@
 using System;
 using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Mappers;
@@ -12,7 +12,7 @@ public static class MessageDocumentMapper
         MessageDocument destination = new()
         {
             ConnectionId = connectionId,
-            Date = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow,
             Metadata = PositionMetadataElementMapper.Map(device),
             Position = PositionElementMapper.Map(source),
             Gsm = GsmElementMapper.Map(source)

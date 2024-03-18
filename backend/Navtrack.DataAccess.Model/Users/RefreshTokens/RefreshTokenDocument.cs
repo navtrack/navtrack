@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
-namespace Navtrack.DataAccess.Model.Users;
+namespace Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 [Collection("users_refresh_tokens")]
 public class RefreshTokenDocument

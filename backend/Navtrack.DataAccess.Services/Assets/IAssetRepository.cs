@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 
