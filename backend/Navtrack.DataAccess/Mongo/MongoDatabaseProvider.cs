@@ -17,8 +17,8 @@ public class MongoDatabaseProvider : IMongoDatabaseProvider
     {
         this.options = options;
 
-        ConventionRegistry.Register(nameof(IgnoreIfNullConvention),
-            new ConventionPack { new IgnoreIfNullConvention(true) }, t => true);
+        ConventionRegistry.Register(nameof(IgnoreIfDefaultConvention),
+            new ConventionPack { new IgnoreIfDefaultConvention(true) }, t => true);
         ConventionRegistry.Register(nameof(IgnoreExtraElementsConvention),
             new ConventionPack { new IgnoreExtraElementsConvention(true) }, t => true);
         ConventionRegistry.Register(nameof(CamelCaseElementNameConvention),
