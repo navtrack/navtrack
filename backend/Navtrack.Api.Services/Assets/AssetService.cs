@@ -44,7 +44,7 @@ public class AssetService(
         AssetDocument asset = await assetRepository.GetById(assetId);
         DeviceType deviceType = deviceTypeRepository.GetById(asset.Device.DeviceTypeId);
         UserDocument currentUser = await currentUserAccessor.Get();
-        
+
         return AssetModelMapper.Map(currentUser, asset, deviceType);
     }
 
@@ -142,13 +142,13 @@ public class AssetService(
                 ValidationErrorCodes.UserAlreadyOnAsset);
         }
 
-        if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType))
+        if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType) || assetRoleType == AssetRoleType.Owner)
         {
             throw new ValidationApiException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
         }
 
         await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
-        
+
         await post.Send(new AssetUserAddedEvent(assetId, userDocument.Id.ToString()));
     }
 
@@ -167,7 +167,7 @@ public class AssetService(
         }
 
         await assetRepository.RemoveUserFromAsset(assetId, userId);
-        
+
         await post.Send(new AssetUserDeletedEvent(assetId, userId));
     }
 

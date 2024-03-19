@@ -32,10 +32,10 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
 
   const roles: Role[] = useMemo(
     () => [
-      {
-        label: "Owner",
-        value: AssetRoleType.Owner
-      },
+      // {
+      //   label: "Owner",
+      //   value: AssetRoleType.Owner
+      // },
       {
         label: "Viewer",
         value: AssetRoleType.Viewer

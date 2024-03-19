@@ -1,5 +1,8 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { AssetUserModel } from "@navtrack/shared/api/model/generated";
+import {
+  AssetRoleType,
+  AssetUserModel
+} from "@navtrack/shared/api/model/generated";
 import { useState } from "react";
 import { DeleteUserFromAssetModal } from "./DeleteUserFromAssetModal";
 import { Button } from "../../../ui/button/Button";
@@ -21,14 +24,18 @@ export function UsersTable(props: UsersTableProps) {
     { labelId: "generic.role", row: (user) => user.role },
     {
       row: (user) => (
-        <Button
-          icon={faTrashAlt}
-          color="error"
-          onClick={() => {
-            setUser(user);
-            setShowDeleteModal(true);
-          }}
-        />
+        <>
+          {user.role !== AssetRoleType.Owner && (
+            <Button
+              icon={faTrashAlt}
+              color="error"
+              onClick={() => {
+                setUser(user);
+                setShowDeleteModal(true);
+              }}
+            />
+          )}
+        </>
       )
     }
   ];
