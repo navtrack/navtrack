@@ -1,20 +1,12 @@
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
-import { ReactNode } from "react";
+
 import { FormattedMessage } from "react-intl";
 import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
+import { TableProps, useTable } from "./useTable";
 
-export interface ITableColumn<T> {
-  labelId?: string;
-  render: (row: T) => ReactNode;
-}
+export function TableV1<T>(props: TableProps<T>) {
+  const table = useTable(props);
 
-type TableProps<T> = {
-  columns: ITableColumn<T>[];
-  rows?: T[];
-  loading?: boolean;
-};
-
-export function Table<T>(props: TableProps<T>) {
   return (
     <table className="w-full border">
       <thead className="border bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500 ">
@@ -29,20 +21,20 @@ export function Table<T>(props: TableProps<T>) {
         </tr>
       </thead>
       <tbody className="border-b text-sm text-gray-900">
-        {props.loading ? (
+        {table.sortedRows === undefined ? (
           <tr className="border">
             <td className="p-2 text-center" colSpan={props.columns.length}>
               <LoadingIndicator className="text-base" />
             </td>
           </tr>
-        ) : props.rows?.length === 0 ? (
+        ) : table.sortedRows.length === 0 ? (
           <tr className="border">
             <td className="p-2 text-center" colSpan={props.columns.length}>
               <FormattedMessage id="ui.table.no-items" />
             </td>
           </tr>
         ) : (
-          props.rows?.map((row, rowIndex) => (
+          table.sortedRows.map((row, rowIndex) => (
             <tr key={`row${rowIndex}`} className="border">
               {props.columns.map((column, columnIndex) => (
                 <td
@@ -51,7 +43,7 @@ export function Table<T>(props: TableProps<T>) {
                     "p-2",
                     c(rowIndex % 2 !== 0, "bg-gray-50")
                   )}>
-                  {column.render(row)}
+                  {column.row(row)}
                 </td>
               ))}
             </tr>

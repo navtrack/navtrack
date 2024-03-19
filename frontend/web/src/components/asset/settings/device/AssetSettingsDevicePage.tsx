@@ -55,7 +55,7 @@ export function AssetSettingsDevicePage() {
             showNotification({
               type: "success",
               description: intl.formatMessage({
-                id: "assets.settings.device.success"
+                id: "assets.settings.device.save.success"
               })
             });
           },

@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { DeleteAssetFormValues } from "./types";
 import { Modal } from "../../../ui/modal/Modal";
@@ -22,13 +22,16 @@ export function DeleteAssetModal(props: DeleteAssetModalProps) {
   const validationSchema = useDeleteAssetValidationSchema();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
+  const intl = useIntl();
 
   const deleteAsset = useDeleteAsset({
     onSuccess: () => {
       navigate(Paths.Home);
       showNotification({
         type: "success",
-        description: "assets.settings.general.delete-asset.success"
+        description: intl.formatMessage({
+          id: "assets.settings.general.delete-asset.success"
+        })
       });
     }
   });

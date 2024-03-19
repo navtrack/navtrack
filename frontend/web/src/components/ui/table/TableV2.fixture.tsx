@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useValue } from "react-cosmos/client";
-import { TableV2, ITableColumn } from "./TableV2";
+import { TableV2 } from "./TableV2";
+import { ITableColumn } from "./useTable";
 
 type User = {
   email: string;

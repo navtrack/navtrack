@@ -1,9 +1,10 @@
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { AssetUserModel } from "@navtrack/shared/api/model/generated";
 import { useState } from "react";
-import { Table, ITableColumn } from "../../../ui/table/Table";
 import { DeleteUserFromAssetModal } from "./DeleteUserFromAssetModal";
 import { Button } from "../../../ui/button/Button";
+import { ITableColumn } from "../../../ui/table/useTable";
+import { TableV1 } from "../../../ui/table/TableV1";
 
 type UsersTableProps = {
   rows?: AssetUserModel[];
@@ -16,10 +17,10 @@ export function UsersTable(props: UsersTableProps) {
   const [user, setUser] = useState<AssetUserModel | undefined>();
 
   const columns: ITableColumn<AssetUserModel>[] = [
-    { labelId: "generic.email", render: (user) => user.email },
-    { labelId: "generic.role", render: (user) => user.role },
+    { labelId: "generic.email", row: (user) => user.email },
+    { labelId: "generic.role", row: (user) => user.role },
     {
-      render: (user) => (
+      row: (user) => (
         <Button
           icon={faTrashAlt}
           color="error"
@@ -34,7 +35,7 @@ export function UsersTable(props: UsersTableProps) {
 
   return (
     <>
-      <Table rows={props.rows} loading={props.loading} columns={columns} />
+      <TableV1 rows={props.rows} columns={columns} />
       <DeleteUserFromAssetModal
         user={user}
         show={showDeleteModal}

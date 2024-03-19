@@ -3,11 +3,12 @@ import { DeviceModel } from "@navtrack/shared/api/model/generated";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteDeviceMutation";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNotification } from "../../../ui/notification/useNotification";
-import { Table, ITableColumn } from "../../../ui/table/Table";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
 import { Button } from "../../../ui/button/Button";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { ITableColumn } from "../../../ui/table/useTable";
+import { TableV1 } from "../../../ui/table/TableV1";
 
 type DevicesTableProps = {
   rows?: DeviceModel[];
@@ -25,15 +26,15 @@ export function DevicesTable(props: DevicesTableProps) {
   const columns: ITableColumn<DeviceModel>[] = [
     {
       labelId: "generic.device-type",
-      render: (device) => device.deviceType.displayName
+      row: (device) => device.deviceType.displayName
     },
     {
       labelId: "generic.serial-number",
-      render: (device) => device.serialNumber
+      row: (device) => device.serialNumber
     },
     {
       labelId: "generic.status",
-      render: (device) => (
+      row: (device) => (
         <>
           {device.active ? (
             <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-0.5 text-sm font-medium text-green-800">
@@ -47,11 +48,11 @@ export function DevicesTable(props: DevicesTableProps) {
         </>
       )
     },
-    { labelId: "generic.locations", render: (device) => device.positions },
+    { labelId: "generic.positions", row: (device) => device.positions },
     {
-      render: (device) => (
+      row: (device) => (
         <>
-          {!device.active && (
+          {!device.active && !device.positions && (
             <Button
               icon={faTrashAlt}
               color="error"
@@ -87,5 +88,5 @@ export function DevicesTable(props: DevicesTableProps) {
     }
   ];
 
-  return <Table rows={props.rows} loading={props.loading} columns={columns} />;
+  return <TableV1 rows={props.rows} columns={columns} />;
 }
