@@ -11,7 +11,7 @@ type UseDeleteAssetProps = {
 export function useDeleteAsset(props: UseDeleteAssetProps) {
   const currentAsset = useCurrentAsset();
   const deleteAssetMutation = useDeleteAssetMutation();
-  const setSurrentAssetIdAtom = useSetRecoilState(currentAssetIdAtom);
+  const setCurrentAssetIdAtom = useSetRecoilState(currentAssetIdAtom);
 
   const handleSubmit = useCallback(
     (assetId: string) => {
@@ -20,14 +20,14 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
           { assetId: assetId },
           {
             onSuccess: () => {
-              setSurrentAssetIdAtom(undefined);
+              setCurrentAssetIdAtom(undefined);
               props.onSuccess();
             }
           }
         );
       }
     },
-    [currentAsset.data, deleteAssetMutation, props, setSurrentAssetIdAtom]
+    [currentAsset.data, deleteAssetMutation, props, setCurrentAssetIdAtom]
   );
 
   return {

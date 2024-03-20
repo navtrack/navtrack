@@ -41,19 +41,19 @@ export default {
   ),
   Loading: (
     <div className="block space-x-4">
-      <Button color="primary" loading>
+      <Button color="primary" isLoading>
         Click me
       </Button>
-      <Button color="secondary" loading>
+      <Button color="secondary" isLoading>
         Click me
       </Button>
-      <Button color="white" loading>
+      <Button color="white" isLoading>
         Click me
       </Button>
-      <Button color="success" loading>
+      <Button color="success" isLoading>
         Click me
       </Button>
-      <Button color="error" loading>
+      <Button color="error" isLoading>
         Click me
       </Button>
     </div>

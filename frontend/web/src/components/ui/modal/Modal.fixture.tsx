@@ -45,7 +45,7 @@ export default {
         <Button onClick={() => setOpen(true)}>Open modal</Button>
         <Modal open={open} close={() => setOpen(false)}>
           <ModalContainer>
-            <ModalActions close={() => setOpen(false)}>
+            <ModalActions cancel={() => setOpen(false)}>
               <Button onClick={() => console.log("clicked")}>Save</Button>
             </ModalActions>
           </ModalContainer>
@@ -62,7 +62,7 @@ export default {
         <Modal open={open} close={() => setOpen(false)}>
           <ModalContainer>
             <ModalIcon icon={faUser} />
-            <ModalActions close={() => setOpen(false)}>
+            <ModalActions cancel={() => setOpen(false)}>
               <Button onClick={() => console.log("clicked")}>Save</Button>
             </ModalActions>
           </ModalContainer>
@@ -82,7 +82,7 @@ export default {
               <ModalIcon icon={faUser} />
               <ModalBody>this is some content over here</ModalBody>
             </ModalContent>
-            <ModalActions close={() => setOpen(false)}>
+            <ModalActions cancel={() => setOpen(false)}>
               <Button onClick={() => console.log("clicked")}>Save</Button>
             </ModalActions>
           </ModalContainer>

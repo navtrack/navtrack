@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Navtrack.DataAccess.Model.Positions;
+using Navtrack.DataAccess.Model.Devices.Connections;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
@@ -49,16 +49,16 @@ public class ProtocolListener(
     {
         NetworkStreamWrapper networkStream = new(tcpClient);
         
-        ConnectionDocument connectionDocument = new()
+        DeviceConnectionDocument deviceConnectionDocument = new()
         {
             ProtocolPort = protocol.Port,
             Ip = networkStream.RemoteEndPoint,
             CreatedDate = DateTime.UtcNow
         };
-        await connectionRepository.Add(connectionDocument);
+        await connectionRepository.Add(deviceConnectionDocument);
 
         ProtocolConnectionContext connectionContext =
-            new(networkStream, protocol, connectionDocument.Id);
+            new(networkStream, protocol, deviceConnectionDocument.Id);
         
         return connectionContext;
     }

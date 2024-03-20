@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -19,8 +20,8 @@ public class UserDocument : BaseDocument
     [BsonElement("password")]
     public PasswordElement Password { get; set; }
         
-    [BsonElement("created")]
-    public AuditElement Created { get; set; }
+    [BsonElement("createdDate")]
+    public DateTime CreatedDate { get; set; }
         
     [BsonElement("assetRoles")]
     public IEnumerable<UserAssetRoleElement>? AssetRoles { get; set; }

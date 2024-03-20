@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.RefreshTokens;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
 

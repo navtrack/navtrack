@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 namespace Navtrack.DataAccess.Services.Users;
 

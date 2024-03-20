@@ -6,6 +6,6 @@ namespace Navtrack.Api.Services.User;
 
 public interface ICurrentUserAccessor
 {
-    ObjectId GetId();
+    ObjectId? GetId();
     Task<UserDocument> Get();
 }

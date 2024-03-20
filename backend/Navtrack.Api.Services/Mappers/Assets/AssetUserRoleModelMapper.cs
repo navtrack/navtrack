@@ -1,6 +1,5 @@
 using Navtrack.Api.Model.Assets;
 using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Mappers.Assets;
 
@@ -11,7 +10,8 @@ public static class AssetUserRoleModelMapper
         return new AssetUserRoleModel
         {
             UserId = source.UserId.ToString(),
-            Role = source.Role
+            Role = source.Role,
+            CreatedDate = source.CreatedDate
         };
     }
 }

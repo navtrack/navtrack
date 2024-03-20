@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Exceptions;
-using Navtrack.Api.Services.Util;
 using Navtrack.Shared.Library.Extensions;
 
 namespace Navtrack.Api.Services.Mappers.Common;

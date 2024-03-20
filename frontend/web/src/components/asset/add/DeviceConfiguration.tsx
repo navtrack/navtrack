@@ -22,7 +22,7 @@ export function DeviceConfiguration(props: DeviceConfigurationProps) {
               <FormattedMessage id="generic.hostname" />
             </td>
             <td className="border p-2 font-medium">
-              <FormattedMessage id="navtrack.listener.hostname" />
+              {import.meta.env.VITE_LISTENER_HOSTNAME}
             </td>
           </tr>
           <tr>
@@ -30,7 +30,7 @@ export function DeviceConfiguration(props: DeviceConfigurationProps) {
               <FormattedMessage id="generic.ip-address" />
             </td>
             <td className="border p-2 font-medium">
-              <FormattedMessage id="navtrack.listener.ip-address" />
+              {import.meta.env.VITE_LISTENER_IP}
             </td>
           </tr>
           <tr>

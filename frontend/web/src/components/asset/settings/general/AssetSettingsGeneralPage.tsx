@@ -1,13 +1,11 @@
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { Form, Formik } from "formik";
-import { useRenameAsset } from "./useRenameAsset";
+import { RenameAssetFormValues, useRenameAsset } from "./useRenameAsset";
 import { FormattedMessage } from "react-intl";
 import { DeleteAssetModal } from "./DeleteAssetModal";
-import { useState } from "react";
 import { Icon } from "../../../ui/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { LoadingIndicator } from "../../../ui/loading-indicator/LoadingIndicator";
-import { RenameAssetFormValues } from "./types";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
@@ -17,7 +15,6 @@ import { Button } from "../../../ui/button/Button";
 export function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();
   const currentAsset = useCurrentAsset();
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -78,17 +75,7 @@ export function AssetSettingsGeneralPage() {
                 <FormattedMessage id="assets.settings.general.delete-asset.info" />
               </p>
               <div className="mt-4 text-right">
-                <Button
-                  color="error"
-                  type="submit"
-                  size="base"
-                  onClick={() => setShowModal(true)}>
-                  <FormattedMessage id="assets.settings.general.delete-asset" />
-                </Button>
-                <DeleteAssetModal
-                  show={showModal}
-                  close={() => setShowModal(false)}
-                />
+                <DeleteAssetModal />
               </div>
             </div>
           </CardBody>

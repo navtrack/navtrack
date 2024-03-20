@@ -2,16 +2,16 @@ import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { Button } from "../button/Button";
 
-interface IModalActions {
+type ModalActionsProps = {
   children?: ReactNode;
-  close?: () => void;
-}
+  cancel?: () => void;
+};
 
-export function ModalActions(props: IModalActions) {
+export function ModalActions(props: ModalActionsProps) {
   return (
-    <div className="flex justify-end space-x-3 bg-gray-50 px-4 py-3">
-      {props.close !== undefined && (
-        <Button onClick={props.close} color="white">
+    <div className="flex justify-end space-x-3 rounded-b-lg bg-gray-50 px-4 py-3">
+      {props.cancel !== undefined && (
+        <Button onClick={props.cancel} color="white">
           <FormattedMessage id="generic.cancel" />
         </Button>
       )}

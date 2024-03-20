@@ -89,7 +89,7 @@ export function RegisterPage() {
                       color="secondary"
                       full
                       size="lg"
-                      loading={register.loading}>
+                      isLoading={register.loading}>
                       <FormattedMessage id="register.button" />
                     </Button>
                   </div>
@@ -106,7 +106,7 @@ export function RegisterPage() {
                 className="ml-1"
               />
             </div>
-        {slots?.externalLogin}
+            {slots?.externalLogin}
           </>
         )}
       </Card>

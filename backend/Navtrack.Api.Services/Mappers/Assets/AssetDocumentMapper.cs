@@ -1,8 +1,7 @@
+using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Services.Mappers.Common;
-using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Users;
 
@@ -16,11 +15,13 @@ public static class AssetDocumentMapper
         {
             Id = ObjectId.GenerateNewId(),
             Name = source.Name,
+            OwnerId = owner.Id,
             UserRoles = new List<AssetUserRoleElement>
             {
-                UserRoleElementMapper.Map(owner.Id, AssetRoleType.Owner)
+                AssetUserRoleElementMapper.Map(owner.Id, AssetRoleType.Owner)
             },
-            Created = AuditElementMapper.Map(owner.Id)
+            CreatedDate = DateTime.UtcNow,
+            CreatedBy = owner.Id
         };
     }
 }

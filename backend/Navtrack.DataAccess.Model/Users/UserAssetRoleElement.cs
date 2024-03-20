@@ -1,3 +1,4 @@
+using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Model.Assets;
@@ -12,4 +13,7 @@ public class UserAssetRoleElement
     [BsonElement("role")]
     [BsonRepresentation(BsonType.String)]
     public AssetRoleType Role { get; set; }
+    
+    [BsonElement("createdDate")]
+    public DateTime? CreatedDate { get; set; }
 }

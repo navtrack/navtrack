@@ -6,16 +6,11 @@ using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Services.Passwords;
 
 namespace Navtrack.Api.Services.User;
 
 [Service(typeof(IUserService))]
-public class UserService(
-    IPasswordHasher hasher,
-    ICurrentUserAccessor userAccessor,
-    IUserRepository repository)
-    : IUserService
+public class UserService(ICurrentUserAccessor userAccessor, IUserRepository repository) : IUserService
 {
     public async Task<UserModel> GetCurrentUser()
     {
@@ -44,36 +39,12 @@ public class UserService(
                 updateUser.Email = model.Email;
             }
         }
-        
+
         if (model.UnitsType.HasValue && currentUser.UnitsType != model.UnitsType)
         {
             updateUser.UnitsType = model.UnitsType;
         }
 
         await repository.Update(currentUser.Id, updateUser);
-    }
-
-    public async Task Register(RegisterAccountModel model)
-    {
-        ValidationApiException apiException = new();
-
-        if (await repository.EmailIsUsed(model.Email))
-        {
-            apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyUsed);
-        }
-
-        if (model.Password != model.ConfirmPassword)
-        {
-            apiException.AddValidationError(nameof(model.ConfirmPassword),
-                ValidationErrorCodes.PasswordsDoNotMatch);
-        }
-
-        apiException.ThrowIfInvalid();
-
-        (string hash, string salt) = hasher.Hash(model.Password);
-
-        UserDocument userDocument = UserDocumentMapper.Map(model.Email, hash, salt);
-
-        await repository.Add(userDocument);
     }
 }

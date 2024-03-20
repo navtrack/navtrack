@@ -1,5 +1,6 @@
 import { useFixtureInput } from "react-cosmos/client";
-import { ITableColumn, TableV2 } from "./TableV2";
+import { TableV2 } from "./TableV2";
+import { ITableColumn } from "./useTable";
 
 type User = {
   email: string;

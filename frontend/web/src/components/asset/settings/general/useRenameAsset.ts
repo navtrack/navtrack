@@ -1,12 +1,15 @@
 import { useCallback, useState } from "react";
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
-import { RenameAssetFormValues } from "./types";
 import { FormikHelpers } from "formik";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useRenameAssetMutation";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
+
+export type RenameAssetFormValues = {
+  name?: string; // TODO: make required
+};
 
 export function useRenameAsset() {
   const currentAsset = useCurrentAsset();

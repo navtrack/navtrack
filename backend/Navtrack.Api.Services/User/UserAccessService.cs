@@ -8,6 +8,7 @@ using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
 using Navtrack.Api.Services.Mappers.Users;
 using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.PasswordResets;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Services.Email;
@@ -109,14 +110,14 @@ public class UserAccessService(
             throw new ApiException(ApiErrorCodes.PasswordResetInvalid);
         }
 
-        if (passwordReset.Created.Date < DateTime.UtcNow.AddHours(-ApiConstants.PasswordResetLinkExpirationHours))
+        if (passwordReset.CreatedDate < DateTime.UtcNow.AddHours(-ApiConstants.PasswordResetLinkExpirationHours))
         {
             throw new ApiException(ApiErrorCodes.PasswordResetExpired);
         }
 
         (string hash, string salt) = hasher.Hash(model.Password);
 
-        await repository.Update(passwordReset.UserId, new UpdateUser
+        await repository.Update(passwordReset.CreatedBy, new UpdateUser
         {
             Password = new PasswordElement
             {

@@ -387,7 +387,7 @@
         "tags": [
           "AssetsDevices"
         ],
-        "operationId": "AssetsDevices_Update",
+        "operationId": "AssetsDevices_CreateOrUpdate",
         "parameters": [
           {
             "name": "assetId",
@@ -404,7 +404,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssetDeviceModel"
+                "$ref": "#/components/schemas/CreateOrUpdateAssetDeviceModel"
               }
             }
           },
@@ -1302,7 +1302,7 @@
           "latitude",
           "coordinates",
           "validCoordinates",
-          "dateTime"
+          "date"
         ],
         "properties": {
           "id": {
@@ -1326,7 +1326,7 @@
           "validCoordinates": {
             "type": "boolean"
           },
-          "dateTime": {
+          "date": {
             "type": "string",
             "format": "date-time",
             "minLength": 1
@@ -1360,13 +1360,27 @@
             "type": "boolean",
             "nullable": true
           },
-          "gsmSignal": {
-            "type": "integer",
-            "nullable": true
+          "gsm": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GsmModel"
+              }
+            ]
           },
           "odometer": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "GsmModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "gsmSignal": {
+            "type": "integer",
             "nullable": true
           }
         }
@@ -1466,6 +1480,11 @@
           "userId": {
             "type": "string",
             "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
@@ -1557,7 +1576,7 @@
           }
         }
       },
-      "UpdateAssetDeviceModel": {
+      "CreateOrUpdateAssetDeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1826,6 +1845,11 @@
           "userId": {
             "type": "string",
             "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },

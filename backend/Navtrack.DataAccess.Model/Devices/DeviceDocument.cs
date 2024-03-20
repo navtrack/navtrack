@@ -1,12 +1,11 @@
+using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Navtrack.DataAccess.Model.Common;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Devices;
 
 [Collection("devices")]
-[BsonIgnoreExtraElements]
 public class DeviceDocument : BaseDocument
 {
     [BsonElement("serialNumber")]
@@ -18,6 +17,9 @@ public class DeviceDocument : BaseDocument
     [BsonElement("assetId")]
     public ObjectId AssetId { get; set; }
 
-    [BsonElement("created")]
-    public AuditElement Created { get; set; }
+    [BsonElement("createdDate")]
+    public DateTime CreatedDate { get; set; }
+        
+    [BsonElement("createdBy")]
+    public ObjectId CreatedBy { get; set; }
 }

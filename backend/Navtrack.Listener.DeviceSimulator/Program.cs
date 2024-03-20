@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Navtrack.Listener.Helpers;
+using Navtrack.Listener.Helpers.New;
 
 namespace Navtrack.Listener.DeviceSimulator;
 
@@ -36,21 +37,25 @@ class Program
         tcpClient.Connect(IPAddress.Loopback, 7001);
         NetworkStream networkStream = tcpClient.GetStream();
 
-
         while (true)
         {
             string date = DateTime.UtcNow.ToString("yyMMddHHmmss");
 
-            var location = GetRandomLocation();
+            (double, double) location = GetRandomLocation();
 
-            var altitude = new Random().Next(0, 2000);
-            var heading = new Random().Next(0, 360);
+            int altitude = new Random().Next(0, 2000);
+            int heading = new Random().Next(0, 360);
 
-            var text =
-                $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*7E";
+            string text =
+                $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*";
 
+            string checksum = ChecksumUtil.Xor(Encoding.UTF8.GetBytes(text));
+            text += $"{checksum}\r\n";
+            
+            Console.Write(text);
+            
             networkStream.Write(Encoding.UTF8.GetBytes(text));
-
+            
             Thread.Sleep(5000);
         }
     }

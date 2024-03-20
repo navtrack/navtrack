@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.PasswordResets;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
 
@@ -16,7 +16,7 @@ public class PasswordResetRepository(IRepository repository)
     public Task<int> GetCountOfPasswordResets(string ipAddress, string email, DateTime fromDate)
     {
         return repository.GetQueryable<PasswordResetDocument>()
-            .Where(x => x.IpAddress == ipAddress && x.Created.Date > fromDate && x.Email == email)
+            .Where(x => x.IpAddress == ipAddress && x.CreatedDate > fromDate && x.Email == email)
             .CountAsync();
     }
 
@@ -27,8 +27,8 @@ public class PasswordResetRepository(IRepository repository)
         if (documentByHash != null)
         {
             PasswordResetDocument? latestUserDocument = await repository.GetQueryable<PasswordResetDocument>()
-                .Where(x => x.UserId == documentByHash.UserId)
-                .OrderByDescending(x => x.Created.Date)
+                .Where(x => x.CreatedBy == documentByHash.CreatedBy)
+                .OrderByDescending(x => x.CreatedDate)
                 .FirstOrDefaultAsync();
 
             return latestUserDocument;
@@ -45,7 +45,7 @@ public class PasswordResetRepository(IRepository repository)
 
     public Task MarkAsInvalidByUserId(ObjectId userId)
     {
-        return repository.GetCollection<PasswordResetDocument>().UpdateManyAsync(x => x.UserId == userId,
+        return repository.GetCollection<PasswordResetDocument>().UpdateManyAsync(x => x.CreatedBy == userId,
             Builders<PasswordResetDocument>.Update.Set(x => x.Invalid, true));
     }
 }

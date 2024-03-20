@@ -2,8 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using MongoDB.Bson;
-using Navtrack.Api.Services.Mappers.Common;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.DataAccess.Model.Users.PasswordResets;
 
 namespace Navtrack.Api.Services.Mappers.Users;
 
@@ -14,10 +13,10 @@ public static class PasswordResetMapper
         PasswordResetDocument document = new()
         {
             Email = email,
-            UserId = userId,
+            CreatedDate = DateTime.UtcNow,
+            CreatedBy = userId,
             Hash = Convert.ToHexString(MD5.HashData(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString()))).ToLower(),
-            IpAddress = ipAddress,
-            Created = AuditElementMapper.Map()
+            IpAddress = ipAddress
         };
 
         return document;

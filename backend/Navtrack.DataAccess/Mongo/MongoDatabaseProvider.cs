@@ -16,11 +16,13 @@ public class MongoDatabaseProvider : IMongoDatabaseProvider
     public MongoDatabaseProvider(IOptions<MongoOptions> options)
     {
         this.options = options;
-        
-        ConventionRegistry.Register(nameof(IgnoreIfNullConvention),
-            new ConventionPack { new IgnoreIfNullConvention(true) }, t => true);
+
+        ConventionRegistry.Register(nameof(IgnoreIfDefaultConvention),
+            new ConventionPack { new IgnoreIfDefaultConvention(true) }, t => true);
         ConventionRegistry.Register(nameof(IgnoreExtraElementsConvention),
             new ConventionPack { new IgnoreExtraElementsConvention(true) }, t => true);
+        ConventionRegistry.Register(nameof(CamelCaseElementNameConvention),
+            new ConventionPack { new CamelCaseElementNameConvention() }, t => true);
 
         mongoClient = new MongoClient(options.Value.ConnectionString);
         mongoDatabase = mongoClient.GetDatabase(options.Value.Database);

@@ -112,7 +112,7 @@ export function AuthenticatedLayoutNavbar(
         </div>
         <div className="flex items-center space-x-3">
           <Link to={Paths.AssetsAdd}>
-            <Button size="md" color="white" icon={faPlus}>
+            <Button size="md" color="secondary" icon={faPlus}>
               <FormattedMessage id="generic.new-asset" />
             </Button>
           </Link>

@@ -7,6 +7,7 @@
 import type { AssetRoleType } from "./assetRoleType";
 
 export interface AssetUserRoleModel {
+  createdDate?: string | null;
   role: AssetRoleType;
   userId: string;
 }

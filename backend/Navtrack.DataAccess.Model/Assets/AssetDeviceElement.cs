@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Navtrack.DataAccess.Model.Assets;
 
-[BsonIgnoreExtraElements]
 public class AssetDeviceElement
 {
     [BsonId]

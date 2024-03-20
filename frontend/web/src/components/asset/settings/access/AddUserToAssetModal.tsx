@@ -9,8 +9,10 @@ import { ModalBody } from "../../../ui/modal/ModalBody";
 import { ModalContainer } from "../../../ui/modal/ModalContainer";
 import { ModalContent } from "../../../ui/modal/ModalContent";
 import { ModalIcon } from "../../../ui/modal/ModalIcon";
-import { AddUserToAssetFormValues } from "./types";
-import { useAddUserToAsset } from "./useAddUserToAsset";
+import {
+  AddUserToAssetFormValues,
+  useAddUserToAsset
+} from "./useAddUserToAsset";
 import { AssetRoleType } from "@navtrack/shared/api/model/generated";
 import { Button } from "../../../ui/button/Button";
 import { FormikSelect } from "../../../ui/form/select/FormikSelect";
@@ -32,10 +34,10 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
 
   const roles: Role[] = useMemo(
     () => [
-      {
-        label: "Owner",
-        value: AssetRoleType.Owner
-      },
+      // {
+      //   label: "Owner",
+      //   value: AssetRoleType.Owner
+      // },
       {
         label: "Viewer",
         value: AssetRoleType.Viewer
@@ -47,7 +49,7 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
   return (
     <Modal open={props.show} close={props.close} className="w-full max-w-sm">
       <Formik<AddUserToAssetFormValues>
-        initialValues={{ email: "", role: "" }}
+        initialValues={{ email: "", role: AssetRoleType.Viewer }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}>
         {() => (
@@ -77,8 +79,8 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
                   </div>
                 </ModalBody>
               </ModalContent>
-              <ModalActions close={props.close}>
-                <Button type="submit" loading={loading}>
+              <ModalActions cancel={props.close}>
+                <Button type="submit" isLoading={loading}>
                   <FormattedMessage id="generic.save" />
                 </Button>
               </ModalActions>

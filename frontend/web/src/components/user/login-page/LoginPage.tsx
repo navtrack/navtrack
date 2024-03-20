@@ -86,7 +86,7 @@ export function LoginPage() {
                   type="submit"
                   color="secondary"
                   size="lg"
-                  loading={login.loading}
+                  isLoading={login.loading}
                   full>
                   <FormattedMessage id="login.button" />
                 </Button>

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using Navtrack.DataAccess.Model.Settings;
+using Navtrack.DataAccess.Model.System;
 using Navtrack.DataAccess.Services.Settings;
 using Navtrack.Shared.Library.DI;
 
@@ -15,7 +15,7 @@ public class SettingService(ISettingRepository repository) : ISettingService
     {
         string key = GetKey<T>();
 
-        SettingDocument? document = await repository.Get(key);
+        SystemSettingDocument? document = await repository.Get(key);
 
         if (document != null)
         {

@@ -21,7 +21,7 @@ public class PositionModel
                                     CoordinatesValidation.IsValidLongitude(Longitude);
 
     [Required]
-    public DateTime DateTime { get; set; }
+    public DateTime Date { get; set; }
 
     public float? Speed { get; set; }
     public float? Heading { get; set; }
@@ -29,6 +29,6 @@ public class PositionModel
     public int? Satellites { get; set; }
     public float? HDOP { get; set; }
     public bool? Valid { get; set; }
-    public short? GsmSignal { get; set; }
+    public GsmModel? Gsm { get; set; }
     public double? Odometer { get; set; }
 }

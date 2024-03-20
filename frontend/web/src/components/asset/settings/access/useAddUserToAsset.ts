@@ -6,13 +6,17 @@ import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
-import { AddUserToAssetFormValues } from "./types";
 
-interface IUseAddUserToAsset {
+export type AddUserToAssetFormValues = {
+  email: string;
+  role: string;
+};
+
+type UseAddUserToAssetProps = {
   close: () => void;
-}
+};
 
-export function useAddUserToAsset(props: IUseAddUserToAsset) {
+export function useAddUserToAsset(props: UseAddUserToAssetProps) {
   const intl = useIntl();
   const mutation = useAssetUserCreateMutation();
   const currentAsset = useCurrentAsset();

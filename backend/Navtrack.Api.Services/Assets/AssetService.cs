@@ -31,7 +31,7 @@ namespace Navtrack.Api.Services.Assets;
 public class AssetService(
     IAssetRepository assetRepository,
     ICurrentUserAccessor currentUserAccessor,
-    IPositionRepository positionRepository,
+    IMessageRepository messageRepository,
     IDeviceTypeRepository deviceTypeRepository,
     IDeviceService service,
     IRepository repository,
@@ -44,7 +44,7 @@ public class AssetService(
         AssetDocument asset = await assetRepository.GetById(assetId);
         DeviceType deviceType = deviceTypeRepository.GetById(asset.Device.DeviceTypeId);
         UserDocument currentUser = await currentUserAccessor.Get();
-        
+
         return AssetModelMapper.Map(currentUser, asset, deviceType);
     }
 
@@ -90,7 +90,7 @@ public class AssetService(
     public async Task Delete(string assetId)
     {
         Task deleteAssetTask = assetRepository.Delete(assetId);
-        Task deleteLocationsTask = positionRepository.DeleteByAssetId(assetId);
+        Task deleteLocationsTask = messageRepository.DeleteByAssetId(assetId);
         Task removeRoleTask = userRepository.DeleteAssetRoles(assetId);
 
         await Task.WhenAll(new List<Task> { deleteAssetTask, deleteLocationsTask, removeRoleTask });
@@ -110,7 +110,7 @@ public class AssetService(
         DeviceType deviceType = deviceTypeRepository.GetById(model.DeviceTypeId);
         AssetModel asset = AssetModelMapper.Map(currentUser, assetDocument, deviceType);
 
-        await post.Send(new AssetCreatedEvent(asset));
+        await post.Send(new AssetCreatedEvent(asset.Id));
 
         return asset;
     }
@@ -142,12 +142,17 @@ public class AssetService(
                 ValidationErrorCodes.UserAlreadyOnAsset);
         }
 
-        if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType))
+        if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType) || assetRoleType == AssetRoleType.Owner)
         {
             throw new ValidationApiException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
         }
+        
+        AssetUserRoleElement userRole = AssetUserRoleElementMapper.Map(userDocument.Id, assetRoleType);
+        UserAssetRoleElement assetRole = UserAssetRoleElementMapper.Map(asset.Id, assetRoleType);
 
-        await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
+        await assetRepository.AddUserToAsset(userRole, assetRole);
+
+        await post.Send(new AssetUserAddedEvent(assetId, userDocument.Id.ToString()));
     }
 
     public async Task RemoveUserFromAsset(string assetId, string userId)
@@ -165,6 +170,8 @@ public class AssetService(
         }
 
         await assetRepository.RemoveUserFromAsset(assetId, userId);
+
+        await post.Send(new AssetUserDeletedEvent(assetId, userId));
     }
 
     private async Task<AssetDocument> AddDocuments(CreateAssetModel model)
@@ -175,7 +182,7 @@ public class AssetService(
         AssetDocument assetDocument = AssetDocumentMapper.Map(model, currentUser);
         await repository.GetCollection<AssetDocument>().InsertOneAsync(assetDocument);
 
-        DeviceDocument deviceDocument = DeviceDocumentMapper.Map(model, assetDocument.Id, currentUser.Id);
+        DeviceDocument deviceDocument = DeviceDocumentMapper.Map(assetDocument.Id, model, currentUser.Id);
         await repository.GetCollection<DeviceDocument>().InsertOneAsync(deviceDocument);
 
         assetDocument.Device = AssetDeviceElementMapper.Map(deviceDocument, deviceType);
@@ -184,7 +191,8 @@ public class AssetService(
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement
             {
                 Role = AssetRoleType.Owner,
-                AssetId = assetDocument.Id
+                AssetId = assetDocument.Id,
+                CreatedDate = DateTime.UtcNow
             }));
 
         await assetRepository.SetActiveDevice(assetDocument.Id, deviceDocument.Id, deviceDocument.SerialNumber,

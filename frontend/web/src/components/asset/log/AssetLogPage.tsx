@@ -87,8 +87,8 @@ export function AssetLogPage() {
               </>
             ),
             sort: "desc",
-            sortValue: (row) => row.dateTime,
-            row: (row) => showDateTime(row.dateTime),
+            sortValue: (row) => row.date,
+            row: (row) => showDateTime(row.date),
             sortable: true
           },
           {
