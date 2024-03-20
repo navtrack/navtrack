@@ -1,8 +1,8 @@
-import { useValue } from "react-cosmos/client";
+import { useFixtureInput } from "react-cosmos/client";
 import { Slider } from "./Slider";
 
 export default function Fixture() {
-  const [value, setValue] = useValue<number>("slider", { defaultValue: 25 });
+  const [value, setValue] = useFixtureInput("slider", 25);
 
   return (
     <Slider

@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useValue } from "react-cosmos/client";
+import { useFixtureInput } from "react-cosmos/client";
 import { TableV2 } from "./TableV2";
 import { ITableColumn } from "./useTable";
 
@@ -45,9 +44,7 @@ export default {
   Loading: <TableV2 columns={columns} rows={undefined} />,
   "No Items": <TableV2 columns={columns} rows={[]} />,
   "With Selected Item": () => {
-    const [user, setUser] = useValue<User | undefined>("user", {
-      defaultValue: users[2]
-    });
+    const [user, setUser] = useFixtureInput<User | undefined>("user", users[2]);
 
     return (
       <TableV2

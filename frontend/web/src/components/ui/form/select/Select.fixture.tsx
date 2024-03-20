@@ -1,4 +1,4 @@
-import { useValue } from "react-cosmos/client";
+import { useFixtureInput } from "react-cosmos/client";
 import { Select, SelectOption } from "./Select";
 
 const assets: SelectOption[] = Array.from(Array(100).keys()).map((x) => ({
@@ -8,9 +8,7 @@ const assets: SelectOption[] = Array.from(Array(100).keys()).map((x) => ({
 
 const fixture = {
   Basic: () => {
-    const [value, setValue] = useValue<string>("value", {
-      defaultValue: assets[10].value
-    });
+    const [value, setValue] = useFixtureInput("value", assets[10].value);
 
     return (
       <Select
