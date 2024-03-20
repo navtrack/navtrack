@@ -10,12 +10,15 @@ import { Paths } from "../../../../app/Paths";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 import { Button } from "../../../ui/button/Button";
 import { ObjectSchema, object, string } from "yup";
+import { useContext } from "react";
+import { SlotContext } from "../../../../app/SlotContext";
 
 export type DeleteAssetFormValues = {
   name?: string; // TODO make required
 };
 
 export function DeleteAssetModal() {
+  const slot = useContext(SlotContext);
   const currentAsset = useCurrentAsset();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
@@ -56,6 +59,7 @@ export function DeleteAssetModal() {
       }}>
       {({ values, submitForm, resetForm }) => (
         <DeleteModal
+          maxWidth="lg"
           isLoading={deleteAsset.isLoading}
           onClose={() => resetForm()}
           onConfirm={() => {
@@ -94,6 +98,7 @@ export function DeleteAssetModal() {
               />
             </div>
           </Form>
+          {slot?.assetDeleteModalBlock}
         </DeleteModal>
       )}
     </Formik>

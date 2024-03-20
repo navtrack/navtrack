@@ -27,6 +27,7 @@ export type TableProps<T> = {
   equals?: (a: T, b: T) => boolean;
   selectedItem?: T;
   setSelectedItem?: (item?: T) => void;
+  rowClick?: (row: T) => void;
 };
 
 function getInitialSort<T>(columns: ITableColumn<T>[]): {

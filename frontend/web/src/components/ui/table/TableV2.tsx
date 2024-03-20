@@ -62,11 +62,12 @@ export function TableV2<T>(props: TableProps<T>) {
               table.sortedRows.map((row, rowIndex) => (
                 <tr
                   key={`row${rowIndex}`}
-                  onClick={() =>
-                    table.selectionEnabled
-                      ? table.setIndex(rowIndex)
-                      : undefined
-                  }
+                  onClick={() => {
+                    if (table.selectionEnabled) {
+                      table.setIndex(rowIndex);
+                    }
+                    props.rowClick?.(row);
+                  }}
                   ref={(el) => (table.tableRows.current[rowIndex] = el)}
                   className={classNames(
                     c(
@@ -78,6 +79,10 @@ export function TableV2<T>(props: TableProps<T>) {
                     c(
                       table.selectionEnabled,
                       "cursor-pointer hover:bg-gray-100"
+                    ),
+                    c(
+                      props.rowClick !== undefined,
+                      "hover:cursor-pointer hover:bg-gray-100"
                     )
                   )}>
                   {props.columns.map((column, columnIndex) => (
@@ -88,7 +93,8 @@ export function TableV2<T>(props: TableProps<T>) {
                         c(
                           rowIndex + 1 !== props.rows?.length,
                           "border-b border-gray-900/5"
-                        )
+                        ),
+                        column.rowClassName
                       )}>
                       {column.row(row)}
                     </td>

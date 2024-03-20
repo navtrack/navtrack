@@ -8,6 +8,7 @@ import { ModalIcon } from "./ModalIcon";
 import { FormattedMessage } from "react-intl";
 import { ModalBody } from "./ModalBody";
 import { Button } from "../button/Button";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
 type DeleteModalProps = {
   onConfirm?: () => void;
@@ -15,6 +16,7 @@ type DeleteModalProps = {
   renderButton?: (open: () => void) => JSX.Element;
   children?: React.ReactNode;
   onClose?: () => void;
+  maxWidth?: "lg";
 };
 
 export function DeleteModal(props: DeleteModalProps) {
@@ -32,7 +34,12 @@ export function DeleteModal(props: DeleteModalProps) {
       ) : (
         <Button icon={faTrashAlt} color="error" onClick={() => setOpen(true)} />
       )}
-      <Modal open={open} close={close} className="max-w-md">
+      <Modal
+        open={open}
+        close={close}
+        className={classNames(
+          c(props.maxWidth === "lg", "max-w-lg", "max-w-md")
+        )}>
         <ModalContainer>
           <ModalContent>
             <ModalIcon icon={faTrash} />

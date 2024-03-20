@@ -12,6 +12,9 @@ public class AssetModel
 
     [Required]
     public string Name { get; set; }
+    
+    [Required]
+    public string OwnerId { get; set; }
 
     [Required]
     public bool Online { get; set; }

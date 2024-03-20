@@ -28,6 +28,7 @@ public static class AssetModelMapper
             .Where(x => isOwner || x.UserId == currentUser.Id)
             .Select(AssetUserRoleModelMapper.Map)
             .ToList();
+        model.OwnerId = asset.OwnerId.ToString();
 
         return model;
     }

@@ -1,4 +1,5 @@
-import { classNames } from "@navtrack/shared/utils/tailwind";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
+import { ReactNode } from "react";
 
 export enum BadgeColor {
   Gray,
@@ -10,9 +11,10 @@ export enum BadgeColor {
 }
 
 export type BadgeProps = {
-  label?: string;
+  children?: ReactNode;
   color?: BadgeColor;
   className?: string;
+  size?: "sm";
 };
 
 function getColor(color?: BadgeColor) {
@@ -36,11 +38,13 @@ export function Badge(props: BadgeProps) {
   return (
     <span
       className={classNames(
-        "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset",
+        "inline-flex items-center rounded-md text-xs font-medium ring-1 ring-inset",
+        c(props.size === "sm", "px-2 py-0.5"),
+        c(props.size === undefined, "px-2 py-1"),
         getColor(props.color),
         props.className
       )}>
-      {props.label}
+      {props.children}
     </span>
   );
 }

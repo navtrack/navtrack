@@ -68,6 +68,9 @@ export function Autocomplete(props: AutocompleteProps) {
           onChange={(e) => {
             setSearch(e.target.value);
             ref.current?.scrollTo(0, 0);
+            if (e.target.value) {
+              setOpen(true);
+            }
           }}
           onBlur={() => {
             setOpen(false);

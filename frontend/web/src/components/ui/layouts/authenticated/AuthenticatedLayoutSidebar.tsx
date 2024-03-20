@@ -4,8 +4,12 @@ import { Link } from "react-router-dom";
 import { AuthenticatedLayoutSidebarAssets } from "./AuthenticatedLayoutSidebarAssets";
 import { Paths } from "../../../../app/Paths";
 import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
+import { useContext } from "react";
+import { SlotContext } from "../../../../app/SlotContext";
 
 export function AuthenticatedLayoutSidebar() {
+  const slots = useContext(SlotContext);
+
   return (
     <div className="absolute bottom-0 top-0 flex w-64 flex-col">
       <div className="relative flex h-16 items-center bg-gray-900 px-4">
@@ -17,7 +21,7 @@ export function AuthenticatedLayoutSidebar() {
         </Link>
       </div>
       <div className="flex h-12 items-center bg-gray-800 px-4 text-xs font-medium uppercase tracking-wider text-white">
-        <FormattedMessage id="sidebar.assets" />
+        {slots?.assetsSidebarTitle ?? <FormattedMessage id="sidebar.assets" />}
       </div>
       <div
         className="relative flex-1 overflow-y-scroll bg-gray-800 py-2"

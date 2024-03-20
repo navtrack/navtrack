@@ -14,6 +14,7 @@ export interface AssetModel {
   maxSpeed: number;
   name: string;
   online: boolean;
+  ownerId: string;
   position?: AssetModelPosition;
   userRoles?: AssetUserRoleModel[] | null;
 }
