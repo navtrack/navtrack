@@ -1480,6 +1480,11 @@
           "userId": {
             "type": "string",
             "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
@@ -1840,6 +1845,11 @@
           "userId": {
             "type": "string",
             "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },

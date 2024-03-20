@@ -41,7 +41,8 @@ export function TableV1<T>(props: TableProps<T>) {
                   key={`row${rowIndex}col${columnIndex}`}
                   className={classNames(
                     "p-2",
-                    c(rowIndex % 2 !== 0, "bg-gray-50")
+                    c(rowIndex % 2 !== 0, "bg-gray-50"),
+                    column.rowClassName
                   )}>
                   {column.row(row)}
                 </td>

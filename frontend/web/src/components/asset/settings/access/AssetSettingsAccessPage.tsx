@@ -1,4 +1,4 @@
-import { UsersTable } from "./UsersTable";
+import { AssetUsersTable } from "./AssetUsersTable";
 import { FormattedMessage } from "react-intl";
 import { useState } from "react";
 import { AddUserToAssetModal } from "./AddUserToAssetModal";
@@ -30,7 +30,7 @@ export function AssetSettingsAccessPage() {
                 <FormattedMessage id="generic.add-user" />
               </Button>
             </div>
-            <UsersTable
+            <AssetUsersTable
               rows={assetUsers.data?.items}
               loading={assetUsers.isLoading}
               refresh={assetUsers.refetch}

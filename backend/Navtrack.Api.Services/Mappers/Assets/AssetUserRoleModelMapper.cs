@@ -10,7 +10,8 @@ public static class AssetUserRoleModelMapper
         return new AssetUserRoleModel
         {
             UserId = source.UserId.ToString(),
-            Role = source.Role
+            Role = source.Role,
+            CreatedDate = source.CreatedDate
         };
     }
 }

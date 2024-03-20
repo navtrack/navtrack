@@ -78,7 +78,7 @@ export function ForgotPasswordPage() {
                         size="lg"
                         color="secondary"
                         full
-                        loading={forgotPassword.loading}>
+                        isLoading={forgotPassword.loading}>
                         <FormattedMessage id="forgot-password.button" />
                       </Button>
                     </div>

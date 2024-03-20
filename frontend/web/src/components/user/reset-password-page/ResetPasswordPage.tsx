@@ -88,7 +88,7 @@ export const ResetPasswordPage = () => {
                         type="submit"
                         size="lg"
                         full
-                        loading={resetPassword.loading}>
+                        isLoading={resetPassword.loading}>
                         <FormattedMessage id="reset-password.button" />
                       </Button>
                     </div>

@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-interface IModalContent {
+type ModalContentProps = {
   children?: ReactNode;
-}
+};
 
-export function ModalContent(props: IModalContent) {
+export function ModalContent(props: ModalContentProps) {
   return <div className="flex">{props.children}</div>;
 }

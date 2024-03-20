@@ -101,7 +101,7 @@ export function AssetAddPage() {
               </CardBody>
               {slot?.assetAddFooterBlock}
               <CardFooter className="text-right">
-                <Button type="submit" loading={addAsset.isLoading} size="lg">
+                <Button type="submit" isLoading={addAsset.isLoading} size="lg">
                   <FormattedMessage id="generic.save" />
                 </Button>
               </CardFooter>

@@ -12,7 +12,8 @@ public static class AssetUserModelMapper
         {
             Email = user.Email,
             UserId = source.UserId.ToString(),
-            Role = source.Role
+            Role = source.Role,
+            CreatedDate = source.CreatedDate
         };
     }
 }

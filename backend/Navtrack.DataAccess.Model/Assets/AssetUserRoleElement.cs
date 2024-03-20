@@ -1,3 +1,4 @@
+using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -11,4 +12,7 @@ public class AssetUserRoleElement
     [BsonElement("role")]
     [BsonRepresentation(BsonType.String)]
     public AssetRoleType Role { get; set; }
+    
+    [BsonElement("createdDate")]
+    public DateTime? CreatedDate { get; set; }
 }

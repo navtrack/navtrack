@@ -15,7 +15,7 @@ public interface IAssetRepository : IGenericRepository<AssetDocument>
     Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids);
     Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string? assetId = null);
     Task UpdateName(string assetId, string name);
-    Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole);
+    Task AddUserToAsset(AssetUserRoleElement userRole, UserAssetRoleElement assetRole);
     Task RemoveUserFromAsset(string assetId, string userId);
     Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
         int protocolPort);

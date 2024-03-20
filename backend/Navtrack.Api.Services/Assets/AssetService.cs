@@ -146,8 +146,11 @@ public class AssetService(
         {
             throw new ValidationApiException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
         }
+        
+        AssetUserRoleElement userRole = AssetUserRoleElementMapper.Map(userDocument.Id, assetRoleType);
+        UserAssetRoleElement assetRole = UserAssetRoleElementMapper.Map(asset.Id, assetRoleType);
 
-        await assetRepository.AddUserToAsset(asset, userDocument, assetRoleType);
+        await assetRepository.AddUserToAsset(userRole, assetRole);
 
         await post.Send(new AssetUserAddedEvent(assetId, userDocument.Id.ToString()));
     }
@@ -188,7 +191,8 @@ public class AssetService(
             Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, new UserAssetRoleElement
             {
                 Role = AssetRoleType.Owner,
-                AssetId = assetDocument.Id
+                AssetId = assetDocument.Id,
+                CreatedDate = DateTime.UtcNow
             }));
 
         await assetRepository.SetActiveDevice(assetDocument.Id, deviceDocument.Id, deviceDocument.SerialNumber,

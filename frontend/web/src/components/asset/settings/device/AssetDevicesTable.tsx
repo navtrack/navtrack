@@ -1,22 +1,21 @@
-import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { DeviceModel } from "@navtrack/shared/api/model/generated";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteDeviceMutation";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
-import { Button } from "../../../ui/button/Button";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { ITableColumn } from "../../../ui/table/useTable";
 import { TableV1 } from "../../../ui/table/TableV1";
+import { DeleteModal } from "../../../ui/modal/DeleteModal";
 
-type DevicesTableProps = {
+type AssetDevicesTableProps = {
   rows?: DeviceModel[];
   loading: boolean;
   refresh: () => void;
 };
 
-export function DevicesTable(props: DevicesTableProps) {
+export function AssetDevicesTable(props: AssetDevicesTableProps) {
   const deleteDeviceMutation = useDeleteDeviceMutation();
   const queryClient = useQueryClient();
   const { showNotification } = useNotification();
@@ -50,38 +49,58 @@ export function DevicesTable(props: DevicesTableProps) {
     },
     { labelId: "generic.positions", row: (device) => device.positions },
     {
+      rowClassName: "flex justify-end",
       row: (device) => (
         <>
           {!device.active && !device.positions && (
-            <Button
-              icon={faTrashAlt}
-              color="error"
-              onClick={() => {
+            <DeleteModal
+              isLoading={deleteDeviceMutation.isLoading}
+              onConfirm={() => {
                 if (currentAsset.data) {
-                  deleteDeviceMutation
-                    .mutateAsync(
-                      { assetId: currentAsset.data.id, deviceId: device.id },
-                      {
-                        onSuccess: () => {
-                          showNotification({
-                            type: "success",
-                            description: intl.formatMessage({
-                              id: "assets.settings.device.delete.success"
-                            })
-                          });
+                  return deleteDeviceMutation.mutateAsync(
+                    {
+                      assetId: currentAsset.data.id,
+                      deviceId: device.id
+                    },
+                    {
+                      onSuccess: () => {
+                        showNotification({
+                          type: "success",
+                          description: intl.formatMessage({
+                            id: "assets.settings.device.delete.success"
+                          })
+                        });
+                        if (currentAsset.data) {
+                          queryClient.refetchQueries(
+                            getAssetsDevicesGetListQueryKey(
+                              currentAsset.data.id
+                            )
+                          );
                         }
                       }
-                    )
-                    .then(() => {
-                      if (currentAsset.data) {
-                        queryClient.refetchQueries(
-                          getAssetsDevicesGetListQueryKey(currentAsset.data.id)
-                        );
-                      }
-                    });
+                    }
+                  );
                 }
-              }}
-            />
+
+                return Promise.resolve();
+              }}>
+              <FormattedMessage
+                id="assets.settings.device.delete.question"
+                values={{
+                  device: (
+                    <span className="font-bold">
+                      {device.deviceType.displayName}
+                    </span>
+                  ),
+                  serialNumber: (
+                    <span className="font-bold">{device.serialNumber}</span>
+                  ),
+                  assetName: (
+                    <span className="font-bold">{currentAsset.data?.name}</span>
+                  )
+                }}
+              />
+            </DeleteModal>
           )}
         </>
       )

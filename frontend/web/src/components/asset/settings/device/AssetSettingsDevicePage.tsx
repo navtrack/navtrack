@@ -4,7 +4,7 @@ import { Formik, Form, FormikHelpers } from "formik";
 import { FormikAutocomplete } from "../../../ui/form/autocomplete/FormikAutocomplete";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { DeviceConfiguration } from "../../add/DeviceConfiguration";
-import { DevicesTable } from "./DevicesTable";
+import { AssetDevicesTable } from "./AssetDevicesTable";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { object, ObjectSchema, string } from "yup";
 import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
@@ -142,7 +142,7 @@ export function AssetSettingsDevicePage() {
                           deviceTypes === undefined ||
                           currentAsset.data === undefined
                         }
-                        loading={mutation.isLoading}>
+                        isLoading={mutation.isLoading}>
                         <FormattedMessage id="generic.save" />
                       </Button>
                     </div>
@@ -160,7 +160,7 @@ export function AssetSettingsDevicePage() {
             <FormattedMessage id="assets.settings.device.history" />
           </Heading>
           <div className="mt-4">
-            <DevicesTable
+            <AssetDevicesTable
               rows={devices.data?.items}
               loading={devices.isLoading}
               refresh={devices.refetch}

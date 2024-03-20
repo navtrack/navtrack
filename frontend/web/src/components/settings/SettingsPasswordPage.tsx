@@ -63,7 +63,7 @@ export function SettingsPasswordPage() {
                 <Button
                   type="submit"
                   size="lg"
-                  loading={changePassword.isLoading}>
+                  isLoading={changePassword.isLoading}>
                   <FormattedMessage id="generic.save" />
                 </Button>
               </CardFooter>

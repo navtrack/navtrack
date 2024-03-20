@@ -10,7 +10,7 @@ type ButtonProps = {
   size?: "base" | "xs" | "sm" | "md" | "lg";
   color?: "primary" | "secondary" | "white" | "success" | "error";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  loading?: boolean;
+  isLoading?: boolean;
   disabled?: boolean;
   full?: boolean;
   icon?: IconProp;
@@ -21,7 +21,7 @@ export function Button(props: ButtonProps) {
     <button
       type={props.type ?? "button"}
       onClick={props.onClick}
-      disabled={props.loading || props.disabled}
+      disabled={props.isLoading || props.disabled}
       className={classNames(
         "font-semibold shadow-sm",
         c(
@@ -55,12 +55,12 @@ export function Button(props: ButtonProps) {
         c(props.full, "w-full")
       )}>
       <div className="flex items-center justify-center">
-        {props.loading && (
+        {props.isLoading && (
           <NtwLoadingIndicator
             className={props.children !== undefined ? "mr-2" : undefined}
           />
         )}
-        {props.icon && !props.loading && (
+        {props.icon && !props.isLoading && (
           <Icon
             icon={props.icon}
             className={props.children !== undefined ? "mr-2" : undefined}

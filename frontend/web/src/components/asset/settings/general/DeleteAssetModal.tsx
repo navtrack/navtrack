@@ -1,25 +1,22 @@
 import { Form, Formik } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
-import { DeleteAssetFormValues } from "./types";
-import { Modal } from "../../../ui/modal/Modal";
-import { DeleteModalContainer } from "../../../ui/modal/DeleteModalContainer";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { nameOf } from "@navtrack/shared/utils/typescript";
-import { useDeleteAssetValidationSchema } from "./useDeleteAssetValidationSchema";
 import { useDeleteAsset } from "@navtrack/shared/hooks/assets/delete-asset/useDeleteAsset";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
+import { DeleteModal } from "../../../ui/modal/DeleteModal";
+import { Button } from "../../../ui/button/Button";
+import { ObjectSchema, object, string } from "yup";
 
-type DeleteAssetModalProps = {
-  show: boolean;
-  close: () => void;
+export type DeleteAssetFormValues = {
+  name?: string; // TODO make required
 };
 
-export function DeleteAssetModal(props: DeleteAssetModalProps) {
+export function DeleteAssetModal() {
   const currentAsset = useCurrentAsset();
-  const validationSchema = useDeleteAssetValidationSchema();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
   const intl = useIntl();
@@ -36,54 +33,69 @@ export function DeleteAssetModal(props: DeleteAssetModalProps) {
     }
   });
 
+  const validationSchema: ObjectSchema<DeleteAssetFormValues> = object()
+    .shape({
+      name: string()
+        .required("generic.name.required")
+        .equals(
+          [`${currentAsset.data?.name}`],
+          "assets.settings.general.delete-asset.name-match"
+        )
+    })
+    .defined();
+
   return (
-    <Modal open={props.show} close={props.close} className="max-w-md">
-      <Formik<DeleteAssetFormValues>
-        initialValues={{ name: "" }}
-        validationSchema={validationSchema}
-        onSubmit={() => {
-          if (currentAsset.data?.id) {
-            deleteAsset.handleSubmit(currentAsset.data?.id);
-          }
-        }}>
-        {({ values }) => (
+    <Formik<DeleteAssetFormValues>
+      enableReinitialize
+      initialValues={{ name: "" }}
+      validationSchema={validationSchema}
+      onSubmit={() => {
+        if (currentAsset.data?.id) {
+          deleteAsset.handleSubmit(currentAsset.data?.id);
+        }
+      }}>
+      {({ values, submitForm, resetForm }) => (
+        <DeleteModal
+          isLoading={deleteAsset.isLoading}
+          onClose={() => resetForm()}
+          onConfirm={() => {
+            submitForm();
+          }}
+          renderButton={(open) => (
+            <Button color="error" type="submit" size="base" onClick={open}>
+              <FormattedMessage id="assets.settings.general.delete-asset" />
+            </Button>
+          )}>
           <Form>
-            <DeleteModalContainer
-              close={props.close}
-              loading={deleteAsset.isLoading}>
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
-                <FormattedMessage id="shared.delete-modal.title" />
-              </h3>
-              <div className="mt-2 text-sm">
-                <p>
-                  <FormattedMessage id="assets.settings.general.delete-asset.question" />
-                </p>
-                <p className="mt-2">
-                  <FormattedMessage id="assets.settings.general.delete-asset.warning" />
-                </p>
-                <p className="mt-2">
-                  <FormattedMessage
-                    id="assets.settings.general.delete-asset.type-name"
-                    values={{
-                      name: (
-                        <span className="font-semibold">
-                          {currentAsset.data?.name}
-                        </span>
-                      )
-                    }}
-                  />
-                </p>
-              </div>
-              <div className="mt-4">
-                <FormikTextInput
-                  name={nameOf<DeleteAssetFormValues>("name")}
-                  value={values.name}
+            <div className="mt-2 text-sm">
+              <p>
+                <FormattedMessage id="assets.settings.general.delete-asset.question" />
+              </p>
+              <p className="mt-2">
+                <FormattedMessage id="assets.settings.general.delete-asset.warning" />
+              </p>
+              <p className="mt-2">
+                <FormattedMessage
+                  id="assets.settings.general.delete-asset.type-name"
+                  values={{
+                    name: (
+                      <span className="font-semibold">
+                        {currentAsset.data?.name}
+                      </span>
+                    )
+                  }}
                 />
-              </div>
-            </DeleteModalContainer>
+              </p>
+            </div>
+            <div className="mt-4">
+              <FormikTextInput
+                name={nameOf<DeleteAssetFormValues>("name")}
+                value={values.name}
+              />
+            </div>
           </Form>
-        )}
-      </Formik>
-    </Modal>
+        </DeleteModal>
+      )}
+    </Formik>
   );
 }

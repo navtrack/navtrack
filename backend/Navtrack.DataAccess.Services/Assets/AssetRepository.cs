@@ -61,27 +61,15 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
             .UpdateOneAsync(x => x.Id == ObjectId.Parse(assetId), update);
     }
 
-    public async Task AddUserToAsset(AssetDocument assetDocument, UserDocument userDocument, AssetRoleType modelRole)
+    public async Task AddUserToAsset(AssetUserRoleElement userRole, UserAssetRoleElement assetRole)
     {
-        UserAssetRoleElement userAssetRoleElement = new()
-        {
-            AssetId = assetDocument.Id,
-            Role = modelRole
-        };
-
-        AssetUserRoleElement assetUserRoleElement = new()
-        {
-            UserId = userDocument.Id,
-            Role = modelRole
-        };
-
         await repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetDocument.Id,
-                Builders<AssetDocument>.Update.Push(x => x.UserRoles, assetUserRoleElement));
+            .UpdateOneAsync(x => x.Id == assetRole.AssetId,
+                Builders<AssetDocument>.Update.Push(x => x.UserRoles, userRole));
 
         await repository.GetCollection<UserDocument>()
-            .UpdateOneAsync(x => x.Id == userDocument.Id,
-                Builders<UserDocument>.Update.Push(x => x.AssetRoles, userAssetRoleElement));
+            .UpdateOneAsync(x => x.Id == userRole.UserId,
+                Builders<UserDocument>.Update.Push(x => x.AssetRoles, assetRole));
     }
 
     public async Task RemoveUserFromAsset(string assetId, string userId)
