@@ -18,11 +18,14 @@ import { AuthenticationErrorType } from "@navtrack/shared/hooks/app/authenticati
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 import { Button } from "../../ui/button/Button";
 import { SlotContext } from "../../../app/SlotContext";
+import { isLoggingInAtom } from "@navtrack/shared/state/authentication";
+import { useRecoilValue } from "recoil";
 
 export function LoginPage() {
   const login = useLogin();
   const validationSchema = useLoginFormValidationSchema();
   const slots = useContext(SlotContext);
+  const isLoading = useRecoilValue(isLoggingInAtom);
 
   const errorMessage = useMemo(
     () =>
@@ -86,7 +89,7 @@ export function LoginPage() {
                   type="submit"
                   color="secondary"
                   size="lg"
-                  isLoading={login.loading}
+                  isLoading={isLoading}
                   full>
                   <FormattedMessage id="login.button" />
                 </Button>

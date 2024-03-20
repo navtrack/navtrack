@@ -6,7 +6,6 @@ import { useAccessToken } from "../authentication/useAccessToken";
 import { log } from "../../../utils/log";
 import { AxiosError } from "axios";
 import { useAuthentication } from "../authentication/useAuthentication";
-import { AuthenticationErrorType } from "../authentication/authentication";
 
 type AxiosInterceptor = {
   requestId: number;

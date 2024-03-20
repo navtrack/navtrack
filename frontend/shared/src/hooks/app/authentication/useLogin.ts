@@ -47,7 +47,6 @@ export function useLogin() {
     internalLogin,
     externalLogin,
     logout: () => authentication.clear(),
-    loading: tokenMutation.isLoading,
     error: authentication.error
   };
 }
