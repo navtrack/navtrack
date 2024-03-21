@@ -38,6 +38,7 @@ export function SettingsPasswordPage() {
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-3">
                     <FormikTextInput
+                      autoComplete="current-password"
                       type="password"
                       label="settings.password.current-password"
                       name={nameOf<ChangePasswordFormValues>("currentPassword")}
@@ -45,6 +46,7 @@ export function SettingsPasswordPage() {
                   </div>
                   <div className="col-span-3 col-start-1">
                     <FormikTextInput
+                      autoComplete="new-password"
                       type="password"
                       label="generic.password"
                       name={nameOf<ChangePasswordFormValues>("password")}
@@ -52,6 +54,7 @@ export function SettingsPasswordPage() {
                   </div>
                   <div className="col-span-3 col-start-1">
                     <FormikTextInput
+                      autoComplete="new-password"
                       type="password"
                       label="generic.confirm-password"
                       name={nameOf<ChangePasswordFormValues>("confirmPassword")}

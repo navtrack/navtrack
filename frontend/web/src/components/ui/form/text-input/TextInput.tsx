@@ -20,7 +20,7 @@ export type TextInputProps = {
   leftAddon?: ReactNode;
   rightAddon?: ReactNode;
   error?: string;
-  autoComplete?: "off";
+  autoComplete?: "off" | string;
   loading?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
