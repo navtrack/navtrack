@@ -21,7 +21,6 @@ import type {
   ChangePasswordModel,
   CreateAssetModel,
   CreateAssetUserModel,
-  CreateOrUpdateAssetDeviceModel,
   DistanceReportListModel,
   ErrorModel,
   ForgotPasswordModel,
@@ -35,6 +34,7 @@ import type {
   RegisterAccountModel,
   ResetPasswordModel,
   TripListModel,
+  UpdateAssetDeviceModel,
   UpdateAssetModel,
   UpdateUserModel,
   UserModel
@@ -691,13 +691,13 @@ export const useAssetsDevicesGetList = <
 
 export const assetsDevicesCreateOrUpdate = (
   assetId: string,
-  createOrUpdateAssetDeviceModel: CreateOrUpdateAssetDeviceModel
+  updateAssetDeviceModel: UpdateAssetDeviceModel
 ) => {
   return authAxiosInstance<void>({
     url: `/assets/${assetId}/devices`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createOrUpdateAssetDeviceModel
+    data: updateAssetDeviceModel
   });
 };
 
@@ -708,20 +708,20 @@ export const getAssetsDevicesCreateOrUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
     TError,
-    { assetId: string; data: CreateOrUpdateAssetDeviceModel },
+    { assetId: string; data: UpdateAssetDeviceModel },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
   TError,
-  { assetId: string; data: CreateOrUpdateAssetDeviceModel },
+  { assetId: string; data: UpdateAssetDeviceModel },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
-    { assetId: string; data: CreateOrUpdateAssetDeviceModel }
+    { assetId: string; data: UpdateAssetDeviceModel }
   > = (props) => {
     const { assetId, data } = props ?? {};
 
@@ -734,8 +734,7 @@ export const getAssetsDevicesCreateOrUpdateMutationOptions = <
 export type AssetsDevicesCreateOrUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>
 >;
-export type AssetsDevicesCreateOrUpdateMutationBody =
-  CreateOrUpdateAssetDeviceModel;
+export type AssetsDevicesCreateOrUpdateMutationBody = UpdateAssetDeviceModel;
 export type AssetsDevicesCreateOrUpdateMutationError =
   | ErrorModel
   | ProblemDetails;
@@ -747,7 +746,7 @@ export const useAssetsDevicesCreateOrUpdate = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
     TError,
-    { assetId: string; data: CreateOrUpdateAssetDeviceModel },
+    { assetId: string; data: UpdateAssetDeviceModel },
     TContext
   >;
 }) => {

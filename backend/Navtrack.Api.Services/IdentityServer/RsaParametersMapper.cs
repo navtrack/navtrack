@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using Navtrack.Api.Services.IdentityServer.Model;
+using Navtrack.Api.Services.IdentityServer.Models;
 
 namespace Navtrack.Api.Services.IdentityServer;
 

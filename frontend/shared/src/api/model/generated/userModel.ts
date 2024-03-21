@@ -8,7 +8,7 @@ import type { UserAssetRoleModel } from "./userAssetRoleModel";
 import type { UnitsType } from "./unitsType";
 
 export interface UserModel {
-  assetRoles?: UserAssetRoleModel[] | null;
+  assetRoles?: UserAssetRoleModel[];
   email: string;
   id: string;
   units: UnitsType;

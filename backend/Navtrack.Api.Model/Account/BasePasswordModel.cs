@@ -1,12 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Navtrack.Api.Model.User;
+namespace Navtrack.Api.Model.Account;
 
-public class RegisterAccountModel
+public abstract class BasePasswordModel
 {
-    [Required]
-    public string Email { get; set; }
-
     [Required]
     public string Password { get; set; }
 

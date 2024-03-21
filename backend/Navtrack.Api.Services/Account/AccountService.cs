@@ -2,11 +2,13 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Navtrack.Api.Model.Account;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
+using Navtrack.Api.Services.Mappers.Accounts;
 using Navtrack.Api.Services.Mappers.Users;
+using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Model.Users.PasswordResets;
 using Navtrack.DataAccess.Services.Users;
@@ -15,22 +17,45 @@ using Navtrack.Shared.Services.Email;
 using Navtrack.Shared.Services.Email.Emails;
 using Navtrack.Shared.Services.Passwords;
 using Navtrack.Shared.Services.Settings;
-using Navtrack.Shared.Services.Settings.Settings;
+using Navtrack.Shared.Services.Settings.Models;
 
-namespace Navtrack.Api.Services.User;
+namespace Navtrack.Api.Services.Account;
 
-[Service(typeof(IUserAccessService))]
-public class UserAccessService(
+[Service(typeof(IAccountService))]
+public class AccountService(
     IPasswordHasher hasher,
     ICurrentUserAccessor userAccessor,
     IHttpContextAccessor contextAccessor,
     IEmailService service,
     ISettingService settingService,
     IUserRepository repository,
-    IPasswordResetRepository resetRepository)
-    : IUserAccessService
+    IPasswordResetRepository resetRepository) : IAccountService
 {
-    public async Task ForgotPassword(ForgotPasswordModel model)
+    public async Task Register(RegisterAccountModel model)
+    {
+        ValidationApiException apiException = new();
+
+        if (await repository.EmailIsUsed(model.Email))
+        {
+            apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyUsed);
+        }
+
+        if (model.Password != model.ConfirmPassword)
+        {
+            apiException.AddValidationError(nameof(model.ConfirmPassword),
+                ValidationErrorCodes.PasswordsDoNotMatch);
+        }
+
+        apiException.ThrowIfInvalid();
+
+        (string hash, string salt) = hasher.Hash(model.Password);
+
+        UserDocument userDocument = UserDocumentMapper.Map(model.Email, hash, salt);
+
+        await repository.Add(userDocument);
+    }
+    
+     public async Task ForgotPassword(ForgotPasswordModel model)
     {
         string? ipAddress = contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
         model.Email = model.Email.Trim().ToLowerInvariant();

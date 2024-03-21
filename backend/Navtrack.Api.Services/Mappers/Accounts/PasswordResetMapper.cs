@@ -4,7 +4,7 @@ using System.Text;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Users.PasswordResets;
 
-namespace Navtrack.Api.Services.Mappers.Users;
+namespace Navtrack.Api.Services.Mappers.Accounts;
 
 public static class PasswordResetMapper
 {

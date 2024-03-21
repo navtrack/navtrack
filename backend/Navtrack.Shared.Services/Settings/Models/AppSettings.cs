@@ -1,4 +1,4 @@
-namespace Navtrack.Shared.Services.Settings.Settings;
+namespace Navtrack.Shared.Services.Settings.Models;
 
 public class AppSettings
 {

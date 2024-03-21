@@ -1,4 +1,4 @@
-namespace Navtrack.Api.Services.IdentityServer.Model;
+namespace Navtrack.Api.Services.IdentityServer.Models;
 
 public class IdentityServerSigningCredentials
 {

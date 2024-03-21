@@ -4,7 +4,7 @@ using Navtrack.Api.Services.Exceptions;
 
 namespace Navtrack.Api.Services.Extensions;
 
-public static class ObjectExtensions
+public static class ApiExceptionUtil
 {
     public static void Return404IfNull(this object @object)
     {

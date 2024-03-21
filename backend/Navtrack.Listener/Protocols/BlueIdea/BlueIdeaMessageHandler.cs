@@ -5,6 +5,4 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Protocols.BlueIdea;
 
 [Service(typeof(ICustomMessageHandler<BlueIdeaProtocol>))]
-public class BlueIdeaMessageHandler : BaseBofanMessageHandler<BlueIdeaProtocol>
-{
-}
+public class BlueIdeaMessageHandler : BaseBofanMessageHandler<BlueIdeaProtocol>;

@@ -8,6 +8,6 @@ public interface IDeviceService
 {
     Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null);
     Task<ListModel<DeviceModel>> GetList(string assetId);
-    Task CreateOrUpdate(string assetId, CreateOrUpdateAssetDeviceModel model);
+    Task CreateOrUpdate(string assetId, UpdateAssetDeviceModel model);
     Task Delete(string assetId, string deviceId);
 }

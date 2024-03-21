@@ -15,5 +15,5 @@ public class UserModel
     [Required]
     public UnitsType Units { get; set; }
 
-    public IEnumerable<UserAssetRoleModel>? AssetRoles { get; set; }
+    public IEnumerable<UserAssetRoleModel> AssetRoles { get; set; }
 }

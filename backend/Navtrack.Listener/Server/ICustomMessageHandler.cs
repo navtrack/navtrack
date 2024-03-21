@@ -9,6 +9,4 @@ public interface ICustomMessageHandler
     IEnumerable<Position>? ParseRange(MessageInput input);
 }
 
-public interface ICustomMessageHandler<T> : ICustomMessageHandler
-{
-}
+public interface ICustomMessageHandler<T> : ICustomMessageHandler;

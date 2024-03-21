@@ -3,7 +3,7 @@ using Navtrack.DataAccess.Model.Protocols;
 
 namespace Navtrack.Api.Services.Mappers.Protocols;
 
-public class ProtocolModelMapper
+public static class ProtocolModelMapper
 {
     public static ProtocolModel Map(Protocol source)
     {

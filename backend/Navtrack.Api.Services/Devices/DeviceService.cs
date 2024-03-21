@@ -51,7 +51,7 @@ public class DeviceService(
         return DeviceListModelMapper.Map(devices, deviceTypes, locationCount, asset);
     }
 
-    public async Task CreateOrUpdate(string assetId, CreateOrUpdateAssetDeviceModel model)
+    public async Task CreateOrUpdate(string assetId, UpdateAssetDeviceModel model)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
         asset.Return404IfNull();

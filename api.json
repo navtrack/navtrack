@@ -404,7 +404,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrUpdateAssetDeviceModel"
+                "$ref": "#/components/schemas/UpdateAssetDeviceModel"
               }
             }
           },
@@ -1193,6 +1193,7 @@
       },
       "BasePasswordModel": {
         "type": "object",
+        "x-abstract": true,
         "additionalProperties": false,
         "required": [
           "password",
@@ -1581,7 +1582,7 @@
           }
         }
       },
-      "CreateOrUpdateAssetDeviceModel": {
+      "UpdateAssetDeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1928,7 +1929,6 @@
           },
           "assetRoles": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/UserAssetRoleModel"
             }

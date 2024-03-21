@@ -13,7 +13,7 @@ public static class UserMapper
         destination.Id = source.Id.ToString();
         destination.Email = source.Email;
         destination.Units = source.UnitsType;
-        destination.AssetRoles = source.AssetRoles?.Select(UserAssetRoleModelMapper.Map).ToList();
+        destination.AssetRoles = source.AssetRoles?.Select(UserAssetRoleModelMapper.Map).ToList() ?? [];
 
         return destination;
     }

@@ -5,6 +5,4 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Protocols.CanTrack;
 
 [Service(typeof(ICustomMessageHandler<CanTrackProtocol>))]
-public class CanTrackMessageHandler : BaseTkStarMessageHandler<CanTrackProtocol>
-{
-}
+public class CanTrackMessageHandler : BaseTkStarMessageHandler<CanTrackProtocol>;

@@ -5,6 +5,4 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Protocols.Smartrack;
 
 [Service(typeof(ICustomMessageHandler<SmartrackProtocol>))]
-public class SmartrackMessageHandler : BaseVjoyCarMessageHandler<SmartrackProtocol>
-{
-}
+public class SmartrackMessageHandler : BaseVjoyCarMessageHandler<SmartrackProtocol>;

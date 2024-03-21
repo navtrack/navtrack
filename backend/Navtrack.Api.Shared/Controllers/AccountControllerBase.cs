@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
+using Navtrack.Api.Model.Account;
 using Navtrack.Api.Model.Common;
-using Navtrack.Api.Model.User;
-using Navtrack.Api.Services.User;
+using Navtrack.Api.Services.Account;
 
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
-public abstract class AccountControllerBase(IAccountService accountService, IUserAccessService accessService)
+public abstract class AccountControllerBase(IAccountService accountService)
     : ControllerBase
 {
     [HttpPost(ApiPaths.Account)]
@@ -29,7 +29,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
     {
-        await accessService.ForgotPassword(model);
+        await accountService.ForgotPassword(model);
 
         return Ok();
     }
@@ -39,7 +39,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
     {
-        await accessService.ResetPassword(model);
+        await accountService.ResetPassword(model);
 
         return Ok();
     }
@@ -50,7 +50,7 @@ public abstract class AccountControllerBase(IAccountService accountService, IUse
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordModel model)
     {
-        await accessService.ChangePassword(model);
+        await accountService.ChangePassword(model);
 
         return Ok();
     }

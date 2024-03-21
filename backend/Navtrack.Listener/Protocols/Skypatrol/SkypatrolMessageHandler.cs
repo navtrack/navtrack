@@ -5,6 +5,4 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Protocols.Skypatrol;
 
 [Service(typeof(ICustomMessageHandler<SkypatrolProtocol>))]
-public class SkypatrolMessageHandler : BaseGosafeMessageHandler<SkypatrolProtocol>
-{
-}
+public class SkypatrolMessageHandler : BaseGosafeMessageHandler<SkypatrolProtocol>;

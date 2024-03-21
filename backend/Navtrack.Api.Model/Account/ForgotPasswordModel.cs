@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Navtrack.Api.Model.User;
+namespace Navtrack.Api.Model.Account;
 
 public class ForgotPasswordModel
 {

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Navtrack.Api.Model;
-using Navtrack.Api.Model.User;
+using Navtrack.Api.Model.Account;
 using Navtrack.Api.Tests.Helpers;
 using static System.String;
 

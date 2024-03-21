@@ -10,13 +10,13 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Navtrack.Api.Model;
-using Navtrack.Api.Model.User;
+using Navtrack.Api.Model.Account;
 using Navtrack.Api.Tests.Helpers;
 using Navtrack.DataAccess.Model.System;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Model.Users.PasswordResets;
 using Navtrack.Shared.Services.Passwords;
-using Navtrack.Shared.Services.Settings.Settings;
+using Navtrack.Shared.Services.Settings.Models;
 
 namespace Navtrack.Api.Tests;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Services.Email.Emails;
 using Navtrack.Shared.Services.Settings;
-using Navtrack.Shared.Services.Settings.Settings;
+using Navtrack.Shared.Services.Settings.Models;
 
 namespace Navtrack.Shared.Services.Email;
 
