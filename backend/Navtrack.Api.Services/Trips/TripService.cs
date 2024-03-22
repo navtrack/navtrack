@@ -65,7 +65,7 @@ public class TripService(IMessageRepository repository) : ITripService
             currentTrip.Positions.Add(position);
         }
 
-        trips = trips.Where(x => x.Positions.Count > 0).ToList();
+        trips = trips.Where(x => x.Positions.Count > 10).ToList();
 
         RemoveDuplicatePositions(trips);
         TrimPositionsEnds(trips);
