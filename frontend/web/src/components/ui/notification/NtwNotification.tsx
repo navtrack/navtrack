@@ -19,7 +19,7 @@ export function NtwNotification(props: NtwNotificationProps) {
         "rounded-md p-4"
       )}>
       <div className="flex">
-        <div className="flex-shrink-0">
+        <div className="flex flex-shrink-0 items-center">
           <NtwIcon
             icon={faCheckCircle}
             className={classNames(
@@ -29,7 +29,7 @@ export function NtwNotification(props: NtwNotificationProps) {
             )}
           />
         </div>
-        <div className="ml-3">
+        <div className="ml-3 flex items-center">
           <p
             className={classNames(
               c(props.type === "success", "text-green-800"),
@@ -40,7 +40,7 @@ export function NtwNotification(props: NtwNotificationProps) {
           </p>
         </div>
         <div className="ml-auto pl-3">
-          <div className="-mx-1.5 -my-1.5">
+          <div className="-mx-1.5 -my-1.5 flex items-center">
             <button
               onClick={props.onDismiss}
               type="button"
