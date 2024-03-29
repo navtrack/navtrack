@@ -61,7 +61,7 @@ public class ProtocolMessageHandler(
     {
         if (context.Device?.AssetId == null && !string.IsNullOrEmpty(context.Device?.SerialNumber))
         {
-            AssetDocument? asset = await assetRepository.Get(context.Device.SerialNumber, context.Protocol.Port);
+            AssetDocument asset = await assetRepository.Get(context.Device.SerialNumber, context.Protocol.Port);
 
             if (asset is { Device: not null })
             {
