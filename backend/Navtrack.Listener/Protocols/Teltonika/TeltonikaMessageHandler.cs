@@ -44,19 +44,51 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
     {
         List<Position> locations = [];
 
-        Codec codec = (Codec) input.DataMessage.ByteReader.Skip(8).GetOne();
-        CodecConfiguration codecConfiguration = CodecConfiguration.Dictionary[codec];
+        Codec? codec = GetCodec(input);
+
+        if (codec == null)
+        {
+            return [];
+        }
+        
+        CodecConfiguration codecConfiguration = CodecConfiguration.Dictionary[codec.Value];
 
         int noOfLocations = input.DataMessage.ByteReader.GetOne();
 
         for (int i = 0; i < noOfLocations; i++)
         {
-            Position position = GetLocation(input, codec, codecConfiguration);
+            Position position = GetLocation(input, codec.Value, codecConfiguration);
 
             locations.Add(position);
         }
 
         return locations;
+    }
+
+    private static Codec? GetCodec(MessageInput input)
+    {
+        List<int> codecs = Enum.GetValues(typeof(Codec)).Cast<int>().ToList();
+
+        byte b;
+
+        do
+        {
+            b = input.DataMessage.ByteReader.GetOne();
+        } while (b == 0);
+
+        Codec? codec = null;
+
+        do
+        {
+            b = input.DataMessage.ByteReader.GetOne();
+
+            if (codecs.Contains(b))
+            {
+                codec = (Codec)b;
+            }
+        } while (codec == null);
+
+        return codec;
     }
 
     private static Position GetLocation(MessageInput input, Codec codec, CodecConfiguration codecConfiguration)
