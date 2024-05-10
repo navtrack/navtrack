@@ -1,4 +1,3 @@
-import { Icon } from "../../icon/Icon";
 import {
   faCog,
   faDatabase,

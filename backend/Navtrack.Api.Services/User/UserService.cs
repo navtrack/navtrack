@@ -33,7 +33,7 @@ public class UserService(ICurrentUserAccessor userAccessor, IUserRepository repo
                 if (await repository.EmailIsUsed(model.Email))
                 {
                     throw new ValidationApiException().AddValidationError(nameof(UpdateUserModel.Email),
-                        ValidationErrorCodes.EmailAlreadyUsed);
+                        ApiErrorCodes.EmailAlreadyUsed);
                 }
 
                 updateUser.Email = model.Email;

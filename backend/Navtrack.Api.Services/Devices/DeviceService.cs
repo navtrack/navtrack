@@ -28,11 +28,11 @@ public class DeviceService(
     IMessageRepository messageRepository)
     : IDeviceService
 {
-    public Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null)
+    public async Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null)
     {
-        DeviceType deviceType = typeRepository.GetById(deviceTypeId);
+        DeviceType? deviceType = typeRepository.GetById(deviceTypeId);
 
-        return repository.SerialNumberIsUsed(serialNumber, deviceType.Protocol.Port, excludeAssetId);
+        return deviceType != null && await repository.SerialNumberIsUsed(serialNumber, deviceType.Protocol.Port, excludeAssetId);
     }
 
     public async Task<ListModel<DeviceModel>> GetList(string assetId)
@@ -64,13 +64,13 @@ public class DeviceService(
         if (!typeRepository.Exists(model.DeviceTypeId))
         {
             throw new ValidationApiException()
-                .AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
+                .AddValidationError(nameof(model.DeviceTypeId), ApiErrorCodes.DeviceTypeInvalid);
         }
 
         if (await SerialNumberIsUsed(model.SerialNumber, model.DeviceTypeId, assetId))
         {
             throw new ValidationApiException()
-                .AddValidationError(nameof(model.SerialNumber), ValidationErrorCodes.SerialNumberAlreadyUsed);
+                .AddValidationError(nameof(model.SerialNumber), ApiErrorCodes.SerialNumberAlreadyUsed);
         }
 
         List<DeviceDocument> devices = await repository.GetDevicesByAssetId(assetId);
@@ -100,12 +100,12 @@ public class DeviceService(
     {
         if (await repository.IsActive(assetId, deviceId))
         {
-            throw new ValidationApiException(ValidationErrorCodes.DeviceIsActive);
+            throw new ApiException(ApiErrorCodes.DeviceIsActive);
         }
-        
+
         if (await messageRepository.DeviceHasMessages(assetId, deviceId))
         {
-            throw new ValidationApiException(ValidationErrorCodes.DeviceIsActive);
+            throw new ApiException(ApiErrorCodes.DeviceIsActive);
         }
 
         await repository.Delete(deviceId);

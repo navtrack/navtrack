@@ -7,7 +7,7 @@ namespace Navtrack.DataAccess.Services.Devices;
 
 public interface IDeviceRepository : IGenericRepository<DeviceDocument>
 {
-    Task<bool> SerialNumberIsUsed(string serialNumber, int protocolPort, string excludeAssetId);
+    Task<bool> SerialNumberIsUsed(string serialNumber, int protocolPort, string? excludeAssetId);
     Task<List<DeviceDocument>> GetDevicesByAssetId(string assetId);
     Task<bool> IsActive(string assetId, string deviceId);
 }

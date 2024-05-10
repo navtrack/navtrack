@@ -2,12 +2,8 @@ using Navtrack.Api.Model.Errors;
 
 namespace Navtrack.Api.Services.Exceptions;
 
-public class ValidationApiException(ApiError apiError) : ApiException(apiError)
+public class ValidationApiException() : ApiException(ApiErrorCodes.Validation)
 {
-    public ValidationApiException() : this(ApiErrorCodes.Validation)
-    {
-    }
-    
     public ApiException AddValidationError(string propertyName, ApiError apiError)
     {
         ValidationErrors.Add(new ValidationError

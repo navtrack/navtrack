@@ -80,7 +80,7 @@ public class AssetService(
             if (nameIsUsed)
             {
                 throw new ValidationApiException()
-                    .AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
+                    .AddValidationError(nameof(model.Name), ApiErrorCodes.AssetNameAlreadyUsed);
             }
 
             await assetRepository.UpdateName(assetId, model.Name);
@@ -133,20 +133,20 @@ public class AssetService(
         if (userDocument == null)
         {
             throw new ValidationApiException().AddValidationError(nameof(model.Email),
-                ValidationErrorCodes.NoUserWithEmail);
+                ApiErrorCodes.NoUserWithEmail);
         }
 
         if (asset.UserRoles.Any(x => x.UserId == userDocument.Id))
         {
             throw new ValidationApiException().AddValidationError(nameof(model.Email),
-                ValidationErrorCodes.UserAlreadyOnAsset);
+                ApiErrorCodes.UserAlreadyOnAsset);
         }
 
         if (!Enum.TryParse(model.Role, out AssetRoleType assetRoleType) || assetRoleType == AssetRoleType.Owner)
         {
-            throw new ValidationApiException().AddValidationError(nameof(model.Role), ValidationErrorCodes.InvalidRole);
+            throw new ValidationApiException().AddValidationError(nameof(model.Role), ApiErrorCodes.InvalidRole);
         }
-        
+
         AssetUserRoleElement userRole = AssetUserRoleElementMapper.Map(userDocument.Id, assetRoleType);
         UserAssetRoleElement assetRole = UserAssetRoleElementMapper.Map(asset.Id, assetRoleType);
 
@@ -207,18 +207,18 @@ public class AssetService(
 
         if (await assetRepository.NameIsUsed(model.Name, currentUser.Id))
         {
-            validationException.AddValidationError(nameof(model.Name), ValidationErrorCodes.AssetNameAlreadyUsed);
+            validationException.AddValidationError(nameof(model.Name), ApiErrorCodes.AssetNameAlreadyUsed);
         }
 
         if (!deviceTypeRepository.Exists(model.DeviceTypeId))
         {
-            validationException.AddValidationError(nameof(model.DeviceTypeId), ValidationErrorCodes.DeviceTypeInvalid);
+            validationException.AddValidationError(nameof(model.DeviceTypeId), ApiErrorCodes.DeviceTypeInvalid);
         }
 
         if (await service.SerialNumberIsUsed(model.SerialNumber, model.DeviceTypeId))
         {
             validationException.AddValidationError(nameof(model.SerialNumber),
-                ValidationErrorCodes.SerialNumberAlreadyUsed);
+                ApiErrorCodes.SerialNumberAlreadyUsed);
         }
 
         validationException.ThrowIfInvalid();

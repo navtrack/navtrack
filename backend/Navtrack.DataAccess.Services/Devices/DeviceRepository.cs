@@ -16,7 +16,7 @@ public class DeviceRepository(IRepository repository) : GenericRepository<Device
     public Task<bool> SerialNumberIsUsed(string serialNumber, int protocolPort, string? excludeAssetId = null)
     {
         return repository.GetQueryable<AssetDocument>()
-            .AnyAsync(x => x.Device.SerialNumber == serialNumber &&
+            .AnyAsync(x => x.Device != null && x.Device.SerialNumber == serialNumber &&
                            x.Device.ProtocolPort == protocolPort &&
                            (excludeAssetId == null || x.Id != ObjectId.Parse(excludeAssetId)));
     }

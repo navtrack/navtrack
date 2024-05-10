@@ -37,13 +37,13 @@ public class AccountService(
 
         if (await repository.EmailIsUsed(model.Email))
         {
-            apiException.AddValidationError(nameof(model.Email), ValidationErrorCodes.EmailAlreadyUsed);
+            apiException.AddValidationError(nameof(model.Email), ApiErrorCodes.EmailAlreadyUsed);
         }
 
         if (model.Password != model.ConfirmPassword)
         {
             apiException.AddValidationError(nameof(model.ConfirmPassword),
-                ValidationErrorCodes.PasswordsDoNotMatch);
+                ApiErrorCodes.PasswordsDoNotMatch);
         }
 
         apiException.ThrowIfInvalid();
@@ -74,8 +74,8 @@ public class AccountService(
 
         if (userDocument == null)
         {
-            throw new ValidationApiException(ApiErrorCodes.Validation)
-                .AddValidationError(nameof(ForgotPasswordModel.Email), ValidationErrorCodes.EmailDoesNotExist);
+            throw new ValidationApiException()
+                .AddValidationError(nameof(ForgotPasswordModel.Email), ApiErrorCodes.EmailDoesNotExist);
         }
 
         await resetRepository.MarkAsInvalidByUserId(userDocument.Id);
@@ -101,7 +101,7 @@ public class AccountService(
         if (!hasher.CheckPassword(model.CurrentPassword, currentUser.Password.Hash,
                 currentUser.Password.Salt))
         {
-            apiException.AddValidationError(nameof(model.CurrentPassword), ValidationErrorCodes.CurrentPasswordInvalid);
+            apiException.AddValidationError(nameof(model.CurrentPassword), ApiErrorCodes.CurrentPasswordInvalid);
         }
 
         ValidatePasswords(model, apiException, model.CurrentPassword);
@@ -158,11 +158,11 @@ public class AccountService(
     {
         if (model.Password != model.ConfirmPassword)
         {
-            apiException.AddValidationError(nameof(model.ConfirmPassword), ValidationErrorCodes.PasswordsDoNotMatch);
+            apiException.AddValidationError(nameof(model.ConfirmPassword), ApiErrorCodes.PasswordsDoNotMatch);
         }
         else if (model.Password == currentPassword)
         {
-            apiException.AddValidationError(nameof(model.Password), ValidationErrorCodes.PasswordMustBeNew);
+            apiException.AddValidationError(nameof(model.Password), ApiErrorCodes.PasswordMustBeNew);
         }
     }
 
