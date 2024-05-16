@@ -4,6 +4,7 @@ export type AppConfig = {
   api: {
     url: string;
   };
+  reactQueryDevtools?: boolean;
   authentication: {
     clientId: string;
     apple?: {
