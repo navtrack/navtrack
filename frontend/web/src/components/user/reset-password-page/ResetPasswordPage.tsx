@@ -64,6 +64,7 @@ export const ResetPasswordPage = () => {
                       label={"generic.password"}
                       type="password"
                       value={values.password}
+                      autoComplete="new-password"
                       className="pl-8"
                       leftAddon={
                         <TextInputLeftAddon>
@@ -76,6 +77,7 @@ export const ResetPasswordPage = () => {
                       label="generic.confirm-password"
                       className="pl-8"
                       type="password"
+                      autoComplete="new-password"
                       value={values.confirmPassword}
                       leftAddon={
                         <TextInputLeftAddon>

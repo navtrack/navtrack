@@ -65,6 +65,7 @@ export function LoginPage() {
                 name="email"
                 label="generic.email"
                 value={values.email}
+                autoComplete="username"
                 className="pl-8"
                 leftAddon={
                   <TextInputLeftAddon>
@@ -77,6 +78,7 @@ export function LoginPage() {
                 label={"generic.password"}
                 type="password"
                 value={values.password}
+                autoComplete="current-password"
                 className="pl-8"
                 leftAddon={
                   <TextInputLeftAddon>

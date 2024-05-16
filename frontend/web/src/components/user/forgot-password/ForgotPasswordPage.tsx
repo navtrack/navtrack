@@ -65,6 +65,7 @@ export function ForgotPasswordPage() {
                       name="email"
                       label={"generic.email"}
                       value={values.email}
+                      autoComplete="username"
                       className="pl-8"
                       leftAddon={
                         <TextInputLeftAddon>

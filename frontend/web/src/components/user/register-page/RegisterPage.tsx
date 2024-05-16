@@ -52,6 +52,7 @@ export function RegisterPage() {
                     name="email"
                     label="generic.email"
                     value={values.email}
+                    autoComplete="username"
                     className="pl-8"
                     leftAddon={
                       <TextInputLeftAddon>
@@ -64,6 +65,7 @@ export function RegisterPage() {
                     label="generic.password"
                     className="pl-8"
                     type="password"
+                    autoComplete="new-password"
                     value={values.password}
                     leftAddon={
                       <TextInputLeftAddon>
@@ -76,6 +78,7 @@ export function RegisterPage() {
                     label="generic.confirm-password"
                     className="pl-8"
                     type="password"
+                    autoComplete="new-password"
                     value={values.confirmPassword}
                     leftAddon={
                       <TextInputLeftAddon>
