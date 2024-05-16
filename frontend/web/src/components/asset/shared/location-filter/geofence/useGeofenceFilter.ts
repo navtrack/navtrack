@@ -33,7 +33,6 @@ export function useGeofenceFilter(
 
   const handleMapMove = useCallback(
     (center: LongLat, zoom: number) => {
-      console.log("center", center, zoom);
       setState((current) => ({
         ...current,
         map: {
