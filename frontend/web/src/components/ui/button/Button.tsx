@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
-import { NtwLoadingIndicator } from "../loading-indicator/NtwLoadingIndicator";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Icon } from "../icon/Icon";
+import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 
 type ButtonProps = {
   children?: ReactNode;
@@ -56,7 +56,7 @@ export function Button(props: ButtonProps) {
       )}>
       <div className="flex items-center justify-center">
         {props.isLoading && (
-          <NtwLoadingIndicator
+          <LoadingIndicator
             className={props.children !== undefined ? "mr-2" : undefined}
           />
         )}
