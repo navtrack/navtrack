@@ -27,8 +27,8 @@ export type AppConfig = {
   map: {
     tileUrl: string;
   };
-  register?: {
-    captcha: boolean;
+  captcha?: {
+    siteKey: string;
   };
 };
 

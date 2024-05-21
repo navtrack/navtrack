@@ -18,7 +18,7 @@ export const useRegisterFormValidationSchema = () => {
       .required("generic.confirm-password.required")
       .min(8, "generic.password.requirements.length")
       .oneOf([ref("password")], "generic.confirm-password.requirements.match"),
-    captcha: appConfig?.register?.captcha
+    captcha: appConfig?.captcha?.siteKey
       ? string().required("register.captcha")
       : string().optional()
   }).defined();
