@@ -21,7 +21,8 @@ export const useRegister = (props?: UseRegisterProps) => {
           data: {
             email: values.email,
             password: values.password,
-            confirmPassword: values.confirmPassword
+            confirmPassword: values.confirmPassword,
+            captcha: values.captcha
           }
         },
         {

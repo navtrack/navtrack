@@ -10,6 +10,7 @@ export type AppSlots = {
   assetAddFooterBlock?: React.ReactNode;
   assetDeleteModalBlock?: React.ReactNode;
   externalLogin?: React.ReactNode;
+  captcha?: React.ReactNode;
 };
 
 export const SlotContext = React.createContext<AppSlots | undefined>({});

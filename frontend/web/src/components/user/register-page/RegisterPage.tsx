@@ -86,6 +86,7 @@ export function RegisterPage() {
                       </TextInputLeftAddon>
                     }
                   />
+                  {slots?.captcha}
                   <div className="pt-2">
                     <Button
                       type="submit"

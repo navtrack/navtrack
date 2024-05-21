@@ -1,8 +1,12 @@
 import { ref } from "yup";
 import { object, ObjectSchema, string } from "yup";
 import { RegisterFormValues } from "./RegisterFormValues";
+import { useRecoilValue } from "recoil";
+import { appConfigAtom } from "../../../state/appConfig";
 
 export const useRegisterFormValidationSchema = () => {
+  const appConfig = useRecoilValue(appConfigAtom);
+
   const validationSchema: ObjectSchema<RegisterFormValues> = object({
     email: string()
       .email("generic.email.invalid")
@@ -13,7 +17,10 @@ export const useRegisterFormValidationSchema = () => {
     confirmPassword: string()
       .required("generic.confirm-password.required")
       .min(8, "generic.password.requirements.length")
-      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
+      .oneOf([ref("password")], "generic.confirm-password.requirements.match"),
+    captcha: appConfig?.register?.captcha
+      ? string().required("register.captcha")
+      : string().optional()
   }).defined();
 
   return validationSchema;

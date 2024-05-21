@@ -1155,6 +1155,9 @@
           "confirmPassword": {
             "type": "string",
             "minLength": 1
+          },
+          "captcha": {
+            "type": "string"
           }
         }
       },

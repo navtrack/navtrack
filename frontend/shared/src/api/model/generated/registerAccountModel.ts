@@ -6,6 +6,7 @@
  */
 
 export interface RegisterAccountModel {
+  captcha?: string;
   confirmPassword: string;
   email: string;
   password: string;

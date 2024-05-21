@@ -27,6 +27,9 @@ export type AppConfig = {
   map: {
     tileUrl: string;
   };
+  register?: {
+    captcha: boolean;
+  };
 };
 
 export const appConfigAtom = atom<AppConfig | undefined>({

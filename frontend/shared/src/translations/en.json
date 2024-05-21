@@ -232,6 +232,7 @@
   "register.existing.question": "Already have an account?",
   "register.success": "Your account was successfully created.",
   "register.title": "Create your account",
+  "register.captcha": "Please complete the captcha.",
   "reset-password.button": "Change password",
   "reset-password.existing.action": "Go back to login.",
   "reset-password.existing.question": "Remebered your password?",

@@ -24,4 +24,5 @@ public static class ApiErrorCodes
     public static readonly ApiError NoUserWithEmail = new ("100017", "There is no user with that email.");
     public static readonly ApiError UserAlreadyOnAsset = new ("100018", "This user already has a role on this asset.");
     public static readonly ApiError InvalidRole = new ("100019", "Invalid role.");
+    public static readonly ApiError InvalidCaptcha = new ("100020", "Invalid captcha.");
 }

@@ -21,6 +21,11 @@ using Navtrack.Shared.Services.Settings.Models;
 
 namespace Navtrack.Api.Services.Account;
 
+public interface ICaptchaValidator
+{
+    Task<bool> Validate(string captcha);
+}
+
 [Service(typeof(IAccountService))]
 public class AccountService(
     IPasswordHasher hasher,
@@ -29,7 +34,8 @@ public class AccountService(
     IEmailService service,
     ISettingService settingService,
     IUserRepository repository,
-    IPasswordResetRepository resetRepository) : IAccountService
+    IPasswordResetRepository resetRepository,
+    ICaptchaValidator? captchaValidator = null) : IAccountService
 {
     public async Task Register(RegisterAccountModel model)
     {
@@ -45,6 +51,12 @@ public class AccountService(
             apiException.AddValidationError(nameof(model.ConfirmPassword),
                 ApiErrorCodes.PasswordsDoNotMatch);
         }
+        
+        if (captchaValidator != null && !await captchaValidator.Validate(model.Captcha))
+        {
+            apiException.AddValidationError(nameof(model.Captcha),
+                ApiErrorCodes.InvalidCaptcha);
+        }
 
         apiException.ThrowIfInvalid();
 
@@ -54,8 +66,8 @@ public class AccountService(
 
         await repository.Add(userDocument);
     }
-    
-     public async Task ForgotPassword(ForgotPasswordModel model)
+
+    public async Task ForgotPassword(ForgotPasswordModel model)
     {
         string? ipAddress = contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
         model.Email = model.Email.Trim().ToLowerInvariant();
@@ -79,7 +91,7 @@ public class AccountService(
         }
 
         await resetRepository.MarkAsInvalidByUserId(userDocument.Id);
-        
+
         PasswordResetDocument document =
             PasswordResetMapper.Map(model.Email, userDocument.Id, ipAddress!);
 

@@ -12,4 +12,6 @@ public class RegisterAccountModel
 
     [Required]
     public string ConfirmPassword { get; set; }
+
+    public string? Captcha { get; set; }
 }
