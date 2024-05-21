@@ -54,7 +54,6 @@ export function AssetDevicesTable(props: AssetDevicesTableProps) {
         <>
           {!device.active && !device.positions && (
             <DeleteModal
-              isLoading={deleteDeviceMutation.isLoading}
               onConfirm={() => {
                 if (currentAsset.data) {
                   return deleteDeviceMutation.mutateAsync(

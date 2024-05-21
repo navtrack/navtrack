@@ -14,6 +14,7 @@ type ButtonProps = {
   disabled?: boolean;
   full?: boolean;
   icon?: IconProp;
+  title?: string;
 };
 
 export function Button(props: ButtonProps) {
@@ -21,6 +22,7 @@ export function Button(props: ButtonProps) {
     <button
       type={props.type ?? "button"}
       onClick={props.onClick}
+      title={props.title}
       disabled={props.isLoading || props.disabled}
       className={classNames(
         "font-semibold shadow-sm",

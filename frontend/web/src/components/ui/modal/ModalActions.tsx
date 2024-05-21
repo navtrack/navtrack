@@ -5,13 +5,14 @@ import { Button } from "../button/Button";
 type ModalActionsProps = {
   children?: ReactNode;
   cancel?: () => void;
+  isLoading?: boolean;
 };
 
 export function ModalActions(props: ModalActionsProps) {
   return (
     <div className="flex justify-end space-x-3 rounded-b-lg bg-gray-50 px-4 py-3">
       {props.cancel !== undefined && (
-        <Button onClick={props.cancel} color="white">
+        <Button onClick={props.cancel} color="white" disabled={props.isLoading}>
           <FormattedMessage id="generic.cancel" />
         </Button>
       )}

@@ -54,17 +54,14 @@ export function DeleteAssetModal() {
       validationSchema={validationSchema}
       onSubmit={() => {
         if (currentAsset.data?.id) {
-          deleteAsset.handleSubmit(currentAsset.data?.id);
+          return deleteAsset.handleSubmit(currentAsset.data.id);
         }
       }}>
       {({ values, submitForm, resetForm }) => (
         <DeleteModal
           maxWidth="lg"
-          isLoading={deleteAsset.isLoading}
           onClose={() => resetForm()}
-          onConfirm={() => {
-            submitForm();
-          }}
+          onConfirm={() => submitForm()}
           renderButton={(open) => (
             <Button color="error" type="submit" size="base" onClick={open}>
               <FormattedMessage id="assets.settings.general.delete-asset" />

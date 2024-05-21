@@ -16,7 +16,7 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
   const handleSubmit = useCallback(
     (assetId: string) => {
       if (currentAsset.data) {
-        deleteAssetMutation.mutate(
+        return deleteAssetMutation.mutateAsync(
           { assetId: assetId },
           {
             onSuccess: () => {
@@ -26,6 +26,8 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
           }
         );
       }
+
+      return Promise.resolve();
     },
     [currentAsset.data, deleteAssetMutation, props, setCurrentAssetIdAtom]
   );

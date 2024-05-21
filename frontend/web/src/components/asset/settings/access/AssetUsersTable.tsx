@@ -37,7 +37,6 @@ export function AssetUsersTable(props: AssetUsersTableProps) {
         <>
           {assetUser.role !== AssetRoleType.Owner && (
             <DeleteModal
-              isLoading={deleteUser.isLoading}
               onConfirm={() => {
                 if (currentAsset.data) {
                   return deleteUser.mutateAsync(

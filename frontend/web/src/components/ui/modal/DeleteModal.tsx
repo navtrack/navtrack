@@ -11,56 +11,81 @@ import { Button } from "../button/Button";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
 type DeleteModalProps = {
-  onConfirm?: () => void;
-  isLoading?: boolean;
+  onConfirm?: () => Promise<void> | undefined;
   renderButton?: (open: () => void) => JSX.Element;
   children?: React.ReactNode;
   onClose?: () => void;
   maxWidth?: "lg";
+  disabled?: boolean;
+  deleteButtonTitle?: string;
 };
 
 export function DeleteModal(props: DeleteModalProps) {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const close = useCallback(() => {
     setOpen(false);
     props.onClose?.();
   }, [props]);
 
+  const handleConfirm = useCallback(async () => {
+    setIsLoading(true);
+
+    if (props.onConfirm !== undefined) {
+      await props.onConfirm();
+    }
+
+    setIsLoading(false);
+    close();
+  }, [close, props]);
+
   return (
     <>
       {props.renderButton ? (
         props.renderButton(() => setOpen(true))
       ) : (
-        <Button icon={faTrashAlt} color="error" onClick={() => setOpen(true)} />
+        <Button
+          icon={faTrashAlt}
+          color="error"
+          onClick={() => setOpen(true)}
+          disabled={props.disabled}
+          title={props.deleteButtonTitle}
+        />
       )}
-      <Modal
-        open={open}
-        close={close}
-        className={classNames(
-          c(props.maxWidth === "lg", "max-w-lg", "max-w-md")
-        )}>
-        <ModalContainer>
-          <ModalContent>
-            <ModalIcon icon={faTrash} />
-            <ModalBody>
-              <div className="mb-4 font-semibold">
-                <FormattedMessage id="shared.delete-modal.title" />
-              </div>
-              <div className="text-sm">{props.children}</div>
-            </ModalBody>
-          </ModalContent>
-          <ModalActions cancel={close}>
-            <Button
-              color="error"
-              type="submit"
-              isLoading={props.isLoading}
-              onClick={() => props.onConfirm?.()}>
-              <FormattedMessage id="generic.delete" />
-            </Button>
-          </ModalActions>
-        </ModalContainer>
-      </Modal>
+      {!props.disabled && (
+        <Modal
+          open={open}
+          close={() => {
+            if (!isLoading) {
+              close();
+            }
+          }}
+          className={classNames(
+            c(props.maxWidth === "lg", "max-w-lg", "max-w-md")
+          )}>
+          <ModalContainer>
+            <ModalContent>
+              <ModalIcon icon={faTrash} />
+              <ModalBody>
+                <div className="mb-4 font-semibold">
+                  <FormattedMessage id="shared.delete-modal.title" />
+                </div>
+                <div className="text-sm">{props.children}</div>
+              </ModalBody>
+            </ModalContent>
+            <ModalActions cancel={close} isLoading={isLoading}>
+              <Button
+                color="error"
+                type="submit"
+                isLoading={isLoading}
+                onClick={handleConfirm}>
+                <FormattedMessage id="generic.delete" />
+              </Button>
+            </ModalActions>
+          </ModalContainer>
+        </Modal>
+      )}
     </>
   );
 }

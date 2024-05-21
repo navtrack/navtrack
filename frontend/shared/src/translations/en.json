@@ -52,6 +52,7 @@
   "forgot-password.success": "Check your email and follow the instructions to reset your password.",
   "forgot-password.title": "Forgot your password?",
   "generic.active": "Active",
+  "generic.default": "Default",
   "generic.add-user": "Add user",
   "generic.address": "Address",
   "generic.altitude": "Altitude",
