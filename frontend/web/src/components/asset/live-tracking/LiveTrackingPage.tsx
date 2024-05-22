@@ -6,23 +6,27 @@ import { PositionBar } from "../shared/position-bar/PositionBar";
 import { MapPin } from "../../ui/map/MapPin";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapFollowControl } from "../../ui/map/MapFollowControl";
+import { useContext } from "react";
+import { SlotContext } from "../../../app/SlotContext";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
-  const location = currentAsset.data?.position;
+  const position = currentAsset.data?.position;
+  const slots = useContext(SlotContext);
 
   return (
     <>
-      {location ? (
+      {position ? (
         <>
-          <Card className="p-2">
-            <PositionBar position={location} />
+          <Card className="flex space-x-5 p-2">
+            <PositionBar position={position} />
+            {slots?.assetLiveTrackingPositionCardExtraItems?.(position)}
           </Card>
           <Card className="flex flex-grow">
             <CardMapWrapper>
-              <Map center={{ ...location }}>
-                <MapPin position={{ ...location }} />
-                <MapFollowControl position={{ ...location }} />
+              <Map center={{ ...position }}>
+                <MapPin position={{ ...position }} />
+                <MapFollowControl position={{ ...position }} />
               </Map>
             </CardMapWrapper>
           </Card>

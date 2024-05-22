@@ -1,12 +1,12 @@
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
-import { FormattedMessage } from "react-intl";
 import { PositionModel } from "@navtrack/shared/api/model/generated";
 import {
   showCoordinate,
   showHeading,
   showProperty
 } from "@navtrack/shared/utils/coordinates";
+import { PositionBarItem } from "./PositionBarItem";
 
 type PositionBarProps = {
   position: PositionModel;
@@ -17,53 +17,39 @@ export function PositionBar(props: PositionBarProps) {
   const { showSpeed, showAltitude } = useDistance();
 
   return (
-    <table className="w-full">
-      <thead>
-        <tr className="text-left text-xs uppercase tracking-wider text-gray-500">
-          <th className="font-medium">
-            <FormattedMessage id="generic.date" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.latitude" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.longitude" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.speed" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.altitude" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.heading" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.satellites" />
-          </th>
-          <th className="font-medium">
-            <FormattedMessage id="generic.hdop" />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="text-sm font-medium">
-          <td className="min-w-40">{showDateTime(props.position.date)}</td>
-          <td className="min-w-24">
-            {showCoordinate(props.position.latitude)}
-          </td>
-          <td className="min-w-24">
-            {showCoordinate(props.position.longitude)}
-          </td>
-          <td className="min-w-24">{showSpeed(props.position.speed)}</td>
-          <td className="min-w-24">{showAltitude(props.position.altitude)}</td>
-          <td className="min-w-20">{showHeading(props.position.heading)}</td>
-          <td className="min-w-24">
-            {showProperty(props.position.satellites)}
-          </td>
-          <td className="min-w-14">{showProperty(props.position.hdop)}</td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <PositionBarItem
+        label="generic.date"
+        value={showDateTime(props.position.date)}
+      />
+      <PositionBarItem
+        label="generic.latitude"
+        value={showCoordinate(props.position.latitude)}
+      />
+      <PositionBarItem
+        label="generic.longitude"
+        value={showCoordinate(props.position.longitude)}
+      />
+      <PositionBarItem
+        label="generic.speed"
+        value={showSpeed(props.position.speed)}
+      />
+      <PositionBarItem
+        label="generic.altitude"
+        value={showAltitude(props.position.altitude)}
+      />
+      <PositionBarItem
+        label="generic.heading"
+        value={showHeading(props.position.heading)}
+      />
+      <PositionBarItem
+        label="generic.satellites"
+        value={showProperty(props.position.satellites)}
+      />
+      <PositionBarItem
+        label="generic.hdop"
+        value={showProperty(props.position.hdop)}
+      />
+    </>
   );
 }

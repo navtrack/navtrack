@@ -1157,7 +1157,8 @@
             "minLength": 1
           },
           "captcha": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
