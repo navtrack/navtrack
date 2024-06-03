@@ -156,7 +156,7 @@ export function AssetTripsPage() {
               </div>
             </div>
             {selectedTripPosition && (
-              <div className="p-2">
+              <div className="flex justify-between px-3 py-2">
                 <PositionBar position={selectedTripPosition} />
               </div>
             )}

@@ -18,7 +18,7 @@ export function AssetLiveTrackingPage() {
     <>
       {position ? (
         <>
-          <Card className="flex space-x-5 p-2">
+          <Card className="flex justify-between px-3 py-2">
             <PositionBar position={position} />
             {slots?.assetLiveTrackingPositionCardExtraItems?.(position)}
           </Card>

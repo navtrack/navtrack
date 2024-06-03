@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export function showCoordinate(value?: number): ReactNode {
-  return value ? `${value.toFixed(6)}` : "";
+  return value !== undefined ? `${value.toFixed(6)}` : "-";
 }
 
 export function showHeading(value?: number | null): ReactNode {
