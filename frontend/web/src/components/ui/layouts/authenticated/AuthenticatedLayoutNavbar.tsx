@@ -36,28 +36,28 @@ export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
     label: "navbar.asset.live-tracking",
     path: Paths.AssetsLive,
     icon: faMapMarkerAlt,
-    priority: 1,
-    role: AssetRoleType.Viewer
-  },
-  {
-    label: "navbar.asset.log",
-    path: Paths.AssetsLog,
-    icon: faDatabase,
-    priority: 2,
+    priority: 10,
     role: AssetRoleType.Viewer
   },
   {
     label: "navbar.asset.trips",
     path: Paths.AssetsTrips,
     icon: faRoute,
-    priority: 3,
+    priority: 20,
+    role: AssetRoleType.Viewer
+  },
+  {
+    label: "navbar.asset.log",
+    path: Paths.AssetsLog,
+    icon: faDatabase,
+    priority: 30,
     role: AssetRoleType.Viewer
   },
   {
     label: "navbar.asset.settings",
     path: Paths.AssetsSettings,
     icon: faCog,
-    priority: 4,
+    priority: 40,
     role: AssetRoleType.Owner
   }
 ];
