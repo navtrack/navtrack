@@ -60,7 +60,7 @@ export function LoginPage() {
           }
           validationSchema={validationSchema}>
           {({ values }) => (
-            <Form className="space-y-2">
+            <Form className="space-y-3">
               <FormikTextInput
                 name="email"
                 label="generic.email"

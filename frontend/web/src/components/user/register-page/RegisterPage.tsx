@@ -47,7 +47,7 @@ export function RegisterPage() {
               initialErrors={undefined}
               enableReinitialize>
               {({ values }) => (
-                <Form className="space-y-4">
+                <Form className="space-y-3">
                   <FormikTextInput
                     name="email"
                     label="generic.email"
