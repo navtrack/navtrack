@@ -104,10 +104,10 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
                 Builders<AssetDocument>.Update.Set(x => x.LastPositionMessage, deviceMessage));
     }
 
-    public Task<bool> IsNewerPositionDate(ObjectId assetId, DateTime date)
+    public Task SetActiveDevice(ObjectId assetDocumentId, AssetDeviceElement assetDocumentDevice)
     {
-        return repository.GetQueryable<AssetDocument>()
-            .AnyAsync(x =>
-                x.Id == assetId && (x.LastPositionMessage == null || x.LastPositionMessage.Position.Date < date));
+        return repository.GetCollection<AssetDocument>()
+            .UpdateOneAsync(x => x.Id == assetDocumentId,
+                Builders<AssetDocument>.Update.Set(x => x.Device, assetDocumentDevice));
     }
 }

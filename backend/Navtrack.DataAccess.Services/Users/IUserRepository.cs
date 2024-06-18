@@ -16,4 +16,5 @@ public interface IUserRepository : IGenericRepository<UserDocument>
     Task<bool> EmailIsUsed(string email);
     Task<List<UserDocument>> GetUsersByIds(IEnumerable<ObjectId> userIds);
     Task Update(ObjectId id, UpdateUser updateUser);
+    Task AddAssetRole(ObjectId userId, UserAssetRoleElement userAssetRole);
 }

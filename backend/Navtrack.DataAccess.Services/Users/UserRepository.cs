@@ -95,7 +95,7 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
         {
             updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.UnitsType, updateUser.UnitsType.Value));
         }
-        
+
         if (updateUser.Password != null)
         {
             updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Password, updateUser.Password));
@@ -124,5 +124,12 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
             await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == id,
                 Builders<UserDocument>.Update.Combine(updateDefinitions));
         }
+    }
+
+    public Task AddAssetRole(ObjectId userId, UserAssetRoleElement userAssetRole)
+    {
+        return repository.GetCollection<UserDocument>()
+            .UpdateOneAsync(x => x.Id == userId,
+                Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, userAssetRole));
     }
 }

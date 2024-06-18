@@ -1,15 +1,11 @@
 using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 [Collection("users_refresh_tokens")]
-public class RefreshTokenDocument
+public class RefreshTokenDocument : BaseDocument
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
     public DateTime CreationTime { get; set; }
     public int Lifetime { get; set; }
     public DateTime? ConsumedTime { get; set; }

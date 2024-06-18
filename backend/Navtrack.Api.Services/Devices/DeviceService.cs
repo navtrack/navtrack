@@ -7,6 +7,7 @@ using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.Extensions;
+using Navtrack.Api.Services.Mappers.Assets;
 using Navtrack.Api.Services.Mappers.Devices;
 using Navtrack.Api.Services.User;
 using Navtrack.DataAccess.Model.Assets;
@@ -81,18 +82,20 @@ public class DeviceService(
 
         if (existingDevice != null)
         {
-            await assetRepository.SetActiveDevice(asset.Id, existingDevice.Id, existingDevice.SerialNumber,
-                existingDevice.DeviceTypeId, deviceType.Protocol.Port);
+            AssetDeviceElement assetDeviceElement = AssetDeviceElementMapper.Map(existingDevice, deviceType);
+
+            await assetRepository.SetActiveDevice(asset.Id, assetDeviceElement);
         }
         else
         {
             UserDocument currentUser = await userAccessor.Get();
             DeviceDocument newDevice = DeviceDocumentMapper.Map(assetId, model, currentUser.Id);
-
+       
             await repository.Add(newDevice);
+            
+            AssetDeviceElement assetDeviceElement = AssetDeviceElementMapper.Map(newDevice, deviceType);
 
-            await assetRepository.SetActiveDevice(asset.Id, newDevice.Id, newDevice.SerialNumber,
-                newDevice.DeviceTypeId, deviceType.Protocol.Port);
+            await assetRepository.SetActiveDevice(asset.Id, assetDeviceElement);
         }
     }
 

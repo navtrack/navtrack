@@ -5,11 +5,8 @@ using Navtrack.DataAccess.Mongo;
 namespace Navtrack.DataAccess.Model.System;
 
 [Collection("system_settings")]
-public class SystemSettingDocument
+public class SystemSettingDocument : BaseDocument
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
-
     [BsonElement("key")]
     public string Key { get; set; }
   
