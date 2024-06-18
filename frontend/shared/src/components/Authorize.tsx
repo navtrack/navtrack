@@ -18,5 +18,5 @@ export function Authorize(props: AuthorizeProps) {
     [assetAuthorize, currentAsset.data, props.role]
   );
 
-  return isAuthorized ? <>{props.children}</> : null;
+  return <>{isAuthorized ? props.children : null}</>;
 }

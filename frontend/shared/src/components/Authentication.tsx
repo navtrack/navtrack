@@ -11,23 +11,22 @@ type AuthenticationProps = {
 export function Authentication(props: AuthenticationProps) {
   const accessToken = useAccessToken();
   const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
-
-  const [refreshed, setRefreshed] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (!refreshed && !accessToken.isLoading) {
-        log("AUTHENTICATION - !refreshed");
+      if (!checked && !accessToken.isLoading) {
+        log("AUTHENTICATION - !checked");
         accessToken.getAccessToken().then((x) => {
-          setRefreshed(true);
-          log("AUTHENTICATION - refreshed");
+          setChecked(true);
+          log("AUTHENTICATION - checked");
         });
       }
     } else {
       log("AUTHENTICATION - !authenticated");
-      setRefreshed(true);
+      setChecked(true);
     }
-  }, [accessToken, isAuthenticated, refreshed]);
+  }, [accessToken, isAuthenticated, checked]);
 
-  return <>{refreshed && props.children}</>;
+  return <>{checked && props.children}</>;
 }
