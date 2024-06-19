@@ -14,7 +14,7 @@ export function AuthenticatedLayoutSidebar() {
     <div className="absolute bottom-0 top-0 flex w-64 flex-col">
       <div className="relative flex h-16 items-center bg-gray-900 px-4">
         <Link to={Paths.Home} className="flex items-center">
-          <NavtrackLogoDark className="h-10 p-2" />
+          <NavtrackLogoDark className="h-10 w-10 p-2" />
           <span className="ml-2 text-2xl font-semibold tracking-wide text-white">
             <FormattedMessage id="navtrack" />
           </span>

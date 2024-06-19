@@ -85,7 +85,7 @@ export function AuthenticatedLayoutNavbar(
           {!props.hideLogo && (
             <div className="flex h-16 items-center">
               <Link to={Paths.Home} className="flex items-center">
-                <NavtrackLogoDark className="h-10 p-2" />
+                <NavtrackLogoDark className="h-10 w-10 p-2" />
                 <span className="ml-2 text-2xl font-semibold tracking-wide text-gray-900">
                   <FormattedMessage id="navtrack" />
                 </span>
