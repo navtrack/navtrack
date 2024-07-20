@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <StartupObject></StartupObject>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Api.Shared\Navtrack.Api.Shared.csproj"/>
+        <ProjectReference Include="..\Navtrack.Api.Shared\Navtrack.Api.Shared.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="NSwag.MSBuild" Version="14.0.1">
+        <PackageReference Include="NSwag.MSBuild" Version="14.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-        <Exec Command="$(NSwagExe_Net80) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)"/>
-        <Exec Command="npm run generate" WorkingDirectory="../../frontend/shared" />
+        <Exec Command="$(NSwagExe_Net80) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)" />
     </Target>
 </Project>

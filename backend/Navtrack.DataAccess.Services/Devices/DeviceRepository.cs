@@ -28,7 +28,7 @@ public class DeviceRepository(IRepository repository) : GenericRepository<Device
 
     public Task<bool> IsActive(string assetId, string deviceId)
     {
-        return repository.GetQueryable<AssetDocument>().AnyAsync(x => x.Device.Id == ObjectId.Parse(deviceId) &&
+        return repository.GetQueryable<AssetDocument>().AnyAsync(x => x.Device != null && x.Device.Id == ObjectId.Parse(deviceId) &&
                                                                       x.Id == ObjectId.Parse(assetId));
     }
 }

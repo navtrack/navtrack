@@ -46,7 +46,7 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
     public Task DeleteAssetRoles(string assetId)
     {
         return repository.GetCollection<UserDocument>().UpdateManyAsync(
-            x => x.AssetRoles.Any(y => y.AssetId == ObjectId.Parse(assetId)),
+            x => x.AssetRoles != null && x.AssetRoles.Any(y => y.AssetId == ObjectId.Parse(assetId)),
             Builders<UserDocument>.Update.PullFilter(x => x.AssetRoles,
                 x => x.AssetId == ObjectId.Parse(assetId)));
     }

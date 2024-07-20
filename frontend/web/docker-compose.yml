@@ -1,0 +1,50 @@
+services:
+  web:
+    image: ghcr.io/navtrack/web:latest
+    networks:
+      - navtrack
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - NAVTRACK_API_URL=http://localhost:3001
+      - NAVTRACK_LISTENER_HOSTNAME=your.hostname
+      - NAVTRACK_LISTENER_IP=your.ip
+
+  api:
+    image: ghcr.io/navtrack/api:latest
+    networks:
+      - navtrack
+    ports:
+      - 3001:8080
+    restart: unless-stopped
+    environment:
+      - "MongoOptions__Database=navtrack"
+      - "MongoOptions__ConnectionString=mongodb://database"
+
+  listener:
+    image: ghcr.io/navtrack/listener:latest
+    networks:
+      - navtrack
+    ports:
+      - "7001-7100:7001-7100"
+    restart: unless-stopped
+    environment:
+      - "MongoOptions__Database=navtrack"
+      - "MongoOptions__ConnectionString=mongodb://database"
+
+  database:
+    image: mongo
+    restart: unless-stopped
+    networks:
+      - navtrack
+    volumes:
+      - navtrack:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  navtrack:
+
+networks:
+  navtrack:

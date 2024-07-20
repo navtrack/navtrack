@@ -9,7 +9,7 @@ namespace Navtrack.DataAccess.Model.Devices.Messages;
 public class DeviceMessageDocument : BaseDocument
 {
     [BsonElement("md")]
-    public MessageMetadataElement Metadata { get; set; }
+    public MessageMetadataElement? Metadata { get; set; }
 
     [BsonElement("cId")]
     public ObjectId? ConnectionId { get; set; }
@@ -18,7 +18,7 @@ public class DeviceMessageDocument : BaseDocument
     public DateTime CreatedDate { get; set; }
 
     [BsonElement("p")]
-    public PositionElement Position { get; set; }
+    public PositionElement? Position { get; set; }
 
     [BsonElement("gsm")]
     public GsmElement? Gsm { get; set; }

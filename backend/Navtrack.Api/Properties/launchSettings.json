@@ -3,7 +3,7 @@
   "profiles": {
     "Navtrack.Api": {
       "commandName": "Project",
-      "applicationUrl": "http://0.0.0.0:3001",
+      "applicationUrl": "http://127.0.0.1:3001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

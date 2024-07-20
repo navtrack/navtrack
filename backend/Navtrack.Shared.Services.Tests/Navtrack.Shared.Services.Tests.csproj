@@ -4,12 +4,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-        <PackageReference Include="xunit" Version="2.6.6" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+        <PackageReference Include="xunit" Version="2.9.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj"/>
+        <ProjectReference Include="..\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj" />
     </ItemGroup>
 </Project>

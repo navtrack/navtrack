@@ -1,46 +1,53 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28306.52
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35103.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Shared.Library", "backend\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj", "{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Shared.Library", "backend\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj", "{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "backend\Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.DataAccess", "backend\Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "backend\Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Listener", "backend\Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Shared.Services", "backend\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj", "{17363B48-67D0-4183-AE79-BC083AD7DEA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Shared.Services", "backend\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj", "{17363B48-67D0-4183-AE79-BC083AD7DEA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.Tests", "backend\Navtrack.Listener.Tests\Navtrack.Listener.Tests.csproj", "{703CB45E-01DA-4CF3-8114-E47C20455A83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Listener.Tests", "backend\Navtrack.Listener.Tests\Navtrack.Listener.Tests.csproj", "{703CB45E-01DA-4CF3-8114-E47C20455A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Shared.Services.Tests", "backend\Navtrack.Shared.Services.Tests\Navtrack.Shared.Services.Tests.csproj", "{C645F80C-8794-425B-89F2-5FD59C1F9ECA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Shared.Services.Tests", "backend\Navtrack.Shared.Services.Tests\Navtrack.Shared.Services.Tests.csproj", "{C645F80C-8794-425B-89F2-5FD59C1F9ECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "backend\Navtrack.Api\Navtrack.Api.csproj", "{E7524FB6-F04C-4021-9815-D947D3001532}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Api", "backend\Navtrack.Api\Navtrack.Api.csproj", "{E7524FB6-F04C-4021-9815-D947D3001532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.DeviceSimulator", "backend\Navtrack.Listener.DeviceSimulator\Navtrack.Listener.DeviceSimulator.csproj", "{D6237E82-B5ED-45B5-96B2-D1159C942146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Listener.DeviceSimulator", "backend\Navtrack.Listener.DeviceSimulator\Navtrack.Listener.DeviceSimulator.csproj", "{D6237E82-B5ED-45B5-96B2-D1159C942146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Model", "backend\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj", "{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.DataAccess.Model", "backend\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj", "{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Model", "backend\Navtrack.Api.Model\Navtrack.Api.Model.csproj", "{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Api.Model", "backend\Navtrack.Api.Model\Navtrack.Api.Model.csproj", "{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Services", "backend\Navtrack.Api.Services\Navtrack.Api.Services.csproj", "{4B5348CD-CD15-4D81-930E-D71BC533C3D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Api.Services", "backend\Navtrack.Api.Services\Navtrack.Api.Services.csproj", "{4B5348CD-CD15-4D81-930E-D71BC533C3D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Services", "backend\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj", "{0577F018-F560-401E-A5BA-E4F7F7C07BD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.DataAccess.Services", "backend\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj", "{0577F018-F560-401E-A5BA-E4F7F7C07BD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{BE4BBA96-89E3-4187-9D2E-2053A18656DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{13772974-C3B3-479F-AB5B-0E756C61CD55}"
-ProjectSection(SolutionItems) = preProject
-	api.json = api.json
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		api.json = api.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Listener", "Listener", "{6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Tests", "backend\Navtrack.Api.Tests\Navtrack.Api.Tests.csproj", "{816F422C-2680-49E9-9C22-733AE2B66823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Api.Tests", "backend\Navtrack.Api.Tests\Navtrack.Api.Tests.csproj", "{816F422C-2680-49E9-9C22-733AE2B66823}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{30CA5669-32EE-40D8-BB12-6DD9543BE2F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Shared", "backend\Navtrack.Api.Shared\Navtrack.Api.Shared.csproj", "{67212544-CD35-4E43-8163-D2F20AFEDD14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Api.Shared", "backend\Navtrack.Api.Shared\Navtrack.Api.Shared.csproj", "{67212544-CD35-4E43-8163-D2F20AFEDD14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navtrack.Shared.Utils", "backend\Navtrack.Shared.Utils\Navtrack.Shared.Utils.csproj", "{6D37B5A3-5A27-414B-B00B-B9225634C193}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED05F997-0F26-49C0-9F3A-96394033AD07}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,27 +111,32 @@ Global
 		{67212544-CD35-4E43-8163-D2F20AFEDD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67212544-CD35-4E43-8163-D2F20AFEDD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67212544-CD35-4E43-8163-D2F20AFEDD14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D37B5A3-5A27-414B-B00B-B9225634C193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D37B5A3-5A27-414B-B00B-B9225634C193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D37B5A3-5A27-414B-B00B-B9225634C193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D37B5A3-5A27-414B-B00B-B9225634C193}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CBE2CFA9-1340-426A-B557-B21BB90BE246}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
 		{E2510825-1735-410F-B685-BB0F3CA27F05} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
-		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
-		{0577F018-F560-401E-A5BA-E4F7F7C07BD6} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
+		{9E032E6F-F882-49B7-9E12-5DE7A16357E4} = {6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}
+		{17363B48-67D0-4183-AE79-BC083AD7DEA9} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
+		{703CB45E-01DA-4CF3-8114-E47C20455A83} = {6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}
+		{C645F80C-8794-425B-89F2-5FD59C1F9ECA} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
 		{E7524FB6-F04C-4021-9815-D947D3001532} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
+		{D6237E82-B5ED-45B5-96B2-D1159C942146} = {6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}
+		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
 		{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
 		{4B5348CD-CD15-4D81-930E-D71BC533C3D6} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
-		{9E032E6F-F882-49B7-9E12-5DE7A16357E4} = {6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}
-		{D6237E82-B5ED-45B5-96B2-D1159C942146} = {6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}
-		{703CB45E-01DA-4CF3-8114-E47C20455A83} = {6BC6BA50-0AFA-499A-801F-9BC4B8BAF9C6}
+		{0577F018-F560-401E-A5BA-E4F7F7C07BD6} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
 		{816F422C-2680-49E9-9C22-733AE2B66823} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
-		{17363B48-67D0-4183-AE79-BC083AD7DEA9} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
-		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
-		{C645F80C-8794-425B-89F2-5FD59C1F9ECA} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
 		{67212544-CD35-4E43-8163-D2F20AFEDD14} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
+		{6D37B5A3-5A27-414B-B00B-B9225634C193} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBE2CFA9-1340-426A-B557-B21BB90BE246}
 	EndGlobalSection
 EndGlobal

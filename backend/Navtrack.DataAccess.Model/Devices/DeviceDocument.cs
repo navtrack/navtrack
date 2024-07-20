@@ -9,17 +9,17 @@ namespace Navtrack.DataAccess.Model.Devices;
 public class DeviceDocument : BaseDocument
 {
     [BsonElement("serialNumber")]
-    public string SerialNumber { get; set; }
+    public string? SerialNumber { get; set; }
 
     [BsonElement("deviceTypeId")]
-    public string DeviceTypeId { get; set; }
+    public string? DeviceTypeId { get; set; }
 
     [BsonElement("assetId")]
     public ObjectId AssetId { get; set; }
 
     [BsonElement("createdDate")]
     public DateTime CreatedDate { get; set; }
-        
+
     [BsonElement("createdBy")]
     public ObjectId CreatedBy { get; set; }
 }

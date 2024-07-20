@@ -9,10 +9,10 @@ public class AssetDeviceElement
     public ObjectId Id { get; set; }
 
     [BsonElement("serialNumber")]
-    public string SerialNumber { get; set; }
+    public string? SerialNumber { get; set; }
 
     [BsonElement("deviceTypeId")]
-    public string DeviceTypeId { get; set; }
+    public string? DeviceTypeId { get; set; }
 
     [BsonElement("protocolPort")]
     public int ProtocolPort { get; set; }

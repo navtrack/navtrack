@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Apis.Auth" Version="1.65.0" />
+        <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
         <PackageReference Include="IdentityServer4" Version="4.1.2" />
     </ItemGroup>
 </Project>
