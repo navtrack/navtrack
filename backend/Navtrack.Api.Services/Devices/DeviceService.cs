@@ -26,7 +26,7 @@ public class DeviceService(
     IDeviceRepository repository,
     IAssetRepository assetRepository,
     ICurrentUserAccessor userAccessor,
-    IMessageRepository messageRepository)
+    IDeviceMessageRepository deviceMessageRepository)
     : IDeviceService
 {
     public async Task<bool> SerialNumberIsUsed(string serialNumber, string deviceTypeId, string? excludeAssetId = null)
@@ -47,7 +47,7 @@ public class DeviceService(
             .ToList();
 
         Dictionary<ObjectId, int> locationCount =
-            await messageRepository.GetMessagesCountByDeviceIds(devices.Select(x => x.Id));
+            await deviceMessageRepository.GetMessagesCountByDeviceIds(devices.Select(x => x.Id));
 
         return DeviceListModelMapper.Map(devices, deviceTypes, locationCount, asset);
     }
@@ -106,7 +106,7 @@ public class DeviceService(
             throw new ApiException(ApiErrorCodes.DeviceIsActive);
         }
 
-        if (await messageRepository.DeviceHasMessages(assetId, deviceId))
+        if (await deviceMessageRepository.DeviceHasMessages(assetId, deviceId))
         {
             throw new ApiException(ApiErrorCodes.DeviceIsActive);
         }

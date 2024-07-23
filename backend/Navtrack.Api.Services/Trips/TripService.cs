@@ -15,7 +15,7 @@ using Navtrack.Shared.Utils.Coordinates;
 namespace Navtrack.Api.Services.Trips;
 
 [Service(typeof(ITripService))]
-public class TripService(IMessageRepository repository) : ITripService
+public class TripService(IDeviceMessageRepository repository) : ITripService
 {
     private const int MinTripDistanceInMeters = 300; // 1000 feet
     private const int MaxDistanceBetweenPositionsInMeters = 1000;

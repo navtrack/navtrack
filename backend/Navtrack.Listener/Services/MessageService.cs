@@ -12,7 +12,7 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Services;
 
 [Service(typeof(IMessageService))]
-public class MessageService(IMessageRepository messageRepository, IAssetRepository assetRepository)
+public class MessageService(IDeviceMessageRepository deviceMessageRepository, IAssetRepository assetRepository)
     : IMessageService
 {
     public async Task Save(ObjectId connectionId, Device device, IEnumerable<Position> positions)
@@ -24,15 +24,15 @@ public class MessageService(IMessageRepository messageRepository, IAssetReposito
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 
-            await messageRepository.AddRange(messages);
+            await deviceMessageRepository.AddRange(messages);
 
-            DeviceMessageDocument? latestPosition = messages.MaxBy(x => x.Position.Date);
+            DeviceMessageDocument? latestPositionMessage = messages.MaxBy(x => x.Position.Date);
 
-            if (latestPosition != null && (device.MaxDate == null || device.MaxDate < latestPosition.Position.Date) &&
-                latestPosition.Position.Latitude != 0 && latestPosition.Position.Longitude != 0)
+            if (latestPositionMessage != null && (device.MaxDate == null || device.MaxDate < latestPositionMessage.Position.Date) &&
+                latestPositionMessage.Position.Latitude != 0 && latestPositionMessage.Position.Longitude != 0)
             {
-                await assetRepository.SetLastPositionMessage(device.AssetId.Value, latestPosition);
-                device.MaxDate = latestPosition.Position.Date;
+                await assetRepository.SetLastPositionMessage(device.AssetId.Value, latestPositionMessage);
+                device.MaxDate = latestPositionMessage.Position.Date;
             }
         }
     }

@@ -10,9 +10,9 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.DataAccess.Services.Positions;
 
-[Service(typeof(IMessageRepository))]
-public class MessageRepository(IRepository repository)
-    : GenericRepository<DeviceMessageDocument>(repository), IMessageRepository
+[Service(typeof(IDeviceMessageRepository))]
+public class DeviceMessageRepository(IRepository repository)
+    : GenericRepository<DeviceMessageDocument>(repository), IDeviceMessageRepository
 {
     public async Task<GetMessagesResult> GetMessages(GetMessagesOptions options)
     {

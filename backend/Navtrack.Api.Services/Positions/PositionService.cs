@@ -8,12 +8,12 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Api.Services.Positions;
 
 [Service(typeof(IPositionService))]
-public class PositionService(IMessageRepository messageRepository) : IPositionService
+public class PositionService(IDeviceMessageRepository deviceMessageRepository) : IPositionService
 {
     public async Task<PositionListModel> GetPositions(string assetId, PositionFilterModel positionFilter, int page,
         int size)
     {
-        GetMessagesResult messages = await messageRepository.GetMessages(new GetMessagesOptions
+        GetMessagesResult messages = await deviceMessageRepository.GetMessages(new GetMessagesOptions
         {
             AssetId = assetId,
             PositionFilter = positionFilter,
