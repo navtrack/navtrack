@@ -1,7 +1,7 @@
 module.exports = {
   content: [
+    "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/index.html",
     "../node_modules/flowbite-react/lib/esm/**/*.js"
   ],
   theme: {

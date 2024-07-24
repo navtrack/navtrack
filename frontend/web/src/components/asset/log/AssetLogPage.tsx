@@ -39,17 +39,7 @@ export function AssetLogPage() {
 
   return (
     <>
-      <LocationFilter
-        filterPage="log"
-        center={
-          position
-            ? {
-                latitude: position.latitude,
-                longitude: position.longitude
-              }
-            : undefined
-        }
-      />
+      <LocationFilter filterPage="log" center={position?.coordinates} />
       <TableV2<PositionModel>
         columns={[
           {
@@ -93,11 +83,11 @@ export function AssetLogPage() {
           },
           {
             labelId: "generic.latitude",
-            row: (row) => showCoordinate(row.latitude)
+            row: (row) => showCoordinate(row.coordinates.latitude)
           },
           {
             labelId: "generic.longitude",
-            row: (row) => showCoordinate(row.longitude)
+            row: (row) => showCoordinate(row.coordinates.longitude)
           },
           {
             labelId: "generic.altitude",
@@ -131,16 +121,9 @@ export function AssetLogPage() {
       <Card className="flex flex-grow">
         <CardMapWrapper>
           <Map
-            center={
-              position
-                ? {
-                    latitude: position.latitude,
-                    longitude: position.longitude
-                  }
-                : DEFAULT_MAP_CENTER
-            }
+            center={position ? position.coordinates : DEFAULT_MAP_CENTER}
             initialZoom={14}>
-            <MapPin position={position} follow />
+            <MapPin coordinates={position?.coordinates} follow />
           </Map>
         </CardMapWrapper>
       </Card>

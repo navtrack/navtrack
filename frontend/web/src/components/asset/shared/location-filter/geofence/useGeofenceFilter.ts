@@ -4,13 +4,13 @@ import {
   DEFAULT_MAP_CENTER,
   GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM
 } from "../../../../../constants";
-import { LongLat } from "../../../../ui/map/mapTypes";
 import { geofenceFilterAtom } from "../locationFilterState";
 import { CircleGeofence } from "../../../../ui/map/geofence/GeofenceCircle";
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 export function useGeofenceFilter(
   filterKey: string,
-  initialMapCenter?: LongLat
+  initialMapCenter?: LatLongModel
 ) {
   const [state, setState] = useRecoilState(geofenceFilterAtom(filterKey));
 
@@ -32,7 +32,7 @@ export function useGeofenceFilter(
   );
 
   const handleMapMove = useCallback(
-    (center: LongLat, zoom: number) => {
+    (center: LatLongModel, zoom: number) => {
       setState((current) => ({
         ...current,
         map: {

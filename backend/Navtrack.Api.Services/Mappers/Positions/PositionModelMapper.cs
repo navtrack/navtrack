@@ -10,7 +10,7 @@ public static class PositionModelMapper
         PositionModel position = new()
         {
             Id = source.Id.ToString(),
-            Coordinates = source.Position.Coordinates,
+            Coordinates = new LatLongModel(source.Position.Latitude, source.Position.Longitude),
             Date = source.Position.Date,
             Speed = source.Position.Speed,
             Heading = source.Position.Heading,

@@ -3,15 +3,14 @@ import { ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { VectorTileLayer } from "./VectorTileLayer";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { MapZoom } from "./MapZoom";
 import { DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useRecoilValue } from "recoil";
 import { MapZoomControl } from "./MapZoomControl";
-import { LongLat } from "./mapTypes";
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 type MapProps = {
-  center: LongLat;
+  center: LatLongModel;
   initialZoom?: number;
   children?: ReactNode;
   hideZoomControl?: boolean;

@@ -22,6 +22,7 @@ type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
   assetSettingsRoutes?: ReactNode;
   accountSettingsRoutes?: ReactNode;
+  extraRoutes?: ReactNode;
 };
 
 export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
@@ -62,6 +63,7 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
         />
         <Route path={Paths.SettingsAccount} element={<SettingsAccountPage />} />
       </Route>
+      {props.extraRoutes}
       <Route path="*" element={<Navigate replace to={Paths.Home} />} />
     </Routes>
   );

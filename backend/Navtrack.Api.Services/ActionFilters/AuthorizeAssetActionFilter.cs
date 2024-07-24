@@ -9,8 +9,8 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.ActionFilters;
 
-[Service(typeof(AuthorizeActionFilter))]
-public class AuthorizeActionFilter(IAssetAuthorizationService authorizationService) : IAsyncAuthorizationFilter
+[Service(typeof(AuthorizeAssetActionFilter))]
+public class AuthorizeAssetActionFilter(IAssetAuthorizationService authorizationService) : IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {

@@ -3,11 +3,11 @@ import { Marker } from "react-leaflet";
 import { PinIcon } from "./PinIcon";
 import { renderToString } from "react-dom/server";
 import { useMemo } from "react";
-import { LongLat } from "./mapTypes";
 import { MapCenter } from "./MapCenter";
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 type MapPinProps = {
-  position?: LongLat;
+  coordinates?: LatLongModel;
   follow?: boolean;
   color?: "primary" | "green" | "red";
   zIndexOffset?: number;
@@ -25,15 +25,15 @@ export function MapPin(props: MapPinProps) {
     [props.color]
   );
 
-  if (props.position !== undefined) {
+  if (props.coordinates !== undefined) {
     return (
       <>
         <Marker
-          position={[props.position.latitude, props.position.longitude]}
+          position={[props.coordinates.latitude, props.coordinates.longitude]}
           icon={pin}
           zIndexOffset={props.zIndexOffset}
         />
-        {props.follow && <MapCenter position={props.position} />}
+        {props.follow && <MapCenter position={props.coordinates} />}
       </>
     );
   }

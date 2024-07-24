@@ -1308,33 +1308,15 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "longitude",
-          "latitude",
           "coordinates",
-          "validCoordinates",
           "date"
         ],
         "properties": {
           "id": {
             "type": "string"
           },
-          "longitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "latitude": {
-            "type": "number",
-            "format": "double"
-          },
           "coordinates": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          "validCoordinates": {
-            "type": "boolean"
+            "$ref": "#/components/schemas/LatLongModel"
           },
           "date": {
             "type": "string",
@@ -1382,6 +1364,27 @@
             "type": "number",
             "format": "double",
             "nullable": true
+          }
+        }
+      },
+      "LatLongModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "valid": {
+            "type": "boolean"
           }
         }
       },

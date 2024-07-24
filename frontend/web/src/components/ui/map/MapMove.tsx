@@ -1,9 +1,9 @@
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 import { useCallback, useEffect } from "react";
 import { useMap } from "react-leaflet";
-import { LongLat } from "./mapTypes";
 
 type MapMoveProps = {
-  onMove?: (center: LongLat, zoom: number) => void;
+  onMove?: (center: LatLongModel, zoom: number) => void;
 };
 
 export function MapMove(props: MapMoveProps) {

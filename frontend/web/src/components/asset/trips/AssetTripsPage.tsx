@@ -9,7 +9,7 @@ import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
 import { MapTrip } from "../../ui/map/MapTrip";
 import { Slider } from "../../ui/slider/Slider";
-import { PositionBar } from "../shared/position-bar/PositionBar";
+import { PositionCardItems } from "../shared/position-card/PositionCardItems";
 import {
   selectedTripAtom,
   selectedTripPositionIndexAtom,
@@ -120,7 +120,10 @@ export function AssetTripsPage() {
           <Map center={DEFAULT_MAP_CENTER} initialZoom={16}>
             <MapTrip trip={selectedTrip} />
             {selectedTripPosition && showPin && (
-              <MapPin position={{ ...selectedTripPosition }} zIndexOffset={1} />
+              <MapPin
+                coordinates={selectedTripPosition.coordinates}
+                zIndexOffset={1}
+              />
             )}
           </Map>
         </CardMapWrapper>
@@ -157,7 +160,7 @@ export function AssetTripsPage() {
             </div>
             {selectedTripPosition && (
               <div className="flex justify-between px-3 py-2">
-                <PositionBar position={selectedTripPosition} />
+                <PositionCardItems position={selectedTripPosition} />
               </div>
             )}
           </Card>

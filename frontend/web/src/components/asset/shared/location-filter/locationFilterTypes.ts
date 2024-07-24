@@ -1,5 +1,5 @@
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 import { CircleGeofence } from "../../../ui/map/geofence/GeofenceCircle";
-import { LongLat } from "../../../ui/map/mapTypes";
 
 export enum LocationFilterType {
   Date,
@@ -35,7 +35,7 @@ export type DateFilter = {
 export type CircleGeofenceFilter = FilterOptions & {
   geofence?: CircleGeofence;
   map?: {
-    center: LongLat;
+    center: LatLongModel;
     zoom: number;
   };
 };

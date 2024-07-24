@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Navtrack.Shared.Utils;
+namespace Navtrack.Shared.Library.Utils;
 
 public static class HashUtil
 {

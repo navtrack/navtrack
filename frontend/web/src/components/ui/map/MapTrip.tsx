@@ -21,7 +21,7 @@ export function MapTrip(props: MapTripProps) {
 
       if (props.trip !== undefined) {
         const latlngs = props.trip.positions.map(
-          (x) => new LatLng(x.latitude, x.longitude)
+          (x) => new LatLng(x.coordinates.latitude, x.coordinates.longitude)
         );
 
         const pl = L.polyline(latlngs, { color: "red" });
@@ -37,8 +37,11 @@ export function MapTrip(props: MapTripProps) {
   if (props.trip) {
     return (
       <>
-        <MapPin position={{ ...props.trip.startPosition }} color="green" />
-        <MapPin position={{ ...props.trip.endPosition }} color="red" />
+        <MapPin
+          coordinates={props.trip.startPosition.coordinates}
+          color="green"
+        />
+        <MapPin coordinates={props.trip.endPosition.coordinates} color="red" />
       </>
     );
   }

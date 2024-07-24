@@ -2,11 +2,11 @@ import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { useEffect, useState } from "react";
 import { Icon } from "../icon/Icon";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
-import { LongLat } from "./mapTypes";
 import { MapCenter } from "./MapCenter";
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 type MapFollowControlProps = {
-  position?: LongLat;
+  position?: LatLongModel;
   follow?: boolean;
   onChange?: (follow: boolean) => void;
 };

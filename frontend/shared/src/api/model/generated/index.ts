@@ -28,6 +28,7 @@ export * from "./errorModel";
 export * from "./errorModelErrors";
 export * from "./forgotPasswordModel";
 export * from "./gsmModel";
+export * from "./latLongModel";
 export * from "./listModelOfAssetModel";
 export * from "./listModelOfAssetUserModel";
 export * from "./listModelOfDeviceModel";

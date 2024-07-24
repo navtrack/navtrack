@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Navtrack.Api.Model.Positions;
 
-namespace Navtrack.Shared.Utils.Coordinates;
+namespace Navtrack.Api.Services.Trips;
 
 public static class DistanceCalculator
 {
@@ -12,7 +13,7 @@ public static class DistanceCalculator
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <returns>The distance in meters.</returns>
-    public static int CalculateDistance(Coordinates from, Coordinates to)
+    public static int CalculateDistance(LatLongModel from, LatLongModel to)
     {
         double d1 = from.Latitude * (Math.PI / 180.0);
         double num1 = from.Longitude * (Math.PI / 180.0);
@@ -25,14 +26,14 @@ public static class DistanceCalculator
         return (int)(6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3))));
     }
 
-    public static bool IsInRadius(Coordinates position, Coordinates center, int radius)
+    public static bool IsInRadius(LatLongModel position, LatLongModel center, int radius)
     {
         int distance = CalculateDistance(position, center);
 
         return distance <= radius;
     }
     
-    public static int CalculateDistance(List<(Coordinates Coordinates, double? Odometer)> positions)
+    public static int CalculateDistance(List<(LatLongModel Coordinates, double? Odometer)> positions)
     {
         int distance = 0;
 
@@ -58,8 +59,8 @@ public static class DistanceCalculator
         return distance;
     }
 
-    private static int CalculateDistance((Coordinates Coordinates, double? Odometer) from,
-        (Coordinates Coordinates, double? Odometer) to)
+    private static int CalculateDistance((LatLongModel Coordinates, double? Odometer) from,
+        (LatLongModel Coordinates, double? Odometer) to)
     {
         if (to.Odometer.HasValue && from.Odometer.HasValue)
         {

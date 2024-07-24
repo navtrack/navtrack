@@ -6,47 +6,47 @@ import {
   showHeading,
   showProperty
 } from "@navtrack/shared/utils/coordinates";
-import { PositionBarItem } from "./PositionBarItem";
+import { PositionCardItem } from "./PositionCardItem";
 
-type PositionBarProps = {
+type PositionCardItemsProps = {
   position: PositionModel;
 };
 
-export function PositionBar(props: PositionBarProps) {
+export function PositionCardItems(props: PositionCardItemsProps) {
   const { showDateTime } = useDateTime();
   const { showSpeed, showAltitude } = useDistance();
 
   return (
     <>
-      <PositionBarItem
+      <PositionCardItem
         label="generic.date"
         value={showDateTime(props.position.date)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.latitude"
-        value={showCoordinate(props.position.latitude)}
+        value={showCoordinate(props.position.coordinates.latitude)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.longitude"
-        value={showCoordinate(props.position.longitude)}
+        value={showCoordinate(props.position.coordinates.longitude)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.speed"
         value={showSpeed(props.position.speed)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.altitude"
         value={showAltitude(props.position.altitude)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.heading"
         value={showHeading(props.position.heading)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.satellites"
         value={showProperty(props.position.satellites)}
       />
-      <PositionBarItem
+      <PositionCardItem
         label="generic.hdop"
         value={showProperty(props.position.hdop)}
       />

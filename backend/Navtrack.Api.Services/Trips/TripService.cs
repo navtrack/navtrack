@@ -10,7 +10,6 @@ using Navtrack.Api.Services.Mappers.Trips;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Utils.Coordinates;
 
 namespace Navtrack.Api.Services.Trips;
 
@@ -54,8 +53,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
             if (currentTrip == null ||
                 lastPosition == null ||
                 position.Date > lastPosition.Date.AddMinutes(MaxTimeBetweenTripInMinutes) ||
-                DistanceCalculator.CalculateDistance(new Coordinates(lastPosition.Latitude, lastPosition.Longitude),
-                    new Coordinates(position.Latitude, position.Longitude)) > MaxDistanceBetweenPositionsInMeters)
+                DistanceCalculator.CalculateDistance(lastPosition.Coordinates, position.Coordinates) > MaxDistanceBetweenPositionsInMeters)
             {
                 currentTrip = new TripModel();
                 trips.Add(currentTrip);
@@ -102,8 +100,8 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
             foreach (PositionModel position in trip.Positions)
             {
-                if (lastPosition == null || Math.Abs(lastPosition.Latitude - position.Latitude) > precision ||
-                    Math.Abs(lastPosition.Longitude - position.Longitude) > precision)
+                if (lastPosition == null || Math.Abs(lastPosition.Coordinates.Latitude - position.Coordinates.Latitude) > precision ||
+                    Math.Abs(lastPosition.Coordinates.Longitude - position.Coordinates.Longitude) > precision)
                 {
                     positions.Add(position);
                     lastPosition = position;
@@ -119,7 +117,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         foreach (TripModel trip in trips)
         {
             trip.Distance = DistanceCalculator.CalculateDistance(trip.Positions
-                .Select(x => (new Coordinates(x.Latitude, x.Longitude), x.Odometer)).ToList());
+                .Select(x => (x.Coordinates, x.Odometer)).ToList());
         }
     }
 
@@ -175,8 +173,8 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
             filteredTrips = filteredTrips
                 .Where(x => x.Positions
                     .Any(y => DistanceCalculator.IsInRadius(
-                        new Coordinates(y.Latitude, y.Longitude),
-                        new Coordinates(tripFilter.Latitude.Value, tripFilter.Longitude.Value),
+                        y.Coordinates,
+                        new LatLongModel(tripFilter.Latitude.Value, tripFilter.Longitude.Value),
                         tripFilter.Radius.Value)))
                 .ToList();
         }

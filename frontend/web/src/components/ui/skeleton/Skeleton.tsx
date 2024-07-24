@@ -4,7 +4,7 @@ import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 
 type SkeletonProps = {
   children: ReactNode;
-  loading: boolean;
+  loading?: boolean;
   className?: string;
   background?: string;
   indicator?: boolean;

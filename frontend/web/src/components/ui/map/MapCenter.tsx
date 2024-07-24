@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useMap } from "./useMap";
-import { LongLat } from "./mapTypes";
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 type MapCenterProps = {
-  position?: LongLat;
+  position?: LatLongModel;
   zoom?: number;
 };
 

@@ -49,7 +49,7 @@ public abstract class BaseApiProgram<T>
 
         builder.Services.AddControllers(options =>
             {
-                options.Filters.Add<AuthorizeActionFilter>();
+                options.Filters.Add<AuthorizeAssetActionFilter>();
                 baseProgramOptions?.Filters?.ForEach(x => options.Filters.Add(x));
             })
             .ConfigureApplicationPartManager(x =>

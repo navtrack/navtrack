@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
 
 namespace Navtrack.Listener.DeviceSimulator;
@@ -16,21 +15,6 @@ class Program
         SimulateMeitrack();
     }
 
-    private static void SimulateTeltonika()
-    {
-        TcpClient tcpClient = new();
-        tcpClient.Connect(IPAddress.Loopback, 7002);
-        NetworkStream networkStream = tcpClient.GetStream();
-
-        networkStream.Write(HexUtil.ConvertHexStringToByteArray("000F333532383438303236333839393631"));
-        networkStream.Write(HexUtil.ConvertHexStringToByteArray(
-            "00000000000003E108120000018CE0464809000DFA91701BDCBA800186007C09002F00080301014501F00103B6000C4233F218002F02C70000004AF100005852000000018CE03AFC15000DE13C701BE3F40001D8009708004400080301014501F00103B6000C4235E818004402C70000009DF100005852000000018CE03AD483000DE114D01BE42BA001D8009C08003F00080301014501F00103B6000C42375218003F02C7000000E1F100005852000000018CE03AAC99000DE0D1901BE462E001D8008408004200080301014501F00103B6000C42360618004202C7000000BDF100005852000000018CE03A8505000DE080101BE4830001DB006F08005200080301014501F00103B6000C42372518005202C7000000DCF100005852000000018CE03A5D73000DE016101BE49E4001DC006F08005000080301014501F00103B6000C42363218005002C700000102F100005852000000018CE03A35E1000DDF9F201BE4BF6001DE006F08006A00080301014501F00103B6000C42374618006A02C700000117F100005852000000018CE03A0E4F000DDF18301BE4E50001E4007808005A00080301014501F00103B6000C42368818005A02C700000116F100005852000000018CE039E6BD000DDEA2F01BE5196001EC007508006B00080301014501F00103B6000C42379818006B02C700000114F100005852000000018CE039BF2B000DDE18801BE54BE001F3007508006A00080301014501F00103B6000C42363018006A02C70000013EF100005852000000018CE0399749000DDD9FC01BE5868001FB008708006400080301014501F00103B6000C42370118006402C700000113F100005852000000018CE0396FB7000DDD45201BE5CFC001FB008C08006900080301014501F00103B6000C42359B18006902C70000011FF100005852000000018CE0394825000DDCE8501BE61F400201008C08006100080301014501F00103B6000C4235EC18006102C7000000E1F100005852000000018CE0392093000DDC9A601BE65D000207007B08004600080301014501F00103B6000C42363818004602C7000000E8F100005852000000018CE038F901000DDC30E01BE67DE0020C007008005C00080301014501F00103B6000C4235F718005C02C7000000E1F100005852000000018CE038D16F000DDBC1B01BE691C0020D005908005700080301014501F00103B6000C42376C18005702C7000000FFF100005852000000018CE038A9DD000DDB32301BE691C00203005E08006B00080301014501F00103B6000C42360818006B02C700000110F100005852000000018CE0388205000DDAB1701BE696000207004508004000080301014501F00103B6000C42379418004002C7000000CFF1000058520012000098E4"));
-
-        networkStream.Close();
-        tcpClient.Close();
-    }
-
-
     private static void SimulateMeitrack()
     {
         TcpClient tcpClient = new();
@@ -39,30 +23,37 @@ class Program
 
         while (true)
         {
-            string date = DateTime.UtcNow.ToString("yyMMddHHmmss");
+            try
+            {
+                string date = DateTime.UtcNow.ToString("yyMMddHHmmss");
 
-            (double, double) location = GetRandomLocation();
+                (double, double) location = GetRandomLocation();
 
-            int altitude = new Random().Next(0, 2000);
-            int heading = new Random().Next(0, 360);
+                int altitude = new Random().Next(0, 2000);
+                int heading = new Random().Next(0, 360);
 
-            string text =
-                $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*";
+                string text =
+                    $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*";
 
-            string checksum = ChecksumUtil.Xor(Encoding.UTF8.GetBytes(text));
-            text += $"{checksum}\r\n";
+                string checksum = ChecksumUtil.Xor(Encoding.UTF8.GetBytes(text));
+                text += $"{checksum}\r\n";
             
-            Console.Write(text);
+                Console.Write(text);
             
-            networkStream.Write(Encoding.UTF8.GetBytes(text));
-            
+                networkStream.Write(Encoding.UTF8.GetBytes(text));
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+          
             Thread.Sleep(5000);
         }
     }
 
     private static (double, double) GetRandomLocation()
     {
-        Random rand = new Random();
+        Random rand = new();
 
         // Generate a random latitude between 46.7662 and 46.7781 degrees (the latitude range of the center of Cluj-Napoca)
         double lat = rand.NextDouble() * 0.0119 + 46.7662;

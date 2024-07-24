@@ -16,13 +16,18 @@ export function useLiveTracking() {
     if (configuration.liveTracking.follow && currentAsset.data?.position) {
       map.setCenter(
         [
-          currentAsset.data.position.latitude,
-          currentAsset.data.position.longitude
+          currentAsset.data.position.coordinates.latitude,
+          currentAsset.data.position.coordinates.longitude
         ],
         configuration.liveTracking.zoom
       );
     }
-  }, [configuration.liveTracking.follow, configuration.liveTracking.zoom, currentAsset.data?.position, map]);
+  }, [
+    configuration.liveTracking.follow,
+    configuration.liveTracking.zoom,
+    currentAsset.data?.position,
+    map
+  ]);
 
   const mapEvents = useMapEvents({
     zoomend: () => {

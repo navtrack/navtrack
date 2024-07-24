@@ -7,18 +7,11 @@ public class PositionModel
 {
     public string Id { get; set; }
     
+    /// <summary>
+    /// [Longitude, Latitude]
+    /// </summary>
     [Required]
-    public double Longitude => Coordinates[0];
-    
-    [Required]
-    public double Latitude => Coordinates[1];
-
-    [Required]
-    public double[] Coordinates { get; set; }
-
-    [Required]
-    public bool ValidCoordinates => CoordinatesValidation.IsValidLatitude(Latitude) &&
-                                    CoordinatesValidation.IsValidLongitude(Longitude);
+    public LatLongModel Coordinates { get; set; }
 
     [Required]
     public DateTime Date { get; set; }

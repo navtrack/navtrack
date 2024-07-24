@@ -7,14 +7,14 @@ import {
 } from "../../../../ui/map/geofence/GeofenceCircle";
 import { Map } from "../../../../ui/map/Map";
 import { MapMove } from "../../../../ui/map/MapMove";
-import { LongLat } from "../../../../ui/map/mapTypes";
 import { Modal } from "../../../../ui/modal/Modal";
 import { FilterModal } from "../FilterModal";
 import { useGeofenceFilter } from "./useGeofenceFilter";
 import { useEffect, useState } from "react";
+import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 type GeofenceFilterModalProps = {
-  initialMapCenter?: LongLat;
+  initialMapCenter?: LatLongModel;
   filterKey: string;
 };
 

@@ -2,7 +2,7 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { FormattedMessage } from "react-intl";
 import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
-import { PositionBar } from "../shared/position-bar/PositionBar";
+import { PositionCardItems } from "../shared/position-card/PositionCardItems";
 import { MapPin } from "../../ui/map/MapPin";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapFollowControl } from "../../ui/map/MapFollowControl";
@@ -18,15 +18,17 @@ export function AssetLiveTrackingPage() {
     <>
       {position ? (
         <>
-          <Card className="flex justify-between px-3 py-2">
-            <PositionBar position={position} />
+          <Card className="space-y-2 px-3 py-2">
+            <div className="flex justify-between">
+              <PositionCardItems position={position} />
+            </div>
             {slots?.assetLiveTrackingPositionCardExtraItems?.(position)}
           </Card>
           <Card className="flex flex-grow">
             <CardMapWrapper>
-              <Map center={{ ...position }}>
-                <MapPin position={{ ...position }} />
-                <MapFollowControl position={{ ...position }} />
+              <Map center={position.coordinates}>
+                <MapPin coordinates={position.coordinates} />
+                <MapFollowControl position={position.coordinates} />
               </Map>
             </CardMapWrapper>
           </Card>
