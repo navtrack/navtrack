@@ -16,7 +16,7 @@ export function MapFitBounds(props: MapFitBoundsProps) {
         return [position.latitude, position.longitude] as LatLngTuple;
       });
 
-      map.leafletMap.fitBounds(latLngs);
+      map.leafletMap.fitBounds(latLngs, { padding: [100, 100] });
     }
   }, [map.leafletMap, props.coordinates]);
 

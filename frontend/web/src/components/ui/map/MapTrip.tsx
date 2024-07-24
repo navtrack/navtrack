@@ -26,7 +26,7 @@ export function MapTrip(props: MapTripProps) {
 
         const pl = L.polyline(latlngs, { color: "red" });
         pl.addTo(map.leafletMap);
-        map.leafletMap.fitBounds(pl.getBounds(), { padding: [30, 30] });
+        map.leafletMap.fitBounds(pl.getBounds(), { padding: [100, 100] });
         setPolyline(pl);
       }
 
