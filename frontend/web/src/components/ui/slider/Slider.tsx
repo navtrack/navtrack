@@ -1,5 +1,3 @@
-import { RangeSlider } from "flowbite-react";
-
 type SliderProps = {
   onChange?: (value: number) => void;
   value?: number;

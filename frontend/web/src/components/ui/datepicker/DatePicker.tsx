@@ -1,5 +1,6 @@
 import { Datepicker } from "flowbite-react";
 import { InputLabel } from "../form/InputLabel";
+import { useIntl } from "react-intl";
 
 export type DatePickerProps = {
   value?: Date;
@@ -9,10 +10,13 @@ export type DatePickerProps = {
 };
 
 export function DatePicker(props: DatePickerProps) {
+  const intl = useIntl();
+
   return (
     <div>
       <InputLabel label={props.label} />
       <Datepicker
+        labelClearButton={intl.formatMessage({ id: "generic.close" })}
         defaultDate={props.value}
         disabled={props.disabled}
         onSelectedDateChanged={(date) => props.onChange(date)}
@@ -28,6 +32,9 @@ export function DatePicker(props: DatePickerProps) {
                   },
                   colors: {
                     gray: "bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  },
+                  withIcon: {
+                    on: "pl-10"
                   }
                 }
               }
@@ -45,7 +52,29 @@ export function DatePicker(props: DatePickerProps) {
             days: {
               items: {
                 item: {
-                  selected: "bg-blue-700 text-white hover:bg-blue-500"
+                  selected: "bg-blue-700 text-white hover:bg-blue-600",
+                  disabled: "text-gray-500"
+                }
+              }
+            },
+            months: {
+              items: {
+                item: {
+                  selected: "bg-blue-700 text-white hover:bg-blue-600"
+                }
+              }
+            },
+            years: {
+              items: {
+                item: {
+                  selected: "bg-blue-700 text-white hover:bg-blue-600"
+                }
+              }
+            },
+            decades: {
+              items: {
+                item: {
+                  selected: "bg-blue-700 text-white hover:bg-blue-600"
                 }
               }
             }

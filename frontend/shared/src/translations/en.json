@@ -69,6 +69,7 @@
   "generic.back": "Back",
   "generic.cancel": "Cancel",
   "generic.city": "City",
+  "generic.close": "Close",
   "generic.confirm-password.required": "The confirm password is required.",
   "generic.confirm-password.requirements.match": "The passwords do not match.",
   "generic.confirm-password": "Confirm password",
