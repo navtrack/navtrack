@@ -1,16 +1,18 @@
 import { Card } from "../ui/card/Card";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
 import { CardMapWrapper } from "../ui/map/CardMapWrapper";
-import { MapPin } from "../ui/map/MapPin";
 import { Map } from "../ui/map/Map";
 import { MapFitBounds } from "../ui/map/MapFitBounds";
 import { useMemo } from "react";
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
 import { StatCountCard } from "../ui/card/StatCountCard";
 import { startOfDay } from "date-fns";
-import { Skeleton } from "../ui/skeleton/Skeleton";
+import { MapPinLabel } from "../ui/map/MapPinLabel";
+import { generatePath, useNavigate } from "react-router-dom";
+import { Paths } from "../../app/Paths";
 
 export function HomePage() {
+  const navigate = useNavigate();
   const assets = useAssetsQuery();
 
   const assetsWithPosition = useMemo(
@@ -62,9 +64,13 @@ export function HomePage() {
         <CardMapWrapper>
           <Map center={{ latitude: 46.77689, longitude: 23.601674 }}>
             {assetsWithPosition.map((asset) => (
-              <MapPin
+              <MapPinLabel
                 key={asset.id}
                 coordinates={asset.position!.coordinates}
+                label={asset.name}
+                onClick={() =>
+                  navigate(generatePath(Paths.AssetsLive, { id: asset.id }))
+                }
               />
             ))}
             <MapFitBounds coordinates={coordinates} />
