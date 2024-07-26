@@ -30,7 +30,7 @@ export function MapTrip(props: MapTripProps) {
         setPolyline(pl);
         map.showAll(
           props.trip.positions.map((x) => x.coordinates),
-          150
+          100
         );
       }
 
@@ -41,14 +41,11 @@ export function MapTrip(props: MapTripProps) {
   if (props.trip) {
     return (
       <>
-        <MapPinLabel
+        <MapPin
           coordinates={props.trip.startPosition.coordinates}
-          label="label"
+          color="green"
         />
-        <MapPinLabel
-          coordinates={props.trip.endPosition.coordinates}
-          label="label"
-        />
+        <MapPin coordinates={props.trip.endPosition.coordinates} color="red" />
         <MapPin coordinates={props.trip.endPosition.coordinates} color="red" />
       </>
     );

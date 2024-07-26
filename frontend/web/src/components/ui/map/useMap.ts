@@ -21,12 +21,10 @@ export function useMap() {
   );
 
   const showAll = useCallback(
-    (coordinates: LatLongModel[], customPadding?: number) => {
+    (coordinates: LatLongModel[], customPadding: number = 100) => {
       const latLngs = coordinates.map((position) => {
         return [position.latitude, position.longitude] as LatLngTuple;
       });
-
-      customPadding = customPadding ?? 100;
 
       map.fitBounds(latLngs, { padding: [customPadding, customPadding] });
     },

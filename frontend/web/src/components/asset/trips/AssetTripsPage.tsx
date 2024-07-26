@@ -1,5 +1,5 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
@@ -18,7 +18,7 @@ import {
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { TripModel } from "@navtrack/shared/api/model/generated";
+import { PositionModel, TripModel } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
@@ -26,10 +26,14 @@ import { useTripsQuery } from "@navtrack/shared/hooks/queries/useTripsQuery";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
+import { SlotContext } from "../../../app/SlotContext";
 
 export function AssetTripsPage() {
+  const slots = useContext(SlotContext);
   const [selectedTrip, setSelectedTrip] = useRecoilState(selectedTripAtom);
   const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
+  const [reverseGeocodePosition, setReverseGeocodePosition] =
+    useState<PositionModel>(selectedTripPosition);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useRecoilState(selectedTripPositionIndexAtom);
   const [showPin, setShowPin] = useState(false);
@@ -47,6 +51,12 @@ export function AssetTripsPage() {
     setShowPin(false);
     setSelectedTripLocationIndex(1);
   });
+
+  useEffect(() => {
+    if (selectedTripPosition && !reverseGeocodePosition) {
+      setReverseGeocodePosition(selectedTripPosition);
+    }
+  }, [reverseGeocodePosition, selectedTripPosition]);
 
   return (
     <>
@@ -150,6 +160,11 @@ export function AssetTripsPage() {
                   max={selectedTrip?.positions.length}
                   value={selectedTripLocationIndex}
                   onChange={(value) => setSelectedTripLocationIndex(value)}
+                  onMouseUp={() => {
+                    if (selectedTripPosition) {
+                      setReverseGeocodePosition(selectedTripPosition);
+                    }
+                  }}
                   onMouseDown={() => {
                     if (!showPin) {
                       setShowPin(true);
@@ -159,8 +174,14 @@ export function AssetTripsPage() {
               </div>
             </div>
             {selectedTripPosition && (
-              <div className="flex justify-between px-3 py-2">
-                <PositionCardItems position={selectedTripPosition} />
+              <div className="px-3 py-2">
+                <div className="mb-2 flex justify-between">
+                  <PositionCardItems position={selectedTripPosition} />
+                </div>
+                {reverseGeocodePosition !== undefined &&
+                  slots?.assetLiveTrackingPositionCardExtraItems?.(
+                    reverseGeocodePosition
+                  )}
               </div>
             )}
           </Card>
