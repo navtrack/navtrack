@@ -14,8 +14,10 @@ type MapCustomMarkerProps = {
 };
 
 type MapCustomMarkerPosition = {
+  width: number;
+  height: number;
   left: number;
-  bottom: number;
+  top: number;
 };
 
 export function MapCustomMarker(props: MapCustomMarkerProps) {
@@ -35,7 +37,8 @@ export function MapCustomMarker(props: MapCustomMarkerProps) {
   const divIcon = useMemo(() => {
     return L.divIcon({
       className: undefined,
-      html: renderToString(<div id={id}></div>)
+      html: renderToString(<div id={id}></div>),
+      iconAnchor: [0, 0]
     });
   }, [id]);
 
@@ -52,8 +55,10 @@ export function MapCustomMarker(props: MapCustomMarkerProps) {
   useEffect(() => {
     if (markerRef.current !== null && div !== undefined) {
       setPosition({
-        left: markerRef.current.scrollWidth / -2,
-        bottom: markerRef.current.scrollHeight
+        width: markerRef.current.clientWidth,
+        height: markerRef.current.clientHeight,
+        left: markerRef.current.clientWidth / -2, //markerRef.current.scrollWidth / -3,
+        top: markerRef.current.clientHeight * -1 + 6 //markerRef.current.scrollHeight - 12
       });
     }
   }, [div]);
@@ -61,17 +66,18 @@ export function MapCustomMarker(props: MapCustomMarkerProps) {
   if (props.coordinates !== undefined) {
     return (
       <>
-        <Marker
-          position={[props.coordinates.latitude, props.coordinates.longitude]}
-          icon={divIcon}
-        />
+        {divIcon !== undefined && (
+          <Marker
+            position={[props.coordinates.latitude, props.coordinates.longitude]}
+            icon={divIcon}
+          />
+        )}
         {div !== undefined &&
           createPortal(
             <div
-              ref={markerRef}
-              style={{ left: position?.left, bottom: position?.bottom }}
+              style={{ left: position?.left, top: position?.top }}
               className="relative flex">
-              <div>{props.children}</div>
+              <div ref={markerRef}>{props.children}</div>
             </div>,
             div
           )}

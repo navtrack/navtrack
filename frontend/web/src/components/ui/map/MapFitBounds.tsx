@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useMap } from "./useMap";
-import { LatLngTuple } from "leaflet";
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 type MapFitBoundsProps = {
@@ -12,13 +11,9 @@ export function MapFitBounds(props: MapFitBoundsProps) {
 
   useEffect(() => {
     if (props.coordinates !== undefined && props.coordinates?.length > 0) {
-      const latLngs = props.coordinates.map((position) => {
-        return [position.latitude, position.longitude] as LatLngTuple;
-      });
-
-      map.leafletMap.fitBounds(latLngs, { padding: [100, 100] });
+      map.showAll(props.coordinates);
     }
-  }, [map.leafletMap, props.coordinates]);
+  }, [map, props.coordinates]);
 
   return null;
 }

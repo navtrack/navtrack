@@ -19,8 +19,8 @@ export function MapPin(props: MapPinProps) {
       L.divIcon({
         className: undefined,
         html: renderToString(<PinIcon color={props.color} />),
-        iconSize: [27, 41],
-        iconAnchor: [18, 41]
+        iconSize: [28, 42],
+        iconAnchor: [14, 35]
       }),
     [props.color]
   );
