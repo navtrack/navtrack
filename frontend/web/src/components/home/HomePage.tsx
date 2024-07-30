@@ -68,6 +68,7 @@ export function HomePage() {
                 key={asset.id}
                 coordinates={asset.position!.coordinates}
                 label={asset.name}
+                color={asset.online ? "green" : "red"}
                 onClick={() =>
                   navigate(generatePath(Paths.AssetsLive, { id: asset.id }))
                 }

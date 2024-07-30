@@ -8,6 +8,7 @@ type MapPinProps = {
   follow?: boolean;
   label: string;
   onClick?: () => void;
+  color?: "primary" | "green" | "red";
 };
 
 export function MapPinLabel(props: MapPinProps) {
@@ -22,7 +23,7 @@ export function MapPinLabel(props: MapPinProps) {
         <div className="mb-1 rounded-xl bg-white/80 px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-md drop-shadow-md">
           {props.label}
         </div>
-        <PinIcon />
+        <PinIcon color={props.color} />
       </div>
     </MapCustomMarker>
   );
