@@ -1,19 +1,18 @@
 import { PinIcon } from "./PinIcon";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
 import { MapCustomMarker } from "./MapCustomMarker";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
+import { MapPinUiModel } from "@navtrack/shared/models/maps";
 
 type MapPinProps = {
-  coordinates?: LatLongModel;
-  follow?: boolean;
-  label: string;
+  pin: MapPinUiModel;
   onClick?: () => void;
-  color?: "primary" | "green" | "red";
 };
 
 export function MapPinLabel(props: MapPinProps) {
   return (
-    <MapCustomMarker coordinates={props.coordinates} follow={props.follow}>
+    <MapCustomMarker
+      coordinates={props.pin.coordinates}
+      follow={props.pin.follow}>
       <div
         className={classNames(
           "flex w-24 flex-col items-center",
@@ -21,9 +20,9 @@ export function MapPinLabel(props: MapPinProps) {
         )}
         onClick={props.onClick}>
         <div className="mb-1 rounded-xl bg-white/80 px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-md drop-shadow-md">
-          {props.label}
+          {props.pin.label}
         </div>
-        <PinIcon color={props.color} />
+        <PinIcon color={props.pin.color} />
       </div>
     </MapCustomMarker>
   );

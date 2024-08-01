@@ -4,12 +4,10 @@ import { PinIcon } from "./PinIcon";
 import { renderToString } from "react-dom/server";
 import { useMemo } from "react";
 import { MapCenter } from "./MapCenter";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { MapPinUiModel } from "@navtrack/shared/models/maps";
 
 type MapPinProps = {
-  coordinates?: LatLongModel;
-  follow?: boolean;
-  color?: "primary" | "green" | "red";
+  pin: MapPinUiModel;
   zIndexOffset?: number;
 };
 
@@ -18,22 +16,25 @@ export function MapPin(props: MapPinProps) {
     () =>
       L.divIcon({
         className: undefined,
-        html: renderToString(<PinIcon color={props.color} />),
+        html: renderToString(<PinIcon color={props.pin.color} />),
         iconSize: [28, 42],
         iconAnchor: [14, 35]
       }),
-    [props.color]
+    [props.pin.color]
   );
 
-  if (props.coordinates !== undefined) {
+  if (props.pin.coordinates !== undefined) {
     return (
       <>
         <Marker
-          position={[props.coordinates.latitude, props.coordinates.longitude]}
+          position={[
+            props.pin.coordinates.latitude,
+            props.pin.coordinates.longitude
+          ]}
           icon={pin}
           zIndexOffset={props.zIndexOffset}
         />
-        {props.follow && <MapCenter position={props.coordinates} />}
+        {props.pin.follow && <MapCenter position={props.pin.coordinates} />}
       </>
     );
   }

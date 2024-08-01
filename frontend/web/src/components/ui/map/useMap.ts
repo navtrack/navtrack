@@ -1,4 +1,5 @@
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import L from "leaflet";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { useCallback } from "react";
 import { useMap as useLeafletMap } from "react-leaflet";
@@ -20,16 +21,38 @@ export function useMap() {
     [map]
   );
 
-  const showAll = useCallback(
-    (coordinates: LatLongModel[], customPadding: number = 100) => {
-      const latLngs = coordinates.map((position) => {
-        return [position.latitude, position.longitude] as LatLngTuple;
-      });
+  const showAllMarkers = useCallback(
+    (
+      coordinates: LatLongModel[] | undefined = undefined,
+      customPadding: number = 100
+    ) => {
+      let latLngs: LatLngTuple[] = [];
 
-      map.fitBounds(latLngs, { padding: [customPadding, customPadding] });
+      if (coordinates !== undefined) {
+        latLngs = coordinates.map((position) => {
+          return [position.latitude, position.longitude] as LatLngTuple;
+        });
+      } else {
+        map.eachLayer((layer) => {
+          if (layer instanceof L.Marker) {
+            const latLng = (layer as L.Marker).getLatLng();
+
+            latLngs.push([latLng.lat, latLng.lng]);
+          }
+        });
+      }
+
+      if (latLngs.length > 0) {
+        map.fitBounds(latLngs, { padding: [customPadding, customPadding] });
+      }
     },
     [map]
   );
 
-  return { leafletMap: map, setCenter, setZoom, showAll };
+  return {
+    leafletMap: map,
+    setCenter,
+    setZoom,
+    showAllMarkers
+  };
 }

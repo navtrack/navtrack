@@ -123,7 +123,9 @@ export function AssetLogPage() {
           <Map
             center={position ? position.coordinates : DEFAULT_MAP_CENTER}
             initialZoom={14}>
-            <MapPin coordinates={position?.coordinates} follow />
+            <MapPin
+              pin={{ coordinates: position?.coordinates, follow: true }}
+            />
           </Map>
         </CardMapWrapper>
       </Card>

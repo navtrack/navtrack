@@ -27,7 +27,7 @@ export function AssetLiveTrackingPage() {
           <Card className="flex flex-grow">
             <CardMapWrapper>
               <Map center={position.coordinates}>
-                <MapPin coordinates={position.coordinates} />
+                <MapPin pin={{ coordinates: position.coordinates }} />
                 <MapFollowControl position={position.coordinates} />
               </Map>
             </CardMapWrapper>

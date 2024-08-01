@@ -30,8 +30,8 @@ export function MapFollowControl(props: MapFollowControlProps) {
           props.onChange?.(!follow);
         }}
         className={classNames(
-          "mb-2 cursor-pointer rounded-lg bg-white px-2 py-0.5 text-sm font-medium shadow-md",
-          c(follow, "text-blue-600", "text-gray-400")
+          "mb-2 cursor-pointer rounded-lg bg-white px-2 py-0.5 text-sm font-medium shadow-md hover:bg-gray-100",
+          c(follow, "text-blue-600", "text-gray-500")
         )}>
         <Icon icon={faLocationArrow} className="mr-1" />
         {follow ? "Follow On" : "Follow Off"}

@@ -32,8 +32,9 @@ export function AssetTripsPage() {
   const slots = useContext(SlotContext);
   const [selectedTrip, setSelectedTrip] = useRecoilState(selectedTripAtom);
   const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
-  const [reverseGeocodePosition, setReverseGeocodePosition] =
-    useState<PositionModel>(selectedTripPosition);
+  const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
+    PositionModel | undefined
+  >(selectedTripPosition);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useRecoilState(selectedTripPositionIndexAtom);
   const [showPin, setShowPin] = useState(false);
@@ -131,7 +132,9 @@ export function AssetTripsPage() {
             <MapTrip trip={selectedTrip} />
             {selectedTripPosition && showPin && (
               <MapPin
-                coordinates={selectedTripPosition.coordinates}
+                pin={{
+                  coordinates: selectedTripPosition.coordinates
+                }}
                 zIndexOffset={1}
               />
             )}

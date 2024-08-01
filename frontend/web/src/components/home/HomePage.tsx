@@ -2,7 +2,6 @@ import { Card } from "../ui/card/Card";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
 import { CardMapWrapper } from "../ui/map/CardMapWrapper";
 import { Map } from "../ui/map/Map";
-import { MapFitBounds } from "../ui/map/MapFitBounds";
 import { useMemo } from "react";
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
 import { StatCountCard } from "../ui/card/StatCountCard";
@@ -10,6 +9,8 @@ import { startOfDay } from "date-fns";
 import { MapPinLabel } from "../ui/map/MapPinLabel";
 import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";
+import { MapShowAllControl } from "../ui/map/MapShowAllControl";
+import { MapShowAll } from "../ui/map/MapShowAll";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -18,12 +19,6 @@ export function HomePage() {
   const assetsWithPosition = useMemo(
     () => assets.data?.items.filter((x) => x.position !== undefined) ?? [],
     [assets.data?.items]
-  );
-
-  const coordinates = useMemo(
-    () =>
-      assetsWithPosition.map((x) => x.position?.coordinates) as LatLongModel[],
-    [assetsWithPosition]
   );
 
   const onlineAssets = assets.data?.items.filter((x) => x.online).length ?? 0;
@@ -35,6 +30,12 @@ export function HomePage() {
         new Date(x.position.date) > startOfDay(new Date())
     ) ?? []
   ).length;
+
+  const coordinates = useMemo(
+    () =>
+      assetsWithPosition.map((x) => x.position?.coordinates) as LatLongModel[],
+    [assetsWithPosition]
+  );
 
   return (
     <>
@@ -66,15 +67,18 @@ export function HomePage() {
             {assetsWithPosition.map((asset) => (
               <MapPinLabel
                 key={asset.id}
-                coordinates={asset.position!.coordinates}
-                label={asset.name}
-                color={asset.online ? "green" : "primary"}
+                pin={{
+                  coordinates: asset.position!.coordinates,
+                  label: asset.name,
+                  color: asset.online ? "green" : "red"
+                }}
                 onClick={() =>
                   navigate(generatePath(Paths.AssetsLive, { id: asset.id }))
                 }
               />
             ))}
-            <MapFitBounds coordinates={coordinates} />
+            <MapShowAll coordinates={coordinates} once />
+            <MapShowAllControl />
           </Map>
         </CardMapWrapper>
       </Card>

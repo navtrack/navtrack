@@ -118,8 +118,10 @@ export default {
     return (
       <Map center={DEFAULT_MAP_CENTER}>
         <MapPin
-          coordinates={{ latitude: latitude, longitude: longitude }}
-          follow
+          pin={{
+            coordinates: { latitude: latitude, longitude: longitude },
+            follow: true
+          }}
         />
       </Map>
     );
@@ -148,7 +150,9 @@ export default {
 
     return (
       <Map center={DEFAULT_MAP_CENTER}>
-        <MapPin coordinates={{ latitude: latitude, longitude: longitude }} />
+        <MapPin
+          pin={{ coordinates: { latitude: latitude, longitude: longitude } }}
+        />
         <MapFollowControl
           position={{ latitude: latitude, longitude: longitude }}
           follow={follow}

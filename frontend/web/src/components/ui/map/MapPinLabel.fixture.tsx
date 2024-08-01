@@ -12,8 +12,10 @@ export default {
       <Map center={{ latitude, longitude }} initialZoom={20}>
         {visible && (
           <MapPinLabel
-            coordinates={{ latitude, longitude }}
-            label="Choco's car"
+            pin={{
+              coordinates: { latitude, longitude },
+              label: "Choco's car"
+            }}
           />
         )}
       </Map>

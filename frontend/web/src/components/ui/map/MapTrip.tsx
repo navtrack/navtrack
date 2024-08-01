@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useMap } from "./useMap";
 import { MapPin } from "./MapPin";
 import { TripModel } from "@navtrack/shared/api/model/generated";
-import { MapPinLabel } from "./MapPinLabel";
 
 type MapTripProps = {
   trip?: TripModel;
@@ -28,7 +27,7 @@ export function MapTrip(props: MapTripProps) {
         const pl = L.polyline(latlngs, { color: "red" });
         pl.addTo(map.leafletMap);
         setPolyline(pl);
-        map.showAll(
+        map.showAllMarkers(
           props.trip.positions.map((x) => x.coordinates),
           100
         );
@@ -42,11 +41,17 @@ export function MapTrip(props: MapTripProps) {
     return (
       <>
         <MapPin
-          coordinates={props.trip.startPosition.coordinates}
-          color="green"
+          pin={{
+            coordinates: props.trip.startPosition.coordinates,
+            color: "green"
+          }}
         />
-        <MapPin coordinates={props.trip.endPosition.coordinates} color="red" />
-        <MapPin coordinates={props.trip.endPosition.coordinates} color="red" />
+        <MapPin
+          pin={{
+            coordinates: props.trip.endPosition.coordinates,
+            color: "red"
+          }}
+        />
       </>
     );
   }

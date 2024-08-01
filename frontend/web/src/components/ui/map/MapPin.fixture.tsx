@@ -10,7 +10,7 @@ export default {
 
     return (
       <Map center={{ latitude, longitude }} initialZoom={20}>
-        {visible && <MapPin coordinates={{ latitude, longitude }} />}
+        {visible && <MapPin pin={{ coordinates: { latitude, longitude } }} />}
       </Map>
     );
   }
