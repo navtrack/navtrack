@@ -1,7 +1,6 @@
 import { IntlProvider } from "react-intl";
 import { RecoilRoot } from "recoil";
-import { SentryProvider } from "./SentryProvider";
-import { AppConfig, appConfigAtom } from "@navtrack/shared/state/appConfig";
+import { AppConfig } from "@navtrack/shared/state/appConfig";
 import { AxiosConfigurator } from "@navtrack/shared/components/AxiosConfigurator";
 import { ConfigProvider } from "@navtrack/shared/components/ConfigProvider";
 import { ReactNode, Suspense } from "react";
@@ -27,7 +26,6 @@ export function BaseApp(props: BaseAppProps) {
         <QueryClientProvider client={queryClient}>
           {props.config.reactQueryDevtools && <ReactQueryDevtools />}
           <ConfigProvider config={props.config}>
-            <SentryProvider>
               <AxiosConfigurator>
                 <IntlProvider locale="en" messages={props.translations}>
                   <Authentication>
@@ -42,7 +40,6 @@ export function BaseApp(props: BaseAppProps) {
                   </Authentication>
                 </IntlProvider>
               </AxiosConfigurator>
-            </SentryProvider>
           </ConfigProvider>
         </QueryClientProvider>
       </RecoilRoot>

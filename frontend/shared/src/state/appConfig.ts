@@ -21,9 +21,6 @@ export type AppConfig = {
       redirectUri?: string;
     };
   };
-  sentry?: {
-    dsn: string;
-  };
   map: {
     tileUrl: string;
   };

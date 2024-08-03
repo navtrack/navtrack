@@ -1,4 +1,4 @@
-import { Transition, Dialog } from "@headlessui/react";
+import { Transition, Dialog, TransitionChild } from "@headlessui/react";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Fragment, ReactNode } from "react";
 
@@ -11,13 +11,13 @@ type ModalProps = {
 
 export function Modal(props: ModalProps) {
   return (
-    <Transition.Root show={props.open} as={Fragment}>
+    <Transition show={props.open} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-20 overflow-y-auto"
         onClose={() => props.close()}>
         <div className="flex min-h-screen items-center justify-center p-4">
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-200"
             enterFrom="opacity-0"
@@ -25,9 +25,9 @@ export function Modal(props: ModalProps) {
             leave="ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0">
-            <Dialog.Overlay className="fixed inset-0 bg-gray-900 bg-opacity-40 transition-opacity" />
-          </Transition.Child>
-          <Transition.Child
+            <div className="fixed inset-0 bg-gray-900 bg-opacity-40 transition-opacity" onClick={() => props.close()} />
+          </TransitionChild>
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-200"
             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -42,9 +42,9 @@ export function Modal(props: ModalProps) {
               )}>
               {props.children}
             </div>
-          </Transition.Child>
+          </TransitionChild>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 }
