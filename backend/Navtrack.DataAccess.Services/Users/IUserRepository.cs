@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Users;
@@ -14,7 +13,6 @@ public interface IUserRepository : IGenericRepository<UserDocument>
     Task DeleteAssetRoles(string assetId);
     Task<UserDocument?> GetByEmail(string email);
     Task<bool> EmailIsUsed(string email);
-    Task<List<UserDocument>> GetUsersByIds(IEnumerable<ObjectId> userIds);
     Task Update(ObjectId id, UpdateUser updateUser);
     Task AddAssetRole(ObjectId userId, UserAssetRoleElement userAssetRole);
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Driver;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Errors;
@@ -117,7 +116,7 @@ public class AssetService(
     public async Task<ListModel<AssetUserModel>> GetAssetUsers(string assetId)
     {
         AssetDocument asset = await assetRepository.GetById(assetId);
-        List<UserDocument> users = await userRepository.GetUsersByIds(asset.UserRoles.Select(x => x.UserId));
+        List<UserDocument> users = await userRepository.GetByIds(asset.UserRoles.Select(x => x.UserId));
 
         return AssetUserListModelMapper.Map(asset, users);
     }

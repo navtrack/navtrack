@@ -13,15 +13,9 @@ namespace Navtrack.DataAccess.Services.Users;
 [Service(typeof(IUserRepository))]
 public class UserRepository(IRepository repository) : GenericRepository<UserDocument>(repository), IUserRepository
 {
-    public Task<UserDocument> GetByObjectId(ObjectId id)
-    {
-        return repository.GetQueryable<UserDocument>()
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
     public Task<UserDocument> GetByEmailOrAppleId(string email, string id)
     {
-        email = email.ToLower();
+        email = LowerAndTrim(email);
 
         return repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.AppleId == id || x.Email == email);
@@ -29,7 +23,7 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
 
     public Task<UserDocument> GetByEmailOrGoogleId(string email, string id)
     {
-        email = email.ToLower();
+        email = LowerAndTrim(email);
 
         return repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.GoogleId == id || x.Email == email);
@@ -37,7 +31,7 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
 
     public Task<UserDocument> GetByEmailOrMicrosoftId(string email, string id)
     {
-        email = email.ToLower();
+        email = LowerAndTrim(email);
 
         return repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.MicrosoftId == id || x.Email == email);
@@ -53,7 +47,7 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
 
     public async Task<UserDocument?> GetByEmail(string email)
     {
-        email = email.ToLower();
+        email = LowerAndTrim(email);
 
         UserDocument? user = await repository.GetQueryable<UserDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
@@ -63,23 +57,9 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
 
     public Task<bool> EmailIsUsed(string email)
     {
-        email = email.ToLower();
+        email = LowerAndTrim(email);
 
-        return repository.GetCollection<UserDocument>().AsQueryable()
-            .AnyAsync(x => x.Email == email);
-    }
-
-    public Task<UserDocument> GetUserById(string id)
-    {
-        return repository.GetQueryable<UserDocument>()
-            .FirstOrDefaultAsync(x => x.Id == ObjectId.Parse(id));
-    }
-
-    public Task<List<UserDocument>> GetUsersByIds(IEnumerable<ObjectId> userIds)
-    {
-        return repository.GetQueryable<UserDocument>()
-            .Where(x => userIds.Contains(x.Id))
-            .ToListAsync();
+        return repository.GetQueryable<UserDocument>().AnyAsync(x => x.Email == email);
     }
 
     public async Task Update(ObjectId id, UpdateUser updateUser)
@@ -131,5 +111,12 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
         return repository.GetCollection<UserDocument>()
             .UpdateOneAsync(x => x.Id == userId,
                 Builders<UserDocument>.Update.AddToSet(x => x.AssetRoles, userAssetRole));
+    }
+
+    private static string LowerAndTrim(string email)
+    {
+        email = email.ToLower().Trim();
+
+        return email;
     }
 }
