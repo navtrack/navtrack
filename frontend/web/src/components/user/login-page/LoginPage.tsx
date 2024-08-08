@@ -11,33 +11,21 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { Paths } from "../../../app/Paths";
 import { Alert } from "../../ui/alert/Alert";
 import { useLoginFormValidationSchema } from "@navtrack/shared/hooks/user/login/useLoginFormValidationSchema";
-import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { InitialLoginFormValues } from "@navtrack/shared/hooks/user/login/LoginFormValues";
-import { useContext, useMemo } from "react";
-import { AuthenticationErrorType } from "@navtrack/shared/hooks/app/authentication/authentication";
+import { useContext } from "react";
 import { UnauthenticatedLayout } from "../../ui/layouts/unauthenticated/UnauthenticatedLayout";
 import { Button } from "../../ui/button/Button";
 import { SlotContext } from "../../../app/SlotContext";
-import { isLoggingInAtom } from "@navtrack/shared/state/authentication";
-import { useRecoilValue } from "recoil";
+import { useAuthentication } from "@navtrack/shared/hooks/app/authentication/useAuthentication";
 
 export function LoginPage() {
-  const login = useLogin();
   const validationSchema = useLoginFormValidationSchema();
   const slots = useContext(SlotContext);
-  const isLoading = useRecoilValue(isLoggingInAtom);
+  const authentication = useAuthentication();
 
-  const errorMessage = useMemo(
-    () =>
-      login.error !== undefined
-        ? login.error === AuthenticationErrorType.Internal
-          ? "login.internal-login-error"
-          : login.error === AuthenticationErrorType.Other
-          ? "authentication.logged-out"
-          : "generic.error-message"
-        : undefined,
-    [login.error]
-  );
+  if (authentication.state.external?.error) {
+    return <>{slots?.linkAccountWithExternalLoginPage}</>;
+  }
 
   return (
     <UnauthenticatedLayout>
@@ -45,15 +33,15 @@ export function LoginPage() {
         <FormattedMessage id="login.title" />
       </h2>
       <Card className="mx-auto mt-8 w-full max-w-md p-8">
-        {errorMessage !== undefined && (
+        {authentication.state.error !== undefined && (
           <Alert className="mb-3">
-            <FormattedMessage id={errorMessage} />
+            <FormattedMessage id={`errors.${authentication.state.error}`} />
           </Alert>
         )}
         <Formik
           initialValues={InitialLoginFormValues}
           onSubmit={(values) =>
-            login.internalLogin({
+            authentication.internalLogin({
               username: values.email,
               password: values.password
             })
@@ -91,9 +79,9 @@ export function LoginPage() {
                   type="submit"
                   color="secondary"
                   size="lg"
-                  isLoading={isLoading}
+                  isLoading={authentication.state.isLoading}
                   full>
-                  <FormattedMessage id="login.button" />
+                  <FormattedMessage id="generic.log-in" />
                 </Button>
               </div>
             </Form>

@@ -5,9 +5,10 @@ import { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, ref, string } from "yup";
 import { useNotification } from "../ui/notification/useNotification";
+import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
 
 export type ChangePasswordFormValues = {
-  currentPassword: string;
+  currentPassword?: string;
   password: string;
   confirmPassword: string;
 };
@@ -16,6 +17,7 @@ export function useChangePassword() {
   const intl = useIntl();
   const { showNotification } = useNotification();
   const changePasswordMutation = useChangePasswordMutation();
+  const currentUser = useCurrentUserQuery();
 
   const handleSubmit = useCallback(
     (
@@ -48,11 +50,13 @@ export function useChangePassword() {
   );
 
   const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
-    currentPassword: string().required(
-      intl.formatMessage({
-        id: "settings.password.current-password.required"
-      })
-    ),
+    currentPassword: currentUser.data?.authentication?.password
+      ? string().required(
+          intl.formatMessage({
+            id: "settings.password.current-password.required"
+          })
+        )
+      : string().optional(),
     password: string()
       .notOneOf(
         [ref("currentPassword")],

@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 import { AUTH_AXIOS_INSTANCE } from "../../../api/authAxiosInstance";
-import { isAuthenticatedAtom } from "../../../state/authentication";
-import { useAccessToken } from "../authentication/useAccessToken";
 import { log } from "../../../utils/log";
 import { useAuthentication } from "../authentication/useAuthentication";
 
@@ -13,8 +10,6 @@ type AxiosInterceptor = {
 let interceptor: AxiosInterceptor | undefined = undefined;
 
 export function useAxiosAuthorization() {
-  const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
-  const token = useAccessToken();
   const authentication = useAuthentication();
   const [configured, setConfigured] = useState(false);
 
@@ -22,7 +17,7 @@ export function useAxiosAuthorization() {
     if (interceptor === undefined) {
       const requestInterceptorId = AUTH_AXIOS_INSTANCE.interceptors.request.use(
         async (config) => {
-          const accessToken = await token.getAccessToken();
+          const accessToken = await authentication.getAccessToken();
 
           config.headers.Authorization = `Bearer ${accessToken}`;
 
@@ -37,7 +32,7 @@ export function useAxiosAuthorization() {
       setConfigured(true);
       log("AXIOS AUTH", "INTERCEPTORS SET");
     }
-  }, [authentication, isAuthenticated, token]);
+  }, [authentication]);
 
   return configured;
 }

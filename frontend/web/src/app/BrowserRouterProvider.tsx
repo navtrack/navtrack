@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { isAuthenticatedAtom } from "@navtrack/shared/state/authentication";
 import { ReactNode } from "react";
+import { useAuthentication } from "@navtrack/shared/hooks/app/authentication/useAuthentication";
 
 type BrowserRouterProviderProps = {
   privateRoutes: ReactNode;
@@ -9,11 +8,13 @@ type BrowserRouterProviderProps = {
 };
 
 export function BrowserRouterProvider(props: BrowserRouterProviderProps) {
-  const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
+  const authentication = useAuthentication();
 
   return (
     <BrowserRouter>
-      {isAuthenticated ? props.privateRoutes : props.publicRoutes}
+      {authentication.state.isAuthenticated
+        ? props.privateRoutes
+        : props.publicRoutes}
     </BrowserRouter>
   );
 }

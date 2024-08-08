@@ -16,4 +16,6 @@ public class UserModel
     public UnitsType Units { get; set; }
 
     public IEnumerable<UserAssetRoleModel> AssetRoles { get; set; }
+    
+    public UserAuthenticationModel Authentication { get; set; }
 }

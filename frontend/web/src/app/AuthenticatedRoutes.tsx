@@ -9,7 +9,7 @@ import { AssetSettingsGeneralPage } from "../components/asset/settings/general/A
 import { AssetAddPage } from "../components/asset/add/AssetAddPage";
 import { AssetSettingsAccessPage } from "../components/asset/settings/access/AssetSettingsAccessPage";
 import { Paths } from "./Paths";
-import { SettingsPasswordPage } from "../components/settings/SettingsPasswordPage";
+import { SettingsAuthenticationPage } from "../components/settings/SettingsAuthenticationPage";
 import { AssetSettingsDevicePage } from "../components/asset/settings/device/AssetSettingsDevicePage";
 import { ReactNode } from "react";
 import { useSetCurrentAssetFromRoute } from "../hooks/assets/useSetCurrentAssetFromRoute";
@@ -58,8 +58,8 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
       <Route element={<AccountSettingsLayout />}>
         {props.accountSettingsRoutes}
         <Route
-          path={Paths.SettingsPassword}
-          element={<SettingsPasswordPage />}
+          path={Paths.SettingsAuthentication}
+          element={<SettingsAuthenticationPage />}
         />
         <Route path={Paths.SettingsAccount} element={<SettingsAccountPage />} />
       </Route>

@@ -6,11 +6,13 @@ export type LinkProps = {
   to: string;
   label: string;
   className?: string;
+  onClick?: () => void;
 };
 
 export function Link(props: LinkProps) {
   return (
     <RouterLink
+      onClick={props.onClick}
       to={props.to}
       className={classNames(
         props.className,

@@ -81,25 +81,25 @@ public class UserRepository(IRepository repository) : GenericRepository<UserDocu
             updateDefinitions.Add(Builders<UserDocument>.Update.Set(x => x.Password, updateUser.Password));
         }
 
-        if (!string.IsNullOrEmpty(updateUser.AppleId))
+        if (updateUser.AppleId != null)
         {
             updateDefinitions.Add(
                 Builders<UserDocument>.Update.Set(x => x.AppleId, updateUser.AppleId));
         }
 
-        if (!string.IsNullOrEmpty(updateUser.MicrosoftId))
+        if (updateUser.MicrosoftId != null)
         {
             updateDefinitions.Add(
-                Builders<UserDocument>.Update.Set(x => x.AppleId, updateUser.AppleId));
+                Builders<UserDocument>.Update.Set(x => x.MicrosoftId, updateUser.MicrosoftId));
         }
 
-        if (!string.IsNullOrEmpty(updateUser.GoogleId))
+        if (updateUser.GoogleId != null)
         {
             updateDefinitions.Add(
-                Builders<UserDocument>.Update.Set(x => x.AppleId, updateUser.AppleId));
+                Builders<UserDocument>.Update.Set(x => x.GoogleId, updateUser.GoogleId));
         }
 
-        if (updateDefinitions.Any())
+        if (updateDefinitions.Count != 0)
         {
             await repository.GetCollection<UserDocument>().UpdateOneAsync(x => x.Id == id,
                 Builders<UserDocument>.Update.Combine(updateDefinitions));

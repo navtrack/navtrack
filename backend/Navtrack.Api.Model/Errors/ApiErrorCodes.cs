@@ -25,4 +25,8 @@ public static class ApiErrorCodes
     public static readonly ApiError UserAlreadyOnAsset = new ("100018", "This user already has a role on this asset.");
     public static readonly ApiError InvalidRole = new ("100019", "Invalid role.");
     public static readonly ApiError InvalidCaptcha = new ("100020", "Invalid captcha.");
+    public static readonly ApiError InvalidUsernameOrPassword = new ("100021", "Invalid username or password.");
+    public static readonly ApiError UserAndSocialLoginNotLinked = new ("100022", "The user is not linked with the social login.");
+    public static readonly ApiError InvalidToken = new ("100023", "Invalid token.");
+    public static readonly ApiError InvalidPassword = new ("100024", "Invalid password.");
 }

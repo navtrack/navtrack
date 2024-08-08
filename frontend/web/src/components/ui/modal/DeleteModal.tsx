@@ -18,6 +18,7 @@ type DeleteModalProps = {
   maxWidth?: "lg";
   disabled?: boolean;
   deleteButtonTitle?: string;
+  buttonLabel?: string;
 };
 
 export function DeleteModal(props: DeleteModalProps) {
@@ -51,7 +52,9 @@ export function DeleteModal(props: DeleteModalProps) {
           onClick={() => setOpen(true)}
           disabled={props.disabled}
           title={props.deleteButtonTitle}
-        />
+          size="xs">
+          {props.buttonLabel && <FormattedMessage id={props.buttonLabel} />}
+        </Button>
       )}
       {!props.disabled && (
         <Modal

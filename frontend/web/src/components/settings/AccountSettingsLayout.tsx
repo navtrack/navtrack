@@ -15,8 +15,8 @@ export const defaultAccountSettingsMenuItem: SettingsMenuItemProps[] = [
     priority: 10
   },
   {
-    label: "settings.menu.password",
-    path: Paths.SettingsPassword,
+    label: "settings.menu.password-authentication",
+    path: Paths.SettingsAuthentication,
     icon: faKey,
     priority: 20
   }

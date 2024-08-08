@@ -7,13 +7,13 @@ import { FormattedMessage } from "react-intl";
 import { IconWithText } from "../../icon/IconWithText";
 import { Link } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
-import { useLogin } from "@navtrack/shared/hooks/app/authentication/useLogin";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
+import { useAuthentication } from "@navtrack/shared/hooks/app/authentication/useAuthentication";
 
 export function AuthenticatedLayoutNavbarProfile() {
   const currentUser = useCurrentUserQuery();
-  const { logout } = useLogin();
+  const authentication = useAuthentication();
 
   return (
     <Menu as="div" className="relative">
@@ -56,7 +56,7 @@ export function AuthenticatedLayoutNavbarProfile() {
           <Menu.Item>
             {({ active }) => (
               <div
-                onClick={logout}
+                onClick={authentication.logout}
                 className={classNames(
                   active ? "bg-gray-100" : "",
                   "block cursor-pointer px-4 py-2 text-sm text-gray-700"

@@ -21,11 +21,6 @@ using Navtrack.Shared.Services.Settings.Models;
 
 namespace Navtrack.Api.Services.Account;
 
-public interface ICaptchaValidator
-{
-    Task<bool> Validate(string captcha);
-}
-
 [Service(typeof(IAccountService))]
 public class AccountService(
     IPasswordHasher hasher,
@@ -48,14 +43,12 @@ public class AccountService(
 
         if (model.Password != model.ConfirmPassword)
         {
-            apiException.AddValidationError(nameof(model.ConfirmPassword),
-                ApiErrorCodes.PasswordsDoNotMatch);
+            apiException.AddValidationError(nameof(model.ConfirmPassword), ApiErrorCodes.PasswordsDoNotMatch);
         }
-        
+
         if (captchaValidator != null && !await captchaValidator.Validate(model.Captcha))
         {
-            apiException.AddValidationError(nameof(model.Captcha),
-                ApiErrorCodes.InvalidCaptcha);
+            apiException.AddValidationError(nameof(model.Captcha), ApiErrorCodes.InvalidCaptcha);
         }
 
         apiException.ThrowIfInvalid();
@@ -110,7 +103,7 @@ public class AccountService(
 
         ValidationApiException apiException = new();
 
-        if (!hasher.CheckPassword(model.CurrentPassword, currentUser.Password.Hash,
+        if (currentUser.Password != null && !hasher.CheckPassword(model.CurrentPassword, currentUser.Password.Hash,
                 currentUser.Password.Salt))
         {
             apiException.AddValidationError(nameof(model.CurrentPassword), ApiErrorCodes.CurrentPasswordInvalid);

@@ -5,9 +5,10 @@ type ClassName = string | undefined;
 export function c(
   check: boolean | string | undefined,
   trueValue: ClassName,
-  falseValue: ClassName = ""
+  falseValue: ClassName = "",
+  bothValue: ClassName = ""
 ) {
-  return !!check ? trueValue : falseValue ?? "";
+  return classNames(!!check ? trueValue : falseValue, bothValue);
 }
 
 export function classNames(...classNames: ClassName[]) {

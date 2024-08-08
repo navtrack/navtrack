@@ -1222,13 +1222,9 @@
           {
             "type": "object",
             "additionalProperties": false,
-            "required": [
-              "currentPassword"
-            ],
             "properties": {
               "currentPassword": {
-                "type": "string",
-                "minLength": 1
+                "type": "string"
               }
             }
           }
@@ -1939,6 +1935,9 @@
             "items": {
               "$ref": "#/components/schemas/UserAssetRoleModel"
             }
+          },
+          "authentication": {
+            "$ref": "#/components/schemas/UserAuthenticationModel"
           }
         }
       },
@@ -1968,6 +1967,15 @@
           },
           "role": {
             "$ref": "#/components/schemas/AssetRoleType"
+          }
+        }
+      },
+      "UserAuthenticationModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "password": {
+            "type": "boolean"
           }
         }
       },

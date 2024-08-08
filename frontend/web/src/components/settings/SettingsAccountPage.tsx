@@ -15,7 +15,6 @@ import { CardHeader } from "../ui/card/CardHeader";
 import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
-import { Skeleton } from "../ui/skeleton/Skeleton";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
 
 type AccountSettingsFormValues = {

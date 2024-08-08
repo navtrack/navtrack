@@ -43,7 +43,9 @@ export function useMap() {
       }
 
       if (latLngs.length > 0) {
-        map.fitBounds(latLngs, { padding: [customPadding, customPadding] });
+        map.fitBounds(latLngs);
+        // TODO
+        // map.fitBounds(latLngs, { padding: [customPadding, customPadding] });
       }
     },
     [map]

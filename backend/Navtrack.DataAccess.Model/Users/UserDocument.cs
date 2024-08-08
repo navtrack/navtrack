@@ -18,7 +18,7 @@ public class UserDocument : BaseDocument
     public UnitsType UnitsType { get; set; }
 
     [BsonElement("password")]
-    public PasswordElement Password { get; set; }
+    public PasswordElement? Password { get; set; }
         
     [BsonElement("createdDate")]
     public DateTime CreatedDate { get; set; }

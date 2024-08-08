@@ -1,32 +1,18 @@
-import { ReactNode, useEffect, useState } from "react";
-import { useAccessToken } from "../hooks/app/authentication/useAccessToken";
-import { useRecoilValue } from "recoil";
-import { isAuthenticatedAtom } from "../state/authentication";
-import { log } from "../utils/log";
+import { ReactNode, useEffect } from "react";
+import { useAuthentication } from "../hooks/app/authentication/useAuthentication";
 
 type AuthenticationProps = {
   children: ReactNode;
 };
 
 export function Authentication(props: AuthenticationProps) {
-  const accessToken = useAccessToken();
-  const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
-  const [checked, setChecked] = useState(false);
+  const authentication = useAuthentication();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (!checked && !accessToken.isLoading) {
-        log("AUTHENTICATION - !checked");
-        accessToken.getAccessToken().then((x) => {
-          setChecked(true);
-          log("AUTHENTICATION - checked");
-        });
-      }
-    } else {
-      log("AUTHENTICATION - !authenticated");
-      setChecked(true);
+    if (!authentication.state.initialized) {
+      authentication.initialize();
     }
-  }, [accessToken, isAuthenticated, checked]);
+  }, [authentication]);
 
-  return <>{checked && props.children}</>;
+  return <>{authentication.state.initialized && props.children}</>;
 }

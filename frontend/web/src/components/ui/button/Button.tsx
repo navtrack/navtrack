@@ -25,15 +25,15 @@ export function Button(props: ButtonProps) {
       title={props.title}
       disabled={props.isLoading || props.disabled}
       className={classNames(
-        "font-semibold shadow-sm",
+        "whitespace-nowrap font-semibold shadow-sm",
+        c(props.size === "xs", "h-6 rounded px-2 text-xs"),
+        c(props.size === "sm", "h-7 rounded px-2.5 text-sm"),
         c(
           props.size === undefined || props.size === "base",
-          "rounded-md px-2.5 py-1.5 text-sm"
+          "h-8 rounded px-3 text-sm"
         ),
-        c(props.size === "xs", "rounded px-2 py-1 text-xs"),
-        c(props.size === "sm", "rounded px-2 py-1 text-sm"),
-        c(props.size === "md", "rounded-md px-3 py-2 text-sm"),
-        c(props.size === "lg", "rounded-md px-3.5 py-2.5 text-sm"),
+        c(props.size === "md", "h-9 rounded px-3.5 text-sm"),
+        c(props.size === "lg", "h-10 rounded px-4 text-sm"),
         c(
           props.color === undefined || props.color === "primary",
           "bg-blue-700 text-white hover:bg-blue-800 disabled:bg-blue-500 disabled:opacity-90"
@@ -65,7 +65,14 @@ export function Button(props: ButtonProps) {
         {props.icon && !props.isLoading && (
           <Icon
             icon={props.icon}
-            className={props.children !== undefined ? "mr-2" : undefined}
+            className={classNames(
+              c(props.children !== undefined, "mr-2"),
+              c(props.size === "xs", "text-xs"),
+              c(props.size === "sm", "text-xs"),
+              c(props.size === undefined || props.size === "base", "text-sm"),
+              c(props.size === "md", "text-base"),
+              c(props.size === "lg", "text-lg")
+            )}
           />
         )}
         {props.children}

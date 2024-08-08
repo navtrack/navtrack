@@ -5,6 +5,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ChangePasswordModelAllOf = {
-  currentPassword?: string;
-};
+export interface UserAuthenticationModel {
+  password?: boolean;
+}

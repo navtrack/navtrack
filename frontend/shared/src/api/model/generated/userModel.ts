@@ -5,10 +5,12 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { UserAssetRoleModel } from "./userAssetRoleModel";
+import type { UserAuthenticationModel } from "./userAuthenticationModel";
 import type { UnitsType } from "./unitsType";
 
 export interface UserModel {
   assetRoles?: UserAssetRoleModel[];
+  authentication?: UserAuthenticationModel;
   email: string;
   id: string;
   units: UnitsType;

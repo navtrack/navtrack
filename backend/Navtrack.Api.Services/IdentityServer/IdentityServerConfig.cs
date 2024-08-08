@@ -7,7 +7,7 @@ namespace Navtrack.Api.Services.IdentityServer;
 
 public static class IdentityServerConfig
 {
-    public static string NavtrackMobileClientId  = "navtrack.mobile";
+    public const string NavtrackMobileClientId = "navtrack.mobile";
 
     public static IEnumerable<IdentityResource> GetIdentityResources()
     {

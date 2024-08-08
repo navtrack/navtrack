@@ -1,7 +1,21 @@
-import { useAccountChangePassword } from "../../../api/index-generated";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  getUserGetQueryKey,
+  useAccountChangePassword
+} from "../../../api/index-generated";
 
 export function useChangePasswordMutation() {
-  const mutation = useAccountChangePassword();
+  const queryClient = useQueryClient();
+
+  const mutation = useAccountChangePassword({
+    mutation: {
+      onSuccess: () => {
+        return queryClient.refetchQueries({
+          queryKey: getUserGetQueryKey()
+        });
+      }
+    }
+  });
 
   return mutation;
 }

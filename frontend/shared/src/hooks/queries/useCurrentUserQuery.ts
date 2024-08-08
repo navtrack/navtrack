@@ -1,13 +1,12 @@
-import { useRecoilValue } from "recoil";
 import { useUserGet } from "../../api/index-generated";
-import { isAuthenticatedAtom } from "../../state/authentication";
+import { useAuthentication } from "../app/authentication/useAuthentication";
 
 export const useCurrentUserQuery = () => {
-  const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
+  const authentication = useAuthentication();
 
   const query = useUserGet({
     query: {
-      enabled: isAuthenticated,
+      enabled: authentication.state.isAuthenticated,
       refetchOnWindowFocus: false,
       refetchOnMount: false
     }

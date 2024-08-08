@@ -14,6 +14,7 @@ public static class UserMapper
         destination.Email = source.Email;
         destination.Units = source.UnitsType;
         destination.AssetRoles = source.AssetRoles?.Select(UserAssetRoleModelMapper.Map).ToList() ?? [];
+        destination.Authentication = UserAuthenticationModelMapper.Map(source);
 
         return destination;
     }

@@ -14,5 +14,5 @@ export const Paths = {
   AssetsSettingsAccess: "/assets/:id/settings/access",
   AssetsAdd: "/assets/add",
   SettingsAccount: "/settings/account",
-  SettingsPassword: "/settings/password"
+  SettingsAuthentication: "/settings/authentication"
 };
