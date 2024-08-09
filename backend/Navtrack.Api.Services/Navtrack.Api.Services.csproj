@@ -2,10 +2,10 @@
     <ItemGroup>
         <ProjectReference Include="..\Navtrack.Api.Model\Navtrack.Api.Model.csproj" />
         <ProjectReference Include="..\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj" />
-        <ProjectReference Include="..\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj" />
+        <ProjectReference
+            Include="..\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj" />
         <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj" />
         <ProjectReference Include="..\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj" />
-        <ProjectReference Include="..\Navtrack.Shared.Utils\Navtrack.Shared.Utils.csproj" />
     </ItemGroup>
 
     <ItemGroup>
