@@ -22,4 +22,7 @@ public class DeviceMessageDocument : BaseDocument
 
     [BsonElement("gsm")]
     public GsmElement? Gsm { get; set; }
+
+    [BsonElement("teltonika")]
+    public object Teltonika { get; set; }
 }

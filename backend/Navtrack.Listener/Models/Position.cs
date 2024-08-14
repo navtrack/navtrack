@@ -36,4 +36,6 @@ public class Position
     public int? MobileNetworkCode { get; set; }
     public int? LocationAreaCode { get; set; }
     public int? CellId { get; set; }
+    
+    public object Teltonika { get; set; }
 }

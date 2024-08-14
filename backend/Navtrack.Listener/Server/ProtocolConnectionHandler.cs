@@ -37,6 +37,7 @@ public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger
                     await handler.HandleMessage(connectionContext, connectionContext.NetworkStream,
                         buffer[startIndex..length]);
                 }
+                
             } while (!cancellationToken.IsCancellationRequested && length > 0 &&
                      connectionContext.NetworkStream.CanRead);
         }

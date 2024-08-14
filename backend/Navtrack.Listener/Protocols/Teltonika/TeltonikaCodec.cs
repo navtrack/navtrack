@@ -1,6 +1,6 @@
 namespace Navtrack.Listener.Protocols.Teltonika;
 
-public enum Codec
+internal enum TeltonikaCodec
 {
     Codec8 = 0x08,
     Codec8Extended = 0x8E,

@@ -34,6 +34,12 @@ public class ProtocolMessageHandler(
             DataMessage = new DataMessage(bytes, connectionContext.Protocol.SplitMessageBy)
         };
 
+        if (MessageIsBlacklisted(messageInput))
+        {
+            connectionContext.NetworkStream.Close();
+            return;
+        }
+
         await connectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
 
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
@@ -55,6 +61,19 @@ public class ProtocolMessageHandler(
             logger.LogCritical(e, "{Type}: Error parsing {DataMessageHex} ", customMessageHandler.GetType(),
                 messageInput.DataMessage.Hex);
         }
+    }
+
+    private static bool MessageIsBlacklisted(MessageInput messageInput)
+    {
+        string[] blacklistedMessages =
+        [
+            "HTTP",
+            "Host:",
+            "MGLNDD"
+        ];
+
+        return blacklistedMessages.Any(x =>
+            messageInput.DataMessage.String.Contains(x, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task PrepareContext(ProtocolConnectionContext context)

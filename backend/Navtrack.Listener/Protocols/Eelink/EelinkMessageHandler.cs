@@ -95,14 +95,14 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         };
 
         input.DataMessage.ByteReader.Skip(startIndex);
-        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
-        position.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
-        position.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
-        position.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
-        position.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();
-        position.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToInt16();
-        position.MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToInt16();
-        position.LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToInt16();
+        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToSInt4());
+        position.Latitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+        position.Longitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+        position.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        position.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        position.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        position.MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        position.LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2();
         position.CellId = GetCellId(input.DataMessage.ByteReader);
         string status = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
         position.PositionStatus = status[^1] == '1';
@@ -114,7 +114,7 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
     {
         byte[] array = { 0x00,dataMessageByteReader.GetOne(),dataMessageByteReader.GetOne(),dataMessageByteReader.GetOne()};
 
-        return array.ToInt32();
+        return array.ToSInt4();
     }
 
     private static Position GetLocationV20(MessageInput input)
@@ -127,25 +127,25 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         };
 
         input.DataMessage.ByteReader.Skip(locationStartIndex);
-        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToInt32());
+        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToSInt4());
         string mask = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
 
         if (mask[^1] == '1')
         {
-            position.Latitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
-            position.Longitude = input.DataMessage.ByteReader.Get(4).ToInt32() / 1800000.0;
-            position.Altitude = input.DataMessage.ByteReader.Get(2).ToInt16();
-            position.Speed = input.DataMessage.ByteReader.Get(2).ToInt16();
-            position.Heading = input.DataMessage.ByteReader.Get(2).ToInt16();
+            position.Latitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+            position.Longitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+            position.Altitude = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            position.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            position.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
             position.Satellites = Convert.ToInt16(input.DataMessage.ByteReader.GetOne());
         }
 
         if (mask[^2] == '1')
         {
-            position.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToInt16();
-            position.MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToInt16();
-            position.LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToInt16();
-            position.CellId = input.DataMessage.ByteReader.Get(4).ToInt32();
+            position.MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            position.MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            position.LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            position.CellId = input.DataMessage.ByteReader.Get(4).ToSInt4();
             position.GsmSignal = input.DataMessage.ByteReader.GetOne();
         }
 

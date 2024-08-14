@@ -15,7 +15,8 @@ public static class MessageDocumentMapper
             CreatedDate = DateTime.UtcNow,
             Metadata = PositionMetadataElementMapper.Map(device),
             Position = PositionElementMapper.Map(source),
-            Gsm = GsmElementMapper.Map(source)
+            Gsm = GsmElementMapper.Map(source),
+            Teltonika = source.Teltonika
         };
 
         return destination;

@@ -19,6 +19,7 @@ public class NetworkStreamWrapper(TcpClient tcpClient) : INetworkStreamWrapper
     public void Close()
     {
         networkStream.Close();
+        tcpClient.Close();
     }
 
     public bool CanRead => networkStream.CanRead;
@@ -45,5 +46,4 @@ public class NetworkStreamWrapper(TcpClient tcpClient) : INetworkStreamWrapper
     {
         networkStream.Write(buffer);
     }
-
 }
