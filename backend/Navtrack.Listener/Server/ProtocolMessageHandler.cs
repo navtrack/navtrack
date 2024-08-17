@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Navtrack.DataAccess.Model.Assets;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Listener.Helpers;
@@ -47,7 +48,7 @@ public class ProtocolMessageHandler(
 
         try
         {
-            List<Position>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
+            List<DeviceMessageDocument>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
 
             if (positions is { Count: > 0 } && connectionContext.Device != null)
             {
@@ -67,7 +68,6 @@ public class ProtocolMessageHandler(
     {
         string[] blacklistedMessages =
         [
-            "HTTP",
             "Host:",
             "MGLNDD"
         ];

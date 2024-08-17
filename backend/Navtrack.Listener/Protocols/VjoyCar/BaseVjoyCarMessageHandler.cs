@@ -1,24 +1,24 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.VjoyCar;
 
 public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         HandleLoginMessage(input);
 
-        Position position = ParseLocation(input);
+        DeviceMessageDocument deviceMessageDocument = ParseLocation(input);
 
-        return position;
+        return deviceMessageDocument;
     }
 
-    private static Position ParseLocation(MessageInput input)
+    private static DeviceMessageDocument ParseLocation(MessageInput input)
     {
         GroupCollection lgc =
             new Regex(
@@ -27,20 +27,23 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 
         if (lgc.Count == 17)
         {
-            Position position = new()
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
-                    lgc[12].Value),
-                PositionStatus = lgc[4].Value == "F",
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
-                Speed = float.Parse(lgc[9].Value),
-                Heading = float.Parse(lgc[13].Value),
-                Odometer = long.Parse(lgc[15].Value, NumberStyles.HexNumber)
+                // Device = input.ConnectionContext.Device,
+                Position = new PositionElement
+                {
+                    Date = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
+                        lgc[12].Value),
+                    Valid = lgc[4].Value == "F",
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
+                    Speed = float.Parse(lgc[9].Value),
+                    Heading = float.Parse(lgc[13].Value),
+                    Odometer = long.Parse(lgc[15].Value, NumberStyles.HexNumber)
+                }
             };
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;
@@ -50,8 +53,8 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
     {
         Dictionary<string, string> loginCommandResponse = new()
         {
-            {"BP00", "AP01HSO"},
-            {"BP05", "AP05"}
+            { "BP00", "AP01HSO" },
+            { "BP05", "AP05" }
         };
 
         string command = string.Join(string.Empty, input.DataMessage.String[13..17]);
@@ -59,9 +62,9 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
         if (loginCommandResponse.ContainsKey(command))
         {
             string imei = input.DataMessage.String[17..32];
-                
+
             input.ConnectionContext.SetDevice(imei);
-                
+
             string reply =
                 $"({string.Join(string.Empty, input.DataMessage.String[1..13])}{loginCommandResponse[command]})";
 

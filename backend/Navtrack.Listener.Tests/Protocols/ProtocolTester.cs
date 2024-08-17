@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Moq;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Listener.Helpers;
@@ -31,9 +32,9 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     public ProtocolConnectionContext ConnectionContext { get; }
 
-    public List<Position>? LastParsedPositions { get; private set; }
-    public List<Position> TotalParsedPositions { get; }
-    public Position? LastParsedPosition => LastParsedPositions?.FirstOrDefault();
+    public List<DeviceMessageDocument>? LastParsedPositions { get; private set; }
+    public List<DeviceMessageDocument> TotalParsedPositions { get; }
+    public DeviceMessageDocument? LastParsedPosition => LastParsedPositions?.FirstOrDefault();
 
     public ProtocolTester()
     {
@@ -91,10 +92,10 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         Mock<IMessageService> mock = new();
 
         mock.Setup(x =>
-                x.Save(It.IsAny<ObjectId>(), It.IsAny<Device>(), It.IsAny<List<Position>>()))
-            .Callback<ObjectId, Device, IEnumerable<Position>>((_, _, locations) =>
+                x.Save(It.IsAny<ObjectId>(), It.IsAny<Device>(), It.IsAny<List<DeviceMessageDocument>>()))
+            .Callback<ObjectId, Device, IEnumerable<DeviceMessageDocument>>((_, _, locations) =>
             {
-                List<Position> locationsList = locations.ToList();
+                List<DeviceMessageDocument> locationsList = locations.ToList();
                 LastParsedPositions = locationsList;
                 TotalParsedPositions.AddRange(locationsList);
             });

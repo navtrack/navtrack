@@ -15,12 +15,12 @@ namespace Navtrack.Listener.Services;
 public class MessageService(IDeviceMessageRepository deviceMessageRepository, IAssetRepository assetRepository)
     : IMessageService
 {
-    public async Task Save(ObjectId connectionId, Device device, IEnumerable<Position> positions)
+    public async Task Save(ObjectId connectionId, Device device, IEnumerable<DeviceMessageDocument> positions)
     {
         if (device is { AssetId: not null, DeviceId: not null })
         {
             List<DeviceMessageDocument> messages = positions
-                .Select(x => MessageDocumentMapper.Map(x, device, connectionId))
+                .Select(x => MessageDocumentMapper.Map(device, connectionId, x))
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 

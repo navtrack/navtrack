@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.Crc;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -12,7 +12,7 @@ namespace Navtrack.Listener.Protocols.Ruptela;
 [Service(typeof(ICustomMessageHandler<RuptelaProtocol>))]
 public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
 {
-    public override IEnumerable<Position>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
     {
         short size = input.DataMessage.ByteReader.GetLe<short>();
         long imei = input.DataMessage.ByteReader.GetLe<long>();
@@ -26,13 +26,13 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
             byte recordsLeftInDevice = input.DataMessage.ByteReader.GetOne();
             byte records = input.DataMessage.ByteReader.GetOne();
 
-            List<Position> locations = [];
+            List<DeviceMessageDocument> locations = [];
 
             for (int i = 0; i < records; i++)
             {
-                Position position = GetLocation(input, command == (int) Command.ExtendedRecords);
+                DeviceMessageDocument deviceMessageDocument = GetLocation(input, command == (int) Command.ExtendedRecords);
 
-                locations.Add(position);
+                locations.Add(deviceMessageDocument);
             }
 
             SendResponse(input);
@@ -56,27 +56,28 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(fullReply));
     }
 
-    private static Position GetLocation(MessageInput input, bool extended)
+    private static DeviceMessageDocument GetLocation(MessageInput input, bool extended)
     {
         // ReSharper disable once UseObjectOrCollectionInitializer
-        Position position = new()
+        DeviceMessageDocument deviceMessageDocument = new()
         {
-            Device = input.ConnectionContext.Device
+            // Device = input.ConnectionContext.Device,
+            Position = new PositionElement()
         };
 
-        position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.GetLe<int>());
+        deviceMessageDocument.Position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.GetLe<int>());
         byte timestampExtension = input.DataMessage.ByteReader.GetOne();
         byte? recordExtension = extended
             ? input.DataMessage.ByteReader.GetOne()
             : default;
         byte priority = input.DataMessage.ByteReader.GetOne();
-        position.Longitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000.0;
-        position.Latitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000.0;
-        position.Altitude = input.DataMessage.ByteReader.GetLe<short>() / 10f;
-        position.Heading = input.DataMessage.ByteReader.GetLe<short>() / 100f;
-        position.Satellites = input.DataMessage.ByteReader.GetOne();
-        position.Speed = input.DataMessage.ByteReader.GetLe<short>();
-        position.HDOP = input.DataMessage.ByteReader.GetOne() / 10;
+        deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000.0;
+        deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.GetLe<int>() / 10000000.0;
+        deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.GetLe<short>() / 10f;
+        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetLe<short>() / 100f;
+        deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
+        deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.GetOne() / 10;
         short eventId = extended
             ? input.DataMessage.ByteReader.GetLe<short>()
             : input.DataMessage.ByteReader.GetOne();
@@ -88,7 +89,7 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
         events.AddRange(GetIOData(input.DataMessage.ByteReader, 4, extended)); // 4 bytes IO data
         events.AddRange(GetIOData(input.DataMessage.ByteReader, 8, extended)); // 8 bytes IO data
 
-        return position;
+        return deviceMessageDocument;
     }
 
     private static IEnumerable<IOData> GetIOData(ByteReader input, int eventBytes, bool extended)

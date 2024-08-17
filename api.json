@@ -1341,7 +1341,7 @@
           },
           "hdop": {
             "type": "number",
-            "format": "float",
+            "format": "double",
             "nullable": true
           },
           "valid": {

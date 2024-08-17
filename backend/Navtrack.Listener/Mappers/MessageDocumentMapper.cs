@@ -7,17 +7,22 @@ namespace Navtrack.Listener.Mappers;
 
 public static class MessageDocumentMapper
 {
-    public static DeviceMessageDocument Map(Position source, Device device, ObjectId connectionId)
+    public static DeviceMessageDocument Map(Device device, ObjectId connectionId, DeviceMessageDocument destination)
     {
-        DeviceMessageDocument destination = new()
+        destination.ConnectionId = connectionId;
+        destination.CreatedDate = DateTime.UtcNow;
+        destination.Metadata = PositionMetadataElementMapper.Map(device);
+
+        if (destination.Data?.Count == 0)
         {
-            ConnectionId = connectionId,
-            CreatedDate = DateTime.UtcNow,
-            Metadata = PositionMetadataElementMapper.Map(device),
-            Position = PositionElementMapper.Map(source),
-            Gsm = GsmElementMapper.Map(source),
-            Teltonika = source.Teltonika
-        };
+            destination.Data = null;
+        }
+        
+        if (destination.Extra?.Count == 0)
+        {
+            destination.Extra = null;
+        }
+
 
         return destination;
     }

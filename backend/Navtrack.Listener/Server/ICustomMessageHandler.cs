@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using Navtrack.Listener.Models;
+using Navtrack.DataAccess.Model.Devices.Messages;
 
 namespace Navtrack.Listener.Server;
 
 public interface ICustomMessageHandler
 {
-    Position Parse(MessageInput input);
-    IEnumerable<Position>? ParseRange(MessageInput input);
+    DeviceMessageDocument Parse(MessageInput input);
+    IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input);
 }
 
 public interface ICustomMessageHandler<T> : ICustomMessageHandler;

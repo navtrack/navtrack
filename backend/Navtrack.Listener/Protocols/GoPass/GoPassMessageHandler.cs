@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -10,13 +10,13 @@ namespace Navtrack.Listener.Protocols.GoPass;
 [Service(typeof(ICustomMessageHandler<GoPassProtocol>))]
 public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         HandleImeiMessage(input);
 
-        Position position = ParseLocation(input);
+        DeviceMessageDocument deviceMessageDocument = ParseLocation(input);
 
-        return position;
+        return deviceMessageDocument;
     }
 
     private static void HandleImeiMessage(MessageInput input)
@@ -32,13 +32,13 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
         }
     }
 
-    private static Position ParseLocation(MessageInput input)
+    private static DeviceMessageDocument ParseLocation(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {
             return null;
         }
-            
+
         Match locationMatch =
             new Regex(
                     "GPRMC," +
@@ -53,25 +53,30 @@ public class GoPassMessageHandler : BaseMessageHandler<GoPassProtocol>
 
         if (locationMatch.Success)
         {
-            Position position = new()
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = DateTimeUtil.New(
-                    locationMatch.Groups[15].Value,
-                    locationMatch.Groups[14].Value,
-                    locationMatch.Groups[13].Value,
-                    locationMatch.Groups[1].Value,
-                    locationMatch.Groups[2].Value,
-                    locationMatch.Groups[3].Value,
-                    locationMatch.Groups[5].Value),
-                PositionStatus = locationMatch.Groups[6].Value == "A",
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value, locationMatch.Groups[8].Value),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[11].Get<float>()),
-                Heading = locationMatch.Groups[12].Get<float?>()
+                // Device = input.ConnectionContext.Device,
+                Position = new PositionElement
+                {
+                    Date = DateTimeUtil.New(
+                        locationMatch.Groups[15].Value,
+                        locationMatch.Groups[14].Value,
+                        locationMatch.Groups[13].Value,
+                        locationMatch.Groups[1].Value,
+                        locationMatch.Groups[2].Value,
+                        locationMatch.Groups[3].Value,
+                        locationMatch.Groups[5].Value),
+                    Valid = locationMatch.Groups[6].Value == "A",
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[7].Value,
+                        locationMatch.Groups[8].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[9].Value,
+                        locationMatch.Groups[10].Value),
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[11].Get<float>()),
+                    Heading = locationMatch.Groups[12].Get<float?>()
+                }
             };
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;

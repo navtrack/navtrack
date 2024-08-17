@@ -1,5 +1,6 @@
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
+using Navtrack.Listener.Mappers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -8,19 +9,21 @@ namespace Navtrack.Listener.Protocols.Tzone;
 [Service(typeof(ICustomMessageHandler<TzoneProtocol>))]
 public class TzoneMessageHandler : BaseMessageHandler<TzoneProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         GPRMC gprmc = GPRMC.Parse(input.DataMessage.BarSplit[1].Substring(2));
 
         input.ConnectionContext.SetDevice(input.DataMessage.BarSplit[0].Substring(4));
             
-        Position position = new(gprmc)
+        DeviceMessageDocument deviceMessageDocument = new()
         {
-            Device = input.ConnectionContext.Device,
-            HDOP = input.DataMessage.BarSplit.Get<float?>(3),
-            Odometer = input.DataMessage.BarSplit.GetDouble(11, 4)
+            // Device = input.ConnectionContext.Device,
+            Position = PositionElementMapper.Map(gprmc)
         };
 
-        return position;
+        deviceMessageDocument.Position.HDOP = input.DataMessage.BarSplit.Get<float?>(3);
+        deviceMessageDocument.Position.Odometer = input.DataMessage.BarSplit.GetDouble(11, 4);
+
+        return deviceMessageDocument;
     }
 }

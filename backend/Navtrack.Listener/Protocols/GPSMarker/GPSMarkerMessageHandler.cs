@@ -1,8 +1,8 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.GPSMarker;
 [Service(typeof(ICustomMessageHandler<GPSMarkerProtocol>))]
 public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -29,19 +29,24 @@ public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
         if (locationMatch.Success)
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[3].Value);
-                
-            Position position = new()
+
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
-                Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value, locationMatch.Groups[5].Value),
-                Longitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value, locationMatch.Groups[7].Value),
-                Speed = locationMatch.Groups[9].Get<float?>(),
-                Heading = locationMatch.Groups[10].Get<float?>(),
-                Satellites = short.Parse(locationMatch.Groups[11].Value, NumberStyles.HexNumber)
+                // Device = input.ConnectionContext.Device,
+                Position = new PositionElement
+                {
+                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
+                    Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value,
+                        locationMatch.Groups[5].Value),
+                    Longitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value,
+                        locationMatch.Groups[7].Value),
+                    Speed = locationMatch.Groups[9].Get<float?>(),
+                    Heading = locationMatch.Groups[10].Get<float?>(),
+                    Satellites = short.Parse(locationMatch.Groups[11].Value, NumberStyles.HexNumber)
+                }
             };
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;

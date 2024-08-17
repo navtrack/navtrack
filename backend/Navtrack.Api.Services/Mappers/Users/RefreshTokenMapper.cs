@@ -13,7 +13,7 @@ internal static class RefreshTokenMapper
             Lifetime = source.Lifetime,
             ConsumedTime = source.ConsumedTime,
             AccessToken = AccessTokenMapper.Map(source.AccessToken),
-            Version = source.Version,
+            Version = source.Version
         };
     }
 }
