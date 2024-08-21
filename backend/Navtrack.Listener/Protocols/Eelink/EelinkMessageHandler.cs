@@ -122,7 +122,7 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
     private static int GetCellId(ByteReader dataMessageByteReader)
     {
         byte[] array =
-            { 0x00, dataMessageByteReader.GetOne(), dataMessageByteReader.GetOne(), dataMessageByteReader.GetOne() };
+            [0x00, dataMessageByteReader.GetOne(), dataMessageByteReader.GetOne(), dataMessageByteReader.GetOne()];
 
         return array.ToSInt4();
     }

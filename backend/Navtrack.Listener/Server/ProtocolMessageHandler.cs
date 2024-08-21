@@ -59,7 +59,7 @@ public class ProtocolMessageHandler(
         }
         catch (Exception e)
         {
-            logger.LogCritical(e, "{Type}: Error parsing {DataMessageHex} ", customMessageHandler.GetType(),
+            logger.LogCritical(e, "{Type}: Error parsing {DataMessageHex}", customMessageHandler.GetType(),
                 messageInput.DataMessage.Hex);
         }
     }

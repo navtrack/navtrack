@@ -86,7 +86,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         try
         {
             string imei = GetImei(input.DataMessage.Hex);
-            string[] serialNumber = { "00", "01" };
+            string[] serialNumber = ["00", "01"];
 
             if (StringUtil.IsDigitsOnly(imei))
             {

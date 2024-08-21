@@ -45,20 +45,18 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
     {
         List<DeviceMessageDocument> positions = [];
 
-        TeltonikaCodec? codec = GetCodec(input);
+        TeltonikaCodecConfiguration? codecConfiguration = GetCodec(input);
 
-        if (codec == null)
+        if (codecConfiguration == null)
         {
             return [];
         }
-
-        TeltonikaCodecConfiguration teltonikaCodecConfiguration = TeltonikaCodecConfiguration.GetAll[codec.Value];
 
         int noOfLocations = input.DataMessage.ByteReader.GetOne();
 
         for (int i = 0; i < noOfLocations; i++)
         {
-            DeviceMessageDocument deviceMessageDocument = GetPosition(input, teltonikaCodecConfiguration);
+            DeviceMessageDocument deviceMessageDocument = GetPosition(input, codecConfiguration);
 
             positions.Add(deviceMessageDocument);
         }
@@ -66,34 +64,28 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
         return positions;
     }
 
-    private static TeltonikaCodec? GetCodec(MessageInput input)
+    private static TeltonikaCodecConfiguration? GetCodec(MessageInput input)
     {
         List<int> codecs = Enum.GetValues(typeof(TeltonikaCodec)).Cast<int>().ToList();
 
-        byte b;
-
-        do
+        byte[] preamble = input.DataMessage.ByteReader.Get(4);
+        uint length = input.DataMessage.ByteReader.Get(4).ToUInt4();
+        byte codecId = input.DataMessage.ByteReader.GetOne();
+        
+        if (codecs.Contains(codecId))
         {
-            b = input.DataMessage.ByteReader.GetOne();
-        } while (b == 0);
+            TeltonikaCodec? codec = (TeltonikaCodec)codecId;
+            
+            TeltonikaCodecConfiguration? teltonikaCodecConfiguration = TeltonikaCodecConfiguration.GetAll[codec.Value];
 
-        TeltonikaCodec? codec = null;
-
-        do
-        {
-            b = input.DataMessage.ByteReader.GetOne();
-
-            if (codecs.Contains(b))
-            {
-                codec = (TeltonikaCodec)b;
-            }
-        } while (codec == null);
-
-        return codec;
+            return teltonikaCodecConfiguration;
+        }
+        
+        return null;
     }
 
     private static DeviceMessageDocument GetPosition(MessageInput input,
-        TeltonikaCodecConfiguration teltonikaCodecConfiguration)
+        TeltonikaCodecConfiguration? teltonikaCodecConfiguration)
     {
         DeviceMessageDocument deviceMessageDocument = new()
         {
@@ -157,7 +149,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
     }
 
     private static void MapDataPackets(DeviceMessageDocument deviceMessageDocument, ByteReader input,
-        TeltonikaCodecConfiguration teltonikaCodecConfiguration,
+        TeltonikaCodecConfiguration? teltonikaCodecConfiguration,
         short? dataPacketBytes = null)
     {
         short numberOfDataPackets = GetNumberOfDataPackets(input, teltonikaCodecConfiguration, dataPacketBytes);
@@ -467,7 +459,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     string[] array = HexUtil.ConvertByteArrayToHexStringArray(value);
                     Array.Reverse(array);
 
-                    deviceMessageDocument.Extra[$"{value}"] = HexUtil.ConvertHexStringArrayToHexString(array);
+                    deviceMessageDocument.Extra[$"{id}"] = HexUtil.ConvertHexStringArrayToHexString(array);
 
                     return;
             }
@@ -483,7 +475,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
     }
 
     private static short GetNumberOfDataPackets(ByteReader input,
-        TeltonikaCodecConfiguration teltonikaCodecConfiguration,
+        TeltonikaCodecConfiguration? teltonikaCodecConfiguration,
         int? dataPacketBytes)
     {
         if (dataPacketBytes != null)

@@ -114,7 +114,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                     Gsm = new GsmElement()
                 };
 
-                int[] sizes = { 1, 2, 4 };
+                int[] sizes = [1, 2, 4];
 
                 foreach (int size in sizes)
                 {

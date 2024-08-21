@@ -147,7 +147,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
             .Callback<byte[]>(x => { receiveStream = new MemoryStream(x); });
         mock
             .Setup(x => x.WriteByte(It.IsAny<byte>()))
-            .Callback<byte>(x => { receiveStream = new MemoryStream(new[] { x }); });
+            .Callback<byte>(x => { receiveStream = new MemoryStream([x]); });
         mock.Setup(x => x.CanRead).Returns(true);
         mock.Setup(x => x.DataAvailable).Returns(true);
         mock.Setup(x => x.TcpClient).Returns(new TcpClient());

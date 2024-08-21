@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Navtelecom;
 public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
 {
     private static readonly byte[] FlexFieldSize =
-    {
+    [
         4, 2, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 2, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 4, 4, 2, 2,
         4, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 2, 1, 4, 2, 2, 2, 2, 2, 1, 1, 1, 2, 4, 2, 1, 8, 2, 1,
         16, 4, 2, 4, 37, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6, 12, 24, 48, 1, 1, 2, 1, 4, 4, 1, 4, 2,
@@ -24,7 +24,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 6, 3, 1, 2, 2, 1, 4, 5, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
         4, 4, 8, 8, 8
-    };
+    ];
 
     private const string FlexArrayKey = "FLEX_ARRAY";
 
@@ -63,7 +63,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
     private IEnumerable<DeviceMessageDocument> Handle_FLEX(MessageInput input)
     {
         int? flexStartIndex =
-            input.DataMessage.Bytes.GetStartIndex(new byte[] { 0x2A, 0x3E, 0x46, 0x4C, 0x45, 0x58 });
+            input.DataMessage.Bytes.GetStartIndex([0x2A, 0x3E, 0x46, 0x4C, 0x45, 0x58]);
 
         if (flexStartIndex.HasValue)
         {

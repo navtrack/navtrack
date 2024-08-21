@@ -8,19 +8,19 @@ namespace Navtrack.Listener.Protocols.Totem;
 public class TotemProtocol : BaseProtocol
 {
     public override int Port => 7005;
-    public override byte[] MessageStart => new byte[] {0x24, 0x24};
-    public override int? GetMessageLength(byte[] bytes)
+    public override byte[] MessageStart => [0x24, 0x24];
+    public override int? GetMessageLength(byte[] buffer, int bytesReadCount)
     {
-        if (bytes.Length >= 6)
+        if (buffer.Length >= 6)
         {
-            int? headerIndex = bytes.GetStartIndex(MessageStart);
+            int? headerIndex = buffer.GetStartIndex(MessageStart);
 
             if (headerIndex.HasValue)
             {
                 int lengthStartIndex = headerIndex.Value + 2; // 2 = header
                 int lengthEndIndex = lengthStartIndex + 4; // 4 = length 
 
-                if (int.TryParse(StringUtil.ConvertByteArrayToString(bytes[lengthStartIndex..lengthEndIndex]),
+                if (int.TryParse(StringUtil.ConvertByteArrayToString(buffer[lengthStartIndex..lengthEndIndex]),
                         out int length))
                 {
                     return length; 

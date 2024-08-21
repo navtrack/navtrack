@@ -37,7 +37,6 @@ public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger
                     await handler.HandleMessage(connectionContext, connectionContext.NetworkStream,
                         buffer[startIndex..length]);
                 }
-                
             } while (!cancellationToken.IsCancellationRequested && length > 0 &&
                      connectionContext.NetworkStream.CanRead);
         }
@@ -57,31 +56,30 @@ public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger
     private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
         CancellationToken cancellationToken)
     {
-        int bytesReadCount = 0;
-        byte[] oneByteBuffer = new byte[1];
-        int length;
-
+        int totalBytesReadCount = 0;
+        bool readOneByte;
         int? messageLength = null;
 
         do
         {
-            length = networkStream.Read(oneByteBuffer, 0, 1);
+            byte[] oneByteBuffer = new byte[1];
 
-            if (length > 0)
+            readOneByte = networkStream.Read(oneByteBuffer, 0, 1) > 0;
+
+            if (readOneByte)
             {
-                buffer[bytesReadCount++] = oneByteBuffer[0];
+                buffer[totalBytesReadCount++] = oneByteBuffer[0];
 
-                messageLength = protocol.GetMessageLength(buffer[..bytesReadCount]);
+                messageLength ??= protocol.GetMessageLength(buffer, totalBytesReadCount);
             }
         } while (!cancellationToken.IsCancellationRequested &&
-                 networkStream.CanRead &&
-                 networkStream.DataAvailable &&
-                 length > 0 &&
-                 bytesReadCount < ServerVariables.BufferLength &&
-                 (!messageLength.HasValue || bytesReadCount < messageLength) &&
-                 !ReachedEnd(buffer, bytesReadCount, protocol));
+                 networkStream is { CanRead: true, DataAvailable: true } &&
+                 readOneByte &&
+                 totalBytesReadCount < ServerVariables.BufferLength &&
+                 (!messageLength.HasValue || totalBytesReadCount < messageLength) &&
+                 !ReachedEnd(buffer, totalBytesReadCount, protocol));
 
-        return bytesReadCount;
+        return totalBytesReadCount;
     }
 
     private static int GetStartIndex(byte[] buffer, in int length, IProtocol protocol)

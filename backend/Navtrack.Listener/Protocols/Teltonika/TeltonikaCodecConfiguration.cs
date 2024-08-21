@@ -23,7 +23,7 @@ internal class TeltonikaCodecConfiguration
         HasVariableDataPackets = hasVariableDataPackets;
     }
 
-    public static readonly Dictionary<TeltonikaCodec, TeltonikaCodecConfiguration> GetAll =
+    public static readonly Dictionary<TeltonikaCodec, TeltonikaCodecConfiguration?> GetAll =
         new()
         {
             { TeltonikaCodec.Codec8, new TeltonikaCodecConfiguration(1, false, 1, 1, 1, false) },
