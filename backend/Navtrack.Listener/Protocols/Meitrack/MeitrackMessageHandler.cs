@@ -57,7 +57,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
                 deviceMessageDocument.Position.Valid = input.DataMessage.ByteReader.GetOne() == 0x01;
                 deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
-                deviceMessageDocument.Gsm.Signal = input.DataMessage.ByteReader.GetOne();
+                deviceMessageDocument.Gsm.SignalStrength = input.DataMessage.ByteReader.GetOne();
                 deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>();
                 deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get<short>();
                 deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
@@ -65,11 +65,11 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                 deviceMessageDocument.Position.Odometer = input.DataMessage.ByteReader.Get<int>();
                 int runTime = input.DataMessage.ByteReader.Get<int>();
                 deviceMessageDocument.Gsm.CellGlobalIdentity.MobileCountryCode =
-                    input.DataMessage.ByteReader.Get<short>();
+                    input.DataMessage.ByteReader.Get<short>().ToString();
                 deviceMessageDocument.Gsm.CellGlobalIdentity.MobileNetworkCode =
-                    input.DataMessage.ByteReader.Get<short>();
+                    input.DataMessage.ByteReader.Get<short>().ToString();
                 deviceMessageDocument.Gsm.CellGlobalIdentity.LocationAreaCode =
-                    input.DataMessage.ByteReader.Get<short>();
+                    input.DataMessage.ByteReader.Get<short>().ToString();
                 deviceMessageDocument.Gsm.CellGlobalIdentity.CellId = input.DataMessage.ByteReader.Get<short>();
 
                 input.DataMessage.ByteReader.Skip(12);
@@ -146,7 +146,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                                 deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
                                 break;
                             case 0x07:
-                                deviceMessageDocument.Gsm.Signal = input.DataMessage.ByteReader.GetOne();
+                                deviceMessageDocument.Gsm.SignalStrength = input.DataMessage.ByteReader.GetOne();
                                 break;
                             case 0x08:
                                 deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>();
@@ -205,7 +205,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             deviceMessageDocument.Position.Date = ConvertDate(input.DataMessage.CommaSplit[6]);
             deviceMessageDocument.Position.Valid = input.DataMessage.CommaSplit.Get<string>(7) == "A";
             deviceMessageDocument.Position.Satellites = input.DataMessage.CommaSplit.Get<short>(8);
-            deviceMessageDocument.Gsm.Signal =
+            deviceMessageDocument.Gsm.SignalStrength =
                 GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9));
             deviceMessageDocument.Position.Speed = input.DataMessage.CommaSplit.Get<float?>(10);
             deviceMessageDocument.Position.Heading = input.DataMessage.CommaSplit.Get<float?>(11);

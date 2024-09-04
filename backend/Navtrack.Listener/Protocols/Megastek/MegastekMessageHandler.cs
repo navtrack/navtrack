@@ -52,7 +52,7 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
         };
 
         // deviceMessageDocument.Device = input.ConnectionContext.Device,
-        deviceMessageDocument.Gsm.Signal = input.DataMessage.CommaSplit.Get<short?>(17);
+        deviceMessageDocument.Gsm.SignalStrength = input.DataMessage.CommaSplit.Get<short?>(17);
 
         return deviceMessageDocument;
     }
@@ -80,7 +80,7 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
             },
             Gsm = new GsmElement
             {
-                Signal = input.DataMessage.CommaSplit.Get<short?>(23)
+                SignalStrength = input.DataMessage.CommaSplit.Get<short?>(23)
             }
         };
 

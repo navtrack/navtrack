@@ -55,9 +55,9 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
                     {
                         CellGlobalIdentity = new CellGlobalIdentityElement
                         {
-                            MobileCountryCode = int.Parse(match[10].Value),
-                            MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber),
-                            LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber),
+                            MobileCountryCode = match[10].Value,
+                            MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber).ToString(),
+                            LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber).ToString(),
                             CellId = int.Parse(match[13].Value, NumberStyles.HexNumber)
                         }
                     };

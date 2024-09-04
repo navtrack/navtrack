@@ -30,7 +30,7 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 
         deviceMessageDocument.Position.Date = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12));
         deviceMessageDocument.Position.Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(16).Get(2));
-        deviceMessageDocument.Gsm.Signal = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2)));
+        deviceMessageDocument.Gsm.SignalStrength = GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2)));
         deviceMessageDocument.Position.Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.HDOP = float.Parse(input.DataMessage.Reader.Get(4));
@@ -57,7 +57,7 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 
         deviceMessageDocument.Position.Date = ConvertDate(input.DataMessage.Reader.Skip(8).Get(12));
         deviceMessageDocument.Position.Satellites = Convert.ToInt16(input.DataMessage.Reader.Skip(36).Get(2));
-        deviceMessageDocument.Gsm.Signal =
+        deviceMessageDocument.Gsm.SignalStrength =
             GsmUtil.ConvertSignal(Convert.ToInt16(input.DataMessage.Reader.Get(2)));
         deviceMessageDocument.Position.Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3));

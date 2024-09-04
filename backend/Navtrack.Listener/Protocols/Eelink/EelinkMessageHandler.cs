@@ -106,9 +106,9 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         {
             CellGlobalIdentity = new CellGlobalIdentityElement
             {
-                MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2(),
-                MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2(),
-                LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2(),
+                MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
                 CellId = GetCellId(input.DataMessage.ByteReader)
             }
         };
@@ -158,12 +158,12 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
             {
                 CellGlobalIdentity = new CellGlobalIdentityElement
                 {
-                    MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2(),
-                    MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2(),
-                    LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2(),
+                    MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                    MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                    LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
                     CellId = input.DataMessage.ByteReader.Get(4).ToSInt4()
                 },
-                Signal = input.DataMessage.ByteReader.GetOne()
+                SignalStrength = input.DataMessage.ByteReader.GetOne()
             };
         }
 

@@ -43,9 +43,9 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
                 {
                     CellGlobalIdentity = new CellGlobalIdentityElement
                     {
-                        MobileCountryCode = locationMatch.Groups[14].Get<int?>(),
-                        MobileNetworkCode = locationMatch.Groups[15].Get<int?>(),
-                        LocationAreaCode = int.Parse(locationMatch.Groups[16].Value, NumberStyles.HexNumber),
+                        MobileCountryCode = locationMatch.Groups[14].Get<int?>().ToString(),
+                        MobileNetworkCode = locationMatch.Groups[15].Get<int?>().ToString(),
+                        LocationAreaCode = int.Parse(locationMatch.Groups[16].Value, NumberStyles.HexNumber).ToString(),
                         CellId = int.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber)
                     }
                 }

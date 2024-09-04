@@ -58,7 +58,7 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
                 },
                 Gsm = new GsmElement
                 {
-                    Signal = locationMatch.Groups[22].Get<short?>()
+                    SignalStrength = locationMatch.Groups[22].Get<short?>()
                 }
             };
 

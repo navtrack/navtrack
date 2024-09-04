@@ -11,7 +11,13 @@ public class GsmElement
     /// 31       -51 dBm or greater - high signal
     /// 99       not known or not detectable
     [BsonElement("rssi")]
-    public short? Signal { get; set; }
+    public short? SignalStrength { get; set; }
+    
+    /// <summary>
+    /// Values from 1 to 5
+    /// </summary>
+    [BsonElement("sl")]
+    public byte? SignalLevel { get; set; }
 
     [BsonElement("cgi")]
     public CellGlobalIdentityElement? CellGlobalIdentity { get; set; }

@@ -58,7 +58,7 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
                 int.Parse(locationMatch.Groups[14].Value, NumberStyles.HexNumber) / 100;
             deviceMessageDocument.Position.Heading =
                 locationMatch.Groups[15].Get<float?>();
-            deviceMessageDocument.Gsm.Signal =
+            deviceMessageDocument.Gsm.SignalStrength =
                 short.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber);
             deviceMessageDocument.Position.Odometer =
                 long.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber);

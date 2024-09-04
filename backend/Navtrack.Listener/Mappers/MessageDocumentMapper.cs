@@ -13,14 +13,14 @@ public static class MessageDocumentMapper
         destination.CreatedDate = DateTime.UtcNow;
         destination.Metadata = PositionMetadataElementMapper.Map(device);
 
-        if (destination.Data?.Count == 0)
+        if (destination.AdditionalData?.Count == 0)
         {
-            destination.Data = null;
+            destination.AdditionalData = null;
         }
         
-        if (destination.Extra?.Count == 0)
+        if (destination.AdditionalDataUnhandled?.Count == 0)
         {
-            destination.Extra = null;
+            destination.AdditionalDataUnhandled = null;
         }
 
 

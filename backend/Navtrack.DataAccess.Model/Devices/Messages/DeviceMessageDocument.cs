@@ -11,14 +11,17 @@ public class DeviceMessageDocument : BaseDocument
 {
     public DeviceMessageDocument()
     {
-        Data = new Dictionary<string, string>();
-        Extra = new Dictionary<string, string>();
+        AdditionalData = new Dictionary<string, string>();
+        AdditionalDataUnhandled = new Dictionary<string, string>();
     }
+    
+    [BsonElement("mp")]
+    public MessagePriority? MessagePriority { get; set; }
     
     [BsonElement("md")]
     public MessageMetadataElement Metadata { get; set; }
-
-    [BsonElement("cId")]
+    
+    [BsonElement("cid")]
     public ObjectId? ConnectionId { get; set; }
 
     [BsonElement("cd")]
@@ -26,19 +29,31 @@ public class DeviceMessageDocument : BaseDocument
 
     [BsonElement("p")]
     public PositionElement Position { get; set; }
+    
+    [BsonElement("d")]
+    public DeviceElement? Device { get; set; }
 
+    [BsonElement("v")]
+    public VehicleElement? Vehicle { get; set; }
+    
     [BsonElement("gsm")]
     public GsmElement? Gsm { get; set; }
-
-    [BsonElement("obd")]
-    public ObdElement? Obd { get; set; }
-
-    [BsonElement("ev")]
-    public EventElement? Event { get; set; }
-
-    [BsonElement("d")]
-    public Dictionary<string, string>? Data { get; set; }
     
-    [BsonElement("e")]
-    public Dictionary<string, string>? Extra { get; set; }
+    [BsonElement("ad")]
+    public Dictionary<string, string> AdditionalData { get; set; }
+    
+    [BsonElement("adu")]
+    public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }
+
+    // [BsonElement("s")]
+    // public StatusElement Status { get; set; }
+
+    // [BsonElement("t")]
+    // public TripElement Trip { get; set; }
+
+    // [BsonElement("io")]
+    // public IOElement? IO { get; set; }
+    
+    // [BsonElement("can")]
+    // public CanElement? Can { get; set; }
 }

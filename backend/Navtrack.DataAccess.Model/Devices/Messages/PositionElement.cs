@@ -44,7 +44,10 @@ public class PositionElement
 
     [BsonElement("sats")]
     public int? Satellites { get; set; }
-
+    
+    [BsonElement("pdop")]
+    public double? PDOP { get; set; }
+    
     [BsonElement("hdop")]
     public double? HDOP { get; set; }
 
@@ -53,7 +56,4 @@ public class PositionElement
 
     [BsonElement("odo")]
     public double? Odometer { get; set; }
-
-    [BsonElement("pdop")]
-    public double PDOP { get; set; }
 }

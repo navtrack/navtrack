@@ -67,7 +67,7 @@ public static class JointechV2MessageHandler
                     case 0x30:
                         deviceMessageDocument.Gsm = new GsmElement
                         {
-                            Signal = input.DataMessage.ByteReader.GetByte()
+                            SignalStrength = input.DataMessage.ByteReader.GetByte()
                         };
                         break;
                     case 0x31:
