@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Server;
 public class ProtocolListener(
     ILogger<ProtocolListener> logger,
     IProtocolConnectionHandler protocolConnectionHandler,
-    IConnectionRepository connectionRepository) : IProtocolListener
+    IDeviceConnectionRepository deviceConnectionRepository) : IProtocolListener
 {
     public async Task Start(IProtocol protocol, CancellationToken cancellationToken)
     {
@@ -55,7 +55,7 @@ public class ProtocolListener(
             Ip = networkStream.RemoteEndPoint,
             CreatedDate = DateTime.UtcNow
         };
-        await connectionRepository.Add(deviceConnectionDocument);
+        await deviceConnectionRepository.Add(deviceConnectionDocument);
 
         ProtocolConnectionContext connectionContext =
             new(networkStream, protocol, deviceConnectionDocument.Id);

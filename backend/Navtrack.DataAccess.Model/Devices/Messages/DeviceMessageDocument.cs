@@ -27,20 +27,20 @@ public class DeviceMessageDocument : BaseDocument
     [BsonElement("cd")]
     public DateTime CreatedDate { get; set; }
 
-    [BsonElement("p")]
-    public PositionElement Position { get; set; }
+    [BsonElement("pos")]
+    public PositionElement? Position { get; set; }
     
-    [BsonElement("d")]
+    [BsonElement("dev")]
     public DeviceElement? Device { get; set; }
 
-    [BsonElement("v")]
+    [BsonElement("veh")]
     public VehicleElement? Vehicle { get; set; }
     
     [BsonElement("gsm")]
     public GsmElement? Gsm { get; set; }
     
     [BsonElement("ad")]
-    public Dictionary<string, string> AdditionalData { get; set; }
+    public Dictionary<string, string>? AdditionalData { get; set; }
     
     [BsonElement("adu")]
     public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }

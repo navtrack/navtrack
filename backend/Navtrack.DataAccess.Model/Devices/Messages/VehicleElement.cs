@@ -10,7 +10,7 @@ public class VehicleElement
     [BsonElement("odo")]
     public uint? Odometer { get; set; }
 
-    [BsonElement("i")]
+    [BsonElement("ign")]
     public bool? Ignition { get; set; }
     
     [BsonElement("v")]

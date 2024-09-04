@@ -27,7 +27,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     private readonly ProtocolConnectionHandler protocolConnectionHandler;
     private readonly Mock<INetworkStreamWrapper> networkStreamWrapperMock;
-    private readonly Mock<IMessageService> locationServiceMock;
+    private readonly Mock<IDeviceMessageService> locationServiceMock;
     private readonly CancellationTokenSource cancellationTokenSource;
 
     public ProtocolConnectionContext ConnectionContext { get; }
@@ -87,9 +87,9 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         await protocolConnectionHandler.HandleConnection(ConnectionContext, cancellationTokenSource.Token);
     }
 
-    private Mock<IMessageService> GetPositionService()
+    private Mock<IDeviceMessageService> GetPositionService()
     {
-        Mock<IMessageService> mock = new();
+        Mock<IDeviceMessageService> mock = new();
 
         mock.Setup(x =>
                 x.Save(It.IsAny<ObjectId>(), It.IsAny<Device>(), It.IsAny<List<DeviceMessageDocument>>()))
@@ -124,7 +124,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
             mock.Object,
             locationServiceMock.Object,
             new Mock<IAssetRepository>().Object,
-            new Mock<IConnectionRepository>().Object);
+            new Mock<IDeviceConnectionRepository>().Object);
 
         ProtocolConnectionHandler handler = new(new Mock<ILogger<ProtocolConnectionHandler>>().Object,
             protocolMessageHandler);

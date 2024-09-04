@@ -11,9 +11,9 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Services;
 
-[Service(typeof(IMessageService))]
-public class MessageService(IDeviceMessageRepository deviceMessageRepository, IAssetRepository assetRepository)
-    : IMessageService
+[Service(typeof(IDeviceMessageService))]
+public class DeviceMessageService(IDeviceMessageRepository deviceMessageRepository, IAssetRepository assetRepository)
+    : IDeviceMessageService
 {
     public async Task Save(ObjectId connectionId, Device device, IEnumerable<DeviceMessageDocument> positions)
     {

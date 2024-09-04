@@ -19,9 +19,9 @@ namespace Navtrack.Listener.Server;
 public class ProtocolMessageHandler(
     ILogger<ProtocolMessageHandler> logger,
     IServiceProvider provider,
-    IMessageService messageService,
+    IDeviceMessageService deviceMessageService,
     IAssetRepository assetRepository,
-    IConnectionRepository connectionRepository) : IProtocolMessageHandler
+    IDeviceConnectionRepository deviceConnectionRepository) : IProtocolMessageHandler
 {
     public async Task HandleMessage(ProtocolConnectionContext connectionContext, INetworkStreamWrapper networkStream,
         byte[] bytes)
@@ -41,7 +41,7 @@ public class ProtocolMessageHandler(
             return;
         }
 
-        await connectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
+        await deviceConnectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
 
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
             HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));
@@ -54,7 +54,7 @@ public class ProtocolMessageHandler(
             {
                 await PrepareContext(connectionContext);
 
-                await messageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
+                await deviceMessageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
             }
         }
         catch (Exception e)
@@ -86,7 +86,7 @@ public class ProtocolMessageHandler(
             {
                 context.Device.DeviceId = asset.Device.Id;
                 context.Device.AssetId = asset.Id;
-                context.Device.MaxDate = asset.LastPositionMessage?.Position.Date;
+                context.Device.MaxDate = asset.LastPositionMessage?.Position?.Date;
             }
         }
     }

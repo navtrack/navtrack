@@ -5,7 +5,7 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Positions;
 
-public interface IConnectionRepository : IGenericRepository<DeviceConnectionDocument>
+public interface IDeviceConnectionRepository : IGenericRepository<DeviceConnectionDocument>
 {
     Task AddMessage(ObjectId connectionId, byte[] hex);
 }
