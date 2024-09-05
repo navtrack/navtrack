@@ -46,21 +46,13 @@ public class ProtocolMessageHandler(
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
             HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));
 
-        try
-        {
-            List<DeviceMessageDocument>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
+        List<DeviceMessageDocument>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
 
-            if (positions is { Count: > 0 } && connectionContext.Device != null)
-            {
-                await PrepareContext(connectionContext);
-
-                await deviceMessageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
-            }
-        }
-        catch (Exception e)
+        if (positions is { Count: > 0 } && connectionContext.Device != null)
         {
-            logger.LogCritical(e, "{Type}: Error parsing {DataMessageHex}", customMessageHandler.GetType(),
-                messageInput.DataMessage.Hex);
+            await PrepareContext(connectionContext);
+
+            await deviceMessageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
         }
     }
 

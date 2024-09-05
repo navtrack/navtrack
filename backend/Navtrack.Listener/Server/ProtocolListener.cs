@@ -20,29 +20,27 @@ public class ProtocolListener(
     public async Task Start(IProtocol protocol, CancellationToken cancellationToken)
     {
         TcpListener? listener = null;
+        
+        listener = new TcpListener(IPAddress.Any, protocol.Port);
+        listener.Start();
+        logger.LogDebug("{Protocol}: listening on {ProtocolPort}", protocol, protocol.Port);
 
-        try
+        while (!cancellationToken.IsCancellationRequested)
         {
-            listener = new TcpListener(IPAddress.Any, protocol.Port);
-            listener.Start();
-            logger.LogDebug("{Protocol}: listening on {ProtocolPort}", protocol, protocol.Port);
-
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
                 TcpClient tcpClient = await listener.AcceptTcpClientAsync(cancellationToken);
                 ProtocolConnectionContext connectionContext = await GetConnectionContext(protocol, tcpClient);
 
                 _ = protocolConnectionHandler.HandleConnection(connectionContext, cancellationToken);
             }
+            catch (Exception exception)
+            {
+                logger.LogCritical(exception, "{Protocol}", protocol);
+            }
         }
-        catch (Exception exception)
-        {
-            logger.LogCritical(exception, "{Protocol}", protocol);
-        }
-        finally
-        {
-            listener?.Stop();
-        }
+        
+        listener.Stop();
     }
 
     private async Task<ProtocolConnectionContext> GetConnectionContext(IProtocol protocol, TcpClient tcpClient)

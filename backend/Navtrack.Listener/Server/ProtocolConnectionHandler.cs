@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,39 +17,29 @@ public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger
         logger.LogDebug("{Protocol}: connected {EndPoint}", connectionContext.Protocol,
             connectionContext.NetworkStream.RemoteEndPoint);
 
-        try
-        {
-            byte[] buffer = new byte[ServerVariables.BufferLength];
-            int length;
+        byte[] buffer = new byte[ServerVariables.BufferLength];
+        int length;
 
-            do
+        do
+        {
+            length = ReadMessage(connectionContext.NetworkStream, buffer, connectionContext.Protocol,
+                cancellationToken);
+
+            if (length > 0)
             {
-                length = ReadMessage(connectionContext.NetworkStream, buffer, connectionContext.Protocol,
-                    cancellationToken);
+                logger.LogDebug("{ClientProtocol}: received {Length} bytes", connectionContext.Protocol, length);
 
-                if (length > 0)
-                {
-                    logger.LogDebug("{ClientProtocol}: received {Length} bytes", connectionContext.Protocol, length);
+                int startIndex = GetStartIndex(buffer, length, connectionContext.Protocol);
 
-                    int startIndex = GetStartIndex(buffer, length, connectionContext.Protocol);
+                await handler.HandleMessage(connectionContext, connectionContext.NetworkStream,
+                    buffer[startIndex..length]);
+            }
+        } while (!cancellationToken.IsCancellationRequested && length > 0 && connectionContext.NetworkStream.CanRead);
 
-                    await handler.HandleMessage(connectionContext, connectionContext.NetworkStream,
-                        buffer[startIndex..length]);
-                }
-            } while (!cancellationToken.IsCancellationRequested && length > 0 &&
-                     connectionContext.NetworkStream.CanRead);
-        }
-        catch (Exception exception)
-        {
-            logger.LogCritical(exception, "{ClientProtocol}", connectionContext.Protocol);
-        }
-        finally
-        {
-            logger.LogDebug("{ClientProtocol}: disconnected {EndPoint}", connectionContext.Protocol,
-                connectionContext.NetworkStream.RemoteEndPoint);
+        logger.LogDebug("{ClientProtocol}: disconnected {EndPoint}", connectionContext.Protocol,
+            connectionContext.NetworkStream.RemoteEndPoint);
 
-            await connectionContext.DisposeAsync();
-        }
+        await connectionContext.DisposeAsync();
     }
 
     private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
