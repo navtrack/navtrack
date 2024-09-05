@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Threading;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Xunit;
 

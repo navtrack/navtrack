@@ -1,4 +1,3 @@
-using System.Linq;
 using Navtrack.Listener.Protocols.Meitrack;
 using Xunit;
 

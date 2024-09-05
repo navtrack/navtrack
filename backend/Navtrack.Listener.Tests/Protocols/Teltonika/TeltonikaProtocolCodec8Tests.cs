@@ -1,6 +1,5 @@
 using System.Linq;
 using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Protocols.Teltonika;
 using Xunit;
 

@@ -1,5 +1,4 @@
 using System;
-using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Model.Devices.Messages.Filters;
 
 namespace Navtrack.Api.Model.Messages;

@@ -6,7 +6,4 @@ namespace Navtrack.DataAccess.Services.Positions;
 
 [Service(typeof(IDeviceMessageDataRepository))]
 public class DeviceMessageDataRepository(IRepository repository)
-    : GenericRepository<DeviceMessageDataDocument>(repository), IDeviceMessageDataRepository
-{
-    
-}
+    : GenericRepository<DeviceMessageDataDocument>(repository), IDeviceMessageDataRepository;

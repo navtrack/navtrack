@@ -1,7 +1,5 @@
 using Navtrack.Api.Model.Messages;
-using Navtrack.Api.Services.Mappers.Positions;
 using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.Shared.Library.Extensions;
 
 namespace Navtrack.Api.Services.Mappers.Messages;
 
