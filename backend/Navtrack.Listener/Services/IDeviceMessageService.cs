@@ -8,5 +8,5 @@ namespace Navtrack.Listener.Services;
 
 public interface IDeviceMessageService
 {
-    Task Save(ObjectId connectionId, Device device, IEnumerable<DeviceMessageDocument> messages);
+    Task<SaveDeviceMessageResult?> Save(SaveDeviceMessageInput input);
 }

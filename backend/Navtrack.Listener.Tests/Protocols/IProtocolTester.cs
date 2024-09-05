@@ -12,7 +12,7 @@ public interface IProtocolTester
     string ReceiveHexInDevice();
     string ReceiveStringInDevice();
     ProtocolConnectionContext ConnectionContext { get; }
-    List<DeviceMessageDocument> TotalParsedPositions { get; }
-    List<DeviceMessageDocument?>? LastParsedPositions { get; }
-    DeviceMessageDocument? LastParsedPosition { get; }
+    List<DeviceMessageDocument> TotalParsedMessages { get; }
+    List<DeviceMessageDocument?>? LastParsedMessages { get; }
+    DeviceMessageDocument? LastParsedMessage { get; }
 }

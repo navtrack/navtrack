@@ -21,7 +21,7 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where T
 
     public void Dispose()
     {
-        foreach (DeviceMessageDocument position in ProtocolTester.TotalParsedPositions)
+        foreach (DeviceMessageDocument position in ProtocolTester.TotalParsedMessages)
         {
             PositionIsValid(position);
         }

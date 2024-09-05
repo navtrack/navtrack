@@ -8,12 +8,12 @@ namespace Navtrack.DataAccess.Model.Devices.Messages;
 [Collection("devices_messages_data")]
 public class DeviceMessageDataDocument : BaseDocument
 {
-    [BsonElement("did")]
+    [BsonElement("dmid")]
     public ObjectId DeviceMessageId { get; set; }
 
-    [BsonElement("ad")]
-    public Dictionary<string, string>? AdditionalData { get; set; }
+    [BsonElement("d")]
+    public Dictionary<string, string>? Data { get; set; }
     
-    [BsonElement("adu")]
-    public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }
+    [BsonElement("du")]
+    public Dictionary<string, string>? DataUnhandled { get; set; }
 }

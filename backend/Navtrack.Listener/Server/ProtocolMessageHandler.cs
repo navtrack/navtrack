@@ -46,13 +46,18 @@ public class ProtocolMessageHandler(
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
             HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));
 
-        List<DeviceMessageDocument>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
+        List<DeviceMessageDocument>? messages = customMessageHandler.ParseRange(messageInput)?.ToList();
 
-        if (positions is { Count: > 0 } && connectionContext.Device != null)
+        if (messages is { Count: > 0 } && connectionContext.Device != null)
         {
             await PrepareContext(connectionContext);
 
-            await deviceMessageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
+            await deviceMessageService.Save(new SaveDeviceMessageInput
+            {
+                Device = connectionContext.Device,
+                ConnectionId = connectionContext.ConnectionId,
+                Messages = messages
+            });
         }
     }
 

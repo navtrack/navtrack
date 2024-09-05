@@ -17,7 +17,7 @@ public class JointechV2ProtocolTests : BaseProtocolTests<JointechProtocol, Joint
         ProtocolTester.SendHexFromDevice(
             "7E020000477752104080000046000000000104100E021436960357B26600000000000023032022393030011C310108D4012FD5020050DA03000605DB0201B0DC0400000000FD0902EC07000022A32168F8020330EE7E");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
 
         Assert.Equal("7E8001000577521040800000000046020000357E", ProtocolTester.ReceiveHexInDevice());
     }

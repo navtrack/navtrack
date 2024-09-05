@@ -30,7 +30,7 @@ public class EelinkV18ProtocolTests : BaseProtocolTests<EelinkProtocol, EelinkMe
         // Location
         ProtocolTester.SendHexFromDevice("676702001C02B259AE7387FCD360D6034332B2000000028F000A4F64002EB10101");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class EelinkV18ProtocolTests : BaseProtocolTests<EelinkProtocol, EelinkMe
         ProtocolTester.SendHexFromDevice("676704001C00B7569FC3020517A2D7020B08E100000000D8001E005B0004460004");
 
         Assert.Equal("676704000200B7", ProtocolTester.ReceiveHexInDevice());
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]

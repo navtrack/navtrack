@@ -22,7 +22,7 @@ public class LaipacProtocolTests : BaseProtocolTests<LaipacProtocol, LaipacMessa
         ProtocolTester.SendStringFromDevice(
             "$AVRMC,99999999,164339,A,4351.0542,N,07923.5445,W,0.29,78.66,180703,0,3.727,17,1,0,0*37\r\n");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
         
     [Fact]
@@ -31,7 +31,7 @@ public class LaipacProtocolTests : BaseProtocolTests<LaipacProtocol, LaipacMessa
         ProtocolTester.SendStringFromDevice(
             "$AVRMC,99999999,164339,a,4351.0542,N,07923.5445,W,0.29,78.66,180703,0,3.727,17,1,0,0*17\r\n");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
         Assert.Equal("$EAVACK,0,17*2D\r\n", ProtocolTester.ReceiveStringInDevice());
     }
 
@@ -41,7 +41,7 @@ public class LaipacProtocolTests : BaseProtocolTests<LaipacProtocol, LaipacMessa
         ProtocolTester.SendStringFromDevice(
             "$AVRMC,99999999,164339,v,4351.0542,N,07923.5445,W,0.29,78.66,180703,0,3.727,17,1,0,0*00\r\n");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
         Assert.Equal("$EAVACK,0,00*2B\r\n", ProtocolTester.ReceiveStringInDevice());
     }
 
@@ -51,7 +51,7 @@ public class LaipacProtocolTests : BaseProtocolTests<LaipacProtocol, LaipacMessa
         ProtocolTester.SendStringFromDevice(
             "$AVRMC,99999999,164339,r,4351.0542,N,07923.5445,W,0.29,78.66,180703,0,3.727,17,1,0,0*04\r\n");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
         Assert.Equal("$EAVACK,0,04*2F\r\n", ProtocolTester.ReceiveStringInDevice());
     }
 }

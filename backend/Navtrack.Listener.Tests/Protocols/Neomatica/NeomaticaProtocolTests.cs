@@ -13,7 +13,7 @@ public class NeomaticaProtocolTests : BaseProtocolTests<NeomaticaProtocol, Neoma
         ProtocolTester.SendHexFromDevice(
             "01002200333508202000000000000000007F0D9F030000000000E39A1056E24A8210");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class NeomaticaProtocolTests : BaseProtocolTests<NeomaticaProtocol, Neoma
         ProtocolTester.SendHexFromDevice(
             "01002680336510002062A34C423DCF8E42A50B1700005801140767E30F568F2534107D220000");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class NeomaticaProtocolTests : BaseProtocolTests<NeomaticaProtocol, Neoma
         ProtocolTester.SendHexFromDevice(
             "0100268033641080207AA34C424CCF8E4239030800005B01140755E30F560000F00F70220000");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class NeomaticaProtocolTests : BaseProtocolTests<NeomaticaProtocol, Neoma
         ProtocolTester.SendHexFromDevice(
             "010022003300072020000000000000000044062A330000000000107F10565D4A8310");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -57,6 +57,6 @@ public class NeomaticaProtocolTests : BaseProtocolTests<NeomaticaProtocol, Neoma
         ProtocolTester.SendHexFromDevice(
             "01002680336510002062A34C423DCF8E42A50B1700005801140767E30F568F2534107D220000");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 }

@@ -34,13 +34,13 @@ public class PositionElement
     public DateTime Date { get; set; }
 
     [BsonElement("spd")]
-    public float? Speed { get; set; }
+    public double? Speed { get; set; }
 
     [BsonElement("hea")]
-    public float? Heading { get; set; }
+    public double? Heading { get; set; }
 
     [BsonElement("alt")]
-    public float? Altitude { get; set; }
+    public double? Altitude { get; set; }
 
     [BsonElement("sats")]
     public int? Satellites { get; set; }

@@ -22,7 +22,7 @@ public class AutofonProtocolTests : BaseProtocolTests<AutofonProtocol, AutofonMe
         // Send location
         ProtocolTester.SendHexFromDevice("02080000251848470AFA010262DAA690013AA4046DA83745F8812560DF010001126A");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class AutofonProtocolTests : BaseProtocolTests<AutofonProtocol, AutofonMe
         ProtocolTester.SendHexFromDevice(
             "111E00000000000000000100007101010B0C020302010B0C0005A053FFFFFFFF02010B0C00276047FFFFFFFF1F5600FA000176F218C7850C0B0B0C203A033DBD46035783EF009E00320014FFFF45");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -55,6 +55,6 @@ public class AutofonProtocolTests : BaseProtocolTests<AutofonProtocol, AutofonMe
         // Send location
         ProtocolTester.SendHexFromDevice("023E00001E004D411EFA01772F185285009C48041F1E366C2961380F26B10B00911C");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 }

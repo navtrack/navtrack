@@ -32,14 +32,14 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     public ProtocolConnectionContext ConnectionContext { get; }
 
-    public List<DeviceMessageDocument>? LastParsedPositions { get; private set; }
-    public List<DeviceMessageDocument> TotalParsedPositions { get; }
-    public DeviceMessageDocument? LastParsedPosition => LastParsedPositions?.FirstOrDefault();
+    public List<DeviceMessageDocument>? LastParsedMessages { get; private set; }
+    public List<DeviceMessageDocument> TotalParsedMessages { get; }
+    public DeviceMessageDocument? LastParsedMessage => LastParsedMessages?.FirstOrDefault();
 
     public ProtocolTester()
     {
         cancellationTokenSource = new CancellationTokenSource();
-        TotalParsedPositions = [];
+        TotalParsedMessages = [];
 
         locationServiceMock = GetPositionService();
         protocolConnectionHandler = GetProtocolClientHandler();
@@ -91,13 +91,11 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
     {
         Mock<IDeviceMessageService> mock = new();
 
-        mock.Setup(x =>
-                x.Save(It.IsAny<ObjectId>(), It.IsAny<Device>(), It.IsAny<List<DeviceMessageDocument>>()))
-            .Callback<ObjectId, Device, IEnumerable<DeviceMessageDocument>>((_, _, locations) =>
+        mock.Setup(x => x.Save(It.IsAny<SaveDeviceMessageInput>()))
+            .Callback<SaveDeviceMessageInput>(input =>
             {
-                List<DeviceMessageDocument> locationsList = locations.ToList();
-                LastParsedPositions = locationsList;
-                TotalParsedPositions.AddRange(locationsList);
+                LastParsedMessages = input.Messages.ToList();
+                TotalParsedMessages.AddRange(LastParsedMessages);
             });
 
         return mock;

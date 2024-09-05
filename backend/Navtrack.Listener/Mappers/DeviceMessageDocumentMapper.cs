@@ -12,12 +12,16 @@ public static class DeviceMessageDocumentMapper
         destination.ConnectionId = connectionId;
         destination.CreatedDate = DateTime.UtcNow;
         destination.Metadata = PositionMetadataElementMapper.Map(device);
+        destination.Position = PositionElementMapper.Map(destination.Position);
+        destination.Device = DeviceElementMapper.Map(destination.Device);
+        destination.Vehicle = VehicleElementMapper.Map(destination.Vehicle);
+        destination.Gsm = GsmElementMapper.Map(destination.Gsm);
 
         if (destination.AdditionalData?.Count == 0)
         {
             destination.AdditionalData = null;
         }
-        
+
         if (destination.AdditionalDataUnhandled?.Count == 0)
         {
             destination.AdditionalDataUnhandled = null;

@@ -15,4 +15,9 @@ public class VehicleElement
     
     [BsonElement("v")]
     public double? Voltage { get; set; }
+    
+    public bool IsNull()
+    {
+        return Odometer == null && Ignition == null && Voltage == null;
+    }
 }

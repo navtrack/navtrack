@@ -26,6 +26,6 @@ public class CarscopCC800ProtocolTests : BaseProtocolTests<CarscopProtocol, Cars
         ProtocolTester.SendStringFromDevice(
             "*040331141830UD04013255A2267.6805N11415.1885E000.104033129.2011111111L000023^");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 }
