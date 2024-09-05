@@ -44,16 +44,4 @@ public class DeviceMessageDocument : BaseDocument
     
     [BsonIgnore]
     public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }
-
-    // [BsonElement("s")]
-    // public StatusElement Status { get; set; }
-
-    // [BsonElement("t")]
-    // public TripElement Trip { get; set; }
-
-    // [BsonElement("io")]
-    // public IOElement? IO { get; set; }
-    
-    // [BsonElement("can")]
-    // public CanElement? Can { get; set; }
 }

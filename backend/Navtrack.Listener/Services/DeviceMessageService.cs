@@ -15,21 +15,20 @@ namespace Navtrack.Listener.Services;
 public class DeviceMessageService(
     IDeviceMessageRepository deviceMessageRepository,
     IAssetRepository assetRepository,
-    IDeviceMessageDataRepository deviceMessageDataRepository)
-    : IDeviceMessageService
+    IDeviceMessageDataRepository deviceMessageDataRepository) : IDeviceMessageService
 {
-    public async Task Save(ObjectId connectionId, Device device, IEnumerable<DeviceMessageDocument> positions)
+    public async Task Save(ObjectId connectionId, Device device, IEnumerable<DeviceMessageDocument> messages)
     {
         if (device is { AssetId: not null, DeviceId: not null })
         {
-            List<DeviceMessageDocument> messages = positions
-                .Select(x => MessageDocumentMapper.Map(device, connectionId, x))
+            List<DeviceMessageDocument> mappedMessages = messages
+                .Select(x => DeviceMessageDocumentMapper.Map(device, connectionId, x))
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 
-            await deviceMessageRepository.AddRange(messages);
+            await deviceMessageRepository.AddRange(mappedMessages);
 
-            IEnumerable<DeviceMessageDataDocument> data = messages.Select(x => new DeviceMessageDataDocument
+            IEnumerable<DeviceMessageDataDocument> data = mappedMessages.Select(x => new DeviceMessageDataDocument
             {
                 DeviceMessageId = x.Id,
                 AdditionalData = x.AdditionalData,
@@ -38,15 +37,20 @@ public class DeviceMessageService(
 
             await deviceMessageDataRepository.AddRange(data);
 
-            DeviceMessageDocument? latestPositionMessage = messages.MaxBy(x => x.Position.Date);
+            DeviceMessageDocument latestMessage = mappedMessages.MaxBy(x => x.CreatedDate)!;
+            DeviceMessageDocument latestPositionMessage = mappedMessages.MaxBy(x => x.Position.Date)!;
 
-            if (latestPositionMessage != null &&
-                (device.MaxDate == null || device.MaxDate < latestPositionMessage.Position.Date) &&
-                latestPositionMessage.Position.Latitude != 0 && latestPositionMessage.Position.Longitude != 0)
+            bool updatePosition = (device.MaxDate == null || device.MaxDate < latestPositionMessage.Position.Date) &&
+                                  latestPositionMessage.Position.Latitude != 0 &&
+                                  latestPositionMessage.Position.Longitude != 0;
+
+            if (updatePosition)
             {
-                await assetRepository.SetLastPositionMessage(device.AssetId.Value, latestPositionMessage);
                 device.MaxDate = latestPositionMessage.Position.Date;
             }
+
+            await assetRepository.UpdateMessages(device.AssetId.Value, latestMessage,
+                updatePosition ? latestPositionMessage : null);
         }
     }
 }

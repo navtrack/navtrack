@@ -5,7 +5,7 @@ using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Mappers;
 
-public static class MessageDocumentMapper
+public static class DeviceMessageDocumentMapper
 {
     public static DeviceMessageDocument Map(Device device, ObjectId connectionId, DeviceMessageDocument destination)
     {

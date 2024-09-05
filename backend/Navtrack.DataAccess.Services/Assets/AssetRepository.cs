@@ -97,11 +97,19 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
                     .Set(x => x.Device!.DeviceTypeId, deviceTypeId));
     }
 
-    public Task SetLastPositionMessage(ObjectId assetId, DeviceMessageDocument deviceMessage)
+    public Task UpdateMessages(ObjectId assetId, DeviceMessageDocument lastMessage,
+        DeviceMessageDocument? positionMessage)
     {
+        List<UpdateDefinition<AssetDocument>> updateDefinitions =
+            [Builders<AssetDocument>.Update.Set(x => x.LastMessage, lastMessage)];
+
+        if (positionMessage != null)
+        {
+            updateDefinitions.Add(Builders<AssetDocument>.Update.Set(x => x.LastPositionMessage, positionMessage));
+        }
+
         return repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetId,
-                Builders<AssetDocument>.Update.Set(x => x.LastPositionMessage, deviceMessage));
+            .UpdateOneAsync(x => x.Id == assetId, Builders<AssetDocument>.Update.Combine(updateDefinitions));
     }
 
     public Task SetActiveDevice(ObjectId assetDocumentId, AssetDeviceElement assetDocumentDevice)
