@@ -23,7 +23,6 @@ public static class MessageDocumentMapper
             destination.AdditionalDataUnhandled = null;
         }
 
-
         return destination;
     }
 }

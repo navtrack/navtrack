@@ -28,7 +28,7 @@ public class DeviceMessageDocument : BaseDocument
     public DateTime CreatedDate { get; set; }
 
     [BsonElement("pos")]
-    public PositionElement? Position { get; set; }
+    public PositionElement Position { get; set; }
     
     [BsonElement("dev")]
     public DeviceElement? Device { get; set; }
@@ -39,10 +39,10 @@ public class DeviceMessageDocument : BaseDocument
     [BsonElement("gsm")]
     public GsmElement? Gsm { get; set; }
     
-    [BsonElement("ad")]
+    [BsonIgnore]
     public Dictionary<string, string>? AdditionalData { get; set; }
     
-    [BsonElement("adu")]
+    [BsonIgnore]
     public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }
 
     // [BsonElement("s")]
