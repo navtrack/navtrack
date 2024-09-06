@@ -23,7 +23,6 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
         {
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Valid = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
@@ -37,6 +36,9 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
                     Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7),
                     HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(1),
                     Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(2),
+                },
+                Device = new DeviceElement
+                {
                     Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7)
                 }
             };

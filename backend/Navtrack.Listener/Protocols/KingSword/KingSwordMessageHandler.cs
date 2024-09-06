@@ -36,7 +36,6 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement(),
                 Gsm = new GsmElement()
             };
@@ -60,8 +59,9 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
                 locationMatch.Groups[15].Get<float?>();
             deviceMessageDocument.Gsm.SignalStrength =
                 short.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber);
-            deviceMessageDocument.Position.Odometer =
-                long.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber);
+            deviceMessageDocument.Device ??= new DeviceElement();
+            deviceMessageDocument.Device.Odometer =
+                uint.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber);
             deviceMessageDocument.Position.Altitude = locationMatch.Groups[22].Get<float?>();
 
             return deviceMessageDocument;

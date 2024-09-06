@@ -30,7 +30,6 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
                 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Date = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),

@@ -38,7 +38,6 @@ public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Date = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,

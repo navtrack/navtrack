@@ -53,7 +53,6 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
             
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement()
         };
 

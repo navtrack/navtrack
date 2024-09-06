@@ -35,7 +35,6 @@ public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Date = DateTimeUtil.New(locationMatch.Groups[2].Value, locationMatch.Groups[3].Value,
@@ -48,7 +47,10 @@ public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
                     Altitude = locationMatch.Groups[18].Get<float?>(),
                     HDOP = locationMatch.Groups[19].Get<float?>(),
                     Satellites = locationMatch.Groups[20].Get<short?>(),
-                    Odometer = locationMatch.Groups[25].Get<double?>()
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = locationMatch.Groups[25].Get<uint?>()
                 }
             };
 

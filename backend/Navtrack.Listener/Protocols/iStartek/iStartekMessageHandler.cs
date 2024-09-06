@@ -19,8 +19,7 @@ public class iStartekMessageHandler : BaseMessageHandler<iStartekProtocol>
 
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            Position = PositionElementMapper.Map(gprmc),
-            // Device = input.ConnectionContext.Device,
+            Position = PositionElementMapper.Map(gprmc)
         };
 
         deviceMessageDocument.Position.Heading = input.DataMessage.BarSplit.Get<float?>(1);

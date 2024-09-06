@@ -32,7 +32,7 @@ public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
         if (locationMatch.Success)
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
-                
+
             DeviceMessageDocument deviceMessageDocument = new()
             {
                 Position = new PositionElement
@@ -50,10 +50,12 @@ public class KeSonMessageHandler : BaseMessageHandler<KeSonProtocol>
                         locationMatch.Groups[9].Value),
                     Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[12].Get<float>()),
                     Heading = locationMatch.Groups[15].Get<float>(),
-                    Odometer = long.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
                     Valid = locationMatch.Groups[7].Value != "V"
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = uint.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber)
                 }
-                
             };
 
             return deviceMessageDocument;

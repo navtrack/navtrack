@@ -27,7 +27,6 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
 
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = PositionElementMapper.Map(gprmc),
         };
 
@@ -63,7 +62,6 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
 
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement
             {
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
@@ -76,7 +74,10 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
                 Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(15)),
                 Heading = input.DataMessage.CommaSplit.Get<float?>(16),
                 Altitude = input.DataMessage.CommaSplit.Get<float?>(17),
-                Odometer = input.DataMessage.CommaSplit.Get<double?>(18) * 1000,
+            },
+            Device = new DeviceElement
+            {
+                Odometer = input.DataMessage.CommaSplit.Get<uint?>(18) * 1000,
             },
             Gsm = new GsmElement
             {

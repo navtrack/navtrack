@@ -59,6 +59,9 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
                     Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[13].Get<float>()),
                     Heading = locationMatch.Groups[14].Get<float?>() / 10,
                     HDOP = locationMatch.Groups[20].Get<float?>() / 10,
+                },
+                Device = new DeviceElement
+                {
                     Odometer = GetOdometer(locationMatch.Groups[22].Value)
                 }
             };
@@ -69,7 +72,7 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
         return null;
     }
 
-    private static double? GetOdometer(string value)
+    private static uint? GetOdometer(string value)
     {
         value = value.Replace(':', 'A')
             .Replace(';', 'B')
@@ -78,6 +81,6 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
             .Replace('>', 'E')
             .Replace('?', 'F');
 
-        return long.Parse(value, NumberStyles.HexNumber);
+        return uint.Parse(value, NumberStyles.HexNumber);
     }
 }

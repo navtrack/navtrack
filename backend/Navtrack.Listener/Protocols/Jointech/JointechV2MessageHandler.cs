@@ -24,7 +24,6 @@ public static class JointechV2MessageHandler
             input.ConnectionContext.SetDevice(phoneNumber);
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement()
             };
 

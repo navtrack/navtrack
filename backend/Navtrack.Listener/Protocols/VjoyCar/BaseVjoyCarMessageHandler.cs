@@ -29,7 +29,6 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
         {
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Date = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
@@ -39,7 +38,10 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
                     Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
                     Speed = float.Parse(lgc[9].Value),
                     Heading = float.Parse(lgc[13].Value),
-                    Odometer = long.Parse(lgc[15].Value, NumberStyles.HexNumber)
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = uint.Parse(lgc[15].Value, NumberStyles.HexNumber)
                 }
             };
 

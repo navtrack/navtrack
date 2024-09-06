@@ -16,7 +16,6 @@ public class BaseTkStarMessageHandler<T> : BaseMessageHandler<T>
 
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement
             {
                 Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),

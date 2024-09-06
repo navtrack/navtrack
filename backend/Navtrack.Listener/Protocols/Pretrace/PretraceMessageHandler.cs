@@ -38,7 +38,6 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Valid = locationMatch.Groups[5].Value == "A",
@@ -52,9 +51,12 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
                     Speed = locationMatch.Groups[16].Get<float?>(),
                     Heading = locationMatch.Groups[17].Get<float?>(),
                     Altitude = int.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
-                    Odometer = int.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
                     Satellites = short.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber),
                     HDOP = locationMatch.Groups[21].Get<float?>(),
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = uint.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
                 },
                 Gsm = new GsmElement
                 {

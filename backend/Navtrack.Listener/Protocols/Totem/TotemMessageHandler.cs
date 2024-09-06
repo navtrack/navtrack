@@ -22,7 +22,6 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 
         DeviceMessageDocument deviceMessageDocument = new DeviceMessageDocument
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement(),
             Gsm = new GsmElement()
         };
@@ -34,7 +33,8 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
         deviceMessageDocument.Position.Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.HDOP = float.Parse(input.DataMessage.Reader.Get(4));
-        deviceMessageDocument.Position.Odometer = uint.Parse(input.DataMessage.Reader.Get(7));
+        deviceMessageDocument.Device ??= new DeviceElement();
+        deviceMessageDocument.Device.Odometer = uint.Parse(input.DataMessage.Reader.Get(7));
         deviceMessageDocument.Position.Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.Reader.Get(9),
             input.DataMessage.Reader.Get(1));
         deviceMessageDocument.Position.Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.Reader.Get(10),
@@ -50,7 +50,6 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
 
         DeviceMessageDocument deviceMessageDocument = new DeviceMessageDocument
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement(),
             Gsm = new GsmElement()
         };
@@ -62,7 +61,8 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
         deviceMessageDocument.Position.Heading = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.Speed = Convert.ToInt32(input.DataMessage.Reader.Get(3));
         deviceMessageDocument.Position.HDOP = float.Parse(input.DataMessage.Reader.Get(4));
-        deviceMessageDocument.Position.Odometer = uint.Parse(input.DataMessage.Reader.Get(7));
+        deviceMessageDocument.Device ??= new DeviceElement();
+        deviceMessageDocument.Device.Odometer = uint.Parse(input.DataMessage.Reader.Get(7));
         deviceMessageDocument.Position.Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.Reader.Get(9),
             input.DataMessage.Reader.Get(1));
         deviceMessageDocument.Position.Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.Reader.Get(10),

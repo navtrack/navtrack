@@ -8,7 +8,7 @@ public class DeviceElement
     /// In meters.
     /// </summary>
     [BsonElement("odo")]
-    public int? Odometer { get; set; }
+    public uint? Odometer { get; set; }
 
     /// <summary>
     /// Battery level (0%-100%)

@@ -25,7 +25,6 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     HDOP = locationMatch.Groups[2].Get<float?>(),

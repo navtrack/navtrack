@@ -15,7 +15,6 @@ public class SuntechMessageHandler : BaseMessageHandler<SuntechProtocol>
             
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement
             {
                 Date = ConvertDate(input.DataMessage.Split.Get<string>(3),
@@ -26,7 +25,10 @@ public class SuntechMessageHandler : BaseMessageHandler<SuntechProtocol>
                 Heading = input.DataMessage.Split.Get<float?>(9),
                 Satellites = input.DataMessage.Split.Get<short?>(10),
                 Valid = input.DataMessage.Split.Get<string>(11) == "1",
-                Odometer = input.DataMessage.Split.Get<double?>(12)
+            },
+            Device = new DeviceElement
+            {
+                Odometer = input.DataMessage.Split.Get<uint?>(12)
             }
         };
 

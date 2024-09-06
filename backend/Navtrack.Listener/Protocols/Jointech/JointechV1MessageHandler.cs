@@ -50,8 +50,11 @@ public class JointechV1MessageHandler
                         "(\\d{5})(\\d{4})"),
                     Speed = SpeedUtil.KnotsToKph(int.Parse(locationMatch.Groups[14].Value, NumberStyles.HexNumber)),
                     Heading = int.Parse(locationMatch.Groups[15].Value, NumberStyles.HexNumber),
-                    Odometer = long.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
                     Valid = BitUtil.IsTrue(locationMatch.Groups[13].Value[0], 0)
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = uint.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber)
                 }
             };
 

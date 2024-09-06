@@ -46,7 +46,6 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
     {
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement
             {
                 Date = dateTime
@@ -158,7 +157,6 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Satellites = locationMatch.Groups[14].Get<short?>(),

@@ -17,12 +17,12 @@ public class TzoneMessageHandler : BaseMessageHandler<TzoneProtocol>
             
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = PositionElementMapper.Map(gprmc)
         };
 
         deviceMessageDocument.Position.HDOP = input.DataMessage.BarSplit.Get<float?>(3);
-        deviceMessageDocument.Position.Odometer = input.DataMessage.BarSplit.GetDouble(11, 4);
+        deviceMessageDocument.Device ??= new DeviceElement();
+        deviceMessageDocument.Device.Odometer = input.DataMessage.BarSplit.Get<uint>(11);
 
         return deviceMessageDocument;
     }

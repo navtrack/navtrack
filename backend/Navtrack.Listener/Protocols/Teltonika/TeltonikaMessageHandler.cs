@@ -194,7 +194,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     return;
                 case TeltonikaDataIds.TotalOdometer:
                     deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.Odometer = value.ToSInt4();
+                    deviceMessageDocument.Device.Odometer = value.ToUInt4();
                     return;
                 case TeltonikaDataIds.GsmSignal:
                     deviceMessageDocument.Gsm ??= new GsmElement();

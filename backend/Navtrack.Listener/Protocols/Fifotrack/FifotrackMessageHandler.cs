@@ -15,7 +15,6 @@ public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
 
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement
             {
                 Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
@@ -25,7 +24,10 @@ public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
                 Speed = input.DataMessage.CommaSplit.Get<float?>(9),
                 Heading = input.DataMessage.CommaSplit.Get<float?>(10),
                 Altitude = input.DataMessage.CommaSplit.Get<float?>(11),
-                Odometer = input.DataMessage.CommaSplit.Get<double?>(12)
+            },
+            Device = new DeviceElement
+            {
+                Odometer = input.DataMessage.CommaSplit.Get<uint?>(12)
             }
         };
 

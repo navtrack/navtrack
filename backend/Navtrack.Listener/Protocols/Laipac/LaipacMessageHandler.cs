@@ -60,7 +60,6 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,

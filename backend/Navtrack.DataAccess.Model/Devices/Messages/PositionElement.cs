@@ -53,7 +53,4 @@ public class PositionElement
 
     [BsonElement("v")]
     public bool? Valid { get; set; }
-
-    [BsonElement("odo")]
-    public double? Odometer { get; set; }
 }

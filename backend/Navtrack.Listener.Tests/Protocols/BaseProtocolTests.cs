@@ -36,7 +36,6 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where T
         Assert.True(deviceMessageDocument.Position.Heading is null or >= 0 and <= 360);
         Assert.True(deviceMessageDocument.Position.Satellites is null or >= 0 and <= 50);
         Assert.True(deviceMessageDocument.Position.HDOP is null or >= 0 and <= 100);
-        Assert.True(deviceMessageDocument.Position.Odometer is null or >= 0);
         Assert.NotNull(ProtocolTester.ConnectionContext.Device);
         Assert.NotEmpty(ProtocolTester.ConnectionContext.Device.SerialNumber);
     }

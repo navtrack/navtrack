@@ -58,10 +58,8 @@ public class RuptelaMessageHandler : BaseMessageHandler<RuptelaProtocol>
 
     private static DeviceMessageDocument GetLocation(MessageInput input, bool extended)
     {
-        // ReSharper disable once UseObjectOrCollectionInitializer
         DeviceMessageDocument deviceMessageDocument = new()
         {
-            // Device = input.ConnectionContext.Device,
             Position = new PositionElement()
         };
 

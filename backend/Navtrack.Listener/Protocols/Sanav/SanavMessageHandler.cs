@@ -31,7 +31,6 @@ public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
 
             DeviceMessageDocument deviceMessageDocument = new()
             {
-                // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
                     Date = DateTimeUtil.New(
