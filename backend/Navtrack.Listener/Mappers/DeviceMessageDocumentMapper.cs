@@ -12,6 +12,14 @@ public static class DeviceMessageDocumentMapper
         destination.ConnectionId = connectionId;
         destination.CreatedDate = DateTime.UtcNow;
         destination.Metadata = PositionMetadataElementMapper.Map(device);
+        
+        DeviceMessageDocument cleaned = Clean(destination);
+
+        return cleaned;
+    }
+    
+    public static DeviceMessageDocument Clean(DeviceMessageDocument destination)
+    {
         destination.Position = PositionElementMapper.Map(destination.Position);
         destination.Device = DeviceElementMapper.Map(destination.Device);
         destination.Vehicle = VehicleElementMapper.Map(destination.Vehicle);
