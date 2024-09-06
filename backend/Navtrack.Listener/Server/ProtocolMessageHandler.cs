@@ -52,12 +52,22 @@ public class ProtocolMessageHandler(
         {
             await PrepareContext(connectionContext);
 
-            await deviceMessageService.Save(new SaveDeviceMessageInput
+            SaveDeviceMessageResult? result = await deviceMessageService.Save(new SaveDeviceMessageInput
             {
                 Device = connectionContext.Device,
                 ConnectionId = connectionContext.ConnectionId,
                 Messages = messages
             });
+            
+            HandleResult(connectionContext, result);
+        }
+    }
+
+    private static void HandleResult(ProtocolConnectionContext connectionContext, SaveDeviceMessageResult? result)
+    {
+        if (result?.MaxPositionDate != null && connectionContext.Device != null)
+        {
+            connectionContext.Device.MaxDate = result.MaxPositionDate;
         }
     }
 
