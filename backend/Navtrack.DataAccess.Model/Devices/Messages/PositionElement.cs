@@ -5,6 +5,11 @@ namespace Navtrack.DataAccess.Model.Devices.Messages;
 
 public class PositionElement
 {
+    public PositionElement()
+    {
+        Coordinates = new double[2];
+    }
+    
     /// <summary>
     /// [Longitude, Latitude]
     /// </summary>
@@ -12,28 +17,39 @@ public class PositionElement
     public double[] Coordinates { get; set; }
 
     [BsonIgnore]
-    public double Latitude => Coordinates[1];
+    public double Latitude
+    {
+        set => Coordinates[1] = value;
+        get => Coordinates[1];
+    }
 
     [BsonIgnore]
-    public double Longitude => Coordinates[0];
+    public double Longitude
+    {
+        set => Coordinates[0] = value;
+        get => Coordinates[0];
+    }
 
     [BsonElement("d")]
     public DateTime Date { get; set; }
 
     [BsonElement("spd")]
-    public float? Speed { get; set; }
+    public double? Speed { get; set; }
 
     [BsonElement("hea")]
-    public float? Heading { get; set; }
+    public double? Heading { get; set; }
 
     [BsonElement("alt")]
-    public float? Altitude { get; set; }
+    public double? Altitude { get; set; }
 
     [BsonElement("sats")]
     public int? Satellites { get; set; }
-
+    
+    [BsonElement("pdop")]
+    public double? PDOP { get; set; }
+    
     [BsonElement("hdop")]
-    public float? HDOP { get; set; }
+    public double? HDOP { get; set; }
 
     [BsonElement("v")]
     public bool? Valid { get; set; }

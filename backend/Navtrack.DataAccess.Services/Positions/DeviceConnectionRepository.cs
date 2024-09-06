@@ -7,10 +7,10 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.DataAccess.Services.Positions;
 
-[Service(typeof(IConnectionRepository))]
-public class ConnectionRepository : GenericRepository<DeviceConnectionDocument>, IConnectionRepository
+[Service(typeof(IDeviceConnectionRepository))]
+public class DeviceConnectionRepository : GenericRepository<DeviceConnectionDocument>, IDeviceConnectionRepository
 {
-    public ConnectionRepository(IRepository repository) : base(repository)
+    public DeviceConnectionRepository(IRepository repository) : base(repository)
     {
     }
 

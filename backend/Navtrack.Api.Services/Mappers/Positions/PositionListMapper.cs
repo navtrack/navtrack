@@ -1,6 +1,6 @@
 using System.Linq;
 using Navtrack.Api.Model.Positions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.DataAccess.Model.Devices.Messages.Filters;
 
 namespace Navtrack.Api.Services.Mappers.Positions;
 

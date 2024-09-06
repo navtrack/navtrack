@@ -25,6 +25,9 @@ public class AssetDocument : BaseDocument
     [BsonElement("device")]
     public AssetDeviceElement? Device { get; set; }
 
+    [BsonElement("lastMessage")]
+    public DeviceMessageDocument? LastMessage { get; set; }
+
     [BsonElement("lastPositionMessage")]
     public DeviceMessageDocument? LastPositionMessage { get; set; }
 

@@ -37,7 +37,7 @@ public class AccountTests(BaseTestFixture fixture) : BaseTest(fixture)
         {
             Email = Empty,
             Password = "password",
-            ConfirmPassword = "password",
+            ConfirmPassword = "password"
         };
 
         HttpResponseMessage response =

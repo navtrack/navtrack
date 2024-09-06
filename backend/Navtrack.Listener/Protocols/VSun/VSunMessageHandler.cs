@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
+using Navtrack.Listener.Mappers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -9,31 +10,32 @@ namespace Navtrack.Listener.Protocols.VSun;
 [Service(typeof(ICustomMessageHandler<VSunProtocol>))]
 public class VSunMessageHandler : BaseMessageHandler<VSunProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
-        Position position = Parse(input, HandleImei, HandleLocation);
+        DeviceMessageDocument deviceMessageDocument = Parse(input, HandleImei, HandleLocation);
 
-        return position;
+        return deviceMessageDocument;
     }
 
-    private static Position HandleLocation(MessageInput input)
+    private static DeviceMessageDocument HandleLocation(MessageInput input)
     {
         GPRMC gprmc = GPRMC.Parse(input.DataMessage.String);
 
         if (gprmc != null)
         {
-            Position position = new(gprmc)
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device
+                // Device = input.ConnectionContext.Device
+                Position = PositionElementMapper.Map(gprmc)
             };
 
-            return position;
+            return deviceMessageDocument;
         }
             
         return null;
     }
 
-    private static Position HandleImei(MessageInput input)
+    private static DeviceMessageDocument HandleImei(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {

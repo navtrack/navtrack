@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace Navtrack.DataAccess.Model.Devices.Messages;
+namespace Navtrack.DataAccess.Model.Devices.Messages.Filters;
 
 public class GetMessagesOptions
 {

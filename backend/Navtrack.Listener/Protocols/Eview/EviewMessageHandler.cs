@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -10,14 +10,14 @@ namespace Navtrack.Listener.Protocols.Eview;
 [Service(typeof(ICustomMessageHandler<EviewProtocol>))]
 public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
-        Position position = Parse(input, HandleLogin, HandleLocation);
+        DeviceMessageDocument deviceMessageDocument = Parse(input, HandleLogin, HandleLocation);
 
-        return position;
+        return deviceMessageDocument;
     }
 
-    private static Position HandleLogin(MessageInput input)
+    private static DeviceMessageDocument HandleLogin(MessageInput input)
     {
         Match imeiMatch = new Regex("!1,(\\d{15})").Match(input.DataMessage.String);
 
@@ -29,7 +29,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
         return null;
     }
 
-    private static Position HandleLocation(MessageInput input)
+    private static DeviceMessageDocument HandleLocation(MessageInput input)
     {
         if (input.ConnectionContext.Device != null)
         {
@@ -44,27 +44,30 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
                                    "(\\d+)," + // battery
                                    "(\\d+)," + // satellites in use
                                    "(\\d+),)?"; // satellites in view
-                
+
             Match locationMatch =
                 new Regex(locationRegex)
                     .Match(input.DataMessage.String);
 
             if (locationMatch.Success)
             {
-                Position position = new()
+                DeviceMessageDocument deviceMessageDocument = new()
                 {
-                    Device = input.ConnectionContext.Device,
-                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
-                        locationMatch.Groups[2].Value),
-                    Latitude = locationMatch.Groups[3].Get<double>(),
-                    Longitude = locationMatch.Groups[4].Get<double>(),
-                    Speed = locationMatch.Groups[5].Get<float?>(),
-                    Heading = locationMatch.Groups[6].Get<float?>(),
-                    Altitude = locationMatch.Groups[9].Get<float?>(),
-                    Satellites = locationMatch.Groups[11].Get<short?>()
+                    // Device = input.ConnectionContext.Device,
+                    Position = new PositionElement
+                    {
+                        Date = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
+                            locationMatch.Groups[2].Value),
+                        Latitude = locationMatch.Groups[3].Get<double>(),
+                        Longitude = locationMatch.Groups[4].Get<double>(),
+                        Speed = locationMatch.Groups[5].Get<float?>(),
+                        Heading = locationMatch.Groups[6].Get<float?>(),
+                        Altitude = locationMatch.Groups[9].Get<float?>(),
+                        Satellites = locationMatch.Groups[11].Get<short?>()
+                    }
                 };
 
-                return position;
+                return deviceMessageDocument;
             }
         }
 

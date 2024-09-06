@@ -16,6 +16,7 @@ public interface IAssetRepository : IGenericRepository<AssetDocument>
     Task UpdateName(string assetId, string name);
     Task AddUserToAsset(AssetUserRoleElement userRole, UserAssetRoleElement assetRole);
     Task RemoveUserFromAsset(string assetId, string userId);
-    Task SetLastPositionMessage(ObjectId assetId, DeviceMessageDocument deviceMessage);
+    Task UpdateMessages(ObjectId assetId, DeviceMessageDocument lastMessage,
+        DeviceMessageDocument? positionMessage);
     Task SetActiveDevice(ObjectId assetDocumentId, AssetDeviceElement assetDocumentDevice);
 }

@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.Pretrace;
 public class PretraceProtocol : BaseProtocol
 {
     public override int Port => 7030;
-    public override byte[] MessageStart => new byte[] {0x24};
+    public override byte[] MessageStart => [0x24];
 }

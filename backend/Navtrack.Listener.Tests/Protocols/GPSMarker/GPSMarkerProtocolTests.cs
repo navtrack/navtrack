@@ -11,7 +11,7 @@ public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMa
         ProtocolTester.SendStringFromDevice(
             "$GM23D863071014445404T260816142611N55441051E037325071033063C0530304#");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -20,7 +20,7 @@ public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMa
         ProtocolTester.SendStringFromDevice(
             "$GM300350123456789012T100511123300G25000001772F185200000000000000005230298#");
 
-        Assert.Null(ProtocolTester.LastParsedPosition);
+        Assert.Null(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMa
         ProtocolTester.SendStringFromDevice(
             "$GM200350123456789012T100511123300N55516789E03756123400000035230298#");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMa
         ProtocolTester.SendStringFromDevice(
             "$GM1350123456789012T1005111233N55516789E03756123400000035200298#");
 
-        Assert.Null(ProtocolTester.LastParsedPosition);
+        Assert.Null(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -47,6 +47,6 @@ public class GPSMarkerProtocolTests : BaseProtocolTests<GPSMarkerProtocol, GPSMa
         ProtocolTester.SendStringFromDevice(
             "$GM203863071014445404T150715202258N55481576E03729275300000040530301#");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 }

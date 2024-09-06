@@ -8,5 +8,5 @@ public interface IProtocol
     byte[] MessageStart { get; }
     IEnumerable<byte[]> MessageEnd { get; }
     string SplitMessageBy { get; }
-    int? GetMessageLength(byte[] bytes);
+    int? GetMessageLength(byte[] buffer, int bytesReadCount);
 }

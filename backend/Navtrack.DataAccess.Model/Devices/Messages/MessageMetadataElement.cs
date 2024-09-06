@@ -5,9 +5,9 @@ namespace Navtrack.DataAccess.Model.Devices.Messages;
 
 public class MessageMetadataElement
 {
-    [BsonElement("aId")]
+    [BsonElement("aid")]
     public ObjectId AssetId { get; set; }
 
-    [BsonElement("dId")]
+    [BsonElement("did")]
     public ObjectId DeviceId { get; set; }
 }

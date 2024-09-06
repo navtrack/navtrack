@@ -25,7 +25,7 @@ public class TeltonikaProtocolCodec16Tests : BaseProtocolTests<TeltonikaProtocol
             "000000000000005F10020000016BDBC7833000000000000000000000000000000000000B05040200010000030002000B00270042563A00000000016BDBC7871800000000000000000000000000000000000B05040200010000030002000B00260042563A00000200005FB3");
 
         Assert.Equal("00000002", ProtocolTester.ReceiveHexInDevice());
-        Assert.Equal(2, ProtocolTester.LastParsedPositions.Count);
+        Assert.Equal(2, ProtocolTester.LastParsedMessages.Count);
     }
         
     [Fact]
@@ -40,7 +40,7 @@ public class TeltonikaProtocolCodec16Tests : BaseProtocolTests<TeltonikaProtocol
             "000000000000002808010000016B40D9AD80010000000000000000000000000000000103021503010101425E100000010000F22A");
 
         Assert.Equal("00000001", ProtocolTester.ReceiveHexInDevice());
-        Assert.Single(ProtocolTester.LastParsedPositions);
+        Assert.Single(ProtocolTester.LastParsedMessages);
     }
 
     [Fact]
@@ -55,6 +55,6 @@ public class TeltonikaProtocolCodec16Tests : BaseProtocolTests<TeltonikaProtocol
             "000000000000004308020000016B40D57B480100000000000000000000000000000001010101000000000000016B40D5C198010000000000000000000000000000000101010101000000020000252C");
 
         Assert.Equal("00000002", ProtocolTester.ReceiveHexInDevice());
-        Assert.Equal(2, ProtocolTester.LastParsedPositions.Count);
+        Assert.Equal(2, ProtocolTester.LastParsedMessages.Count);
     }
 }

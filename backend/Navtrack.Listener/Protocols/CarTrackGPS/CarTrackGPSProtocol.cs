@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.CarTrackGPS;
 public class CarTrackGPSProtocol : BaseProtocol
 {
     public override int Port => 7033;
-    public override byte[] MessageStart => new byte[] {0x24, 0x24};
+    public override byte[] MessageStart => [0x24, 0x24];
 }

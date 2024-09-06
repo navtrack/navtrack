@@ -1,23 +1,16 @@
 using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Mappers;
 
 public static class GsmElementMapper
 {
-    public static GsmElement? Map(Position source)
+    public static GsmElement? Map(GsmElement? destination)
     {
-        CellGlobalIdentityElement? cgi = CellGlobalIdentityElementMapper.Map(source);
-        
-        if (source.GsmSignal != null || cgi != null)
+        if (destination != null)
         {
-            return new GsmElement
-            {
-                Signal = source.GsmSignal,
-                CellGlobalIdentity = CellGlobalIdentityElementMapper.Map(source)
-            };
+            destination.SignalLevel = destination.SignalLevel == 0 ? null : destination.SignalLevel;
         }
 
-        return null;
+        return destination;
     }
 }

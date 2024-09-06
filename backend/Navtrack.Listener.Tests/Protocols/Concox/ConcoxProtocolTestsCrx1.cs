@@ -23,7 +23,7 @@ public class ConcoxProtocolTestsCrx1 : BaseProtocolTests<ConcoxProtocol, ConcoxM
         ProtocolTester.SendHexFromDevice(
             "787822220F010100001EC50045712704BC5EF800493702D40B17D2003B1C000E000007169A0D0A");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
 
@@ -43,6 +43,6 @@ public class ConcoxProtocolTestsCrx1 : BaseProtocolTests<ConcoxProtocol, ConcoxM
         ProtocolTester.SendHexFromDevice(
             "78782222150B120D3807C60045716A04BC5F180048040000000000000000000E010000DD380D0A");
 
-        Assert.Equal(3, ProtocolTester.TotalParsedPositions.Count);
+        Assert.Equal(3, ProtocolTester.TotalParsedMessages.Count);
     }
 }

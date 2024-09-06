@@ -15,7 +15,6 @@ public class TripModel
     public PositionModel StartPosition => Positions.First();
 
     [Required]
-    // ReSharper disable once MemberCanBePrivate.Global
     public PositionModel EndPosition => Positions.Last();
 
     [Required]
@@ -24,13 +23,13 @@ public class TripModel
     [Required]
     public int Distance { get; set; }
 
-    public float? MaxSpeed => Positions.Max(x => x.Speed);
+    public double? MaxSpeed => Positions.Max(x => x.Speed);
 
     public float? AverageSpeed
     {
         get
         {
-            float? average = Positions.Where(x => x.Speed > 0).Average(x => x.Speed);
+            double? average = Positions.Where(x => x.Speed > 0).Average(x => x.Speed);
 
             return average.HasValue ? (float?)Math.Round(average.Value) : null;
         }
@@ -40,7 +39,7 @@ public class TripModel
     {
         get
         {
-            float? average = Positions.Average(x => x.Altitude);
+            double? average = Positions.Average(x => x.Altitude);
 
             return average.HasValue ? (float?)Math.Round(average.Value) : null;
         }

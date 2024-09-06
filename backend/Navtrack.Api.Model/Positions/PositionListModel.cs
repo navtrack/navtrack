@@ -11,7 +11,7 @@ public class PositionListModel : ListModel<PositionModel>
     {
         get
         {
-            float? average = Items.Where(x => x.Speed > 0).Average(x => x.Speed);
+            double? average = Items.Where(x => x.Speed > 0).Average(x => x.Speed);
 
             return (float?)Math.Round(average.GetValueOrDefault());
         }
@@ -21,7 +21,7 @@ public class PositionListModel : ListModel<PositionModel>
     {
         get
         {
-            float? average = Items.Average(x => x.Altitude);
+            double? average = Items.Average(x => x.Altitude);
 
             return (float?)Math.Round(average.GetValueOrDefault());
         }

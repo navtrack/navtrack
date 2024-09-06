@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Tests.Protocols;
@@ -11,7 +12,7 @@ public interface IProtocolTester
     string ReceiveHexInDevice();
     string ReceiveStringInDevice();
     ProtocolConnectionContext ConnectionContext { get; }
-    List<Position> TotalParsedPositions { get; }
-    List<Position?>? LastParsedPositions { get; }
-    Position? LastParsedPosition { get; }
+    List<DeviceMessageDocument> TotalParsedMessages { get; }
+    List<DeviceMessageDocument?>? LastParsedMessages { get; }
+    DeviceMessageDocument? LastParsedMessage { get; }
 }

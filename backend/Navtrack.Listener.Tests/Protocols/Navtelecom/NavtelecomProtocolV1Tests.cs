@@ -30,7 +30,7 @@ public class NavtelecomProtocolV1Tests : BaseProtocolTests<NavtelecomProtocol, N
             "7E540C0000000C0000000010A449D45E000C33A449D45E30C45501F0A8FB01000048410C000000000000000000EC");
 
         Assert.Equal("7E540C0000000B", ProtocolTester.ReceiveHexInDevice());
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class NavtelecomProtocolV1Tests : BaseProtocolTests<NavtelecomProtocol, N
             "7E43FFFF00000010C649D45E000C33C649D45E30C45501F0A8FB01000048410C00000000000000000037");
 
         Assert.Equal("7E43B9", ProtocolTester.ReceiveHexInDevice());
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 
     [Fact]
@@ -56,6 +56,6 @@ public class NavtelecomProtocolV1Tests : BaseProtocolTests<NavtelecomProtocol, N
             "7E41030D0000000010E349D45E000C33E349D45E30C45501F0A8FB01000048410C0000000000000000000E0000000010E349D45E000C33E349D45E30C45501F0A8FB01000048410C0000000000000000000F0000000010E349D45E000C33E349D45E30C45501F0A8FB01000048410C000000000000000000F0");
 
         Assert.Equal("7E4103BD", ProtocolTester.ReceiveHexInDevice());
-        Assert.Equal(3, ProtocolTester.TotalParsedPositions.Count);
+        Assert.Equal(3, ProtocolTester.TotalParsedMessages.Count);
     }
 }

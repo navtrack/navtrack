@@ -10,7 +10,7 @@ public static class PositionMetadataElementMapper
         MessageMetadataElement destination = new()
         {
             AssetId = source.AssetId!.Value,
-            DeviceId = source.DeviceId!.Value,
+            DeviceId = source.DeviceId!.Value
         };
 
         return destination;
