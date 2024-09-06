@@ -1436,9 +1436,6 @@
           "longitude": {
             "type": "number",
             "format": "double"
-          },
-          "valid": {
-            "type": "boolean"
           }
         }
       },
