@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using Navtrack.Api.Model.Positions;
+using Navtrack.Api.Model.Messages;
 
 namespace Navtrack.Api.Services.Positions;
 
 public interface IPositionService
 {
-    Task<PositionListModel> GetPositions(string assetId, PositionFilterModel positionFilter, int page, int size);
+    Task<MessageListModel> GetPositions(string assetId, MessageFilterModel messageFilter, int page, int size);
 }

@@ -4,6 +4,7 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { GsmModel } from "./gsmModel";
 
-export type PositionModelGsm = GsmModel | null;
+export interface MessageDeviceModel {
+  batteryLevel?: number;
+}

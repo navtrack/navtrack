@@ -63,18 +63,15 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
             },
             Gsm = new GsmElement
             {
-                CellGlobalIdentity = new CellGlobalIdentityElement
-                {
-                    MobileCountryCode = int.Parse(
-                        Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(22), GetIndex(24))),
-                        NumberStyles.HexNumber).ToString(),
-                    MobileNetworkCode = input.DataMessage.Bytes[GetIndex(24)].ToString(),
-                    LocationAreaCode = int.Parse(
-                        Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(25), GetIndex(27))).ToString(),
-                        NumberStyles.HexNumber).ToString(),
-                    CellId = int.Parse(Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(27), GetIndex(30))),
-                        NumberStyles.HexNumber)
-                }
+                MobileCountryCode = int.Parse(
+                    Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(22), GetIndex(24))),
+                    NumberStyles.HexNumber).ToString(),
+                MobileNetworkCode = input.DataMessage.Bytes[GetIndex(24)].ToString(),
+                LocationAreaCode = int.Parse(
+                    Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(25), GetIndex(27))).ToString(),
+                    NumberStyles.HexNumber).ToString(),
+                CellId = int.Parse(Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(27), GetIndex(30))),
+                    NumberStyles.HexNumber)
             }
         };
 

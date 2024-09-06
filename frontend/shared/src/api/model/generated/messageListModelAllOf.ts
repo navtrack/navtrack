@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PositionListModelAllOf = {
+export type MessageListModelAllOf = {
   averageAltitude?: number | null;
   averageSpeed?: number | null;
   totalCount: number;

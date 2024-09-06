@@ -3,7 +3,7 @@ using Navtrack.DataAccess.Model.Devices.Messages.Filters;
 
 namespace Navtrack.Api.Model.Messages;
 
-public class PositionFilterModel : PositionFilter
+public class MessageFilterModel : PositionFilter
 {
     public override DateTime? StartDate { get; set; }
     public override DateTime? EndDate { get; set; }

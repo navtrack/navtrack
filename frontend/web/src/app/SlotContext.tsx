@@ -1,7 +1,7 @@
 import React from "react";
 import { SettingsMenuItemProps } from "../components/ui/layouts/settings/SettingsMenuItem";
 import { AssetNavbarMenuItem } from "../components/ui/layouts/authenticated/AuthenticatedLayoutNavbar";
-import { PositionModel } from "@navtrack/shared/api/model/generated";
+import { MessagePositionModel } from "@navtrack/shared/api/model/generated";
 
 export type AppSlots = {
   assetNavbarMenuItems?: AssetNavbarMenuItem[];
@@ -14,7 +14,7 @@ export type AppSlots = {
   linkAccountWithExternalLoginPage?: React.ReactNode;
   captcha?: React.ReactNode;
   assetLiveTrackingPositionCardExtraItems?: (
-    position: PositionModel
+    position: MessagePositionModel
   ) => React.ReactNode;
   settingsPasswordAuthenticationBlock?: React.ReactNode;
 };

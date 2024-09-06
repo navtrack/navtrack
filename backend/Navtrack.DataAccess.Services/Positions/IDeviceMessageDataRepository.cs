@@ -3,6 +3,4 @@ using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Positions;
 
-public interface IDeviceMessageDataRepository : IGenericRepository<DeviceMessageDataDocument>
-{
-}
+public interface IDeviceMessageDataRepository : IGenericRepository<DeviceMessageDataDocument>;

@@ -17,7 +17,10 @@ export function HomePage() {
   const assets = useAssetsQuery();
 
   const assetsWithPosition = useMemo(
-    () => assets.data?.items.filter((x) => x.position !== undefined) ?? [],
+    () =>
+      assets.data?.items.filter(
+        (x) => x.lastPositionMessage?.position !== undefined
+      ) ?? [],
     [assets.data?.items]
   );
 
@@ -26,14 +29,16 @@ export function HomePage() {
   const onlineTodayAssets = (
     assets.data?.items.filter(
       (x) =>
-        x.position?.date !== undefined &&
-        new Date(x.position.date) > startOfDay(new Date())
+        x.lastPositionMessage?.position?.date !== undefined &&
+        new Date(x.lastPositionMessage?.position.date) > startOfDay(new Date())
     ) ?? []
   ).length;
 
   const coordinates = useMemo(
     () =>
-      assetsWithPosition.map((x) => x.position?.coordinates) as LatLongModel[],
+      assetsWithPosition.map(
+        (x) => x.lastPositionMessage?.position?.coordinates
+      ) as LatLongModel[],
     [assetsWithPosition]
   );
 
@@ -68,7 +73,7 @@ export function HomePage() {
               <MapPinLabel
                 key={asset.id}
                 pin={{
-                  coordinates: asset.position!.coordinates,
+                  coordinates: asset.lastPositionMessage?.position?.coordinates,
                   label: asset.name,
                   color: asset.online ? "green" : "primary"
                 }}

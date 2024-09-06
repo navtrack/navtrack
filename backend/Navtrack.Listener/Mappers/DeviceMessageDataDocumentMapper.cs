@@ -10,6 +10,7 @@ public static class DeviceMessageDataDocumentMapper
     {
         return mappedMessages.Select(x => new DeviceMessageDataDocument
         {
+            CreatedDate = x.CreatedDate,
             DeviceMessageId = x.Id,
             Data = x.AdditionalData,
             DataUnhandled = x.AdditionalDataUnhandled

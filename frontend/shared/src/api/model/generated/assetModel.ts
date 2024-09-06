@@ -5,16 +5,18 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { AssetModelDevice } from "./assetModelDevice";
-import type { AssetModelPosition } from "./assetModelPosition";
+import type { AssetModelLastMessage } from "./assetModelLastMessage";
+import type { AssetModelLastPositionMessage } from "./assetModelLastPositionMessage";
 import type { AssetUserRoleModel } from "./assetUserRoleModel";
 
 export interface AssetModel {
   device?: AssetModelDevice;
   id: string;
+  lastMessage?: AssetModelLastMessage;
+  lastPositionMessage?: AssetModelLastPositionMessage;
   maxSpeed: number;
   name: string;
   online: boolean;
   ownerId: string;
-  position?: AssetModelPosition;
   userRoles?: AssetUserRoleModel[] | null;
 }

@@ -254,9 +254,8 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     if (homeNetworkIdentity.Length > 4)
                     {
                         deviceMessageDocument.Gsm ??= new GsmElement();
-                        deviceMessageDocument.Gsm.CellGlobalIdentity ??= new CellGlobalIdentityElement();
-                        deviceMessageDocument.Gsm.CellGlobalIdentity.MobileCountryCode = homeNetworkIdentity[..3];
-                        deviceMessageDocument.Gsm.CellGlobalIdentity.MobileNetworkCode = homeNetworkIdentity[3..];
+                        deviceMessageDocument.Gsm.MobileCountryCode = homeNetworkIdentity[..3];
+                        deviceMessageDocument.Gsm.MobileNetworkCode = homeNetworkIdentity[3..];
                     }
 
                     return;

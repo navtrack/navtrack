@@ -4,6 +4,7 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { PositionModel } from "./positionModel";
 
-export type AssetModelPosition = PositionModel | null;
+export interface MessageVehicleModel {
+  [key: string]: any;
+}

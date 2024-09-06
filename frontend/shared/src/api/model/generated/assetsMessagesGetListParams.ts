@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type AssetsPositionsGetListParams = {
+export type AssetsMessagesGetListParams = {
   StartDate?: string | null;
   EndDate?: string | null;
   MinAltitude?: number | null;

@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Navtrack.Api.Model.Positions;
+using Navtrack.Api.Model.Messages;
 
 namespace Navtrack.Api.Model.Trips;
 
 public class TripModel
 {
     [Required]
-    public List<PositionModel> Positions { get; set; } = [];   
+    public List<MessagePositionModel> Positions { get; set; } = [];   
  
     [Required]
-    public PositionModel StartPosition => Positions.First();
+    public MessagePositionModel StartPosition => Positions.First();
 
     [Required]
-    public PositionModel EndPosition => Positions.Last();
+    public MessagePositionModel EndPosition => Positions.Last();
 
     [Required]
     public double Duration => Math.Ceiling((EndPosition.Date - StartPosition.Date).TotalMinutes);

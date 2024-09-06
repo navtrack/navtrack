@@ -4,7 +4,6 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
+import type { MessageModel } from "./messageModel";
 
-export interface GsmModel {
-  gsmSignal?: number | null;
-}
+export type AssetModelLastMessage = MessageModel | null;

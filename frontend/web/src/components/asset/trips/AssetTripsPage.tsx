@@ -18,7 +18,10 @@ import {
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { PositionModel, TripModel } from "@navtrack/shared/api/model/generated";
+import {
+  MessagePositionModel,
+  TripModel
+} from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
@@ -33,7 +36,7 @@ export function AssetTripsPage() {
   const [selectedTrip, setSelectedTrip] = useRecoilState(selectedTripAtom);
   const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
   const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
-    PositionModel | undefined
+    MessagePositionModel | undefined
   >(selectedTripPosition);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useRecoilState(selectedTripPositionIndexAtom);

@@ -1,4 +1,4 @@
-import { useAssetsPositionsGetList } from "../../api/index-generated";
+import { useAssetsMessagesGetList } from "../../api/index-generated";
 
 export type UsePositionsQueryProps = {
   assetId?: string;
@@ -13,8 +13,8 @@ export type UsePositionsQueryProps = {
   radius?: number;
 };
 
-export function usePositionsQuery(props: UsePositionsQueryProps) {
-  const query = useAssetsPositionsGetList(
+export function useMessagesQuery(props: UsePositionsQueryProps) {
+  const query = useAssetsMessagesGetList(
     props.assetId as string,
     {
       StartDate: props.startDate,

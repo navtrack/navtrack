@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Navtrack.Api.Model.Positions;
+using Navtrack.Api.Model.Messages;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Api.Services.Mappers.Positions;
+using Navtrack.Api.Services.Mappers.Messages;
 using Navtrack.Api.Services.Mappers.Trips;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Model.Devices.Messages.Filters;
@@ -32,7 +32,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
     private async Task<IEnumerable<TripModel>> GetInternalTrips(string assetId, TripFilterModel tripFilter)
     {
-        List<PositionModel> positions = await GetPositions(assetId, tripFilter);
+        List<MessagePositionModel> positions = await GetPositions(assetId, tripFilter);
 
         List<TripModel> trips = CreateTrips(positions);
 
@@ -42,14 +42,14 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return trips;
     }
 
-    private static List<TripModel> CreateTrips(List<PositionModel> source)
+    private static List<TripModel> CreateTrips(List<MessagePositionModel> source)
     {
         List<TripModel> trips = [];
 
         TripModel? currentTrip = null;
-        PositionModel? lastPosition = null;
+        MessagePositionModel? lastPosition = null;
 
-        foreach (PositionModel position in source)
+        foreach (MessagePositionModel position in source)
         {
             if (currentTrip == null ||
                 lastPosition == null ||
@@ -95,11 +95,11 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
         foreach (TripModel trip in trips)
         {
-            List<PositionModel> positions = [];
+            List<MessagePositionModel> positions = [];
 
-            PositionModel? lastPosition = null;
+            MessagePositionModel? lastPosition = null;
 
-            foreach (PositionModel position in trip.Positions)
+            foreach (MessagePositionModel position in trip.Positions)
             {
                 if (lastPosition == null || Math.Abs(lastPosition.Coordinates.Latitude - position.Coordinates.Latitude) > precision ||
                     Math.Abs(lastPosition.Coordinates.Longitude - position.Coordinates.Longitude) > precision)
@@ -118,11 +118,11 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         foreach (TripModel trip in trips)
         {
             trip.Distance = DistanceCalculator.CalculateDistance(trip.Positions
-                .Select(x => (x.Coordinates, x.Odometer)).ToList());
+                .Select(x => (x.Coordinates, (uint?)null)).ToList());
         }
     }
 
-    private async Task<List<PositionModel>> GetPositions(string assetId, DateFilter dateFilter)
+    private async Task<List<MessagePositionModel>> GetPositions(string assetId, DateFilter dateFilter)
     {
         GetMessagesOptions options = new()
         {
@@ -137,8 +137,8 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
         GetMessagesResult result = await repository.GetMessages(options);
 
-        List<PositionModel> mapped = result.Messages
-            .Select(PositionModelMapper.Map)
+        List<MessagePositionModel> mapped = result.Messages
+            .Select(x => PositionModelMapper.Map(x.Position))
             .ToList();
 
         return mapped;

@@ -42,10 +42,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                 DeviceMessageDocument deviceMessageDocument = new()
                 {
                     Position = new PositionElement(),
-                    Gsm = new GsmElement
-                    {
-                        CellGlobalIdentity = new CellGlobalIdentityElement()
-                    }
+                    Gsm = new GsmElement()
                 };
 
                 byte eventCode = input.DataMessage.ByteReader.GetOne();
@@ -64,13 +61,13 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                 deviceMessageDocument.Device ??= new DeviceElement();
                 deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<uint>();
                 int runTime = input.DataMessage.ByteReader.Get<int>();
-                deviceMessageDocument.Gsm.CellGlobalIdentity.MobileCountryCode =
+                deviceMessageDocument.Gsm.MobileCountryCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
-                deviceMessageDocument.Gsm.CellGlobalIdentity.MobileNetworkCode =
+                deviceMessageDocument.Gsm.MobileNetworkCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
-                deviceMessageDocument.Gsm.CellGlobalIdentity.LocationAreaCode =
+                deviceMessageDocument.Gsm.LocationAreaCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
-                deviceMessageDocument.Gsm.CellGlobalIdentity.CellId = input.DataMessage.ByteReader.Get<short>();
+                deviceMessageDocument.Gsm.CellId = input.DataMessage.ByteReader.Get<short>();
 
                 input.DataMessage.ByteReader.Skip(12);
 

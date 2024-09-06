@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -16,4 +17,7 @@ public class DeviceMessageDataDocument : BaseDocument
     
     [BsonElement("du")]
     public Dictionary<string, string>? DataUnhandled { get; set; }
+
+    [BsonElement("cd")]
+    public DateTime CreatedDate { get; set; }
 }
