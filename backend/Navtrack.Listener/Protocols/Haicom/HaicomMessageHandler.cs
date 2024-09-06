@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Haicom;
 [Service(typeof(ICustomMessageHandler<HaicomProtocol>))]
 public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("GPRS(\\d{15})," + // imei
@@ -33,22 +33,24 @@ public class HaicomMessageHandler : BaseMessageHandler<HaicomProtocol>
         if (locationMatch.Success)
         {
             int flags = locationMatch.Groups[9].Get<int>();
-                
+
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            Position position = new()
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,
-                    locationMatch.Groups[5].Value, locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
-                    locationMatch.Groups[8].Value),
-                Latitude = GetCoordinate(locationMatch, 10, 11, flags, 2),
-                Longitude = GetCoordinate(locationMatch, 12, 13, flags, 1),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<float>() / 10),
-                Heading = locationMatch.Groups[15].Get<float?>() / 10
+                Position = new PositionElement
+                {
+                    Date = DateTimeUtil.New(locationMatch.Groups[3].Value, locationMatch.Groups[4].Value,
+                        locationMatch.Groups[5].Value, locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
+                        locationMatch.Groups[8].Value),
+                    Latitude = GetCoordinate(locationMatch, 10, 11, flags, 2),
+                    Longitude = GetCoordinate(locationMatch, 12, 13, flags, 1),
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<float>() / 10),
+                    Heading = locationMatch.Groups[15].Get<float?>() / 10
+                }
             };
-           
-            return position;
+
+            return deviceMessageDocument;
         }
 
         return null;

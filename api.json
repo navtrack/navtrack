@@ -1321,17 +1321,17 @@
           },
           "speed": {
             "type": "number",
-            "format": "float",
+            "format": "double",
             "nullable": true
           },
           "heading": {
             "type": "number",
-            "format": "float",
+            "format": "double",
             "nullable": true
           },
           "altitude": {
             "type": "number",
-            "format": "float",
+            "format": "double",
             "nullable": true
           },
           "satellites": {
@@ -1341,7 +1341,7 @@
           },
           "hdop": {
             "type": "number",
-            "format": "float",
+            "format": "double",
             "nullable": true
           },
           "valid": {
@@ -1805,7 +1805,7 @@
           },
           "maxSpeed": {
             "type": "number",
-            "format": "float",
+            "format": "double",
             "nullable": true
           },
           "averageSpeed": {

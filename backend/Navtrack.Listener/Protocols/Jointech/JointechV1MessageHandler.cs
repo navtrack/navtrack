@@ -1,15 +1,15 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.Jointech;
 
 public class JointechV1MessageHandler
 {
-    public static Position Parse(MessageInput input)
+    public static DeviceMessageDocument Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("24" + // header
@@ -33,29 +33,34 @@ public class JointechV1MessageHandler
 
         if (locationMatch.Success)
         {
-            Position position = new()
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Date = DateTimeUtil.New(
-                    locationMatch.Groups[7].Value,
-                    locationMatch.Groups[6].Value,
-                    locationMatch.Groups[5].Value,
-                    locationMatch.Groups[8].Value,
-                    locationMatch.Groups[9].Value,
-                    locationMatch.Groups[10].Value),
-                Latitude = GetCoordinate(locationMatch.Groups[11].Value, locationMatch.Groups[13].Value[0], 1,
-                    "(\\d{4})(\\d{4})"),
-                Longitude = GetCoordinate(locationMatch.Groups[12].Value, locationMatch.Groups[13].Value[0], 2,
-                    "(\\d{5})(\\d{4})"),
-                Speed = SpeedUtil.KnotsToKph(int.Parse(locationMatch.Groups[14].Value, NumberStyles.HexNumber)),
-                Heading = int.Parse(locationMatch.Groups[15].Value, NumberStyles.HexNumber),
-                Odometer = long.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
-                PositionStatus = BitUtil.IsTrue(locationMatch.Groups[13].Value[0], 0)
+                Position = new PositionElement
+                {
+                    Date = DateTimeUtil.New(
+                        locationMatch.Groups[7].Value,
+                        locationMatch.Groups[6].Value,
+                        locationMatch.Groups[5].Value,
+                        locationMatch.Groups[8].Value,
+                        locationMatch.Groups[9].Value,
+                        locationMatch.Groups[10].Value),
+                    Latitude = GetCoordinate(locationMatch.Groups[11].Value, locationMatch.Groups[13].Value[0], 1,
+                        "(\\d{4})(\\d{4})"),
+                    Longitude = GetCoordinate(locationMatch.Groups[12].Value, locationMatch.Groups[13].Value[0], 2,
+                        "(\\d{5})(\\d{4})"),
+                    Speed = SpeedUtil.KnotsToKph(int.Parse(locationMatch.Groups[14].Value, NumberStyles.HexNumber)),
+                    Heading = int.Parse(locationMatch.Groups[15].Value, NumberStyles.HexNumber),
+                    Valid = BitUtil.IsTrue(locationMatch.Groups[13].Value[0], 0)
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = uint.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber)
+                }
             };
 
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
-            position.Device = input.ConnectionContext.Device;
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;

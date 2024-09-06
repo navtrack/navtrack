@@ -1,6 +1,6 @@
 using System;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -9,25 +9,30 @@ namespace Navtrack.Listener.Protocols.Suntech;
 [Service(typeof(ICustomMessageHandler<SuntechProtocol>))]
 public class SuntechMessageHandler : BaseMessageHandler<SuntechProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.Split.Get<string>(1));
             
-        Position position = new()
+        DeviceMessageDocument deviceMessageDocument = new()
         {
-            Device = input.ConnectionContext.Device,
-            Date = ConvertDate(input.DataMessage.Split.Get<string>(3),
-                input.DataMessage.Split.Get<string>(4)),
-            Latitude = input.DataMessage.Split.Get<double>(6),
-            Longitude = input.DataMessage.Split.Get<double>(7),
-            Speed = input.DataMessage.Split.Get<float?>(8),
-            Heading = input.DataMessage.Split.Get<float?>(9),
-            Satellites = input.DataMessage.Split.Get<short?>(10),
-            PositionStatus = input.DataMessage.Split.Get<string>(11) == "1",
-            Odometer = input.DataMessage.Split.Get<double?>(12)
+            Position = new PositionElement
+            {
+                Date = ConvertDate(input.DataMessage.Split.Get<string>(3),
+                    input.DataMessage.Split.Get<string>(4)),
+                Latitude = input.DataMessage.Split.Get<double>(6),
+                Longitude = input.DataMessage.Split.Get<double>(7),
+                Speed = input.DataMessage.Split.Get<float?>(8),
+                Heading = input.DataMessage.Split.Get<float?>(9),
+                Satellites = input.DataMessage.Split.Get<short?>(10),
+                Valid = input.DataMessage.Split.Get<string>(11) == "1",
+            },
+            Device = new DeviceElement
+            {
+                Odometer = input.DataMessage.Split.Get<uint?>(12)
+            }
         };
 
-        return position;
+        return deviceMessageDocument;
     }
 
     private static DateTime ConvertDate(string date, string time)

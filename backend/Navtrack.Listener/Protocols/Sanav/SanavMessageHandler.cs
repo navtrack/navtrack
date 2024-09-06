@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Sanav;
 [Service(typeof(ICustomMessageHandler<SanavProtocol>))]
 public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("imei(.)" +
@@ -28,26 +28,30 @@ public class SanavMessageHandler : BaseMessageHandler<SanavProtocol>
         if (locationMatch.Success)
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[2].Value);
-                
-            Position position = new()
+
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = DateTimeUtil.New(
-                    locationMatch.Groups[17].Value,
-                    locationMatch.Groups[16].Value,
-                    locationMatch.Groups[15].Value,
-                    locationMatch.Groups[4].Value,
-                    locationMatch.Groups[5].Value,
-                    locationMatch.Groups[6].Value,
-                    locationMatch.Groups[7].Value),
-                PositionStatus = locationMatch.Groups[8].Value == "A",
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[9].Value, locationMatch.Groups[10].Value),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value, locationMatch.Groups[12].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<float>()),
-                Heading = locationMatch.Groups[15].Get<float?>()
+                Position = new PositionElement
+                {
+                    Date = DateTimeUtil.New(
+                        locationMatch.Groups[17].Value,
+                        locationMatch.Groups[16].Value,
+                        locationMatch.Groups[15].Value,
+                        locationMatch.Groups[4].Value,
+                        locationMatch.Groups[5].Value,
+                        locationMatch.Groups[6].Value,
+                        locationMatch.Groups[7].Value),
+                    Valid = locationMatch.Groups[8].Value == "A",
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[9].Value,
+                        locationMatch.Groups[10].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value,
+                        locationMatch.Groups[12].Value),
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[14].Get<float>()),
+                    Heading = locationMatch.Groups[15].Get<float?>()
+                }
             };
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;

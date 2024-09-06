@@ -1,8 +1,8 @@
 using System;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -14,7 +14,7 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
     private const string DefaultDataFormat =
         "#EDT#,#EID#,#PDT#,#LAT#,#LONG#,#SPD#,#HEAD#,#ODO#,#IN1#,#IN2#,#IN3#,#IN4#,#OUT1#,#OUT2#,#OUT3#,#OUT4#,#LAC#,#CID#,#VIN#,#VBAT#,#DEST#,#IGN#,#ENG#";
 
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("\\$SLU" +
@@ -29,20 +29,21 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
                 
-            Position position = new()
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device
+                // Device = input.ConnectionContext.Device
+                Position = new PositionElement()
             };
 
-            SetData(locationMatch.Groups[4].Value, position);
+            SetData(locationMatch.Groups[4].Value, deviceMessageDocument);
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;
     }
 
-    private void SetData(string dataString, Position position)
+    private void SetData(string dataString, DeviceMessageDocument deviceMessageDocument)
     {
         string[] data = dataString.Split(",");
         string[] dataKey = DefaultDataFormat.Split(",");
@@ -51,32 +52,33 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
         {
             if (dataKey[i] == "#LAT#")
             {
-                position.Latitude = GetCoordinate(data[i]);
+                deviceMessageDocument.Position.Latitude = GetCoordinate(data[i]);
             }
 
             if (dataKey[i] == "#LONG#")
             {
-                position.Longitude = GetCoordinate(data[i]);
+                deviceMessageDocument.Position.Longitude = GetCoordinate(data[i]);
             }
 
             if (dataKey[i] == "#SPD#")
             {
-                position.Speed = SpeedUtil.KnotsToKph(Convert.ToSingle(data[i]));
+                deviceMessageDocument.Position.Speed = SpeedUtil.KnotsToKph(Convert.ToSingle(data[i]));
             }
 
             if (dataKey[i] == "#HEAD#")
             {
-                position.Heading = Convert.ToSingle(data[i]);
+                deviceMessageDocument.Position.Heading = Convert.ToSingle(data[i]);
             }
 
             if (dataKey[i] == "#ODO#")
             {
-                position.Odometer = Convert.ToDouble(data[i]) * 1000;
+                deviceMessageDocument.Device ??= new DeviceElement();
+                deviceMessageDocument.Device.Odometer = Convert.ToUInt32(data[i]) * 1000;
             }
 
             if (dataKey[i] == "#EDT#")
             {
-                position.Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, data[i]);
+                deviceMessageDocument.Position.Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, data[i]);
             }
         }
     }

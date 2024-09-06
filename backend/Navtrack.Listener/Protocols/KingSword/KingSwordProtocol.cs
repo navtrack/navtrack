@@ -8,6 +8,6 @@ namespace Navtrack.Listener.Protocols.KingSword;
 public class KingSwordProtocol : BaseProtocol
 {
     public override int Port => 7034;
-    public override byte[] MessageStart => new byte[] {0x2A};
+    public override byte[] MessageStart => [0x2A];
     public override IEnumerable<byte[]> MessageEnd => new[] {new byte[] {0x23}};
 }

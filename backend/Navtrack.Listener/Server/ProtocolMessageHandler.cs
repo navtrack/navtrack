@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Navtrack.DataAccess.Model.Assets;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Positions;
 using Navtrack.Listener.Helpers;
@@ -18,9 +19,9 @@ namespace Navtrack.Listener.Server;
 public class ProtocolMessageHandler(
     ILogger<ProtocolMessageHandler> logger,
     IServiceProvider provider,
-    IMessageService messageService,
+    IDeviceMessageService deviceMessageService,
     IAssetRepository assetRepository,
-    IConnectionRepository connectionRepository) : IProtocolMessageHandler
+    IDeviceConnectionRepository deviceConnectionRepository) : IProtocolMessageHandler
 {
     public async Task HandleMessage(ProtocolConnectionContext connectionContext, INetworkStreamWrapper networkStream,
         byte[] bytes)
@@ -34,27 +35,52 @@ public class ProtocolMessageHandler(
             DataMessage = new DataMessage(bytes, connectionContext.Protocol.SplitMessageBy)
         };
 
-        await connectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
+        if (MessageIsBlacklisted(messageInput))
+        {
+            connectionContext.NetworkStream.Close();
+            return;
+        }
+
+        await deviceConnectionRepository.AddMessage(connectionContext.ConnectionId, messageInput.DataMessage.Bytes);
 
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
             HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));
 
-        try
-        {
-            List<Position>? positions = customMessageHandler.ParseRange(messageInput)?.ToList();
+        List<DeviceMessageDocument>? messages = customMessageHandler.ParseRange(messageInput)?.ToList();
 
-            if (positions is { Count: > 0 } && connectionContext.Device != null)
+        if (messages is { Count: > 0 } && connectionContext.Device != null)
+        {
+            await PrepareContext(connectionContext);
+
+            SaveDeviceMessageResult? result = await deviceMessageService.Save(new SaveDeviceMessageInput
             {
-                await PrepareContext(connectionContext);
+                Device = connectionContext.Device,
+                ConnectionId = connectionContext.ConnectionId,
+                Messages = messages
+            });
+            
+            HandleResult(connectionContext, result);
+        }
+    }
 
-                await messageService.Save(connectionContext.ConnectionId, connectionContext.Device, positions);
-            }
-        }
-        catch (Exception e)
+    private static void HandleResult(ProtocolConnectionContext connectionContext, SaveDeviceMessageResult? result)
+    {
+        if (result?.MaxPositionDate != null && connectionContext.Device != null)
         {
-            logger.LogCritical(e, "{Type}: Error parsing {DataMessageHex} ", customMessageHandler.GetType(),
-                messageInput.DataMessage.Hex);
+            connectionContext.Device.MaxDate = result.MaxPositionDate;
         }
+    }
+
+    private static bool MessageIsBlacklisted(MessageInput messageInput)
+    {
+        string[] blacklistedMessages =
+        [
+            "Host:",
+            "MGLNDD"
+        ];
+
+        return blacklistedMessages.Any(x =>
+            messageInput.DataMessage.String.Contains(x, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task PrepareContext(ProtocolConnectionContext context)
@@ -67,7 +93,7 @@ public class ProtocolMessageHandler(
             {
                 context.Device.DeviceId = asset.Device.Id;
                 context.Device.AssetId = asset.Id;
-                context.Device.MaxDate = asset.LastPositionMessage?.Position.Date;
+                context.Device.MaxDate = asset.LastPositionMessage?.Position?.Date;
             }
         }
     }

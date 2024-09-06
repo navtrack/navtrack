@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -14,15 +14,15 @@ namespace Navtrack.Listener.Protocols.ATrack;
 [Service(typeof(ICustomMessageHandler<ATrackProtocol>))]
 public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
 {
-    public override IEnumerable<Position>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
     {
-        IEnumerable<Position> positions =
+        IEnumerable<DeviceMessageDocument> positions =
             ParseRange(input, HandleKeepAlive, HandleTextMessage, HandleBinaryMessage);
 
         return positions;
     }
 
-    private static IEnumerable<Position> HandleKeepAlive(MessageInput input)
+    private static IEnumerable<DeviceMessageDocument> HandleKeepAlive(MessageInput input)
     {
         if (input.DataMessage.Bytes[0] == 0xFE && input.DataMessage.Bytes[1] == 0x02)
         {
@@ -32,40 +32,42 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         return null;
     }
 
-    private static Position[] HandleBinaryMessage(MessageInput input)
+    private static DeviceMessageDocument[] HandleBinaryMessage(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(2); // prefix
         input.DataMessage.ByteReader.Skip(2); // checksum
         input.DataMessage.ByteReader.Skip(2); // length
-            
+
         int index = input.DataMessage.ByteReader.GetLe<short>(false);
         byte[] indexBytes = input.DataMessage.ByteReader.Get(2);
         long id = input.DataMessage.ByteReader.GetLe<long>(false);
         byte[] idBytes = input.DataMessage.ByteReader.Get(8);
-            
+
         input.ConnectionContext.SetDevice($"{id}");
-            
-        List<Position> positions = [];
+
+        List<DeviceMessageDocument> positions = [];
 
         while (input.DataMessage.ByteReader.BytesLeft > 40)
         {
-            Position position = new()
+            DeviceMessageDocument position = new()
             {
-                Device = input.ConnectionContext.Device
+                // Device = input.ConnectionContext.Device,
+                Position = new PositionElement()
             };
 
             DateTime gpsDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime rtcDate = GetDateTime(input.DataMessage.ByteReader, input);
             DateTime sendDate = GetDateTime(input.DataMessage.ByteReader, input);
-            position.Date = gpsDate;
-            position.Longitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
-            position.Latitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
-            position.Heading = input.DataMessage.ByteReader.GetLe<short>();
+            position.Position.Date = gpsDate;
+            position.Position.Longitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
+            position.Position.Latitude = input.DataMessage.ByteReader.GetLe<int>() * 0.000001f;
+            position.Position.Heading = input.DataMessage.ByteReader.GetLe<short>();
             int reportId = input.DataMessage.ByteReader.GetOne();
-            position.Odometer = input.DataMessage.ByteReader.GetLe<int>() * 100;
-            position.HDOP = input.DataMessage.ByteReader.GetLe<short>() * 0.1f;
+            position.Device ??= new DeviceElement();
+            position.Device.Odometer = (uint?)(input.DataMessage.ByteReader.GetLe<int>() * 100);
+            position.Position.HDOP = input.DataMessage.ByteReader.GetLe<short>() * 0.1f;
             byte inputStatus = input.DataMessage.ByteReader.GetOne();
-            position.Speed = input.DataMessage.ByteReader.GetLe<short>();
+            position.Position.Speed = input.DataMessage.ByteReader.GetLe<short>();
             byte outputStatus = input.DataMessage.ByteReader.GetOne();
             short averageAnalogInput = input.DataMessage.ByteReader.GetLe<short>();
             byte[] driverId = input.DataMessage.ByteReader.GetUntil(0x0);
@@ -95,11 +97,11 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         List<byte> response = [0xFE, 0x02];
         response.AddRange(id);
         response.AddRange(index);
-            
+
         input.NetworkStream.Write(response.ToArray());
     }
 
-    private static void ReadCustomData(MessageInput input, string form, Position position)
+    private static void ReadCustomData(MessageInput input, string form, DeviceMessageDocument position)
     {
         string[] fieldIds = form.Split('%');
 
@@ -135,7 +137,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
                     input.DataMessage.ByteReader.Get<int>();
                     break;
                 case "AT":
-                    position.Altitude = input.DataMessage.ByteReader.GetLe<int>();
+                    position.Position.Altitude = input.DataMessage.ByteReader.GetLe<int>();
                     break;
                 case "RP":
                     input.DataMessage.ByteReader.Get<short>();
@@ -306,16 +308,16 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         return date;
     }
 
-    private static Position[] HandleTextMessage(MessageInput input)
+    private static DeviceMessageDocument[] HandleTextMessage(MessageInput input)
     {
         StringReader stringReader = new(input.DataMessage.String);
 
-        List<Position> positions = [];
+        List<DeviceMessageDocument> positions = [];
         string line;
 
         while (!string.IsNullOrEmpty(line = stringReader.ReadLine()))
         {
-            Position position = GetLocation(input, line);
+            DeviceMessageDocument position = GetLocation(input, line);
 
             if (position != null)
             {
@@ -326,7 +328,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         return positions.Any() ? positions.ToArray() : null;
     }
 
-    private static Position GetLocation(MessageInput input, string line)
+    private static DeviceMessageDocument GetLocation(MessageInput input, string line)
     {
         Match locationMatch =
             new Regex(
@@ -357,17 +359,23 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
         if (locationMatch.Success)
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[4].Value);
-              
-            Position position = new()
+
+            DeviceMessageDocument position = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = GetDateTime(locationMatch.Groups[5].Value),
-                Longitude = locationMatch.Groups[8].Get<int>() * 0.000001,
-                Latitude = locationMatch.Groups[9].Get<int>() * 0.000001,
-                Heading = locationMatch.Groups[10].Get<float?>(),
-                Odometer = locationMatch.Groups[12].Get<double?>() * 100,
-                HDOP = locationMatch.Groups[13].Get<float?>() * 0.1f,
-                Speed = locationMatch.Groups[15].Get<float>()
+                // Device = input.ConnectionContext.Device,
+                Position = new PositionElement
+                {
+                    Date = GetDateTime(locationMatch.Groups[5].Value),
+                    Longitude = locationMatch.Groups[8].Get<int>() * 0.000001,
+                    Latitude = locationMatch.Groups[9].Get<int>() * 0.000001,
+                    Heading = locationMatch.Groups[10].Get<float?>(),
+                    HDOP = locationMatch.Groups[13].Get<float?>() * 0.1f,
+                    Speed = locationMatch.Groups[15].Get<float>()
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = (uint?)(locationMatch.Groups[12].Get<double?>() * 100)
+                }
             };
 
             return position;

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -12,9 +12,9 @@ namespace Navtrack.Listener.Protocols.Autofon;
 [Service(typeof(ICustomMessageHandler<AutofonProtocol>))]
 public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
 {
-    public override IEnumerable<Position>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
     {
-        MessageType type = (MessageType) input.DataMessage.ByteReader.GetOne();
+        MessageType type = (MessageType)input.DataMessage.ByteReader.GetOne();
 
         return type switch
         {
@@ -27,7 +27,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         };
     }
 
-    private static IEnumerable<Position> HandleLoginMessage(MessageInput input, MessageType type)
+    private static IEnumerable<DeviceMessageDocument> HandleLoginMessage(MessageInput input, MessageType type)
     {
         if (type == MessageType.LoginV1)
         {
@@ -36,42 +36,43 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
 
         input.ConnectionContext.SetDevice(HexUtil.ConvertByteArrayToHexStringArray(input.DataMessage.ByteReader.Get(8))
             .StringJoin().Substring(1));
-            
+
         SendLoginResponse(input);
 
         return null;
     }
 
-    private static Position[] HandleLocationV1Message(MessageInput input, bool history = false)
+    private static DeviceMessageDocument[] HandleLocationV1Message(MessageInput input, bool history = false)
     {
-        Position position = new()
+        DeviceMessageDocument deviceMessageDocument = new()
         {
-            Device = input.ConnectionContext.Device
+            // Device = input.ConnectionContext.Device,
+            Position = new PositionElement()
         };
 
         input.DataMessage.ByteReader.Skip(history ? 18 : 53);
 
         int valid = input.DataMessage.ByteReader.GetOne();
-        position.PositionStatus = (valid & 0xc0) != 0;
-        position.Satellites = (short?) (valid & 0x3f);
-        position.Date = GetDateTime(input);
-        position.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
-        position.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
-        position.Altitude = input.DataMessage.ByteReader.GetLe<short>();
-        position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
-        position.Heading = input.DataMessage.ByteReader.GetOne() * 2.0f;
-        position.HDOP = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessageDocument.Position.Valid = (valid & 0xc0) != 0;
+        deviceMessageDocument.Position.Satellites = (short?)(valid & 0x3f);
+        deviceMessageDocument.Position.Date = GetDateTime(input);
+        deviceMessageDocument.Position.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
+        deviceMessageDocument.Position.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
+        deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessageDocument.Position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
+        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetOne() * 2.0f;
+        deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.GetLe<short>();
 
         input.DataMessage.ByteReader.Skip(3);
 
-        return new[] {position};
+        return [deviceMessageDocument];
     }
 
-    private static IEnumerable<Position> HandleHistoryV1Message(MessageInput input)
+    private static IEnumerable<DeviceMessageDocument> HandleHistoryV1Message(MessageInput input)
     {
         int count = input.DataMessage.ByteReader.GetOne() & 0x0f;
         int totalCount = input.DataMessage.ByteReader.Get<short>();
-        List<Position> positions = [];
+        List<DeviceMessageDocument> positions = [];
 
         for (int i = 0; i < count; i++)
         {
@@ -81,27 +82,28 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         return positions;
     }
 
-    private static IEnumerable<Position> HandleLocationV2Message(MessageInput input)
+    private static IEnumerable<DeviceMessageDocument> HandleLocationV2Message(MessageInput input)
     {
-        Position position = new()
+        DeviceMessageDocument deviceMessageDocument = new()
         {
-            Device = input.ConnectionContext.Device
+            // Device = input.ConnectionContext.Device,
+            Position = new PositionElement()
         };
 
         input.DataMessage.ByteReader.Skip(14);
 
         int valid = input.DataMessage.ByteReader.GetOne();
-        position.PositionStatus = BitUtil.ShiftRight(valid, 6) != 0;
-        position.Satellites = (short?) BitUtil.ShiftRight(valid, 6);
-        position.Date = GetDateTimeV2(input);
-        position.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
+        deviceMessageDocument.Position.Valid = BitUtil.ShiftRight(valid, 6) != 0;
+        deviceMessageDocument.Position.Satellites = (short?)BitUtil.ShiftRight(valid, 6);
+        deviceMessageDocument.Position.Date = GetDateTimeV2(input);
+        deviceMessageDocument.Position.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
             input.DataMessage.ByteReader.GetMediumIntLe());
-        position.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
+        deviceMessageDocument.Position.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
             input.DataMessage.ByteReader.GetMediumIntLe());
-        position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
-        position.Heading = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessageDocument.Position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
+        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetLe<short>();
 
-        return new[] {position};
+        return new[] { deviceMessageDocument };
     }
 
     private static void SendLoginResponse(MessageInput input)

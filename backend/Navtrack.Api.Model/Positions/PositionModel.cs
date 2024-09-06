@@ -16,11 +16,11 @@ public class PositionModel
     [Required]
     public DateTime Date { get; set; }
 
-    public float? Speed { get; set; }
-    public float? Heading { get; set; }
-    public float? Altitude { get; set; }
+    public double? Speed { get; set; }
+    public double? Heading { get; set; }
+    public double? Altitude { get; set; }
     public int? Satellites { get; set; }
-    public float? HDOP { get; set; }
+    public double? HDOP { get; set; }
     public bool? Valid { get; set; }
     public GsmModel? Gsm { get; set; }
     public double? Odometer { get; set; }

@@ -11,7 +11,7 @@ public static class GsmModelMapper
         {
             GsmModel position = new()
             {
-                GsmSignal = source.Gsm.Signal
+                GsmSignal = source.Gsm.SignalStrength
             };
 
             return position;

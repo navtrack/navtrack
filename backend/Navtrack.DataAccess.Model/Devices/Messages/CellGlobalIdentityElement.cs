@@ -5,14 +5,17 @@ namespace Navtrack.DataAccess.Model.Devices.Messages;
 public class CellGlobalIdentityElement
 {
     [BsonElement("mcc")]
-    public int? MobileCountryCode { get; set; }
+    public string? MobileCountryCode { get; set; }
 
     [BsonElement("mnc")]
-    public int? MobileNetworkCode { get; set; }
+    public string? MobileNetworkCode { get; set; }
 
     [BsonElement("lac")]
-    public int? LocationAreaCode { get; set; }
+    public string? LocationAreaCode { get; set; }
 
     [BsonElement("ci")]
     public int? CellId { get; set; }
+
+    [BsonElement("lci")]
+    public uint? LteCellId { get; set; }
 }

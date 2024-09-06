@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
-using Navtrack.Listener.Models;
+using Navtrack.DataAccess.Model.Devices.Messages;
 
 namespace Navtrack.Listener.Server;
 
 public class BaseMessageHandler<T> : ICustomMessageHandler<T>
 {
-    public virtual Position Parse(MessageInput input)
+    public virtual DeviceMessageDocument Parse(MessageInput input)
     {
         return null;
     }
 
-    public virtual IEnumerable<Position>? ParseRange(MessageInput input)
+    public virtual IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
     {
         try
         {
-            Position position = Parse(input);
+            DeviceMessageDocument deviceMessageDocument = Parse(input);
 
-            return position != null ? new[] {position} : null;
+            return deviceMessageDocument != null ? new[] {deviceMessageDocument} : null;
         }
         catch (Exception)
         {
@@ -25,19 +25,19 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         }
     }
 
-    protected Position Parse(MessageInput input, params Func<MessageInput, Position>[] parsers)
+    protected DeviceMessageDocument Parse(MessageInput input, params Func<MessageInput, DeviceMessageDocument>[] parsers)
     {
-        foreach (Func<MessageInput,Position> parse in parsers)
+        foreach (Func<MessageInput,DeviceMessageDocument> parse in parsers)
         {
             try
             {
                 input.DataMessage.Reader.Reset();
                 input.DataMessage.ByteReader.Reset();
-                Position position = parse(input);
+                DeviceMessageDocument deviceMessageDocument = parse(input);
 
-                if (position != null)
+                if (deviceMessageDocument != null)
                 {
-                    return position;
+                    return deviceMessageDocument;
                 }
             }
             catch (Exception)
@@ -49,15 +49,15 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         return null;
     }
         
-    protected IEnumerable<Position> ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<Position>>[] parsers)
+    protected IEnumerable<DeviceMessageDocument> ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<DeviceMessageDocument>>[] parsers)
     {
-        foreach (Func<MessageInput,IEnumerable<Position>> parse in parsers)
+        foreach (Func<MessageInput,IEnumerable<DeviceMessageDocument>> parse in parsers)
         {
             try
             {
                 input.DataMessage.Reader.Reset();
                 input.DataMessage.ByteReader.Reset();
-                IEnumerable<Position> location = parse(input);
+                IEnumerable<DeviceMessageDocument> location = parse(input);
 
                 if (location != null)
                 {

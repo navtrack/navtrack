@@ -18,7 +18,6 @@ public static class PositionModelMapper
             Satellites = source.Position.Satellites,
             HDOP = source.Position.HDOP,
             Valid = source.Position.Valid,
-            Odometer = source.Position.Odometer,
             Gsm = GsmModelMapper.Map(source)
         };
 

@@ -1,9 +1,9 @@
 using System;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Helpers.New2;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -30,14 +30,14 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
         "(.*?)\\*" + // adc2
         "(..)"; // checksum
 
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
-        Position position = Parse(input, Authentication, Location);
+        DeviceMessageDocument deviceMessageDocument = Parse(input, Authentication, Location);
 
-        return position;
+        return deviceMessageDocument;
     }
 
-    private static Position Authentication(MessageInput input)
+    private static DeviceMessageDocument Authentication(MessageInput input)
     {
         if (input.DataMessage.String.Contains("$ECHK"))
         {
@@ -47,7 +47,7 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
         return null;
     }
 
-    private static Position Location(MessageInput input)
+    private static DeviceMessageDocument Location(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -57,24 +57,26 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
         if (locationMatch.Success)
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
-                
-            Position position = new()
+
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
-                    $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[4].Value,
-                    locationMatch.Groups[5].Value),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[6].Value,
-                    locationMatch.Groups[7].Value),
-                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<float>()),
-                Heading = locationMatch.Groups[9].Get<float>()
+                Position = new PositionElement
+                {
+                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                        $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[4].Value,
+                        locationMatch.Groups[5].Value),
+                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[6].Value,
+                        locationMatch.Groups[7].Value),
+                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[8].Get<float>()),
+                    Heading = locationMatch.Groups[9].Get<float>()
+                }
             };
 
             SendLocationAcknowledge(locationMatch.Groups[3].Value, locationMatch.Groups[11].Value,
                 locationMatch.Groups[17].Value, input);
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;

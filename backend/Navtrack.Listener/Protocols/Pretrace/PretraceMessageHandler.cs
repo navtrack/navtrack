@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Pretrace;
 [Service(typeof(ICustomMessageHandler<PretraceProtocol>))]
 public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\()" +
@@ -36,27 +36,35 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[2].Value);
 
-            Position position = new()
+            DeviceMessageDocument deviceMessageDocument = new()
             {
-                Device = input.ConnectionContext.Device,
-                PositionStatus = locationMatch.Groups[5].Value == "A",
-                Date = DateTimeUtil.New(locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
-                    locationMatch.Groups[8].Value, locationMatch.Groups[9].Value, locationMatch.Groups[10].Value,
-                    locationMatch.Groups[11].Value),
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[12].Value,
-                    locationMatch.Groups[13].Value),
-                Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[14].Value,
-                    locationMatch.Groups[15].Value),
-                Speed = locationMatch.Groups[16].Get<float?>(),
-                Heading = locationMatch.Groups[17].Get<float?>(),
-                Altitude = int.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
-                Odometer = int.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
-                Satellites = short.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber),
-                HDOP = locationMatch.Groups[21].Get<float?>(),
-                GsmSignal = locationMatch.Groups[22].Get<short?>()
+                Position = new PositionElement
+                {
+                    Valid = locationMatch.Groups[5].Value == "A",
+                    Date = DateTimeUtil.New(locationMatch.Groups[6].Value, locationMatch.Groups[7].Value,
+                        locationMatch.Groups[8].Value, locationMatch.Groups[9].Value, locationMatch.Groups[10].Value,
+                        locationMatch.Groups[11].Value),
+                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[12].Value,
+                        locationMatch.Groups[13].Value),
+                    Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[14].Value,
+                        locationMatch.Groups[15].Value),
+                    Speed = locationMatch.Groups[16].Get<float?>(),
+                    Heading = locationMatch.Groups[17].Get<float?>(),
+                    Altitude = int.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber),
+                    Satellites = short.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber),
+                    HDOP = locationMatch.Groups[21].Get<float?>(),
+                },
+                Device = new DeviceElement
+                {
+                    Odometer = uint.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
+                },
+                Gsm = new GsmElement
+                {
+                    SignalStrength = locationMatch.Groups[22].Get<short?>()
+                }
             };
 
-            return position;
+            return deviceMessageDocument;
         }
 
         return null;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -10,13 +10,14 @@ namespace Navtrack.Listener.Protocols.Galileosky;
 [Service(typeof(ICustomMessageHandler<GalileoskyProtocol>))]
 public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
 {
-    public override IEnumerable<Position>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(1);
         int length = input.DataMessage.ByteReader.Get<short>() & 0x7fff;
 
-        List<Position> positions = [];
-        Position position = new();
+        List<DeviceMessageDocument> positions = [];
+        DeviceMessageDocument deviceMessageDocument = new();
+        deviceMessageDocument.Position = new PositionElement();
 
         HashSet<byte> tagsFound = [];
 
@@ -26,7 +27,10 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
 
             if (tagsFound.Contains(tag))
             {
-                position = new Position();
+                deviceMessageDocument = new DeviceMessageDocument
+                {
+                    Position = new PositionElement()
+                };
                 tagsFound.Clear();
             }
 
@@ -42,24 +46,24 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
                     break;
 
                 case 0x20:
-                    position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+                    deviceMessageDocument.Position.Date =
+                        DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
                     break;
 
                 case 0x30:
-
-                    position.PositionStatus = (input.DataMessage.ByteReader.GetOne() & 0xf0) == 0x00;
-                    position.Latitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0;
-                    position.Longitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0;
-                    positions.Add(position);
+                    deviceMessageDocument.Position.Valid = (input.DataMessage.ByteReader.GetOne() & 0xf0) == 0x00;
+                    deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0;
+                    deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.Get<int>() / 1000000.0;
+                    positions.Add(deviceMessageDocument);
                     break;
 
                 case 0x33:
-                    position.Speed = input.DataMessage.ByteReader.Get<short>() / 10;
-                    position.Heading = input.DataMessage.ByteReader.Get<short>() / 10;
+                    deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>() / 10;
+                    deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get<short>() / 10;
                     break;
 
                 case 0x34:
-                    position.Altitude = input.DataMessage.ByteReader.Get<short>();
+                    deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get<short>();
                     break;
 
                 case 0xE1:
@@ -75,7 +79,7 @@ public class GalileoskyMessageHandler : BaseMessageHandler<GalileoskyProtocol>
         string checksum = input.DataMessage.Hex[^2..].StringJoin();
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray($"02{checksum}"));
 
-        positions.ForEach(x => x.Device = input.ConnectionContext.Device);
+        // positions.ForEach(x => x.Device = input.ConnectionContext.Device);
 
         return positions;
     }

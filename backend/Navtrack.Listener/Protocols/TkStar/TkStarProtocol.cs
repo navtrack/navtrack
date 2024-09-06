@@ -8,6 +8,6 @@ namespace Navtrack.Listener.Protocols.TkStar;
 public class TkStarProtocol : BaseProtocol
 {
     public override int Port => 7011;
-    public override byte[] MessageStart => new byte[] {0x2A};
+    public override byte[] MessageStart => [0x2A];
     public override IEnumerable<byte[]> MessageEnd => new List<byte[]> {new byte[] {0x23}};
 }

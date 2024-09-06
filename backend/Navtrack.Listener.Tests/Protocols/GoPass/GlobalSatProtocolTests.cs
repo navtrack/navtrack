@@ -14,6 +14,6 @@ public class GlobalSatProtocolTests : BaseProtocolTests<GoPassProtocol, GoPassMe
         ProtocolTester.SendStringFromDevice(
             "$GPRMC,204700,A,3403.868,N,11709.432,W,001.9,336.9,170698,013.6,E*6E");
 
-        Assert.NotNull(ProtocolTester.LastParsedPosition);
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
 }

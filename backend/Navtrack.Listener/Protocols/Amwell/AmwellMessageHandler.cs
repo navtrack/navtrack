@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
@@ -11,33 +12,37 @@ namespace Navtrack.Listener.Protocols.Amwell;
 [Service(typeof(ICustomMessageHandler<AmwellProtocol>))]
 public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
 {
-    public override Position Parse(MessageInput input)
+    public override DeviceMessageDocument Parse(MessageInput input)
     {
         LoginHandler(input);
 
         return GetLocation(input);
     }
 
-    private static Position GetLocation(MessageInput input)
+    private static DeviceMessageDocument GetLocation(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(9);
 
-        Position position = new()
+        DeviceMessageDocument deviceMessageDocument = new()
         {
-            Device = input.ConnectionContext.Device,
-            Date = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
-                int.Parse(input.DataMessage.Hex[10]),
-                int.Parse(input.DataMessage.Hex[11]),
-                int.Parse(input.DataMessage.Hex[12]),
-                int.Parse(input.DataMessage.Hex[13]),
-                int.Parse(input.DataMessage.Hex[14])),
-            Latitude = GetCoordinate(input.DataMessage.Hex[15..19], input.DataMessage.Bytes[15]),
-            Longitude = GetCoordinate(input.DataMessage.Hex[19..23], input.DataMessage.Bytes[19]),
-            Speed = float.Parse(input.DataMessage.Hex[23..25].StringJoin()),
-            Heading = float.Parse(input.DataMessage.Hex[25..27].StringJoin())
+            // Device = input.ConnectionContext.Device,
+            Position = new PositionElement
+            {
+                Date = new DateTime(int.Parse(input.DataMessage.Hex[9]) + 2000,
+                    int.Parse(input.DataMessage.Hex[10]),
+                    int.Parse(input.DataMessage.Hex[11]),
+                    int.Parse(input.DataMessage.Hex[12]),
+                    int.Parse(input.DataMessage.Hex[13]),
+                    int.Parse(input.DataMessage.Hex[14])),
+                Latitude = GetCoordinate(input.DataMessage.Hex[15..19], input.DataMessage.Bytes[15]),
+                Longitude = GetCoordinate(input.DataMessage.Hex[19..23], input.DataMessage.Bytes[19]),
+                Speed = float.Parse(input.DataMessage.Hex[23..25].StringJoin()),
+                Heading = float.Parse(input.DataMessage.Hex[25..27].StringJoin())
+            }
+            
         };
 
-        return position;
+        return deviceMessageDocument;
     }
 
     private static double GetCoordinate(string[] input, byte highestByte)
