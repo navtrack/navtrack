@@ -3,12 +3,11 @@ import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useMessagesQuery } from "@navtrack/shared/hooks/queries/usePositionsQuery";
+import { useMessagesQuery } from "@navtrack/shared/hooks/queries/useMessagesQuery";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
 import { MessageModel } from "@navtrack/shared/api/model/generated";

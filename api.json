@@ -1446,15 +1446,45 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "odometer": {
+            "type": "integer",
+            "nullable": true
+          },
           "batteryLevel": {
             "type": "integer",
-            "format": "int32"
+            "format": "byte",
+            "nullable": true
+          },
+          "batteryVoltage": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "batteryCurrent": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         }
       },
       "MessageVehicleModel": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "properties": {
+          "odometer": {
+            "type": "integer",
+            "nullable": true
+          },
+          "ignition": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "voltage": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
       },
       "MessageGsmModel": {
         "type": "object",

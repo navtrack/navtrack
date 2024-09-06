@@ -6,5 +6,8 @@
  */
 
 export interface MessageDeviceModel {
-  batteryLevel?: number;
+  batteryCurrent?: number | null;
+  batteryLevel?: number | null;
+  batteryVoltage?: number | null;
+  odometer?: number | null;
 }

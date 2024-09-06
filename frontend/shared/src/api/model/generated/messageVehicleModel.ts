@@ -6,5 +6,7 @@
  */
 
 export interface MessageVehicleModel {
-  [key: string]: any;
+  ignition?: boolean | null;
+  odometer?: number | null;
+  voltage?: number | null;
 }
