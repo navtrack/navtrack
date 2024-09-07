@@ -15,7 +15,7 @@ public class AssetStatsItemModel
     public int? DurationPrevious { get; set; }
     public int? DurationChange { get; set; }
     
-    public int? FuelConsumption { get; set; }
-    public int? FuelConsumptionPrevious { get; set; }
+    public double? FuelConsumption { get; set; }
+    public double? FuelConsumptionPrevious { get; set; }
     public int? FuelConsumptionChange { get; set; }
 }
