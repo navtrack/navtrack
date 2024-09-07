@@ -7,15 +7,17 @@ public static class MessageModelMapper
 {
     public static MessageModel Map(DeviceMessageDocument source)
     {
-        MessageModel position = new()
+        MessageModel message = new()
         {
             Id = source.Id.ToString(),
-            Gsm = new GsmModel
-            {
-                // GsmSignal = source.Data.Test()
-            }
+            Priority = source.MessagePriority ?? MessagePriority.Low,
+            CreatedDate = source.CreatedDate,
+            Position = PositionModelMapper.Map(source.Position),
+            Device = MessageDeviceModelMapper.Map(source.Device),
+            Vehicle = VehicleModelMapper.Map(source.Vehicle),
+            Gsm = GsmModelMapper.Map(source.Gsm),
         };
 
-        return position;
+        return message;
     }
 }

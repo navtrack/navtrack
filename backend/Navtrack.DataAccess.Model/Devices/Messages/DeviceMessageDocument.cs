@@ -13,6 +13,7 @@ public class DeviceMessageDocument : BaseDocument
     {
         AdditionalData = new Dictionary<string, string>();
         AdditionalDataUnhandled = new Dictionary<string, string>();
+        AdditionalDataException = new Dictionary<string, string>();
     }
     
     [BsonElement("mp")]
@@ -44,4 +45,7 @@ public class DeviceMessageDocument : BaseDocument
     
     [BsonIgnore]
     public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }
+    
+    [BsonIgnore]
+    public Dictionary<string, string>? AdditionalDataException { get; set; }
 }

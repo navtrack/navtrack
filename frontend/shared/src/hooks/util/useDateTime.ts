@@ -39,17 +39,9 @@ export function useDateTime() {
     [intl, showDate, showTime]
   );
 
-  const showDuration = useCallback((minutes?: number) => {
-    minutes = minutes ?? 0;
-
-    return minutes > 60
-      ? `${Math.floor(minutes / 60)} h ${Math.round(minutes % 60)} m`
-      : `${Math.round(minutes)} m`;
-  }, []);
-
   function getDate(dateTime: string) {
     return parseISO(dateTime);
   }
 
-  return { showDate, showTime, showDateTime, showDuration, getDate };
+  return { showDate, showTime, showDateTime, getDate };
 }

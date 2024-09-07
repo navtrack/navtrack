@@ -9,7 +9,4 @@ public class LatLongModel(double latitude, double longitude)
 
     [Required]
     public double Longitude { get; set; } = longitude;
-
-    public bool Valid => CoordinatesValidation.IsValidLatitude(Latitude) &&
-                         CoordinatesValidation.IsValidLongitude(Longitude);
 }

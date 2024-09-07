@@ -52,13 +52,10 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
                     deviceMessageDocument.Position.Altitude = float.Parse(match[4].Value);
                     deviceMessageDocument.Gsm = new GsmElement
                     {
-                        CellGlobalIdentity = new CellGlobalIdentityElement
-                        {
-                            MobileCountryCode = match[10].Value,
-                            MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber).ToString(),
-                            LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber).ToString(),
-                            CellId = int.Parse(match[13].Value, NumberStyles.HexNumber)
-                        }
+                        MobileCountryCode = match[10].Value,
+                        MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber).ToString(),
+                        LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber).ToString(),
+                        CellId = int.Parse(match[13].Value, NumberStyles.HexNumber)
                     };
                 }
             }

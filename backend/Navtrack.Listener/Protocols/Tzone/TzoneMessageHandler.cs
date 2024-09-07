@@ -22,7 +22,7 @@ public class TzoneMessageHandler : BaseMessageHandler<TzoneProtocol>
 
         deviceMessageDocument.Position.HDOP = input.DataMessage.BarSplit.Get<float?>(3);
         deviceMessageDocument.Device ??= new DeviceElement();
-        deviceMessageDocument.Device.Odometer = input.DataMessage.BarSplit.Get<uint>(11);
+        deviceMessageDocument.Device.Odometer = input.DataMessage.BarSplit.Get<int>(11);
 
         return deviceMessageDocument;
     }

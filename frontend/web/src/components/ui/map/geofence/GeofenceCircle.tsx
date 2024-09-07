@@ -1,10 +1,10 @@
 import { FormattedMessage } from "react-intl";
 import { showCoordinate } from "@navtrack/shared/utils/coordinates";
-import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useEffect, useState } from "react";
 import { useMap } from "../useMap";
 import { Circle, circle } from "leaflet";
 import { GEOFENCE_CIRCLE_MAX_RADIUS_METERS as GEOFENCE_CIRCLE_MAX_RADIUS } from "../../../../constants";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 export type CircleGeofence = {
   latitude: number;
@@ -19,7 +19,7 @@ export type GeofenceCircleProps = {
 
 export function GeofenceCircle(props: GeofenceCircleProps) {
   const map = useMap();
-  const { showDistance } = useDistance();
+  const show = useShow();
   const [initialised, setInitialised] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [geofence, setGeofence] = useState(props.geofence);
@@ -135,7 +135,7 @@ export function GeofenceCircle(props: GeofenceCircleProps) {
               <span className="flex font-semibold">
                 <FormattedMessage id="generic.radius" />
               </span>
-              <span>{showDistance(geofence.radius)}</span>
+              <span>{show.distance(geofence.radius, false)}</span>
             </div>
           </>
         ) : (

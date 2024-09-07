@@ -194,7 +194,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     return;
                 case TeltonikaDataIds.TotalOdometer:
                     deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.Odometer = value.ToUInt4();
+                    deviceMessageDocument.Device.Odometer = value.ToSInt4();
                     return;
                 case TeltonikaDataIds.GsmSignal:
                     deviceMessageDocument.Gsm ??= new GsmElement();
@@ -254,9 +254,8 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     if (homeNetworkIdentity.Length > 4)
                     {
                         deviceMessageDocument.Gsm ??= new GsmElement();
-                        deviceMessageDocument.Gsm.CellGlobalIdentity ??= new CellGlobalIdentityElement();
-                        deviceMessageDocument.Gsm.CellGlobalIdentity.MobileCountryCode = homeNetworkIdentity[..3];
-                        deviceMessageDocument.Gsm.CellGlobalIdentity.MobileNetworkCode = homeNetworkIdentity[3..];
+                        deviceMessageDocument.Gsm.MobileCountryCode = homeNetworkIdentity[..3];
+                        deviceMessageDocument.Gsm.MobileNetworkCode = homeNetworkIdentity[3..];
                     }
 
                     return;
@@ -267,6 +266,10 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                 // Event I/O elements
                 case 250:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.EventTrip.ToString()] = value.ToUByte1().ToString();
+                    return;
+                case TeltonikaDataIds.IgnitionOnCounter:
+                    deviceMessageDocument.Vehicle ??= new VehicleElement();
+                    deviceMessageDocument.Vehicle.IgnitionDuration = value.ToSInt4();
                     return;
 
                 // OBD elements
@@ -426,6 +429,10 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                 case 100:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanProgramNumber.ToString()] = value.ToUInt4().ToString();
                     return;
+                case TeltonikaDataIds.CanFuelConsumedCounted:
+                    deviceMessageDocument.Vehicle ??= new VehicleElement();
+                    deviceMessageDocument.Vehicle.FuelConsumed = value.ToSInt4() * 0.1;
+                    return;
                 case 123:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanControlStateFlags.ToString()] = value.ToUInt4().ToString();
                     return;
@@ -456,7 +463,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
             string[] array = HexUtil.ConvertByteArrayToHexStringArray(value);
             Array.Reverse(array);
 
-            deviceMessageDocument.AdditionalDataUnhandled[id.ToString()] =
+            deviceMessageDocument.AdditionalDataException[id.ToString()] =
                 HexUtil.ConvertHexStringArrayToHexString(array);
         }
     }

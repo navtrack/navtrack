@@ -50,7 +50,7 @@ public class AlematicsMessageHandler : BaseMessageHandler<AlematicsProtocol>
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = locationMatch.Groups[25].Get<uint?>()
+                    Odometer = locationMatch.Groups[25].Get<int?>()
                 }
             };
 

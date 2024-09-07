@@ -3,15 +3,14 @@ import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { usePositionsQuery } from "@navtrack/shared/hooks/queries/usePositionsQuery";
+import { useMessagesQuery } from "@navtrack/shared/hooks/queries/useMessagesQuery";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
-import { PositionModel } from "@navtrack/shared/api/model/generated";
+import { MessageModel } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
@@ -25,7 +24,7 @@ export function AssetLogPage() {
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("log");
   const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
-  const query = usePositionsQuery({
+  const query = useMessagesQuery({
     assetId: currentAsset.data?.id,
     ...filters
   });
@@ -33,14 +32,12 @@ export function AssetLogPage() {
   const { showDateTime } = useDateTime();
   const { showSpeed, showAltitude } = useDistance();
 
-  const [position, setPosition] = useState<PositionModel | undefined>(
-    undefined
-  );
+  const [message, setMessage] = useState<MessageModel | undefined>(undefined);
 
   return (
     <>
-      <LocationFilter filterPage="log" center={position?.coordinates} />
-      <TableV2<PositionModel>
+      <LocationFilter filterPage="log" center={message?.position.coordinates} />
+      <TableV2<MessageModel>
         columns={[
           {
             labelId: "generic.date",
@@ -77,54 +74,54 @@ export function AssetLogPage() {
               </>
             ),
             sort: "desc",
-            sortValue: (row) => row.date,
-            row: (row) => showDateTime(row.date),
+            sortValue: (row) => row.position.date,
+            row: (row) => showDateTime(row.position.date),
             sortable: true
           },
           {
             labelId: "generic.latitude",
-            row: (row) => showCoordinate(row.coordinates.latitude)
+            row: (row) => showCoordinate(row.position.coordinates.latitude)
           },
           {
             labelId: "generic.longitude",
-            row: (row) => showCoordinate(row.coordinates.longitude)
+            row: (row) => showCoordinate(row.position.coordinates.longitude)
           },
           {
             labelId: "generic.altitude",
-            row: (row) => showAltitude(row.altitude),
-            sortValue: (row) => row.altitude,
+            row: (row) => showAltitude(row.position.altitude),
+            sortValue: (row) => row.position.altitude,
             sortable: true
           },
           {
             labelId: "generic.speed",
-            row: (row) => showSpeed(row.speed),
-            sortValue: (row) => row.speed,
+            row: (row) => showSpeed(row.position.speed),
+            sortValue: (row) => row.position.speed,
             sortable: true
           },
           {
             labelId: "generic.heading",
-            row: (row) => showHeading(row.heading),
-            sortValue: (row) => row.heading,
+            row: (row) => showHeading(row.position.heading),
+            sortValue: (row) => row.position.heading,
             sortable: true
           },
           {
             labelId: "generic.satellites",
-            row: (row) => `${row.satellites}`,
-            sortValue: (row) => row.satellites,
+            row: (row) => `${row.position.satellites}`,
+            sortValue: (row) => row.position.satellites,
             sortable: true
           }
         ]}
         rows={query.data?.items}
-        setSelectedItem={setPosition}
+        setSelectedItem={setMessage}
         className="flex h-44 flex-grow"
       />
       <Card className="flex flex-grow">
         <CardMapWrapper>
           <Map
-            center={position ? position.coordinates : DEFAULT_MAP_CENTER}
+            center={message ? message.position.coordinates : DEFAULT_MAP_CENTER}
             initialZoom={14}>
             <MapPin
-              pin={{ coordinates: position?.coordinates, follow: true }}
+              pin={{ coordinates: message?.position.coordinates, follow: true }}
             />
           </Map>
         </CardMapWrapper>

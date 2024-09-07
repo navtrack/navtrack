@@ -6,6 +6,7 @@ import { useCurrentUserQuery } from "../queries/useCurrentUserQuery";
 type Units = {
   unitsType: UnitsType;
   speed: string;
+  volume: string;
   length: string;
   lengthK: string;
 };
@@ -20,7 +21,8 @@ export function useCurrentUnits() {
         unitsType: UnitsType.Imperial,
         speed: intl.formatMessage({ id: "generic.units.mph" }),
         length: intl.formatMessage({ id: "generic.units.ft" }),
-        lengthK: intl.formatMessage({ id: "generic.units.miles" })
+        lengthK: intl.formatMessage({ id: "generic.units.miles" }),
+        volume: intl.formatMessage({ id: "generic.units.gal" })
       };
     }
 
@@ -28,7 +30,8 @@ export function useCurrentUnits() {
       unitsType: UnitsType.Metric,
       speed: intl.formatMessage({ id: "generic.units.kph" }),
       length: intl.formatMessage({ id: "generic.units.m" }),
-      lengthK: intl.formatMessage({ id: "generic.units.km" })
+      lengthK: intl.formatMessage({ id: "generic.units.km" }),
+      volume: intl.formatMessage({ id: "generic.units.l" })
     };
   }, [currentUser.data?.units, intl]);
 

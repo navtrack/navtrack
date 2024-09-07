@@ -27,7 +27,7 @@ public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
             },
             Device = new DeviceElement
             {
-                Odometer = input.DataMessage.CommaSplit.Get<uint?>(12)
+                Odometer = input.DataMessage.CommaSplit.Get<int?>(12)
             }
         };
 

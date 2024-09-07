@@ -1,6 +1,6 @@
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
-import { PositionModel } from "@navtrack/shared/api/model/generated";
+import { MessagePositionModel } from "@navtrack/shared/api/model/generated";
 import {
   showCoordinate,
   showHeading,
@@ -9,7 +9,7 @@ import {
 import { PositionCardItem } from "./PositionCardItem";
 
 type PositionCardItemsProps = {
-  position: PositionModel;
+  position: MessagePositionModel;
 };
 
 export function PositionCardItems(props: PositionCardItemsProps) {

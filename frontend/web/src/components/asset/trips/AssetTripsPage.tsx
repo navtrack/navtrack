@@ -18,7 +18,10 @@ import {
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { PositionModel, TripModel } from "@navtrack/shared/api/model/generated";
+import {
+  MessagePositionModel,
+  TripModel
+} from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
@@ -27,20 +30,22 @@ import { locationFiltersSelector } from "../shared/location-filter/locationFilte
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { SlotContext } from "../../../app/SlotContext";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 export function AssetTripsPage() {
   const slots = useContext(SlotContext);
   const [selectedTrip, setSelectedTrip] = useRecoilState(selectedTripAtom);
   const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
   const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
-    PositionModel | undefined
+    MessagePositionModel | undefined
   >(selectedTripPosition);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useRecoilState(selectedTripPositionIndexAtom);
   const [showPin, setShowPin] = useState(false);
 
-  const { showDuration, showDateTime } = useDateTime();
-  const { showSpeed, showDistance, showAltitude } = useDistance();
+  const { showDateTime } = useDateTime();
+  const { showSpeed, showAltitude } = useDistance();
+  const show = useShow();
 
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("trips");
@@ -81,18 +86,20 @@ export function AssetTripsPage() {
             },
             {
               labelId: "generic.duration",
-              row: (row) => showDuration(row.duration),
+              row: (row) => show.duration(row.duration),
               sortValue: (row) => row.duration,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && showDuration(query.data?.totalDuration),
+              footer: () =>
+                hasTrips && show.duration(query.data?.totalDuration),
               sortable: true
             },
             {
               labelId: "generic.distance",
-              row: (row) => showDistance(row.distance),
+              row: (row) => show.distance(row.distance),
               sortValue: (row) => row.distance,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && showDistance(query.data?.totalDistance),
+              footer: () =>
+                hasTrips && show.distance(query.data?.totalDistance),
               sortable: true
             },
             {

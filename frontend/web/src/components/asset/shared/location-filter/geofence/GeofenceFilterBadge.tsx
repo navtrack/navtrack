@@ -3,9 +3,9 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { geofenceFilterAtom } from "../locationFilterState";
-import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
 import { showCoordinate } from "@navtrack/shared/utils/coordinates";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 type GeofenceFilterBadgeProps = {
   filterKey: string;
@@ -14,7 +14,7 @@ type GeofenceFilterBadgeProps = {
 export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
   const [state, setState] = useRecoilState(geofenceFilterAtom(props.filterKey));
   const reset = useResetRecoilState(geofenceFilterAtom(props.filterKey));
-  const distance = useDistance();
+  const show = useShow();
 
   return (
     <>
@@ -29,7 +29,7 @@ export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
               values={{
                 latitude: showCoordinate(state.geofence?.latitude),
                 longitude: showCoordinate(state.geofence?.longitude),
-                distance: distance.showDistance(state.geofence?.radius)
+                distance: show.distance(state.geofence?.radius)
               }}
             />
           </IconWithText>

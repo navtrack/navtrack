@@ -72,7 +72,7 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
         return null;
     }
 
-    private static uint? GetOdometer(string value)
+    private static int? GetOdometer(string value)
     {
         value = value.Replace(':', 'A')
             .Replace(';', 'B')
@@ -81,6 +81,6 @@ public class CarTrackGPSMessageHandler : BaseMessageHandler<CarTrackGPSProtocol>
             .Replace('>', 'E')
             .Replace('?', 'F');
 
-        return uint.Parse(value, NumberStyles.HexNumber);
+        return int.Parse(value, NumberStyles.HexNumber);
     }
 }

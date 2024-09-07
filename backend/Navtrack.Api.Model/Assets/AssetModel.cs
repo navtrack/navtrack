@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Navtrack.Api.Model.Devices;
-using Navtrack.Api.Model.Positions;
+using Navtrack.Api.Model.Messages;
+using DeviceModel = Navtrack.Api.Model.Devices.DeviceModel;
 
 namespace Navtrack.Api.Model.Assets;
 
@@ -12,7 +12,7 @@ public class AssetModel
 
     [Required]
     public string Name { get; set; }
-    
+
     [Required]
     public string OwnerId { get; set; }
 
@@ -22,7 +22,8 @@ public class AssetModel
     [Required]
     public int MaxSpeed => 400; // TODO update this property
 
-    public PositionModel? Position { get; set; }
+    public MessageModel? LastMessage { get; set; }
+    public MessageModel? LastPositionMessage { get; set; }
 
     public DeviceModel? Device { get; set; }
 

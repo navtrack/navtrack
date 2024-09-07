@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,8 @@ public class DeviceMessageRepository(IRepository repository)
 
         FilterDefinition<DeviceMessageDocument> filter = GetFilter(options);
 
-        IFindFluent<DeviceMessageDocument, DeviceMessageDocument>? query = repository.GetCollection<DeviceMessageDocument>()
+        IFindFluent<DeviceMessageDocument, DeviceMessageDocument>? query = repository
+            .GetCollection<DeviceMessageDocument>()
             .Find(filter);
 
         long count = await query.CountDocumentsAsync();
@@ -84,7 +86,7 @@ public class DeviceMessageRepository(IRepository repository)
             double radiusInKm = positionFilter.Radius.Value / 1000d;
 
             filter &= Builders<DeviceMessageDocument>.Filter.GeoWithinCenterSphere(x => x.Position.Coordinates,
-                positionFilter.Longitude.Value, positionFilter.Latitude.Value, radiusInKm/6378.1);
+                positionFilter.Longitude.Value, positionFilter.Latitude.Value, radiusInKm / 6378.1);
         }
 
         return filter;
@@ -112,6 +114,20 @@ public class DeviceMessageRepository(IRepository repository)
         return repository.GetQueryable<DeviceMessageDocument>()
             .AnyAsync(x =>
                 x.Metadata.DeviceId == ObjectId.Parse(deviceId) && x.Metadata.AssetId == ObjectId.Parse(assetId));
+    }
+
+    public async Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLastPosition(
+        string assetId, DateTime startDate, DateTime endDate)
+    {
+        IMongoQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
+            .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) &&
+                        x.Position.Date >= startDate &&
+                        x.Position.Date <= endDate);
+
+        DeviceMessageDocument? first = await query.OrderBy(x => x.Position.Date).FirstOrDefaultAsync();
+        DeviceMessageDocument? last = await query.OrderByDescending(x => x.Position.Date).FirstOrDefaultAsync();
+
+        return (first, last);
     }
 
     private static FilterDefinition<DeviceMessageDocument> ApplyPositionValidFilter(

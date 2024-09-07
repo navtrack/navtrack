@@ -104,13 +104,10 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
         deviceMessageDocument.Gsm = new GsmElement
         {
-            CellGlobalIdentity = new CellGlobalIdentityElement
-            {
-                MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                CellId = GetCellId(input.DataMessage.ByteReader)
-            }
+            MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+            MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+            LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+            CellId = GetCellId(input.DataMessage.ByteReader)
         };
 
         string status = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
@@ -156,13 +153,10 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         {
             deviceMessageDocument.Gsm = new GsmElement
             {
-                CellGlobalIdentity = new CellGlobalIdentityElement
-                {
-                    MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                    MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                    LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                    CellId = input.DataMessage.ByteReader.Get(4).ToSInt4()
-                },
+                MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
+                CellId = input.DataMessage.ByteReader.Get(4).ToSInt4(),
                 SignalStrength = input.DataMessage.ByteReader.GetOne()
             };
         }

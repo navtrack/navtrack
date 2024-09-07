@@ -1,6 +1,9 @@
 import {
+  faChartLine,
   faCog,
   faDatabase,
+  faGauge,
+  faHome,
   faMapMarkerAlt,
   faPlus,
   faRoute
@@ -10,14 +13,12 @@ import { Paths } from "../../../../app/Paths";
 import { AuthenticatedLayoutNavbarProfile } from "./AuthenticatedLayoutNavbarProfile";
 import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
 import { AuthenticatedLayoutNavbarItem } from "./AuthenticatedLayoutNavbarItem";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
 import { FormattedMessage } from "react-intl";
-import { useContext, useMemo } from "react";
-import { SlotContext } from "../../../../app/SlotContext";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { useAssetAuthorize } from "@navtrack/shared/hooks/assets/useAssetAuthorize";
 import { AssetRoleType } from "@navtrack/shared/api/model/generated";
 import { Button } from "../../button/Button";
+import { useRecoilValue } from "recoil";
+import { currentAssetIdAtom } from "@navtrack/shared/state/assets";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
@@ -28,15 +29,49 @@ export type AssetNavbarMenuItem = {
   path: string;
   icon: IconProp;
   priority: number;
-  role: AssetRoleType;
+  role?: AssetRoleType;
 };
 
-export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
+export const navbarMenuItems: AssetNavbarMenuItem[] = [
+  {
+    label: "generic.home",
+    path: Paths.Home,
+    icon: faHome,
+    priority: 10
+  },
+  // {
+  //   label: "generic.dashboard",
+  //   path: Paths.AssetsDashboard,
+  //   icon: faGauge,
+  //   priority: 20
+  // },
+  {
+    label: "generic.reports",
+    path: Paths.Reports,
+    icon: faChartLine,
+    priority: 20
+  },
+  {
+    label: "generic.settings",
+    path: Paths.SettingsAccount,
+    icon: faCog,
+    priority: 30
+  }
+];
+
+export const assetNavbarMenuitems: AssetNavbarMenuItem[] = [
   {
     label: "navbar.asset.live-tracking",
     path: Paths.AssetsLive,
     icon: faMapMarkerAlt,
     priority: 10,
+    role: AssetRoleType.Viewer
+  },
+  {
+    label: "generic.dashboard",
+    path: Paths.AssetsDashboard,
+    icon: faGauge,
+    priority: 15,
     role: AssetRoleType.Viewer
   },
   {
@@ -65,25 +100,17 @@ export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
 export function AuthenticatedLayoutNavbar(
   props: AuthenticatedLayoutNavbarProps
 ) {
-  const slots = useContext(SlotContext);
-  const currentAsset = useCurrentAsset();
-  const assetAuthorize = useAssetAuthorize();
+  const currentAssetId = useRecoilValue(currentAssetIdAtom);
 
-  const menuItmes = useMemo(
-    () =>
-      (slots?.assetNavbarMenuItems ?? defaultAssetNavbarMenuItems).filter(
-        (x) =>
-          currentAsset.data && assetAuthorize(currentAsset.data?.id, x.role)
-      ),
-    [assetAuthorize, currentAsset.data, slots?.assetNavbarMenuItems]
-  );
+  const menuItems =
+    currentAssetId !== undefined ? assetNavbarMenuitems : navbarMenuItems;
 
   return (
     <nav className="relative bg-white px-4 shadow">
       <div className="flex h-16 justify-between">
         <div className="flex">
           {!props.hideLogo && (
-            <div className="flex h-16 items-center">
+            <div className="flex h-16 w-64 items-center">
               <Link to={Paths.Home} className="flex items-center">
                 <NavtrackLogoDark className="h-10 w-10 p-2" />
                 <span className="ml-2 text-2xl font-semibold tracking-wide text-gray-900">
@@ -93,20 +120,16 @@ export function AuthenticatedLayoutNavbar(
             </div>
           )}
           <div className="flex space-x-8">
-            {currentAsset.data?.id !== undefined && (
-              <>
-                {menuItmes.map((item) => (
-                  <AuthenticatedLayoutNavbarItem
-                    key={item.label}
-                    labelId={item.label}
-                    icon={item.icon}
-                    to={generatePath(item.path, {
-                      id: currentAsset.data?.id
-                    })}
-                  />
-                ))}
-              </>
-            )}
+            {menuItems.map((item) => (
+              <AuthenticatedLayoutNavbarItem
+                key={item.label}
+                labelId={item.label}
+                icon={item.icon}
+                to={generatePath(item.path, {
+                  id: `${currentAssetId}`
+                })}
+              />
+            ))}
           </div>
         </div>
         <div className="flex items-center space-x-3">

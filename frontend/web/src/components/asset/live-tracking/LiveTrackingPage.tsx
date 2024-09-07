@@ -11,7 +11,7 @@ import { SlotContext } from "../../../app/SlotContext";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
-  const position = currentAsset.data?.position;
+  const position = currentAsset.data?.lastPositionMessage?.position;
   const slots = useContext(SlotContext);
 
   return (

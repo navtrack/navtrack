@@ -19,6 +19,18 @@ public class GsmElement
     [BsonElement("sl")]
     public byte? SignalLevel { get; set; }
 
-    [BsonElement("cgi")]
-    public CellGlobalIdentityElement? CellGlobalIdentity { get; set; }
+    [BsonElement("mcc")]
+    public string? MobileCountryCode { get; set; }
+
+    [BsonElement("mnc")]
+    public string? MobileNetworkCode { get; set; }
+
+    [BsonElement("lac")]
+    public string? LocationAreaCode { get; set; }
+
+    [BsonElement("ci")]
+    public int? CellId { get; set; }
+
+    [BsonElement("lci")]
+    public uint? LteCellId { get; set; }
 }

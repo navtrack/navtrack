@@ -77,7 +77,7 @@ public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
             },
             Device = new DeviceElement
             {
-                Odometer = input.DataMessage.CommaSplit.Get<uint?>(18) * 1000,
+                Odometer = input.DataMessage.CommaSplit.Get<int?>(18) * 1000,
             },
             Gsm = new GsmElement
             {

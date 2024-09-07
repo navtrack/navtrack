@@ -54,7 +54,7 @@ public class JointechV1MessageHandler
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = uint.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber)
+                    Odometer = int.Parse(locationMatch.Groups[18].Value, NumberStyles.HexNumber)
                 }
             };
 

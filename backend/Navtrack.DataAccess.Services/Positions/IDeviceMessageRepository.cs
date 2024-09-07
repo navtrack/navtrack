@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -13,4 +14,6 @@ public interface IDeviceMessageRepository : IGenericRepository<DeviceMessageDocu
     Task<Dictionary<ObjectId, int>> GetMessagesCountByDeviceIds(IEnumerable<ObjectId> deviceIds);
     Task DeleteByAssetId(string assetId);
     Task<bool> DeviceHasMessages(string assetId, string deviceId);
+    Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLastPosition(string assetId,
+        DateTime startDate, DateTime endDate);
 }

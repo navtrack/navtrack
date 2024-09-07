@@ -2,14 +2,6 @@ import { useCallback } from "react";
 import { useCurrentUnits } from "./useCurrentUnits";
 import { UnitsType } from "../../api/model/generated";
 
-function convertMetersToKm(distance: number) {
-  return Math.round((distance / 1000) * 100) / 100;
-}
-
-function convertFeetToMiles(distance: number) {
-  return Math.round((distance / 5280) * 100) / 100;
-}
-
 function convertKphToMph(speed: number) {
   return Math.round((speed / 0.621371192) * 100) / 100;
 }
@@ -42,23 +34,6 @@ export function useDistance() {
     [units.speed, units.unitsType]
   );
 
-  const showDistance = useCallback(
-    (distance?: number) => {
-      const convertedDistance = convertToSelectedUnitsType(distance);
-
-      if (convertedDistance > 1000) {
-        if (units.unitsType === UnitsType.Metric) {
-          return `${convertMetersToKm(convertedDistance)} ${units.lengthK}`;
-        }
-
-        return `${convertFeetToMiles(convertedDistance)} ${units.lengthK}`;
-      }
-
-      return `${Math.round(convertedDistance * 100) / 100} ${units.length}`;
-    },
-    [convertToSelectedUnitsType, units.length, units.lengthK, units.unitsType]
-  );
-
   const showAltitude = useCallback(
     (altitude?: number | null) =>
       altitude !== undefined && altitude !== null
@@ -73,5 +48,5 @@ export function useDistance() {
     []
   );
 
-  return { showSpeed, showDistance, showAltitude, showHeading };
+  return { showSpeed, showAltitude, showHeading };
 }

@@ -491,12 +491,12 @@
         }
       }
     },
-    "/assets/{assetId}/positions": {
+    "/assets/{assetId}/messages": {
       "get": {
         "tags": [
-          "AssetsPositions"
+          "AssetsMessages"
         ],
-        "operationId": "AssetsPositions_GetList",
+        "operationId": "AssetsMessages_GetList",
         "parameters": [
           {
             "name": "assetId",
@@ -626,7 +626,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PositionListModel"
+                  "$ref": "#/components/schemas/MessageListModel"
                 }
               }
             }
@@ -688,6 +688,47 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DistanceReportListModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/{assetId}/stats": {
+      "get": {
+        "tags": [
+          "AssetsStats"
+        ],
+        "operationId": "AssetsStats_Get",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetStatsListModel"
                 }
               }
             }
@@ -1275,11 +1316,19 @@
             "type": "integer",
             "format": "int32"
           },
-          "position": {
+          "lastMessage": {
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PositionModel"
+                "$ref": "#/components/schemas/MessageModel"
+              }
+            ]
+          },
+          "lastPositionMessage": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MessageModel"
               }
             ]
           },
@@ -1300,7 +1349,74 @@
           }
         }
       },
-      "PositionModel": {
+      "MessageModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "position"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "priority": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MessagePriority"
+              }
+            ]
+          },
+          "position": {
+            "$ref": "#/components/schemas/MessagePositionModel"
+          },
+          "device": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MessageDeviceModel"
+              }
+            ]
+          },
+          "vehicle": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MessageVehicleModel"
+              }
+            ]
+          },
+          "gsm": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MessageGsmModel"
+              }
+            ]
+          }
+        }
+      },
+      "MessagePriority": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Low",
+          "Medium",
+          "High",
+          "Emergency"
+        ],
+        "enum": [
+          "Low",
+          "Medium",
+          "High",
+          "Emergency"
+        ]
+      },
+      "MessagePositionModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1308,9 +1424,6 @@
           "date"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "coordinates": {
             "$ref": "#/components/schemas/LatLongModel"
           },
@@ -1321,45 +1434,31 @@
           },
           "speed": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "heading": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "altitude": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "satellites": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "hdop": {
+            "type": "number",
+            "format": "double"
+          },
+          "pdop": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
           "valid": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "gsm": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/GsmModel"
-              }
-            ]
-          },
-          "odometer": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
+            "type": "boolean"
           }
         }
       },
@@ -1378,18 +1477,69 @@
           "longitude": {
             "type": "number",
             "format": "double"
-          },
-          "valid": {
-            "type": "boolean"
           }
         }
       },
-      "GsmModel": {
+      "MessageDeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "gsmSignal": {
+          "odometer": {
             "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "batteryLevel": {
+            "type": "integer",
+            "format": "byte",
+            "nullable": true
+          },
+          "batteryVoltage": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "batteryCurrent": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "MessageVehicleModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "odometer": {
+            "type": "integer",
+            "nullable": true
+          },
+          "ignition": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "voltage": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "MessageGsmModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "signalLevel": {
+            "type": "integer",
+            "format": "byte",
+            "nullable": true
+          },
+          "mobileCountryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobileNetworkCode": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -1603,10 +1753,10 @@
           }
         }
       },
-      "PositionListModel": {
+      "MessageListModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfPositionModel"
+            "$ref": "#/components/schemas/ListModelOfMessageModel"
           },
           {
             "type": "object",
@@ -1633,7 +1783,7 @@
           }
         ]
       },
-      "ListModelOfPositionModel": {
+      "ListModelOfMessageModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1643,7 +1793,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PositionModel"
+              "$ref": "#/components/schemas/MessageModel"
             }
           }
         }
@@ -1717,6 +1867,105 @@
           }
         }
       },
+      "AssetStatsListModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListModelOfAssetStatsItemModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ListModelOfAssetStatsItemModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetStatsItemModel"
+            }
+          }
+        }
+      },
+      "AssetStatsItemModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dateRange"
+        ],
+        "properties": {
+          "dateRange": {
+            "$ref": "#/components/schemas/AssetStatsDateRange"
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "distancePrevious": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "distanceChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "durationPrevious": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "durationChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fuelConsumptionPrevious": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fuelConsumptionChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "AssetStatsDateRange": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Today",
+          "ThisWeek",
+          "ThisMonth",
+          "ThisYear"
+        ],
+        "enum": [
+          "Today",
+          "ThisWeek",
+          "ThisMonth",
+          "ThisYear"
+        ]
+      },
       "TripListModel": {
         "allOf": [
           {
@@ -1786,14 +2035,14 @@
           "positions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PositionModel"
+              "$ref": "#/components/schemas/MessagePositionModel"
             }
           },
           "startPosition": {
-            "$ref": "#/components/schemas/PositionModel"
+            "$ref": "#/components/schemas/MessagePositionModel"
           },
           "endPosition": {
-            "$ref": "#/components/schemas/PositionModel"
+            "$ref": "#/components/schemas/MessagePositionModel"
           },
           "duration": {
             "type": "number",

@@ -4,15 +4,15 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { PositionModel } from "./positionModel";
+import type { MessagePositionModel } from "./messagePositionModel";
 
 export interface TripModel {
   averageAltitude?: number | null;
   averageSpeed?: number | null;
   distance: number;
   duration: number;
-  endPosition: PositionModel;
+  endPosition: MessagePositionModel;
   maxSpeed?: number | null;
-  positions: PositionModel[];
-  startPosition: PositionModel;
+  positions: MessagePositionModel[];
+  startPosition: MessagePositionModel;
 }

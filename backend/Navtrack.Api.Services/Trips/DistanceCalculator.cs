@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Navtrack.Api.Model.Positions;
+using Navtrack.Api.Model.Messages;
 
 namespace Navtrack.Api.Services.Trips;
 
@@ -33,12 +33,12 @@ public static class DistanceCalculator
         return distance <= radius;
     }
     
-    public static int CalculateDistance(List<(LatLongModel Coordinates, double? Odometer)> positions)
+    public static int CalculateDistance(List<(LatLongModel Coordinates, uint? Odometer)> positions)
     {
         int distance = 0;
 
-        (_, double? firstOdometer) = positions.First();
-        (_, double? lastOdometer) = positions.Last();
+        (_, uint? firstOdometer) = positions.First();
+        (_, uint? lastOdometer) = positions.Last();
 
         if (firstOdometer.HasValue && lastOdometer.HasValue)
         {

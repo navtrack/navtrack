@@ -56,7 +56,7 @@ public class PretraceMessageHandler : BaseMessageHandler<PretraceProtocol>
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = uint.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
+                    Odometer = int.Parse(locationMatch.Groups[19].Value, NumberStyles.HexNumber),
                 },
                 Gsm = new GsmElement
                 {

@@ -33,7 +33,7 @@ public class XirgoMessageHandler : BaseMessageHandler<XirgoProtocol>
             deviceMessageDocument.Position.Satellites = input.DataMessage.CommaSplit.Get<short?>(12);
             deviceMessageDocument.Position.HDOP = input.DataMessage.CommaSplit.Get<float?>(13);
             deviceMessageDocument.Device ??= new DeviceElement();
-            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<uint?>(14);
+            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<int?>(14);
         }
         else
         {
@@ -41,7 +41,7 @@ public class XirgoMessageHandler : BaseMessageHandler<XirgoProtocol>
             deviceMessageDocument.Position.Satellites = input.DataMessage.CommaSplit.Get<short?>(9);
             deviceMessageDocument.Position.HDOP = input.DataMessage.CommaSplit.Get<float?>(10);
             deviceMessageDocument.Device ??= new DeviceElement();
-            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<uint?>(13);
+            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<int?>(13);
         }
 
         return deviceMessageDocument;

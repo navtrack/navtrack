@@ -17,6 +17,7 @@ import { AuthenticatedLayoutTwoColumns } from "../components/ui/layouts/authenti
 import { AssetLogPage } from "../components/asset/log/AssetLogPage";
 import { AssetSettingsLayout } from "../components/asset/settings/shared/AssetSettingsLayout";
 import { AccountSettingsLayout } from "../components/settings/AccountSettingsLayout";
+import { AssetDashboardPage } from "../components/asset/dashboard/AssetDashboardPage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -32,12 +33,13 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
     <Routes>
       <Route element={<AuthenticatedLayoutTwoColumns />}>
         {props.mainRoutes}
+        <Route path={Paths.AssetsAdd} element={<AssetAddPage />} />
+        <Route path={Paths.AssetsAlerts} element={<AssetAlertsPage />} />
+        <Route path={Paths.AssetsDashboard} element={<AssetDashboardPage />} />
         <Route path={Paths.AssetsLive} element={<AssetLiveTrackingPage />} />
         <Route path={Paths.AssetsLog} element={<AssetLogPage />} />
-        <Route path={Paths.AssetsTrips} element={<AssetTripsPage />} />
-        <Route path={Paths.AssetsAdd} element={<AssetAddPage />} />
         <Route path={Paths.AssetsReports} element={<AssetReportsPage />} />
-        <Route path={Paths.AssetsAlerts} element={<AssetAlertsPage />} />
+        <Route path={Paths.AssetsTrips} element={<AssetTripsPage />} />
         <Route path={Paths.Home} element={<HomePage />} />
       </Route>
       <Route element={<AssetSettingsLayout />}>
