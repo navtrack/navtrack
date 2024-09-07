@@ -15,6 +15,7 @@ import type {
 } from "@tanstack/react-query";
 import type {
   AssetModel,
+  AssetStatsListModel,
   AssetsMessagesGetListParams,
   AssetsReportsGetTimeDistanceReportParams,
   AssetsTripsGetListParams,
@@ -988,6 +989,80 @@ export const useAssetsReportsGetTimeDistanceReport = <
     params,
     options
   );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const assetsStatsGet = (assetId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<AssetStatsListModel>({
+    url: `/assets/${assetId}/stats`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getAssetsStatsGetQueryKey = (assetId: string) => {
+  return [`/assets/${assetId}/stats`] as const;
+};
+
+export const getAssetsStatsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof assetsStatsGet>>,
+  TError = ProblemDetails
+>(
+  assetId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof assetsStatsGet>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getAssetsStatsGetQueryKey(assetId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof assetsStatsGet>>> = ({
+    signal
+  }) => assetsStatsGet(assetId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!assetId,
+    ...queryOptions
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof assetsStatsGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AssetsStatsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof assetsStatsGet>>
+>;
+export type AssetsStatsGetQueryError = ProblemDetails;
+
+export const useAssetsStatsGet = <
+  TData = Awaited<ReturnType<typeof assetsStatsGet>>,
+  TError = ProblemDetails
+>(
+  assetId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof assetsStatsGet>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getAssetsStatsGetQueryOptions(assetId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

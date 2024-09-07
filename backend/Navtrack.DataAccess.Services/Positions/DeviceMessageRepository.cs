@@ -121,8 +121,6 @@ public class DeviceMessageRepository(IRepository repository)
     {
         IMongoQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
             .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) &&
-                        x.Device != null &&
-                        x.Device.Odometer != null &&
                         x.Position.Date >= startDate &&
                         x.Position.Date <= endDate);
 

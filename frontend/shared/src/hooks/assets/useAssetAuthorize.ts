@@ -1,10 +1,8 @@
 import { useCallback } from "react";
 import { useCurrentUserQuery } from "../queries/useCurrentUserQuery";
-import { useAssetsQuery } from "../queries/useAssetsQuery";
 import { AssetRoleType } from "../../api/model/generated";
 
 export function useAssetAuthorize() {
-  const assets = useAssetsQuery();
   const currentUser = useCurrentUserQuery();
 
   const assetAuthorize = useCallback(
@@ -14,14 +12,13 @@ export function useAssetAuthorize() {
           ? [AssetRoleType.Owner, AssetRoleType.Viewer]
           : [role];
 
-      return assets.data?.items
-        .find((x) => x.id === assetId)
-        ?.userRoles?.find(
-          (x) =>
-            x.userId === currentUser.data?.id && validRoles.includes(x.role)
-        );
+      return (
+        currentUser.data?.assetRoles?.find(
+          (x) => x.assetId === assetId && validRoles.includes(x.role)
+        ) !== undefined
+      );
     },
-    [assets.data?.items, currentUser.data?.id]
+    [currentUser.data?.assetRoles]
   );
 
   return assetAuthorize;

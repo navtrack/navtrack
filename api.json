@@ -1908,7 +1908,7 @@
             "format": "int32",
             "nullable": true
           },
-          "previousDistance": {
+          "distancePrevious": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1918,32 +1918,32 @@
             "format": "int32",
             "nullable": true
           },
-          "fuelConsumption": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "previousFuelConsumption": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "fuelConsumptionChange": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "duration": {
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
-          "previousDuration": {
+          "durationPrevious": {
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
           "durationChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelConsumption": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelConsumptionPrevious": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelConsumptionChange": {
             "type": "integer",
             "format": "int32",
             "nullable": true

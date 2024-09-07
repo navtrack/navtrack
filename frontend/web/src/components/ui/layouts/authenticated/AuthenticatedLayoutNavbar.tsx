@@ -1,6 +1,9 @@
 import {
+  faChartLine,
   faCog,
   faDatabase,
+  faGauge,
+  faHome,
   faMapMarkerAlt,
   faPlus,
   faRoute
@@ -28,8 +31,35 @@ export type AssetNavbarMenuItem = {
   path: string;
   icon: IconProp;
   priority: number;
-  role: AssetRoleType;
+  role?: AssetRoleType;
 };
+
+export const navbarMenuItems: AssetNavbarMenuItem[] = [
+  {
+    label: "generic.home",
+    path: Paths.Home,
+    icon: faHome,
+    priority: 10
+  },
+  {
+    label: "generic.dashboard",
+    path: Paths.AssetsDashboard,
+    icon: faGauge,
+    priority: 20
+  },
+  {
+    label: "generic.reports",
+    path: Paths.Reports,
+    icon: faChartLine,
+    priority: 20
+  },
+  {
+    label: "generic.settings",
+    path: Paths.SettingsAccount,
+    icon: faCog,
+    priority: 30
+  }
+];
 
 export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
   {
@@ -37,6 +67,13 @@ export const defaultAssetNavbarMenuItems: AssetNavbarMenuItem[] = [
     path: Paths.AssetsLive,
     icon: faMapMarkerAlt,
     priority: 10,
+    role: AssetRoleType.Viewer
+  },
+  {
+    label: "generic.dashboard",
+    path: Paths.AssetsDashboard,
+    icon: faGauge,
+    priority: 15,
     role: AssetRoleType.Viewer
   },
   {
@@ -69,21 +106,27 @@ export function AuthenticatedLayoutNavbar(
   const currentAsset = useCurrentAsset();
   const assetAuthorize = useAssetAuthorize();
 
-  const menuItmes = useMemo(
-    () =>
-      (slots?.assetNavbarMenuItems ?? defaultAssetNavbarMenuItems).filter(
+  const menuItems = useMemo(() => {
+    if (currentAsset.data?.id !== undefined) {
+      return (
+        slots?.assetNavbarMenuItems ?? defaultAssetNavbarMenuItems
+      ).filter(
         (x) =>
-          currentAsset.data && assetAuthorize(currentAsset.data?.id, x.role)
-      ),
-    [assetAuthorize, currentAsset.data, slots?.assetNavbarMenuItems]
-  );
+          currentAsset.data &&
+          (x.role === undefined ||
+            assetAuthorize(currentAsset.data?.id, x.role))
+      );
+    } else {
+      return navbarMenuItems;
+    }
+  }, [assetAuthorize, currentAsset.data, slots?.assetNavbarMenuItems]);
 
   return (
     <nav className="relative bg-white px-4 shadow">
       <div className="flex h-16 justify-between">
         <div className="flex">
           {!props.hideLogo && (
-            <div className="flex h-16 items-center">
+            <div className="flex h-16 w-64 items-center">
               <Link to={Paths.Home} className="flex items-center">
                 <NavtrackLogoDark className="h-10 w-10 p-2" />
                 <span className="ml-2 text-2xl font-semibold tracking-wide text-gray-900">
@@ -93,20 +136,16 @@ export function AuthenticatedLayoutNavbar(
             </div>
           )}
           <div className="flex space-x-8">
-            {currentAsset.data?.id !== undefined && (
-              <>
-                {menuItmes.map((item) => (
-                  <AuthenticatedLayoutNavbarItem
-                    key={item.label}
-                    labelId={item.label}
-                    icon={item.icon}
-                    to={generatePath(item.path, {
-                      id: currentAsset.data?.id
-                    })}
-                  />
-                ))}
-              </>
-            )}
+            {menuItems.map((item) => (
+              <AuthenticatedLayoutNavbarItem
+                key={item.label}
+                labelId={item.label}
+                icon={item.icon}
+                to={generatePath(item.path, {
+                  id: `${currentAsset.data?.id}`
+                })}
+              />
+            ))}
           </div>
         </div>
         <div className="flex items-center space-x-3">

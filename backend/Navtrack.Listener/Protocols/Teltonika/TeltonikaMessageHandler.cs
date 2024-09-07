@@ -269,7 +269,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     return;
                 case TeltonikaDataIds.IgnitionOnCounter:
                     deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.IgnitionDuration = value.ToUInt4();
+                    deviceMessageDocument.Vehicle.IgnitionDuration = value.ToSInt4();
                     return;
 
                 // OBD elements
@@ -459,7 +459,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
             string[] array = HexUtil.ConvertByteArrayToHexStringArray(value);
             Array.Reverse(array);
 
-            deviceMessageDocument.AdditionalDataUnhandled[id.ToString()] =
+            deviceMessageDocument.AdditionalDataException[id.ToString()] =
                 HexUtil.ConvertHexStringArrayToHexString(array);
         }
     }

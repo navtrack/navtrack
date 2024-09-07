@@ -2,8 +2,7 @@ import { LatLongModel } from "@navtrack/shared/api/model/generated";
 
 export const DEFAULT_MAP_CENTER: LatLongModel = {
   latitude: 46.770439,
-  longitude: 23.591423,
-  valid: true
+  longitude: 23.591423
 };
 
 export const DEFAULT_MAP_ZOOM = 15;

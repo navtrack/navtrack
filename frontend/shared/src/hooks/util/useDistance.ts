@@ -43,10 +43,10 @@ export function useDistance() {
   );
 
   const showDistance = useCallback(
-    (distance?: number) => {
+    (distance?: number, onlyK: boolean = false) => {
       const convertedDistance = convertToSelectedUnitsType(distance);
 
-      if (convertedDistance > 1000) {
+      if (convertedDistance > 1000 || onlyK) {
         if (units.unitsType === UnitsType.Metric) {
           return `${convertMetersToKm(convertedDistance)} ${units.lengthK}`;
         }

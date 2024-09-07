@@ -14,7 +14,7 @@ public class VehicleElement
     public bool? Ignition { get; set; }
     
     [BsonElement("ignd")]
-    public uint IgnitionDuration { get; set; }
+    public int? IgnitionDuration { get; set; }
 
     [BsonElement("v")]
     public double? Voltage { get; set; }

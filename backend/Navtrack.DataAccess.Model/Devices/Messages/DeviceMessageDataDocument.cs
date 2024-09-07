@@ -18,6 +18,9 @@ public class DeviceMessageDataDocument : BaseDocument
     [BsonElement("du")]
     public Dictionary<string, string>? DataUnhandled { get; set; }
 
+    [BsonElement("de")]
+    public Dictionary<string, string>? DataException { get; set; }
+
     [BsonElement("cd")]
     public DateTime CreatedDate { get; set; }
 }

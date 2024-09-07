@@ -44,4 +44,7 @@ public class DeviceMessageDocument : BaseDocument
     
     [BsonIgnore]
     public Dictionary<string, string>? AdditionalDataUnhandled { get; set; }
+    
+    [BsonIgnore]
+    public Dictionary<string, string>? AdditionalDataException { get; set; }
 }
