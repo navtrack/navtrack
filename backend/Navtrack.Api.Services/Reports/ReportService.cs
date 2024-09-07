@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Reports;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Api.Services.Mappers.Reports;
+using Navtrack.Api.Services.Reports.Mappers;
 using Navtrack.Api.Services.Trips;
 using Navtrack.Shared.Library.DI;
 

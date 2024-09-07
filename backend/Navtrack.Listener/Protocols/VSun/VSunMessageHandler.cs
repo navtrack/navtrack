@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Mappers;
 using Navtrack.Listener.Server;
+using Navtrack.Listener.Services.Mappers;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.VSun;

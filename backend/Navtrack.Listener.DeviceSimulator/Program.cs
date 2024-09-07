@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Navtrack.Listener.Helpers.New;
+using Navtrack.Listener.Helpers;
 
 namespace Navtrack.Listener.DeviceSimulator;
 

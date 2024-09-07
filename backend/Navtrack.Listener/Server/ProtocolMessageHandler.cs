@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Positions;
+using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Services;

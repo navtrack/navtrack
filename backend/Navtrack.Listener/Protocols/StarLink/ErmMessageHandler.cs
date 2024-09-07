@@ -2,7 +2,6 @@ using System;
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -78,7 +77,7 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
 
             if (dataKey[i] == "#EDT#")
             {
-                deviceMessageDocument.Position.Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, data[i]);
+                deviceMessageDocument.Position.Date = DateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, data[i]);
             }
         }
     }

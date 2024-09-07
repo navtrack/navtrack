@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -56,7 +55,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
                     // Device = input.ConnectionContext.Device,
                     Position = new PositionElement
                     {
-                        Date = NewDateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
+                        Date = DateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
                             locationMatch.Groups[2].Value),
                         Latitude = locationMatch.Groups[3].Get<double>(),
                         Longitude = locationMatch.Groups[4].Get<double>(),

@@ -1,7 +1,7 @@
-using Navtrack.Api.Services.Positions;
+using Navtrack.Api.Services.DeviceMessages;
 using Navtrack.Api.Shared.Controllers;
 
 namespace Navtrack.Api.Controllers;
 
-public class AssetsMessagesController(IPositionService positionService)
-    : AssetsMessagesControllerBase(positionService);
+public class AssetsMessagesController(IDeviceMessageService deviceMessageService)
+    : AssetsMessagesControllerBase(deviceMessageService);

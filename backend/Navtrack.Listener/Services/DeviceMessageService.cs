@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Positions;
-using Navtrack.Listener.Mappers;
+using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Listener.Models;
+using Navtrack.Listener.Services.Mappers;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Services;

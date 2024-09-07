@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 

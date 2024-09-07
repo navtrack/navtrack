@@ -2,8 +2,6 @@ using System;
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
-using Navtrack.Listener.Helpers.New2;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -62,7 +60,7 @@ public class LaipacMessageHandler : BaseMessageHandler<LaipacProtocol>
             {
                 Position = new PositionElement
                 {
-                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                    Date = DateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                         $"{locationMatch.Groups[10].Value}{locationMatch.Groups[2].Value}"),
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[4].Value,
                         locationMatch.Groups[5].Value),

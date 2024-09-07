@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -387,7 +386,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
     private static DateTime GetDateTime(string value)
     {
         return value.Length == 14
-            ? NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, value)
+            ? DateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, value)
             : DateTime.UnixEpoch.AddSeconds(Convert.ToDouble(value));
     }
 }

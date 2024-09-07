@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using Navtrack.Listener.Helpers.New;
 
 namespace Navtrack.Listener.Helpers;
 
@@ -29,7 +28,7 @@ public class GPRMC
         {
             GPRMC gprmc = new()
             {
-                DateTime = NewDateTimeUtil.Convert(DateFormat.HHMMSS_SS_DDMMYY, match.Groups[1].Value,
+                DateTime = DateTimeUtil.Convert(DateFormat.HHMMSS_SS_DDMMYY, match.Groups[1].Value,
                     match.Groups[9].Value),
                 PositionStatus = match.Groups[2].Value == "A",
                 Latitude = GpsUtil.ConvertDmmLatToDecimal(match.Groups[3].Value, match.Groups[4].Value),

@@ -11,7 +11,7 @@ using MongoDB.Bson;
 using Moq;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Positions;
+using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;

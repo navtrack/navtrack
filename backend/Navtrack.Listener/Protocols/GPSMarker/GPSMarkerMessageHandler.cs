@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -35,10 +34,10 @@ public class GPSMarkerMessageHandler : BaseMessageHandler<GPSMarkerProtocol>
                 // Device = input.ConnectionContext.Device,
                 Position = new PositionElement
                 {
-                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
-                    Latitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value,
+                    Date = DateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS, locationMatch.Groups[4].Value),
+                    Latitude = GpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[6].Value,
                         locationMatch.Groups[5].Value),
-                    Longitude = NewGpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value,
+                    Longitude = GpsUtil.Convert(GpsFormat.DDDMMmmmm, locationMatch.Groups[8].Value,
                         locationMatch.Groups[7].Value),
                     Speed = locationMatch.Groups[9].Get<float?>(),
                     Heading = locationMatch.Groups[10].Get<float?>(),

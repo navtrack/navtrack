@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Navtrack.Api.Model.Common;
-using Navtrack.Api.Services.Mappers.Common;
+using Navtrack.Api.Services.Mappers;
 
 namespace Navtrack.Api.Shared;
 

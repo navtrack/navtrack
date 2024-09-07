@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -161,7 +160,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
                 {
                     Satellites = locationMatch.Groups[14].Get<short?>(),
                     Altitude = locationMatch.Groups[15].Get<float?>(),
-                    Date = NewDateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                    Date = DateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
                         $"{locationMatch.Groups[26].Value}{locationMatch.Groups[19].Value}"),
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[20].Value,
                         locationMatch.Groups[21].Value),

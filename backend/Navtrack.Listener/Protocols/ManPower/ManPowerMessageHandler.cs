@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -31,7 +30,7 @@ public class ManPowerMessageHandler : BaseMessageHandler<ManPowerProtocol>
             {
                 Position = new PositionElement
                 {
-                    Date = NewDateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
+                    Date = DateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
                     Valid = locationMatch.Groups[4].Value == "A",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
                         locationMatch.Groups[6].Value),

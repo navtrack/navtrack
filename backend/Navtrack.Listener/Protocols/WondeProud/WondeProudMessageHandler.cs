@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
@@ -32,7 +31,7 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
             {
                 Position = new PositionElement
                 {
-                    Date = NewDateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
+                    Date = DateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
                     Longitude = locationMatch.Groups[3].Get<double>(),
                     Latitude = locationMatch.Groups[4].Get<double>(),
                     Speed = locationMatch.Groups[5].Get<float?>(),

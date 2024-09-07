@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Stats;
 using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.DataAccess.Services.Positions;
+using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Stats;

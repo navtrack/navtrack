@@ -16,7 +16,7 @@ using Navtrack.Api.Services;
 using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.IdentityServer;
-using Navtrack.Api.Services.Mappers.Common;
+using Navtrack.Api.Services.Mappers;
 using Navtrack.Api.Shared.Hubs;
 using Navtrack.DataAccess.Mongo;
 using Navtrack.Shared.Library.DI;
@@ -114,7 +114,7 @@ public abstract class BaseApiProgram<T>
         app.UseMiddleware<ExceptionMiddleware>();
 
         app.MapControllers();
-        app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));
+        // app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));
 
         app.Run();
     }

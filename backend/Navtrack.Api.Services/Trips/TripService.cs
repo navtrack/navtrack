@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using Navtrack.Api.Model.Messages;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Api.Services.Mappers.Messages;
-using Navtrack.Api.Services.Mappers.Trips;
+using Navtrack.Api.Services.DeviceMessages.Mappers;
+using Navtrack.Api.Services.Trips.Mappers;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Model.Devices.Messages.Filters;
-using Navtrack.DataAccess.Services.Positions;
+using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Trips;

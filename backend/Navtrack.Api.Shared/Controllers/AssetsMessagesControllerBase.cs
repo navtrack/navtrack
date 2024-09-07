@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model;
 using Navtrack.Api.Model.Messages;
 using Navtrack.Api.Services.ActionFilters;
-using Navtrack.Api.Services.Positions;
+using Navtrack.Api.Services.DeviceMessages;
 using Navtrack.DataAccess.Model.Assets;
 
 namespace Navtrack.Api.Shared.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public abstract class AssetsMessagesControllerBase(IPositionService service) : ControllerBase
+public abstract class AssetsMessagesControllerBase(IDeviceMessageService service) : ControllerBase
 {
     [HttpGet(ApiPaths.AssetsAssetMessages)]
     [ProducesResponseType(typeof(MessageListModel), StatusCodes.Status200OK)]

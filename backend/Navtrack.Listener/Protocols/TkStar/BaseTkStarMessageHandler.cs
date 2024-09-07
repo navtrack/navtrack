@@ -1,7 +1,6 @@
 using System;
 using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.Listener.Helpers;
-using Navtrack.Listener.Helpers.New;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Protocols.TkStar;

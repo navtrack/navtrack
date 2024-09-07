@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
-using Navtrack.Api.Services.Mappers.Users;
+using Navtrack.Api.Services.IdentityServer.Mappers;
 using Navtrack.DataAccess.Model.Users.RefreshTokens;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Shared.Library.DI;
