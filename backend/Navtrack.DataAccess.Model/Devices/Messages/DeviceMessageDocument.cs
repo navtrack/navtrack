@@ -13,6 +13,7 @@ public class DeviceMessageDocument : BaseDocument
     {
         AdditionalData = new Dictionary<string, string>();
         AdditionalDataUnhandled = new Dictionary<string, string>();
+        AdditionalDataException = new Dictionary<string, string>();
     }
     
     [BsonElement("mp")]
