@@ -49,14 +49,14 @@ export function DashboardItem(props: DashboardItemProps) {
           </div>
         )}
       </div>
-      <Skeleton loading={props.loading}>
-        <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
-          <div className="flex items-baseline text-nowrap text-2xl font-semibold text-indigo-600">
-            <div className="text-nowrap border-r-2 pr-2">
+      <Skeleton loading={props.loading} className="mt-1">
+        <dd className="flex items-end py-1">
+          <div>
+            <span className="text-nowrap border-r-2 pr-2 text-2xl font-semibold text-indigo-600">
               {props.mainStat ?? <FormattedMessage id="generic.na" />}
-            </div>
-            <div className="ml-2 space-x-1 text-nowrap text-sm font-medium text-gray-500">
-              <span>
+            </span>
+            <span className="ml-2 space-x-1 text-nowrap text-sm text-gray-500">
+              <span className="font-medium">
                 {props.secondaryStat ?? <FormattedMessage id="generic.na" />}
               </span>
               <span className="font-normal lowercase">
@@ -64,7 +64,7 @@ export function DashboardItem(props: DashboardItemProps) {
                   id={previousDateRangeLabelIds[props.dateRange]}
                 />
               </span>
-            </div>
+            </span>
           </div>
         </dd>
       </Skeleton>
