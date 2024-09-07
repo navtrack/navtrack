@@ -87,6 +87,7 @@ public static class TeltonikaDataIds
     // CAN adapters
     public const short CanDoorStatus = 90;
     public const short CanProgramNumber = 100;
+    public const short CanFuelConsumedCounted = 107;
     public const short CanControlStateFlags = 123;
     public const short CanAgriculturalMachineryFlags = 124;
     public const short CanSecurityStateFlags = 132;

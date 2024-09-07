@@ -1,3 +1,4 @@
+using System;
 using Navtrack.Api.Model.Stats;
 using Navtrack.DataAccess.Model.Devices.Messages;
 
@@ -6,28 +7,31 @@ namespace Navtrack.Api.Services.Stats;
 public static class AssetStatsItemModelMapper
 {
     public static AssetStatsItemModel Map(AssetStatsDateRange dateRange,
-        (DeviceMessageDocument? first, DeviceMessageDocument? last) currentPositions,
-        (DeviceMessageDocument? first, DeviceMessageDocument? last) previousPositions)
+        (DeviceMessageDocument? first, DeviceMessageDocument? last) current,
+        (DeviceMessageDocument? first, DeviceMessageDocument? last) previous)
     {
         AssetStatsItemModel model = new()
         {
             DateRange = dateRange
         };
 
-        MapCurrentStats(currentPositions, model);
-        MapPreviousStats(previousPositions, model);
-        MapChanges(model);
+        model.Distance = ComputeDifference(current.first?.Device?.Odometer,
+            current.last?.Device?.Odometer);
+        model.DistancePrevious = ComputeDifference(previous.first?.Device?.Odometer,
+            previous.last?.Device?.Odometer);
+        model.DistanceChange = ComputeChange(model.DistancePrevious, model.Distance);
+        
+        model.Duration = ComputeDifference(current.first?.Vehicle?.IgnitionDuration,
+            current.last?.Vehicle?.IgnitionDuration) / 60;
+        model.DurationPrevious = ComputeDifference(previous.first?.Vehicle?.IgnitionDuration,
+            previous.last?.Vehicle?.IgnitionDuration) / 60;
+        model.DurationChange = ComputeChange(model.DurationPrevious, model.Duration);
+
+        model.FuelConsumptionChange = ComputeChange(model.FuelConsumptionPrevious, model.FuelConsumption);
 
         return model;
     }
 
-    private static void MapChanges(AssetStatsItemModel destination)
-    {
-        destination.DistanceChange = ComputeChange(destination.DistancePrevious, destination.Distance);
-        destination.DurationChange = ComputeChange(destination.DurationPrevious, destination.Duration);
-        destination.FuelConsumptionChange = ComputeChange(destination.FuelConsumptionPrevious, destination.FuelConsumption);
-    }
-    
     private static int? ComputeChange(int? previous, int? current)
     {
         if (previous != null && current != null)
@@ -48,41 +52,8 @@ public static class AssetStatsItemModelMapper
         return null;
     }
 
-    private static void MapPreviousStats((DeviceMessageDocument? first, DeviceMessageDocument? last) positions,
-        AssetStatsItemModel destination)
+    private static int? ComputeDifference(int? first, int? last)
     {
-        if (positions.first?.Device?.Odometer != null && positions.last?.Device?.Odometer != null &&
-            positions.last.Device.Odometer.Value > positions.first.Device.Odometer.Value)
-        {
-            destination.DistancePrevious = positions.last.Device.Odometer.Value - positions.first.Device.Odometer.Value;
-        }
-
-        if (positions.first?.Vehicle?.IgnitionDuration != null &&
-            positions.last?.Vehicle?.IgnitionDuration != null &&
-            positions.last.Vehicle.IgnitionDuration.Value >
-            positions.first.Vehicle.IgnitionDuration.Value)
-        {
-            destination.DurationPrevious = (positions.last.Vehicle.IgnitionDuration.Value -
-                                            positions.first.Vehicle.IgnitionDuration.Value) / 60;
-        }
-    }
-
-    private static void MapCurrentStats((DeviceMessageDocument? first, DeviceMessageDocument? last) positions,
-        AssetStatsItemModel destination)
-    {
-        if (positions.first?.Device?.Odometer != null && positions.last?.Device?.Odometer != null &&
-            positions.last.Device.Odometer.Value > positions.first.Device.Odometer.Value)
-        {
-            destination.Distance = positions.last.Device.Odometer.Value - positions.first.Device.Odometer.Value;
-        }
-
-        if (positions.first?.Vehicle?.IgnitionDuration != null &&
-            positions.last?.Vehicle?.IgnitionDuration != null &&
-            positions.last.Vehicle.IgnitionDuration.Value >
-            positions.first.Vehicle.IgnitionDuration.Value)
-        {
-            destination.Duration = (positions.last.Vehicle.IgnitionDuration.Value -
-                                    positions.first.Vehicle.IgnitionDuration.Value) / 60;
-        }
+        return last != null ? Math.Max(0, last.Value - (first ?? 0)) : null;
     }
 }

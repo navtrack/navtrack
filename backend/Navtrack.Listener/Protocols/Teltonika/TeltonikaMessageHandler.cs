@@ -429,6 +429,10 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                 case 100:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanProgramNumber.ToString()] = value.ToUInt4().ToString();
                     return;
+                case TeltonikaDataIds.CanFuelConsumedCounted:
+                    deviceMessageDocument.Vehicle ??= new VehicleElement();
+                    deviceMessageDocument.Vehicle.FuelConsumed = value.ToSInt4();
+                    return;
                 case 123:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanControlStateFlags.ToString()] = value.ToUInt4().ToString();
                     return;
