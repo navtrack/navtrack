@@ -1934,13 +1934,13 @@
             "nullable": true
           },
           "fuelConsumption": {
-            "type": "integer",
-            "format": "int32",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fuelConsumptionPrevious": {
-            "type": "integer",
-            "format": "int32",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fuelConsumptionChange": {
