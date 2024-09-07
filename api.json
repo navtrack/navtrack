@@ -705,6 +705,47 @@
         }
       }
     },
+    "/assets/{assetId}/stats": {
+      "get": {
+        "tags": [
+          "AssetsStats"
+        ],
+        "operationId": "AssetsStats_Get",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetStatsListModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/assets/{assetId}/trips": {
       "get": {
         "tags": [
@@ -1445,6 +1486,7 @@
         "properties": {
           "odometer": {
             "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "batteryLevel": {
@@ -1824,6 +1866,105 @@
             "format": "double"
           }
         }
+      },
+      "AssetStatsListModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListModelOfAssetStatsItemModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ListModelOfAssetStatsItemModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetStatsItemModel"
+            }
+          }
+        }
+      },
+      "AssetStatsItemModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dateRange"
+        ],
+        "properties": {
+          "dateRange": {
+            "$ref": "#/components/schemas/AssetStatsDateRange"
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "previousDistance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "distanceChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelConsumption": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "previousFuelConsumption": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelConsumptionChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "previousDuration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "durationChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "AssetStatsDateRange": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Today",
+          "ThisWeek",
+          "ThisMonth",
+          "ThisYear"
+        ],
+        "enum": [
+          "Today",
+          "ThisWeek",
+          "ThisMonth",
+          "ThisYear"
+        ]
       },
       "TripListModel": {
         "allOf": [
