@@ -64,7 +64,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
             position.Position.Heading = input.DataMessage.ByteReader.GetLe<short>();
             int reportId = input.DataMessage.ByteReader.GetOne();
             position.Device ??= new DeviceElement();
-            position.Device.Odometer = (uint?)(input.DataMessage.ByteReader.GetLe<int>() * 100);
+            position.Device.Odometer = input.DataMessage.ByteReader.GetLe<int>() * 100;
             position.Position.HDOP = input.DataMessage.ByteReader.GetLe<short>() * 0.1f;
             byte inputStatus = input.DataMessage.ByteReader.GetOne();
             position.Position.Speed = input.DataMessage.ByteReader.GetLe<short>();
@@ -374,7 +374,7 @@ public class ATrackMessageHandler : BaseMessageHandler<ATrackProtocol>
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = (uint?)(locationMatch.Groups[12].Get<double?>() * 100)
+                    Odometer = (int?)(locationMatch.Groups[12].Get<double?>() * 100)
                 }
             };
 

@@ -28,7 +28,7 @@ public class SuntechMessageHandler : BaseMessageHandler<SuntechProtocol>
             },
             Device = new DeviceElement
             {
-                Odometer = input.DataMessage.Split.Get<uint?>(12)
+                Odometer = input.DataMessage.Split.Get<int?>(12)
             }
         };
 

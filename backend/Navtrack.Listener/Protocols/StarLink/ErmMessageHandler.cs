@@ -73,7 +73,7 @@ public class ErmMessageHandler : BaseMessageHandler<ErmProtocol>
             if (dataKey[i] == "#ODO#")
             {
                 deviceMessageDocument.Device ??= new DeviceElement();
-                deviceMessageDocument.Device.Odometer = Convert.ToUInt32(data[i]) * 1000;
+                deviceMessageDocument.Device.Odometer = Convert.ToInt32(data[i]) * 1000;
             }
 
             if (dataKey[i] == "#EDT#")

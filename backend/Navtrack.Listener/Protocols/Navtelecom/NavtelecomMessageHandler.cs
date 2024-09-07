@@ -239,7 +239,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
                         break;
                     case 16:
                         deviceMessageDocument.Device ??= new DeviceElement();
-                        deviceMessageDocument.Device.Odometer = (uint?)(reader.Get<float>() * 1000);
+                        deviceMessageDocument.Device.Odometer = (int?)(reader.Get<float>() * 1000);
                         break;
                     default:
                         reader.Skip(FlexFieldSize[i - 1]);
@@ -274,7 +274,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         deviceMessageDocument.Position.Speed = reader.Get<float>();
         deviceMessageDocument.Position.Heading = reader.Get<short>();
         deviceMessageDocument.Device ??= new DeviceElement();
-        deviceMessageDocument.Device.Odometer = (uint?)(reader.Get<float>() * 1000);
+        deviceMessageDocument.Device.Odometer = (int?)(reader.Get<float>() * 1000);
 
         int dynamicPartLength = packageLength - staticDataLength - 2;
         reader.Skip(dynamicPartLength);

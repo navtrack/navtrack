@@ -30,6 +30,7 @@ public static class TeltonikaDataIds
 
     // Event I/O elements
     public const short EventTrip = 250;
+    public const short IgnitionOnCounter = 449;
 
     // OBD elements
     public const short ObdDtcCount = 30;

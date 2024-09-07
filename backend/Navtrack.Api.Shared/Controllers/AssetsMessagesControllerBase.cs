@@ -16,7 +16,7 @@ namespace Navtrack.Api.Shared.Controllers;
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 public abstract class AssetsMessagesControllerBase(IPositionService service) : ControllerBase
 {
-    [HttpGet(ApiPaths.AssetsAssetPositions)]
+    [HttpGet(ApiPaths.AssetsAssetMessages)]
     [ProducesResponseType(typeof(MessageListModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]

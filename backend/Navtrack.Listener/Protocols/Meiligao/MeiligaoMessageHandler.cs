@@ -39,7 +39,7 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<uint?>(7)
+                    Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<int?>(7)
                 }
             };
 

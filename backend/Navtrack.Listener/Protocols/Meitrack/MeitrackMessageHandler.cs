@@ -59,7 +59,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                 deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
                 deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get<short>();
                 deviceMessageDocument.Device ??= new DeviceElement();
-                deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<uint>();
+                deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<int>();
                 int runTime = input.DataMessage.ByteReader.Get<int>();
                 deviceMessageDocument.Gsm.MobileCountryCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
@@ -158,7 +158,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                                 break;
                             case 0x0C:
                                 deviceMessageDocument.Device ??= new DeviceElement();
-                                deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<uint>();
+                                deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<int>();
                                 break;
                             default:
                                 byte[] value = input.DataMessage.ByteReader.Get(size);
@@ -209,7 +209,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             deviceMessageDocument.Position.HDOP = input.DataMessage.CommaSplit.Get<double?>(12);
             deviceMessageDocument.Position.Altitude = input.DataMessage.CommaSplit.Get<int>(13);
             deviceMessageDocument.Device ??= new DeviceElement();
-            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<uint>(14);
+            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<int>(14);
 
             return [deviceMessageDocument];
         }

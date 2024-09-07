@@ -49,7 +49,7 @@ public class CarscopMessageHandler : BaseTkStarMessageHandler<CarscopProtocol>
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = uint.Parse(lgc[16].Value)
+                    Odometer = int.Parse(lgc[16].Value)
                 }
             };
 

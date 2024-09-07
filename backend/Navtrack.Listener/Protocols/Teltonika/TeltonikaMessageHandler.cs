@@ -194,7 +194,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     return;
                 case TeltonikaDataIds.TotalOdometer:
                     deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.Odometer = value.ToUInt4();
+                    deviceMessageDocument.Device.Odometer = value.ToSInt4();
                     return;
                 case TeltonikaDataIds.GsmSignal:
                     deviceMessageDocument.Gsm ??= new GsmElement();
@@ -266,6 +266,10 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                 // Event I/O elements
                 case 250:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.EventTrip.ToString()] = value.ToUByte1().ToString();
+                    return;
+                case TeltonikaDataIds.IgnitionOnCounter:
+                    deviceMessageDocument.Vehicle ??= new VehicleElement();
+                    deviceMessageDocument.Vehicle.IgnitionDuration = value.ToUInt4();
                     return;
 
                 // OBD elements

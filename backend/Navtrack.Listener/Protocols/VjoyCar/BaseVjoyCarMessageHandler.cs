@@ -41,7 +41,7 @@ public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
                 },
                 Device = new DeviceElement
                 {
-                    Odometer = uint.Parse(lgc[15].Value, NumberStyles.HexNumber)
+                    Odometer = int.Parse(lgc[15].Value, NumberStyles.HexNumber)
                 }
             };
 

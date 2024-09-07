@@ -61,7 +61,7 @@ public class KingSwordMessageHandler : BaseMessageHandler<KingSwordProtocol>
                 short.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber);
             deviceMessageDocument.Device ??= new DeviceElement();
             deviceMessageDocument.Device.Odometer =
-                uint.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber);
+                int.Parse(locationMatch.Groups[20].Value, NumberStyles.HexNumber);
             deviceMessageDocument.Position.Altitude = locationMatch.Groups[22].Get<float?>();
 
             return deviceMessageDocument;
