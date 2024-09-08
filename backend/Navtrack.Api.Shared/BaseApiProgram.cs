@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Model.Common;
-using Navtrack.Api.Services;
 using Navtrack.Api.Services.ActionFilters;
 using Navtrack.Api.Services.Exceptions;
 using Navtrack.Api.Services.IdentityServer;

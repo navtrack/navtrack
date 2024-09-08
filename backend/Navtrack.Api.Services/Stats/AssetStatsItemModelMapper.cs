@@ -7,6 +7,7 @@ namespace Navtrack.Api.Services.Stats;
 public static class AssetStatsItemModelMapper
 {
     public static AssetStatsItemModel Map(AssetStatsDateRange dateRange,
+        DeviceMessageDocument? initial,
         (DeviceMessageDocument? first, DeviceMessageDocument? last) current,
         (DeviceMessageDocument? first, DeviceMessageDocument? last) previous)
     {
@@ -16,9 +17,9 @@ public static class AssetStatsItemModelMapper
         };
 
         model.Distance = (int?)ComputeDifference(current.first?.Device?.Odometer,
-            current.last?.Device?.Odometer);
+            current.last?.Device?.Odometer, initial?.Device?.Odometer);
         model.DistancePrevious = (int?)ComputeDifference(previous.first?.Device?.Odometer,
-            previous.last?.Device?.Odometer);
+            previous.last?.Device?.Odometer, initial?.Device?.Odometer);
         model.DistanceChange = (int?)ComputeChange(model.DistancePrevious, model.Distance);
 
         model.Duration = (int?)(ComputeDifference(current.first?.Vehicle?.IgnitionDuration,
@@ -58,8 +59,20 @@ public static class AssetStatsItemModelMapper
         return null;
     }
 
-    private static double? ComputeDifference(double? first, double? last)
+    private static double? ComputeDifference(double? from, double? to, int? initial = null)
     {
-        return last != null ? Math.Max(0, last.Value - (first ?? 0)) : null;
+        if (to != null)
+        {
+            double diff = to.Value - (from ?? 0);
+            
+            if (initial.HasValue && !from.HasValue && to.Value > initial)
+            {
+                diff -= initial.Value;
+            }
+
+            return Math.Max(0, diff);
+        }
+
+        return null;
     }
 }

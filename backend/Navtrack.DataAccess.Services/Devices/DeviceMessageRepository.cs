@@ -116,8 +116,8 @@ public class DeviceMessageRepository(IRepository repository)
                 x.Metadata.DeviceId == ObjectId.Parse(deviceId) && x.Metadata.AssetId == ObjectId.Parse(assetId));
     }
 
-    public async Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLastPosition(
-        string assetId, DateTime startDate, DateTime endDate)
+    public async Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLast(string assetId,
+        DateTime? startDate, DateTime? endDate)
     {
         IMongoQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
             .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) &&
@@ -128,6 +128,16 @@ public class DeviceMessageRepository(IRepository repository)
         DeviceMessageDocument? last = await query.OrderByDescending(x => x.Position.Date).FirstOrDefaultAsync();
 
         return (first, last);
+    }
+
+    public async Task<DeviceMessageDocument?> GetFirstOdometer(string assetId)
+    {
+        DeviceMessageDocument? first = await repository.GetQueryable<DeviceMessageDocument>()
+            .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) && x.Device != null && x.Device.Odometer != null)
+            .OrderBy(x => x.Position.Date)
+            .FirstOrDefaultAsync();
+
+        return first;
     }
 
     private static FilterDefinition<DeviceMessageDocument> ApplyPositionValidFilter(

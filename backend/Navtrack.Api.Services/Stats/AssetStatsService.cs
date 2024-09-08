@@ -13,21 +13,23 @@ public class AssetStatsService(IDeviceMessageRepository deviceMessageRepository)
 {
     public async Task<AssetStatsListModel> GetStats(string assetId)
     {
+        DeviceMessageDocument? initialOdometer = await deviceMessageRepository.GetFirstOdometer(assetId);
+        
         AssetStatsListModel model = new()
         {
             Items = await Task.WhenAll(Enum.GetValues<AssetStatsDateRange>().Select(async dateRange =>
             {
-                DateTime middle = AssetStatsDateRangeMapper.GetMidDate(dateRange);
-                DateTime first = AssetStatsDateRangeMapper.GetFirstDate(dateRange, middle);
-                DateTime last = AssetStatsDateRangeMapper.GetEndDate(dateRange, middle);
-
+                DateTime? middle = AssetStatsDateRangeMapper.GetMidDate(dateRange);
+                DateTime? first = AssetStatsDateRangeMapper.GetFirstDate(dateRange, middle);
+                DateTime? last = AssetStatsDateRangeMapper.GetEndDate(dateRange, middle);
+                
                 (DeviceMessageDocument? first, DeviceMessageDocument? last) currentPositions =
-                    await deviceMessageRepository.GetFirstAndLastPosition(assetId, middle, last);
+                    await deviceMessageRepository.GetFirstAndLast(assetId, middle, last);
                 (DeviceMessageDocument? first, DeviceMessageDocument? last) previousPositions =
-                    await deviceMessageRepository.GetFirstAndLastPosition(assetId, first, middle);
+                    await deviceMessageRepository.GetFirstAndLast(assetId, first, middle);
 
                 AssetStatsItemModel model =
-                    AssetStatsItemModelMapper.Map(dateRange, currentPositions, previousPositions);
+                    AssetStatsItemModelMapper.Map(dateRange, initialOdometer, currentPositions, previousPositions);
 
                 return model;
             }))

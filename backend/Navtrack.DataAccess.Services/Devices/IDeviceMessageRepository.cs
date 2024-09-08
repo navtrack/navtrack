@@ -14,6 +14,7 @@ public interface IDeviceMessageRepository : IGenericRepository<DeviceMessageDocu
     Task<Dictionary<ObjectId, int>> GetMessagesCountByDeviceIds(IEnumerable<ObjectId> deviceIds);
     Task DeleteByAssetId(string assetId);
     Task<bool> DeviceHasMessages(string assetId, string deviceId);
-    Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLastPosition(string assetId,
-        DateTime startDate, DateTime endDate);
+    Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLast(string assetId,
+        DateTime? startDate, DateTime? endDate);
+    Task<DeviceMessageDocument?> GetFirstOdometer(string assetId);
 }
