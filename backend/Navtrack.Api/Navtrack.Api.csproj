@@ -4,11 +4,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSwag.AspNetCore" Version="14.0.1"/>
+        <PackageReference Include="NSwag.AspNetCore" Version="14.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSwag.MSBuild" Version="14.0.1">
+        <PackageReference Include="NSwag.MSBuild" Version="14.1.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
