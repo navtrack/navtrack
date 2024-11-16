@@ -1,10 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="NSwag.AspNetCore" Version="14.1.0" />
+        <PackageReference Include="NSwag.AspNetCore" Version="14.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -15,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj" />
+        <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj"/>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
