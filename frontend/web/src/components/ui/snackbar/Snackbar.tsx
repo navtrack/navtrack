@@ -8,6 +8,7 @@ import { Transition } from "@headlessui/react";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { Fragment, useMemo } from "react";
 import { Icon } from "../icon/Icon";
+import { FormattedMessage } from "react-intl";
 
 export type SnackbarType = "success" | "error" | "info";
 
@@ -60,9 +61,13 @@ export function Snackbar(props: SnackbarProps) {
         </div>
         <div className={classNames(c(!props.title, "flex items-center"))}>
           {props.title && (
-            <div className="mb-2 font-semibold">{props.title}</div>
+            <div className="mb-2 font-semibold">
+              <FormattedMessage id={props.title} />
+            </div>
           )}
-          <div className="text-sm text-gray-500">{props.description}</div>
+          <div className="text-sm text-gray-500">
+            <FormattedMessage id={props.description} />
+          </div>
         </div>
         <div
           className={classNames("ml-5", c(!props.title, "flex items-center"))}>

@@ -1,9 +1,10 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Navtrack.DataAccess.Model.Shared;
 
 namespace Navtrack.DataAccess.Model.Assets;
 
-public class AssetDeviceElement
+public class AssetDeviceElement : CreatedAuditElement
 {
     [BsonId]
     public ObjectId Id { get; set; }

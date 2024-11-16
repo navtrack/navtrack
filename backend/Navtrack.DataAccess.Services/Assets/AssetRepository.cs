@@ -28,26 +28,16 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
         return asset;
     }
 
-    public Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids)
+    public Task<bool> NameIsUsed(ObjectId organizationId, string name, ObjectId? assetId = null)
     {
-        return repository.GetQueryable<AssetDocument>()
-            .Where(x => ids.Contains(x.Id))
-            .OrderBy(x => x.Name)
-            .ToListAsync();
-    }
-
-    public Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string? assetId = null)
-    {
-        name = name.ToLower();
-
         Expression<Func<AssetDocument, bool>> filter = assetId == null
             ? x =>
-                x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
+                x.OrganizationId == organizationId &&
                 x.Name.ToLower().Equals(name.ToLower())
             : x =>
-                x.UserRoles.Any(y => y.Role == AssetRoleType.Owner && y.UserId == ownerUserId) &&
+                x.OrganizationId == organizationId &&
                 x.Name.ToLower().Equals(name.ToLower()) &&
-                x.Id != ObjectId.Parse(assetId);
+                x.Id != assetId;
 
         return repository.GetQueryable<AssetDocument>()
             .AnyAsync(filter);
@@ -59,31 +49,6 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
 
         await repository.GetCollection<AssetDocument>()
             .UpdateOneAsync(x => x.Id == ObjectId.Parse(assetId), update);
-    }
-
-    public async Task AddUserToAsset(AssetUserRoleElement userRole, UserAssetRoleElement assetRole)
-    {
-        await repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetRole.AssetId,
-                Builders<AssetDocument>.Update.Push(x => x.UserRoles, userRole));
-
-        await repository.GetCollection<UserDocument>()
-            .UpdateOneAsync(x => x.Id == userRole.UserId,
-                Builders<UserDocument>.Update.Push(x => x.AssetRoles, assetRole));
-    }
-
-    public async Task RemoveUserFromAsset(string assetId, string userId)
-    {
-        ObjectId assetObjectId = ObjectId.Parse(assetId);
-        ObjectId userObjectId = ObjectId.Parse(userId);
-
-        await repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetObjectId,
-                Builders<AssetDocument>.Update.PullFilter(x => x.UserRoles, x => x.UserId == userObjectId));
-
-        await repository.GetCollection<UserDocument>()
-            .UpdateOneAsync(x => x.Id == userObjectId,
-                Builders<UserDocument>.Update.PullFilter(x => x.AssetRoles, x => x.AssetId == assetObjectId));
     }
 
     public Task SetActiveDevice(ObjectId assetId, ObjectId deviceId, string serialNumber, string deviceTypeId,
@@ -112,10 +77,73 @@ public class AssetRepository(IRepository repository) : GenericRepository<AssetDo
             .UpdateOneAsync(x => x.Id == assetId, Builders<AssetDocument>.Update.Combine(updateDefinitions));
     }
 
-    public Task SetActiveDevice(ObjectId assetDocumentId, AssetDeviceElement assetDocumentDevice)
+    public Task SetActiveDevice(ObjectId assetId, AssetDeviceElement assetDevice)
     {
         return repository.GetCollection<AssetDocument>()
-            .UpdateOneAsync(x => x.Id == assetDocumentId,
-                Builders<AssetDocument>.Update.Set(x => x.Device, assetDocumentDevice));
+            .UpdateOneAsync(x => x.Id == assetId,
+                Builders<AssetDocument>.Update.Set(x => x.Device, assetDevice));
+    }
+
+    public Task<List<AssetDocument>> GetByTeamId(ObjectId teamId)
+    {
+        return repository.GetQueryable<AssetDocument>()
+            .Where(x => x.Teams!.Any(y => y.TeamId == teamId))
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+    }
+
+    public Task<List<AssetDocument>> GetByOrganizationId(ObjectId organizationId)
+    {
+        return repository.GetQueryable<AssetDocument>()
+            .Where(x => x.OrganizationId == organizationId)
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+    }
+
+    public Task<List<AssetDocument>> GetAssetsByAssetAndTeamIds(List<ObjectId> assetIds, List<ObjectId> teamIds)
+    {
+        return repository.GetQueryable<AssetDocument>()
+            .Where(x => assetIds.Contains(x.Id) || x.Teams!.Any(y => teamIds.Contains(y.TeamId)))
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+    }
+
+    public async Task<List<AssetDocument>> GetByUserId(ObjectId userId, ObjectId organizationId)
+    {
+        UserDocument user = await repository.GetQueryable<UserDocument>().FirstOrDefaultAsync(x => x.Id == userId);
+
+        List<ObjectId> assetIds =
+            user?.Assets?.Where(x => x.OrganizationId == organizationId).Select(x => x.AssetId).ToList() ?? [];
+
+        List<ObjectId> teamIds =
+            user?.Teams?.Where(x => x.OrganizationId == organizationId).Select(x => x.TeamId).ToList() ?? [];
+
+        List<AssetDocument> assets = await repository.GetQueryable<AssetDocument>()
+            .Where(x => x.OrganizationId == organizationId &&
+                        (assetIds.Contains(x.Id) || x.Teams!.Any(y => teamIds.Contains(y.TeamId))))
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+
+        return assets;
+    }
+
+    public Task AddAssetToTeam(ObjectId assetId, AssetTeamElement element)
+    {
+        return repository.GetCollection<AssetDocument>().UpdateOneAsync(x => x.Id == assetId,
+            Builders<AssetDocument>.Update.Push(x => x.Teams, element));
+    }
+
+    public Task RemoveAssetFromTeam(ObjectId teamId, ObjectId assetId)
+    {
+        return repository.GetCollection<AssetDocument>()
+            .UpdateOneAsync(x => x.Id == assetId,
+                Builders<AssetDocument>.Update.PullFilter(x => x.Teams, x => x.TeamId == teamId));
+    }
+
+    public Task RemoveTeamFromAssets(ObjectId teamId)
+    {
+        return repository.GetCollection<AssetDocument>()
+            .UpdateManyAsync(x => x.Teams!.Any(y => y.TeamId == teamId),
+                Builders<AssetDocument>.Update.PullFilter(x => x.Teams, y => y.TeamId == teamId));
     }
 }

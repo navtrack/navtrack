@@ -14,7 +14,7 @@ export function SettingsLayout(props: SettingsLayoutProps) {
 
   return (
     <>
-      <div className="block w-64">
+      <div className="block w-56">
         <div className="flex-none space-y-1">
           {sortedMenuItems.map((item) => (
             <SettingsMenuItem {...item} key={item.path} />

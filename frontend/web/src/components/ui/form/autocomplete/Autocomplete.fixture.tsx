@@ -14,6 +14,13 @@ export default {
 
     return <Autocomplete options={assets} value={value} onChange={setValue} />;
   },
+  Open: () => {
+    const [value, setValue] = useFixtureInput("option", assets[3].value);
+
+    return (
+      <Autocomplete options={assets} value={value} onChange={setValue} open />
+    );
+  },
   WithInterval: () => {
     const [value, setValue] = useFixtureInput("option", "");
 

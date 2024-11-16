@@ -1,19 +1,16 @@
-import {
-  AssetRoleType,
-  AssetUserModel
-} from "@navtrack/shared/api/model/generated";
+import { AssetUserRole, AssetUser } from "@navtrack/shared/api/model/generated";
 import { ITableColumn } from "../../../ui/table/useTable";
 import { TableV1 } from "../../../ui/table/TableV1";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 import { FormattedMessage } from "react-intl";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useAssetUserDeleteMutation } from "@navtrack/shared/hooks/mutations/assets/useAssetUserDeleteMutation";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
+import { useAssetUserDeleteMutation } from "@navtrack/shared/hooks/queries/assets/useAssetUserDeleteMutation";
 import { getError } from "@navtrack/shared/utils/api";
 import { useNotification } from "../../../ui/notification/useNotification";
 
 type AssetUsersTableProps = {
-  rows?: AssetUserModel[];
+  rows?: AssetUser[];
   loading: boolean;
   refresh: () => void;
 };
@@ -24,18 +21,18 @@ export function AssetUsersTable(props: AssetUsersTableProps) {
   const dateTime = useDateTime();
   const { showNotification } = useNotification();
 
-  const columns: ITableColumn<AssetUserModel>[] = [
+  const columns: ITableColumn<AssetUser>[] = [
     { labelId: "generic.email", row: (user) => user.email },
     {
       labelId: "assets.settings.access.added-on",
       row: (user) => dateTime.showDate(user.createdDate)
     },
-    { labelId: "generic.role", row: (user) => user.role },
+    { labelId: "generic.role", row: (user) => user.userRole },
     {
       rowClassName: "flex justify-end",
       row: (assetUser) => (
         <>
-          {assetUser.role !== AssetRoleType.Owner && (
+          {assetUser.userRole !== AssetUserRole.Owner && (
             <DeleteModal
               onConfirm={() => {
                 if (currentAsset.data) {

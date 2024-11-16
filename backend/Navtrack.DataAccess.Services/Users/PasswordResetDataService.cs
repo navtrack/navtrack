@@ -22,7 +22,8 @@ public class PasswordResetRepository(IRepository repository)
 
     public async Task<PasswordResetDocument?> GetLatestFromHash(string hash)
     {
-        PasswordResetDocument? documentByHash = await repository.GetQueryable<PasswordResetDocument>().FirstOrDefaultAsync(x => x.Hash == hash);
+        PasswordResetDocument? documentByHash =
+            await repository.GetQueryable<PasswordResetDocument>().FirstOrDefaultAsync(x => x.Hash == hash);
 
         if (documentByHash != null)
         {

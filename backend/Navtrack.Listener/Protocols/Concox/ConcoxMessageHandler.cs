@@ -68,7 +68,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
                     NumberStyles.HexNumber).ToString(),
                 MobileNetworkCode = input.DataMessage.Bytes[GetIndex(24)].ToString(),
                 LocationAreaCode = int.Parse(
-                    Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(25), GetIndex(27))).ToString(),
+                    Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(25), GetIndex(27))),
                     NumberStyles.HexNumber).ToString(),
                 CellId = int.Parse(Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(27), GetIndex(30))),
                     NumberStyles.HexNumber)

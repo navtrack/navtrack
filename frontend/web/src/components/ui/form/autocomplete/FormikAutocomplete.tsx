@@ -19,7 +19,17 @@ export function FormikAutocomplete(props: FormikCustomSelectProps) {
         formikContext.setFieldValue(props.name, value);
       }}
       value={fieldMeta.value}
-      label={props.label ? intl.formatMessage({ id: props.label }) : undefined}
+      placeholder={
+        props.placeholder
+          ? intl.formatMessage({ id: props.placeholder })
+          : undefined
+      }
+      label={props.label}
+      error={
+        fieldMeta && fieldMeta.error && fieldMeta.touched
+          ? fieldMeta.error
+          : undefined
+      }
     />
   );
 }

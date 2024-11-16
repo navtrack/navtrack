@@ -2,7 +2,7 @@ import { useContext, useMemo } from "react";
 import { faCog, faHdd, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { Outlet, generatePath } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { SettingsLayout } from "../../../ui/layouts/settings/SettingsLayout";
 import { SettingsMenuItemProps } from "../../../ui/layouts/settings/SettingsMenuItem";
 import { AuthenticatedLayoutTwoColumns } from "../../../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
@@ -11,19 +11,19 @@ import { SlotContext } from "../../../../app/SlotContext";
 export const defaultAssetSettingsMenuItems: SettingsMenuItemProps[] = [
   {
     label: "assets.settings.sidebar.settings",
-    path: Paths.AssetsSettings,
+    path: Paths.AssetSettings,
     icon: faCog,
     priority: 100
   },
   {
     label: "assets.settings.sidebar.device",
-    path: Paths.AssetsSettingsDevice,
+    path: Paths.AssetSettingsDevice,
     icon: faHdd,
     priority: 200
   },
   {
     label: "assets.settings.sidebar.access",
-    path: Paths.AssetsSettingsAccess,
+    path: Paths.AssetSettingsAccess,
     icon: faUsers,
     priority: 300
   }

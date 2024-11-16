@@ -14,31 +14,48 @@ import type {
   UseQueryResult
 } from "@tanstack/react-query";
 import type {
-  AssetModel,
-  AssetStatsListModel,
+  Asset,
+  AssetStatList,
   AssetsMessagesGetListParams,
   AssetsReportsGetTimeDistanceReportParams,
   AssetsTripsGetListParams,
   ChangePasswordModel,
-  CreateAssetModel,
-  CreateAssetUserModel,
-  DistanceReportListModel,
-  ErrorModel,
-  ForgotPasswordModel,
-  ListModelOfAssetModel,
-  ListModelOfAssetUserModel,
-  ListModelOfDeviceModel,
-  ListModelOfDeviceTypeModel,
-  ListModelOfProtocolModel,
-  MessageListModel,
+  CreateAccount,
+  CreateAsset,
+  CreateAssetUser,
+  CreateOrUpdateAssetDevice,
+  CreateOrganization,
+  CreateOrganizationUser,
+  CreateTeam,
+  CreateTeamAsset,
+  CreateTeamUser,
+  CurrentUser,
+  DistanceReportList,
+  Entity,
+  Error,
+  ForgotPassword,
+  ListOfAsset,
+  ListOfAssetUser,
+  ListOfDevice,
+  ListOfDeviceType,
+  ListOfOrganization,
+  ListOfOrganizationUser,
+  ListOfProtocol,
+  ListOfTeam,
+  ListOfTeamAsset,
+  ListOfTeamUser,
+  MessageList,
+  Organization,
   ProblemDetails,
-  RegisterAccountModel,
-  ResetPasswordModel,
-  TripListModel,
-  UpdateAssetDeviceModel,
-  UpdateAssetModel,
-  UpdateUserModel,
-  UserModel
+  ResetPassword,
+  Team,
+  TripList,
+  UpdateAsset,
+  UpdateOrganizationModel,
+  UpdateOrganizationUser,
+  UpdateTeam,
+  UpdateTeamUser,
+  UpdateUserModel
 } from "./model/generated";
 import { authAxiosInstance } from "./authAxiosInstance";
 
@@ -46,99 +63,97 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
-export const accountRegister = (registerAccountModel: RegisterAccountModel) => {
+export const accountCreateAccount = (createAccount: CreateAccount) => {
   return authAxiosInstance<void>({
     url: `/account`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: registerAccountModel
+    data: createAccount
   });
 };
 
-export const getAccountRegisterMutationOptions = <
-  TError = ErrorModel,
+export const getAccountCreateAccountMutationOptions = <
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof accountRegister>>,
+    Awaited<ReturnType<typeof accountCreateAccount>>,
     TError,
-    { data: RegisterAccountModel },
+    { data: CreateAccount },
     TContext
   >;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof accountRegister>>,
+  Awaited<ReturnType<typeof accountCreateAccount>>,
   TError,
-  { data: RegisterAccountModel },
+  { data: CreateAccount },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof accountRegister>>,
-    { data: RegisterAccountModel }
+    Awaited<ReturnType<typeof accountCreateAccount>>,
+    { data: CreateAccount }
   > = (props) => {
     const { data } = props ?? {};
 
-    return accountRegister(data);
+    return accountCreateAccount(data);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type AccountRegisterMutationResult = NonNullable<
-  Awaited<ReturnType<typeof accountRegister>>
+export type AccountCreateAccountMutationResult = NonNullable<
+  Awaited<ReturnType<typeof accountCreateAccount>>
 >;
-export type AccountRegisterMutationBody = RegisterAccountModel;
-export type AccountRegisterMutationError = ErrorModel;
+export type AccountCreateAccountMutationBody = CreateAccount;
+export type AccountCreateAccountMutationError = Error;
 
-export const useAccountRegister = <
-  TError = ErrorModel,
+export const useAccountCreateAccount = <
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof accountRegister>>,
+    Awaited<ReturnType<typeof accountCreateAccount>>,
     TError,
-    { data: RegisterAccountModel },
+    { data: CreateAccount },
     TContext
   >;
 }) => {
-  const mutationOptions = getAccountRegisterMutationOptions(options);
+  const mutationOptions = getAccountCreateAccountMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
 
-export const accountForgotPassword = (
-  forgotPasswordModel: ForgotPasswordModel
-) => {
+export const accountForgotPassword = (forgotPassword: ForgotPassword) => {
   return authAxiosInstance<void>({
-    url: `/account/password/forgot`,
+    url: `/account/forgot-password`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: forgotPasswordModel
+    data: forgotPassword
   });
 };
 
 export const getAccountForgotPasswordMutationOptions = <
-  TError = ErrorModel,
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof accountForgotPassword>>,
     TError,
-    { data: ForgotPasswordModel },
+    { data: ForgotPassword },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof accountForgotPassword>>,
   TError,
-  { data: ForgotPasswordModel },
+  { data: ForgotPassword },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof accountForgotPassword>>,
-    { data: ForgotPasswordModel }
+    { data: ForgotPassword }
   > = (props) => {
     const { data } = props ?? {};
 
@@ -151,17 +166,17 @@ export const getAccountForgotPasswordMutationOptions = <
 export type AccountForgotPasswordMutationResult = NonNullable<
   Awaited<ReturnType<typeof accountForgotPassword>>
 >;
-export type AccountForgotPasswordMutationBody = ForgotPasswordModel;
-export type AccountForgotPasswordMutationError = ErrorModel;
+export type AccountForgotPasswordMutationBody = ForgotPassword;
+export type AccountForgotPasswordMutationError = Error;
 
 export const useAccountForgotPassword = <
-  TError = ErrorModel,
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof accountForgotPassword>>,
     TError,
-    { data: ForgotPasswordModel },
+    { data: ForgotPassword },
     TContext
   >;
 }) => {
@@ -170,38 +185,36 @@ export const useAccountForgotPassword = <
   return useMutation(mutationOptions);
 };
 
-export const accountResetPassword = (
-  resetPasswordModel: ResetPasswordModel
-) => {
+export const accountResetPassword = (resetPassword: ResetPassword) => {
   return authAxiosInstance<void>({
-    url: `/account/password/reset`,
+    url: `/account/reset-password`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: resetPasswordModel
+    data: resetPassword
   });
 };
 
 export const getAccountResetPasswordMutationOptions = <
-  TError = ErrorModel,
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof accountResetPassword>>,
     TError,
-    { data: ResetPasswordModel },
+    { data: ResetPassword },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof accountResetPassword>>,
   TError,
-  { data: ResetPasswordModel },
+  { data: ResetPassword },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof accountResetPassword>>,
-    { data: ResetPasswordModel }
+    { data: ResetPassword }
   > = (props) => {
     const { data } = props ?? {};
 
@@ -214,17 +227,17 @@ export const getAccountResetPasswordMutationOptions = <
 export type AccountResetPasswordMutationResult = NonNullable<
   Awaited<ReturnType<typeof accountResetPassword>>
 >;
-export type AccountResetPasswordMutationBody = ResetPasswordModel;
-export type AccountResetPasswordMutationError = ErrorModel;
+export type AccountResetPasswordMutationBody = ResetPassword;
+export type AccountResetPasswordMutationError = Error;
 
 export const useAccountResetPassword = <
-  TError = ErrorModel,
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof accountResetPassword>>,
     TError,
-    { data: ResetPasswordModel },
+    { data: ResetPassword },
     TContext
   >;
 }) => {
@@ -233,100 +246,46 @@ export const useAccountResetPassword = <
   return useMutation(mutationOptions);
 };
 
-export const accountChangePassword = (
-  changePasswordModel: ChangePasswordModel
-) => {
-  return authAxiosInstance<void>({
-    url: `/account/password/change`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: changePasswordModel
-  });
-};
-
-export const getAccountChangePasswordMutationOptions = <
-  TError = ErrorModel,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof accountChangePassword>>,
-    TError,
-    { data: ChangePasswordModel },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof accountChangePassword>>,
-  TError,
-  { data: ChangePasswordModel },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof accountChangePassword>>,
-    { data: ChangePasswordModel }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return accountChangePassword(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AccountChangePasswordMutationResult = NonNullable<
-  Awaited<ReturnType<typeof accountChangePassword>>
->;
-export type AccountChangePasswordMutationBody = ChangePasswordModel;
-export type AccountChangePasswordMutationError = ErrorModel;
-
-export const useAccountChangePassword = <
-  TError = ErrorModel,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof accountChangePassword>>,
-    TError,
-    { data: ChangePasswordModel },
-    TContext
-  >;
-}) => {
-  const mutationOptions = getAccountChangePasswordMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-
-export const assetsGetList = (signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfAssetModel>({
-    url: `/assets`,
+export const assetsGetList = (organizationId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<ListOfAsset>({
+    url: `/organizations/${organizationId}/assets`,
     method: "GET",
     signal
   });
 };
 
-export const getAssetsGetListQueryKey = () => {
-  return [`/assets`] as const;
+export const getAssetsGetListQueryKey = (organizationId: string) => {
+  return [`/organizations/${organizationId}/assets`] as const;
 };
 
 export const getAssetsGetListQueryOptions = <
   TData = Awaited<ReturnType<typeof assetsGetList>>,
   TError = unknown
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof assetsGetList>>,
-    TError,
-    TData
-  >;
-}) => {
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof assetsGetList>>,
+      TError,
+      TData
+    >;
+  }
+) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getAssetsGetListQueryKey();
+  const queryKey =
+    queryOptions?.queryKey ?? getAssetsGetListQueryKey(organizationId);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof assetsGetList>>> = ({
     signal
-  }) => assetsGetList(signal);
+  }) => assetsGetList(organizationId, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!organizationId,
+    ...queryOptions
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof assetsGetList>>,
     TError,
     TData
@@ -341,14 +300,17 @@ export type AssetsGetListQueryError = unknown;
 export const useAssetsGetList = <
   TData = Awaited<ReturnType<typeof assetsGetList>>,
   TError = unknown
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof assetsGetList>>,
-    TError,
-    TData
-  >;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getAssetsGetListQueryOptions(options);
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof assetsGetList>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getAssetsGetListQueryOptions(organizationId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -359,40 +321,43 @@ export const useAssetsGetList = <
   return query;
 };
 
-export const assetsCreate = (createAssetModel: CreateAssetModel) => {
-  return authAxiosInstance<AssetModel>({
-    url: `/assets`,
+export const assetsCreate = (
+  organizationId: string,
+  createAsset: CreateAsset
+) => {
+  return authAxiosInstance<Entity>({
+    url: `/organizations/${organizationId}/assets`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createAssetModel
+    data: createAsset
   });
 };
 
 export const getAssetsCreateMutationOptions = <
-  TError = ErrorModel,
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsCreate>>,
     TError,
-    { data: CreateAssetModel },
+    { organizationId: string; data: CreateAsset },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof assetsCreate>>,
   TError,
-  { data: CreateAssetModel },
+  { organizationId: string; data: CreateAsset },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof assetsCreate>>,
-    { data: CreateAssetModel }
+    { organizationId: string; data: CreateAsset }
   > = (props) => {
-    const { data } = props ?? {};
+    const { organizationId, data } = props ?? {};
 
-    return assetsCreate(data);
+    return assetsCreate(organizationId, data);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -401,17 +366,14 @@ export const getAssetsCreateMutationOptions = <
 export type AssetsCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsCreate>>
 >;
-export type AssetsCreateMutationBody = CreateAssetModel;
-export type AssetsCreateMutationError = ErrorModel;
+export type AssetsCreateMutationBody = CreateAsset;
+export type AssetsCreateMutationError = Error;
 
-export const useAssetsCreate = <
-  TError = ErrorModel,
-  TContext = unknown
->(options?: {
+export const useAssetsCreate = <TError = Error, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsCreate>>,
     TError,
-    { data: CreateAssetModel },
+    { organizationId: string; data: CreateAsset },
     TContext
   >;
 }) => {
@@ -421,7 +383,7 @@ export const useAssetsCreate = <
 };
 
 export const assetsGet = (assetId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<AssetModel>({
+  return authAxiosInstance<Asset>({
     url: `/assets/${assetId}`,
     method: "GET",
     signal
@@ -492,39 +454,36 @@ export const useAssetsGet = <
   return query;
 };
 
-export const assetsUpdate = (
-  assetId: string,
-  updateAssetModel: UpdateAssetModel
-) => {
+export const assetsUpdate = (assetId: string, updateAsset: UpdateAsset) => {
   return authAxiosInstance<void>({
     url: `/assets/${assetId}`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: updateAssetModel
+    data: updateAsset
   });
 };
 
 export const getAssetsUpdateMutationOptions = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsUpdate>>,
     TError,
-    { assetId: string; data: UpdateAssetModel },
+    { assetId: string; data: UpdateAsset },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof assetsUpdate>>,
   TError,
-  { assetId: string; data: UpdateAssetModel },
+  { assetId: string; data: UpdateAsset },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof assetsUpdate>>,
-    { assetId: string; data: UpdateAssetModel }
+    { assetId: string; data: UpdateAsset }
   > = (props) => {
     const { assetId, data } = props ?? {};
 
@@ -537,17 +496,17 @@ export const getAssetsUpdateMutationOptions = <
 export type AssetsUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsUpdate>>
 >;
-export type AssetsUpdateMutationBody = UpdateAssetModel;
-export type AssetsUpdateMutationError = ErrorModel | ProblemDetails;
+export type AssetsUpdateMutationBody = UpdateAsset;
+export type AssetsUpdateMutationError = Error | ProblemDetails;
 
 export const useAssetsUpdate = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsUpdate>>,
     TError,
-    { assetId: string; data: UpdateAssetModel },
+    { assetId: string; data: UpdateAsset },
     TContext
   >;
 }) => {
@@ -616,7 +575,7 @@ export const useAssetsDelete = <
 };
 
 export const assetsDevicesGetList = (assetId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfDeviceModel>({
+  return authAxiosInstance<ListOfDevice>({
     url: `/assets/${assetId}/devices`,
     method: "GET",
     signal
@@ -692,37 +651,37 @@ export const useAssetsDevicesGetList = <
 
 export const assetsDevicesCreateOrUpdate = (
   assetId: string,
-  updateAssetDeviceModel: UpdateAssetDeviceModel
+  createOrUpdateAssetDevice: CreateOrUpdateAssetDevice
 ) => {
   return authAxiosInstance<void>({
     url: `/assets/${assetId}/devices`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: updateAssetDeviceModel
+    data: createOrUpdateAssetDevice
   });
 };
 
 export const getAssetsDevicesCreateOrUpdateMutationOptions = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
     TError,
-    { assetId: string; data: UpdateAssetDeviceModel },
+    { assetId: string; data: CreateOrUpdateAssetDevice },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
   TError,
-  { assetId: string; data: UpdateAssetDeviceModel },
+  { assetId: string; data: CreateOrUpdateAssetDevice },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
-    { assetId: string; data: UpdateAssetDeviceModel }
+    { assetId: string; data: CreateOrUpdateAssetDevice }
   > = (props) => {
     const { assetId, data } = props ?? {};
 
@@ -735,19 +694,17 @@ export const getAssetsDevicesCreateOrUpdateMutationOptions = <
 export type AssetsDevicesCreateOrUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>
 >;
-export type AssetsDevicesCreateOrUpdateMutationBody = UpdateAssetDeviceModel;
-export type AssetsDevicesCreateOrUpdateMutationError =
-  | ErrorModel
-  | ProblemDetails;
+export type AssetsDevicesCreateOrUpdateMutationBody = CreateOrUpdateAssetDevice;
+export type AssetsDevicesCreateOrUpdateMutationError = Error | ProblemDetails;
 
 export const useAssetsDevicesCreateOrUpdate = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsDevicesCreateOrUpdate>>,
     TError,
-    { assetId: string; data: UpdateAssetDeviceModel },
+    { assetId: string; data: CreateOrUpdateAssetDevice },
     TContext
   >;
 }) => {
@@ -765,7 +722,7 @@ export const assetsDevicesDelete = (assetId: string, deviceId: string) => {
 };
 
 export const getAssetsDevicesDeleteMutationOptions = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
@@ -798,10 +755,10 @@ export type AssetsDevicesDeleteMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsDevicesDelete>>
 >;
 
-export type AssetsDevicesDeleteMutationError = ErrorModel | ProblemDetails;
+export type AssetsDevicesDeleteMutationError = Error | ProblemDetails;
 
 export const useAssetsDevicesDelete = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
@@ -821,7 +778,7 @@ export const assetsMessagesGetList = (
   params?: AssetsMessagesGetListParams,
   signal?: AbortSignal
 ) => {
-  return authAxiosInstance<MessageListModel>({
+  return authAxiosInstance<MessageList>({
     url: `/assets/${assetId}/messages`,
     method: "GET",
     params,
@@ -910,7 +867,7 @@ export const assetsReportsGetTimeDistanceReport = (
   params?: AssetsReportsGetTimeDistanceReportParams,
   signal?: AbortSignal
 ) => {
-  return authAxiosInstance<DistanceReportListModel>({
+  return authAxiosInstance<DistanceReportList>({
     url: `/assets/${assetId}/reports/time-distance`,
     method: "GET",
     params,
@@ -1000,7 +957,7 @@ export const useAssetsReportsGetTimeDistanceReport = <
 };
 
 export const assetsStatsGet = (assetId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<AssetStatsListModel>({
+  return authAxiosInstance<AssetStatList>({
     url: `/assets/${assetId}/stats`,
     method: "GET",
     signal
@@ -1078,7 +1035,7 @@ export const assetsTripsGetList = (
   params?: AssetsTripsGetListParams,
   signal?: AbortSignal
 ) => {
-  return authAxiosInstance<TripListModel>({
+  return authAxiosInstance<TripList>({
     url: `/assets/${assetId}/trips`,
     method: "GET",
     params,
@@ -1163,7 +1120,7 @@ export const useAssetsTripsGetList = <
 };
 
 export const assetsUsersGetList = (assetId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfAssetUserModel>({
+  return authAxiosInstance<ListOfAssetUser>({
     url: `/assets/${assetId}/users`,
     method: "GET",
     signal
@@ -1239,37 +1196,37 @@ export const useAssetsUsersGetList = <
 
 export const assetsUsersCreate = (
   assetId: string,
-  createAssetUserModel: CreateAssetUserModel
+  createAssetUser: CreateAssetUser
 ) => {
   return authAxiosInstance<void>({
     url: `/assets/${assetId}/users`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createAssetUserModel
+    data: createAssetUser
   });
 };
 
 export const getAssetsUsersCreateMutationOptions = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsUsersCreate>>,
     TError,
-    { assetId: string; data: CreateAssetUserModel },
+    { assetId: string; data: CreateAssetUser },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof assetsUsersCreate>>,
   TError,
-  { assetId: string; data: CreateAssetUserModel },
+  { assetId: string; data: CreateAssetUser },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof assetsUsersCreate>>,
-    { assetId: string; data: CreateAssetUserModel }
+    { assetId: string; data: CreateAssetUser }
   > = (props) => {
     const { assetId, data } = props ?? {};
 
@@ -1282,17 +1239,17 @@ export const getAssetsUsersCreateMutationOptions = <
 export type AssetsUsersCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsUsersCreate>>
 >;
-export type AssetsUsersCreateMutationBody = CreateAssetUserModel;
-export type AssetsUsersCreateMutationError = ErrorModel | ProblemDetails;
+export type AssetsUsersCreateMutationBody = CreateAssetUser;
+export type AssetsUsersCreateMutationError = Error | ProblemDetails;
 
 export const useAssetsUsersCreate = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof assetsUsersCreate>>,
     TError,
-    { assetId: string; data: CreateAssetUserModel },
+    { assetId: string; data: CreateAssetUser },
     TContext
   >;
 }) => {
@@ -1309,7 +1266,7 @@ export const assetsUsersDelete = (assetId: string, userId: string) => {
 };
 
 export const getAssetsUsersDeleteMutationOptions = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1342,10 +1299,10 @@ export type AssetsUsersDeleteMutationResult = NonNullable<
   Awaited<ReturnType<typeof assetsUsersDelete>>
 >;
 
-export type AssetsUsersDeleteMutationError = ErrorModel | ProblemDetails;
+export type AssetsUsersDeleteMutationError = Error | ProblemDetails;
 
 export const useAssetsUsersDelete = <
-  TError = ErrorModel | ProblemDetails,
+  TError = Error | ProblemDetails,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1361,7 +1318,7 @@ export const useAssetsUsersDelete = <
 };
 
 export const devicesGetList = (signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfDeviceTypeModel>({
+  return authAxiosInstance<ListOfDeviceType>({
     url: `/devices/types`,
     method: "GET",
     signal
@@ -1423,8 +1380,384 @@ export const useDevicesGetList = <
   return query;
 };
 
+export const healthGet = (signal?: AbortSignal) => {
+  return authAxiosInstance<void>({ url: `/health`, method: "GET", signal });
+};
+
+export const getHealthGetQueryKey = () => {
+  return [`/health`] as const;
+};
+
+export const getHealthGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof healthGet>>,
+  TError = unknown
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof healthGet>>, TError, TData>;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getHealthGetQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthGet>>> = ({
+    signal
+  }) => healthGet(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof healthGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type HealthGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof healthGet>>
+>;
+export type HealthGetQueryError = unknown;
+
+export const useHealthGet = <
+  TData = Awaited<ReturnType<typeof healthGet>>,
+  TError = unknown
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof healthGet>>, TError, TData>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getHealthGetQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const organizationsList = (signal?: AbortSignal) => {
+  return authAxiosInstance<ListOfOrganization>({
+    url: `/organizations`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getOrganizationsListQueryKey = () => {
+  return [`/organizations`] as const;
+};
+
+export const getOrganizationsListQueryOptions = <
+  TData = Awaited<ReturnType<typeof organizationsList>>,
+  TError = ProblemDetails
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof organizationsList>>,
+    TError,
+    TData
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getOrganizationsListQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof organizationsList>>
+  > = ({ signal }) => organizationsList(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof organizationsList>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type OrganizationsListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof organizationsList>>
+>;
+export type OrganizationsListQueryError = ProblemDetails;
+
+export const useOrganizationsList = <
+  TData = Awaited<ReturnType<typeof organizationsList>>,
+  TError = ProblemDetails
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof organizationsList>>,
+    TError,
+    TData
+  >;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getOrganizationsListQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const organizationsCreate = (createOrganization: CreateOrganization) => {
+  return authAxiosInstance<Entity>({
+    url: `/organizations`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: createOrganization
+  });
+};
+
+export const getOrganizationsCreateMutationOptions = <
+  TError = Error,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof organizationsCreate>>,
+    TError,
+    { data: CreateOrganization },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof organizationsCreate>>,
+  TError,
+  { data: CreateOrganization },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof organizationsCreate>>,
+    { data: CreateOrganization }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return organizationsCreate(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type OrganizationsCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof organizationsCreate>>
+>;
+export type OrganizationsCreateMutationBody = CreateOrganization;
+export type OrganizationsCreateMutationError = Error;
+
+export const useOrganizationsCreate = <
+  TError = Error,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof organizationsCreate>>,
+    TError,
+    { data: CreateOrganization },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getOrganizationsCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const organizationsGet = (
+  organizationId: string,
+  signal?: AbortSignal
+) => {
+  return authAxiosInstance<Organization>({
+    url: `/organizations/${organizationId}`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getOrganizationsGetQueryKey = (organizationId: string) => {
+  return [`/organizations/${organizationId}`] as const;
+};
+
+export const getOrganizationsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof organizationsGet>>,
+  TError = ProblemDetails
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof organizationsGet>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getOrganizationsGetQueryKey(organizationId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof organizationsGet>>
+  > = ({ signal }) => organizationsGet(organizationId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!organizationId,
+    ...queryOptions
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof organizationsGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type OrganizationsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof organizationsGet>>
+>;
+export type OrganizationsGetQueryError = ProblemDetails;
+
+export const useOrganizationsGet = <
+  TData = Awaited<ReturnType<typeof organizationsGet>>,
+  TError = ProblemDetails
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof organizationsGet>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getOrganizationsGetQueryOptions(organizationId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const organizationsUpdate = (
+  organizationId: string,
+  updateOrganizationModel: UpdateOrganizationModel
+) => {
+  return authAxiosInstance<void>({
+    url: `/organizations/${organizationId}`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: updateOrganizationModel
+  });
+};
+
+export const getOrganizationsUpdateMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof organizationsUpdate>>,
+    TError,
+    { organizationId: string; data: UpdateOrganizationModel },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof organizationsUpdate>>,
+  TError,
+  { organizationId: string; data: UpdateOrganizationModel },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof organizationsUpdate>>,
+    { organizationId: string; data: UpdateOrganizationModel }
+  > = (props) => {
+    const { organizationId, data } = props ?? {};
+
+    return organizationsUpdate(organizationId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type OrganizationsUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof organizationsUpdate>>
+>;
+export type OrganizationsUpdateMutationBody = UpdateOrganizationModel;
+export type OrganizationsUpdateMutationError = Error | ProblemDetails;
+
+export const useOrganizationsUpdate = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof organizationsUpdate>>,
+    TError,
+    { organizationId: string; data: UpdateOrganizationModel },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getOrganizationsUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const organizationsDelete = (organizationId: string) => {
+  return authAxiosInstance<void>({
+    url: `/organizations/${organizationId}`,
+    method: "DELETE"
+  });
+};
+
+export const getOrganizationsDeleteMutationOptions = <
+  TError = ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof organizationsDelete>>,
+    TError,
+    { organizationId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof organizationsDelete>>,
+  TError,
+  { organizationId: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof organizationsDelete>>,
+    { organizationId: string }
+  > = (props) => {
+    const { organizationId } = props ?? {};
+
+    return organizationsDelete(organizationId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type OrganizationsDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof organizationsDelete>>
+>;
+
+export type OrganizationsDeleteMutationError = ProblemDetails;
+
+export const useOrganizationsDelete = <
+  TError = ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof organizationsDelete>>,
+    TError,
+    { organizationId: string },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getOrganizationsDeleteMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
 export const protocolsGetList = (signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfProtocolModel>({
+  return authAxiosInstance<ListOfProtocol>({
     url: `/protocols`,
     method: "GET",
     signal
@@ -1486,8 +1819,791 @@ export const useProtocolsGetList = <
   return query;
 };
 
+export const teamsAssetsList = (teamId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<ListOfTeamAsset>({
+    url: `/teams/${teamId}/assets`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getTeamsAssetsListQueryKey = (teamId: string) => {
+  return [`/teams/${teamId}/assets`] as const;
+};
+
+export const getTeamsAssetsListQueryOptions = <
+  TData = Awaited<ReturnType<typeof teamsAssetsList>>,
+  TError = ProblemDetails
+>(
+  teamId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsAssetsList>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getTeamsAssetsListQueryKey(teamId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsAssetsList>>> = ({
+    signal
+  }) => teamsAssetsList(teamId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!teamId,
+    ...queryOptions
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof teamsAssetsList>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type TeamsAssetsListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof teamsAssetsList>>
+>;
+export type TeamsAssetsListQueryError = ProblemDetails;
+
+export const useTeamsAssetsList = <
+  TData = Awaited<ReturnType<typeof teamsAssetsList>>,
+  TError = ProblemDetails
+>(
+  teamId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsAssetsList>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTeamsAssetsListQueryOptions(teamId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const teamsAssetsCreate = (
+  teamId: string,
+  createTeamAsset: CreateTeamAsset
+) => {
+  return authAxiosInstance<void>({
+    url: `/teams/${teamId}/assets`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: createTeamAsset
+  });
+};
+
+export const getTeamsAssetsCreateMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsAssetsCreate>>,
+    TError,
+    { teamId: string; data: CreateTeamAsset },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsAssetsCreate>>,
+  TError,
+  { teamId: string; data: CreateTeamAsset },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsAssetsCreate>>,
+    { teamId: string; data: CreateTeamAsset }
+  > = (props) => {
+    const { teamId, data } = props ?? {};
+
+    return teamsAssetsCreate(teamId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsAssetsCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsAssetsCreate>>
+>;
+export type TeamsAssetsCreateMutationBody = CreateTeamAsset;
+export type TeamsAssetsCreateMutationError = Error | ProblemDetails;
+
+export const useTeamsAssetsCreate = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsAssetsCreate>>,
+    TError,
+    { teamId: string; data: CreateTeamAsset },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsAssetsCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsAssetsDelete = (teamId: string, assetId: string) => {
+  return authAxiosInstance<void>({
+    url: `/teams/${teamId}/assets/${assetId}`,
+    method: "DELETE"
+  });
+};
+
+export const getTeamsAssetsDeleteMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsAssetsDelete>>,
+    TError,
+    { teamId: string; assetId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsAssetsDelete>>,
+  TError,
+  { teamId: string; assetId: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsAssetsDelete>>,
+    { teamId: string; assetId: string }
+  > = (props) => {
+    const { teamId, assetId } = props ?? {};
+
+    return teamsAssetsDelete(teamId, assetId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsAssetsDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsAssetsDelete>>
+>;
+
+export type TeamsAssetsDeleteMutationError = Error | ProblemDetails;
+
+export const useTeamsAssetsDelete = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsAssetsDelete>>,
+    TError,
+    { teamId: string; assetId: string },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsAssetsDeleteMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsGetList = (organizationId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<ListOfTeam>({
+    url: `/organizations/${organizationId}/teams`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getTeamsGetListQueryKey = (organizationId: string) => {
+  return [`/organizations/${organizationId}/teams`] as const;
+};
+
+export const getTeamsGetListQueryOptions = <
+  TData = Awaited<ReturnType<typeof teamsGetList>>,
+  TError = unknown
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsGetList>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getTeamsGetListQueryKey(organizationId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsGetList>>> = ({
+    signal
+  }) => teamsGetList(organizationId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!organizationId,
+    ...queryOptions
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof teamsGetList>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type TeamsGetListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof teamsGetList>>
+>;
+export type TeamsGetListQueryError = unknown;
+
+export const useTeamsGetList = <
+  TData = Awaited<ReturnType<typeof teamsGetList>>,
+  TError = unknown
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsGetList>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTeamsGetListQueryOptions(organizationId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const teamsCreate = (organizationId: string, createTeam: CreateTeam) => {
+  return authAxiosInstance<Team>({
+    url: `/organizations/${organizationId}/teams`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: createTeam
+  });
+};
+
+export const getTeamsCreateMutationOptions = <
+  TError = unknown,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsCreate>>,
+    TError,
+    { organizationId: string; data: CreateTeam },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsCreate>>,
+  TError,
+  { organizationId: string; data: CreateTeam },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsCreate>>,
+    { organizationId: string; data: CreateTeam }
+  > = (props) => {
+    const { organizationId, data } = props ?? {};
+
+    return teamsCreate(organizationId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsCreate>>
+>;
+export type TeamsCreateMutationBody = CreateTeam;
+export type TeamsCreateMutationError = unknown;
+
+export const useTeamsCreate = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsCreate>>,
+    TError,
+    { organizationId: string; data: CreateTeam },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsGet = (teamId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<Team>({
+    url: `/teams/${teamId}`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getTeamsGetQueryKey = (teamId: string) => {
+  return [`/teams/${teamId}`] as const;
+};
+
+export const getTeamsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof teamsGet>>,
+  TError = unknown
+>(
+  teamId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsGet>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getTeamsGetQueryKey(teamId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsGet>>> = ({
+    signal
+  }) => teamsGet(teamId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!teamId,
+    ...queryOptions
+  } as UseQueryOptions<Awaited<ReturnType<typeof teamsGet>>, TError, TData> & {
+    queryKey: QueryKey;
+  };
+};
+
+export type TeamsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof teamsGet>>
+>;
+export type TeamsGetQueryError = unknown;
+
+export const useTeamsGet = <
+  TData = Awaited<ReturnType<typeof teamsGet>>,
+  TError = unknown
+>(
+  teamId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsGet>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTeamsGetQueryOptions(teamId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const teamsUpdate = (teamId: string, updateTeam: UpdateTeam) => {
+  return authAxiosInstance<Blob>({
+    url: `/teams/${teamId}`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: updateTeam,
+    responseType: "blob"
+  });
+};
+
+export const getTeamsUpdateMutationOptions = <
+  TError = unknown,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUpdate>>,
+    TError,
+    { teamId: string; data: UpdateTeam },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsUpdate>>,
+  TError,
+  { teamId: string; data: UpdateTeam },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsUpdate>>,
+    { teamId: string; data: UpdateTeam }
+  > = (props) => {
+    const { teamId, data } = props ?? {};
+
+    return teamsUpdate(teamId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsUpdate>>
+>;
+export type TeamsUpdateMutationBody = UpdateTeam;
+export type TeamsUpdateMutationError = unknown;
+
+export const useTeamsUpdate = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUpdate>>,
+    TError,
+    { teamId: string; data: UpdateTeam },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsDelete = (teamId: string) => {
+  return authAxiosInstance<void>({ url: `/teams/${teamId}`, method: "DELETE" });
+};
+
+export const getTeamsDeleteMutationOptions = <
+  TError = ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsDelete>>,
+    TError,
+    { teamId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsDelete>>,
+  TError,
+  { teamId: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsDelete>>,
+    { teamId: string }
+  > = (props) => {
+    const { teamId } = props ?? {};
+
+    return teamsDelete(teamId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsDelete>>
+>;
+
+export type TeamsDeleteMutationError = ProblemDetails;
+
+export const useTeamsDelete = <
+  TError = ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsDelete>>,
+    TError,
+    { teamId: string },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsDeleteMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsUsersList = (teamId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<ListOfTeamUser>({
+    url: `/teams/${teamId}/users`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getTeamsUsersListQueryKey = (teamId: string) => {
+  return [`/teams/${teamId}/users`] as const;
+};
+
+export const getTeamsUsersListQueryOptions = <
+  TData = Awaited<ReturnType<typeof teamsUsersList>>,
+  TError = ProblemDetails
+>(
+  teamId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsUsersList>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getTeamsUsersListQueryKey(teamId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof teamsUsersList>>> = ({
+    signal
+  }) => teamsUsersList(teamId, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!teamId,
+    ...queryOptions
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof teamsUsersList>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type TeamsUsersListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof teamsUsersList>>
+>;
+export type TeamsUsersListQueryError = ProblemDetails;
+
+export const useTeamsUsersList = <
+  TData = Awaited<ReturnType<typeof teamsUsersList>>,
+  TError = ProblemDetails
+>(
+  teamId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof teamsUsersList>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTeamsUsersListQueryOptions(teamId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const teamsUsersCreate = (
+  teamId: string,
+  createTeamUser: CreateTeamUser
+) => {
+  return authAxiosInstance<void>({
+    url: `/teams/${teamId}/users`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: createTeamUser
+  });
+};
+
+export const getTeamsUsersCreateMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUsersCreate>>,
+    TError,
+    { teamId: string; data: CreateTeamUser },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsUsersCreate>>,
+  TError,
+  { teamId: string; data: CreateTeamUser },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsUsersCreate>>,
+    { teamId: string; data: CreateTeamUser }
+  > = (props) => {
+    const { teamId, data } = props ?? {};
+
+    return teamsUsersCreate(teamId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsUsersCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsUsersCreate>>
+>;
+export type TeamsUsersCreateMutationBody = CreateTeamUser;
+export type TeamsUsersCreateMutationError = Error | ProblemDetails;
+
+export const useTeamsUsersCreate = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUsersCreate>>,
+    TError,
+    { teamId: string; data: CreateTeamUser },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsUsersCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsUsersUpdate = (
+  teamId: string,
+  userId: string,
+  updateTeamUser: UpdateTeamUser
+) => {
+  return authAxiosInstance<void>({
+    url: `/teams/${teamId}/users/${userId}`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: updateTeamUser
+  });
+};
+
+export const getTeamsUsersUpdateMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUsersUpdate>>,
+    TError,
+    { teamId: string; userId: string; data: UpdateTeamUser },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsUsersUpdate>>,
+  TError,
+  { teamId: string; userId: string; data: UpdateTeamUser },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsUsersUpdate>>,
+    { teamId: string; userId: string; data: UpdateTeamUser }
+  > = (props) => {
+    const { teamId, userId, data } = props ?? {};
+
+    return teamsUsersUpdate(teamId, userId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsUsersUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsUsersUpdate>>
+>;
+export type TeamsUsersUpdateMutationBody = UpdateTeamUser;
+export type TeamsUsersUpdateMutationError = Error | ProblemDetails;
+
+export const useTeamsUsersUpdate = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUsersUpdate>>,
+    TError,
+    { teamId: string; userId: string; data: UpdateTeamUser },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsUsersUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const teamsUsersDelete = (teamId: string, userId: string) => {
+  return authAxiosInstance<void>({
+    url: `/teams/${teamId}/users/${userId}`,
+    method: "DELETE"
+  });
+};
+
+export const getTeamsUsersDeleteMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUsersDelete>>,
+    TError,
+    { teamId: string; userId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof teamsUsersDelete>>,
+  TError,
+  { teamId: string; userId: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof teamsUsersDelete>>,
+    { teamId: string; userId: string }
+  > = (props) => {
+    const { teamId, userId } = props ?? {};
+
+    return teamsUsersDelete(teamId, userId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type TeamsUsersDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof teamsUsersDelete>>
+>;
+
+export type TeamsUsersDeleteMutationError = Error | ProblemDetails;
+
+export const useTeamsUsersDelete = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof teamsUsersDelete>>,
+    TError,
+    { teamId: string; userId: string },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getTeamsUsersDeleteMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
 export const userGet = (signal?: AbortSignal) => {
-  return authAxiosInstance<UserModel>({ url: `/user`, method: "GET", signal });
+  return authAxiosInstance<CurrentUser>({
+    url: `/user`,
+    method: "GET",
+    signal
+  });
 };
 
 export const getUserGetQueryKey = () => {
@@ -1547,7 +2663,7 @@ export const userUpdate = (updateUserModel: UpdateUserModel) => {
 };
 
 export const getUserUpdateMutationOptions = <
-  TError = ErrorModel,
+  TError = Error,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1580,12 +2696,9 @@ export type UserUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof userUpdate>>
 >;
 export type UserUpdateMutationBody = UpdateUserModel;
-export type UserUpdateMutationError = ErrorModel;
+export type UserUpdateMutationError = Error;
 
-export const useUserUpdate = <
-  TError = ErrorModel,
-  TContext = unknown
->(options?: {
+export const useUserUpdate = <TError = Error, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof userUpdate>>,
     TError,
@@ -1598,47 +2711,132 @@ export const useUserUpdate = <
   return useMutation(mutationOptions);
 };
 
-export const healthGet = (signal?: AbortSignal) => {
-  return authAxiosInstance<void>({ url: `/health`, method: "GET", signal });
+export const userChangePassword = (
+  changePasswordModel: ChangePasswordModel
+) => {
+  return authAxiosInstance<void>({
+    url: `/user/change-password`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: changePasswordModel
+  });
 };
 
-export const getHealthGetQueryKey = () => {
-  return [`/health`] as const;
-};
-
-export const getHealthGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof healthGet>>,
-  TError = unknown
+export const getUserChangePasswordMutationOptions = <
+  TError = Error,
+  TContext = unknown
 >(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof healthGet>>, TError, TData>;
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof userChangePassword>>,
+    TError,
+    { data: ChangePasswordModel },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof userChangePassword>>,
+  TError,
+  { data: ChangePasswordModel },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof userChangePassword>>,
+    { data: ChangePasswordModel }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return userChangePassword(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UserChangePasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof userChangePassword>>
+>;
+export type UserChangePasswordMutationBody = ChangePasswordModel;
+export type UserChangePasswordMutationError = Error;
+
+export const useUserChangePassword = <
+  TError = Error,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof userChangePassword>>,
+    TError,
+    { data: ChangePasswordModel },
+    TContext
+  >;
 }) => {
+  const mutationOptions = getUserChangePasswordMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const usersList = (organizationId: string, signal?: AbortSignal) => {
+  return authAxiosInstance<ListOfOrganizationUser>({
+    url: `/organizations/${organizationId}/users`,
+    method: "GET",
+    signal
+  });
+};
+
+export const getUsersListQueryKey = (organizationId: string) => {
+  return [`/organizations/${organizationId}/users`] as const;
+};
+
+export const getUsersListQueryOptions = <
+  TData = Awaited<ReturnType<typeof usersList>>,
+  TError = unknown
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof usersList>>,
+      TError,
+      TData
+    >;
+  }
+) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getHealthGetQueryKey();
+  const queryKey =
+    queryOptions?.queryKey ?? getUsersListQueryKey(organizationId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthGet>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof usersList>>> = ({
     signal
-  }) => healthGet(signal);
+  }) => usersList(organizationId, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof healthGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!organizationId,
+    ...queryOptions
+  } as UseQueryOptions<Awaited<ReturnType<typeof usersList>>, TError, TData> & {
+    queryKey: QueryKey;
+  };
 };
 
-export type HealthGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthGet>>
+export type UsersListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof usersList>>
 >;
-export type HealthGetQueryError = unknown;
+export type UsersListQueryError = unknown;
 
-export const useHealthGet = <
-  TData = Awaited<ReturnType<typeof healthGet>>,
+export const useUsersList = <
+  TData = Awaited<ReturnType<typeof usersList>>,
   TError = unknown
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof healthGet>>, TError, TData>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getHealthGetQueryOptions(options);
+>(
+  organizationId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof usersList>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getUsersListQueryOptions(organizationId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -1647,4 +2845,192 @@ export const useHealthGet = <
   query.queryKey = queryOptions.queryKey;
 
   return query;
+};
+
+export const usersCreate = (
+  organizationId: string,
+  createOrganizationUser: CreateOrganizationUser
+) => {
+  return authAxiosInstance<void>({
+    url: `/organizations/${organizationId}/users`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: createOrganizationUser
+  });
+};
+
+export const getUsersCreateMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersCreate>>,
+    TError,
+    { organizationId: string; data: CreateOrganizationUser },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof usersCreate>>,
+  TError,
+  { organizationId: string; data: CreateOrganizationUser },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof usersCreate>>,
+    { organizationId: string; data: CreateOrganizationUser }
+  > = (props) => {
+    const { organizationId, data } = props ?? {};
+
+    return usersCreate(organizationId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UsersCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof usersCreate>>
+>;
+export type UsersCreateMutationBody = CreateOrganizationUser;
+export type UsersCreateMutationError = Error | ProblemDetails;
+
+export const useUsersCreate = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersCreate>>,
+    TError,
+    { organizationId: string; data: CreateOrganizationUser },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getUsersCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const usersUpdate = (
+  organizationId: string,
+  userId: string,
+  updateOrganizationUser: UpdateOrganizationUser
+) => {
+  return authAxiosInstance<void>({
+    url: `/organizations/${organizationId}/users/${userId}`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: updateOrganizationUser
+  });
+};
+
+export const getUsersUpdateMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersUpdate>>,
+    TError,
+    { organizationId: string; userId: string; data: UpdateOrganizationUser },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof usersUpdate>>,
+  TError,
+  { organizationId: string; userId: string; data: UpdateOrganizationUser },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof usersUpdate>>,
+    { organizationId: string; userId: string; data: UpdateOrganizationUser }
+  > = (props) => {
+    const { organizationId, userId, data } = props ?? {};
+
+    return usersUpdate(organizationId, userId, data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UsersUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof usersUpdate>>
+>;
+export type UsersUpdateMutationBody = UpdateOrganizationUser;
+export type UsersUpdateMutationError = Error | ProblemDetails;
+
+export const useUsersUpdate = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersUpdate>>,
+    TError,
+    { organizationId: string; userId: string; data: UpdateOrganizationUser },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getUsersUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const usersDelete = (organizationId: string, userId: string) => {
+  return authAxiosInstance<void>({
+    url: `/organizations/${organizationId}/users/${userId}`,
+    method: "DELETE"
+  });
+};
+
+export const getUsersDeleteMutationOptions = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersDelete>>,
+    TError,
+    { organizationId: string; userId: string },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof usersDelete>>,
+  TError,
+  { organizationId: string; userId: string },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof usersDelete>>,
+    { organizationId: string; userId: string }
+  > = (props) => {
+    const { organizationId, userId } = props ?? {};
+
+    return usersDelete(organizationId, userId);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UsersDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof usersDelete>>
+>;
+
+export type UsersDeleteMutationError = Error | ProblemDetails;
+
+export const useUsersDelete = <
+  TError = Error | ProblemDetails,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersDelete>>,
+    TError,
+    { organizationId: string; userId: string },
+    TContext
+  >;
+}) => {
+  const mutationOptions = getUsersDeleteMutationOptions(options);
+
+  return useMutation(mutationOptions);
 };

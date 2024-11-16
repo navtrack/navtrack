@@ -1,11 +1,11 @@
 import { Form, Formik } from "formik";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { nameOf } from "@navtrack/shared/utils/typescript";
-import { useDeleteAsset } from "@navtrack/shared/hooks/assets/delete-asset/useDeleteAsset";
+import { useDeleteAsset } from "@navtrack/shared/hooks/assets/useDeleteAsset";
 import { useNotification } from "../../../ui/notification/useNotification";
-import { useNavigate } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 import { Button } from "../../../ui/button/Button";
@@ -22,16 +22,17 @@ export function DeleteAssetModal() {
   const currentAsset = useCurrentAsset();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
-  const intl = useIntl();
 
-  const deleteAsset = useDeleteAsset({
+  const deleteAssetMutation = useDeleteAsset({
     onSuccess: () => {
-      navigate(Paths.Home);
+      navigate(
+        generatePath(Paths.OrganizationLive, {
+          id: currentAsset.data?.organizationId
+        })
+      );
       showNotification({
         type: "success",
-        description: intl.formatMessage({
-          id: "assets.settings.general.delete-asset.success"
-        })
+        description: "assets.settings.general.delete-asset.success"
       });
     }
   });
@@ -54,14 +55,16 @@ export function DeleteAssetModal() {
       validationSchema={validationSchema}
       onSubmit={() => {
         if (currentAsset.data?.id) {
-          return deleteAsset.handleSubmit(currentAsset.data.id);
+          return deleteAssetMutation.handleSubmit(currentAsset.data.id);
         }
       }}>
       {({ values, submitForm, resetForm }) => (
         <DeleteModal
+          autoClose={false}
           maxWidth="lg"
           onClose={() => resetForm()}
           onConfirm={() => submitForm()}
+          isLoading={deleteAssetMutation.isLoading}
           renderButton={(open) => (
             <Button color="error" type="submit" size="base" onClick={open}>
               <FormattedMessage id="assets.settings.general.delete-asset" />

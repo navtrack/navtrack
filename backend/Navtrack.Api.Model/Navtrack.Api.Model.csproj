@@ -2,8 +2,7 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
-
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Shared.Services\Navtrack.Shared.Services.csproj" />
+      <ProjectReference Include="..\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj" />
     </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Model.Shared;
 
 namespace Navtrack.DataAccess.Model.Users;
 

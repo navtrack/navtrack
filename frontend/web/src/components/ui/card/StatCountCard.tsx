@@ -23,9 +23,9 @@ export function StatCountCard(props: StatCountCardProps) {
         <FormattedMessage id={props.labelId} />
       </div>
       <div className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-        <Skeleton loading={props.loading}>
+        <Skeleton isLoading={props.loading}>
           {props.count}
-          {props.totalCount && (
+          {props.totalCount !== undefined && (
             <span className="ml-2 text-sm font-medium text-gray-500">
               <FormattedMessage
                 id="ui.card.stat.from"

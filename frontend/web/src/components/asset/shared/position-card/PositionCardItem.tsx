@@ -14,7 +14,7 @@ export function PositionCardItem(props: PositionCardItemProps) {
       <div className="text-xs font-medium uppercase tracking-wider text-gray-500">
         <FormattedMessage id={props.label} />
       </div>
-      <Skeleton loading={props.isLoading ?? false}>
+      <Skeleton isLoading={props.isLoading ?? false}>
         <div className="text-sm font-medium">{props.value}</div>
       </Skeleton>
     </div>

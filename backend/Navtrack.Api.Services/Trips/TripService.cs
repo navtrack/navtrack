@@ -11,6 +11,7 @@ using Navtrack.DataAccess.Model.Devices.Messages;
 using Navtrack.DataAccess.Model.Devices.Messages.Filters;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.Shared.Library.DI;
+using DateFilter = Navtrack.DataAccess.Model.Devices.Messages.Filters.DateFilter;
 
 namespace Navtrack.Api.Services.Trips;
 
@@ -21,20 +22,20 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
     private const int MaxDistanceBetweenPositionsInMeters = 1000;
     private const double MaxTimeBetweenTripInMinutes = 5;
 
-    public async Task<TripListModel> GetTrips(string assetId, TripFilterModel tripFilter)
+    public async Task<TripList> GetTrips(string assetId, TripFilter tripFilter)
     {
-        IEnumerable<TripModel> trips = await GetInternalTrips(assetId, tripFilter);
+        IEnumerable<Trip> trips = await GetInternalTrips(assetId, tripFilter);
 
-        TripListModel list = TripListMapper.Map(trips);
+        TripList list = TripListMapper.Map(trips);
 
         return list;
     }
 
-    private async Task<IEnumerable<TripModel>> GetInternalTrips(string assetId, TripFilterModel tripFilter)
+    private async Task<IEnumerable<Trip>> GetInternalTrips(string assetId, TripFilter tripFilter)
     {
-        List<MessagePositionModel> positions = await GetPositions(assetId, tripFilter);
+        List<MessagePosition> positions = await GetPositions(assetId, tripFilter);
 
-        List<TripModel> trips = CreateTrips(positions);
+        List<Trip> trips = CreateTrips(positions);
 
         trips = ApplyFiltering(trips, tripFilter);
         trips = ApplyOrdering(trips);
@@ -42,21 +43,21 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return trips;
     }
 
-    private static List<TripModel> CreateTrips(List<MessagePositionModel> source)
+    private static List<Trip> CreateTrips(List<MessagePosition> source)
     {
-        List<TripModel> trips = [];
+        List<Trip> trips = [];
 
-        TripModel? currentTrip = null;
-        MessagePositionModel? lastPosition = null;
+        Trip? currentTrip = null;
+        MessagePosition? lastPosition = null;
 
-        foreach (MessagePositionModel position in source)
+        foreach (MessagePosition position in source)
         {
             if (currentTrip == null ||
                 lastPosition == null ||
                 position.Date > lastPosition.Date.AddMinutes(MaxTimeBetweenTripInMinutes) ||
                 DistanceCalculator.CalculateDistance(lastPosition.Coordinates, position.Coordinates) > MaxDistanceBetweenPositionsInMeters)
             {
-                currentTrip = new TripModel();
+                currentTrip = new Trip();
                 trips.Add(currentTrip);
             }
 
@@ -73,9 +74,9 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return trips;
     }
 
-    private static void TrimPositionsEnds(List<TripModel> trips)
+    private static void TrimPositionsEnds(List<Trip> trips)
     {
-        foreach (TripModel trip in trips)
+        foreach (Trip trip in trips)
         {
             int firstMovingPosition = trip.Positions.FindIndex(x => x.Speed > 0);
             int lastMovingPosition = trip.Positions.FindLastIndex(x => x.Speed > 0);
@@ -89,17 +90,17 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         }
     }
 
-    private static void RemoveDuplicatePositions(List<TripModel> trips)
+    private static void RemoveDuplicatePositions(List<Trip> trips)
     {
         const double precision = 0.000001;
 
-        foreach (TripModel trip in trips)
+        foreach (Trip trip in trips)
         {
-            List<MessagePositionModel> positions = [];
+            List<MessagePosition> positions = [];
 
-            MessagePositionModel? lastPosition = null;
+            MessagePosition? lastPosition = null;
 
-            foreach (MessagePositionModel position in trip.Positions)
+            foreach (MessagePosition position in trip.Positions)
             {
                 if (lastPosition == null || Math.Abs(lastPosition.Coordinates.Latitude - position.Coordinates.Latitude) > precision ||
                     Math.Abs(lastPosition.Coordinates.Longitude - position.Coordinates.Longitude) > precision)
@@ -113,16 +114,16 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         }
     }
 
-    private static void AddDistance(List<TripModel> trips)
+    private static void AddDistance(List<Trip> trips)
     {
-        foreach (TripModel trip in trips)
+        foreach (Trip trip in trips)
         {
             trip.Distance = DistanceCalculator.CalculateDistance(trip.Positions
                 .Select(x => (x.Coordinates, (uint?)null)).ToList());
         }
     }
 
-    private async Task<List<MessagePositionModel>> GetPositions(string assetId, DateFilter dateFilter)
+    private async Task<List<MessagePosition>> GetPositions(string assetId, DateFilter dateFilter)
     {
         GetMessagesOptions options = new()
         {
@@ -137,16 +138,16 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
         GetMessagesResult result = await repository.GetMessages(options);
 
-        List<MessagePositionModel> mapped = result.Messages
-            .Select(x => PositionModelMapper.Map(x.Position))
+        List<MessagePosition> mapped = result.Messages
+            .Select(x => MessagePositionMapper.Map(x.Position))
             .ToList();
 
         return mapped;
     }
 
-    private static List<TripModel> ApplyFiltering(IEnumerable<TripModel> trips, TripFilterModel tripFilter)
+    private static List<Trip> ApplyFiltering(IEnumerable<Trip> trips, TripFilter tripFilter)
     {
-        List<TripModel> filteredTrips = trips.ToList();
+        List<Trip> filteredTrips = trips.ToList();
 
         filteredTrips = ApplyDistanceFilter(filteredTrips);
         filteredTrips = ApplyDateFilter(tripFilter, filteredTrips);
@@ -158,7 +159,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyDistanceFilter(List<TripModel> filteredTrips)
+    private static List<Trip> ApplyDistanceFilter(List<Trip> filteredTrips)
     {
         filteredTrips = filteredTrips
             .Where(x => x.Distance > MinTripDistanceInMeters)
@@ -167,7 +168,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyGeofenceFilter(TripFilterModel tripFilter, List<TripModel> filteredTrips)
+    private static List<Trip> ApplyGeofenceFilter(TripFilter tripFilter, List<Trip> filteredTrips)
     {
         if (tripFilter is { Latitude: not null, Longitude: not null, Radius: not null })
         {
@@ -183,7 +184,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyDurationFilter(TripFilterModel tripFilter, List<TripModel> filteredTrips)
+    private static List<Trip> ApplyDurationFilter(TripFilter tripFilter, List<Trip> filteredTrips)
     {
         if (tripFilter.MinDuration.HasValue)
         {
@@ -200,7 +201,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyAvgSpeedFilter(TripFilterModel tripFilter, List<TripModel> filteredTrips)
+    private static List<Trip> ApplyAvgSpeedFilter(TripFilter tripFilter, List<Trip> filteredTrips)
     {
         int minAvgSpeed = tripFilter.MinAvgSpeed ?? 1;
 
@@ -216,7 +217,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyAvgAltitudeFilter(TripFilterModel tripFilter, List<TripModel> filteredTrips)
+    private static List<Trip> ApplyAvgAltitudeFilter(TripFilter tripFilter, List<Trip> filteredTrips)
     {
         if (tripFilter.MaxAvgAltitude.HasValue)
         {
@@ -233,7 +234,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyDateFilter(DateFilter dateFilter, List<TripModel> filteredTrips)
+    private static List<Trip> ApplyDateFilter(DateFilter dateFilter, List<Trip> filteredTrips)
     {
         if (dateFilter.StartDate.HasValue)
         {
@@ -250,7 +251,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<TripModel> ApplyOrdering(IEnumerable<TripModel> trips)
+    private static List<Trip> ApplyOrdering(IEnumerable<Trip> trips)
     {
         return trips.OrderBy(x => x.StartPosition.Date).ToList();
     }

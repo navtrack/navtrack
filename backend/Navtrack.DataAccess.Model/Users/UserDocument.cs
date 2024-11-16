@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Model.Shared;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Model.Users;
@@ -23,15 +23,12 @@ public class UserDocument : BaseDocument
     [BsonElement("createdDate")]
     public DateTime CreatedDate { get; set; }
         
-    [BsonElement("assetRoles")]
-    public IEnumerable<UserAssetRoleElement>? AssetRoles { get; set; }
-
-    [BsonElement("googleId")]
-    public string? GoogleId { get; set; }
-
-    [BsonElement("microsoftId")]
-    public string? MicrosoftId { get; set; }
+    [BsonElement("assets")]
+    public IEnumerable<UserAssetElement>? Assets { get; set; }
     
-    [BsonElement("appleId")]
-    public string? AppleId { get; set; }
+    [BsonElement("teams")]
+    public IEnumerable<UserTeamElement>? Teams { get; set; }
+    
+    [BsonElement("organizations")]
+    public IEnumerable<UserOrganizationElement>? Organizations { get; set; }
 }

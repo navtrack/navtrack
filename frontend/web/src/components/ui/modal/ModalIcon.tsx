@@ -7,9 +7,9 @@ type ModalIconProps = {
 
 export function ModalIcon(props: ModalIconProps) {
   return (
-    <div className="py-4 pl-4">
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-900 text-white  sm:mx-0 sm:h-10 sm:w-10">
-        <Icon icon={props.icon} />
+    <div className="py-6 pl-6">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white">
+        <Icon icon={props.icon} size="sm" />
       </div>
     </div>
   );

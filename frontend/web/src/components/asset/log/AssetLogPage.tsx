@@ -2,15 +2,15 @@ import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Map } from "../../ui/map/Map";
 import { MapPin } from "../../ui/map/MapPin";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useMessagesQuery } from "@navtrack/shared/hooks/queries/useMessagesQuery";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
+import { useMessagesQuery } from "@navtrack/shared/hooks/queries/assets/useMessagesQuery";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
-import { MessageModel } from "@navtrack/shared/api/model/generated";
+import { Message } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
@@ -32,12 +32,12 @@ export function AssetLogPage() {
   const { showDateTime } = useDateTime();
   const { showSpeed, showAltitude } = useDistance();
 
-  const [message, setMessage] = useState<MessageModel | undefined>(undefined);
+  const [message, setMessage] = useState<Message | undefined>(undefined);
 
   return (
     <>
       <LocationFilter filterPage="log" center={message?.position.coordinates} />
-      <TableV2<MessageModel>
+      <TableV2<Message>
         columns={[
           {
             labelId: "generic.date",

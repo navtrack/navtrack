@@ -1,22 +1,30 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Navtrack.Api.Model;
+using Navtrack.Api.Controllers.Shared;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Assets;
-using Navtrack.Api.Shared.Controllers;
+using Navtrack.Api.Services.Common.ActionFilters;
+using Navtrack.Api.Services.Requests;
+using Navtrack.DataAccess.Model.Organizations;
 
 namespace Navtrack.Api.Controllers;
 
-public class AssetsController(IAssetService service) : AssetsControllerBase(service)
+public class AssetsController(IRequestHandler requestHandler) : BaseAssetsController(requestHandler)
 {
-    [HttpGet(ApiPaths.Assets)]
-    [ProducesResponseType(typeof(ListModel<AssetModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetList()
+    [HttpGet(ApiPaths.OrganizationAssets)]
+    [ProducesResponseType(typeof(List<Asset>), StatusCodes.Status200OK)]
+    [AuthorizeOrganization(OrganizationUserRole.Member)]
+    public async Task<List<Asset>> GetList([FromRoute] string organizationId)
     {
-        ListModel<AssetModel> assets = await service.GetAssets();
+        List<Asset> result =
+            await requestHandler.Handle<GetAssetsRequest, List<Asset>>(
+                new GetAssetsRequest
+                {
+                    OrganizationId = organizationId
+                });
 
-        return new JsonResult(assets);
+        return result;
     }
 }

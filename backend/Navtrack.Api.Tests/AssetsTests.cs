@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using Navtrack.Api.Model;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Tests.Helpers;
 
@@ -17,9 +16,9 @@ public class AssetsTests(BaseTestFixture fixture) : BaseTest(fixture)
     {
         HttpResponseMessage response =
             await HttpClient.GetAsync(
-                GetUrl(ApiPaths.AssetsAsset, new KeyValuePair<string, string>("assetId", Asset.Id.ToString())));
+                GetUrl(ApiPaths.AssetById, new KeyValuePair<string, string>("assetId", Asset.Id.ToString())));
 
-        AssetModel? asset = await response.Content.ReadFromJsonAsync<AssetModel>();
+        Asset? asset = await response.Content.ReadFromJsonAsync<Asset>();
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(asset);
@@ -31,7 +30,7 @@ public class AssetsTests(BaseTestFixture fixture) : BaseTest(fixture)
     {
         HttpResponseMessage response =
             await HttpClient.GetAsync(
-                GetUrl(ApiPaths.AssetsAsset, new KeyValuePair<string, string>("assetId", ObjectId.GenerateNewId().ToString())));
+                GetUrl(ApiPaths.AssetById, new KeyValuePair<string, string>("assetId", ObjectId.GenerateNewId().ToString())));
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

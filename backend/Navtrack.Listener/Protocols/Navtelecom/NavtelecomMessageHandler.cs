@@ -74,7 +74,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             int result = (int)Math.Ceiling((double)dataSize / 8);
             byte[] bytes = input.DataMessage.ByteReader.Get(result);
 
-            bool[]? flexArray = new bool[dataSize];
+            bool[] flexArray = new bool[dataSize];
 
             int byteIndex = 0;
             int bitIndex = 0;

@@ -1,26 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Navtrack.Api.Model.Assets;
-using Navtrack.Api.Model.Common;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices;
-using Navtrack.DataAccess.Model.Users;
 
 namespace Navtrack.Api.Services.Assets.Mappers;
 
 public static class AssetListMapper
 {
-    public static ListModel<AssetModel> Map(UserDocument currentUser, IEnumerable<AssetDocument> source,
+    public static Model.Common.List<Asset> Map(IEnumerable<AssetDocument?> source,
         IEnumerable<DeviceType> deviceTypes)
     {
-        ListModel<AssetModel> list = new()
+        Model.Common.List<Asset> list = new()
         {
             Items = source
                 .Select(x =>
                 {
                     DeviceType deviceType = deviceTypes.First(y => y.Id == x.Device.DeviceTypeId.ToString());
 
-                    return AssetModelMapper.Map(currentUser, x, deviceType);
+                    return AssetMapper.Map(x, deviceType);
                 })
                 .ToList()
         };

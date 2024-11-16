@@ -1,23 +1,14 @@
-import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
 import { DurationFilterFormValues } from "../locationFilterTypes";
 
 export const useDurationFilterFormValidation = () => {
-  const intl = useIntl();
-
   const validationSchema: ObjectSchema<DurationFilterFormValues> = object({
     minDuration: string()
-      .matches(
-        /^[0-9]+$/,
-        intl.formatMessage({ id: "generic.number.required" })
-      )
-      .required(intl.formatMessage({ id: "generic.number.required" })),
+      .matches(/^[0-9]+$/, "generic.number.required")
+      .required("generic.number.required"),
     maxDuration: string()
-      .matches(
-        /^[0-9]+$/,
-        intl.formatMessage({ id: "generic.number.required" })
-      )
-      .required(intl.formatMessage({ id: "generic.number.required" }))
+      .matches(/^[0-9]+$/, "generic.number.required")
+      .required("generic.number.required")
   }).defined();
 
   return validationSchema;

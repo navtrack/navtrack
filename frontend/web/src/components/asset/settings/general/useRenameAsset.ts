@@ -2,9 +2,8 @@ import { useCallback, useState } from "react";
 import { useIntl } from "react-intl";
 import { object, ObjectSchema, string } from "yup";
 import { FormikHelpers } from "formik";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useRenameAssetMutation } from "@navtrack/shared/hooks/mutations/assets/useRenameAssetMutation";
-import { useAssetsQuery } from "@navtrack/shared/hooks/queries/useAssetsQuery";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
+import { useRenameAssetMutation } from "@navtrack/shared/hooks/queries/assets/useRenameAssetMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 
 export type RenameAssetFormValues = {
@@ -14,7 +13,6 @@ export type RenameAssetFormValues = {
 export function useRenameAsset() {
   const currentAsset = useCurrentAsset();
   const renameAssetMutation = useRenameAssetMutation();
-  const assetsQuery = useAssetsQuery();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const submit = useCallback(
@@ -28,7 +26,6 @@ export function useRenameAsset() {
           { assetId: currentAsset.data?.id, data: { name: values.name } },
           {
             onSuccess: () => {
-              assetsQuery.refetch();
               setShowSuccess(true);
               setInterval(() => setShowSuccess(false), 5000);
             },
@@ -37,7 +34,7 @@ export function useRenameAsset() {
         );
       }
     },
-    [assetsQuery, currentAsset, renameAssetMutation]
+    [currentAsset, renameAssetMutation]
   );
 
   const intl = useIntl();

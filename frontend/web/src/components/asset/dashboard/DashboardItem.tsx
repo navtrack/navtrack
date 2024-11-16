@@ -49,7 +49,7 @@ export function DashboardItem(props: DashboardItemProps) {
           </div>
         )}
       </div>
-      <Skeleton loading={props.loading} className="mt-1">
+      <Skeleton isLoading={props.loading} className="mt-1">
         <dd className="flex items-end py-1">
           <div>
             <span className="text-nowrap border-r-2 pr-2 text-2xl font-semibold text-indigo-600">

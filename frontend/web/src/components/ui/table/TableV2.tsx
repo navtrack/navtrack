@@ -20,8 +20,8 @@ export function TableV2<T>(props: TableProps<T>) {
                   onClick={() =>
                     column.sortable ? table.handleHeaderClick(index) : null
                   }
-                  key={column.labelId}
-                  className="sticky top-0 cursor-pointer border-b border-gray-900/5 bg-gray-50 p-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  key={`${column.labelId}${index}`}
+                  className="sticky top-0 cursor-pointer border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   <div className="flex items-center">
                     {column.labelId !== undefined && (
                       <FormattedMessage id={column.labelId} />
@@ -45,16 +45,16 @@ export function TableV2<T>(props: TableProps<T>) {
               ))}
             </tr>
           </thead>
-          <tbody className="text-xs text-gray-900">
+          <tbody className="text-sm text-gray-900">
             {table.sortedRows === undefined ? (
               <tr>
-                <td className="p-2 text-center" colSpan={props.columns.length}>
+                <td className="p-3 text-center" colSpan={props.columns.length}>
                   <LoadingIndicator className="text-xl" />
                 </td>
               </tr>
             ) : table.sortedRows.length === 0 ? (
               <tr>
-                <td className="p-2 text-center" colSpan={props.columns.length}>
+                <td className="p-3 text-center" colSpan={props.columns.length}>
                   <FormattedMessage id="ui.table.no-items" />
                 </td>
               </tr>
@@ -89,7 +89,7 @@ export function TableV2<T>(props: TableProps<T>) {
                     <td
                       key={`row${rowIndex}col${columnIndex}`}
                       className={classNames(
-                        "px-2 py-1",
+                        "px-3 py-2",
                         c(
                           rowIndex + 1 !== props.rows?.length,
                           "border-b border-gray-900/5"

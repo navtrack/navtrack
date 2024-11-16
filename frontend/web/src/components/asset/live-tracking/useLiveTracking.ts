@@ -1,4 +1,4 @@
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { assetConfigurationAtom } from "@navtrack/shared/state/assets";
 import { useEffect } from "react";
 import { useMapEvents } from "react-leaflet";

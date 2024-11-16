@@ -1,18 +1,35 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using Navtrack.DataAccess.Model.Organizations;
+using Navtrack.DataAccess.Model.Teams;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Users;
 
-public interface IUserRepository : IGenericRepository<UserDocument>
+public interface IUserRepository : IGenericRepository<UserDocument> 
 {
-    Task<UserDocument> GetByEmailOrAppleId(string email, string id);
-    Task<UserDocument> GetByEmailOrGoogleId(string email, string id);
-    Task<UserDocument> GetByEmailOrMicrosoftId(string email, string id);
-    Task DeleteAssetRoles(string assetId);
     Task<UserDocument?> GetByEmail(string email);
     Task<bool> EmailIsUsed(string email);
     Task Update(ObjectId id, UpdateUser updateUser);
-    Task AddAssetRole(ObjectId userId, UserAssetRoleElement userAssetRole);
+    
+    Task<List<UserDocument>> GetByOrganizationId(ObjectId organizationId);
+
+    Task<int> GetOrganizationOwnersCount(ObjectId organizationId);
+    Task<List<UserDocument>> GetByTeamId(string teamId);
+    Task<List<UserDocument>> GetByAssetId(ObjectId assetId);
+    
+    Task AddAssetToUser(ObjectId userId, UserAssetElement asset);
+    Task RemoveAssetFromUser(ObjectId assetId, ObjectId userId);
+    Task RemoveAssetFromUsers(ObjectId assetId);
+    
+    Task AddUserToTeam(ObjectId userId, UserTeamElement element);
+    Task UpdateTeamUser(ObjectId teamId, ObjectId userId, TeamUserRole userRole);
+    Task RemoveTeamFromUser(ObjectId userId, ObjectId teamId);
+    Task RemoveTeamFromUsers(ObjectId teamId);
+    
+    Task AddUserToOrganization(ObjectId userId, UserOrganizationElement element);
+    Task UpdateOrganizationUser(ObjectId userId, ObjectId organizationId, OrganizationUserRole userRole);
+    Task DeleteUserFromOrganization(ObjectId userId, ObjectId organizationId);
 }

@@ -6,7 +6,7 @@ import { DeleteAssetModal } from "./DeleteAssetModal";
 import { Icon } from "../../../ui/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { LoadingIndicator } from "../../../ui/loading-indicator/LoadingIndicator";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";

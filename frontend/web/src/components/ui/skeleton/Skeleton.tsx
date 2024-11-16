@@ -4,24 +4,28 @@ import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 
 type SkeletonProps = {
   children: ReactNode;
-  loading?: boolean;
+  isLoading?: boolean;
   className?: string;
   background?: string;
   indicator?: boolean;
 };
 
 export function Skeleton(props: SkeletonProps) {
-  if (props.loading) {
+  if (props.isLoading) {
     if (props.indicator) {
       return (
-        <div className={props.className}>
+        <div
+          className={classNames(
+            "flex items-center justify-center",
+            props.className
+          )}>
           <LoadingIndicator size="lg" className="p-4" />
         </div>
       );
     }
     return (
       <div className={classNames("relative overflow-hidden", props.className)}>
-        <div className="absolute h-full w-full rounded-md bg-white" />
+        <div className="absolute h-full w-full rounded-md bg-gray-200" />
         <div
           className={classNames(
             "absolute h-full w-full animate-pulse rounded-md",

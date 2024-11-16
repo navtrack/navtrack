@@ -17,7 +17,7 @@ export function FormikTextInput(props: FormikTextInputProps) {
       value={fieldMeta.value}
       onChange={props.onChange ?? formikContext.handleChange}
       onBlur={props.onBlur ?? formikContext.handleBlur}
-      label={props.label ? intl.formatMessage({ id: props.label }) : undefined}
+      label={props.label}
       placeholder={
         props.placeholder
           ? intl.formatMessage({ id: props.placeholder })

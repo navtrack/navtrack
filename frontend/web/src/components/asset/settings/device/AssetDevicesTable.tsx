@@ -1,28 +1,26 @@
-import { DeviceModel } from "@navtrack/shared/api/model/generated";
-import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useDeleteDeviceMutation";
-import { FormattedMessage, useIntl } from "react-intl";
+import { Device } from "@navtrack/shared/api/model/generated";
+import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/queries/assets/useDeleteDeviceMutation";
+import { FormattedMessage } from "react-intl";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { ITableColumn } from "../../../ui/table/useTable";
 import { TableV1 } from "../../../ui/table/TableV1";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 
 type AssetDevicesTableProps = {
-  rows?: DeviceModel[];
+  rows?: Device[];
   loading: boolean;
-  refresh: () => void;
 };
 
 export function AssetDevicesTable(props: AssetDevicesTableProps) {
   const deleteDeviceMutation = useDeleteDeviceMutation();
   const queryClient = useQueryClient();
   const { showNotification } = useNotification();
-  const intl = useIntl();
   const currentAsset = useCurrentAsset();
 
-  const columns: ITableColumn<DeviceModel>[] = [
+  const columns: ITableColumn<Device>[] = [
     {
       labelId: "generic.device-type",
       row: (device) => device.deviceType.displayName
@@ -65,9 +63,7 @@ export function AssetDevicesTable(props: AssetDevicesTableProps) {
                       onSuccess: () => {
                         showNotification({
                           type: "success",
-                          description: intl.formatMessage({
-                            id: "assets.settings.device.delete.success"
-                          })
+                          description: "assets.settings.device.delete.success"
                         });
                         if (currentAsset.data) {
                           queryClient.refetchQueries(

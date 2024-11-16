@@ -13,7 +13,7 @@ import {
   AddUserToAssetFormValues,
   useAddUserToAsset
 } from "./useAddUserToAsset";
-import { AssetRoleType } from "@navtrack/shared/api/model/generated";
+import { AssetUserRole } from "@navtrack/shared/api/model/generated";
 import { Button } from "../../../ui/button/Button";
 import { FormikSelect } from "../../../ui/form/select/FormikSelect";
 
@@ -24,7 +24,7 @@ type AddUserToAssetModalProps = {
 
 type Role = {
   label: string;
-  value: AssetRoleType;
+  value: AssetUserRole;
 };
 
 export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
@@ -36,11 +36,11 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
     () => [
       // {
       //   label: "Owner",
-      //   value: AssetRoleType.Owner
+      //   value: AssetUserRole.Owner
       // },
       {
         label: "Viewer",
-        value: AssetRoleType.Viewer
+        value: AssetUserRole.Viewer
       }
     ],
     []
@@ -49,7 +49,7 @@ export function AddUserToAssetModal(props: AddUserToAssetModalProps) {
   return (
     <Modal open={props.show} close={props.close} className="w-full max-w-sm">
       <Formik<AddUserToAssetFormValues>
-        initialValues={{ email: "", role: AssetRoleType.Viewer }}
+        initialValues={{ email: "", role: AssetUserRole.Viewer }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}>
         {() => (

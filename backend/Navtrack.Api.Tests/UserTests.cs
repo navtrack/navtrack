@@ -9,14 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Navtrack.Api.Model;
 using Navtrack.Api.Model.Account;
+using Navtrack.Api.Services.Common.Passwords;
+using Navtrack.Api.Services.Common.Settings.Models;
 using Navtrack.Api.Tests.Helpers;
 using Navtrack.DataAccess.Model.System;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Model.Users.PasswordResets;
-using Navtrack.Shared.Services.Passwords;
-using Navtrack.Shared.Services.Settings.Models;
 
 namespace Navtrack.Api.Tests;
 
@@ -25,8 +24,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
     [Fact]
     public async Task ResetPassword_EmailNotInDatabase_ReturnsBadRequest()
     {
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = "nosuchemail@navtrack"
             });
@@ -44,8 +43,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             Email = email
         });
         
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = email
             });
@@ -67,8 +66,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             Email = email
         });
         
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = email
             });
@@ -94,8 +93,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
 
         for (int i = 0; i < 11; i++)
         {
-            responseMessages.Add(await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-                new ForgotPasswordModel
+            responseMessages.Add(await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+                new ForgotPassword
                 {
                     Email = email
                 }));
@@ -114,8 +113,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             Email = email
         });
 
-        await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+        await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = email
             });
@@ -126,8 +125,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
         PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
-            new ResetPasswordModel
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
+            new ResetPassword
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -156,8 +155,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             }
         });
 
-        await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+        await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = email
             });
@@ -165,8 +164,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
         PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
-            new ResetPasswordModel
+        await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
+            new ResetPassword
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -192,13 +191,13 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             Email = email
         });
 
-       await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+       await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = email
             });
-       await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-           new ForgotPasswordModel
+       await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+           new ForgotPassword
            {
                Email = email
            });
@@ -209,8 +208,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             .OrderBy(x => x.CreatedDate)
             .FirstOrDefaultAsync();
 
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
-            new ResetPasswordModel
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
+            new ResetPassword
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
@@ -239,8 +238,8 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
             }
         });
 
-        await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordForgot,
-            new ForgotPasswordModel
+        await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPassword
             {
                 Email = email
             });
@@ -248,16 +247,16 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
         PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        HttpResponseMessage firstResponse = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
-            new ResetPasswordModel
+        HttpResponseMessage firstResponse = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
+            new ResetPassword
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",
                 ConfirmPassword = "new password"
             });
 
-        HttpResponseMessage secondResponse = await HttpClient.PostAsJsonAsync(ApiPaths.AccountPasswordReset,
-            new ResetPasswordModel
+        HttpResponseMessage secondResponse = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
+            new ResetPassword
             {
                 Hash = passwordResetDocument.Hash,
                 Password = "new password",

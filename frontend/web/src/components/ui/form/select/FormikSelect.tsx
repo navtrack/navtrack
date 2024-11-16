@@ -4,6 +4,7 @@ import { Select, SelectProps } from "./Select";
 
 export type FormikSelectProps = SelectProps & {
   name: string;
+  formatOptionLabel?: boolean;
 };
 
 export function FormikSelect(props: FormikSelectProps) {
@@ -18,8 +19,15 @@ export function FormikSelect(props: FormikSelectProps) {
       onChange={(value) =>
         props.onChange ?? formikContext.setFieldValue(props.name, value)
       }
+      options={props.options.map((option) => ({
+        label:
+          props.formatOptionLabel !== false
+            ? intl.formatMessage({ id: option.label })
+            : option.label,
+        value: option.value
+      }))}
       onBlur={props.onBlur ?? formikContext.handleBlur}
-      label={props.label ? intl.formatMessage({ id: props.label }) : undefined}
+      label={props.label}
       error={
         fieldMeta && fieldMeta.error && fieldMeta.touched
           ? fieldMeta.error

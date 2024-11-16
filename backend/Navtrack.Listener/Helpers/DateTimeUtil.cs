@@ -56,7 +56,7 @@ public static class DateTimeUtil
         Match dateMatch = new Regex("(\\d+)\\/(\\d+)\\/(\\d+)").Match(input[0]); // dd/mm/yy
         Match timeMatch = new Regex("(\\d+):(\\d+):(\\d+)").Match(input[1]); // hh:mm:ss
 
-        return DateTimeUtil.New(
+        return New(
             dateMatch.Groups[3].Value,
             dateMatch.Groups[2].Value,
             dateMatch.Groups[1].Value,
@@ -70,7 +70,7 @@ public static class DateTimeUtil
         Match timeMatch = new Regex("(\\d{2})(\\d{2})(\\d{2}).(\\d+)").Match(input[0]); // hh mm ss . sss
         Match dateMatch = new Regex("(\\d{2})(\\d{2})(\\d{2})").Match(input[1]); // dd mm yy
 
-        return DateTimeUtil.New(
+        return New(
             dateMatch.Groups[3].Value,
             dateMatch.Groups[2].Value,
             dateMatch.Groups[1].Value,
@@ -84,7 +84,7 @@ public static class DateTimeUtil
     {
         Match match = new Regex("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})").Match(input[0]);
 
-        return DateTimeUtil.New(
+        return New(
             match.Groups[1].Value,
             match.Groups[2].Value,
             match.Groups[3].Value,
@@ -97,7 +97,7 @@ public static class DateTimeUtil
     {
         Match match = new Regex("(\\d{4})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})").Match(input[0]);
 
-        return DateTimeUtil.New(
+        return New(
             match.Groups[1].Value,
             match.Groups[2].Value,
             match.Groups[3].Value,
@@ -110,7 +110,7 @@ public static class DateTimeUtil
     {
         Match match = new Regex("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})").Match(input[0]);
 
-        return DateTimeUtil.New(
+        return New(
             match.Groups[3].Value,
             match.Groups[2].Value,
             match.Groups[1].Value,

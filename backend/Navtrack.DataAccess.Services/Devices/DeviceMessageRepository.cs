@@ -103,10 +103,10 @@ public class DeviceMessageRepository(IRepository repository)
         return counts.ToDictionary(x => x.DeviceId, x => x.Count);
     }
 
-    public Task DeleteByAssetId(string assetId)
+    public Task DeleteByAssetId(ObjectId assetId)
     {
         return repository.GetCollection<DeviceMessageDocument>()
-            .DeleteManyAsync(x => x.Metadata.AssetId == ObjectId.Parse(assetId));
+            .DeleteManyAsync(x => x.Metadata.AssetId == assetId);
     }
 
     public Task<bool> DeviceHasMessages(string assetId, string deviceId)

@@ -11,13 +11,13 @@
         "tags": [
           "Account"
         ],
-        "operationId": "Account_Register",
+        "operationId": "Account_CreateAccount",
         "requestBody": {
           "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterAccountModel"
+                "$ref": "#/components/schemas/CreateAccount"
               }
             }
           },
@@ -33,7 +33,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -41,7 +41,7 @@
         }
       }
     },
-    "/account/password/forgot": {
+    "/account/forgot-password": {
       "post": {
         "tags": [
           "Account"
@@ -52,7 +52,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordModel"
+                "$ref": "#/components/schemas/ForgotPassword"
               }
             }
           },
@@ -68,7 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -76,7 +76,7 @@
         }
       }
     },
-    "/account/password/reset": {
+    "/account/reset-password": {
       "post": {
         "tags": [
           "Account"
@@ -87,7 +87,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ResetPasswordModel"
+                "$ref": "#/components/schemas/ResetPassword"
               }
             }
           },
@@ -103,7 +103,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -111,54 +111,30 @@
         }
       }
     },
-    "/account/password/change": {
-      "post": {
-        "tags": [
-          "Account"
-        ],
-        "operationId": "Account_ChangePassword",
-        "requestBody": {
-          "x-name": "model",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordModel"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/assets": {
+    "/organizations/{organizationId}/assets": {
       "get": {
         "tags": [
           "Assets"
         ],
         "operationId": "Assets_GetList",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfAssetModel"
+                  "$ref": "#/components/schemas/ListOfAsset"
                 }
               }
             }
@@ -170,17 +146,28 @@
           "Assets"
         ],
         "operationId": "Assets_Create",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
         "requestBody": {
           "x-name": "model",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAssetModel"
+                "$ref": "#/components/schemas/CreateAsset"
               }
             }
           },
           "required": true,
-          "x-position": 1
+          "x-position": 2
         },
         "responses": {
           "200": {
@@ -188,7 +175,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetModel"
+                  "$ref": "#/components/schemas/Entity"
                 }
               }
             }
@@ -198,7 +185,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -229,7 +216,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetModel"
+                  "$ref": "#/components/schemas/Asset"
                 }
               }
             }
@@ -277,7 +264,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssetModel"
+                "$ref": "#/components/schemas/UpdateAsset"
               }
             }
           },
@@ -293,7 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -346,7 +333,7 @@
     "/assets/{assetId}/devices": {
       "get": {
         "tags": [
-          "AssetsDevices"
+          "Assets - Devices"
         ],
         "operationId": "AssetsDevices_GetList",
         "parameters": [
@@ -366,7 +353,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfDeviceModel"
+                  "$ref": "#/components/schemas/ListOfDevice"
                 }
               }
             }
@@ -385,7 +372,7 @@
       },
       "post": {
         "tags": [
-          "AssetsDevices"
+          "Assets - Devices"
         ],
         "operationId": "AssetsDevices_CreateOrUpdate",
         "parameters": [
@@ -404,7 +391,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAssetDeviceModel"
+                "$ref": "#/components/schemas/CreateOrUpdateAssetDevice"
               }
             }
           },
@@ -415,22 +402,22 @@
           "200": {
             "description": ""
           },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
           "404": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -441,7 +428,7 @@
     "/assets/{assetId}/devices/{deviceId}": {
       "delete": {
         "tags": [
-          "AssetsDevices"
+          "Assets - Devices"
         ],
         "operationId": "AssetsDevices_Delete",
         "parameters": [
@@ -468,22 +455,22 @@
           "200": {
             "description": ""
           },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
           "404": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -494,7 +481,7 @@
     "/assets/{assetId}/messages": {
       "get": {
         "tags": [
-          "AssetsMessages"
+          "Assets - Messages"
         ],
         "operationId": "AssetsMessages_GetList",
         "parameters": [
@@ -626,7 +613,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MessageListModel"
+                  "$ref": "#/components/schemas/MessageList"
                 }
               }
             }
@@ -647,7 +634,7 @@
     "/assets/{assetId}/reports/time-distance": {
       "get": {
         "tags": [
-          "AssetsReports"
+          "Assets - Reports"
         ],
         "operationId": "AssetsReports_GetTimeDistanceReport",
         "parameters": [
@@ -687,7 +674,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DistanceReportListModel"
+                  "$ref": "#/components/schemas/DistanceReportList"
                 }
               }
             }
@@ -708,7 +695,7 @@
     "/assets/{assetId}/stats": {
       "get": {
         "tags": [
-          "AssetsStats"
+          "Assets - Stats"
         ],
         "operationId": "AssetsStats_Get",
         "parameters": [
@@ -728,7 +715,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetStatsListModel"
+                  "$ref": "#/components/schemas/AssetStatList"
                 }
               }
             }
@@ -749,7 +736,7 @@
     "/assets/{assetId}/trips": {
       "get": {
         "tags": [
-          "AssetsTrips"
+          "Assets - Trips"
         ],
         "operationId": "AssetsTrips_GetList",
         "parameters": [
@@ -879,7 +866,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TripListModel"
+                  "$ref": "#/components/schemas/TripList"
                 }
               }
             }
@@ -900,7 +887,7 @@
     "/assets/{assetId}/users": {
       "get": {
         "tags": [
-          "AssetsUsers"
+          "Assets - Users"
         ],
         "operationId": "AssetsUsers_GetList",
         "parameters": [
@@ -920,7 +907,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfAssetUserModel"
+                  "$ref": "#/components/schemas/ListOfAssetUser"
                 }
               }
             }
@@ -939,7 +926,7 @@
       },
       "post": {
         "tags": [
-          "AssetsUsers"
+          "Assets - Users"
         ],
         "operationId": "AssetsUsers_Create",
         "parameters": [
@@ -958,7 +945,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAssetUserModel"
+                "$ref": "#/components/schemas/CreateAssetUser"
               }
             }
           },
@@ -969,22 +956,22 @@
           "200": {
             "description": ""
           },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
           "404": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -995,7 +982,7 @@
     "/assets/{assetId}/users/{userId}": {
       "delete": {
         "tags": [
-          "AssetsUsers"
+          "Assets - Users"
         ],
         "operationId": "AssetsUsers_Delete",
         "parameters": [
@@ -1022,22 +1009,22 @@
           "200": {
             "description": ""
           },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            }
-          },
           "404": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1057,7 +1044,237 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfDeviceTypeModel"
+                  "$ref": "#/components/schemas/ListOfDeviceType"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "operationId": "Health_Get",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/organizations": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_List",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfOrganization"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Create",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganization"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Get",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Update",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrganizationModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Delete",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1077,7 +1294,543 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfProtocolModel"
+                  "$ref": "#/components/schemas/ListOfProtocol"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/assets": {
+      "get": {
+        "tags": [
+          "Teams - Assets"
+        ],
+        "operationId": "TeamsAssets_List",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfTeamAsset"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Teams - Assets"
+        ],
+        "operationId": "TeamsAssets_Create",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamAsset"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/assets/{assetId}": {
+      "delete": {
+        "tags": [
+          "Teams - Assets"
+        ],
+        "operationId": "TeamsAssets_Delete",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/teams": {
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "operationId": "Teams_GetList",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfTeam"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Teams"
+        ],
+        "operationId": "Teams_Create",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeam"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamId}": {
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "operationId": "Teams_Get",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Teams"
+        ],
+        "operationId": "Teams_Update",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeam"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Teams"
+        ],
+        "operationId": "Teams_Delete",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/users": {
+      "get": {
+        "tags": [
+          "Teams - Users"
+        ],
+        "operationId": "TeamsUsers_List",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfTeamUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Teams - Users"
+        ],
+        "operationId": "TeamsUsers_Create",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamUser"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/users/{userId}": {
+      "post": {
+        "tags": [
+          "Teams - Users"
+        ],
+        "operationId": "TeamsUsers_Update",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeamUser"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 3
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Teams - Users"
+        ],
+        "operationId": "TeamsUsers_Delete",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1097,7 +1850,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserModel"
+                  "$ref": "#/components/schemas/CurrentUser"
                 }
               }
             }
@@ -1130,7 +1883,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1138,15 +1891,238 @@
         }
       }
     },
-    "/health": {
-      "get": {
+    "/user/change-password": {
+      "post": {
         "tags": [
-          "Health"
+          "User"
         ],
-        "operationId": "Health_Get",
+        "operationId": "User_ChangePassword",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_List",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfOrganizationUser"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Create",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationUser"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/users/{userId}": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Update",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrganizationUser"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 3
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_Delete",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1154,12 +2130,13 @@
   },
   "components": {
     "schemas": {
-      "ErrorModel": {
+      "Error": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "errors": {
             "type": "object",
+            "nullable": true,
             "additionalProperties": {
               "type": "array",
               "items": {
@@ -1176,7 +2153,7 @@
           }
         }
       },
-      "RegisterAccountModel": {
+      "CreateAccount": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1203,7 +2180,7 @@
           }
         }
       },
-      "ForgotPasswordModel": {
+      "ForgotPassword": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1216,7 +2193,7 @@
           }
         }
       },
-      "ResetPasswordModel": {
+      "ResetPassword": {
         "allOf": [
           {
             "$ref": "#/components/schemas/BasePasswordModel"
@@ -1255,23 +2232,7 @@
           }
         }
       },
-      "ChangePasswordModel": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BasePasswordModel"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "currentPassword": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      },
-      "ListModelOfAssetModel": {
+      "ListOfAsset": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1281,18 +2242,18 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetModel"
+              "$ref": "#/components/schemas/Asset"
             }
           }
         }
       },
-      "AssetModel": {
+      "Asset": {
         "type": "object",
         "additionalProperties": false,
         "required": [
           "id",
           "name",
-          "ownerId",
+          "organizationId",
           "online",
           "maxSpeed"
         ],
@@ -1305,7 +2266,7 @@
             "type": "string",
             "minLength": 1
           },
-          "ownerId": {
+          "organizationId": {
             "type": "string",
             "minLength": 1
           },
@@ -1320,7 +2281,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageModel"
+                "$ref": "#/components/schemas/Message"
               }
             ]
           },
@@ -1328,7 +2289,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageModel"
+                "$ref": "#/components/schemas/Message"
               }
             ]
           },
@@ -1336,20 +2297,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/DeviceModel"
+                "$ref": "#/components/schemas/Device"
               }
             ]
-          },
-          "userRoles": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/AssetUserRoleModel"
-            }
           }
         }
       },
-      "MessageModel": {
+      "Message": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1372,13 +2326,13 @@
             ]
           },
           "position": {
-            "$ref": "#/components/schemas/MessagePositionModel"
+            "$ref": "#/components/schemas/MessagePosition"
           },
           "device": {
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageDeviceModel"
+                "$ref": "#/components/schemas/MessageDevice"
               }
             ]
           },
@@ -1386,7 +2340,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageVehicleModel"
+                "$ref": "#/components/schemas/MessageVehicle"
               }
             ]
           },
@@ -1394,7 +2348,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageGsmModel"
+                "$ref": "#/components/schemas/MessageGsm"
               }
             ]
           }
@@ -1416,7 +2370,7 @@
           "Emergency"
         ]
       },
-      "MessagePositionModel": {
+      "MessagePosition": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1480,7 +2434,7 @@
           }
         }
       },
-      "MessageDeviceModel": {
+      "MessageDevice": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1506,7 +2460,7 @@
           }
         }
       },
-      "MessageVehicleModel": {
+      "MessageVehicle": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1525,7 +2479,7 @@
           }
         }
       },
-      "MessageGsmModel": {
+      "MessageGsm": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1544,7 +2498,7 @@
           }
         }
       },
-      "DeviceModel": {
+      "Device": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1563,7 +2517,7 @@
             "minLength": 1
           },
           "deviceType": {
-            "$ref": "#/components/schemas/DeviceTypeModel"
+            "$ref": "#/components/schemas/DeviceType"
           },
           "active": {
             "type": "boolean"
@@ -1575,7 +2529,7 @@
           }
         }
       },
-      "DeviceTypeModel": {
+      "DeviceType": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1603,11 +2557,11 @@
             "minLength": 1
           },
           "protocol": {
-            "$ref": "#/components/schemas/ProtocolModel"
+            "$ref": "#/components/schemas/Protocol"
           }
         }
       },
-      "ProtocolModel": {
+      "Protocol": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1625,39 +2579,37 @@
           }
         }
       },
-      "AssetUserRoleModel": {
+      "Entity": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "role",
-          "userId"
-        ],
         "properties": {
-          "role": {
-            "$ref": "#/components/schemas/AssetRoleType"
-          },
-          "userId": {
-            "type": "string",
-            "minLength": 1
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
+          "id": {
+            "type": "string"
           }
         }
       },
-      "AssetRoleType": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Owner",
-          "Viewer"
+      "CreateAsset": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "deviceTypeId",
+          "serialNumber"
         ],
-        "enum": [
-          "Owner",
-          "Viewer"
-        ]
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deviceTypeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "serialNumber": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       },
       "ProblemDetails": {
         "type": "object",
@@ -1688,30 +2640,7 @@
           }
         }
       },
-      "CreateAssetModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "deviceTypeId",
-          "serialNumber"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "deviceTypeId": {
-            "type": "string",
-            "minLength": 1
-          },
-          "serialNumber": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "UpdateAssetModel": {
+      "UpdateAsset": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1720,7 +2649,7 @@
           }
         }
       },
-      "ListModelOfDeviceModel": {
+      "ListOfDevice": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1730,12 +2659,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DeviceModel"
+              "$ref": "#/components/schemas/Device"
             }
           }
         }
       },
-      "UpdateAssetDeviceModel": {
+      "CreateOrUpdateAssetDevice": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1753,10 +2682,10 @@
           }
         }
       },
-      "MessageListModel": {
+      "MessageList": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfMessageModel"
+            "$ref": "#/components/schemas/ListOfMessage"
           },
           {
             "type": "object",
@@ -1783,7 +2712,7 @@
           }
         ]
       },
-      "ListModelOfMessageModel": {
+      "ListOfMessage": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1793,15 +2722,15 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MessageModel"
+              "$ref": "#/components/schemas/Message"
             }
           }
         }
       },
-      "DistanceReportListModel": {
+      "DistanceReportList": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfDistanceReportItemModel"
+            "$ref": "#/components/schemas/ListOfDistanceReportItemModel"
           },
           {
             "type": "object",
@@ -1823,7 +2752,7 @@
           }
         ]
       },
-      "ListModelOfDistanceReportItemModel": {
+      "ListOfDistanceReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1867,10 +2796,10 @@
           }
         }
       },
-      "AssetStatsListModel": {
+      "AssetStatList": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfAssetStatsItemModel"
+            "$ref": "#/components/schemas/ListOfAssetStatItem"
           },
           {
             "type": "object",
@@ -1878,7 +2807,7 @@
           }
         ]
       },
-      "ListModelOfAssetStatsItemModel": {
+      "ListOfAssetStatItem": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1888,12 +2817,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetStatsItemModel"
+              "$ref": "#/components/schemas/AssetStatItem"
             }
           }
         }
       },
-      "AssetStatsItemModel": {
+      "AssetStatItem": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1966,10 +2895,10 @@
           "ThisYear"
         ]
       },
-      "TripListModel": {
+      "TripList": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfTripModel"
+            "$ref": "#/components/schemas/ListOfTrip"
           },
           {
             "type": "object",
@@ -2006,7 +2935,7 @@
           }
         ]
       },
-      "ListModelOfTripModel": {
+      "ListOfTrip": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2016,12 +2945,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TripModel"
+              "$ref": "#/components/schemas/Trip"
             }
           }
         }
       },
-      "TripModel": {
+      "Trip": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2035,14 +2964,14 @@
           "positions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MessagePositionModel"
+              "$ref": "#/components/schemas/MessagePosition"
             }
           },
           "startPosition": {
-            "$ref": "#/components/schemas/MessagePositionModel"
+            "$ref": "#/components/schemas/MessagePosition"
           },
           "endPosition": {
-            "$ref": "#/components/schemas/MessagePositionModel"
+            "$ref": "#/components/schemas/MessagePosition"
           },
           "duration": {
             "type": "number",
@@ -2069,7 +2998,7 @@
           }
         }
       },
-      "ListModelOfAssetUserModel": {
+      "ListOfAssetUser": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2079,26 +3008,27 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetUserModel"
+              "$ref": "#/components/schemas/AssetUser"
             }
           }
         }
       },
-      "AssetUserModel": {
+      "AssetUser": {
         "type": "object",
         "additionalProperties": false,
         "required": [
           "email",
-          "role",
-          "userId"
+          "userRole",
+          "userId",
+          "createdDate"
         ],
         "properties": {
           "email": {
             "type": "string",
             "minLength": 1
           },
-          "role": {
-            "$ref": "#/components/schemas/AssetRoleType"
+          "userRole": {
+            "$ref": "#/components/schemas/AssetUserRole"
           },
           "userId": {
             "type": "string",
@@ -2107,29 +3037,125 @@
           "createdDate": {
             "type": "string",
             "format": "date-time",
-            "nullable": true
+            "minLength": 1
           }
         }
       },
-      "CreateAssetUserModel": {
+      "AssetUserRole": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Owner",
+          "Viewer"
+        ],
+        "enum": [
+          "Owner",
+          "Viewer"
+        ]
+      },
+      "CreateAssetUser": {
         "type": "object",
         "additionalProperties": false,
         "required": [
           "email",
-          "role"
+          "userRole"
         ],
         "properties": {
           "email": {
             "type": "string",
             "minLength": 1
           },
-          "role": {
+          "userRole": {
+            "$ref": "#/components/schemas/AssetUserRole"
+          }
+        }
+      },
+      "ListOfDeviceType": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceType"
+            }
+          }
+        }
+      },
+      "ListOfOrganization": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Organization"
+            }
+          }
+        }
+      },
+      "Organization": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "assetsCount",
+          "usersCount",
+          "teamsCount"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assetsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usersCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teamsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateOrganization": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
             "type": "string",
             "minLength": 1
           }
         }
       },
-      "ListModelOfDeviceTypeModel": {
+      "UpdateOrganizationModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ListOfProtocol": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2139,12 +3165,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DeviceTypeModel"
+              "$ref": "#/components/schemas/Protocol"
             }
           }
         }
       },
-      "ListModelOfProtocolModel": {
+      "ListOfTeamAsset": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2154,12 +3180,204 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ProtocolModel"
+              "$ref": "#/components/schemas/TeamAsset"
             }
           }
         }
       },
-      "UserModel": {
+      "TeamAsset": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assetId",
+          "name",
+          "createdDate"
+        ],
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          }
+        }
+      },
+      "CreateTeamAsset": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assetId"
+        ],
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "ListOfTeam": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "organizationId",
+          "usersCount",
+          "assetsCount"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "organizationId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "usersCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assetsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateTeam": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "UpdateTeam": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ListOfTeamUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeamUser"
+            }
+          }
+        }
+      },
+      "TeamUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userId",
+          "email",
+          "userRole",
+          "createdDate"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/TeamUserRole"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          }
+        }
+      },
+      "TeamUserRole": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Owner",
+          "Member"
+        ],
+        "enum": [
+          "Owner",
+          "Member"
+        ]
+      },
+      "CreateTeamUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "userRole"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/TeamUserRole"
+          }
+        }
+      },
+      "UpdateTeamUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userRole"
+        ],
+        "properties": {
+          "userRole": {
+            "$ref": "#/components/schemas/TeamUserRole"
+          }
+        }
+      },
+      "CurrentUser": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2179,14 +3397,20 @@
           "units": {
             "$ref": "#/components/schemas/UnitsType"
           },
-          "assetRoles": {
+          "assets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserAssetRoleModel"
+              "$ref": "#/components/schemas/UserAsset"
+            }
+          },
+          "organizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserOrganization"
             }
           },
           "authentication": {
-            "$ref": "#/components/schemas/UserAuthenticationModel"
+            "$ref": "#/components/schemas/UserAuthentication"
           }
         }
       },
@@ -2202,24 +3426,53 @@
           "Imperial"
         ]
       },
-      "UserAssetRoleModel": {
+      "UserAsset": {
         "type": "object",
         "additionalProperties": false,
         "required": [
           "assetId",
-          "role"
+          "userRole"
         ],
         "properties": {
           "assetId": {
             "type": "string",
             "minLength": 1
           },
-          "role": {
-            "$ref": "#/components/schemas/AssetRoleType"
+          "userRole": {
+            "$ref": "#/components/schemas/AssetUserRole"
           }
         }
       },
-      "UserAuthenticationModel": {
+      "UserOrganization": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "organizationId",
+          "userRole"
+        ],
+        "properties": {
+          "organizationId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          }
+        }
+      },
+      "OrganizationUserRole": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Owner",
+          "Member"
+        ],
+        "enum": [
+          "Owner",
+          "Member"
+        ]
+      },
+      "UserAuthentication": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2246,7 +3499,133 @@
             ]
           }
         }
+      },
+      "ChangePasswordModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasePasswordModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "currentPassword": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ListOfOrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationUser"
+            }
+          }
+        }
+      },
+      "OrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "userRole",
+          "userId",
+          "createdDate"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          },
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          }
+        }
+      },
+      "CreateOrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "userRole"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          }
+        }
+      },
+      "UpdateOrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userRole"
+        ],
+        "properties": {
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          }
+        }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Assets"
+    },
+    {
+      "name": "Assets - Devices"
+    },
+    {
+      "name": "Assets - Messages"
+    },
+    {
+      "name": "Assets - Reports"
+    },
+    {
+      "name": "Assets - Stats"
+    },
+    {
+      "name": "Assets - Trips"
+    },
+    {
+      "name": "Assets - Users"
+    },
+    {
+      "name": "Organizations"
+    },
+    {
+      "name": "Teams - Assets"
+    },
+    {
+      "name": "Teams"
+    },
+    {
+      "name": "Teams - Users"
+    },
+    {
+      "name": "Users"
+    }
+  ]
 }

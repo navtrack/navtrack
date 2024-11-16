@@ -18,14 +18,11 @@ import {
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import {
-  MessagePositionModel,
-  TripModel
-} from "@navtrack/shared/api/model/generated";
+import { MessagePosition, Trip } from "@navtrack/shared/api/model/generated";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useTripsQuery } from "@navtrack/shared/hooks/queries/useTripsQuery";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
+import { useTripsQuery } from "@navtrack/shared/hooks/queries/assets/useTripsQuery";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
@@ -37,7 +34,7 @@ export function AssetTripsPage() {
   const [selectedTrip, setSelectedTrip] = useRecoilState(selectedTripAtom);
   const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
   const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
-    MessagePositionModel | undefined
+    MessagePosition | undefined
   >(selectedTripPosition);
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useRecoilState(selectedTripPositionIndexAtom);
@@ -68,7 +65,7 @@ export function AssetTripsPage() {
     <>
       <LocationFilter filterPage="trips" duration avgAltitude avgSpeed />
       <div>
-        <TableV2<TripModel>
+        <TableV2<Trip>
           columns={[
             {
               labelId: "generic.start-date",

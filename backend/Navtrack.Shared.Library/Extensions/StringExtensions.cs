@@ -6,4 +6,9 @@ public static class StringExtensions
     {
         return char.ToLowerInvariant(value[0]) + value[1..];
     }
+    
+    public static string TrimAndLower(this string value)
+    {
+        return value.Trim().ToLowerInvariant();
+    }
 }

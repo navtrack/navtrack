@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Assets;
 using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Mongo;
 
 namespace Navtrack.DataAccess.Services.Assets;
@@ -11,12 +10,15 @@ namespace Navtrack.DataAccess.Services.Assets;
 public interface IAssetRepository : IGenericRepository<AssetDocument>
 {
     Task<AssetDocument> Get(string serialNumber, int protocolPort);
-    Task<List<AssetDocument>> GetAssetsByIds(List<ObjectId> ids);
-    Task<bool> NameIsUsed(string name, ObjectId ownerUserId, string? assetId = null);
+    Task<bool> NameIsUsed(ObjectId organizationId, string name, ObjectId? assetId = null);
     Task UpdateName(string assetId, string name);
-    Task AddUserToAsset(AssetUserRoleElement userRole, UserAssetRoleElement assetRole);
-    Task RemoveUserFromAsset(string assetId, string userId);
-    Task UpdateMessages(ObjectId assetId, DeviceMessageDocument lastMessage,
-        DeviceMessageDocument? positionMessage);
-    Task SetActiveDevice(ObjectId assetDocumentId, AssetDeviceElement assetDocumentDevice);
+    Task UpdateMessages(ObjectId assetId, DeviceMessageDocument lastMessage, DeviceMessageDocument? positionMessage);
+    Task SetActiveDevice(ObjectId assetId, AssetDeviceElement assetDevice);
+    Task<List<AssetDocument>> GetByTeamId(ObjectId teamId);
+    Task<List<AssetDocument>> GetByOrganizationId(ObjectId organizationId);
+    Task<List<AssetDocument>> GetAssetsByAssetAndTeamIds(List<ObjectId> assetIds, List<ObjectId> teamIds);
+    
+    Task AddAssetToTeam(ObjectId assetId, AssetTeamElement element);
+    Task RemoveAssetFromTeam(ObjectId teamId, ObjectId assetId);
+    Task RemoveTeamFromAssets(ObjectId teamId);
 }

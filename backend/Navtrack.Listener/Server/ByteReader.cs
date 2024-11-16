@@ -6,7 +6,7 @@ namespace Navtrack.Listener.Server;
 
 public class ByteReader(byte[] bytes, string[] hex)
 {
-    public int Index = 0;
+    public int Index;
 
     public byte GetOne()
     {

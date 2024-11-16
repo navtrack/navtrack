@@ -1,4 +1,4 @@
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { FormattedMessage } from "react-intl";
 import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";

@@ -2,7 +2,7 @@ import { classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 
 export type CardProps = {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
 };
 

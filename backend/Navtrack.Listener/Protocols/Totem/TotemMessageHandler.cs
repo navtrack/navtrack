@@ -20,7 +20,7 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
     {
         input.ConnectionContext.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
 
-        DeviceMessageDocument deviceMessageDocument = new DeviceMessageDocument
+        DeviceMessageDocument deviceMessageDocument = new()
         {
             Position = new PositionElement(),
             Gsm = new GsmElement()
@@ -48,7 +48,7 @@ public class TotemMessageHandler : BaseMessageHandler<TotemProtocol>
     {
         input.ConnectionContext.SetDevice(input.DataMessage.Reader.Skip(8).GetUntil('|'));
 
-        DeviceMessageDocument deviceMessageDocument = new DeviceMessageDocument
+        DeviceMessageDocument deviceMessageDocument = new()
         {
             Position = new PositionElement(),
             Gsm = new GsmElement()

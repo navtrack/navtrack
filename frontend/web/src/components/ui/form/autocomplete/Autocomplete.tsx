@@ -17,10 +17,13 @@ export type AutocompleteProps = {
   options?: SelectOption[];
   onChange?: (value: string) => void;
   loading?: boolean;
+  open?: boolean;
+  size?: "xs" | "sm";
+  error?: string;
 };
 
 export function Autocomplete(props: AutocompleteProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(props.open);
   const [selectedOption, setSelectedOption] = useState(
     props.options?.find((o) => o.value === props.value)
   );
@@ -57,6 +60,7 @@ export function Autocomplete(props: AutocompleteProps) {
     <div className="relative">
       <Popover>
         <TextInput
+          size={props.size}
           className={classNames(
             "pr-9",
             c(selectedOption?.label, "placeholder:text-gray-900", "")
@@ -64,7 +68,12 @@ export function Autocomplete(props: AutocompleteProps) {
           value={search}
           label={props.label}
           onClick={() => setOpen(true)}
-          placeholder={open ? "" : selectedOption?.label || "Type to search"}
+          error={props.error}
+          placeholder={
+            open
+              ? ""
+              : selectedOption?.label ?? props.placeholder ?? "Type to search"
+          }
           onChange={(e) => {
             setSearch(e.target.value);
             ref.current?.scrollTo(0, 0);
@@ -80,7 +89,7 @@ export function Autocomplete(props: AutocompleteProps) {
           rightAddon={
             <TextInputRightAddon className="pointer-events-auto mr-0">
               <div
-                className="mr-2 px-1 py-1 hover:cursor-pointer"
+                className="py-1 hover:cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault();
                   e.nativeEvent.stopImmediatePropagation();
@@ -95,17 +104,17 @@ export function Autocomplete(props: AutocompleteProps) {
         />
         <Popover.Panel static={open}>
           <div
-            className="absolute left-0 right-0 z-10 mt-1 max-h-60 overflow-y-scroll rounded-md bg-white py-1 text-sm font-medium shadow-md ring-1 ring-inset ring-gray-300"
+            className="absolute left-0 right-0 z-10 mt-1 max-h-56 overflow-y-scroll rounded-md border border-gray-300 bg-white py-1 text-sm font-medium shadow-md"
             ref={ref}>
             {filteredOptions.map((option) => (
               <div
                 key={option.value}
                 className={classNames(
-                  "px-4 py-1.5 hover:cursor-pointer hover:bg-blue-500 hover:text-white",
+                  "px-4 py-1.5 ring-inset hover:cursor-pointer",
                   c(
                     option.value === props.value,
-                    "bg-blue-500 text-white",
-                    "text-gray-900"
+                    "bg-gray-800 text-white",
+                    "text-gray-900 hover:bg-gray-100"
                   )
                 )}
                 onMouseDown={() => {

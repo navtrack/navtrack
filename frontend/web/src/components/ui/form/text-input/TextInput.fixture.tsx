@@ -4,6 +4,13 @@ import { TextInputRightAddon } from "./TextInputRightAddon";
 
 export default {
   Basic: <TextInput name="basic" />,
+  Sizes: (
+    <div className="space-y-2">
+      <TextInput name="basic" size="xs" placeholder="XS" />
+      <TextInput name="basic" size="sm" placeholder="SM" />
+      <TextInput name="basic" placeholder="Base" />
+    </div>
+  ),
   Loading: <TextInput name="basic" loading />,
   Disabled: <TextInput name="basic" disabled value="1234" />,
   WithLabel: <TextInput name="basic" label="Email" />,

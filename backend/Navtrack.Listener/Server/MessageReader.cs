@@ -2,7 +2,7 @@ namespace Navtrack.Listener.Server;
 
 public class MessageReader(string message)
 {
-    private int index = 0;
+    private int index;
 
     public string Get(int i)
     {

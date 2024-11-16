@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDevicesTypesQuery } from "../queries/useDevicesTypesQuery";
+import { useDevicesTypesQuery } from "../queries/devices/useDevicesTypesQuery";
 
 export function useDeviceTypes() {
   const deviceTypes = useDevicesTypesQuery();

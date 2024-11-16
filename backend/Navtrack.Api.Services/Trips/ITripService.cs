@@ -5,5 +5,5 @@ namespace Navtrack.Api.Services.Trips;
 
 public interface ITripService
 {
-    Task<TripListModel> GetTrips(string assetId, TripFilterModel tripFilter);
+    Task<TripList> GetTrips(string assetId, TripFilter tripFilter);
 }

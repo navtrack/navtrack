@@ -1,8 +1,11 @@
 import { useCallback } from "react";
 import { useCurrentUnits } from "./useCurrentUnits";
 import { UnitsType } from "../../api/model/generated";
+import { useIntl } from "react-intl";
+import { format, parseISO } from "date-fns";
 
 export function useShow() {
+  const intl = useIntl();
   const units = useCurrentUnits();
 
   const showDistance = useCallback(
@@ -59,9 +62,46 @@ export function useShow() {
     [units.unitsType, units.volume]
   );
 
+  const showDate = useCallback(
+    (
+      date?: string | Date | null,
+      customFormat?: string,
+      customMessage?: string
+    ): string => {
+      if (date !== undefined && date !== null) {
+        return format(
+          typeof date === "string" ? parseISO(date) : date,
+          customFormat ?? "yyyy-MM-dd"
+        );
+      }
+
+      return customMessage ?? intl.formatMessage({ id: "generic.na" });
+    },
+    [intl]
+  );
+
+  const showTime = useCallback(
+    (date?: string): string =>
+      date
+        ? format(parseISO(date), "HH:mm:ss")
+        : intl.formatMessage({ id: "generic.na" }),
+    [intl]
+  );
+
+  const showDateTime = useCallback(
+    (date?: string): string =>
+      date
+        ? `${showDate(date)} ${showTime(date)}`
+        : intl.formatMessage({ id: "generic.na" }),
+    [intl, showDate, showTime]
+  );
+
   return {
     distance: showDistance,
     duration: showDuration,
-    volume: showVolume
+    volume: showVolume,
+    date: showDate,
+    time: showTime,
+    dateTime: showDateTime
   };
 }

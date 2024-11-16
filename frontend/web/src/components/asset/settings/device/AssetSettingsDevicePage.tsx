@@ -1,22 +1,22 @@
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
 import { FormikAutocomplete } from "../../../ui/form/autocomplete/FormikAutocomplete";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
-import { DeviceConfiguration } from "../../add/DeviceConfiguration";
+import { DeviceConfiguration } from "../../new/DeviceConfiguration";
 import { AssetDevicesTable } from "./AssetDevicesTable";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { object, ObjectSchema, string } from "yup";
-import { DeviceTypeModel } from "@navtrack/shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
-import { useChangeDeviceMutation } from "@navtrack/shared/hooks/mutations/assets/useChangeDeviceMutation";
-import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/useAssetDevicesQuery";
+import { DeviceType } from "@navtrack/shared/api/model/generated";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
+import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/assets/useAssetDevicesQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { useDeviceTypes } from "@navtrack/shared/hooks/devices/useDeviceTypes";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
 import { Button } from "../../../ui/button/Button";
+import { useChangeDeviceMutation } from "@navtrack/shared/hooks/queries/assets/useChangeDeviceMutation";
 
 type ChangeDeviceFormValues = {
   serialNumber: string;
@@ -24,14 +24,11 @@ type ChangeDeviceFormValues = {
 };
 
 export function AssetSettingsDevicePage() {
-  const currentAsset = useCurrentAsset();
-
-  const [selectedDeviceType, setSelectedDeviceType] =
-    useState<DeviceTypeModel>();
-
-  const mutation = useChangeDeviceMutation();
   const { showNotification } = useNotification();
-  const intl = useIntl();
+  const currentAsset = useCurrentAsset();
+  const changeDeviceMutation = useChangeDeviceMutation();
+
+  const [selectedDeviceType, setSelectedDeviceType] = useState<DeviceType>();
 
   const devices = useAssetDevicesQuery(currentAsset?.data?.id);
   const { deviceTypes } = useDeviceTypes();
@@ -41,7 +38,7 @@ export function AssetSettingsDevicePage() {
       values: ChangeDeviceFormValues,
       formikHelpers: FormikHelpers<ChangeDeviceFormValues>
     ) => {
-      mutation.mutate(
+      changeDeviceMutation.mutate(
         {
           assetId: `${currentAsset.data?.id}`,
           data: {
@@ -51,19 +48,16 @@ export function AssetSettingsDevicePage() {
         },
         {
           onSuccess: () => {
-            devices.refetch();
             showNotification({
               type: "success",
-              description: intl.formatMessage({
-                id: "assets.settings.device.save.success"
-              })
+              description: "assets.settings.device.save.success"
             });
           },
           onError: (error) => mapErrors(error, formikHelpers)
         }
       );
     },
-    [currentAsset.data?.id, devices, intl, mutation, showNotification]
+    [currentAsset.data?.id, changeDeviceMutation, showNotification]
   );
 
   useEffect(() => {
@@ -81,12 +75,8 @@ export function AssetSettingsDevicePage() {
   ]);
 
   const validationSchema: ObjectSchema<ChangeDeviceFormValues> = object({
-    deviceTypeId: string().required(
-      intl.formatMessage({ id: "generic.device-type.required" })
-    ),
-    serialNumber: string().required(
-      intl.formatMessage({ id: "generic.serial-number.required" })
-    )
+    deviceTypeId: string().required("generic.device-type.required"),
+    serialNumber: string().required("generic.serial-number.required")
   }).defined();
 
   return (
@@ -142,7 +132,7 @@ export function AssetSettingsDevicePage() {
                           deviceTypes === undefined ||
                           currentAsset.data === undefined
                         }
-                        isLoading={mutation.isLoading}>
+                        isLoading={changeDeviceMutation.isLoading}>
                         <FormattedMessage id="generic.save" />
                       </Button>
                     </div>
@@ -163,7 +153,6 @@ export function AssetSettingsDevicePage() {
             <AssetDevicesTable
               rows={devices.data?.items}
               loading={devices.isLoading}
-              refresh={devices.refetch}
             />
           </div>
         </div>

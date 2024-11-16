@@ -11,7 +11,7 @@ import { Button } from "../button/Button";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
 type DeleteModalProps = {
-  onConfirm?: () => Promise<void> | undefined;
+  onConfirm?: (close: () => void) => Promise<void> | undefined;
   renderButton?: (open: () => void) => JSX.Element;
   children?: React.ReactNode;
   onClose?: () => void;
@@ -19,11 +19,12 @@ type DeleteModalProps = {
   disabled?: boolean;
   deleteButtonTitle?: string;
   buttonLabel?: string;
+  isLoading?: boolean;
+  autoClose?: boolean;
 };
 
 export function DeleteModal(props: DeleteModalProps) {
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -31,15 +32,16 @@ export function DeleteModal(props: DeleteModalProps) {
   }, [props]);
 
   const handleConfirm = useCallback(async () => {
-    setIsLoading(true);
-
-    if (props.onConfirm !== undefined) {
-      await props.onConfirm();
+    try {
+      if (props.onConfirm !== undefined) {
+        await props.onConfirm(() => setOpen(false));
+      }
+    } finally {
+      if (props.autoClose === undefined || props.autoClose) {
+        setOpen(false);
+      }
     }
-
-    setIsLoading(false);
-    close();
-  }, [close, props]);
+  }, [props]);
 
   return (
     <>
@@ -60,7 +62,7 @@ export function DeleteModal(props: DeleteModalProps) {
         <Modal
           open={open}
           close={() => {
-            if (!isLoading) {
+            if (!props.isLoading) {
               close();
             }
           }}
@@ -77,11 +79,11 @@ export function DeleteModal(props: DeleteModalProps) {
                 <div className="text-sm">{props.children}</div>
               </ModalBody>
             </ModalContent>
-            <ModalActions cancel={close} isLoading={isLoading}>
+            <ModalActions cancel={close} isLoading={props.isLoading}>
               <Button
                 color="error"
                 type="submit"
-                isLoading={isLoading}
+                isLoading={props.isLoading}
                 onClick={handleConfirm}>
                 <FormattedMessage id="generic.delete" />
               </Button>

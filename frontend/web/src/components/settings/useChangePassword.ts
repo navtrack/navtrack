@@ -1,11 +1,10 @@
-import { useChangePasswordMutation } from "@navtrack/shared/hooks/mutations/users/useChangePasswordMutation";
+import { useChangePasswordMutation } from "@navtrack/shared/hooks/queries/users/useChangePasswordMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
-import { useIntl } from "react-intl";
 import { object, ObjectSchema, ref, string } from "yup";
 import { useNotification } from "../ui/notification/useNotification";
-import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
+import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 
 export type ChangePasswordFormValues = {
   currentPassword?: string;
@@ -14,7 +13,6 @@ export type ChangePasswordFormValues = {
 };
 
 export function useChangePassword() {
-  const intl = useIntl();
   const { showNotification } = useNotification();
   const changePasswordMutation = useChangePasswordMutation();
   const currentUser = useCurrentUserQuery();
@@ -36,9 +34,7 @@ export function useChangePassword() {
           onSuccess: () => {
             showNotification({
               type: "success",
-              description: intl.formatMessage({
-                id: "settings.password.success"
-              })
+              description: "settings.password.success"
             });
             formikHelpers.resetForm();
           },
@@ -46,41 +42,24 @@ export function useChangePassword() {
         }
       );
     },
-    [changePasswordMutation, intl, showNotification]
+    [changePasswordMutation, showNotification]
   );
 
   const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
     currentPassword: currentUser.data?.authentication?.password
-      ? string().required(
-          intl.formatMessage({
-            id: "settings.password.current-password.required"
-          })
-        )
+      ? string().required("settings.password.current-password.required")
       : string().optional(),
     password: string()
       .notOneOf(
         [ref("currentPassword")],
-        intl.formatMessage({
-          id: "settings.password.different-password"
-        })
+        "settings.password.different-password"
       )
-      .required(intl.formatMessage({ id: "generic.password.required" }))
-      .min(
-        8,
-        intl.formatMessage({ id: "generic.password.requirements.length" })
-      ),
+      .required("generic.password.required")
+      .min(8, "generic.password.requirements.length"),
     confirmPassword: string()
-      .oneOf(
-        [ref("password")],
-        intl.formatMessage({
-          id: "generic.confirm-password.requirements.match"
-        })
-      )
-      .required(intl.formatMessage({ id: "generic.confirm-password.required" }))
-      .min(
-        8,
-        intl.formatMessage({ id: "generic.password.requirements.length" })
-      )
+      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
+      .required("generic.confirm-password.required")
+      .min(8, "generic.password.requirements.length")
   }).defined();
 
   return {

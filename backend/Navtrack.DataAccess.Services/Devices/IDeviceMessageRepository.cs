@@ -12,7 +12,7 @@ public interface IDeviceMessageRepository : IGenericRepository<DeviceMessageDocu
 {
     Task<GetMessagesResult> GetMessages(GetMessagesOptions options);
     Task<Dictionary<ObjectId, int>> GetMessagesCountByDeviceIds(IEnumerable<ObjectId> deviceIds);
-    Task DeleteByAssetId(string assetId);
+    Task DeleteByAssetId(ObjectId assetId);
     Task<bool> DeviceHasMessages(string assetId, string deviceId);
     Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLast(string assetId,
         DateTime? startDate, DateTime? endDate);

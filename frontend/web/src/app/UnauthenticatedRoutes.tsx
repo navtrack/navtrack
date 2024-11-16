@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { ForgotPasswordPage } from "../components/user/forgot-password/ForgotPasswordPage";
-import { LoginPage } from "../components/user/login-page/LoginPage";
-import { RegisterPage } from "../components/user/register-page/RegisterPage";
-import { ResetPasswordPage } from "../components/user/reset-password-page/ResetPasswordPage";
+import { ForgotPasswordPage } from "../components/user/ForgotPasswordPage";
+import { LoginPage } from "../components/user/LoginPage";
+import { RegisterPage } from "../components/user/RegisterPage";
+import { ResetPasswordPage } from "../components/user/ResetPasswordPage";
 import { Paths } from "./Paths";
 import { ReactNode } from "react";
 

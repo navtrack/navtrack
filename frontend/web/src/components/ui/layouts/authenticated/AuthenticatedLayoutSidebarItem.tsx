@@ -3,13 +3,13 @@ import { IconWithText } from "../../icon/IconWithText";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
 import { useScrollToAsset } from "./useScrollToAsset";
-import { AssetModel } from "@navtrack/shared/api/model/generated";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { Asset } from "@navtrack/shared/api/model/generated";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Paths } from "../../../../app/Paths";
 
-export type AuthenticatedLayoutSidebarItemProps = {
-  asset: AssetModel;
+type AuthenticatedLayoutSidebarItemProps = {
+  asset: Asset;
 };
 
 export function AuthenticatedLayoutSidebarItem(
@@ -21,7 +21,7 @@ export function AuthenticatedLayoutSidebarItem(
   return (
     <Link
       ref={elementRef}
-      to={generatePath(Paths.AssetsLive, { id: props.asset.id })}
+      to={generatePath(Paths.AssetLive, { id: props.asset.id })}
       className={classNames(
         currentAsset.data === props.asset
           ? "bg-gray-900 text-white"

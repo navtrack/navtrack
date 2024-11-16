@@ -66,7 +66,10 @@ export function Button(props: ButtonProps) {
           <Icon
             icon={props.icon}
             className={classNames(
-              c(props.children !== undefined, "mr-2"),
+              c(
+                props.children !== undefined,
+                c(props.size === "xs", "mr-1", "mr-2")
+              ),
               c(props.size === "xs", "text-xs"),
               c(props.size === "sm", "text-xs"),
               c(props.size === undefined || props.size === "base", "text-sm"),

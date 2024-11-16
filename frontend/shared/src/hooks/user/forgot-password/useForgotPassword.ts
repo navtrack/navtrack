@@ -1,8 +1,16 @@
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
-import { useForgotPasswordMutation } from "../../mutations/users/useForgotPasswordMutation";
+import { useForgotPasswordMutation } from "../../queries/users/useForgotPasswordMutation";
 import { mapErrors } from "../../../utils/formik";
-import { ForgotPasswordFormValues } from "./ForgotPasswordFormValues";
+import { object, ObjectSchema, string } from "yup";
+
+export type ForgotPasswordFormValues = {
+  email: string;
+};
+
+export const InitialForgotPasswordFormValues: ForgotPasswordFormValues = {
+  email: ""
+};
 
 type UseForgotPasswordProps = {
   onSuccess?: () => void;
@@ -31,8 +39,15 @@ export function useForgotPassword(props?: UseForgotPasswordProps) {
     [props?.onSuccess, resetPasswordMutation]
   );
 
+  const validationSchema: ObjectSchema<ForgotPasswordFormValues> = object({
+    email: string()
+      .email("generic.email.invalid")
+      .required("generic.email.required")
+  }).defined();
+
   return {
     resetPassword,
+    validationSchema,
     loading: resetPasswordMutation.isLoading,
     success: resetPasswordMutation.isSuccess
   };

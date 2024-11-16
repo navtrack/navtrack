@@ -63,11 +63,11 @@ public class BaseTest : IClassFixture<BaseTestFixture>
     {
         Id = AuthenticatedUserId,
         Email = "choco@navtrack.com",
-        AssetRoles = new[]
+        Assets = new[]
         {
-            new UserAssetRoleElement
+            new UserAssetElement
             {
-                Role = AssetRoleType.Owner,
+                UserRole = AssetUserRole.Owner,
                 AssetId = AssetId
             }
         }
@@ -82,14 +82,14 @@ public class BaseTest : IClassFixture<BaseTestFixture>
             DeviceTypeId = "1",
             SerialNumber = "123456789"
         },
-        UserRoles = new List<AssetUserRoleElement>
-        {
-            new()
-            {
-                Role = AssetRoleType.Owner,
-                UserId = AuthenticatedUserId
-            }
-        }
+        // Users = new List<AssetUserElement>
+        // {
+        //     new()
+        //     {
+        //         UserRole = AssetUserRole.Owner,
+        //         UserId = AuthenticatedUserId
+        //     }
+        // }
     };
 
     protected static string GetUrl(string path, params KeyValuePair<string, string>[] values)

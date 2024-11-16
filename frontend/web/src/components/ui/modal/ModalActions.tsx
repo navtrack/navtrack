@@ -10,7 +10,7 @@ type ModalActionsProps = {
 
 export function ModalActions(props: ModalActionsProps) {
   return (
-    <div className="flex justify-end space-x-3 rounded-b-lg bg-gray-50 px-4 py-3">
+    <div className="flex justify-end space-x-3 rounded-b-lg bg-gray-50 px-6 py-4">
       {props.cancel !== undefined && (
         <Button onClick={props.cancel} color="white" disabled={props.isLoading}>
           <FormattedMessage id="generic.cancel" />

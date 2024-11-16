@@ -5,9 +5,9 @@ namespace Navtrack.Api.Services.Trips.Mappers;
 
 public static class TripListMapper
 {
-    public static TripListModel Map(IEnumerable<TripModel> source)
+    public static TripList Map(IEnumerable<Trip> source)
     {
-        return new TripListModel
+        return new TripList
         {
             Items = source
         };

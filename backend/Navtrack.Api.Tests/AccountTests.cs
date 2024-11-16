@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Navtrack.Api.Model;
 using Navtrack.Api.Model.Account;
 using Navtrack.Api.Tests.Helpers;
 using static System.String;
@@ -14,7 +13,7 @@ public class AccountTests(BaseTestFixture fixture) : BaseTest(fixture)
     [Fact]
     public async Task Register_SendRequestTwoTimes_SecondFailsWithEmailUsed()
     {
-        RegisterAccountModel model = new()
+        CreateAccount model = new()
         {
             Email = "email_used@navtrack.com",
             Password = "password",
@@ -33,7 +32,7 @@ public class AccountTests(BaseTestFixture fixture) : BaseTest(fixture)
     [Fact]
     public async Task Register_WithEmptyEmail_ReturnsValidationError()
     {
-        RegisterAccountModel model = new()
+        CreateAccount model = new()
         {
             Email = Empty,
             Password = "password",

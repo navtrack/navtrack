@@ -1,10 +1,10 @@
 import { Form, Formik, FormikHelpers } from "formik";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { FormikTextInput } from "../ui/form/text-input/FormikTextInput";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { FormikSelect } from "../ui/form/select/FormikSelect";
 import { useNotification } from "../ui/notification/useNotification";
-import { useUpdateUserMutation } from "@navtrack/shared/hooks/mutations/users/useUpdateUserMutation";
+import { useUpdateUserMutation } from "@navtrack/shared/hooks/queries/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { SelectOption } from "../ui/form/select/Select";
@@ -15,18 +15,28 @@ import { CardHeader } from "../ui/card/CardHeader";
 import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
-import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
+import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 
 type AccountSettingsFormValues = {
   email?: string;
   units?: UnitsType;
 };
 
+const units: SelectOption[] = [
+  {
+    label: "generic.units.metric",
+    value: `${UnitsType.Metric}`
+  },
+  {
+    label: "generic.units.imperial",
+    value: `${UnitsType.Imperial}`
+  }
+];
+
 export function SettingsAccountPage() {
   const user = useCurrentUserQuery();
   const updateUserMutation = useUpdateUserMutation();
   const { showNotification } = useNotification();
-  const intl = useIntl();
 
   const handleSubmit = useCallback(
     (
@@ -44,30 +54,14 @@ export function SettingsAccountPage() {
           onSuccess: () => {
             showNotification({
               type: "success",
-              description: intl.formatMessage({
-                id: "settings.account.success"
-              })
+              description: "settings.account.success"
             });
           },
           onError: (error) => mapErrors(error, formikHelpers)
         }
       );
     },
-    [intl, showNotification, updateUserMutation]
-  );
-
-  const units: SelectOption[] = useMemo(
-    () => [
-      {
-        label: intl.formatMessage({ id: "generic.units.metric" }),
-        value: `${UnitsType.Metric}`
-      },
-      {
-        label: intl.formatMessage({ id: "generic.units.imperial" }),
-        value: `${UnitsType.Imperial}`
-      }
-    ],
-    [intl]
+    [showNotification, updateUserMutation]
   );
 
   return (

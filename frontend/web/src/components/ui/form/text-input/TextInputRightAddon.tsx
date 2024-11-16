@@ -10,7 +10,7 @@ export function TextInputRightAddon(props: TextInputRightAddonProps) {
   return (
     <div
       className={classNames(
-        "pointer-events-none absolute inset-y-0 right-0 mr-2 flex items-center",
+        "pointer-events-none absolute inset-y-0 right-0 mr-3 flex items-center",
         props.className
       )}>
       <span className="flex items-center text-sm text-gray-500">

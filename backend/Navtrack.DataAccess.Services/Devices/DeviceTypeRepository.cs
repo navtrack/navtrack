@@ -19,11 +19,6 @@ public class DeviceTypeRepository : IDeviceTypeRepository
         return GetDeviceTypes().FirstOrDefault(x => x.Id == deviceTypeId);
     }
 
-    public bool Exists(string deviceTypeId)
-    {
-        return GetDeviceTypes().Any(x => x.Id == deviceTypeId);
-    }
-
     public IEnumerable<DeviceType> GetDeviceTypes()
     {
         if (deviceTypes == null)

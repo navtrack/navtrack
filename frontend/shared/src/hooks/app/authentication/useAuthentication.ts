@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import {
   TokenRequest,
   useTokenMutation
-} from "../../mutations/authentication/useTokenMutation";
+} from "../../queries/authentication/useTokenMutation";
 import { appConfigAtom } from "../../../state/appConfig";
 import { add, isAfter, parseISO, sub } from "date-fns";
 import { randomInteger } from "../../../utils/numbers";
@@ -13,33 +13,29 @@ import {
   setInAsyncStorage,
   removeFromAsyncStorage
 } from "../../../utils/asyncStorage";
+import { LoginFormValues } from "../../user/login/LoginFormValues";
 
 export type ExternalAuthenticationProvider = "apple" | "microsoft" | "google";
 
-export type LoginValues = {
-  username: string;
-  password: string;
-};
-
-export type Token = {
+type Token = {
   accessToken: string;
   refreshToken: string;
   expiryDate: string;
   date: string;
 };
 
-export type AuthenticationStorageState = {
+type AuthenticationStorageState = {
   token?: Token;
 };
 
 const authenticationStorageKey = "Navtrack:Authentication";
 
-export const AuthenticationStorage = {
+const AuthenticationStorage = {
   get: () =>
     getFromAsyncStorage<AuthenticationStorageState>(authenticationStorageKey),
   set: (value: AuthenticationStorageState) =>
     setInAsyncStorage(authenticationStorageKey, value),
-  clear: () => removeFromAsyncStorage(authenticationStorageKey)
+  remove: () => removeFromAsyncStorage(authenticationStorageKey)
 };
 
 type RefreshLock = {
@@ -68,21 +64,12 @@ function tokenIsExpired(expiryDate: string): boolean {
   return expired;
 }
 
-function getExpiryDate(expiresIn: number) {
-  const date = add(new Date(), {
-    seconds: expiresIn
-  }).toISOString();
-
-  return date;
-}
-
 type AuthenticationState = {
   isAuthenticated: boolean;
   initialized: boolean;
   error?: string;
   isLoading: boolean;
   external?: {
-    error?: string;
     provider: ExternalAuthenticationProvider;
     token?: string;
   };
@@ -115,14 +102,17 @@ export function useAuthentication() {
       onMutate: () => {
         setState((prev) => ({
           ...prev,
-          isLoading: true
+          isLoading: true,
+          error: undefined
         }));
       },
       onSuccess: async (data) => {
         const token: Token = {
           accessToken: data.access_token,
           refreshToken: data.refresh_token,
-          expiryDate: getExpiryDate(data.expires_in),
+          expiryDate: add(new Date(), {
+            seconds: data.expires_in
+          }).toISOString(),
           date: new Date().toISOString()
         };
 
@@ -130,13 +120,15 @@ export function useAuthentication() {
         setState((prev) => ({
           ...prev,
           isAuthenticated: true,
-          error: undefined
+          error: undefined,
+          external: undefined
         }));
       },
       onError: (error, data) => {
-        const accountNotLinkedError = error.response?.data.code === "100022";
+        const accountNotLinkedError =
+          error.response?.data.code === "LOGIN_000002";
 
-        AuthenticationStorage.clear();
+        AuthenticationStorage.remove();
         setState((prev) => ({
           ...prev,
           isAuthenticated: false,
@@ -147,8 +139,7 @@ export function useAuthentication() {
               : accountNotLinkedError
               ? {
                   provider: data.grant_type as ExternalAuthenticationProvider,
-                  token: error.response?.data.token ?? data.code,
-                  error: error.response?.data.code
+                  token: error.response?.data.token ?? data.code
                 }
               : undefined
         }));
@@ -194,10 +185,10 @@ export function useAuthentication() {
   }, [appConfig?.authentication?.clientId, tokenMutation]);
 
   const internalLogin = useCallback(
-    (values: LoginValues) => {
+    (values: LoginFormValues) => {
       const data = {
         grant_type: "password",
-        username: values.username,
+        username: values.email,
         password: values.password,
         scope: "offline_access IdentityServerApi openid",
         client_id: appConfig?.authentication?.clientId!
@@ -228,27 +219,16 @@ export function useAuthentication() {
   );
 
   const logout = useCallback(() => {
-    AuthenticationStorage.clear();
-    setState((prev) => ({
-      ...prev,
+    AuthenticationStorage.remove();
+    setState({
+      initialized: true,
+      isLoading: false,
       isAuthenticated: false,
-      token: undefined,
       error: undefined,
       external: undefined
-    }));
+    });
     queryClient.clear();
   }, [queryClient, setState]);
-
-  const clearErrors = useCallback(
-    (includeExternal: boolean = false) => {
-      setState((prev) => ({
-        ...prev,
-        error: undefined,
-        external: includeExternal ? undefined : prev.external
-      }));
-    },
-    [setState]
-  );
 
   const initialize = useCallback(async () => {
     getAccessToken().finally(() => {
@@ -259,6 +239,25 @@ export function useAuthentication() {
     });
   }, [getAccessToken, setState]);
 
+  const clearErrors = useCallback(
+    () =>
+      setState((prev) => ({
+        ...prev,
+        error: undefined
+      })),
+    [setState]
+  );
+
+  const clearExternal = useCallback(
+    () =>
+      setState((prev) => ({
+        ...prev,
+        error: undefined,
+        external: undefined
+      })),
+    [setState]
+  );
+
   return {
     initialize,
     getAccessToken,
@@ -266,6 +265,7 @@ export function useAuthentication() {
     externalLogin,
     logout,
     clearErrors,
+    clearExternal,
     state
   };
 }

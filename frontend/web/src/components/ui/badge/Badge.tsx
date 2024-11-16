@@ -14,7 +14,7 @@ export type BadgeProps = {
   children?: ReactNode;
   color?: BadgeColor;
   className?: string;
-  size?: "sm";
+  size?: "sm" | "lg";
 };
 
 function getColor(color?: BadgeColor) {
@@ -38,9 +38,10 @@ export function Badge(props: BadgeProps) {
   return (
     <span
       className={classNames(
-        "inline-flex items-center rounded-md text-xs font-medium ring-1 ring-inset",
-        c(props.size === "sm", "px-2 py-0.5"),
-        c(props.size === undefined, "px-2 py-1"),
+        "inline-flex items-center rounded-md  font-medium ring-1 ring-inset",
+        c(props.size === "sm", "px-2 py-0.5 text-xs"),
+        c(props.size === "lg", "px-3 py-1 text-sm"),
+        c(props.size === undefined, "px-2 py-1 text-xs"),
         getColor(props.color),
         props.className
       )}>

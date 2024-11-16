@@ -1,6 +1,7 @@
 using System;
-using Navtrack.DataAccess.Model.Common;
+using Navtrack.DataAccess.Model.Shared;
 using Navtrack.DataAccess.Model.Users;
+using Navtrack.Shared.Library.Extensions;
 
 namespace Navtrack.Api.Services.Account.Mappers;
 
@@ -9,6 +10,7 @@ public static class UserDocumentMapper
     public static UserDocument Map(string email, string hash, string salt)
     {
         UserDocument userDocument = Map(email);
+        
         userDocument.Password = new PasswordElement
         {
             Hash = hash,
@@ -18,24 +20,14 @@ public static class UserDocumentMapper
         return userDocument;
     }
 
-    public static UserDocument MapWithExternalId(string email, string? microsoftId = null, string? googleId = null,
-        string? appleId = null)
+    public static UserDocument Map(string email, UserDocument? destination = null)
     {
-        UserDocument userDocument = Map(email);
-        userDocument.MicrosoftId = microsoftId;
-        userDocument.GoogleId = googleId;
-        userDocument.AppleId = appleId;
+        UserDocument userDocument = destination ?? new UserDocument();
+
+        userDocument.Email = email.TrimAndLower();
+        userDocument.UnitsType = UnitsType.Metric;
+        userDocument.CreatedDate = DateTime.UtcNow;
 
         return userDocument;
-    }
-
-    private static UserDocument Map(string email)
-    {
-        return new UserDocument
-        {
-            Email = email.ToLower(),
-            UnitsType = UnitsType.Metric,
-            CreatedDate = DateTime.UtcNow
-        };
     }
 }

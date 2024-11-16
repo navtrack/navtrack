@@ -1,6 +1,6 @@
-import { useAssetStatsQuery } from "@navtrack/shared/hooks/queries/useAssetStatsQuery";
+import { useAssetStatsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetStatsQuery";
 import { DashboardItem } from "./DashboardItem";
-import { useCurrentAsset } from "@navtrack/shared/hooks/assets/useCurrentAsset";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { FormattedMessage } from "react-intl";
 import { AssetStatsDateRange } from "@navtrack/shared/api/model/generated";
 import { useMemo } from "react";
@@ -34,7 +34,7 @@ export function AssetDashboardPage() {
   return (
     <>
       {stats.map((item) => (
-        <div>
+        <div key={item.labelId}>
           <h3 className="text-lg font-semibold leading-6 text-gray-900">
             <FormattedMessage id={item.labelId} />
           </h3>

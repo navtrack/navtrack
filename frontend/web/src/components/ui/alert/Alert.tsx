@@ -8,6 +8,7 @@ type AlertProps = {
   children?: ReactNode;
   close?: () => void;
   color?: "red" | "blue";
+  center?: boolean;
 };
 
 export function Alert(props: AlertProps) {
@@ -23,7 +24,13 @@ export function Alert(props: AlertProps) {
         props.className
       )}>
       <div className="flex justify-between">
-        <div className="flex items-center">{props.children}</div>
+        <div
+          className={classNames(
+            "flex items-center",
+            c(props.center, "flex-1 justify-center")
+          )}>
+          {props.children}
+        </div>
         {props.close !== undefined && (
           <div>
             <button

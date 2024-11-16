@@ -12,7 +12,7 @@ import { CardHeader } from "../ui/card/CardHeader";
 import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
-import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/useCurrentUserQuery";
+import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 
 export function ChangePasswordCard() {
   const currentUser = useCurrentUserQuery();

@@ -1,10 +1,10 @@
 import React from "react";
 import { SettingsMenuItemProps } from "../components/ui/layouts/settings/SettingsMenuItem";
-import { MessagePositionModel } from "@navtrack/shared/api/model/generated";
+import { MessagePosition } from "@navtrack/shared/api/model/generated";
 
 export type AppSlots = {
-  assetsSidebarTitle?: React.ReactNode;
   accountSettingsMenuItems?: SettingsMenuItemProps[];
+  organizationSettingsMenuItems?: SettingsMenuItemProps[];
   assetSettingsMenuItems?: SettingsMenuItemProps[];
   assetAddFooterBlock?: React.ReactNode;
   assetDeleteModalBlock?: React.ReactNode;
@@ -12,7 +12,7 @@ export type AppSlots = {
   linkAccountWithExternalLoginPage?: React.ReactNode;
   captcha?: React.ReactNode;
   assetLiveTrackingPositionCardExtraItems?: (
-    position: MessagePositionModel
+    position: MessagePosition
   ) => React.ReactNode;
   settingsPasswordAuthenticationBlock?: React.ReactNode;
 };
