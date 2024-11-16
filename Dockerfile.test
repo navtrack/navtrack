@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM ubuntu:24.10 AS build
 
-# Install utilities
+# Install utilities (.NET 8 needed for NSwag)
 RUN apt-get update
-RUN apt-get install -y ca-certificates curl gnupg
+RUN apt-get install -y ca-certificates curl gnupg dotnet-sdk-8.0 dotnet-sdk-9.0
 
 # Install Node.js
 RUN mkdir -p /etc/apt/keyrings
