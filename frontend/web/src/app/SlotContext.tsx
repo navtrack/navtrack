@@ -9,6 +9,7 @@ export type AppSlots = {
   assetAddFooterBlock?: React.ReactNode;
   assetDeleteModalBlock?: React.ReactNode;
   externalLogin?: React.ReactNode;
+  navbarAdditional?: React.ReactNode;
   linkAccountWithExternalLoginPage?: React.ReactNode;
   captcha?: React.ReactNode;
   assetLiveTrackingPositionCardExtraItems?: (

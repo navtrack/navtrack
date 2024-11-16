@@ -25,7 +25,7 @@ export function AuthenticatedLayoutNavbarItem(
             "border-gray-900 text-gray-900 hover:border-gray-900",
             "border-transparent hover:border-gray-300"
           ),
-          "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-900"
+          "inline-flex items-center whitespace-nowrap border-b-2 px-1 pt-1 text-sm font-medium text-gray-900"
         )
       }>
       <IconWithText icon={props.icon}>

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { FormikHelpers } from "formik";
 import { mapErrors } from "../../utils/formik";
-import { useAddAssetMutation } from "../queries/assets/useAddAssetMutation";
+import { useCreateAssetMutation } from "../queries/assets/useCreateAssetMutation";
 import { Entity } from "../../api/model/generated";
 import { useCurrentOrganization } from "../current/useCurrentOrganization";
 import { ObjectSchema, object, string } from "yup";
@@ -23,7 +23,7 @@ type UseCreateAssetProps = {
 };
 
 export function useCreateAsset(props: UseCreateAssetProps) {
-  const addAssetMutation = useAddAssetMutation();
+  const addAssetMutation = useCreateAssetMutation();
   const currentOrganization = useCurrentOrganization();
 
   const handleSubmit = useCallback(

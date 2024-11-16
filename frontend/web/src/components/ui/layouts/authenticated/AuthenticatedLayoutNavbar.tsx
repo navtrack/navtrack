@@ -18,24 +18,32 @@ import { FormattedMessage } from "react-intl";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { NavbarOrganization } from "./NavbarOrganization";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
-import { useCallback, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { NavbarBreadcrumbs } from "./NavbarBreadcrumbs";
+import {
+  AssetUserRole,
+  OrganizationUserRole
+} from "@navtrack/shared/api/model/generated";
+import { SlotContext } from "../../../../app/SlotContext";
+import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
 };
 
-export type AssetNavbarMenuItem = {
+export type NavbarMenuItem = {
   label: string;
   path: string;
   icon: IconProp;
   order: number;
   count?: number;
+  organizationRole?: OrganizationUserRole;
+  assetRole?: AssetUserRole;
 };
 
-const assetNavbarMenuitems: AssetNavbarMenuItem[] = [
+const assetNavbarMenuitems: NavbarMenuItem[] = [
   {
     label: "navbar.asset.live-tracking",
     path: Paths.AssetLive,
@@ -64,7 +72,8 @@ const assetNavbarMenuitems: AssetNavbarMenuItem[] = [
     label: "navbar.asset.settings",
     path: Paths.AssetSettings,
     icon: faCog,
-    order: 40
+    order: 40,
+    assetRole: AssetUserRole.Owner
   }
 ];
 
@@ -73,8 +82,10 @@ export function AuthenticatedLayoutNavbar(
 ) {
   const currentAsset = useCurrentAsset();
   const currentOrganization = useCurrentOrganization();
+  const slots = useContext(SlotContext);
+  const authorize = useAuthorize();
 
-  const navbarMenuItems: AssetNavbarMenuItem[] = useMemo(
+  const organizationNavbarMenuItems: NavbarMenuItem[] = useMemo(
     () => [
       {
         label: "navbar.asset.live-tracking",
@@ -113,13 +124,15 @@ export function AuthenticatedLayoutNavbar(
         path: Paths.OrganizationUsers,
         icon: faUser,
         order: 35,
-        count: currentOrganization.data?.usersCount
+        count: currentOrganization.data?.usersCount,
+        organizationRole: OrganizationUserRole.Owner
       },
       {
         label: "generic.settings",
         path: Paths.OrganizationSettings,
         icon: faCog,
-        order: 40
+        order: 40,
+        organizationRole: OrganizationUserRole.Owner
       }
     ],
     [
@@ -132,11 +145,23 @@ export function AuthenticatedLayoutNavbar(
   const menuItems = useMemo(
     () =>
       currentAsset.id !== undefined
-        ? assetNavbarMenuitems
+        ? assetNavbarMenuitems.filter(
+            (item) =>
+              item.assetRole === undefined || authorize.asset(item.assetRole)
+          )
         : currentOrganization.id !== undefined
-        ? navbarMenuItems
+        ? organizationNavbarMenuItems.filter(
+            (item) =>
+              item.organizationRole === undefined ||
+              authorize.organization(item.organizationRole)
+          )
         : [],
-    [currentAsset.id, currentOrganization.id, navbarMenuItems]
+    [
+      authorize,
+      currentAsset.id,
+      currentOrganization.id,
+      organizationNavbarMenuItems
+    ]
   );
 
   const getPath = useCallback(
@@ -178,6 +203,7 @@ export function AuthenticatedLayoutNavbar(
           <NavbarBreadcrumbs />
         </div>
         <div className="flex items-center space-x-4">
+          {slots?.navbarAdditional}
           <NavbarOrganization />
           {/*<button
             type="button"

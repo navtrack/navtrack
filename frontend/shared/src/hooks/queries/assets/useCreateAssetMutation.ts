@@ -6,7 +6,7 @@ import {
   useAssetsCreate
 } from "../../../api/index-generated";
 
-export function useAddAssetMutation() {
+export function useCreateAssetMutation() {
   const queryClient = useQueryClient();
 
   const mutation = useAssetsCreate({
