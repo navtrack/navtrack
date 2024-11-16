@@ -26,6 +26,7 @@ public class AuthorizeTeamActionFilter(INavtrackContextAccessor navtrackContextA
             string? teamId = ActionFilterHelpers.GetId(context.HttpContext, "teamId");
 
             TeamDocument? team = !string.IsNullOrEmpty(teamId) ? await teamRepository.GetById(teamId) : null;
+            team.Return404IfNull();
                 
             bool hasRole = navtrackContextAccessor.NavtrackContext.HasTeamUserRole(team, authorizeTeamAttribute.UserRole);
 

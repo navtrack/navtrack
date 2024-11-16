@@ -27,6 +27,7 @@ public class AuthorizeAssetActionFilter(
             string? assetId = ActionFilterHelpers.GetId(context.HttpContext, "assetId");
 
             AssetDocument? asset = !string.IsNullOrEmpty(assetId) ? await assetRepository.GetById(assetId) : null;
+            asset.Return404IfNull();
 
             bool hasRole =
                 navtrackContextAccessor.NavtrackContext.HasAssetUserRole(asset, authorizeAssetAttribute.UserRole);

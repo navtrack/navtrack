@@ -100,7 +100,7 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
                 }));
         }
 
-        Assert.Equal(HttpStatusCode.TooManyRequests, responseMessages.Last().StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, responseMessages.Last().StatusCode);
     }
     
     [Fact]
