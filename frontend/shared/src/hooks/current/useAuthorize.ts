@@ -56,7 +56,7 @@ export function useAuthorize() {
           return false;
       }
     },
-    [authorizeOrganization, currentUser.data?.assets]
+    [authorizeOrganization, currentAsset.id, currentUser.data?.assets]
   );
 
   return { organization: authorizeOrganization, asset: assetAuthorize };

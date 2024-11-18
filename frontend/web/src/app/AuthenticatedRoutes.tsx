@@ -12,7 +12,6 @@ import { Paths } from "./Paths";
 import { SettingsAuthenticationPage } from "../components/settings/SettingsAuthenticationPage";
 import { AssetSettingsDevicePage } from "../components/asset/settings/device/AssetSettingsDevicePage";
 import { ReactNode } from "react";
-import { useSetCurrentAssetFromRoute } from "../hooks/assets/useSetCurrentAssetFromRoute";
 import { AuthenticatedLayoutTwoColumns } from "../components/ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { AssetLogPage } from "../components/asset/log/AssetLogPage";
 import { AssetSettingsLayout } from "../components/asset/settings/shared/AssetSettingsLayout";
@@ -30,6 +29,7 @@ import { OrganizationSettingsLayout } from "../components/organizations/settings
 import { NotFoundPage } from "../components/shared/NotFoundPage";
 import { AuthenticatedLayoutOneColumn } from "../components/ui/layouts/authenticated/AuthenticatedLayoutOneColumn";
 import { OrganizationsPage } from "../components/organizations/OrganizationsPage";
+import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentAssetFromRoute";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
