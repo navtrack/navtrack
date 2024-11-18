@@ -38,13 +38,13 @@ public class GetAssetStatsRequestHandler(
                 DateTime? first = AssetStatsDateRangeMapper.GetFirstDate(dateRange, middle);
                 DateTime? last = AssetStatsDateRangeMapper.GetEndDate(dateRange, middle);
 
-                (DeviceMessageDocument? first, DeviceMessageDocument? last) currentPositions =
-                    await deviceMessageRepository.GetFirstAndLast(request.AssetId, middle, last);
-                (DeviceMessageDocument? first, DeviceMessageDocument? last) previousPositions =
-                    await deviceMessageRepository.GetFirstAndLast(request.AssetId, first, middle);
+                GetFirstAndLastPositionResult currentRangePositions =
+                    await deviceMessageRepository.GetFirstAndLast(asset!.Id, middle, last);
+                GetFirstAndLastPositionResult previousRangePositions =
+                    await deviceMessageRepository.GetFirstAndLast(asset!.Id, first, middle);
 
                 AssetStatItem model =
-                    AssetStatItemMapper.Map(dateRange, initialOdometer, currentPositions, previousPositions);
+                    AssetStatItemMapper.Map(dateRange, initialOdometer, currentRangePositions, previousRangePositions);
 
                 return model;
             }))

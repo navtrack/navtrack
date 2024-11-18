@@ -18,4 +18,8 @@ public class AssetStatItem
     public double? FuelConsumption { get; set; }
     public double? FuelConsumptionPrevious { get; set; }
     public int? FuelConsumptionChange { get; set; }
+    
+    public double? FuelConsumptionAverage { get; set; }
+    public double? FuelConsumptionAveragePrevious { get; set; }
+    public int? FuelConsumptionAverageChange { get; set; }
 }

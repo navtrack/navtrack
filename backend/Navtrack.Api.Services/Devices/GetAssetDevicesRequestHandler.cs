@@ -33,8 +33,8 @@ public class GetAssetDevicesRequestHandler(
     
     public override async Task<Model.Common.List<Device>> Handle(GetAssetDevicesRequest request)
     {
-        System.Collections.Generic.List<DeviceDocument> devices = await deviceRepository.GetDevicesByAssetId(request.AssetId);
-        System.Collections.Generic.List<DeviceType> deviceTypes = deviceTypeRepository
+        List<DeviceDocument> devices = await deviceRepository.GetDevicesByAssetId(request.AssetId);
+        List<DeviceType> deviceTypes = deviceTypeRepository
             .GetDeviceTypes()
             .Where(x => devices.Any(y => y.DeviceTypeId == x.Id))
             .ToList();

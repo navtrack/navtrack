@@ -39,7 +39,7 @@ export function AssetDashboardPage() {
             <FormattedMessage id={item.labelId} />
           </h3>
           <Card>
-            <dl className="mt-2 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden md:grid-cols-3 md:divide-x md:divide-y-0">
+            <dl className="mt-2 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden md:grid-cols-4 md:divide-x md:divide-y-0">
               <DashboardItem
                 dateRange={item.dataRange}
                 labelId="generic.distance"
@@ -58,10 +58,22 @@ export function AssetDashboardPage() {
               />
               <DashboardItem
                 dateRange={item.dataRange}
-                labelId="generic.fuel-consumption"
+                labelId="generic.fuel-consumed"
                 mainStat={show.volume(item.data?.fuelConsumption)}
                 secondaryStat={show.volume(item.data?.fuelConsumptionPrevious)}
                 change={item.data?.fuelConsumptionChange}
+                loading={statsQuery.isLoading}
+              />
+              <DashboardItem
+                dateRange={item.dataRange}
+                labelId="generic.average-fuel-consumption"
+                mainStat={show.showFuelConsumption(
+                  item.data?.fuelConsumptionAverage
+                )}
+                secondaryStat={show.showFuelConsumption(
+                  item.data?.fuelConsumptionAveragePrevious
+                )}
+                change={item.data?.fuelConsumptionAverageChange}
                 loading={statsQuery.isLoading}
               />
             </dl>

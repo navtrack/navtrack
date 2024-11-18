@@ -15,6 +15,9 @@ export interface AssetStatItem {
   durationChange?: number | null;
   durationPrevious?: number | null;
   fuelConsumption?: number | null;
+  fuelConsumptionAverage?: number | null;
+  fuelConsumptionAverageChange?: number | null;
+  fuelConsumptionAveragePrevious?: number | null;
   fuelConsumptionChange?: number | null;
   fuelConsumptionPrevious?: number | null;
 }

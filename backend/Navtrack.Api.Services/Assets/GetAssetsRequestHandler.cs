@@ -35,9 +35,9 @@ public class GetAssetsRequestHandler(
 
     public override async Task<Model.Common.List<Asset>> Handle(GetAssetsRequest request)
     {
-        System.Collections.Generic.List<AssetDocument> assets = await GetAssetsByOrganizationId(organization!.Id);
+        List<AssetDocument> assets = await GetAssetsByOrganizationId(organization!.Id);
 
-        System.Collections.Generic.List<string> assetDeviceTypes =
+        List<string> assetDeviceTypes =
             assets.Where(x => x.Device != null)
                 .Select(x => x.Device!.DeviceTypeId)
                 .Distinct()
@@ -52,7 +52,7 @@ public class GetAssetsRequestHandler(
     }
     
     
-    private Task<System.Collections.Generic.List<AssetDocument>> GetAssetsByOrganizationId(ObjectId organizationId)
+    private Task<List<AssetDocument>> GetAssetsByOrganizationId(ObjectId organizationId)
     {
         if (navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(organizationId.ToString(), OrganizationUserRole.Owner))
         {

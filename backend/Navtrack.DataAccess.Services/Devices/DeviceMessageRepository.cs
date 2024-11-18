@@ -116,24 +116,37 @@ public class DeviceMessageRepository(IRepository repository)
                 x.Metadata.DeviceId == ObjectId.Parse(deviceId) && x.Metadata.AssetId == ObjectId.Parse(assetId));
     }
 
-    public async Task<(DeviceMessageDocument? first, DeviceMessageDocument? last)> GetFirstAndLast(string assetId,
+    public async Task<GetFirstAndLastPositionResult> GetFirstAndLast(ObjectId assetId,
         DateTime? startDate, DateTime? endDate)
     {
         IMongoQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
-            .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) &&
+            .Where(x => x.Metadata.AssetId == assetId &&
                         x.Position.Date >= startDate &&
                         x.Position.Date <= endDate);
 
-        DeviceMessageDocument? first = await query.OrderBy(x => x.Position.Date).FirstOrDefaultAsync();
-        DeviceMessageDocument? last = await query.OrderByDescending(x => x.Position.Date).FirstOrDefaultAsync();
+        GetFirstAndLastPositionResult result = new()
+        {
+            FirstOdometer = await query.Where(x => x.Device!.Odometer > 0)
+                .OrderBy(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+            LastOdometer = await query.Where(x => x.Device!.Odometer > 0)
+                .OrderByDescending(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+            FirstFuelConsumed = await query.Where(x => x.Vehicle!.FuelConsumed > 0)
+                .OrderBy(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+            LastFuelConsumed = await query.Where(x => x.Vehicle!.FuelConsumed > 0)
+                .OrderByDescending(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+        };
 
-        return (first, last);
+        return result;
     }
 
     public async Task<DeviceMessageDocument?> GetFirstOdometer(string assetId)
     {
         DeviceMessageDocument? first = await repository.GetQueryable<DeviceMessageDocument>()
-            .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) && x.Device != null && x.Device.Odometer != null)
+            .Where(x => x.Metadata.AssetId == ObjectId.Parse(assetId) && x.Device != null && x.Device.Odometer > 0)
             .OrderBy(x => x.Position.Date)
             .FirstOrDefaultAsync();
 

@@ -62,6 +62,22 @@ export function useShow() {
     [units.unitsType, units.volume]
   );
 
+  const showFuelConsumption = useCallback(
+    (fuel?: number | null) => {
+      if (fuel === undefined || fuel === null) {
+        return undefined;
+      }
+
+      const convertedVolume =
+        units.unitsType === UnitsType.Imperial ? 235.215 / fuel : fuel ?? 0;
+
+      const roundedVolume = Math.round(convertedVolume * 100) / 100;
+
+      return `${roundedVolume} ${units.fuelConsumption}`;
+    },
+    [units.fuelConsumption, units.unitsType]
+  );
+
   const showDate = useCallback(
     (
       date?: string | Date | null,
@@ -102,6 +118,7 @@ export function useShow() {
     volume: showVolume,
     date: showDate,
     time: showTime,
-    dateTime: showDateTime
+    dateTime: showDateTime,
+    showFuelConsumption
   };
 }

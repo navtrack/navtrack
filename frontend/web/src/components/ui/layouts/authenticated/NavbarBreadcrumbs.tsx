@@ -74,7 +74,7 @@ export function NavbarBreadcrumbs() {
           <NavLink
             to={page.href}
             className={classNames(
-              "ml-2 rounded-md px-2 py-1 text-gray-900 hover:bg-gray-100",
+              "ml-2 whitespace-nowrap rounded-md px-2 py-1 text-gray-900 hover:bg-gray-100",
               c(i === breadcrumbs.length - 1, "font-semibold")
             )}>
             {page.name}

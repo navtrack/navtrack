@@ -9,6 +9,7 @@ type Units = {
   volume: string;
   length: string;
   lengthK: string;
+  fuelConsumption: string;
 };
 
 export function useCurrentUnits() {
@@ -22,7 +23,8 @@ export function useCurrentUnits() {
         speed: intl.formatMessage({ id: "generic.units.mph" }),
         length: intl.formatMessage({ id: "generic.units.ft" }),
         lengthK: intl.formatMessage({ id: "generic.units.miles" }),
-        volume: intl.formatMessage({ id: "generic.units.gal" })
+        volume: intl.formatMessage({ id: "generic.units.gal" }),
+        fuelConsumption: intl.formatMessage({ id: "generic.units.mpg" })
       };
     }
 
@@ -31,7 +33,8 @@ export function useCurrentUnits() {
       speed: intl.formatMessage({ id: "generic.units.kph" }),
       length: intl.formatMessage({ id: "generic.units.m" }),
       lengthK: intl.formatMessage({ id: "generic.units.km" }),
-      volume: intl.formatMessage({ id: "generic.units.l" })
+      volume: intl.formatMessage({ id: "generic.units.l" }),
+      fuelConsumption: intl.formatMessage({ id: "generic.units.l100km" })
     };
   }, [currentUser.data?.units, intl]);
 

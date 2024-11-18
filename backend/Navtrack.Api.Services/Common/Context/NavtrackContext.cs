@@ -32,7 +32,8 @@ public class NavtrackContext
         return userRole switch
         {
             AssetUserRole.Owner => userAsset?.UserRole == AssetUserRole.Owner,
-            AssetUserRole.Viewer => userAsset?.UserRole is AssetUserRole.Owner or AssetUserRole.Viewer,
+            AssetUserRole.Viewer => userAsset?.UserRole is AssetUserRole.Owner or AssetUserRole.Viewer ||
+                                    User.Teams?.Any(x => asset.Teams?.Any(y => y.TeamId == x.TeamId) == true) == true,
             _ => false
         };
     }
@@ -59,14 +60,14 @@ public class NavtrackContext
             _ => false
         };
     }
-    
+
     public bool HasOrganizationUserRole(string organizationId, OrganizationUserRole userRole)
     {
         if (!ObjectId.TryParse(organizationId, out ObjectId organizationObjectId))
         {
             return false;
         }
-     
+
         UserOrganizationElement? userOrganization = User?.Organizations?.FirstOrDefault(x =>
             x.OrganizationId == organizationObjectId);
 

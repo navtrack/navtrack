@@ -31,7 +31,7 @@ export function NavbarOrganization() {
             <Badge
               color={BadgeColor.Gray}
               size="lg"
-              className="hover:bg-gray-100">
+              className="whitespace-nowrap hover:bg-gray-100">
               {currentOrganization.isLoading ? (
                 <LoadingIndicator />
               ) : (

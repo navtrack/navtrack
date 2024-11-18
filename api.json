@@ -2876,6 +2876,21 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "fuelConsumptionAverage": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fuelConsumptionAveragePrevious": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fuelConsumptionAverageChange": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         }
       },
