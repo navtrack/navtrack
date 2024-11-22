@@ -38,11 +38,11 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "query-string": "^9.1.0",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-cosmos": "6.1.1",
     "react-cosmos-plugin-open-fixture": "6.1.1",
     "react-cosmos-plugin-vite": "6.1.1",
-    "react-dom": "18.2.0",
+    "react-dom": "18.3.1",
     "react-intl": "^6.6.8",
     "react-leaflet": "^4.1.0",
     "react-router-dom": "^6.26.0",
@@ -56,10 +56,6 @@
     "start:web": "cd web && npm run start",
     "build:web": "cd web && npm run build",
     "clean": "rm -rf node_modules && rm -rf shared/node_modules && rm -rf web/node_modules && rm -rf package-lock.json"
-  },
-  "overrides": {
-    "react-dom": "18.2.0",
-    "react": "18.2.0"
   },
   "eslintConfig": {
     "rules": {
