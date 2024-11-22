@@ -14,6 +14,7 @@ import {
   removeFromAsyncStorage
 } from "../../../utils/asyncStorage";
 import { LoginFormValues } from "../../user/login/LoginFormValues";
+import { useResetCurrent } from "../../current/useResetCurrent";
 
 export type ExternalAuthenticationProvider = "apple" | "microsoft" | "google";
 
@@ -95,6 +96,7 @@ const authenticationAtom = atom<AuthenticationState>({
 export function useAuthentication() {
   const appConfig = useRecoilValue(appConfigAtom);
   const queryClient = useQueryClient();
+  const resetCurrent = useResetCurrent();
   const [state, setState] = useRecoilState(authenticationAtom);
 
   const tokenMutation = useTokenMutation({
@@ -129,6 +131,7 @@ export function useAuthentication() {
           error.response?.data.code === "LOGIN_000002";
 
         AuthenticationStorage.remove();
+        resetCurrent();
         setState((prev) => ({
           ...prev,
           isAuthenticated: false,
@@ -137,11 +140,11 @@ export function useAuthentication() {
             prev.external !== undefined
               ? prev.external
               : accountNotLinkedError
-              ? {
-                  provider: data.grant_type as ExternalAuthenticationProvider,
-                  token: error.response?.data.token ?? data.code
-                }
-              : undefined
+                ? {
+                    provider: data.grant_type as ExternalAuthenticationProvider,
+                    token: error.response?.data.token ?? data.code
+                  }
+                : undefined
         }));
       },
       onSettled: () => {
@@ -228,7 +231,8 @@ export function useAuthentication() {
       external: undefined
     });
     queryClient.clear();
-  }, [queryClient, setState]);
+    resetCurrent();
+  }, [queryClient, resetCurrent, setState]);
 
   const initialize = useCallback(async () => {
     getAccessToken().finally(() => {

@@ -17,10 +17,10 @@ export function OrganizationsPage() {
       <Heading type="h1">
         <FormattedMessage id="generic.organizations" />
       </Heading>
-      <div className="mt-4 grid grid-cols-4 gap-4">
+      <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {organizations.isLoading ? (
           <Skeleton isLoading background="bg-gray-300">
-            <div className="h-24" />
+            <div className="h-28" />
           </Skeleton>
         ) : (
           organizations.data?.items.map((organization) => (
@@ -32,7 +32,7 @@ export function OrganizationsPage() {
         )}
         <div
           onClick={() => setOpen(true)}
-          className="flex h-24 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-500 hover:border-gray-600 hover:bg-gray-200">
+          className="flex h-28 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-500 hover:border-gray-600 hover:bg-gray-200">
           <Icon icon={faPlus} className="mr-2" />
           <FormattedMessage id="generic.new-organization" />
         </div>

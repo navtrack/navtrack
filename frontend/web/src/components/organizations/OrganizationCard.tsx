@@ -24,15 +24,19 @@ export function OrganizationCard(props: OrganizationCardProps) {
       to={generatePath(Paths.OrganizationLive, {
         id: props.organization.id
       })}>
-      <Card className=" cursor-pointer p-4 text-gray-900 hover:bg-gray-50">
-        <div className="flex justify-between">
-          <div className="text-lg font-semibold">
-            <Icon icon={faBuilding} className="mr-2" />
+      <Card className="flex flex-col cursor-pointer p-4 text-gray-900 hover:bg-gray-50 h-28">
+        <div className="flex flex-1">
+          <div className="h-7">
+            <Icon icon={faBuilding} />
+          </div>
+          <div className="flex-1 text-lg font-semibold mx-2 h-14 line-clamp-2">
             {props.organization.name}
           </div>
-          <Badge color={BadgeColor.Blue}>{userOrganization?.userRole}</Badge>
+          <div>
+            <Badge color={BadgeColor.Blue}>{userOrganization?.userRole}</Badge>
+          </div>
         </div>
-        <div className="mt-4 flex space-x-4 text-sm text-gray-500">
+        <div className="flex space-x-4 text-sm text-gray-500">
           <div>
             <Icon icon={faHdd} className="mr-1" />
             {props.organization.assetsCount}

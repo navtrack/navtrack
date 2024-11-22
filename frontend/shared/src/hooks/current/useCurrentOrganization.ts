@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import { useOrganizationsQuery } from "../queries/organizations/useOrganizationsQuery";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { currentOrganizationIdAtom } from "../../state/current";
 
 export function useCurrentOrganization() {
-  const currentOrganizationId = useRecoilValue(currentOrganizationIdAtom);
+  const [currentOrganizationId, setCurrentOrganizationId] = useRecoilState(
+    currentOrganizationIdAtom
+  );
+
   const organizations = useOrganizationsQuery();
 
   const organization = useMemo(
@@ -16,6 +19,7 @@ export function useCurrentOrganization() {
   return {
     id: currentOrganizationId,
     data: organization,
-    isLoading: organizations.isLoading
+    isLoading: organizations.isLoading,
+    set: setCurrentOrganizationId
   };
 }

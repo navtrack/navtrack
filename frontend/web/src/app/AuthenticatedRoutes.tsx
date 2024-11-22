@@ -30,6 +30,7 @@ import { NotFoundPage } from "../components/shared/NotFoundPage";
 import { AuthenticatedLayoutOneColumn } from "../components/ui/layouts/authenticated/AuthenticatedLayoutOneColumn";
 import { OrganizationsPage } from "../components/organizations/OrganizationsPage";
 import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentAssetFromRoute";
+import { useSetCurrentOrganizationFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentOrganizationFromRoute";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -41,6 +42,7 @@ type AuthenticatedRoutesProps = {
 
 export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
   useSetCurrentAssetFromRoute();
+  useSetCurrentOrganizationFromRoute();
 
   return (
     <Routes>
