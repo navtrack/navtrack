@@ -1,6 +1,12 @@
 import { Fragment, useState } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { classNames } from "@navtrack/shared/utils/tailwind";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition
+} from "@headlessui/react";
+import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { Icon } from "../../icon/Icon";
 import { faAngleDown, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
@@ -25,7 +31,7 @@ export function NavbarOrganization() {
       <CreateOrganizationModal open={open} setOpen={setOpen} />
       <Menu as="div" className="relative">
         <div>
-          <Menu.Button
+          <MenuButton
             disabled={currentOrganization.isLoading}
             className="relative flex rounded-md bg-white text-sm text-gray-900 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 disabled:hover:text-gray-900">
             <Badge
@@ -44,7 +50,7 @@ export function NavbarOrganization() {
                 </>
               )}
             </Badge>
-          </Menu.Button>
+          </MenuButton>
         </div>
         <Transition
           as={Fragment}
@@ -54,9 +60,9 @@ export function NavbarOrganization() {
           leave="transition ease-in duration-75"
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95">
-          <Menu.Items className="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <MenuItems className="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="mb-1 border-b border-gray-200 pb-1">
-              <Menu.Item>
+              <MenuItem>
                 {({ active }) => (
                   <div
                     onClick={(e) => {
@@ -71,15 +77,19 @@ export function NavbarOrganization() {
                     </IconWithText>
                   </div>
                 )}
-              </Menu.Item>
+              </MenuItem>
             </div>
             {organizations.data?.items.map((organization) => (
-              <Menu.Item key={organization.id}>
+              <MenuItem key={organization.id}>
                 {({ active }) => (
                   <button
                     className={classNames(
                       active ? "bg-gray-100" : "",
-                      " w-full px-4 py-2 text-left text-sm text-gray-700"
+                      "w-full px-4 py-2 text-left text-sm text-gray-700",
+                      c(
+                        organization.id === currentOrganization.data?.id,
+                        "bg-gray-100"
+                      )
                     )}
                     onClick={() => {
                       navigate(
@@ -93,9 +103,9 @@ export function NavbarOrganization() {
                     </IconWithText>
                   </button>
                 )}
-              </Menu.Item>
+              </MenuItem>
             ))}
-          </Menu.Items>
+          </MenuItems>
         </Transition>
       </Menu>
     </>

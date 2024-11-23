@@ -11,6 +11,7 @@ import { Button } from "../../button/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "../../icon/Icon";
 import { faHdd } from "@fortawesome/free-regular-svg-icons";
+import { useMemo } from "react";
 
 export function AuthenticatedLayoutSidebar() {
   const currentOrganization = useCurrentOrganization();
@@ -18,10 +19,20 @@ export function AuthenticatedLayoutSidebar() {
     organizationId: currentOrganization.data?.id
   });
 
+  const logoPath = useMemo(() => {
+    if (currentOrganization.id !== undefined) {
+      return generatePath(Paths.OrganizationLive, {
+        id: currentOrganization.id
+      });
+    }
+
+    return Paths.Home;
+  }, [currentOrganization.id]);
+
   return (
     <div className="absolute bottom-0 top-0 flex w-64 flex-col">
       <div className="relative flex h-14 items-center bg-gray-900 px-4">
-        <Link to={Paths.Home} className="flex items-center">
+        <Link to={logoPath} className="flex items-center">
           <NavtrackLogoDark className="h-10 w-10 p-2" />
           <span className="ml-2 text-2xl font-semibold tracking-wide text-white">
             <FormattedMessage id="navtrack" />

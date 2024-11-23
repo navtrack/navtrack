@@ -4,7 +4,7 @@ import { currentAssetIdAtom } from "../../state/current";
 import { useCurrentOrganization } from "./useCurrentOrganization";
 import { useAssetsQuery } from "../queries/assets/useAssetsQuery";
 
-export const useSetCurrentAssetFromList = () => {
+export function useSetCurrentAssetFromList() {
   const [currentAssetId, setCurrentAssetId] =
     useRecoilState(currentAssetIdAtom);
   const currentOrganization = useCurrentOrganization();
@@ -15,4 +15,4 @@ export const useSetCurrentAssetFromList = () => {
       setCurrentAssetId(assets.data.items[0].id);
     }
   }, [assets, currentAssetId, setCurrentAssetId]);
-};
+}

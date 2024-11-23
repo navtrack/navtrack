@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useMatch } from "react-router-dom";
-import { useOrganizationsQuery } from "../queries/organizations/useOrganizationsQuery";
 import { useCurrentAsset } from "./useCurrentAsset";
 import { useRecoilState } from "recoil";
 import { currentOrganizationIdAtom } from "../../state/current";
@@ -12,7 +11,6 @@ export function useSetCurrentOrganizationFromRoute() {
   );
 
   const orgMatch = useMatch("/orgs/:id/*");
-  const organizations = useOrganizationsQuery();
 
   const assetMatch = useMatch("/assets/:id/*");
   const currentAsset = useCurrentAsset();
@@ -75,17 +73,4 @@ export function useSetCurrentOrganizationFromRoute() {
     setCurrentOrganizationId,
     teamMatch?.params.id
   ]);
-
-  const organization = useMemo(
-    () =>
-      organizations.data?.items.find((org) => org.id === currentOrganizationId),
-    [currentOrganizationId, organizations.data?.items]
-  );
-
-  return {
-    id: orgMatch?.params.id ?? currentOrganizationId,
-    data: organization,
-    isLoading: organizations.isLoading,
-    clear: () => setCurrentOrganizationId(undefined)
-  };
 }

@@ -58,7 +58,6 @@ export function GeofenceFilterModal(props: GeofenceFilterModalProps) {
               <div className="mt-4 flex flex-grow" style={{ height: "400px" }}>
                 {renderMap && (
                   <Map center={filter.center} initialZoom={filter.zoom}>
-                    <>{console.log("center", filter.center, filter.zoom)}</>
                     <MapMove onMove={filter.handleMapMove} />
                     <GeofenceCircle
                       geofence={values.geofence}

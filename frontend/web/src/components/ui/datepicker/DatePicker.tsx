@@ -17,9 +17,9 @@ export function DatePicker(props: DatePickerProps) {
       <InputLabel label={props.label} />
       <Datepicker
         labelClearButton={intl.formatMessage({ id: "generic.close" })}
-        defaultDate={props.value}
+        value={props.value}
         disabled={props.disabled}
-        onSelectedDateChanged={(date) => props.onChange(date)}
+        onChange={(date) => (date !== null ? props.onChange(date) : undefined)}
         theme={{
           root: {
             input: {

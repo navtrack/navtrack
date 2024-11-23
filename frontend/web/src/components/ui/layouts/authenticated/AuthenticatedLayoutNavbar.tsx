@@ -150,12 +150,12 @@ export function AuthenticatedLayoutNavbar(
               item.assetRole === undefined || authorize.asset(item.assetRole)
           )
         : currentOrganization.id !== undefined
-        ? organizationNavbarMenuItems.filter(
-            (item) =>
-              item.organizationRole === undefined ||
-              authorize.organization(item.organizationRole)
-          )
-        : [],
+          ? organizationNavbarMenuItems.filter(
+              (item) =>
+                item.organizationRole === undefined ||
+                authorize.organization(item.organizationRole)
+            )
+          : [],
     [
       authorize,
       currentAsset.id,
@@ -174,8 +174,8 @@ export function AuthenticatedLayoutNavbar(
           isAsset
             ? currentAsset.id
             : isOrganization
-            ? currentOrganization.id
-            : undefined
+              ? currentOrganization.id
+              : undefined
         }`
       });
     },
