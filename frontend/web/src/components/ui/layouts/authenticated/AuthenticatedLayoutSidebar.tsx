@@ -12,6 +12,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "../../icon/Icon";
 import { faHdd } from "@fortawesome/free-regular-svg-icons";
 import { useMemo } from "react";
+import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
+import { OrganizationUserRole } from "@navtrack/shared/api/model/generated";
 
 export function AuthenticatedLayoutSidebar() {
   const currentOrganization = useCurrentOrganization();
@@ -47,14 +49,16 @@ export function AuthenticatedLayoutSidebar() {
           <Icon icon={faHdd} className="mr-2" />
           <FormattedMessage id="generic.assets" />
         </Link>
-        <Link
-          to={generatePath(Paths.OrganizationAssetsNew, {
-            id: `${currentOrganization.id}`
-          })}>
-          <Button size="xs" color="success" icon={faPlus}>
-            <FormattedMessage id="generic.new-asset" />
-          </Button>
-        </Link>
+        <Authorize organizationUserRole={OrganizationUserRole.Owner}>
+          <Link
+            to={generatePath(Paths.OrganizationAssetsNew, {
+              id: `${currentOrganization.id}`
+            })}>
+            <Button size="xs" color="success" icon={faPlus}>
+              <FormattedMessage id="generic.new-asset" />
+            </Button>
+          </Link>
+        </Authorize>
       </div>
       <div
         className="relative flex-1 overflow-y-scroll bg-gray-800 py-2"

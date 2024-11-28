@@ -18,6 +18,8 @@ import { useCreateTeamMutation } from "@navtrack/shared/hooks/queries/teams/useC
 import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
+import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
+import { OrganizationUserRole } from "@navtrack/shared/api/model/generated";
 
 export type CreateTeamFormValues = {
   name: string;
@@ -71,7 +73,7 @@ export function CreateTeamModal() {
   );
 
   return (
-    <>
+    <Authorize organizationUserRole={OrganizationUserRole.Owner}>
       <Button onClick={() => setOpen(true)} icon={faPlus}>
         <FormattedMessage id="teams.new" />
       </Button>
@@ -112,6 +114,6 @@ export function CreateTeamModal() {
           )}
         </Formik>
       </Modal>
-    </>
+    </Authorize>
   );
 }

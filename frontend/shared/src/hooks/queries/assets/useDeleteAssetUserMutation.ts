@@ -4,7 +4,7 @@ import {
   useAssetsUsersDelete
 } from "../../../api/index-generated";
 
-export function useAssetUserDeleteMutation() {
+export function useDeleteAssetUserMutation() {
   const queryClient = useQueryClient();
 
   const mutation = useAssetsUsersDelete({

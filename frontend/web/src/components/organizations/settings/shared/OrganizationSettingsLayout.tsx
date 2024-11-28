@@ -22,13 +22,15 @@ export function OrganizationSettingsLayout() {
   const slots = useContext(SlotContext);
 
   const menuItems = useMemo(() => {
-    return (
-      slots?.organizationSettingsMenuItems ??
-      defaultOrganizationSettingsMenuItems
-    ).map((item) => ({
-      ...item,
-      path: generatePath(item.path, { id: currentOrganization.id })
-    }));
+    return currentOrganization.id !== undefined
+      ? (
+          slots?.organizationSettingsMenuItems ??
+          defaultOrganizationSettingsMenuItems
+        ).map((item) => ({
+          ...item,
+          path: generatePath(item.path, { id: currentOrganization.id })
+        }))
+      : [];
   }, [currentOrganization.id, slots?.organizationSettingsMenuItems]);
 
   return (

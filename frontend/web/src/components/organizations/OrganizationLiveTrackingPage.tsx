@@ -10,8 +10,9 @@ import { MapPinLabel } from "../ui/map/MapPinLabel";
 import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";
 import { MapShowAllControl } from "../ui/map/MapShowAllControl";
-import { MapShowAll } from "../ui/map/MapShowAll";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
+import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../constants";
+import { MapShowAll } from "../ui/map/MapShowAll";
 
 export function OrganizationLiveTrackingPage() {
   const navigate = useNavigate();
@@ -72,12 +73,12 @@ export function OrganizationLiveTrackingPage() {
       </div>
       <Card className="flex flex-grow">
         <CardMapWrapper>
-          <Map center={{ latitude: 46.77689, longitude: 23.601674 }}>
+          <Map center={DEFAULT_MAP_CENTER} initialZoom={DEFAULT_MAP_ZOOM}>
             {assetsWithPosition.map((asset) => (
               <MapPinLabel
                 key={asset.id}
                 pin={{
-                  coordinates: asset.lastPositionMessage?.position?.coordinates,
+                  coordinates: asset.lastPositionMessage!.position.coordinates,
                   label: asset.name,
                   color: asset.online ? "green" : "primary"
                 }}
@@ -86,7 +87,11 @@ export function OrganizationLiveTrackingPage() {
                 }
               />
             ))}
-            <MapShowAll coordinates={coordinates} once />
+            {/* <MapShowAll
+              key={currentOrganization.id}
+              coordinates={coordinates}
+              once
+            /> */}
             <MapShowAllControl />
           </Map>
         </CardMapWrapper>

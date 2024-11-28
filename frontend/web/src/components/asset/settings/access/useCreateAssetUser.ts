@@ -6,29 +6,30 @@ import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { object, ObjectSchema, string } from "yup";
 
-export type AddUserToAssetFormValues = {
+export type CreateAssetUserFormValues = {
   email: string;
   role: string;
 };
 
-type UseAddUserToAssetProps = {
+type CreateAssetUserProps = {
   close: () => void;
 };
 
-export function useAddUserToAsset(props: UseAddUserToAssetProps) {
+export function useCreateAssetUser(props: CreateAssetUserProps) {
   const mutation = useAssetUserCreateMutation();
   const currentAsset = useCurrentAsset();
 
-  const validationSchema: ObjectSchema<AddUserToAssetFormValues> = object({
+  const validationSchema: ObjectSchema<CreateAssetUserFormValues> = object({
     email: string()
       .email("generic.email.invalid")
       .required("generic.email.required"),
     role: string().required("generic.password.required").defined()
   });
+
   const handleSubmit = useCallback(
     (
-      values: AddUserToAssetFormValues,
-      formikHelpers: FormikHelpers<AddUserToAssetFormValues>
+      values: CreateAssetUserFormValues,
+      formikHelpers: FormikHelpers<CreateAssetUserFormValues>
     ) => {
       if (currentAsset.data) {
         mutation.mutate(
@@ -36,7 +37,7 @@ export function useAddUserToAsset(props: UseAddUserToAssetProps) {
             assetId: currentAsset.data.id,
             data: {
               email: values.email,
-              userRole: values.role as AssetUserRole // TODO: Fix this
+              userRole: values.role as AssetUserRole // TODO fix this
             }
           },
           {

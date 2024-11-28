@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { CreateUserModal } from "./CreateUserModal";
+import { CreateOrganizationUserModal } from "./CreateOrganizationUserModal";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 import { Heading } from "../ui/heading/Heading";
 import { OrganizationUser } from "@navtrack/shared/api/model/generated";
@@ -8,13 +8,13 @@ import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";
 import { ITableColumn } from "../ui/table/useTable";
-import { UpdateUserModal } from "./UpdateUserModal";
+import { UpdateOrganizationUserModal } from "./UpdateOrganizationUserModal";
 import { useDeleteOrganizationUserMutation } from "@navtrack/shared/hooks/queries/organizations/useDeleteOrganizationUserMutation";
 import { TableV2 } from "../ui/table/TableV2";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useOrganizationUsersQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationUsersQuery";
 
-export function UsersPage() {
+export function OrganizationUsersPage() {
   const currentUser = useCurrentUserQuery();
   const currentOrganization = useCurrentOrganization();
   const organizationUsers = useOrganizationUsersQuery({
@@ -36,7 +36,7 @@ export function UsersPage() {
       rowClassName: "flex justify-end space-x-2",
       row: (user) => (
         <>
-          <UpdateUserModal user={user} />
+          <UpdateOrganizationUserModal user={user} />
           <DeleteModal
             isLoading={deleteUser.isLoading}
             onConfirm={(close) => {
@@ -88,7 +88,7 @@ export function UsersPage() {
         <Heading type="h1">
           <FormattedMessage id="organizations.users.title" />
         </Heading>
-        <CreateUserModal />
+        <CreateOrganizationUserModal />
       </div>
       <TableV2 rows={organizationUsers.data?.items} columns={columns} />
     </>

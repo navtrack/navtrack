@@ -23,7 +23,7 @@ export type UpdateUserFormValues = {
   role: string;
 };
 
-export function UpdateUserModal(props: UpdateUserModalProps) {
+export function UpdateOrganizationUserModal(props: UpdateUserModalProps) {
   const currentUser = useCurrentUserQuery();
   const currentOrganization = useCurrentOrganization();
   const mutation = useUpdateOrganizationUserMutation();

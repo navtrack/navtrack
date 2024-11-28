@@ -7,7 +7,6 @@ import { AssetReportsPage } from "../components/asset/reports/AssetReportsPage";
 import { SettingsAccountPage } from "../components/settings/SettingsAccountPage";
 import { AssetSettingsGeneralPage } from "../components/asset/settings/general/AssetSettingsGeneralPage";
 import { NewAssetPage } from "../components/asset/new/NewAssetPage";
-import { AssetSettingsAccessPage } from "../components/asset/settings/access/AssetSettingsAccessPage";
 import { Paths } from "./Paths";
 import { SettingsAuthenticationPage } from "../components/settings/SettingsAuthenticationPage";
 import { AssetSettingsDevicePage } from "../components/asset/settings/device/AssetSettingsDevicePage";
@@ -18,8 +17,8 @@ import { AssetSettingsLayout } from "../components/asset/settings/shared/AssetSe
 import { AccountSettingsLayout } from "../components/settings/AccountSettingsLayout";
 import { AssetDashboardPage } from "../components/asset/dashboard/AssetDashboardPage";
 import { OrganizationSettingsGeneralPage } from "../components/organizations/settings/general/OrganizationSettingsGeneralPage";
-import { TeamsPage } from "../components/teams/TeamsPage";
-import { UsersPage } from "../components/users/UsersPage";
+import { OrganizationTeamsPage } from "../components/teams/OrganizationTeamsPage";
+import { OrganizationUsersPage } from "../components/users/OrganizationUsersPage";
 import { TeamUsersPage } from "../components/teams/users/TeamUsersPage";
 import { TeamSettingsPage } from "../components/teams/settings/TeamSettingsPage";
 import { TeamAssetsPage } from "../components/teams/assets/TeamAssetsPage";
@@ -31,6 +30,7 @@ import { AuthenticatedLayoutOneColumn } from "../components/ui/layouts/authentic
 import { OrganizationsPage } from "../components/organizations/OrganizationsPage";
 import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentAssetFromRoute";
 import { useSetCurrentOrganizationFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentOrganizationFromRoute";
+import { AssetUsersPage } from "../components/asset/settings/access/AssetUsersPage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -67,8 +67,14 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
           path={Paths.OrganizationReports}
           element={<OrganizationReportsPage />}
         />
-        <Route path={Paths.OrganizationTeams} element={<TeamsPage />} />
-        <Route path={Paths.OrganizationUsers} element={<UsersPage />} />
+        <Route
+          path={Paths.OrganizationTeams}
+          element={<OrganizationTeamsPage />}
+        />
+        <Route
+          path={Paths.OrganizationUsers}
+          element={<OrganizationUsersPage />}
+        />
       </Route>
       <Route element={<OrganizationSettingsLayout />}>
         {props.organizationSettingsRoutes}
@@ -92,10 +98,7 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
           path={Paths.AssetSettingsDevice}
           element={<AssetSettingsDevicePage />}
         />
-        <Route
-          path={Paths.AssetSettingsAccess}
-          element={<AssetSettingsAccessPage />}
-        />
+        <Route path={Paths.AssetSettingsAccess} element={<AssetUsersPage />} />
       </Route>
       <Route element={<AccountSettingsLayout />}>
         {props.accountSettingsRoutes}

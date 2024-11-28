@@ -1,23 +1,26 @@
-import { AssetUserRole, AssetUser } from "@navtrack/shared/api/model/generated";
-import { ITableColumn } from "../../../ui/table/useTable";
-import { TableV1 } from "../../../ui/table/TableV1";
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
-import { DeleteModal } from "../../../ui/modal/DeleteModal";
 import { FormattedMessage } from "react-intl";
-import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
-import { useAssetUserDeleteMutation } from "@navtrack/shared/hooks/queries/assets/useAssetUserDeleteMutation";
+import { AssetUser, AssetUserRole } from "@navtrack/shared/api/model/generated";
+import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { getError } from "@navtrack/shared/utils/api";
+import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
+import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/assets/useAssetUsersQuery";
+import { DeleteModal } from "../../../ui/modal/DeleteModal";
+import { ITableColumn } from "../../../ui/table/useTable";
+import { Heading } from "../../../ui/heading/Heading";
+import { TableV2 } from "../../../ui/table/TableV2";
+import { useDeleteAssetUserMutation } from "@navtrack/shared/hooks/queries/assets/useDeleteAssetUserMutation";
 import { useNotification } from "../../../ui/notification/useNotification";
+import { CreateAssetUserModal } from "./CreateAssetUserModal";
+import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
 
-type AssetUsersTableProps = {
-  rows?: AssetUser[];
-  loading: boolean;
-  refresh: () => void;
-};
-
-export function AssetUsersTable(props: AssetUsersTableProps) {
+export function AssetUsersPage() {
   const currentAsset = useCurrentAsset();
-  const deleteUser = useAssetUserDeleteMutation();
+  const assetUsers = useAssetUsersQuery({
+    assetId: currentAsset.data?.id ?? ""
+  });
+  const authorize = useAuthorize();
+
+  const deleteUser = useDeleteAssetUserMutation();
   const dateTime = useDateTime();
   const { showNotification } = useNotification();
 
@@ -32,7 +35,7 @@ export function AssetUsersTable(props: AssetUsersTableProps) {
       rowClassName: "flex justify-end",
       row: (assetUser) => (
         <>
-          {assetUser.userRole !== AssetUserRole.Owner && (
+          {authorize.asset(AssetUserRole.Owner) && (
             <DeleteModal
               onConfirm={() => {
                 if (currentAsset.data) {
@@ -42,9 +45,6 @@ export function AssetUsersTable(props: AssetUsersTableProps) {
                       userId: assetUser.userId
                     },
                     {
-                      onSuccess: () => {
-                        props.refresh();
-                      },
                       onError: (error) => {
                         const model = getError(error);
 
@@ -73,5 +73,15 @@ export function AssetUsersTable(props: AssetUsersTableProps) {
     }
   ];
 
-  return <TableV1 rows={props.rows} columns={columns} />;
+  return (
+    <>
+      <div className="flex justify-between">
+        <Heading type="h1">
+          <FormattedMessage id="organizations.users.title" />
+        </Heading>
+        <CreateAssetUserModal />
+      </div>
+      <TableV2 rows={assetUsers.data?.items} columns={columns} />
+    </>
+  );
 }

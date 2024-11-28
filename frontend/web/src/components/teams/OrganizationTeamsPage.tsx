@@ -9,7 +9,7 @@ import { Paths } from "../../app/Paths";
 import { TableV2 } from "../ui/table/TableV2";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 
-export function TeamsPage() {
+export function OrganizationTeamsPage() {
   const currentOrganization = useCurrentOrganization();
   const teams = useTeamsQuery({ organizationId: currentOrganization.data?.id });
 

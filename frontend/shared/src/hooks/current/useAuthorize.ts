@@ -32,7 +32,7 @@ export function useAuthorize() {
 
   const assetAuthorize = useCallback(
     (userRole: AssetUserRole) => {
-      var isOrganizationOwner = authorizeOrganization(
+      const isOrganizationOwner = authorizeOrganization(
         OrganizationUserRole.Owner
       );
 

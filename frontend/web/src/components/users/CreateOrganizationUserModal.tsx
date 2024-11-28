@@ -29,7 +29,7 @@ export type CreateUserFormValues = {
   role: TeamUserRole;
 };
 
-export function CreateUserModal() {
+export function CreateOrganizationUserModal() {
   const createOrganizationUserMutation = useCreateOrganizationUserMutation();
   const currentUser = useCurrentUserQuery();
   const currentOrganization = useCurrentOrganization();
