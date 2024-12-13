@@ -4,9 +4,11 @@ import { MessagePosition } from "@navtrack/shared/api/model/generated";
 import {
   showCoordinate,
   showHeading,
+  showNumber,
   showProperty
 } from "@navtrack/shared/utils/coordinates";
 import { PositionCardItem } from "./PositionCardItem";
+import { GoogleMapsIconLink } from "../../../ui/helpers/GoogleMapsIconLink";
 
 type PositionCardItemsProps = {
   position: MessagePosition;
@@ -23,12 +25,15 @@ export function PositionCardItems(props: PositionCardItemsProps) {
         value={showDateTime(props.position.date)}
       />
       <PositionCardItem
-        label="generic.latitude"
-        value={showCoordinate(props.position.coordinates.latitude)}
-      />
-      <PositionCardItem
-        label="generic.longitude"
-        value={showCoordinate(props.position.coordinates.longitude)}
+        label="generic.latitude-longitude"
+        value={`${showCoordinate(props.position.coordinates.latitude)}, ${showCoordinate(props.position.coordinates.longitude)}`}
+        copyable
+        labelExtra={
+          <GoogleMapsIconLink
+            coordinates={props.position.coordinates}
+            className="ml-2"
+          />
+        }
       />
       <PositionCardItem
         label="generic.speed"
@@ -48,7 +53,7 @@ export function PositionCardItems(props: PositionCardItemsProps) {
       />
       <PositionCardItem
         label="generic.hdop"
-        value={showProperty(props.position.hdop)}
+        value={showNumber(props.position.hdop, 2)}
       />
     </>
   );

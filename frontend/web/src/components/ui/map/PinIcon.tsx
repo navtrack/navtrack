@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
-interface IPinIcon {
+type PinIconProps = {
   color?: "primary" | "green" | "red";
-}
+};
 
-export function PinIcon(props: IPinIcon) {
+export function PinIcon(props: PinIconProps) {
   const color = useMemo(() => {
     switch (props.color) {
       case "primary":

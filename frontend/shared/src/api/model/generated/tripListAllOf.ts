@@ -6,8 +6,9 @@
  */
 
 export type TripListAllOf = {
-  totalAvgAltitude: number;
-  totalAvgSpeed: number;
+  avgAltitude: number;
+  avgSpeed: number;
+  maxSpeed: number;
   totalDistance: number;
   totalDuration: number;
   totalPositions: number;

@@ -8,6 +8,7 @@ import { TextInputRightAddon } from "../text-input/TextInputRightAddon";
 import { FormattedMessage } from "react-intl";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
+import { ZINDEX_MENU } from "../../../../constants";
 
 export type AutocompleteProps = {
   name?: string;
@@ -72,7 +73,7 @@ export function Autocomplete(props: AutocompleteProps) {
           placeholder={
             open
               ? ""
-              : selectedOption?.label ?? props.placeholder ?? "Type to search"
+              : (selectedOption?.label ?? props.placeholder ?? "Type to search")
           }
           onChange={(e) => {
             setSearch(e.target.value);
@@ -104,7 +105,8 @@ export function Autocomplete(props: AutocompleteProps) {
         />
         <Popover.Panel static={open}>
           <div
-            className="absolute left-0 right-0 z-10 mt-1 max-h-56 overflow-y-scroll rounded-md border border-gray-300 bg-white py-1 text-sm font-medium shadow-md"
+            className="absolute left-0 right-0 mt-1 max-h-56 overflow-y-scroll rounded-md border border-gray-300 bg-white py-1 text-sm font-medium shadow-md"
+            style={{ zIndex: ZINDEX_MENU }}
             ref={ref}>
             {filteredOptions.map((option) => (
               <div

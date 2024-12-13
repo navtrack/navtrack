@@ -1,7 +1,7 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Card } from "../../ui/card/Card";
 import { Icon } from "../../ui/icon/Icon";
@@ -10,38 +10,41 @@ import { MapPin } from "../../ui/map/MapPin";
 import { MapTrip } from "../../ui/map/MapTrip";
 import { Slider } from "../../ui/slider/Slider";
 import { PositionCardItems } from "../shared/position-card/PositionCardItems";
-import {
-  selectedTripAtom,
-  selectedTripPositionIndexAtom,
-  selectedTripPositionSelector
-} from "./tripsState";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
 import { MessagePosition, Trip } from "@navtrack/shared/api/model/generated";
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useTripsQuery } from "@navtrack/shared/hooks/queries/assets/useTripsQuery";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { SlotContext } from "../../../app/SlotContext";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
+import { MapCenter } from "../../ui/map/MapCenter";
 
 export function AssetTripsPage() {
   const slots = useContext(SlotContext);
-  const [selectedTrip, setSelectedTrip] = useRecoilState(selectedTripAtom);
-  const selectedTripPosition = useRecoilValue(selectedTripPositionSelector);
+
+  const [selectedTrip, setSelectedTrip] = useState<Trip>();
+  const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
+    useState<number>(0);
+
+  const selectedTripPosition = useMemo(
+    () =>
+      selectedTrip !== undefined && selectedTripLocationIndex !== undefined
+        ? selectedTrip.positions[selectedTripLocationIndex]
+        : undefined,
+    [selectedTrip, selectedTripLocationIndex]
+  );
+
   const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
     MessagePosition | undefined
   >(selectedTripPosition);
-  const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
-    useRecoilState(selectedTripPositionIndexAtom);
+
   const [showPin, setShowPin] = useState(false);
 
-  const { showDateTime } = useDateTime();
-  const { showSpeed, showAltitude } = useDistance();
+  const { showSpeed } = useDistance();
   const show = useShow();
 
   const currentAsset = useCurrentAsset();
@@ -52,7 +55,7 @@ export function AssetTripsPage() {
 
   useOnChange(selectedTrip, () => {
     setShowPin(false);
-    setSelectedTripLocationIndex(1);
+    setSelectedTripLocationIndex(0);
   });
 
   useEffect(() => {
@@ -71,13 +74,13 @@ export function AssetTripsPage() {
               labelId: "generic.start-date",
               sort: "desc",
               sortValue: (row) => row.startPosition.date,
-              row: (row) => showDateTime(row.startPosition.date),
+              row: (row) => show.dateTime(row.startPosition.date),
               sortable: true
             },
             {
               labelId: "generic.end-date",
               sortValue: (row) => row.endPosition.date,
-              row: (row) => showDateTime(row.endPosition.date),
+              row: (row) => show.dateTime(row.endPosition.date),
               sortable: true,
               footerColSpan: 2
             },
@@ -100,22 +103,22 @@ export function AssetTripsPage() {
               sortable: true
             },
             {
-              labelId: "generic.avg-speed",
-              row: (row) => showSpeed(row.averageSpeed),
-              sortValue: (row) => row.averageSpeed,
+              labelId: "generic.max-speed",
+              row: (row) => showSpeed(row.maxSpeed),
+              sortValue: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && showSpeed(query.data?.totalAvgSpeed),
+              footer: () => hasTrips && showSpeed(query.data?.maxSpeed),
               sortable: true
             },
-            {
-              labelId: "generic.avg-altitude",
-              row: (row) => showAltitude(row.averageAltitude),
-              sortValue: (row) => row.averageAltitude,
-              footerClassName: "font-semibold",
-              footer: () =>
-                hasTrips && showAltitude(query.data?.totalAvgAltitude),
-              sortable: true
-            },
+            // {
+            //   labelId: "generic.avg-altitude",
+            //   row: (row) => showAltitude(row.averageAltitude),
+            //   sortValue: (row) => row.averageAltitude,
+            //   footerClassName: "font-semibold",
+            //   footer: () =>
+            //     hasTrips && showAltitude(query.data?.totalAvgAltitude),
+            //   sortable: true
+            // },
             {
               labelId: "generic.positions",
               row: (row) => row.positions.length,
@@ -127,20 +130,23 @@ export function AssetTripsPage() {
           ]}
           rows={query.data?.items}
           setSelectedItem={setSelectedTrip}
-          className="flex h-44 flex-grow"
+          className="flex h-48 flex-grow"
         />
       </div>
       <Card className="flex flex-grow">
         <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
-          <Map center={DEFAULT_MAP_CENTER} initialZoom={16}>
+          <Map>
             <MapTrip trip={selectedTrip} />
             {selectedTripPosition && showPin && (
-              <MapPin
-                pin={{
-                  coordinates: selectedTripPosition.coordinates
-                }}
-                zIndexOffset={1}
-              />
+              <>
+                <MapPin
+                  pin={{
+                    coordinates: selectedTripPosition.coordinates
+                  }}
+                  zIndexOffset={1}
+                />
+                <MapCenter position={selectedTripPosition.coordinates} />
+              </>
             )}
           </Map>
         </CardMapWrapper>
@@ -163,8 +169,8 @@ export function AssetTripsPage() {
               <div className="flex flex-grow bg-white px-3">
                 <Slider
                   step={1}
-                  min={1}
-                  max={selectedTrip?.positions.length}
+                  min={0}
+                  max={selectedTrip?.positions.length - 1}
                   value={selectedTripLocationIndex}
                   onChange={(value) => setSelectedTripLocationIndex(value)}
                   onMouseUp={() => {

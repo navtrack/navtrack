@@ -7,16 +7,18 @@ type MapFitBoundsProps = {
   once?: boolean;
 };
 
-export function MapShowAll(props: MapFitBoundsProps) {
+export function MapShowAll2(props: MapFitBoundsProps) {
   const map = useMap();
   const [initalized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (
-      (props.coordinates?.length ?? 0) > 0 &&
+      props.coordinates !== undefined &&
+      props.coordinates.length > 0 &&
       ((props.once && !initalized) || !props.once)
     ) {
-      map.showAllMarkers(props.coordinates);
+      map.fitBounds(props.coordinates);
+
       setInitialized(true);
     }
   }, [initalized, map, props.coordinates, props.once]);

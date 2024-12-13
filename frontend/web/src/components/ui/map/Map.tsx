@@ -1,39 +1,37 @@
-import styled from "@emotion/styled";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { VectorTileLayer } from "./VectorTileLayer";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { DEFAULT_MAP_ZOOM } from "../../../constants";
+import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useRecoilValue } from "recoil";
 import { MapZoomControl } from "./MapZoomControl";
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { MapResizeObserver } from "./MapResizeObserver";
 
 type MapProps = {
-  center: LatLongModel;
+  center?: LatLongModel;
   initialZoom?: number;
   children?: ReactNode;
   hideZoomControl?: boolean;
   hideAttribution?: boolean;
 };
 
-const StyledDiv = styled("div")`
-  .leaflet-pane {
-    z-index: 0;
-  }
-`;
-
 export function Map(props: MapProps) {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const appConfig = useRecoilValue(appConfigAtom);
 
+  const center = props.center ?? DEFAULT_MAP_CENTER;
+
   return (
-    <StyledDiv className="relative flex flex-grow">
+    <div className="relative flex flex-grow" ref={mapContainerRef}>
       <MapContainer
-        center={[props.center.latitude, props.center.longitude]}
+        center={[center.latitude, center.longitude]}
         zoom={props.initialZoom ?? DEFAULT_MAP_ZOOM}
         className="h-full w-full"
         zoomControl={false}
         attributionControl={!props.hideAttribution}>
+        <MapResizeObserver mapContainerRef={mapContainerRef} />
         {!props.hideZoomControl && <MapZoomControl />}
         {appConfig?.map.tileUrl ? (
           <VectorTileLayer styleUrl={appConfig.map.tileUrl} />
@@ -45,6 +43,6 @@ export function Map(props: MapProps) {
         )}
         {props.children}
       </MapContainer>
-    </StyledDiv>
+    </div>
   );
 }

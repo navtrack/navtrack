@@ -1,6 +1,7 @@
 import { Transition, Dialog, TransitionChild } from "@headlessui/react";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Fragment, ReactNode } from "react";
+import { ZINDEX_MODAL } from "../../../constants";
 
 type ModalProps = {
   open: boolean;
@@ -14,7 +15,8 @@ export function Modal(props: ModalProps) {
     <Transition show={props.open} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-20 overflow-y-auto"
+        className="fixed inset-0 overflow-y-auto"
+        style={{ zIndex: ZINDEX_MODAL }}
         onClose={() => props.close()}>
         <div className="flex min-h-screen items-center justify-center p-4">
           <TransitionChild
@@ -25,7 +27,10 @@ export function Modal(props: ModalProps) {
             leave="ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0">
-            <div className="fixed inset-0 bg-gray-900 bg-opacity-40 transition-opacity" onClick={() => props.close()} />
+            <div
+              className="fixed inset-0 bg-gray-900 bg-opacity-40 transition-opacity"
+              onClick={() => props.close()}
+            />
           </TransitionChild>
           <TransitionChild
             as={Fragment}

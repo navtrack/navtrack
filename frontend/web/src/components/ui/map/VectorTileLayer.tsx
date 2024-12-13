@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useMap } from "./useMap";
 import L from "leaflet";
 import "@maplibre/maplibre-gl-leaflet";
 
 type VectorTileLayerProps = {
   styleUrl: string;
+  children?: ReactNode;
 };
 
 export function VectorTileLayer(props: VectorTileLayerProps) {
   const map = useMap();
-  const [layer, setLayer] = useState<L.MaplibreGL>();
+  const layer = useRef<L.MaplibreGL>();
 
   useEffect(() => {
-    if (!layer) {
-      //@ts-ignore TODO
+    if (layer.current === undefined) {
       const l = L.maplibreGL({ style: props.styleUrl }).addTo(map.leafletMap);
 
-      setLayer(l);
+      layer.current = l;
     }
   }, [layer, map, props.styleUrl]);
 

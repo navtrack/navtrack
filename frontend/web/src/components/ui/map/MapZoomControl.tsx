@@ -6,24 +6,18 @@ export function MapZoomControl() {
   const map = useMap();
 
   return (
-    <div className="absolute left-2 top-2 z-20 overflow-hidden rounded-lg shadow-md">
+    <div
+      className="absolute left-2 top-2 overflow-hidden rounded-lg shadow-md"
+      style={{ zIndex: 1000 }}>
       <button
         className="flex h-8 w-8 cursor-pointer items-center justify-center bg-white hover:bg-gray-100"
-        onClick={(e) => {
-          e.nativeEvent.stopImmediatePropagation();
-          e.preventDefault();
-          map.leafletMap.zoomIn();
-        }}>
+        onClick={() => map.leafletMap.zoomIn()}>
         <Icon icon={faPlus} />
       </button>
       <div className="h-px w-full bg-gray-200" />
       <button
         className="flex h-8 w-8 cursor-pointer items-center justify-center bg-white hover:bg-gray-100"
-        onClick={(e) => {
-          e.nativeEvent.stopImmediatePropagation();
-          e.preventDefault();
-          map.leafletMap.zoomOut();
-        }}>
+        onClick={() => map.leafletMap.zoomOut()}>
         <Icon icon={faMinus} />
       </button>
     </div>

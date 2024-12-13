@@ -1,4 +1,4 @@
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLongModel } from "./api/model/generated";
 
 export const DEFAULT_MAP_CENTER: LatLongModel = {
   latitude: 46.770439,
@@ -9,11 +9,3 @@ export const DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING = 13;
 
 export const GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM = 14;
 export const GEOFENCE_CIRCLE_MAX_RADIUS_METERS = 1000;
-
-export const AUTHENTICATION = {
-  CLIENT_ID: "navtrack.web"
-};
-
-export const ZINDEX_MODAL = 1000;
-export const ZINDEX_MENU = 900;
-export const ZINDEX_MAP_CONTROL = 500;

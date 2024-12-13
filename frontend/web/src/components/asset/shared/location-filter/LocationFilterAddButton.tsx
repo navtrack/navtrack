@@ -3,7 +3,7 @@ import {
   faMountain,
   faTachometerAlt
 } from "@fortawesome/free-solid-svg-icons";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -17,6 +17,7 @@ import {
 import { LocationFilterAddButtonMenuItem } from "./LocationFilterAddButtonMenuItem";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "../../../ui/button/Button";
+import { ZINDEX_MENU } from "../../../../constants";
 
 type LocationFilterAddButtonProps = {
   duration?: boolean;
@@ -67,10 +68,12 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
             leave="transition ease-in duration-75"
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95">
-            <Menu.Items className="absolute left-0 z-10 mt-2 w-44 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <MenuItems
+              className="absolute left-0 mt-2 w-44 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              style={{ zIndex: ZINDEX_MENU }}>
               <div className="py-1">
                 {!altitudeFilter.enabled && (
-                  <Menu.Item>
+                  <MenuItem>
                     <LocationFilterAddButtonMenuItem
                       icon={faMountain}
                       labelId={
@@ -86,10 +89,10 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
                         }))
                       }
                     />
-                  </Menu.Item>
+                  </MenuItem>
                 )}
                 {props.duration && !durationFilter.enabled && (
-                  <Menu.Item>
+                  <MenuItem>
                     <LocationFilterAddButtonMenuItem
                       icon={faClock}
                       labelId="locations.filter.duration"
@@ -101,10 +104,10 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
                         }))
                       }
                     />
-                  </Menu.Item>
+                  </MenuItem>
                 )}
                 {!geofenceFilter.enabled && (
-                  <Menu.Item>
+                  <MenuItem>
                     <LocationFilterAddButtonMenuItem
                       icon={faMapMarkedAlt}
                       labelId="locations.filter.geofence"
@@ -116,10 +119,10 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
                         }))
                       }
                     />
-                  </Menu.Item>
+                  </MenuItem>
                 )}
                 {!speedFilter.enabled && (
-                  <Menu.Item>
+                  <MenuItem>
                     <LocationFilterAddButtonMenuItem
                       icon={faTachometerAlt}
                       labelId={
@@ -135,10 +138,10 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
                         }))
                       }
                     />
-                  </Menu.Item>
+                  </MenuItem>
                 )}
               </div>
-            </Menu.Items>
+            </MenuItems>
           </Transition>
         </Menu>
       )}

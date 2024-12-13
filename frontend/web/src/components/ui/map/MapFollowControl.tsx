@@ -4,6 +4,8 @@ import { Icon } from "../icon/Icon";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import { MapCenter } from "./MapCenter";
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { ZINDEX_MAP_CONTROL } from "../../../constants";
+import { FormattedMessage } from "react-intl";
 
 type MapFollowControlProps = {
   position?: LatLongModel;
@@ -23,7 +25,9 @@ export function MapFollowControl(props: MapFollowControlProps) {
   }, [follow, props.follow]);
 
   return (
-    <div className="absolute bottom-0 z-10 mx-auto flex w-full justify-center">
+    <div
+      className="absolute bottom-0 mx-auto flex w-full justify-center"
+      style={{ zIndex: ZINDEX_MAP_CONTROL }}>
       <div
         onClick={() => {
           setFollow(!follow);
@@ -34,7 +38,9 @@ export function MapFollowControl(props: MapFollowControlProps) {
           c(follow, "text-blue-600", "text-gray-500")
         )}>
         <Icon icon={faLocationArrow} className="mr-1" />
-        {follow ? "Follow On" : "Follow Off"}
+        <FormattedMessage
+          id={follow ? "generic.follow-on" : "generic.follow-off"}
+        />
       </div>
       {follow ? <MapCenter position={props.position} /> : null}
     </div>

@@ -29,7 +29,9 @@ public class Trip
     {
         get
         {
-            double? average = Positions.Where(x => x.Speed > 0).Average(x => x.Speed);
+            List<MessagePosition> positions = Positions.Where(x => x.Speed > 0).ToList();
+            
+            double? average = positions.Count != 0 ? positions.Average(x => x.Speed) : null;
 
             return average.HasValue ? (float?)Math.Round(average.Value) : null;
         }

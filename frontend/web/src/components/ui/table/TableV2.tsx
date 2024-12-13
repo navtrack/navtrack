@@ -116,7 +116,7 @@ export function TableV2<T>(props: TableProps<T>) {
                       colSpan={column.footerColSpan}
                       key={`footer${index}`}
                       className={classNames(
-                        "sticky bottom-0 h-6 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
+                        "sticky bottom-0 h-6 border-t border-gray-900/5 bg-gray-50 px-2 py-1.5 text-left text-xs text-gray-900",
                         column.footerClassName
                       )}>
                       {column.footer?.(props.rows)}

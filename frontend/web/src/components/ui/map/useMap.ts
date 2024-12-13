@@ -1,60 +1,53 @@
 import { LatLongModel } from "@navtrack/shared/api/model/generated";
 import L from "leaflet";
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import { useCallback } from "react";
 import { useMap as useLeafletMap } from "react-leaflet";
+import { DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING } from "../../../constants";
 
 export function useMap() {
-  const map = useLeafletMap();
+  const leafletMap = useLeafletMap();
 
   const setCenter = useCallback(
     (location: LatLngExpression, zoom?: number) => {
-      map.setView(location, zoom, { animate: false });
+      leafletMap.setView(location, zoom, { animate: false });
     },
-    [map]
+    [leafletMap]
   );
 
   const setZoom = useCallback(
     (zoom: number) => {
-      map.setZoom(zoom);
+      leafletMap.setZoom(zoom);
     },
-    [map]
+    [leafletMap]
   );
 
-  const showAllMarkers = useCallback(
-    (
-      coordinates: LatLongModel[] | undefined = undefined,
-      customPadding: number = 100
-    ) => {
-      let latLngs: LatLngTuple[] = [];
+  const fitBounds = useCallback(
+    (coordinates: LatLongModel[], options?: L.FitBoundsOptions) => {
+      if (coordinates.length > 0) {
+        const featureGroup = L.featureGroup(
+          coordinates.map((x) => L.marker([x.latitude, x.longitude]))
+        );
 
-      if (coordinates !== undefined) {
-        latLngs = coordinates.map((position) => {
-          return [position.latitude, position.longitude] as LatLngTuple;
-        });
-      } else {
-        map.eachLayer((layer) => {
-          if (layer instanceof L.Marker) {
-            const latLng = (layer as L.Marker).getLatLng();
+        const bounds = featureGroup.getBounds();
 
-            latLngs.push([latLng.lat, latLng.lng]);
-          }
-        });
-      }
-
-      if (latLngs.length > 0) {
-        map.fitBounds(latLngs);
-        // TODO
-        // map.fitBounds(latLngs, { padding: [customPadding, customPadding] });
+        if (coordinates.length === 1) {
+          leafletMap.setView(
+            bounds.getCenter(),
+            DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING
+          );
+        } else {
+          leafletMap.fitBounds(bounds, options);
+        }
       }
     },
-    [map]
+    [leafletMap]
   );
 
   return {
-    leafletMap: map,
+    leafletMap,
+    fitBounds,
     setCenter,
-    setZoom,
-    showAllMarkers
+    setZoom
   };
 }

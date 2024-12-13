@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 type SliderProps = {
   onChange?: (value: number) => void;
   value?: number;
@@ -11,8 +9,6 @@ type SliderProps = {
 };
 
 export function Slider(props: SliderProps) {
-  const [value, setValue] = useState(props.value);
-
   return (
     <div className="w-full">
       <div>
@@ -22,16 +18,19 @@ export function Slider(props: SliderProps) {
           min={props.min}
           max={props.max}
           step={props.step}
-          value={value}
+          value={props.value}
           onChange={(e) => {
-            setValue(e.target.value as unknown as number);
             props.onChange?.(e.target.value as unknown as number);
           }}
           onMouseUp={() =>
-            value !== undefined ? props.onMouseUp?.(value) : undefined
+            props.value !== undefined
+              ? props.onMouseUp?.(props.value)
+              : undefined
           }
           onMouseDown={() =>
-            value !== undefined ? props.onMouseDown?.(value) : undefined
+            props.value !== undefined
+              ? props.onMouseDown?.(props.value)
+              : undefined
           }
         />
       </div>

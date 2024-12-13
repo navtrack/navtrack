@@ -2922,8 +2922,9 @@
               "totalDistance",
               "totalDuration",
               "totalPositions",
-              "totalAvgSpeed",
-              "totalAvgAltitude"
+              "avgSpeed",
+              "avgAltitude",
+              "maxSpeed"
             ],
             "properties": {
               "totalDistance": {
@@ -2938,13 +2939,17 @@
                 "type": "number",
                 "format": "double"
               },
-              "totalAvgSpeed": {
+              "avgSpeed": {
                 "type": "number",
                 "format": "float"
               },
-              "totalAvgAltitude": {
+              "avgAltitude": {
                 "type": "number",
                 "format": "float"
+              },
+              "maxSpeed": {
+                "type": "number",
+                "format": "double"
               }
             }
           }

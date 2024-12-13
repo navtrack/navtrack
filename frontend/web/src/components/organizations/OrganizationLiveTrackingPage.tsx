@@ -12,7 +12,6 @@ import { Paths } from "../../app/Paths";
 import { MapShowAllControl } from "../ui/map/MapShowAllControl";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../constants";
-import { MapShowAll } from "../ui/map/MapShowAll";
 
 export function OrganizationLiveTrackingPage() {
   const navigate = useNavigate();
@@ -87,12 +86,14 @@ export function OrganizationLiveTrackingPage() {
                 }
               />
             ))}
-            {/* <MapShowAll
+            <MapShowAllControl
               key={currentOrganization.id}
               coordinates={coordinates}
-              once
-            /> */}
-            <MapShowAllControl />
+              options={{
+                paddingTopLeft: [60, 120],
+                paddingBottomRight: [10, 10]
+              }}
+            />
           </Map>
         </CardMapWrapper>
       </Card>

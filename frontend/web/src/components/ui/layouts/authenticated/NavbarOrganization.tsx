@@ -19,6 +19,7 @@ import { Badge, BadgeColor } from "../../badge/Badge";
 import { LoadingIndicator } from "../../loading-indicator/LoadingIndicator";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useOrganizationsQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationsQuery";
+import { ZINDEX_MENU } from "../../../../constants";
 
 export function NavbarOrganization() {
   const currentOrganization = useCurrentOrganization();
@@ -60,7 +61,9 @@ export function NavbarOrganization() {
           leave="transition ease-in duration-75"
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95">
-          <MenuItems className="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <MenuItems
+            className="absolute right-0  mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            style={{ zIndex: ZINDEX_MENU }}>
             <div className="mb-1 border-b border-gray-200 pb-1">
               <MenuItem>
                 {({ active }) => (

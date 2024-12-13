@@ -16,8 +16,11 @@ public class TripList : List<Trip>
     public double TotalPositions => Items.Sum(x => x.Positions.Count);
 
     [Required]
-    public float? TotalAvgSpeed => Items.Average(x => x.AverageSpeed);
+    public float? AvgSpeed => Items.Average(x => x.AverageSpeed);
         
     [Required]
-    public float? TotalAvgAltitude => Items.Average(x => x.AverageAltitude);
+    public float? AvgAltitude => Items.Average(x => x.AverageAltitude);
+    
+    [Required]
+    public double? MaxSpeed => Items.Max(x => x.MaxSpeed);
 }

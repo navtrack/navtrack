@@ -8,6 +8,7 @@ import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapFollowControl } from "../../ui/map/MapFollowControl";
 import { useContext } from "react";
 import { SlotContext } from "../../../app/SlotContext";
+import { DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING } from "../../../constants";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();
@@ -26,7 +27,10 @@ export function AssetLiveTrackingPage() {
           </Card>
           <Card className="flex flex-grow">
             <CardMapWrapper>
-              <Map center={position.coordinates}>
+              <Map
+                key={currentAsset.id}
+                center={position.coordinates}
+                initialZoom={DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING}>
                 <MapPin pin={{ coordinates: position.coordinates }} />
                 <MapFollowControl position={position.coordinates} />
               </Map>
