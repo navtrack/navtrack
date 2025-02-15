@@ -1,9 +1,9 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.DataAccess.Mongo;
@@ -26,7 +26,7 @@ public class MongoRepository : IMongoRepository
             new ConventionPack { new IgnoreIfNullConvention(true) }, t => true);
     }
 
-    public IMongoQueryable<T> GetQueryable<T>()
+    public IQueryable<T> GetQueryable<T>()
     {
         return GetCollection<T>().AsQueryable();
     }

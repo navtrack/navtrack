@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using IdentityServer4.Validation;
+using Duende.IdentityServer.Validation;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Passwords;
 using Navtrack.DataAccess.Model.Users;

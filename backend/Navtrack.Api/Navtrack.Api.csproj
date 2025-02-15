@@ -1,21 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <ItemGroup>
-        <PackageReference Include="NSwag.AspNetCore" Version="14.1.0"/>
+        <PackageReference Include="Duende.IdentityServer" Version="7.1.0" />
+        <PackageReference Include="Duende.IdentityServer.Storage" Version="7.1.0" />
+        <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.2" />
+        <PackageReference Include="MongoDB.Bson" Version="3.2.0" />
+        <PackageReference Include="MongoDB.Driver" Version="3.2.0" />
+        <PackageReference Include="NSwag.AspNetCore" Version="14.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSwag.MSBuild" Version="14.1.0">
+        <PackageReference Include="NSwag.MSBuild" Version="14.2.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj"/>
+        <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-        <Exec Command="$(NSwagExe_Net80) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)"/>
-        <Exec Command="npm run generate" WorkingDirectory="../../frontend/shared"/>
+        <Exec Command="$(NSwagExe_Net80) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)" />
+        <Exec Command="npm run generate" WorkingDirectory="../../frontend/shared" />
     </Target>
 </Project>

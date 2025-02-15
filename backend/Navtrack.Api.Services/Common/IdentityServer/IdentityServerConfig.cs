@@ -1,7 +1,7 @@
+using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 using System;
 using System.Collections.Generic;
-using IdentityServer4;
-using IdentityServer4.Models;
 
 namespace Navtrack.Api.Services.Common.IdentityServer;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using IdentityServer4.Models;
+using Duende.IdentityServer.Models;
 using MongoDB.Bson;
 using Navtrack.DataAccess.Model.Users.RefreshTokens;
 

@@ -1,4 +1,4 @@
-using IdentityServer4.Models;
+using Duende.IdentityServer.Models;
 using Navtrack.DataAccess.Model.Users.RefreshTokens;
 
 namespace Navtrack.Api.Services.Common.IdentityServer.Mappers;

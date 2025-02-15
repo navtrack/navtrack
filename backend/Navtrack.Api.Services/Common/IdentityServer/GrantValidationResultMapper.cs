@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using IdentityServer4.Models;
-using IdentityServer4.Validation;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Validation;
 using Navtrack.Api.Model.Errors;
 
 namespace Navtrack.Api.Services.Common.IdentityServer;

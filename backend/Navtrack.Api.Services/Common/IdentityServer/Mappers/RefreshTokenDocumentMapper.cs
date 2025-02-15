@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using IdentityServer4.Models;
+using Duende.IdentityServer.Models;
 using Navtrack.DataAccess.Model.Users.RefreshTokens;
 using Navtrack.Shared.Library.Utils;
 

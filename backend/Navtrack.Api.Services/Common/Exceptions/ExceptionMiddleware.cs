@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using IdentityServer4.Extensions;
+using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Http;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Common.Mappers;

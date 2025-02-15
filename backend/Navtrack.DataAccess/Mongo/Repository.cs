@@ -1,6 +1,6 @@
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Navtrack.Shared.Library.DI;
+using System.Linq;
 
 namespace Navtrack.DataAccess.Mongo;
 
@@ -9,7 +9,7 @@ public class Repository(IMongoDatabaseProvider mongoDatabaseProvider) : IReposit
 {
     private readonly IMongoDatabase mongoDatabase = mongoDatabaseProvider.GetMongoDatabase();
 
-    public IMongoQueryable<T> GetQueryable<T>() where T : class
+    public IQueryable<T> GetQueryable<T>() where T : class
     {
         return GetCollection<T>().AsQueryable();
     }

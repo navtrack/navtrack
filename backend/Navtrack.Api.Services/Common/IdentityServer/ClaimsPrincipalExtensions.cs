@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Security.Claims;
-using IdentityModel;
+using Duende.IdentityModel;
 
 namespace Navtrack.Api.Services.Common.IdentityServer;
 

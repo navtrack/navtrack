@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using IdentityServer4.Models;
-using IdentityServer4.Stores;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Stores;
 using Navtrack.Api.Services.Common.IdentityServer.Mappers;
 using Navtrack.DataAccess.Model.Users.RefreshTokens;
 using Navtrack.DataAccess.Services.Users;
@@ -14,9 +14,7 @@ public class RefreshTokenStore(IRefreshTokenRepository tokenRepository) : IRefre
     public async Task<string> StoreRefreshTokenAsync(RefreshToken refreshToken)
     {
         RefreshTokenDocument document = RefreshTokenDocumentMapper.Map(refreshToken);
-        
         await tokenRepository.Add(document);
-
         return document.Hash;
     }
 
@@ -28,15 +26,7 @@ public class RefreshTokenStore(IRefreshTokenRepository tokenRepository) : IRefre
     public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshTokenHandle)
     {
         RefreshTokenDocument? document = await tokenRepository.Get(refreshTokenHandle);
-
-        if (document != null)
-        {
-            RefreshToken refreshToken = RefreshTokenMapper.Map(document);
-
-            return refreshToken;
-        }
-        
-        return null;
+        return document != null ? RefreshTokenMapper.Map(document) : null;
     }
 
     public Task RemoveRefreshTokenAsync(string refreshTokenHandle)

@@ -1,10 +1,10 @@
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using System.Linq;
 
 namespace Navtrack.DataAccess.Mongo;
 
 public interface IRepository
 {
-    IMongoQueryable<T> GetQueryable<T>() where T : class?;
+    IQueryable<T> GetQueryable<T>() where T : class?;
     IMongoCollection<T> GetCollection<T>() where T : class;
 }

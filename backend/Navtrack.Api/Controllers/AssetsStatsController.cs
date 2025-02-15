@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using IdentityServer4;
+using Duende.IdentityServer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

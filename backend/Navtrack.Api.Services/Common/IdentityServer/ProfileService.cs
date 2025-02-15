@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityModel;
-using IdentityServer4.Models;
-using IdentityServer4.Services;
+using Duende.IdentityModel;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Services;
 using Navtrack.DataAccess.Model.Users;
 using Navtrack.DataAccess.Services.Users;
 using Navtrack.Shared.Library.DI;

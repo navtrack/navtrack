@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using IdentityModel;
-using IdentityServer4.Models;
-using IdentityServer4.Stores;
+using Duende.IdentityModel;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Stores;
 using Microsoft.IdentityModel.Tokens;
 using Navtrack.Api.Services.Common.IdentityServer.Models;
 using Navtrack.Api.Services.Common.Settings;
@@ -90,5 +90,10 @@ public class SigningCredentialStore(ISettingService service) : ISigningCredentia
         }
 
         return identityServerSigningCredentials;
+    }
+
+    Task<IEnumerable<SecurityKeyInfo>> IValidationKeysStore.GetValidationKeysAsync()
+    {
+        throw new System.NotImplementedException();
     }
 }

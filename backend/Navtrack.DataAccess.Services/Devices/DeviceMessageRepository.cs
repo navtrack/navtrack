@@ -119,7 +119,7 @@ public class DeviceMessageRepository(IRepository repository)
     public async Task<GetFirstAndLastPositionResult> GetFirstAndLast(ObjectId assetId,
         DateTime? startDate, DateTime? endDate)
     {
-        IMongoQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
+        IQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
             .Where(x => x.Metadata.AssetId == assetId &&
                         x.Position.Date >= startDate &&
                         x.Position.Date <= endDate);
