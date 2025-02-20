@@ -11,7 +11,12 @@ export function MapZoomControl() {
       style={{ zIndex: 1000 }}>
       <button
         className="flex h-8 w-8 cursor-pointer items-center justify-center bg-white hover:bg-gray-100"
-        onClick={() => map.leafletMap.zoomIn()}>
+        onClick={(e) => {
+          e.nativeEvent.stopPropagation();
+          map.leafletMap.zoomIn();
+        }}
+        onDoubleClickCapture={(e) => e.stopPropagation()}
+        onDoubleClick={(e) => e.nativeEvent.stopPropagation()}>
         <Icon icon={faPlus} />
       </button>
       <div className="h-px w-full bg-gray-200" />

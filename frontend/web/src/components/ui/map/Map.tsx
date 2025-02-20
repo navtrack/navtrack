@@ -30,6 +30,7 @@ export function Map(props: MapProps) {
         zoom={props.initialZoom ?? DEFAULT_MAP_ZOOM}
         className="h-full w-full"
         zoomControl={false}
+        maxZoom={20}
         attributionControl={!props.hideAttribution}>
         <MapResizeObserver mapContainerRef={mapContainerRef} />
         {!props.hideZoomControl && <MapZoomControl />}
