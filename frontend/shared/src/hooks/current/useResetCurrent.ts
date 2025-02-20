@@ -1,17 +1,12 @@
-import { useResetRecoilState } from "recoil";
-import {
-  currentAssetIdAtom,
-  currentOrganizationIdAtom
-} from "../../state/current";
+import { useCurrentAsset } from "./useCurrentAsset";
+import { useCurrentOrganization } from "./useCurrentOrganization";
 
 export function useResetCurrent() {
-  const resetCurrentAssetId = useResetRecoilState(currentAssetIdAtom);
-  const resetCurrentOrganizationId = useResetRecoilState(
-    currentOrganizationIdAtom
-  );
+  const currentAsset = useCurrentAsset();
+  const currentOrganization = useCurrentOrganization();
 
   return () => {
-    resetCurrentAssetId();
-    resetCurrentOrganizationId();
+    currentAsset.reset();
+    currentOrganization.reset();
   };
 }

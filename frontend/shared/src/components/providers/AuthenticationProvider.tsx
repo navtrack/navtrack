@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { Fragment, ReactNode, useEffect } from "react";
 import { useAuthentication } from "../../hooks/app/authentication/useAuthentication";
 
 type AuthenticationProps = {
@@ -14,5 +14,7 @@ export function AuthenticationProvider(props: AuthenticationProps) {
     }
   }, [authentication]);
 
-  return <>{authentication.state.initialized && props.children}</>;
+  return (
+    <Fragment>{authentication.state.initialized && props.children}</Fragment>
+  );
 }

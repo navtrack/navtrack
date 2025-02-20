@@ -26,7 +26,7 @@ public class RefreshTokenRepository(IRepository repository) : IRefreshTokenRepos
             .DeleteOneAsync(x => x.AccessToken.SubjectId == ObjectId.Parse(subjectId) && x.AccessToken.ClientId == clientId);
     }
 
-    public Task<RefreshTokenDocument>? Get(string refreshTokenHandle)
+    public Task<RefreshTokenDocument?> Get(string refreshTokenHandle)
     {
         return repository.GetQueryable<RefreshTokenDocument>()
             .FirstOrDefaultAsync(x => x.Hash == refreshTokenHandle);

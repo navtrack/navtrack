@@ -1,28 +1,28 @@
-import { useMemo } from "react";
-import { useRecoilValue } from "recoil";
+import { useEffect, useMemo } from "react";
+import { useRecoilState } from "recoil";
 import { assetConfigurationAtom } from "../../state/assets";
 import { useAssetsQuery } from "../queries/assets/useAssetsQuery";
-import { useOnChange } from "../util/useOnChange";
 import {
   currentAssetIdAtom,
-  currentOrganizationIdAtom
+  currentAssetIdInitializedAtom
 } from "../../state/current";
 import { useAssetQuery } from "../queries/assets/useAssetQuery";
+import { useCurrentOrganization } from "./useCurrentOrganization";
 
-type UseCurrentAssetProps = {
-  onChange?: (oldId?: string, newId?: string) => void;
-};
+export function useCurrentAsset() {
+  const [currentAssetId, setCurrentAssetId] =
+    useRecoilState(currentAssetIdAtom);
+  const [currentAssetIdInitialized, setCurrentAssetIdInitialized] =
+    useRecoilState(currentAssetIdInitializedAtom);
 
-export function useCurrentAsset(props?: UseCurrentAssetProps) {
-  const currentAssetId = useRecoilValue(currentAssetIdAtom);
-  const currentOrganizationId = useRecoilValue(currentOrganizationIdAtom);
+  const currentOrganizationId = useCurrentOrganization();
   const asset = useAssetQuery({
-    assetId: currentOrganizationId === undefined ? currentAssetId : undefined
+    assetId: !!currentOrganizationId === undefined ? currentAssetId : undefined
   });
   const assets = useAssetsQuery({
-    organizationId: currentOrganizationId ?? asset.data?.organizationId
+    organizationId: currentOrganizationId.id ?? asset.data?.organizationId
   });
-  const assetConfiguration = useRecoilValue(
+  const [assetConfiguration, setAssetConfiguration] = useRecoilState(
     assetConfigurationAtom(currentAssetId)
   );
 
@@ -32,12 +32,27 @@ export function useCurrentAsset(props?: UseCurrentAssetProps) {
     [assets, currentAssetId]
   );
 
-  useOnChange(currentAssetId, (prev, cur) => props?.onChange?.(prev, cur));
+  useEffect(() => {
+    if (currentAssetId !== null && !currentAssetIdInitialized) {
+      setCurrentAssetIdInitialized(true);
+    }
+  }, [
+    currentAssetId,
+    currentAssetIdInitialized,
+    currentOrganizationId,
+    setCurrentAssetIdInitialized
+  ]);
 
   return {
     id: currentAssetId,
     isLoading: assets.isLoading,
+    initialized: currentAssetIdInitialized,
     data: currentAsset,
-    configuration: assetConfiguration
+    configuration: assetConfiguration,
+    setConfiguration: setAssetConfiguration,
+    setId: (value: string | undefined) => setCurrentAssetId(value),
+    reset: () => {
+      setCurrentAssetId(undefined);
+    }
   };
 }
