@@ -1,15 +1,15 @@
 import { useAssetsGetList } from "../../../api/index-generated";
 
-type UseAssetsQueryProps = {
-  organizationId?: string;
+export type AssetsQueryProps = {
+  organizationId?: string | null;
 };
 
-export function useAssetsQuery(props: UseAssetsQueryProps) {
+export function useAssetsQuery(props: AssetsQueryProps) {
   const query = useAssetsGetList(props.organizationId!, {
     query: {
       refetchIntervalInBackground: true,
       refetchInterval: 5000,
-      enabled: props.organizationId !== undefined
+      enabled: !!props.organizationId
     }
   });
 

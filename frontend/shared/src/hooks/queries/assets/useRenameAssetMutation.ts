@@ -4,12 +4,11 @@ import {
   getAssetsGetListQueryKey,
   useAssetsUpdate
 } from "../../../api/index-generated";
-import { useRecoilValue } from "recoil";
-import { currentOrganizationIdAtom } from "../../../state/current";
+import { useCurrentOrganization } from "../../current/useCurrentOrganization";
 
 export function useRenameAssetMutation() {
   const queryClient = useQueryClient();
-  const currentOrganizationId = useRecoilValue(currentOrganizationIdAtom);
+  const currentOrganization = useCurrentOrganization();
 
   const mutation = useAssetsUpdate({
     mutation: {
@@ -19,7 +18,7 @@ export function useRenameAssetMutation() {
             queryKey: getAssetsGetQueryKey(variables.assetId)
           }),
           queryClient.invalidateQueries({
-            queryKey: getAssetsGetListQueryKey(currentOrganizationId!)
+            queryKey: getAssetsGetListQueryKey(currentOrganization.id!)
           })
         ]);
       }

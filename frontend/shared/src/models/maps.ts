@@ -5,4 +5,5 @@ export type MapPinUiModel = {
   follow?: boolean;
   color?: "primary" | "green" | "red";
   label?: string;
+  assetId?: string;
 };

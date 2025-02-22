@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import { useCurrentAsset } from "../current/useCurrentAsset";
-import { useSetRecoilState } from "recoil";
 import { useDeleteAssetMutation } from "../queries/assets/useDeleteAssetMutation";
-import { currentAssetIdAtom } from "../../state/current";
 
 type UseDeleteAssetProps = {
   onSuccess: () => void;
@@ -11,7 +9,6 @@ type UseDeleteAssetProps = {
 export function useDeleteAsset(props: UseDeleteAssetProps) {
   const currentAsset = useCurrentAsset();
   const deleteAssetMutation = useDeleteAssetMutation();
-  const setCurrentAssetIdAtom = useSetRecoilState(currentAssetIdAtom);
 
   const handleSubmit = useCallback(
     (assetId: string) => {
@@ -20,7 +17,7 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
           { assetId: assetId },
           {
             onSuccess: () => {
-              setCurrentAssetIdAtom(undefined);
+              currentAsset.setId(undefined);
               props.onSuccess();
             }
           }
@@ -29,7 +26,7 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
 
       return Promise.resolve();
     },
-    [currentAsset.data, deleteAssetMutation, props, setCurrentAssetIdAtom]
+    [currentAsset, deleteAssetMutation, props]
   );
 
   return {

@@ -7,6 +7,7 @@ import { Skeleton } from "../ui/skeleton/Skeleton";
 import { OrganizationCard } from "./OrganizationCard";
 import { CreateOrganizationModal } from "../ui/layouts/authenticated/CreateOrganizationModal";
 import { useState } from "react";
+import { LoadingIndicator } from "../ui/loading-indicator/LoadingIndicator";
 
 export function OrganizationsPage() {
   const organizations = useOrganizationsQuery();
@@ -19,24 +20,26 @@ export function OrganizationsPage() {
       </Heading>
       <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {organizations.isLoading ? (
-          <Skeleton isLoading background="bg-gray-300">
-            <div className="h-28" />
-          </Skeleton>
+          <div className="col-span-4 flex justify-center">
+            <LoadingIndicator size="xl" />
+          </div>
         ) : (
-          organizations.data?.items.map((organization) => (
-            <OrganizationCard
-              key={organization.id}
-              organization={organization}
-            />
-          ))
+          <>
+            {organizations.data?.items.map((organization) => (
+              <OrganizationCard
+                key={organization.id}
+                organization={organization}
+              />
+            ))}
+            <div
+              onClick={() => setOpen(true)}
+              className="flex h-28 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-500 hover:border-gray-600 hover:bg-gray-200">
+              <Icon icon={faPlus} className="mr-2" />
+              <FormattedMessage id="generic.new-organization" />
+            </div>
+            <CreateOrganizationModal open={open} setOpen={setOpen} />
+          </>
         )}
-        <div
-          onClick={() => setOpen(true)}
-          className="flex h-28 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-500 hover:border-gray-600 hover:bg-gray-200">
-          <Icon icon={faPlus} className="mr-2" />
-          <FormattedMessage id="generic.new-organization" />
-        </div>
-        <CreateOrganizationModal open={open} setOpen={setOpen} />
       </div>
     </div>
   );

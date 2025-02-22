@@ -5,12 +5,11 @@ import {
   getAssetsGetListQueryKey,
   useAssetsDevicesCreateOrUpdate
 } from "../../../api/index-generated";
-import { useRecoilValue } from "recoil";
-import { currentOrganizationIdAtom } from "../../../state/current";
+import { useCurrentOrganization } from "../../current/useCurrentOrganization";
 
 export function useChangeDeviceMutation() {
   const queryClient = useQueryClient();
-  const currentOrganizationId = useRecoilValue(currentOrganizationIdAtom);
+  const currentOrganization = useCurrentOrganization();
 
   const mutation = useAssetsDevicesCreateOrUpdate({
     mutation: {
@@ -20,7 +19,7 @@ export function useChangeDeviceMutation() {
             queryKey: getAssetsGetQueryKey(variables.assetId)
           }),
           queryClient.invalidateQueries({
-            queryKey: getAssetsGetListQueryKey(currentOrganizationId!)
+            queryKey: getAssetsGetListQueryKey(currentOrganization.id!)
           }),
           queryClient.invalidateQueries({
             queryKey: getAssetsDevicesGetListQueryKey(variables.assetId)

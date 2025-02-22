@@ -3,18 +3,17 @@ import {
   getAssetsGetListQueryKey,
   useAssetsDelete
 } from "../../../api/index-generated";
-import { useRecoilValue } from "recoil";
-import { currentOrganizationIdAtom } from "../../../state/current";
+import { useCurrentOrganization } from "../../current/useCurrentOrganization";
 
 export function useDeleteAssetMutation() {
   const queryClient = useQueryClient();
-  const currentOrganizationId = useRecoilValue(currentOrganizationIdAtom);
+  const currentOrganization = useCurrentOrganization();
 
   const mutation = useAssetsDelete({
     mutation: {
       onSuccess: () => {
         return queryClient.refetchQueries({
-          queryKey: getAssetsGetListQueryKey(currentOrganizationId!)
+          queryKey: getAssetsGetListQueryKey(currentOrganization.id!)
         });
       }
     }

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { Fragment, ReactNode, useEffect } from "react";
 import { AppConfig, appConfigAtom } from "../../state/appConfig";
 import { useRecoilState } from "recoil";
 
@@ -16,5 +16,5 @@ export function ConfigProvider(props: ConfigProviderProps) {
     }
   }, [props.config, setState, state]);
 
-  return <>{state !== undefined && props.children}</>;
+  return <Fragment>{state !== undefined && props.children}</Fragment>;
 }

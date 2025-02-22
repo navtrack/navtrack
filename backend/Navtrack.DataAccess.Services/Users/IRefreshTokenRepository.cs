@@ -7,6 +7,6 @@ public interface IRefreshTokenRepository
 {
     Task Add(RefreshTokenDocument document);
     Task Remove(string subjectId, string clientId);
-    Task<RefreshTokenDocument>? Get(string refreshTokenHandle);
+    Task<RefreshTokenDocument?> Get(string refreshTokenHandle);
     Task Remove(string refreshTokenHandle);
 }

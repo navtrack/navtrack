@@ -1,4 +1,4 @@
-import { AtomEffect, DefaultValue } from "recoil";
+import { AtomEffect } from "recoil";
 import {
   getFromAsyncStorage,
   removeFromAsyncStorage,
@@ -10,7 +10,8 @@ export function getLocalStorageEffect<T>(): AtomEffect<T> {
     const loadPersisted = async () => {
       const value = await getFromAsyncStorage<T>(node.key);
 
-      setSelf(value !== undefined ? value : new DefaultValue());
+      // @ts-ignore
+      setSelf(value);
     };
 
     if (trigger === "get") {

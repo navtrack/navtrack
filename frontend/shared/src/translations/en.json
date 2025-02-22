@@ -1,4 +1,5 @@
 {
+  "generic.all": "All",
   "assets.add.name.placeholder": "John's car",
   "assets.add.serial-number.placeholder": "IMEI or serial number",
   "assets.add.success": "The asset was added successfully.",
