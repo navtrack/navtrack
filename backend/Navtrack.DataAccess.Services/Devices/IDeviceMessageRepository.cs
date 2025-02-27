@@ -16,5 +16,7 @@ public interface IDeviceMessageRepository : IGenericRepository<DeviceMessageDocu
     Task<bool> DeviceHasMessages(string assetId, string deviceId);
     Task<GetFirstAndLastPositionResult> GetFirstAndLast(ObjectId assetId,
         DateTime? startDate, DateTime? endDate);
+    Task<GetFirstAndLastPositionResult> GetFirstAndLast(ObjectId assetId,
+        DateTime date);
     Task<DeviceMessageDocument?> GetFirstOdometer(string assetId);
 }

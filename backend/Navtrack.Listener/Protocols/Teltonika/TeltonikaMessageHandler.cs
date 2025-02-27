@@ -431,7 +431,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
                     return;
                 case TeltonikaDataIds.CanFuelConsumedCounted:
                     deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.FuelConsumed = value.ToSInt4() * 0.1;
+                    deviceMessageDocument.Vehicle.FuelConsumption = value.ToSInt4() * 0.1;
                     return;
                 case 123:
                     deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanControlStateFlags.ToString()] = value.ToUInt4().ToString();

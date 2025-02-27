@@ -29,34 +29,16 @@ public static class GpsUtil
         return Math.Round((degrees + minutes + seconds) * multiplier, 6, MidpointRounding.ToZero);
     }
 
-    public static double ConvertDmmToDecimal(string regExPattern, string point, string cardinalDirection)
-    {
-        MatchCollection matchCollection = new Regex(regExPattern).Matches(point);
-
-        int multiplier = cardinalDirection == "S" || cardinalDirection == "W" ? -1 : 1;
-        double degrees = double.Parse(matchCollection[0].Groups[1].Value);
-        double minutes = double.Parse(matchCollection[0].Groups[2].Value) / 60;
-
-        return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
-    }
-
     public static double ConvertDmmToDecimal(double degrees, double minutes, CardinalPoint cardinalPoint)
     {
-        int multiplier = cardinalPoint == CardinalPoint.South || cardinalPoint == CardinalPoint.West ? -1 : 1;
-          
-        return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
-    }
-
-    public static double ConvertDdmToDecimal(double degrees, double minutes, CardinalPoint cardinalPoint)
-    {
-        int multiplier = cardinalPoint == CardinalPoint.South || cardinalPoint == CardinalPoint.West ? -1 : 1;
+        int multiplier = cardinalPoint is CardinalPoint.South or CardinalPoint.West ? -1 : 1;
           
         return Math.Round((degrees + minutes/60) * multiplier, 6, MidpointRounding.ToZero);
     }
 
     public static double ConvertStringToDecimal(string value, string cardinalDirection)
     {
-        int multiplier = cardinalDirection == "S" || cardinalDirection == "W" ? -1 : 1;
+        int multiplier = cardinalDirection is "S" or "W" ? -1 : 1;
 
         double result = double.Parse(value) * multiplier;
 
@@ -69,6 +51,17 @@ public static class GpsUtil
         {
             _ => Parse_DDDmmmmmm(input)
         };
+    }
+
+    private static double ConvertDmmToDecimal(string regExPattern, string point, string cardinalDirection)
+    {
+        MatchCollection matchCollection = new Regex(regExPattern).Matches(point);
+
+        int multiplier = cardinalDirection is "S" or "W" ? -1 : 1;
+        double degrees = double.Parse(matchCollection[0].Groups[1].Value);
+        double minutes = double.Parse(matchCollection[0].Groups[2].Value) / 60;
+
+        return Math.Round((degrees + minutes) * multiplier, 6, MidpointRounding.ToZero);
     }
 
     private static double Parse_DDDmmmmmm(IReadOnlyList<string> input)

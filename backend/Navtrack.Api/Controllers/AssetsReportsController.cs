@@ -19,14 +19,14 @@ namespace Navtrack.Api.Controllers;
 public class AssetsReportsController(IRequestHandler requestHandler)
     : ControllerBase
 {
-    [HttpGet(ApiPaths.AssetReportsTimeDistance)]
-    [ProducesResponseType(typeof(DistanceReportList), StatusCodes.Status200OK)]
+    [HttpGet(ApiPaths.AssetReportsDistance)]
+    [ProducesResponseType(typeof(DistanceReport), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<DistanceReportList> GetTimeDistanceReport([FromRoute] string assetId,
+    public async Task<DistanceReport> GetDistanceReport([FromRoute] string assetId,
         [FromQuery] DistanceReportFilter filter)
     {
-        DistanceReportList result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReportList>(
+        DistanceReport result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReport>(
             new GetDistanceReportRequest
             {
                 AssetId = assetId,

@@ -22,7 +22,7 @@ export function AuthenticatedLayoutSidebar() {
   });
 
   const logoPath = useMemo(() => {
-    if (currentOrganization.id !== undefined) {
+    if (currentOrganization.id) {
       return generatePath(Paths.OrganizationLive, {
         id: currentOrganization.id
       });

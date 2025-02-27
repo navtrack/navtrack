@@ -1,5 +1,9 @@
-using Navtrack.Api.Model.Trips;
+using System;
 
 namespace Navtrack.Api.Model.Reports;
 
-public class DistanceReportFilter : DateFilter;
+public class DistanceReportFilter
+{
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+}

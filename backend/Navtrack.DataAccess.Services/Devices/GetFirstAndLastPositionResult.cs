@@ -6,6 +6,6 @@ public class GetFirstAndLastPositionResult
 {
     public DeviceMessageDocument? FirstOdometer { get; set; }
     public DeviceMessageDocument? LastOdometer { get; set; }
-    public DeviceMessageDocument? FirstFuelConsumed { get; set; }
-    public DeviceMessageDocument? LastFuelConsumed { get; set; }
+    public DeviceMessageDocument? FirstFuelConsumption { get; set; }
+    public DeviceMessageDocument? LastFuelConsumption { get; set; }
 }

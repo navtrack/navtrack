@@ -15,6 +15,8 @@ export interface Trip {
   duration: number;
   endPosition: MessagePosition;
   /** @nullable */
+  fuelConsumption?: number | null;
+  /** @nullable */
   maxSpeed?: number | null;
   positions: MessagePosition[];
   startPosition: MessagePosition;

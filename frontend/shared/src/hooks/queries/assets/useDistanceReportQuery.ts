@@ -1,15 +1,13 @@
-import { useAssetsReportsGetTimeDistanceReport } from "../../../api/index-generated";
+import { useAssetsReportsGetDistanceReport } from "../../../api/index-generated";
 
-export type UseTimeAndDistanceReportQueryProps = {
+export type DistanceReportQueryProps = {
   assetId?: string;
   startDate?: string;
   endDate?: string;
 };
 
-export const useTimeAndDistanceReportQuery = (
-  props: UseTimeAndDistanceReportQueryProps
-) => {
-  const query = useAssetsReportsGetTimeDistanceReport(
+export function useDistanceReportQuery(props: DistanceReportQueryProps) {
+  const query = useAssetsReportsGetDistanceReport(
     props.assetId as string,
     {
       StartDate: props.startDate,
@@ -24,4 +22,4 @@ export const useTimeAndDistanceReportQuery = (
   );
 
   return query;
-};
+}

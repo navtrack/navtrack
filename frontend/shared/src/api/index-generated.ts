@@ -18,7 +18,7 @@ import type {
   Asset,
   AssetStatList,
   AssetsMessagesGetListParams,
-  AssetsReportsGetTimeDistanceReportParams,
+  AssetsReportsGetDistanceReportParams,
   AssetsTripsGetListParams,
   ChangePasswordModel,
   CreateAccount,
@@ -31,7 +31,7 @@ import type {
   CreateTeamAsset,
   CreateTeamUser,
   CurrentUser,
-  DistanceReportList,
+  DistanceReport,
   Entity,
   Error,
   ForgotPassword,
@@ -903,38 +903,38 @@ export const useAssetsMessagesGetList = <
   return query;
 };
 
-export const assetsReportsGetTimeDistanceReport = (
+export const assetsReportsGetDistanceReport = (
   assetId: string,
-  params?: AssetsReportsGetTimeDistanceReportParams,
+  params?: AssetsReportsGetDistanceReportParams,
   signal?: AbortSignal
 ) => {
-  return authAxiosInstance<DistanceReportList>({
-    url: `/assets/${assetId}/reports/time-distance`,
+  return authAxiosInstance<DistanceReport>({
+    url: `/assets/${assetId}/reports/distance`,
     method: "GET",
     params,
     signal
   });
 };
 
-export const getAssetsReportsGetTimeDistanceReportQueryKey = (
+export const getAssetsReportsGetDistanceReportQueryKey = (
   assetId: string,
-  params?: AssetsReportsGetTimeDistanceReportParams
+  params?: AssetsReportsGetDistanceReportParams
 ) => {
   return [
-    `/assets/${assetId}/reports/time-distance`,
+    `/assets/${assetId}/reports/distance`,
     ...(params ? [params] : [])
   ] as const;
 };
 
-export const getAssetsReportsGetTimeDistanceReportQueryOptions = <
-  TData = Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>,
+export const getAssetsReportsGetDistanceReportQueryOptions = <
+  TData = Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>,
   TError = ProblemDetails
 >(
   assetId: string,
-  params?: AssetsReportsGetTimeDistanceReportParams,
+  params?: AssetsReportsGetDistanceReportParams,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>,
+      Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>,
       TError,
       TData
     >;
@@ -944,12 +944,11 @@ export const getAssetsReportsGetTimeDistanceReportQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getAssetsReportsGetTimeDistanceReportQueryKey(assetId, params);
+    getAssetsReportsGetDistanceReportQueryKey(assetId, params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>
-  > = ({ signal }) =>
-    assetsReportsGetTimeDistanceReport(assetId, params, signal);
+    Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>
+  > = ({ signal }) => assetsReportsGetDistanceReport(assetId, params, signal);
 
   return {
     queryKey,
@@ -957,32 +956,32 @@ export const getAssetsReportsGetTimeDistanceReportQueryOptions = <
     enabled: !!assetId,
     ...queryOptions
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>,
+    Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type AssetsReportsGetTimeDistanceReportQueryResult = NonNullable<
-  Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>
+export type AssetsReportsGetDistanceReportQueryResult = NonNullable<
+  Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>
 >;
-export type AssetsReportsGetTimeDistanceReportQueryError = ProblemDetails;
+export type AssetsReportsGetDistanceReportQueryError = ProblemDetails;
 
-export const useAssetsReportsGetTimeDistanceReport = <
-  TData = Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>,
+export const useAssetsReportsGetDistanceReport = <
+  TData = Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>,
   TError = ProblemDetails
 >(
   assetId: string,
-  params?: AssetsReportsGetTimeDistanceReportParams,
+  params?: AssetsReportsGetDistanceReportParams,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof assetsReportsGetTimeDistanceReport>>,
+      Awaited<ReturnType<typeof assetsReportsGetDistanceReport>>,
       TError,
       TData
     >;
   }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getAssetsReportsGetTimeDistanceReportQueryOptions(
+  const queryOptions = getAssetsReportsGetDistanceReportQueryOptions(
     assetId,
     params,
     options

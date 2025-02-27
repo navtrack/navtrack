@@ -631,12 +631,12 @@
         }
       }
     },
-    "/assets/{assetId}/reports/time-distance": {
+    "/assets/{assetId}/reports/distance": {
       "get": {
         "tags": [
           "Assets - Reports"
         ],
-        "operationId": "AssetsReports_GetTimeDistanceReport",
+        "operationId": "AssetsReports_GetDistanceReport",
         "parameters": [
           {
             "name": "assetId",
@@ -652,8 +652,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time",
-              "nullable": true
+              "format": "date-time"
             },
             "x-position": 2
           },
@@ -662,8 +661,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time",
-              "nullable": true
+              "format": "date-time"
             },
             "x-position": 3
           }
@@ -674,7 +672,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DistanceReportList"
+                  "$ref": "#/components/schemas/DistanceReport"
                 }
               }
             }
@@ -2727,17 +2725,19 @@
           }
         }
       },
-      "DistanceReportList": {
+      "DistanceReport": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfDistanceReportItemModel"
+            "$ref": "#/components/schemas/ListOfDistanceReportItem"
           },
           {
             "type": "object",
             "additionalProperties": false,
             "required": [
               "totalDistance",
-              "totalDuration"
+              "totalDuration",
+              "totalFuelConsumption",
+              "averageFuelConsumption"
             ],
             "properties": {
               "totalDistance": {
@@ -2747,12 +2747,20 @@
               "totalDuration": {
                 "type": "number",
                 "format": "double"
+              },
+              "totalFuelConsumption": {
+                "type": "number",
+                "format": "double"
+              },
+              "averageFuelConsumption": {
+                "type": "number",
+                "format": "double"
               }
             }
           }
         ]
       },
-      "ListOfDistanceReportItemModel": {
+      "ListOfDistanceReportItem": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2762,29 +2770,24 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DistanceReportItemModel"
+              "$ref": "#/components/schemas/DistanceReportItem"
             }
           }
         }
       },
-      "DistanceReportItemModel": {
+      "DistanceReportItem": {
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "day",
-          "trips",
+          "date",
           "distance",
           "duration"
         ],
         "properties": {
-          "day": {
+          "date": {
             "type": "string",
             "format": "date-time",
             "minLength": 1
-          },
-          "trips": {
-            "type": "integer",
-            "format": "int32"
           },
           "distance": {
             "type": "integer",
@@ -2793,6 +2796,16 @@
           "duration": {
             "type": "number",
             "format": "double"
+          },
+          "fuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "averageFuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         }
       },
@@ -3000,6 +3013,11 @@
           "distance": {
             "type": "integer",
             "format": "int32"
+          },
+          "fuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           },
           "maxSpeed": {
             "type": "number",

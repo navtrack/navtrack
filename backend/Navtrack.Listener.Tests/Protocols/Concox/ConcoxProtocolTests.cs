@@ -29,7 +29,22 @@ public class ConcoxProtocolTests : BaseProtocolTests<ConcoxProtocol, ConcoxMessa
 
         // Location
         ProtocolTester.SendHexFromDevice(
-            "78781F120B081D112E10CC027AC7EB0C46584900148F01CC00287D001FB8000380810D0A");
+            "7878 1F 12 0A03170F3217 CC 026B3F3E 0C465849 00 154C 01CC 00 287D 001FB8 0003 8081 0D0A");
+        ProtocolTester.SendHexFromDevice(
+            "7878 22 22 0F0101051814 C4 0222518C 04B5AA48 00 4826 02D4 17 04CF 003F35 000E 0100 128F8B0D0A");
+        
+        Assert.NotNull(ProtocolTester.LastParsedMessage);
+    }
+    
+    [Fact]
+    public void DeviceSendsLocation2_LocationIsParsed()
+    {
+        // Login
+        ProtocolTester.SendHexFromDevice("787811010355929100625814201412C900151AB40D0A");
+
+        // Location
+        ProtocolTester.SendHexFromDevice(
+            "787822220F0101051814C40222518C04B5AA4800482602D41704CF003F35000E0100128F8B0D0A");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }

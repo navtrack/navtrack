@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type AssetsReportsGetTimeDistanceReportParams = {
-  StartDate?: string | null;
-  EndDate?: string | null;
+export type AssetsReportsGetDistanceReportParams = {
+  StartDate?: string;
+  EndDate?: string;
 };

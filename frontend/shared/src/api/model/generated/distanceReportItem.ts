@@ -5,10 +5,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface DistanceReportItemModel {
+export interface DistanceReportItem {
+  /** @nullable */
+  averageFuelConsumption?: number | null;
   /** @minLength 1 */
-  day: string;
+  date: string;
   distance: number;
   duration: number;
-  trips: number;
+  /** @nullable */
+  fuelConsumption?: number | null;
 }

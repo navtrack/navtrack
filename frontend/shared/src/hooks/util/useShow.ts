@@ -17,9 +17,9 @@ export function useShow() {
       const convertedDistance =
         units.unitsType === UnitsType.Metric ? distance : distance * 3.2808399;
 
-      const couldBeDivded = convertedDistance > 1000;
+      const couldBeDivided = convertedDistance > 1000;
       const shouldBeDivided =
-        (couldBeDivded && divide === undefined) || divide === true;
+        (couldBeDivided && divide === undefined) || divide === true;
 
       const dividedDistance = shouldBeDivided
         ? units.unitsType === UnitsType.Metric
@@ -53,7 +53,7 @@ export function useShow() {
       }
 
       const convertedVolume =
-        units.unitsType === UnitsType.Imperial ? volume / 3.785 : volume ?? 0;
+        units.unitsType === UnitsType.Imperial ? volume / 3.785 : (volume ?? 0);
 
       const roundedVolume = Math.round(convertedVolume * 100) / 100;
 
@@ -69,7 +69,7 @@ export function useShow() {
       }
 
       const convertedVolume =
-        units.unitsType === UnitsType.Imperial ? 235.215 / fuel : fuel ?? 0;
+        units.unitsType === UnitsType.Imperial ? 235.215 / fuel : (fuel ?? 0);
 
       const roundedVolume = Math.round(convertedVolume * 100) / 100;
 
@@ -119,6 +119,6 @@ export function useShow() {
     date: showDate,
     time: showTime,
     dateTime: showDateTime,
-    showFuelConsumption
+    fuelConsumption: showFuelConsumption
   };
 }

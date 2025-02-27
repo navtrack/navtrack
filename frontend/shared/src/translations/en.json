@@ -145,6 +145,8 @@
   "generic.from": "From",
   "generic.fuel-consumed": "Fuel consumed",
   "generic.average-fuel-consumption": "Average fuel consumption",
+  "generic.avg-fuel-consumption": "Avg. fuel consumption",
+  "generic.no-data-found": "No data found.",
   "generic.go-back": "Go back",
   "generic.google": "Google",
   "generic.group-by": "Group by",

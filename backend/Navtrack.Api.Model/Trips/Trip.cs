@@ -23,6 +23,8 @@ public class Trip
     [Required]
     public int Distance { get; set; }
 
+    public double? FuelConsumption { get; set; }
+
     public double? MaxSpeed => Positions.Max(x => x.Speed);
 
     public float? AverageSpeed

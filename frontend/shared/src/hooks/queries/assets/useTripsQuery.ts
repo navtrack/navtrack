@@ -17,7 +17,7 @@ export type UseTripsQueryProps = {
 
 export const useTripsQuery = (props: UseTripsQueryProps) => {
   const query = useAssetsTripsGetList(
-    props.assetId as string,
+    props.assetId!,
     {
       StartDate: props.startDate,
       EndDate: props.endDate,

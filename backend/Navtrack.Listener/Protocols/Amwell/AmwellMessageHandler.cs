@@ -49,7 +49,7 @@ public class AmwellMessageHandler : BaseMessageHandler<AmwellProtocol>
     {
         string coordinate = input.StringJoin();
 
-        double converted = GpsUtil.ConvertDdmToDecimal(double.Parse(coordinate[..3]),
+        double converted = GpsUtil.ConvertDmmToDecimal(double.Parse(coordinate[..3]),
             double.Parse(coordinate.Substring(3, 5)) / 1000, CardinalPoint.North);
 
         return (highestByte & 0x80) != 0 ? -converted : converted;

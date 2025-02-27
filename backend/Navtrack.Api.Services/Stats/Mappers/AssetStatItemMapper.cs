@@ -29,10 +29,10 @@ public static class AssetStatItemMapper
             previous.LastOdometer?.Vehicle?.IgnitionDuration) / 60);
         model.DurationChange = ComputeChange(model.DurationPrevious, model.Duration);
         
-        model.FuelConsumption = ComputeDifference(current.FirstFuelConsumed?.Vehicle?.FuelConsumed,
-            current.LastFuelConsumed?.Vehicle?.FuelConsumed);
-        model.FuelConsumptionPrevious = ComputeDifference(previous.FirstFuelConsumed?.Vehicle?.FuelConsumed,
-            previous.LastFuelConsumed?.Vehicle?.FuelConsumed);
+        model.FuelConsumption = ComputeDifference(current.FirstFuelConsumption?.Vehicle?.FuelConsumption,
+            current.LastFuelConsumption?.Vehicle?.FuelConsumption);
+        model.FuelConsumptionPrevious = ComputeDifference(previous.FirstFuelConsumption?.Vehicle?.FuelConsumption,
+            previous.LastFuelConsumption?.Vehicle?.FuelConsumption);
         model.FuelConsumptionChange = ComputeChange(model.FuelConsumptionPrevious, model.FuelConsumption);
         
         // Fuel consumption average in l/100km 

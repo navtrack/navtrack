@@ -22,9 +22,7 @@ public class AssetsTripsController(IRequestHandler requestHandler) : ControllerB
     [ProducesResponseType(typeof(TripList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<TripList> GetList(
-        [FromRoute] string assetId,
-        [FromQuery] TripFilter filter)
+    public async Task<TripList> GetList([FromRoute] string assetId, [FromQuery] TripFilter filter)
     {
         TripList result = await requestHandler.Handle<GetAssetTripsRequest, TripList>(
             new GetAssetTripsRequest

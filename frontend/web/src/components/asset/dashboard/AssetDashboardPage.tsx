@@ -67,10 +67,10 @@ export function AssetDashboardPage() {
               <DashboardItem
                 dateRange={item.dataRange}
                 labelId="generic.average-fuel-consumption"
-                mainStat={show.showFuelConsumption(
+                mainStat={show.fuelConsumption(
                   item.data?.fuelConsumptionAverage
                 )}
-                secondaryStat={show.showFuelConsumption(
+                secondaryStat={show.fuelConsumption(
                   item.data?.fuelConsumptionAveragePrevious
                 )}
                 change={item.data?.fuelConsumptionAverageChange}

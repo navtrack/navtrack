@@ -17,7 +17,7 @@ export function useCurrentAsset() {
 
   const currentOrganizationId = useCurrentOrganization();
   const asset = useAssetQuery({
-    assetId: !!currentOrganizationId === undefined ? currentAssetId : undefined
+    assetId: !!currentAssetId ? currentAssetId : undefined
   });
   const assets = useAssetsQuery({
     organizationId: currentOrganizationId.id ?? asset.data?.organizationId

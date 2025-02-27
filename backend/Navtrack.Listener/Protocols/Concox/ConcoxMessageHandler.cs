@@ -139,7 +139,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         int degrees = (int)(d / 30000 / 60);
         double minutes = d / 30000 - degrees * 60;
 
-        return GpsUtil.ConvertDdmToDecimal(degrees, minutes, cardinalPoint);
+        return GpsUtil.ConvertDmmToDecimal(degrees, minutes, cardinalPoint);
     }
 
     private int GetIndex(int index)

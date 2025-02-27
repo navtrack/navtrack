@@ -132,10 +132,39 @@ public class DeviceMessageRepository(IRepository repository)
             LastOdometer = await query.Where(x => x.Device!.Odometer > 0)
                 .OrderByDescending(x => x.Position.Date)
                 .FirstOrDefaultAsync(),
-            FirstFuelConsumed = await query.Where(x => x.Vehicle!.FuelConsumed > 0)
+            FirstFuelConsumption = await query.Where(x => x.Vehicle!.FuelConsumption > 0)
                 .OrderBy(x => x.Position.Date)
                 .FirstOrDefaultAsync(),
-            LastFuelConsumed = await query.Where(x => x.Vehicle!.FuelConsumed > 0)
+            LastFuelConsumption = await query.Where(x => x.Vehicle!.FuelConsumption > 0)
+                .OrderByDescending(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+        };
+
+        return result;
+    }
+
+    public async Task<GetFirstAndLastPositionResult> GetFirstAndLast(ObjectId assetId, DateTime date)
+    {
+        DateTime startDate = new(date.Year, date.Month, date.Day, 0, 0, 0);
+        DateTime endDate = new(date.Year, date.Month, date.Day, 23, 59, 59);
+        
+        IMongoQueryable<DeviceMessageDocument> query = repository.GetQueryable<DeviceMessageDocument>()
+            .Where(x => x.Metadata.AssetId == assetId &&
+                        x.Position.Date >= startDate &&
+                        x.Position.Date <= endDate);
+
+        GetFirstAndLastPositionResult result = new()
+        {
+            FirstOdometer = await query.Where(x => x.Device!.Odometer > 0)
+                .OrderBy(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+            LastOdometer = await query.Where(x => x.Device!.Odometer > 0)
+                .OrderByDescending(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+            FirstFuelConsumption = await query.Where(x => x.Vehicle!.FuelConsumption > 0)
+                .OrderBy(x => x.Position.Date)
+                .FirstOrDefaultAsync(),
+            LastFuelConsumption = await query.Where(x => x.Vehicle!.FuelConsumption > 0)
                 .OrderByDescending(x => x.Position.Date)
                 .FirstOrDefaultAsync(),
         };
