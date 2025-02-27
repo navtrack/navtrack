@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useMap } from "./useMap";
-import "leaflet-active-area";
+// import "leaflet-active-area";
 
 type MapActiveAreaProps = {};
 
