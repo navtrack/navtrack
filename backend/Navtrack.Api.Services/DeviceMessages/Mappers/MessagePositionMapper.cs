@@ -9,7 +9,7 @@ public static class MessagePositionMapper
     {
         MessagePosition result = new()
         {
-            Coordinates = new LatLongModel(source.Latitude, source.Longitude),
+            Coordinates = new LatLong(source.Latitude, source.Longitude),
             Date = source.Date,
             Speed = source.Speed ?? 0,
             Heading = source.Heading ?? 0,

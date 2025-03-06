@@ -11,10 +11,10 @@ import { Modal } from "../../../../ui/modal/Modal";
 import { FilterModal } from "../FilterModal";
 import { useGeofenceFilter } from "./useGeofenceFilter";
 import { useEffect, useState } from "react";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 
 type GeofenceFilterModalProps = {
-  initialMapCenter?: LatLongModel;
+  initialMapCenter?: LatLong;
   filterKey: string;
 };
 

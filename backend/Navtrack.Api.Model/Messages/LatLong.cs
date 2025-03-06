@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Api.Model.Messages;
 
-public class LatLongModel(double latitude, double longitude)
+public class LatLong(double latitude, double longitude)
 {
     [Required]
     public double Latitude { get; set; } = latitude;

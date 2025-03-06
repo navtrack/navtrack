@@ -9,7 +9,7 @@ public class MessagePosition
     /// [Longitude, Latitude]
     /// </summary>
     [Required]
-    public LatLongModel Coordinates { get; set; }
+    public LatLong Coordinates { get; set; }
 
     [Required]
     public DateTime Date { get; set; }

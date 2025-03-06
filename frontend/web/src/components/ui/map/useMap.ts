@@ -1,9 +1,10 @@
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 import L from "leaflet";
 import { LatLngExpression } from "leaflet";
 import { useCallback } from "react";
 import { useMap as useLeafletMap } from "react-leaflet";
 import { DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING } from "../../../constants";
+import { MapPadding } from "@navtrack/shared/maps";
 
 export function useMap() {
   const leafletMap = useLeafletMap();
@@ -23,22 +24,40 @@ export function useMap() {
   );
 
   const fitBounds = useCallback(
-    (coordinates: LatLongModel[], options?: L.FitBoundsOptions) => {
+    (coordinates: LatLong[], padding?: MapPadding) => {
       if (coordinates.length > 0) {
-        const featureGroup = L.featureGroup(
-          coordinates.map((x) => L.marker([x.latitude, x.longitude]))
-        );
+        let featureGroup: L.FeatureGroup<any>;
+
+        if (coordinates.length === 1) {
+          featureGroup = L.featureGroup([
+            L.marker([coordinates[0].latitude, coordinates[0].longitude]),
+            L.marker([
+              coordinates[0].latitude - 0.00008999,
+              coordinates[0].longitude - 0.00008999
+            ]),
+            L.marker([
+              coordinates[0].latitude + 0.00008999,
+              coordinates[0].longitude + 0.00008999
+            ])
+          ]);
+        } else {
+          featureGroup = L.featureGroup(
+            coordinates.map((x) => L.marker([x.latitude, x.longitude]))
+          );
+        }
 
         const bounds = featureGroup.getBounds();
 
-        if (coordinates.length === 1) {
-          leafletMap.setView(
-            bounds.getCenter(),
-            DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING
-          );
-        } else {
-          leafletMap.fitBounds(bounds, options);
-        }
+        leafletMap.fitBounds(
+          bounds,
+          padding
+            ? {
+                paddingTopLeft: [padding.left, padding.top],
+                paddingBottomRight: [padding.right, padding.bottom],
+                maxZoom: DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING
+              }
+            : undefined
+        );
       }
     },
     [leafletMap]

@@ -2377,7 +2377,7 @@
         ],
         "properties": {
           "coordinates": {
-            "$ref": "#/components/schemas/LatLongModel"
+            "$ref": "#/components/schemas/LatLong"
           },
           "date": {
             "type": "string",
@@ -2414,7 +2414,7 @@
           }
         }
       },
-      "LatLongModel": {
+      "LatLong": {
         "type": "object",
         "additionalProperties": false,
         "required": [

@@ -6,11 +6,11 @@ import {
 } from "../../../../../constants";
 import { geofenceFilterAtom } from "../locationFilterState";
 import { CircleGeofence } from "../../../../ui/map/geofence/GeofenceCircle";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 
 export function useGeofenceFilter(
   filterKey: string,
-  initialMapCenter?: LatLongModel
+  initialMapCenter?: LatLong
 ) {
   const [state, setState] = useRecoilState(geofenceFilterAtom(filterKey));
 
@@ -32,7 +32,7 @@ export function useGeofenceFilter(
   );
 
   const handleMapMove = useCallback(
-    (center: LatLongModel, zoom: number) => {
+    (center: LatLong, zoom: number) => {
       setState((current) => ({
         ...current,
         map: {
@@ -48,7 +48,7 @@ export function useGeofenceFilter(
     () =>
       state.map?.center
         ? state.map.center
-        : initialMapCenter ?? DEFAULT_MAP_CENTER,
+        : (initialMapCenter ?? DEFAULT_MAP_CENTER),
     [initialMapCenter, state.map?.center]
   );
 

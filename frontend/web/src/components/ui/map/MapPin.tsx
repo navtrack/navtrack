@@ -2,16 +2,19 @@ import L from "leaflet";
 import { Marker } from "react-leaflet";
 import { PinIcon } from "./PinIcon";
 import { renderToString } from "react-dom/server";
-import { useMemo } from "react";
-import { MapCenter } from "./MapCenter";
-import { MapPinUiModel } from "@navtrack/shared/models/maps";
+import { useEffect, useMemo } from "react";
+import { MapPadding, FeMapPin } from "@navtrack/shared/maps";
+import { useMap } from "./useMap";
 
 type MapPinProps = {
-  pin: MapPinUiModel;
+  pin: FeMapPin;
   zIndexOffset?: number;
+  padding?: MapPadding;
 };
 
 export function MapPin(props: MapPinProps) {
+  const map = useMap();
+
   const pin = useMemo(
     () =>
       L.divIcon({
@@ -22,6 +25,12 @@ export function MapPin(props: MapPinProps) {
       }),
     [props.pin.color]
   );
+
+  useEffect(() => {
+    if (props.pin.follow && props.pin.coordinates) {
+      map.fitBounds([props.pin.coordinates], props.padding);
+    }
+  }, [map, props.padding, props.pin.coordinates, props.pin.follow]);
 
   if (props.pin.coordinates !== undefined) {
     return (
@@ -34,7 +43,7 @@ export function MapPin(props: MapPinProps) {
           icon={pin}
           zIndexOffset={props.zIndexOffset}
         />
-        {props.pin.follow && <MapCenter position={props.pin.coordinates} />}
+        {/* {props.pin.follow && <MapCenter position={props.pin.coordinates} />} */}
       </>
     );
   }

@@ -1,10 +1,10 @@
 import { PinIcon } from "./PinIcon";
 import { MapCustomMarker } from "./MapCustomMarker";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
-import { MapPinUiModel } from "@navtrack/shared/models/maps";
+import { FeMapPin } from "@navtrack/shared/maps";
 
 type MapPinProps = {
-  pin: MapPinUiModel;
+  pin: FeMapPin;
   onClick?: () => void;
 };
 

@@ -23,10 +23,10 @@ public static class AssetStatItemMapper
             previous.LastOdometer?.Device?.Odometer, initial?.Device?.Odometer);
         model.DistanceChange = ComputeChange(model.DistancePrevious, model.Distance);
 
-        model.Duration = (int?)(ComputeDifference(current.FirstOdometer?.Vehicle?.IgnitionDuration,
-            current.LastOdometer?.Vehicle?.IgnitionDuration) / 60);
-        model.DurationPrevious = (int?)(ComputeDifference(previous.FirstOdometer?.Vehicle?.IgnitionDuration,
-            previous.LastOdometer?.Vehicle?.IgnitionDuration) / 60);
+        model.Duration = (int?)ComputeDifference(current.FirstOdometer?.Vehicle?.IgnitionDuration,
+            current.LastOdometer?.Vehicle?.IgnitionDuration);
+        model.DurationPrevious = (int?)ComputeDifference(previous.FirstOdometer?.Vehicle?.IgnitionDuration,
+            previous.LastOdometer?.Vehicle?.IgnitionDuration);
         model.DurationChange = ComputeChange(model.DurationPrevious, model.Duration);
         
         model.FuelConsumption = ComputeDifference(current.FirstFuelConsumption?.Vehicle?.FuelConsumption,

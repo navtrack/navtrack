@@ -18,7 +18,7 @@ public class Trip
     public MessagePosition EndPosition => Positions.Last();
 
     [Required]
-    public double Duration => Math.Ceiling((EndPosition.Date - StartPosition.Date).TotalMinutes);
+    public double Duration => Math.Ceiling((EndPosition.Date - StartPosition.Date).TotalSeconds);
 
     [Required]
     public int Distance { get; set; }

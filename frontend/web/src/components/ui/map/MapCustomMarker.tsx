@@ -2,12 +2,12 @@ import L from "leaflet";
 import { renderToString } from "react-dom/server";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { MapCenter } from "./MapCenter";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 import { Marker } from "react-leaflet";
 import { createPortal } from "react-dom";
 
 type MapCustomMarkerProps = {
-  coordinates?: LatLongModel;
+  coordinates?: LatLong;
   follow?: boolean;
   zIndexOffset?: number;
   children?: ReactNode;

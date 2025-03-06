@@ -3,7 +3,7 @@ import { useAssetsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetsQ
 import { CardMapWrapper } from "../ui/map/CardMapWrapper";
 import { Map } from "../ui/map/Map";
 import { useMemo } from "react";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 import { StatCountCard } from "../ui/card/StatCountCard";
 import { startOfDay } from "date-fns";
 import { MapPinLabel } from "../ui/map/MapPinLabel";
@@ -42,7 +42,7 @@ export function OrganizationLiveTrackingPage() {
     () =>
       assetsWithPosition.map(
         (x) => x.lastPositionMessage?.position?.coordinates
-      ) as LatLongModel[],
+      ) as LatLong[],
     [assetsWithPosition]
   );
 
@@ -89,9 +89,11 @@ export function OrganizationLiveTrackingPage() {
             <MapShowAllControl
               key={currentOrganization.id}
               coordinates={coordinates}
-              options={{
-                paddingTopLeft: [60, 120],
-                paddingBottomRight: [10, 10]
+              padding={{
+                left: 60,
+                top: 120,
+                right: 10,
+                bottom: 20
               }}
             />
           </Map>

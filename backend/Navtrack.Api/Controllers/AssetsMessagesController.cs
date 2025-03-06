@@ -25,7 +25,7 @@ public class AssetsMessagesController(IRequestHandler requestHandler) : Controll
     [AuthorizeAsset(AssetUserRole.Viewer)]
     public async Task<MessageList> GetList(
         [FromRoute] string assetId,
-        [FromQuery] MessageFilterModel filter,
+        [FromQuery] MessageFilter filter,
         [FromQuery] int page = 0,
         [FromQuery] [Range(0, 10000)] int size = 10000)
     {

@@ -4,9 +4,11 @@ import { useMap } from "./useMap";
 import { MapPin } from "./MapPin";
 import { Trip } from "@navtrack/shared/api/model/generated";
 import { Polyline } from "react-leaflet";
+import { MapPadding } from "@navtrack/shared/maps";
 
 type MapTripProps = {
   trip?: Trip;
+  padding?: MapPadding;
 };
 
 export function MapTrip(props: MapTripProps) {
@@ -27,9 +29,10 @@ export function MapTrip(props: MapTripProps) {
       const leafletPolyline = L.polyline(latlngs);
       setPolyline(leafletPolyline);
 
-      map.leafletMap.fitBounds(leafletPolyline.getBounds(), {
-        padding: [40, 40]
-      });
+      map.fitBounds(
+        props.trip.positions.map((x) => x.coordinates),
+        props.padding
+      );
     }
 
     return () => {
@@ -37,7 +40,7 @@ export function MapTrip(props: MapTripProps) {
         setPolyline(undefined);
       }
     };
-  }, [currentTrip, map, map.leafletMap, polyline, props.trip]);
+  }, [currentTrip, map, map.leafletMap, polyline, props?.padding, props.trip]);
 
   if (props.trip !== undefined) {
     return (

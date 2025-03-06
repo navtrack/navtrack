@@ -4,11 +4,11 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { LatLongModel } from "./latLongModel";
+import type { LatLong } from "./latLong";
 
 export interface MessagePosition {
   altitude?: number;
-  coordinates: LatLongModel;
+  coordinates: LatLong;
   /** @minLength 1 */
   date: string;
   hdop?: number;

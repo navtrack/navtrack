@@ -40,6 +40,7 @@ export * from "./entity";
 export * from "./error";
 export * from "./errorErrors";
 export * from "./forgotPassword";
+export * from "./latLong";
 export * from "./latLongModel";
 export * from "./listOfAsset";
 export * from "./listOfAssetStatItem";

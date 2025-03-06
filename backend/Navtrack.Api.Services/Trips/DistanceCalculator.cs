@@ -13,7 +13,7 @@ public static class DistanceCalculator
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <returns>The distance in meters.</returns>
-    public static int CalculateDistance(LatLongModel from, LatLongModel to)
+    public static int CalculateDistance(LatLong from, LatLong to)
     {
         double d1 = from.Latitude * (Math.PI / 180.0);
         double num1 = from.Longitude * (Math.PI / 180.0);
@@ -26,14 +26,14 @@ public static class DistanceCalculator
         return (int)(6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3))));
     }
 
-    public static bool IsInRadius(LatLongModel position, LatLongModel center, int radius)
+    public static bool IsInRadius(LatLong position, LatLong center, int radius)
     {
         int distance = CalculateDistance(position, center);
 
         return distance <= radius;
     }
     
-    public static int CalculateDistance(List<(LatLongModel Coordinates, uint? Odometer)> positions)
+    public static int CalculateDistance(List<(LatLong Coordinates, uint? Odometer)> positions)
     {
         int distance = 0;
 
@@ -59,8 +59,8 @@ public static class DistanceCalculator
         return distance;
     }
 
-    private static int CalculateDistance((LatLongModel Coordinates, double? Odometer) from,
-        (LatLongModel Coordinates, double? Odometer) to)
+    private static int CalculateDistance((LatLong Coordinates, double? Odometer) from,
+        (LatLong Coordinates, double? Odometer) to)
     {
         if (to.Odometer.HasValue && from.Odometer.HasValue)
         {

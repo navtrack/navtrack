@@ -6,11 +6,11 @@ import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useRecoilValue } from "recoil";
 import { MapZoomControl } from "./MapZoomControl";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 import { MapResizeObserver } from "./MapResizeObserver";
 
 type MapProps = {
-  center?: LatLongModel;
+  center?: LatLong;
   initialZoom?: number;
   children?: ReactNode;
   hideZoomControl?: boolean;

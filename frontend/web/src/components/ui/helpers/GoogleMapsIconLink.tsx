@@ -1,11 +1,11 @@
 import { Icon } from "../icon/Icon";
 import { classNames } from "@navtrack/shared/utils/tailwind";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 type GoogleMapsIconLinkProps = {
   className?: string;
-  coordinates: LatLongModel;
+  coordinates: LatLong;
 };
 
 export function GoogleMapsIconLink(props: GoogleMapsIconLinkProps) {

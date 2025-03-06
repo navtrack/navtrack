@@ -77,8 +77,8 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
                 lastMessage == null ||
                 message.Position.Date > lastMessage.Position.Date.AddMinutes(MaxTimeBetweenTripInMinutes) ||
                 DistanceCalculator.CalculateDistance(
-                    new LatLongModel(lastMessage.Position.Latitude, lastMessage.Position.Longitude),
-                    new LatLongModel(message.Position.Latitude, message.Position.Longitude)) >
+                    new LatLong(lastMessage.Position.Latitude, lastMessage.Position.Longitude),
+                    new LatLong(message.Position.Latitude, message.Position.Longitude)) >
                 MaxDistanceBetweenPositionsInMeters ||
                 (message.Vehicle?.Ignition != null && lastMessage.Vehicle?.Ignition != null &&
                  message.Vehicle.Ignition != lastMessage.Vehicle.Ignition)
@@ -153,7 +153,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
             else
             {
                 trip.Distance = DistanceCalculator.CalculateDistance(trip.Messages
-                    .Select(x => (new LatLongModel(x.Position.Latitude, x.Position.Longitude), (uint?)null)).ToList());
+                    .Select(x => (new LatLong(x.Position.Latitude, x.Position.Longitude), (uint?)null)).ToList());
             }
         }
     }
@@ -206,8 +206,8 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
             filteredTrips = filteredTrips
                 .Where(x => x.Messages
                     .Any(y => DistanceCalculator.IsInRadius(
-                        new LatLongModel(y.Position.Latitude, y.Position.Longitude),
-                        new LatLongModel(tripFilter.Latitude.Value, tripFilter.Longitude.Value),
+                        new LatLong(y.Position.Latitude, y.Position.Longitude),
+                        new LatLong(tripFilter.Latitude.Value, tripFilter.Longitude.Value),
                         tripFilter.Radius.Value)))
                 .ToList();
         }

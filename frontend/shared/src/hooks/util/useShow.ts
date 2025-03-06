@@ -36,14 +36,14 @@ export function useShow() {
     [units.length, units.lengthK, units.unitsType]
   );
 
-  const showDuration = useCallback((minutes?: number | null) => {
-    if (minutes === undefined || minutes === null) {
+  const showDuration = useCallback((seconds?: number | null) => {
+    if (seconds === undefined || seconds === null) {
       return undefined;
     }
 
-    return minutes > 60
-      ? `${Math.floor(minutes / 60)} h ${Math.round(minutes % 60)} m`
-      : `${Math.round(minutes)} m`;
+    return seconds > 3600
+      ? `${Math.floor(seconds / 60 / 60)} h ${Math.round(seconds % 60)} m`
+      : `${Math.round(seconds / 60)} m`;
   }, []);
 
   const showVolume = useCallback(

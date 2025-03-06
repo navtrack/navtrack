@@ -16,10 +16,10 @@ import {
   LocationFilterPage,
   useLocationFilterKey
 } from "./useLocationFilterKey";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 
 type LocationFilterProps = {
-  center?: LatLongModel;
+  center?: LatLong;
   duration?: boolean;
   avgSpeed?: boolean;
   avgAltitude?: boolean;

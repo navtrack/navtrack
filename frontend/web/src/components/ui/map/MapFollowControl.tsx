@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { Icon } from "../icon/Icon";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import { MapCenter } from "./MapCenter";
-import { LatLongModel } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model/generated";
 import { ZINDEX_MAP_CONTROL } from "../../../constants";
 import { FormattedMessage } from "react-intl";
 
 type MapFollowControlProps = {
-  position?: LatLongModel;
+  position?: LatLong;
   follow?: boolean;
   onChange?: (follow: boolean) => void;
 };
@@ -29,10 +29,13 @@ export function MapFollowControl(props: MapFollowControlProps) {
       className="absolute bottom-0 mx-auto flex w-full justify-center"
       style={{ zIndex: ZINDEX_MAP_CONTROL }}>
       <div
-        onClick={() => {
+        onClick={(e) => {
           setFollow(!follow);
           props.onChange?.(!follow);
+          e.stopPropagation();
         }}
+        onDoubleClickCapture={(e) => e.stopPropagation()}
+        onDoubleClick={(e) => e.nativeEvent.stopPropagation()}
         className={classNames(
           "mb-2 cursor-pointer rounded-lg bg-white px-2 py-0.5 text-sm font-medium shadow-md hover:bg-gray-100",
           c(follow, "text-blue-600", "text-gray-500")
