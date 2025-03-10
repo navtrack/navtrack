@@ -1,4 +1,3 @@
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { MessagePosition } from "@navtrack/shared/api/model/generated";
 import {
@@ -9,20 +8,21 @@ import {
 } from "@navtrack/shared/utils/coordinates";
 import { PositionCardItem } from "./PositionCardItem";
 import { GoogleMapsIconLink } from "../../../ui/helpers/GoogleMapsIconLink";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 type PositionCardItemsProps = {
   position: MessagePosition;
 };
 
 export function PositionCardItems(props: PositionCardItemsProps) {
-  const { showDateTime } = useDateTime();
+  const show = useShow();
   const { showSpeed, showAltitude } = useDistance();
 
   return (
     <>
       <PositionCardItem
         label="generic.date"
-        value={showDateTime(props.position.date)}
+        value={show.dateTime(props.position.date)}
       />
       <PositionCardItem
         label="generic.latitude-longitude"

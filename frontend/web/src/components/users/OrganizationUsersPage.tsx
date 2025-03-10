@@ -3,7 +3,6 @@ import { CreateOrganizationUserModal } from "./CreateOrganizationUserModal";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 import { Heading } from "../ui/heading/Heading";
 import { OrganizationUser } from "@navtrack/shared/api/model/generated";
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";
@@ -13,6 +12,7 @@ import { useDeleteOrganizationUserMutation } from "@navtrack/shared/hooks/querie
 import { TableV2 } from "../ui/table/TableV2";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useOrganizationUsersQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationUsersQuery";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 export function OrganizationUsersPage() {
   const currentUser = useCurrentUserQuery();
@@ -22,14 +22,14 @@ export function OrganizationUsersPage() {
   });
 
   const deleteUser = useDeleteOrganizationUserMutation();
-  const dateTime = useDateTime();
+  const show = useShow();
   const { showNotification } = useNotification();
 
   const columns: ITableColumn<OrganizationUser>[] = [
     { labelId: "generic.email", row: (user) => user.email },
     {
       labelId: "generic.added-on",
-      row: (user) => dateTime.showDate(user.createdDate)
+      row: (user) => show.date(user.createdDate)
     },
     { labelId: "generic.role", row: (user) => user.userRole },
     {
@@ -39,7 +39,7 @@ export function OrganizationUsersPage() {
           <UpdateOrganizationUserModal user={user} />
           <DeleteModal
             isLoading={deleteUser.isLoading}
-            onConfirm={(close) => {
+            onConfirm={() => {
               if (currentUser.data && currentOrganization.data) {
                 return deleteUser.mutateAsync(
                   {

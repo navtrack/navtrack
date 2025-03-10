@@ -1,6 +1,5 @@
 import { FormattedMessage } from "react-intl";
 import { AssetUser, AssetUserRole } from "@navtrack/shared/api/model/generated";
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { getError } from "@navtrack/shared/utils/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/assets/useAssetUsersQuery";
@@ -12,6 +11,7 @@ import { useDeleteAssetUserMutation } from "@navtrack/shared/hooks/queries/asset
 import { useNotification } from "../../../ui/notification/useNotification";
 import { CreateAssetUserModal } from "./CreateAssetUserModal";
 import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 export function AssetUsersPage() {
   const currentAsset = useCurrentAsset();
@@ -21,14 +21,14 @@ export function AssetUsersPage() {
   const authorize = useAuthorize();
 
   const deleteUser = useDeleteAssetUserMutation();
-  const dateTime = useDateTime();
+  const show = useShow();
   const { showNotification } = useNotification();
 
   const columns: ITableColumn<AssetUser>[] = [
     { labelId: "generic.email", row: (user) => user.email },
     {
       labelId: "assets.settings.access.added-on",
-      row: (user) => dateTime.showDate(user.createdDate)
+      row: (user) => show.date(user.createdDate)
     },
     { labelId: "generic.role", row: (user) => user.userRole },
     {

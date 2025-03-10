@@ -15,6 +15,4 @@ export type MapPadding = {
   bottom: number;
 };
 
-export type MapOptions = {
-  padding?: MapPadding;
-};
+export type MapOptions = { padding?: MapPadding; initialZoom?: number };

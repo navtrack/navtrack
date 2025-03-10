@@ -3,8 +3,7 @@ import L from "leaflet";
 import { LatLngExpression } from "leaflet";
 import { useCallback } from "react";
 import { useMap as useLeafletMap } from "react-leaflet";
-import { DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING } from "../../../constants";
-import { MapPadding } from "@navtrack/shared/maps";
+import { MapOptions } from "@navtrack/shared/maps";
 
 export function useMap() {
   const leafletMap = useLeafletMap();
@@ -24,7 +23,7 @@ export function useMap() {
   );
 
   const fitBounds = useCallback(
-    (coordinates: LatLong[], padding?: MapPadding) => {
+    (coordinates: LatLong[], options?: MapOptions) => {
       if (coordinates.length > 0) {
         let featureGroup: L.FeatureGroup<any>;
 
@@ -47,14 +46,18 @@ export function useMap() {
         }
 
         const bounds = featureGroup.getBounds();
+        const zoom = leafletMap.getZoom();
 
         leafletMap.fitBounds(
           bounds,
-          padding
+          options?.padding
             ? {
-                paddingTopLeft: [padding.left, padding.top],
-                paddingBottomRight: [padding.right, padding.bottom],
-                maxZoom: DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING
+                paddingTopLeft: [options?.padding.left, options?.padding.top],
+                paddingBottomRight: [
+                  options?.padding.right,
+                  options?.padding.bottom
+                ],
+                maxZoom: options.initialZoom ?? zoom
               }
             : undefined
         );
@@ -63,10 +66,5 @@ export function useMap() {
     [leafletMap]
   );
 
-  return {
-    leafletMap,
-    fitBounds,
-    setCenter,
-    setZoom
-  };
+  return { leafletMap, fitBounds, setCenter, setZoom };
 }

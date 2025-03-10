@@ -6,12 +6,9 @@ import { ZINDEX_MAP_CONTROL } from "../../../constants";
 import { useMap } from "./useMap";
 import { LatLong } from "@navtrack/shared/api/model/generated";
 import { useEffect, useState } from "react";
-import { MapPadding } from "@navtrack/shared/maps";
+import { MapOptions } from "@navtrack/shared/maps";
 
-type MapShowAllControlProps = {
-  coordinates: LatLong[];
-  padding?: MapPadding;
-};
+type MapShowAllControlProps = { coordinates: LatLong[]; options?: MapOptions };
 
 export function MapShowAllControl(props: MapShowAllControlProps) {
   const map = useMap();
@@ -24,11 +21,11 @@ export function MapShowAllControl(props: MapShowAllControlProps) {
       props.coordinates.length > 0 &&
       !initialized
     ) {
-      map.fitBounds(props.coordinates, props.padding);
+      map.fitBounds(props.coordinates, props.options);
 
       setInitialized(true);
     }
-  }, [initialized, map, props.coordinates, props.padding]);
+  }, [initialized, map, props.coordinates, props.options]);
 
   return (
     <div
@@ -36,7 +33,7 @@ export function MapShowAllControl(props: MapShowAllControlProps) {
       style={{ zIndex: ZINDEX_MAP_CONTROL }}>
       <div
         onClick={(e) => {
-          map.fitBounds(props.coordinates, props.padding);
+          map.fitBounds(props.coordinates, props.options);
           e.stopPropagation();
         }}
         onDoubleClickCapture={(e) => e.stopPropagation()}

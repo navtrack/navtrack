@@ -89,11 +89,8 @@ export function OrganizationLiveTrackingPage() {
             <MapShowAllControl
               key={currentOrganization.id}
               coordinates={coordinates}
-              padding={{
-                left: 60,
-                top: 120,
-                right: 10,
-                bottom: 20
+              options={{
+                padding: { left: 60, top: 120, right: 10, bottom: 20 }
               }}
             />
           </Map>
