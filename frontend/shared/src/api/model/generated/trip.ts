@@ -10,6 +10,8 @@ export interface Trip {
   /** @nullable */
   averageAltitude?: number | null;
   /** @nullable */
+  averageFuelConsumption?: number | null;
+  /** @nullable */
   averageSpeed?: number | null;
   distance: number;
   duration: number;

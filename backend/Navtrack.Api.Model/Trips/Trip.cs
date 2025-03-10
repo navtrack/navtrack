@@ -48,4 +48,17 @@ public class Trip
             return average.HasValue ? (float?)Math.Round(average.Value) : null;
         }
     }
+    
+    public double? AverageFuelConsumption
+    {
+        get
+        {
+            if (FuelConsumption.HasValue)
+            {
+                return FuelConsumption * 100 / Distance * 1000;
+            }
+
+            return null;
+        }
+    }
 }

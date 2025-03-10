@@ -3033,6 +3033,11 @@
             "type": "number",
             "format": "float",
             "nullable": true
+          },
+          "averageFuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         }
       },
