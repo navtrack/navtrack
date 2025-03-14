@@ -3,13 +3,13 @@ import { Marker } from "react-leaflet";
 import { PinIcon } from "./PinIcon";
 import { renderToString } from "react-dom/server";
 import { useEffect, useMemo, useState } from "react";
-import { FeMapPin, MapOptions } from "@navtrack/shared/maps";
+import { MapPinDto, MapOptionsDto } from "@navtrack/shared/maps";
 import { useMap } from "./useMap";
 
 type MapPinProps = {
-  pin: FeMapPin;
+  pin: MapPinDto;
   zIndexOffset?: number;
-  mapOptions?: MapOptions;
+  mapOptions?: MapOptionsDto;
 };
 
 export function MapPin(props: MapPinProps) {

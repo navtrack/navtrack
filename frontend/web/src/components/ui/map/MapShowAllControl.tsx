@@ -6,9 +6,12 @@ import { ZINDEX_MAP_CONTROL } from "../../../constants";
 import { useMap } from "./useMap";
 import { LatLong } from "@navtrack/shared/api/model/generated";
 import { useEffect, useState } from "react";
-import { MapOptions } from "@navtrack/shared/maps";
+import { MapOptionsDto } from "@navtrack/shared/maps";
 
-type MapShowAllControlProps = { coordinates: LatLong[]; options?: MapOptions };
+type MapShowAllControlProps = {
+  coordinates: LatLong[];
+  options?: MapOptionsDto;
+};
 
 export function MapShowAllControl(props: MapShowAllControlProps) {
   const map = useMap();

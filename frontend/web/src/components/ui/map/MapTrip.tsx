@@ -1,12 +1,12 @@
 import L, { LatLng, Polyline as LeafletPolyline } from "leaflet";
 import { useEffect, useState } from "react";
 import { useMap } from "./useMap";
-import { MapPin } from "./MapPin";
 import { Trip } from "@navtrack/shared/api/model/generated";
 import { Polyline } from "react-leaflet";
-import { MapOptions } from "@navtrack/shared/maps";
+import { MapOptionsDto } from "@navtrack/shared/maps";
+import { MapPin } from "./MapPin";
 
-type MapTripProps = { trip?: Trip; options?: MapOptions };
+type MapTripProps = { trip?: Trip; options?: MapOptionsDto };
 
 export function MapTrip(props: MapTripProps) {
   const map = useMap();

@@ -1,9 +1,9 @@
 import { PinIcon } from "./PinIcon";
 import { MapCustomMarker } from "./MapCustomMarker";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
-import { FeMapPin } from "@navtrack/shared/maps";
+import { MapPinDto } from "@navtrack/shared/maps";
 
-type MapPinProps = { pin: FeMapPin; onClick?: () => void };
+type MapPinProps = { pin: MapPinDto; onClick?: () => void };
 
 export function MapPinLabel(props: MapPinProps) {
   return (

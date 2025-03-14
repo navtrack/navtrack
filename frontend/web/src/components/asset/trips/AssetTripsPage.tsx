@@ -6,7 +6,6 @@ import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Card } from "../../ui/card/Card";
 import { Icon } from "../../ui/icon/Icon";
 import { Map } from "../../ui/map/Map";
-import { MapPin } from "../../ui/map/MapPin";
 import { MapTrip } from "../../ui/map/MapTrip";
 import { Slider } from "../../ui/slider/Slider";
 import { PositionCardItems } from "../shared/position-card/PositionCardItems";
@@ -22,6 +21,7 @@ import { useLocationFilterKey } from "../shared/location-filter/useLocationFilte
 import { SlotContext } from "../../../app/SlotContext";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { MapCenter } from "../../ui/map/MapCenter";
+import { MapPin } from "../../ui/map/MapPin";
 
 export function AssetTripsPage() {
   const slots = useContext(SlotContext);

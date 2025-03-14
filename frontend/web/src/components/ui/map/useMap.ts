@@ -3,7 +3,7 @@ import L from "leaflet";
 import { LatLngExpression } from "leaflet";
 import { useCallback } from "react";
 import { useMap as useLeafletMap } from "react-leaflet";
-import { MapOptions } from "@navtrack/shared/maps";
+import { MapOptionsDto } from "@navtrack/shared/maps";
 
 export function useMap() {
   const leafletMap = useLeafletMap();
@@ -23,7 +23,7 @@ export function useMap() {
   );
 
   const fitBounds = useCallback(
-    (coordinates: LatLong[], options?: MapOptions) => {
+    (coordinates: LatLong[], options?: MapOptionsDto) => {
       if (coordinates.length > 0) {
         let featureGroup: L.FeatureGroup<any>;
 

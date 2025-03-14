@@ -1,6 +1,5 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Map } from "../../ui/map/Map";
-import { MapPin } from "../../ui/map/MapPin";
 import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useMessagesQuery } from "@navtrack/shared/hooks/queries/assets/useMessagesQuery";
@@ -19,6 +18,7 @@ import {
   showHeading
 } from "@navtrack/shared/utils/coordinates";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
+import { MapPin } from "../../ui/map/MapPin";
 
 export function AssetLogPage() {
   const currentAsset = useCurrentAsset();
@@ -120,9 +120,14 @@ export function AssetLogPage() {
           <Map
             center={message ? message.position.coordinates : DEFAULT_MAP_CENTER}
             initialZoom={14}>
-            <MapPin
-              pin={{ coordinates: message?.position.coordinates, follow: true }}
-            />
+            {message?.position.coordinates && (
+              <MapPin
+                pin={{
+                  coordinates: message?.position.coordinates,
+                  follow: true
+                }}
+              />
+            )}
           </Map>
         </CardMapWrapper>
       </Card>
