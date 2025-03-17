@@ -1,4 +1,4 @@
-import { useUserGet } from "../../../api/index-generated";
+import { useUserGet } from "../../../api";
 import { useAuthentication } from "../../app/authentication/useAuthentication";
 
 export const useCurrentUserQuery = () => {

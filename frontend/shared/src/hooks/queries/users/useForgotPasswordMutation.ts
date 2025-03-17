@@ -1,4 +1,4 @@
-import { useAccountForgotPassword } from "../../../api/index-generated";
+import { useAccountForgotPassword } from "../../../api";
 
 export function useForgotPasswordMutation() {
   const mutation = useAccountForgotPassword();

@@ -1,4 +1,4 @@
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 import L from "leaflet";
 import { LatLngExpression } from "leaflet";
 import { useCallback } from "react";

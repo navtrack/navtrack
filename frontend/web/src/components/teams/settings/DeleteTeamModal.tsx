@@ -6,7 +6,7 @@ import { DeleteModal } from "../../ui/modal/DeleteModal";
 import { Button } from "../../ui/button/Button";
 import { useCallback } from "react";
 import { useDeleteTeamMutation } from "@navtrack/shared/hooks/queries/teams/useDeleteTeamMutation";
-import { Team } from "@navtrack/shared/api/model/generated";
+import { Team } from "@navtrack/shared/api/model";
 
 export type DeleteAssetFormValues = {
   name?: string; // TODO make required

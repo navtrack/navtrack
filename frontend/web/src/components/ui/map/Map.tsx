@@ -6,7 +6,7 @@ import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useRecoilValue } from "recoil";
 import { MapZoomControl } from "./MapZoomControl";
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 import { MapResizeObserver } from "./MapResizeObserver";
 
 type MapProps = {

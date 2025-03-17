@@ -3,7 +3,7 @@ import {
   getTeamsGetQueryKey,
   getTeamsUsersListQueryKey,
   useTeamsUsersCreate
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useCreateTeamUserMutation() {
   const queryClient = useQueryClient();

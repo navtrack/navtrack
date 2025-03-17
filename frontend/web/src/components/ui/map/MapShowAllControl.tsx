@@ -4,7 +4,7 @@ import { faMaximize } from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
 import { ZINDEX_MAP_CONTROL } from "../../../constants";
 import { useMap } from "./useMap";
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 import { useEffect, useState } from "react";
 import { MapOptionsDto } from "@navtrack/shared/maps";
 

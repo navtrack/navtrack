@@ -4,7 +4,7 @@ import {
   getAssetsGetQueryKey,
   getAssetsGetListQueryKey,
   useAssetsDevicesCreateOrUpdate
-} from "../../../api/index-generated";
+} from "../../../api";
 import { useCurrentOrganization } from "../../current/useCurrentOrganization";
 
 export function useChangeDeviceMutation() {

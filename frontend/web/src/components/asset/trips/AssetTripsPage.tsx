@@ -12,7 +12,7 @@ import { PositionCardItems } from "../shared/position-card/PositionCardItems";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { MessagePosition, Trip } from "@navtrack/shared/api/model/generated";
+import { MessagePosition, Trip } from "@navtrack/shared/api/model";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useTripsQuery } from "@navtrack/shared/hooks/queries/assets/useTripsQuery";

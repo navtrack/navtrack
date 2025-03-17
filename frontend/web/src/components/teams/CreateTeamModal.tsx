@@ -19,7 +19,7 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
-import { OrganizationUserRole } from "@navtrack/shared/api/model/generated";
+import { OrganizationUserRole } from "@navtrack/shared/api/model";
 
 export type CreateTeamFormValues = {
   name: string;

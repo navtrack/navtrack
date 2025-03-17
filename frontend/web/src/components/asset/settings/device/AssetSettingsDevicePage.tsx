@@ -7,7 +7,7 @@ import { DeviceConfiguration } from "../../new/DeviceConfiguration";
 import { AssetDevicesTable } from "./AssetDevicesTable";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { object, ObjectSchema, string } from "yup";
-import { DeviceType } from "@navtrack/shared/api/model/generated";
+import { DeviceType } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/assets/useAssetDevicesQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";

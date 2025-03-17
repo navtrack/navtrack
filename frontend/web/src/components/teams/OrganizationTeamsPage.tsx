@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { Heading } from "../ui/heading/Heading";
 import { useTeamsQuery } from "@navtrack/shared/hooks/queries/teams/useTeamsQuery";
 import { ITableColumn } from "../ui/table/useTable";
-import { Team } from "@navtrack/shared/api/model/generated";
+import { Team } from "@navtrack/shared/api/model";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { generatePath, Link, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";

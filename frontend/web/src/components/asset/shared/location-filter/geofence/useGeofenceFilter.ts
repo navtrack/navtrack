@@ -6,7 +6,7 @@ import {
 } from "../../../../../constants";
 import { geofenceFilterAtom } from "../locationFilterState";
 import { CircleGeofence } from "../../../../ui/map/geofence/GeofenceCircle";
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 
 export function useGeofenceFilter(
   filterKey: string,

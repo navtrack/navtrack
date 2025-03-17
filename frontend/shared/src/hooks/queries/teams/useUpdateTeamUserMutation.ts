@@ -1,8 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getTeamsUsersListQueryKey,
-  useTeamsUsersUpdate
-} from "../../../api/index-generated";
+import { getTeamsUsersListQueryKey, useTeamsUsersUpdate } from "../../../api";
 
 export function useUpdateTeamUserMutation() {
   const queryClient = useQueryClient();

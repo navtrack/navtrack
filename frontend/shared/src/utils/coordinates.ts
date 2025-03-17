@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { LatLong } from "../api/model/generated";
+import { LatLong } from "../api/model";
 
 export function showNumber(value?: number, decimals?: number): ReactNode {
   return value !== undefined

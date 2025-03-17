@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AssetUserRole, OrganizationUserRole } from "../../api/model/generated";
+import { AssetUserRole, OrganizationUserRole } from "../../api/model";
 import { useAuthorize } from "../../hooks/current/useAuthorize";
 
 type AuthorizeProps = {

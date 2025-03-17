@@ -9,7 +9,7 @@ import { locationFiltersSelector } from "../shared/location-filter/locationFilte
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
-import { Message } from "@navtrack/shared/api/model/generated";
+import { Message } from "@navtrack/shared/api/model";
 import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";

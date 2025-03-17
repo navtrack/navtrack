@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { CreateOrganizationUserModal } from "./CreateOrganizationUserModal";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 import { Heading } from "../ui/heading/Heading";
-import { OrganizationUser } from "@navtrack/shared/api/model/generated";
+import { OrganizationUser } from "@navtrack/shared/api/model";
 import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";

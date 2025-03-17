@@ -1,4 +1,4 @@
-import { useAssetsUsersGetList } from "../../../api/index-generated";
+import { useAssetsUsersGetList } from "../../../api";
 
 type UseAssetUsersQueryProps = {
   assetId: string;

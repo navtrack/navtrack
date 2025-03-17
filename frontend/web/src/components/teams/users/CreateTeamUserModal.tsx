@@ -1,8 +1,5 @@
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import {
-  OrganizationUserRole,
-  TeamUserRole
-} from "@navtrack/shared/api/model/generated";
+import { OrganizationUserRole, TeamUserRole } from "@navtrack/shared/api/model";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useCallback, useState } from "react";
 import { FormattedMessage } from "react-intl";

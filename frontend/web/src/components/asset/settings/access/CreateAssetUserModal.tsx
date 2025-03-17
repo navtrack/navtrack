@@ -13,7 +13,7 @@ import {
   CreateAssetUserFormValues,
   useCreateAssetUser
 } from "./useCreateAssetUser";
-import { AssetUserRole } from "@navtrack/shared/api/model/generated";
+import { AssetUserRole } from "@navtrack/shared/api/model";
 import { Button } from "../../../ui/button/Button";
 import { FormikSelect } from "../../../ui/form/select/FormikSelect";
 import { useOrganizationUsersQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationUsersQuery";

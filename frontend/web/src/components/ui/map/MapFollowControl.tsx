@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "../icon/Icon";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import { MapCenter } from "./MapCenter";
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 import { ZINDEX_MAP_CONTROL } from "../../../constants";
 import { FormattedMessage } from "react-intl";
 

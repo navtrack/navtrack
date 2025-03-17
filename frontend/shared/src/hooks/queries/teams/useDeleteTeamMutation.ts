@@ -3,7 +3,7 @@ import {
   getOrganizationsGetQueryKey,
   getTeamsAssetsListQueryKey,
   useTeamsDelete
-} from "../../../api/index-generated";
+} from "../../../api";
 
 type DeleteTeamMutationProps = {
   organizationId?: string;

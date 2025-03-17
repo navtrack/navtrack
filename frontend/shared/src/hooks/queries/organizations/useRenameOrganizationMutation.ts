@@ -3,7 +3,7 @@ import {
   getOrganizationsGetQueryKey,
   getOrganizationsListQueryKey,
   useOrganizationsUpdate
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useRenameOrganizationMutation() {
   const queryClient = useQueryClient();

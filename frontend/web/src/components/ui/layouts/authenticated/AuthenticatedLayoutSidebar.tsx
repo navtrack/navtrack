@@ -13,7 +13,7 @@ import { Icon } from "../../icon/Icon";
 import { faHdd } from "@fortawesome/free-regular-svg-icons";
 import { useMemo } from "react";
 import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
-import { OrganizationUserRole } from "@navtrack/shared/api/model/generated";
+import { OrganizationUserRole } from "@navtrack/shared/api/model";
 
 export function AuthenticatedLayoutSidebar() {
   const currentOrganization = useCurrentOrganization();

@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { AssetUser, AssetUserRole } from "@navtrack/shared/api/model/generated";
+import { AssetUser, AssetUserRole } from "@navtrack/shared/api/model";
 import { getError } from "@navtrack/shared/utils/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/assets/useAssetUsersQuery";

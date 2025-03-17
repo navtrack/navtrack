@@ -1,6 +1,6 @@
 import { Icon } from "../icon/Icon";
 import { classNames } from "@navtrack/shared/utils/tailwind";
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 type GoogleMapsIconLinkProps = {

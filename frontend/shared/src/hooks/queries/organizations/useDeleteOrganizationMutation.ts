@@ -3,7 +3,7 @@ import {
   getOrganizationsListQueryKey,
   getUserGetQueryKey,
   useOrganizationsDelete
-} from "../../../api/index-generated";
+} from "../../../api";
 
 type UseDeleteOrganizationMutationProps = {
   onSuccess?: () => void;

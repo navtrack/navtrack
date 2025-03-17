@@ -3,7 +3,7 @@ import {
   getTeamsAssetsListQueryKey,
   getTeamsGetQueryKey,
   useTeamsAssetsCreate
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useCreateTeamAssetMutation() {
   const queryClient = useQueryClient();

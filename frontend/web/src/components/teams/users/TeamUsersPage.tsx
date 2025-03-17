@@ -1,6 +1,6 @@
 import { Heading } from "../../ui/heading/Heading";
 import { ITableColumn } from "../../ui/table/useTable";
-import { TeamUser } from "@navtrack/shared/api/model/generated";
+import { TeamUser } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
 import { TableV2 } from "../../ui/table/TableV2";

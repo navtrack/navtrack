@@ -1,4 +1,4 @@
-import { OrganizationUserRole } from "@navtrack/shared/api/model/generated";
+import { OrganizationUserRole } from "@navtrack/shared/api/model";
 import { SelectOption } from "../ui/form/select/Select";
 
 export const organizationUserRoles: SelectOption[] = [

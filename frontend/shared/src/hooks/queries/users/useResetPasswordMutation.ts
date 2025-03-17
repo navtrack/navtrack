@@ -1,4 +1,4 @@
-import { useAccountResetPassword } from "../../../api/index-generated";
+import { useAccountResetPassword } from "../../../api";
 
 export function useResetPasswordMutation() {
   const mutation = useAccountResetPassword();

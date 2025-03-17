@@ -5,13 +5,13 @@ export default defineConfig({
     output: {
       mode: "single",
       client: "react-query",
-      // clean: true,
+      clean: true,
       prettier: true,
-      target: "./src/api/index-generated.ts",
-      schemas: "./src/api/model/generated",
+      target: "./src/api/index.ts",
+      schemas: "./src/api/model",
       override: {
         mutator: {
-          path: "./src/api/authAxiosInstance.ts",
+          path: "./src/axios/authAxiosInstance.ts",
           name: "authAxiosInstance"
         }
       }

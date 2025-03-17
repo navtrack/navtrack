@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useCurrentUnits } from "./useCurrentUnits";
-import { UnitsType } from "../../api/model/generated";
+import { UnitsType } from "../../api/model";
 
 function convertKphToMph(speed: number) {
   return Math.round((speed / 0.621371192) * 100) / 100;
@@ -27,7 +27,7 @@ export function useDistance() {
       const convertedSpeed =
         units.unitsType === UnitsType.Imperial
           ? convertKphToMph(speed ?? 0)
-          : speed ?? 0;
+          : (speed ?? 0);
 
       return `${Math.round(convertedSpeed)} ${units.speed}`;
     },

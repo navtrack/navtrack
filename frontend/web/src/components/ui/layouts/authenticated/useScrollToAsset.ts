@@ -1,4 +1,4 @@
-import { Asset } from "@navtrack/shared/api/model/generated";
+import { Asset } from "@navtrack/shared/api/model";
 import { scrollToAssetAtom } from "@navtrack/shared/state/assets";
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";

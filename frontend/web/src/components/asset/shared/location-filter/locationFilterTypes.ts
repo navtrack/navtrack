@@ -1,4 +1,4 @@
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 import { CircleGeofence } from "../../../ui/map/geofence/GeofenceCircle";
 
 export enum LocationFilterType {

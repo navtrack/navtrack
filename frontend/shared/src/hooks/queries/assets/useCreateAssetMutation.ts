@@ -4,7 +4,7 @@ import {
   getOrganizationsGetQueryKey,
   getOrganizationsListQueryKey,
   useAssetsCreate
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useCreateAssetMutation() {
   const queryClient = useQueryClient();

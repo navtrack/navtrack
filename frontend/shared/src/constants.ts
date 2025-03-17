@@ -1,4 +1,4 @@
-import { LatLong } from "./api/model/generated";
+import { LatLong } from "./api/model";
 
 export const DEFAULT_MAP_CENTER: LatLong = {
   latitude: 46.770439,

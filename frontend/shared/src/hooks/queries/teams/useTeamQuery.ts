@@ -1,4 +1,4 @@
-import { useTeamsGet } from "../../../api/index-generated";
+import { useTeamsGet } from "../../../api";
 
 type UseTeamQueryProps = {
   teamId?: string;

@@ -2,7 +2,7 @@ import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
-import { AssetStatsDateRange } from "@navtrack/shared/api/model/generated";
+import { AssetStatsDateRange } from "@navtrack/shared/api/model";
 import { Skeleton } from "../../ui/skeleton/Skeleton";
 
 type DashboardItemProps = {

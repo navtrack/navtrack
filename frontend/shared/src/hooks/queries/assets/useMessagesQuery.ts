@@ -1,4 +1,4 @@
-import { useAssetsMessagesGetList } from "../../../api/index-generated";
+import { useAssetsMessagesGetList } from "../../../api";
 
 export type UsePositionsQueryProps = {
   assetId?: string;

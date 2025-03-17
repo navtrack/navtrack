@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   getAssetsDevicesGetListQueryKey,
   useAssetsDevicesDelete
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useDeleteDeviceMutation() {
   const queryClient = useQueryClient();

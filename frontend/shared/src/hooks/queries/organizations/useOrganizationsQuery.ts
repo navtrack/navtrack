@@ -1,4 +1,4 @@
-import { useOrganizationsList } from "../../../api/index-generated";
+import { useOrganizationsList } from "../../../api";
 
 export function useOrganizationsQuery() {
   const query = useOrganizationsList({

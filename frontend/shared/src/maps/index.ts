@@ -1,4 +1,4 @@
-import { LatLong } from "../api/model/generated";
+import { LatLong } from "../api/model";
 
 export type MapPinDto = {
   coordinates: LatLong;

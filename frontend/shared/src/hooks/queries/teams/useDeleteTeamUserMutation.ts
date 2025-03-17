@@ -3,7 +3,7 @@ import {
   getTeamsGetQueryKey,
   getTeamsUsersListQueryKey,
   useTeamsUsersDelete
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useDeleteTeamUserMutation() {
   const queryClient = useQueryClient();

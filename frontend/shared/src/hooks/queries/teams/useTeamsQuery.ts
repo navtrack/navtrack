@@ -1,4 +1,4 @@
-import { useTeamsGetList } from "../../../api/index-generated";
+import { useTeamsGetList } from "../../../api";
 
 type UseTeamsQueryProps = {
   organizationId?: string;

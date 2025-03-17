@@ -1,4 +1,4 @@
-import { useDevicesGetList } from "../../../api/index-generated";
+import { useDevicesGetList } from "../../../api";
 
 export const useDevicesTypesQuery = () => {
   const query = useDevicesGetList({

@@ -1,4 +1,4 @@
-import { useOrganizationsGet } from "../../../api/index-generated";
+import { useOrganizationsGet } from "../../../api";
 
 type UseOrganizationQueryProps = {
   organizationId?: string;

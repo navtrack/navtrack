@@ -16,7 +16,7 @@ import {
   LocationFilterPage,
   useLocationFilterKey
 } from "./useLocationFilterKey";
-import { LatLong } from "@navtrack/shared/api/model/generated";
+import { LatLong } from "@navtrack/shared/api/model";
 
 type LocationFilterProps = {
   center?: LatLong;

@@ -1,4 +1,4 @@
-import { TeamUserRole, TeamUser } from "@navtrack/shared/api/model/generated";
+import { TeamUserRole, TeamUser } from "@navtrack/shared/api/model";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { FormikSelect } from "../../ui/form/select/FormikSelect";

@@ -5,7 +5,7 @@ import { FormikAutocomplete } from "../../ui/form/autocomplete/FormikAutocomplet
 import { generatePath, useNavigate } from "react-router-dom";
 import { DeviceConfiguration } from "./DeviceConfiguration";
 import { useContext, useState } from "react";
-import { DeviceType } from "@navtrack/shared/api/model/generated";
+import { DeviceType } from "@navtrack/shared/api/model";
 import {
   CreateAssetFormValues,
   DefaultCreateAssetFormValues,

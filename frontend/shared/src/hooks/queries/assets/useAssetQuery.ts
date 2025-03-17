@@ -1,4 +1,4 @@
-import { useAssetsGet } from "../../../api/index-generated";
+import { useAssetsGet } from "../../../api";
 
 type UseAssetQueryProps = {
   assetId?: string;

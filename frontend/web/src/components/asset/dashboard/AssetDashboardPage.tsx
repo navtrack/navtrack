@@ -2,7 +2,7 @@ import { useAssetStatsQuery } from "@navtrack/shared/hooks/queries/assets/useAss
 import { DashboardItem } from "./DashboardItem";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { FormattedMessage } from "react-intl";
-import { AssetStatsDateRange } from "@navtrack/shared/api/model/generated";
+import { AssetStatsDateRange } from "@navtrack/shared/api/model";
 import { useMemo } from "react";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { Card } from "../../ui/card/Card";

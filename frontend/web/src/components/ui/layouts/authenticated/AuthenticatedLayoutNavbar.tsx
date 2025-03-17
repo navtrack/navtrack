@@ -25,7 +25,7 @@ import { NavbarBreadcrumbs } from "./NavbarBreadcrumbs";
 import {
   AssetUserRole,
   OrganizationUserRole
-} from "@navtrack/shared/api/model/generated";
+} from "@navtrack/shared/api/model";
 import { SlotContext } from "../../../../app/SlotContext";
 import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
 

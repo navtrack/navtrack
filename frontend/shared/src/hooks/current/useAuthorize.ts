@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useCurrentUserQuery } from "../queries/user/useCurrentUserQuery";
-import { AssetUserRole, OrganizationUserRole } from "../../api/model/generated";
+import { AssetUserRole, OrganizationUserRole } from "../../api/model";
 import { useCurrentOrganization } from "./useCurrentOrganization";
 import { useCurrentAsset } from "./useCurrentAsset";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { SettingsMenuItemProps } from "../components/ui/layouts/settings/SettingsMenuItem";
-import { MessagePosition } from "@navtrack/shared/api/model/generated";
+import { MessagePosition } from "@navtrack/shared/api/model";
 
 export type AppSlots = {
   accountSettingsMenuItems?: SettingsMenuItemProps[];

@@ -1,4 +1,4 @@
-import { useUsersList } from "../../../api/index-generated";
+import { useUsersList } from "../../../api";
 
 type UseUsersQueryProps = {
   organizationId?: string;

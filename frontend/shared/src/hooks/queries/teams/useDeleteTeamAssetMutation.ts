@@ -3,7 +3,7 @@ import {
   getTeamsAssetsListQueryKey,
   getTeamsGetQueryKey,
   useTeamsAssetsDelete
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useDeleteTeamAssetMutation() {
   const queryClient = useQueryClient();

@@ -1,8 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getUsersListQueryKey,
-  useUsersUpdate
-} from "../../../api/index-generated";
+import { getUsersListQueryKey, useUsersUpdate } from "../../../api";
 
 export function useUpdateOrganizationUserMutation() {
   const queryClient = useQueryClient();

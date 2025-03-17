@@ -1,9 +1,9 @@
-import { Device } from "@navtrack/shared/api/model/generated";
+import { Device } from "@navtrack/shared/api/model";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/queries/assets/useDeleteDeviceMutation";
 import { FormattedMessage } from "react-intl";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { useQueryClient } from "@tanstack/react-query";
-import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api/index-generated";
+import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { ITableColumn } from "../../../ui/table/useTable";
 import { TableV1 } from "../../../ui/table/TableV1";

@@ -1,4 +1,4 @@
-import { useAssetsReportsGetDistanceReport } from "../../../api/index-generated";
+import { useAssetsReportsGetDistanceReport } from "../../../api";
 
 export type DistanceReportQueryProps = {
   assetId?: string;

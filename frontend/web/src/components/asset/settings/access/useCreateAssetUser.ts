@@ -1,4 +1,4 @@
-import { AssetUserRole } from "@navtrack/shared/api/model/generated";
+import { AssetUserRole } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetUserCreateMutation } from "@navtrack/shared/hooks/queries/assets/useAssetUserCreateMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";

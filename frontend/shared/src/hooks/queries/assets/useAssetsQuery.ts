@@ -1,4 +1,4 @@
-import { useAssetsGetList } from "../../../api/index-generated";
+import { useAssetsGetList } from "../../../api";
 
 export type AssetsQueryProps = {
   organizationId?: string | null;

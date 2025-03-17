@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import { axiosInstance } from "../../../api/axiosInstance";
+import { axiosInstance } from "../../../axios/axiosInstance";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 

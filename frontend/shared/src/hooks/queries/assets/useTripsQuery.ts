@@ -1,4 +1,4 @@
-import { useAssetsTripsGetList } from "../../../api/index-generated";
+import { useAssetsTripsGetList } from "../../../api";
 
 export type UseTripsQueryProps = {
   assetId?: string;

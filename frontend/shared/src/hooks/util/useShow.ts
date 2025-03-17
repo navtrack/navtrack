@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useCurrentUnits } from "./useCurrentUnits";
-import { UnitsType } from "../../api/model/generated";
+import { UnitsType } from "../../api/model";
 import { useIntl } from "react-intl";
 import { format, parseISO } from "date-fns";
 

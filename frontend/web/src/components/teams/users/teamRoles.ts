@@ -1,4 +1,4 @@
-import { TeamUserRole } from "@navtrack/shared/api/model/generated";
+import { TeamUserRole } from "@navtrack/shared/api/model";
 import { SelectOption } from "../../ui/form/select/Select";
 
 export const teamRoles: SelectOption[] = [

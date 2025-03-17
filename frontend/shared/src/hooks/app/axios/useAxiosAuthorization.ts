@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AUTH_AXIOS_INSTANCE } from "../../../api/authAxiosInstance";
+import { AUTH_AXIOS_INSTANCE } from "../../../axios/authAxiosInstance";
 import { log } from "../../../utils/log";
 import { useAuthentication } from "../authentication/useAuthentication";
 

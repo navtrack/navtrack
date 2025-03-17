@@ -1,5 +1,5 @@
 import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
-import { MessagePosition } from "@navtrack/shared/api/model/generated";
+import { MessagePosition } from "@navtrack/shared/api/model";
 import {
   showCoordinate,
   showHeading,

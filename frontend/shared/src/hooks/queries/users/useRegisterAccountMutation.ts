@@ -1,4 +1,4 @@
-import { useAccountCreateAccount } from "../../../api/index-generated";
+import { useAccountCreateAccount } from "../../../api";
 
 export function useRegisterAccountMutation() {
   const mutation = useAccountCreateAccount();

@@ -1,8 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getUserGetQueryKey,
-  useUserChangePassword
-} from "../../../api/index-generated";
+import { getUserGetQueryKey, useUserChangePassword } from "../../../api";
 
 export function useChangePasswordMutation() {
   const queryClient = useQueryClient();

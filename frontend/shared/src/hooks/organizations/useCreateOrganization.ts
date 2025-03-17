@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { FormikHelpers } from "formik";
 import { mapErrors } from "../../utils/formik";
-import { Entity } from "../../api/model/generated";
+import { Entity } from "../../api/model";
 import { ObjectSchema, object, string } from "yup";
 import { useCreateOrganizationMutation } from "../queries/organizations/useCreateOrganizationMutation";
 

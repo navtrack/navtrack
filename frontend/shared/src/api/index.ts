@@ -57,8 +57,8 @@ import type {
   UpdateTeam,
   UpdateTeamUser,
   UpdateUserModel
-} from "./model/generated";
-import { authAxiosInstance } from "./authAxiosInstance";
+} from "./model";
+import { authAxiosInstance } from "../axios/authAxiosInstance";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 

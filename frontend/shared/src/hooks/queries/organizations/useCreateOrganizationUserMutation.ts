@@ -3,7 +3,7 @@ import {
   getOrganizationsGetQueryKey,
   getUsersListQueryKey,
   useUsersCreate
-} from "../../../api/index-generated";
+} from "../../../api";
 
 export function useCreateOrganizationUserMutation() {
   const queryClient = useQueryClient();
