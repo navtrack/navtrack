@@ -24,10 +24,44 @@ public class AssetsReportsController(IRequestHandler requestHandler)
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
     public async Task<DistanceReport> GetDistanceReport([FromRoute] string assetId,
-        [FromQuery] DistanceReportFilter filter)
+        [FromQuery] BaseReportFilter filter)
     {
         DistanceReport result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReport>(
             new GetDistanceReportRequest
+            {
+                AssetId = assetId,
+                Model = filter
+            });
+
+        return result;
+    }
+    
+    [HttpGet(ApiPaths.AssetReportsFuelConsumption)]
+    [ProducesResponseType(typeof(FuelConsumptionReport), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeAsset(AssetUserRole.Viewer)]
+    public async Task<FuelConsumptionReport> GetFuelConsumptionReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilter filter)
+    {
+        FuelConsumptionReport result = await requestHandler.Handle<GetFuelConsumptionReportRequest, FuelConsumptionReport>(
+            new GetFuelConsumptionReportRequest
+            {
+                AssetId = assetId,
+                Model = filter
+            });
+
+        return result;
+    }
+    
+    [HttpGet(ApiPaths.AssetReportsTrips)]
+    [ProducesResponseType(typeof(TripReport), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeAsset(AssetUserRole.Viewer)]
+    public async Task<TripReport> GetTripReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilter filter)
+    {
+        TripReport result = await requestHandler.Handle<GetTripReportRequest, TripReport>(
+            new GetTripReportRequest
             {
                 AssetId = assetId,
                 Model = filter

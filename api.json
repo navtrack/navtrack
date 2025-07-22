@@ -690,6 +690,124 @@
         }
       }
     },
+    "/assets/{assetId}/reports/fuel-consumption": {
+      "get": {
+        "tags": [
+          "Assets - Reports"
+        ],
+        "operationId": "AssetsReports_GetFuelConsumptionReport",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "EndDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FuelConsumptionReport"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/{assetId}/reports/trips": {
+      "get": {
+        "tags": [
+          "Assets - Reports"
+        ],
+        "operationId": "AssetsReports_GetTripReport",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "StartDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "EndDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripReport"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/assets/{assetId}/stats": {
       "get": {
         "tags": [
@@ -1266,6 +1384,207 @@
         "responses": {
           "200": {
             "description": ""
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "OrganizationsUsers_List",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfOrganizationUser"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "OrganizationsUsers_Create",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationUser"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/users/{userId}": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "OrganizationsUsers_Update",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrganizationUser"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 3
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "OrganizationsUsers_Delete",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "404": {
             "description": "",
@@ -1923,207 +2242,6 @@
           }
         }
       }
-    },
-    "/organizations/{organizationId}/users": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_List",
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListOfOrganizationUser"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Create",
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "model",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateOrganizationUser"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/organizations/{organizationId}/users/{userId}": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Update",
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
-        "requestBody": {
-          "x-name": "model",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateOrganizationUser"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 3
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_Delete",
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -2736,23 +2854,23 @@
             "required": [
               "totalDistance",
               "totalDuration",
-              "totalFuelConsumption",
-              "averageFuelConsumption"
+              "averageSpeed",
+              "maxSpeed"
             ],
             "properties": {
               "totalDistance": {
-                "type": "integer",
-                "format": "int32"
+                "type": "number",
+                "format": "double"
               },
               "totalDuration": {
                 "type": "number",
                 "format": "double"
               },
-              "totalFuelConsumption": {
+              "averageSpeed": {
                 "type": "number",
                 "format": "double"
               },
-              "averageFuelConsumption": {
+              "maxSpeed": {
                 "type": "number",
                 "format": "double"
               }
@@ -2781,6 +2899,95 @@
         "required": [
           "date",
           "distance",
+          "duration",
+          "averageSpeed",
+          "maxSpeed"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          },
+          "distance": {
+            "type": "number",
+            "format": "double"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "averageSpeed": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxSpeed": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "FuelConsumptionReport": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListOfFuelConsumptionReportItem"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "totalDistance",
+              "totalDuration",
+              "totalFuelConsumption",
+              "averageFuelConsumption",
+              "averageSpeed"
+            ],
+            "properties": {
+              "totalDistance": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalDuration": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalFuelConsumption": {
+                "type": "number",
+                "format": "double"
+              },
+              "averageFuelConsumption": {
+                "type": "number",
+                "format": "double"
+              },
+              "averageSpeed": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        ]
+      },
+      "ListOfFuelConsumptionReportItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FuelConsumptionReportItem"
+            }
+          }
+        }
+      },
+      "FuelConsumptionReportItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "distance",
           "duration"
         ],
         "properties": {
@@ -2788,6 +2995,105 @@
             "type": "string",
             "format": "date-time",
             "minLength": 1
+          },
+          "distance": {
+            "type": "number",
+            "format": "double"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "fuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "averageFuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "averageSpeed": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "TripReport": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ListOfTripReportItem"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "totalDistance",
+              "totalDuration",
+              "totalFuelConsumption",
+              "averageFuelConsumption",
+              "averageSpeed",
+              "maxSpeed"
+            ],
+            "properties": {
+              "totalDistance": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalDuration": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalFuelConsumption": {
+                "type": "number",
+                "format": "double"
+              },
+              "averageFuelConsumption": {
+                "type": "number",
+                "format": "double"
+              },
+              "averageSpeed": {
+                "type": "number",
+                "format": "double"
+              },
+              "maxSpeed": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        ]
+      },
+      "ListOfTripReportItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TripReportItem"
+            }
+          }
+        }
+      },
+      "TripReportItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "startPosition",
+          "endPosition"
+        ],
+        "properties": {
+          "startPosition": {
+            "$ref": "#/components/schemas/MessagePosition"
+          },
+          "endPosition": {
+            "$ref": "#/components/schemas/MessagePosition"
           },
           "distance": {
             "type": "integer",
@@ -2803,6 +3109,16 @@
             "nullable": true
           },
           "averageFuelConsumption": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "maxSpeed": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "averageSpeed": {
             "type": "number",
             "format": "double",
             "nullable": true
@@ -3198,6 +3514,90 @@
           }
         }
       },
+      "ListOfOrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationUser"
+            }
+          }
+        }
+      },
+      "OrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "userRole",
+          "userId",
+          "createdDate"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          },
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          }
+        }
+      },
+      "OrganizationUserRole": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Owner",
+          "Member"
+        ],
+        "enum": [
+          "Owner",
+          "Member"
+        ]
+      },
+      "CreateOrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "userRole"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          }
+        }
+      },
+      "UpdateOrganizationUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userRole"
+        ],
+        "properties": {
+          "userRole": {
+            "$ref": "#/components/schemas/OrganizationUserRole"
+          }
+        }
+      },
       "ListOfProtocol": {
         "type": "object",
         "additionalProperties": false,
@@ -3503,18 +3903,6 @@
           }
         }
       },
-      "OrganizationUserRole": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Owner",
-          "Member"
-        ],
-        "enum": [
-          "Owner",
-          "Member"
-        ]
-      },
       "UserAuthentication": {
         "type": "object",
         "additionalProperties": false,
@@ -3558,78 +3946,6 @@
             }
           }
         ]
-      },
-      "ListOfOrganizationUser": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "items"
-        ],
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrganizationUser"
-            }
-          }
-        }
-      },
-      "OrganizationUser": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "email",
-          "userRole",
-          "userId",
-          "createdDate"
-        ],
-        "properties": {
-          "email": {
-            "type": "string",
-            "minLength": 1
-          },
-          "userRole": {
-            "$ref": "#/components/schemas/OrganizationUserRole"
-          },
-          "userId": {
-            "type": "string",
-            "minLength": 1
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time",
-            "minLength": 1
-          }
-        }
-      },
-      "CreateOrganizationUser": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "email",
-          "userRole"
-        ],
-        "properties": {
-          "email": {
-            "type": "string",
-            "minLength": 1
-          },
-          "userRole": {
-            "$ref": "#/components/schemas/OrganizationUserRole"
-          }
-        }
-      },
-      "UpdateOrganizationUser": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "userRole"
-        ],
-        "properties": {
-          "userRole": {
-            "$ref": "#/components/schemas/OrganizationUserRole"
-          }
-        }
       }
     }
   },
@@ -3659,6 +3975,9 @@
       "name": "Organizations"
     },
     {
+      "name": "Users"
+    },
+    {
       "name": "Teams - Assets"
     },
     {
@@ -3666,9 +3985,6 @@
     },
     {
       "name": "Teams - Users"
-    },
-    {
-      "name": "Users"
     }
   ]
 }

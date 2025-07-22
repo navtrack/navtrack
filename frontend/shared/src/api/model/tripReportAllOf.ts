@@ -5,11 +5,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface DistanceReportItem {
+export type TripReportAllOf = {
+  averageFuelConsumption: number;
   averageSpeed: number;
-  /** @minLength 1 */
-  date: string;
-  distance: number;
-  duration: number;
   maxSpeed: number;
-}
+  totalDistance: number;
+  totalDuration: number;
+  totalFuelConsumption: number;
+};

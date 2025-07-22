@@ -1,4 +1,4 @@
-import { useAssetsReportsGetDistanceReport } from "../../../api";
+import { useAssetsReportsGetFuelConsumptionReport } from "../../../api";
 
 export type DistanceReportQueryProps = {
   assetId?: string;
@@ -6,8 +6,10 @@ export type DistanceReportQueryProps = {
   endDate?: string;
 };
 
-export function useDistanceReportQuery(props: DistanceReportQueryProps) {
-  const query = useAssetsReportsGetDistanceReport(
+export function useAssetReportFuelConsumptionQuery(
+  props: DistanceReportQueryProps
+) {
+  const query = useAssetsReportsGetFuelConsumptionReport(
     props.assetId as string,
     {
       StartDate: props.startDate,

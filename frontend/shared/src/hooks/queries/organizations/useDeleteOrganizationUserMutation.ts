@@ -1,19 +1,21 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
   getOrganizationsGetQueryKey,
-  getUsersListQueryKey,
-  useUsersDelete
+  getOrganizationsUsersListQueryKey,
+  useOrganizationsUsersDelete
 } from "../../../api";
 
 export function useDeleteOrganizationUserMutation() {
   const queryClient = useQueryClient();
 
-  const mutation = useUsersDelete({
+  const mutation = useOrganizationsUsersDelete({
     mutation: {
       onSuccess: (_, variables) =>
         Promise.all([
           queryClient.invalidateQueries({
-            queryKey: getUsersListQueryKey(variables.organizationId)
+            queryKey: getOrganizationsUsersListQueryKey(
+              variables.organizationId
+            )
           }),
           queryClient.invalidateQueries({
             queryKey: getOrganizationsGetQueryKey(variables.organizationId)

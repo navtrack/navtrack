@@ -3,7 +3,13 @@ import {
   faMountain,
   faTachometerAlt
 } from "@fortawesome/free-solid-svg-icons";
-import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition
+} from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -53,13 +59,13 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
     <>
       {!filtersEnabled.all && (
         <Menu as="div" className="relative order-last inline-block text-left">
-          <Menu.Button as={Fragment}>
+          <MenuButton as={Fragment}>
             <div>
               <Button color="secondary" size="xs">
                 <FormattedMessage id="locations.filter.add" />
               </Button>
             </div>
-          </Menu.Button>
+          </MenuButton>
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"

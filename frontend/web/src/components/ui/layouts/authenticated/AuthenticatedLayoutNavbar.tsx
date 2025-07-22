@@ -2,14 +2,16 @@ import {
   faChartLine,
   faCog,
   faDatabase,
+  faGasPump,
   faGauge,
   faHdd,
   faMapMarkerAlt,
   faRoute,
+  faTachometer,
   faUser,
   faUsers
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, generatePath } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { AuthenticatedLayoutNavbarProfile } from "./AuthenticatedLayoutNavbarProfile";
 import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
@@ -18,7 +20,7 @@ import { FormattedMessage } from "react-intl";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { NavbarOrganization } from "./NavbarOrganization";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
-import { useCallback, useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { NavbarBreadcrumbs } from "./NavbarBreadcrumbs";
@@ -41,6 +43,7 @@ export type NavbarMenuItem = {
   count?: number;
   organizationRole?: OrganizationUserRole;
   assetRole?: AssetUserRole;
+  subMenuItems?: NavbarMenuItem[];
 };
 
 const assetNavbarMenuitems: NavbarMenuItem[] = [
@@ -61,6 +64,32 @@ const assetNavbarMenuitems: NavbarMenuItem[] = [
     path: Paths.AssetTrips,
     icon: faRoute,
     order: 20
+  },
+  {
+    label: "navbar.asset.reports",
+    path: "",
+    icon: faChartLine,
+    order: 25,
+    subMenuItems: [
+      {
+        label: "generic.distance",
+        path: Paths.AssetReportsDistance,
+        icon: faTachometer,
+        order: 10
+      },
+      {
+        label: "generic.fuel-consumption",
+        path: Paths.AssetReportsFuelConsumption,
+        icon: faGasPump,
+        order: 20
+      },
+      {
+        label: "generic.trips",
+        path: Paths.AssetReportsTrips,
+        icon: faRoute,
+        order: 30
+      }
+    ]
   },
   {
     label: "navbar.asset.log",
@@ -164,24 +193,6 @@ export function AuthenticatedLayoutNavbar(
     ]
   );
 
-  const getPath = useCallback(
-    (path: string) => {
-      const isAsset = path.includes("/assets/:id");
-      const isOrganization = path.includes("/orgs/:id");
-
-      return generatePath(path, {
-        id: `${
-          isAsset
-            ? currentAsset.id
-            : isOrganization
-              ? currentOrganization.id
-              : undefined
-        }`
-      });
-    },
-    [currentAsset.id, currentOrganization.id]
-  );
-
   return (
     <div className="relative bg-white px-6 shadow">
       <div
@@ -215,15 +226,9 @@ export function AuthenticatedLayoutNavbar(
       </div>
       {menuItems.length > 0 && (
         <div className="flex h-14 space-x-8">
-          {menuItems.map((item) => (
-            <AuthenticatedLayoutNavbarItem
-              key={item.label}
-              labelId={item.label}
-              icon={item.icon}
-              to={getPath(item.path)}
-              count={item.count}
-            />
-          ))}
+          {menuItems.map((item) => {
+            return <AuthenticatedLayoutNavbarItem {...item} />;
+          })}
         </div>
       )}
     </div>

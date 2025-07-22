@@ -10,40 +10,41 @@ using Navtrack.DataAccess.Services.Assets;
 using Navtrack.DataAccess.Services.Devices;
 using Navtrack.DataAccess.Services.Reports;
 using Navtrack.Shared.Library.DI;
-using DistanceReportItem = Navtrack.Api.Model.Reports.DistanceReportItem;
+using FuelConsumptionReportItem = Navtrack.Api.Model.Reports.FuelConsumptionReportItem;
 
 namespace Navtrack.Api.Services.Reports;
 
-[Service(typeof(IRequestHandler<GetDistanceReportRequest, DistanceReport>))]
-public class GetDistanceReportRequestHandler(
+[Service(typeof(IRequestHandler<GetFuelConsumptionReportRequest, FuelConsumptionReport>))]
+public class GetFuelConsumptionReportRequestHandler(
     IAssetRepository assetRepository,
     IDeviceMessageRepository deviceMessageRepository,
     IReportRepository reportRepository)
-    : BaseRequestHandler<GetDistanceReportRequest, DistanceReport>
+    : BaseRequestHandler<GetFuelConsumptionReportRequest, FuelConsumptionReport>
 {
     private AssetDocument? asset;
 
-    public override async Task Validate(RequestValidationContext<GetDistanceReportRequest> context)
+    public override async Task Validate(RequestValidationContext<GetFuelConsumptionReportRequest> context)
     {
         asset = await assetRepository.GetById(context.Request.AssetId);
         asset.Return404IfNull();
     }
 
-    public override async Task<DistanceReport> Handle(GetDistanceReportRequest request)
+    public override async Task<FuelConsumptionReport> Handle(GetFuelConsumptionReportRequest request)
     {
-        List<DataAccess.Services.Reports.DistanceReportItem> distanceReportItems =
-            await reportRepository.GetDistanceReportItems(asset!.Id, request.Model.StartDate, request.Model.EndDate);
+        List<DataAccess.Services.Reports.FuelConsumptionReportItem> res = 
+            await reportRepository.GetFuelConsumptionReportItems(asset!.Id, request.Model.StartDate,
+            request.Model.EndDate);
 
-        DistanceReport result = new()
+        FuelConsumptionReport result = new()
         {
-            Items = distanceReportItems.Select(x => new DistanceReportItem
+            Items = res.Select(x => new FuelConsumptionReportItem
             {
-                AverageSpeed = x.AverageSpeed ?? 0,
                 Date = x.Date,
-                Distance = x.Distance ?? 0,
-                Duration = x.Duration ?? 0,
-                MaxSpeed = x.MaxSpeed ?? 0,
-            })
+                Distance = x.Distance,
+                Duration = x.Duration,
+                FuelConsumption = x.FuelConsumption,
+                AverageSpeed = x.AverageSpeed
+            }).ToList()
         };
 
         return result;
@@ -61,6 +62,21 @@ public class GetDistanceReportRequestHandler(
     }
 
     private static int ComputeDifference(int start, int end)
+    {
+        return Math.Max(end - start, 0);
+    }
+
+    private static double? ComputeDifference(double? start, double? end)
+    {
+        if (start.HasValue && end.HasValue)
+        {
+            return ComputeDifference(start.Value, end.Value);
+        }
+
+        return null;
+    }
+
+    private static double ComputeDifference(double start, double end)
     {
         return Math.Max(end - start, 0);
     }

@@ -1,4 +1,3 @@
-import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { MessagePosition } from "@navtrack/shared/api/model";
 import {
   showCoordinate,
@@ -16,7 +15,6 @@ type PositionCardItemsProps = {
 
 export function PositionCardItems(props: PositionCardItemsProps) {
   const show = useShow();
-  const { showSpeed, showAltitude } = useDistance();
 
   return (
     <>
@@ -37,11 +35,11 @@ export function PositionCardItems(props: PositionCardItemsProps) {
       />
       <PositionCardItem
         label="generic.speed"
-        value={showSpeed(props.position.speed)}
+        value={show.speed(props.position.speed)}
       />
       <PositionCardItem
         label="generic.altitude"
-        value={showAltitude(props.position.altitude)}
+        value={show.altitude(props.position.altitude)}
       />
       <PositionCardItem
         label="generic.heading"

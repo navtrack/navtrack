@@ -17,11 +17,11 @@ namespace Navtrack.Api.Controllers;
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 [OpenApiTag(ControllerTags.Users)]
-public class UsersController(IRequestHandler requestHandler) : ControllerBase
+public class OrganizationsUsersController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.OrganizationUsers)]
     [ProducesResponseType(typeof(List<OrganizationUser>), StatusCodes.Status200OK)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [AuthorizeOrganization(OrganizationUserRole.Member)]
     public async Task<List<OrganizationUser>> List([FromRoute] string organizationId)
     {
         List<OrganizationUser> result =

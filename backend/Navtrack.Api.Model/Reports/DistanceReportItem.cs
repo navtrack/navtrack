@@ -9,23 +9,14 @@ public class DistanceReportItem
     public DateTime Date { get; set; }
 
     [Required]
-    public int? Distance { get; set; }
+    public double Distance { get; set; }
 
     [Required]
-    public double? Duration { get; set; }
-
-    public double? FuelConsumption { get; set; }
-
-    public double? AverageFuelConsumption
-    {
-        get
-        {
-            if (Distance.HasValue && FuelConsumption.HasValue)
-            {
-                return FuelConsumption * 100 / Distance * 1000;
-            }
-
-            return null;
-        }
-    }
+    public double Duration { get; set; }
+    
+    [Required]
+    public double AverageSpeed { get; set; }
+    
+    [Required]
+    public double MaxSpeed { get; set; }
 }

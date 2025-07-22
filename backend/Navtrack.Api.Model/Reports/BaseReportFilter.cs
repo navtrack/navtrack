@@ -2,7 +2,7 @@ using System;
 
 namespace Navtrack.Api.Model.Reports;
 
-public class DistanceReportFilter
+public class BaseReportFilter
 {
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }

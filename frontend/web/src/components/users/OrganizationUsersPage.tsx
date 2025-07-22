@@ -20,7 +20,6 @@ export function OrganizationUsersPage() {
   const organizationUsers = useOrganizationUsersQuery({
     organizationId: currentOrganization.data?.id
   });
-
   const deleteUser = useDeleteOrganizationUserMutation();
   const show = useShow();
   const { showNotification } = useNotification();

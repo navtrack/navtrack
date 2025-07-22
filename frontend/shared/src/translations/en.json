@@ -1,6 +1,8 @@
 {
   "generic.all": "All",
   "generic.trips": "Trips",
+  "generic.start-location": "Start location",
+  "generic.end-location": "End location",
   "assets.add.name.placeholder": "John's car",
   "assets.add.serial-number.placeholder": "IMEI or serial number",
   "assets.add.success": "The asset was added successfully.",

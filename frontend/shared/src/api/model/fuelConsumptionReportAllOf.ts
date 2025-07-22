@@ -5,9 +5,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type DistanceReportAllOf = {
+export type FuelConsumptionReportAllOf = {
+  averageFuelConsumption: number;
   averageSpeed: number;
-  maxSpeed: number;
   totalDistance: number;
   totalDuration: number;
+  totalFuelConsumption: number;
 };

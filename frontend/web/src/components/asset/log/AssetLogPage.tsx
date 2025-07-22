@@ -10,8 +10,6 @@ import { useLocationFilterKey } from "../shared/location-filter/useLocationFilte
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
 import { Message } from "@navtrack/shared/api/model";
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
-import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
 import { FormattedMessage } from "react-intl";
 import {
   showCoordinate,
@@ -19,8 +17,10 @@ import {
 } from "@navtrack/shared/utils/coordinates";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapPin } from "../../ui/map/MapPin";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 export function AssetLogPage() {
+  const show = useShow();
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("log");
   const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
@@ -28,9 +28,6 @@ export function AssetLogPage() {
     assetId: currentAsset.data?.id,
     ...filters
   });
-
-  const { showDateTime } = useDateTime();
-  const { showSpeed, showAltitude } = useDistance();
 
   const [message, setMessage] = useState<Message | undefined>(undefined);
 
@@ -75,7 +72,7 @@ export function AssetLogPage() {
             ),
             sort: "desc",
             sortValue: (row) => row.position.date,
-            row: (row) => showDateTime(row.position.date),
+            row: (row) => show.dateTime(row.position.date),
             sortable: true
           },
           {
@@ -88,13 +85,13 @@ export function AssetLogPage() {
           },
           {
             labelId: "generic.altitude",
-            row: (row) => showAltitude(row.position.altitude),
+            row: (row) => show.altitude(row.position.altitude),
             sortValue: (row) => row.position.altitude,
             sortable: true
           },
           {
             labelId: "generic.speed",
-            row: (row) => showSpeed(row.position.speed),
+            row: (row) => show.speed(row.position.speed),
             sortValue: (row) => row.position.speed,
             sortable: true
           },
