@@ -38,5 +38,7 @@ public static class ApiPaths
     
     public const string Protocols = "protocols";
     
+    public const string GeocodeReverse = "geocode/reverse";
+    
     public const string Health = "health";
 }

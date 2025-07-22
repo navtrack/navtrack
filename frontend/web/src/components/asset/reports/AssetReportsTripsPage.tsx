@@ -7,9 +7,9 @@ import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { useAssetReportTripsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetReportTripsQuery";
-import { GeocodeReverse } from "../../../../../../../frontend/shared/src/components/geo/Geo";
 import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
 
 export function AssetReportsTripsPage() {
   const show = useShow();

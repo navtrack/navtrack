@@ -38,6 +38,7 @@ import type {
   Error,
   ForgotPassword,
   FuelConsumptionReport,
+  GeocodeReverseParams,
   ListOfAsset,
   ListOfAssetUser,
   ListOfDevice,
@@ -48,6 +49,7 @@ import type {
   ListOfTeam,
   ListOfTeamAsset,
   ListOfTeamUser,
+  LocationModel,
   MessageList,
   Organization,
   ProblemDetails,
@@ -1611,6 +1613,79 @@ export const useDevicesGetList = <
   >;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getDevicesGetListQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const geocodeReverse = (
+  params?: GeocodeReverseParams,
+  signal?: AbortSignal
+) => {
+  return authAxiosInstance<LocationModel>({
+    url: `/geocode/reverse`,
+    method: "GET",
+    params,
+    signal
+  });
+};
+
+export const getGeocodeReverseQueryKey = (params?: GeocodeReverseParams) => {
+  return [`/geocode/reverse`, ...(params ? [params] : [])] as const;
+};
+
+export const getGeocodeReverseQueryOptions = <
+  TData = Awaited<ReturnType<typeof geocodeReverse>>,
+  TError = unknown
+>(
+  params?: GeocodeReverseParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof geocodeReverse>>,
+      TError,
+      TData
+    >;
+  }
+) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGeocodeReverseQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof geocodeReverse>>> = ({
+    signal
+  }) => geocodeReverse(params, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof geocodeReverse>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GeocodeReverseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof geocodeReverse>>
+>;
+export type GeocodeReverseQueryError = unknown;
+
+export const useGeocodeReverse = <
+  TData = Awaited<ReturnType<typeof geocodeReverse>>,
+  TError = unknown
+>(
+  params?: GeocodeReverseParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof geocodeReverse>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGeocodeReverseQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
