@@ -14,7 +14,7 @@ public class SatelliteProtocolTests : BaseProtocolTests<SatelliteProtocol, Satel
         Assert.Equal(5, ProtocolTester.TotalParsedMessages.Count);
         Assert.Equal("00004CBF0016ECB200003C5C", ProtocolTester.ReceiveHexInDevice());
     }
-        
+
     [Fact]
     public void DeviceSends7Locations_7LocationAreParsed()
     {

@@ -5,27 +5,25 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Navtrack.Api.Model.Account;
 using Navtrack.Api.Services.Common.Passwords;
 using Navtrack.Api.Services.Common.Settings.Models;
 using Navtrack.Api.Tests.Helpers;
-using Navtrack.DataAccess.Model.System;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Model.Users.PasswordResets;
+using Navtrack.Database.Model;
+using Navtrack.Database.Model.Users;
+using Newtonsoft.Json;
 
 namespace Navtrack.Api.Tests;
 
-public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
+public class UserTests(BaseTestFixture fixture) : BaseApiTest(fixture)
 {
     [Fact]
     public async Task ResetPassword_EmailNotInDatabase_ReturnsBadRequest()
     {
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+            new ForgotPasswordModel
             {
                 Email = "nosuchemail@navtrack"
             });
@@ -38,18 +36,19 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
     {
         const string email = "choco@navtrack.com";
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email
         });
-        
+        await Repository.GetDbContext().SaveChangesAsync();
+
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+            new ForgotPasswordModel
             {
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
+        UserPasswordResetEntity passwordResetDocument = await Repository.GetQueryable<UserPasswordResetEntity>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -61,18 +60,19 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
     {
         const string email = "choco_is_ok@navtrack.com";
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email
         });
-        
+        await Repository.GetDbContext().SaveChangesAsync();
+
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+            new ForgotPasswordModel
             {
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
+        UserPasswordResetEntity passwordResetDocument = await Repository.GetQueryable<UserPasswordResetEntity>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -84,17 +84,18 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
     {
         const string email = "choco-too-many@navtrack.com";
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email
         });
+        await Repository.GetDbContext().SaveChangesAsync();
 
         List<HttpResponseMessage> responseMessages = [];
 
         for (int i = 0; i < 11; i++)
         {
             responseMessages.Add(await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-                new ForgotPassword
+                new ForgotPasswordModel
                 {
                     Email = email
                 }));
@@ -102,33 +103,35 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
 
         Assert.Equal(HttpStatusCode.BadRequest, responseMessages.Last().StatusCode);
     }
-    
+
     [Fact]
     public async Task ResetPassword_LinkIsExpired_ReturnsBadRequest()
     {
         const string email = "choco@navtrack.com";
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email
         });
+        await Repository.GetDbContext().SaveChangesAsync();
 
         await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+            new ForgotPasswordModel
             {
                 Email = email
             });
-        
-        await Repository.GetCollection<PasswordResetDocument>().UpdateOneAsync(x => x.Email == email,
-            Builders<PasswordResetDocument>.Update.Set(x => x.CreatedDate, DateTime.UtcNow.AddHours(-12)));
 
-        PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
+        await Repository.GetQueryable<UserPasswordResetEntity>()
+            .Where(x => x.Email == email)
+            .ExecuteUpdateAsync(x => x.SetProperty(y => y.CreatedDate, DateTime.UtcNow.AddHours(-12)));
+
+        UserPasswordResetEntity passwordResetDocument = await Repository.GetQueryable<UserPasswordResetEntity>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
-            new ResetPassword
+            new ResetPasswordModel
             {
-                Hash = passwordResetDocument.Hash,
+                Id = passwordResetDocument.Id.ToString(),
                 Password = "new password",
                 ConfirmPassword = "new password"
             });
@@ -139,79 +142,80 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
     [Fact]
     public async Task ResetPassword_CompleteFlow_PasswordIsChanged()
     {
-        const string email = "choco@navtrack.com";
+        const string email = "password-test@navtrack.com";
 
         IPasswordHasher? passwordHasher = ServiceProvider.GetService<IPasswordHasher>();
 
-        (string? hash, string? salt) = passwordHasher!.Hash("old password");
+        (string hash, string salt) = passwordHasher!.Hash("old password");
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email,
-            Password = new PasswordElement
-            {
-                Hash = hash,
-                Salt = salt
-            }
+            PasswordHash = hash,
+            PasswordSalt = salt
         });
+        await Repository.GetDbContext().SaveChangesAsync();
 
         await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+            new ForgotPasswordModel
             {
                 Email = email
             });
-
-        PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
+        
+        UserPasswordResetEntity? passwordResetDocument = await Repository.GetQueryable<UserPasswordResetEntity>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
-            new ResetPassword
+            new ResetPasswordModel
             {
-                Hash = passwordResetDocument.Hash,
+                Id = passwordResetDocument.Id.ToString(),
                 Password = "new password",
                 ConfirmPassword = "new password"
             });
 
-        UserDocument? user = await Repository.GetQueryable<UserDocument>()
+        UserEntity? user = await Repository.GetQueryable<UserEntity>()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == passwordResetDocument.CreatedBy);
-        passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
+        passwordResetDocument = await Repository.GetQueryable<UserPasswordResetEntity>()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email);
 
-        Assert.True(passwordHasher.CheckPassword("new password", user.Password.Hash, user.Password.Salt));
-        Assert.True(passwordResetDocument.Invalid);
+        Assert.True(passwordHasher.CheckPassword("new password", user.PasswordHash, user.PasswordSalt));
+        Assert.True(passwordResetDocument?.Invalid);
     }
-    
+
     [Fact]
     public async Task ResetPassword_Make2RequestAndTryToUseFirstHash_ReturnsBadRequest()
     {
         const string email = "choco@navtrack.com";
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email
         });
+        await Repository.GetDbContext().SaveChangesAsync();
 
-       await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+        await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPasswordModel
             {
                 Email = email
             });
-       await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-           new ForgotPassword
-           {
-               Email = email
-           });
+        await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
+            new ForgotPasswordModel
+            {
+                Email = email
+            });
 
-        PasswordResetDocument passwordResetDocument = await Repository
-            .GetQueryable<PasswordResetDocument>()
+        UserPasswordResetEntity passwordResetDocument = await Repository
+            .GetQueryable<UserPasswordResetEntity>()
             .Where(x => x.Email == email)
             .OrderBy(x => x.CreatedDate)
             .FirstOrDefaultAsync();
 
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
-            new ResetPassword
+            new ResetPasswordModel
             {
-                Hash = passwordResetDocument.Hash,
+                Id = passwordResetDocument.Id.ToString(),
                 Password = "new password",
                 ConfirmPassword = "new password"
             });
@@ -226,39 +230,37 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
 
         IPasswordHasher? passwordHasher = ServiceProvider.GetService<IPasswordHasher>();
 
-        (string? hash, string? salt) = passwordHasher!.Hash("old password");
+        (string hash, string salt) = passwordHasher!.Hash("old password");
 
-        await Repository.GetCollection<UserDocument>().InsertOneAsync(new UserDocument
+        Repository.GetQueryable<UserEntity>().Add(new UserEntity
         {
             Email = email,
-            Password = new PasswordElement
-            {
-                Hash = hash,
-                Salt = salt
-            }
+            PasswordHash = hash,
+            PasswordSalt = salt
         });
+        await Repository.GetDbContext().SaveChangesAsync();
 
         await HttpClient.PostAsJsonAsync(ApiPaths.AccountForgotPassword,
-            new ForgotPassword
+            new ForgotPasswordModel
             {
                 Email = email
             });
 
-        PasswordResetDocument passwordResetDocument = await Repository.GetQueryable<PasswordResetDocument>()
+        UserPasswordResetEntity passwordResetDocument = await Repository.GetQueryable<UserPasswordResetEntity>()
             .FirstOrDefaultAsync(x => x.Email == email);
 
         HttpResponseMessage firstResponse = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
-            new ResetPassword
+            new ResetPasswordModel
             {
-                Hash = passwordResetDocument.Hash,
+                Id = passwordResetDocument.Id.ToString(),
                 Password = "new password",
                 ConfirmPassword = "new password"
             });
 
         HttpResponseMessage secondResponse = await HttpClient.PostAsJsonAsync(ApiPaths.AccountResetPassword,
-            new ResetPassword
+            new ResetPasswordModel
             {
-                Hash = passwordResetDocument.Hash,
+                Id = passwordResetDocument.Id.ToString(),
                 Password = "new password",
                 ConfirmPassword = "new password"
             });
@@ -269,10 +271,11 @@ public class UserTests(BaseTestFixture fixture) : BaseTest(fixture)
 
     protected override void SeedDatabase()
     {
-        Repository.GetCollection<SystemSettingDocument>().InsertOne(new SystemSettingDocument
+        Repository.GetQueryable<SystemSettingEntity>().Add(new SystemSettingEntity
         {
             Key = "App",
-            Value = new AppSettings { AppUrl = "http://test.navtrack.com" }.ToBsonDocument()
+            Value = JsonConvert.SerializeObject(new AppSettings { AppUrl = "http://test.navtrack.com" })
         });
+        Repository.GetDbContext().SaveChanges();
     }
 }

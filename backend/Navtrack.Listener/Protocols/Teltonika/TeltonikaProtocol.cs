@@ -7,7 +7,7 @@ namespace Navtrack.Listener.Protocols.Teltonika;
 [Service(typeof(IProtocol))]
 public class TeltonikaProtocol : BaseProtocol
 {
-    public override int Port => 7002;
+    public override short Port => 7002;
 
     public override int? GetMessageLength(byte[] buffer, int bytesReadCount)
     {

@@ -9,7 +9,7 @@ using Navtrack.Api.Model.Messages;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.DeviceMessages;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;
@@ -25,7 +25,7 @@ public class AssetsMessagesController(IRequestHandler requestHandler) : Controll
     [AuthorizeAsset(AssetUserRole.Viewer)]
     public async Task<MessageList> GetList(
         [FromRoute] string assetId,
-        [FromQuery] MessageFilter filter,
+        [FromQuery] MessageFilterModel filter,
         [FromQuery] int page = 0,
         [FromQuery] [Range(0, 10000)] int size = 10000)
     {

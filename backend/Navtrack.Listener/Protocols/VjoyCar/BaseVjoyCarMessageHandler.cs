@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 
@@ -9,43 +9,42 @@ namespace Navtrack.Listener.Protocols.VjoyCar;
 
 public class BaseVjoyCarMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         HandleLoginMessage(input);
 
-        DeviceMessageDocument deviceMessageDocument = ParseLocation(input);
+        DeviceMessageEntity? deviceMessageDocument = ParseLocation(input);
 
         return deviceMessageDocument;
     }
 
-    private static DeviceMessageDocument ParseLocation(MessageInput input)
+    private static DeviceMessageEntity? ParseLocation(MessageInput input)
     {
-        GroupCollection lgc =
-            new Regex(
-                    @"(\d{2})(\d{2})(\d{2})(A|V)(\d{4}.\d{4})(N|S)(\d{5}.\d{4})(E|W)(.{5})(\d{2})(\d{2})(\d{2})(.{6})(1|0{8})L(.{0,8})(...)")
-                .Matches(input.DataMessage.String)[0].Groups;
+        Regex regex = new Regex(
+            @"(\d{2})(\d{2})(\d{2})(A|V)(\d{4}.\d{4})(N|S)(\d{5}.\d{4})(E|W)(.{5})(\d{2})(\d{2})(\d{2})(.{6})(1|0{8})L(.{0,8})(...)");
 
-        if (lgc.Count == 17)
+        MatchCollection matchCollection = regex.Matches(input.DataMessage.String);
+        
+        if (matchCollection.Count > 0 )
         {
-            DeviceMessageDocument deviceMessageDocument = new()
+            GroupCollection lgc = matchCollection[0].Groups;
+
+            if (lgc.Count == 17)
             {
-                Position = new PositionElement
+                DeviceMessageEntity deviceMessageDocument = new()
                 {
                     Date = DateTimeUtil.New(lgc[1].Value, lgc[2].Value, lgc[3].Value, lgc[10].Value, lgc[11].Value,
                         lgc[12].Value),
                     Valid = lgc[4].Value == "F",
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[5].Value, lgc[6].Value),
                     Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[7].Value, lgc[8].Value),
-                    Speed = float.Parse(lgc[9].Value),
-                    Heading = float.Parse(lgc[13].Value),
-                },
-                Device = new DeviceElement
-                {
-                    Odometer = int.Parse(lgc[15].Value, NumberStyles.HexNumber)
-                }
-            };
+                    Speed = float.Parse(lgc[9].Value).ToShort(),
+                    Heading = float.Parse(lgc[13].Value).ToShort(),
+                    DeviceOdometer = int.Parse(lgc[15].Value, NumberStyles.HexNumber)
+                };
 
-            return deviceMessageDocument;
+                return deviceMessageDocument;
+            }
         }
 
         return null;

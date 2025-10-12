@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ public class AuthorizeOrganizationActionFilter(INavtrackContextAccessor navtrack
             string? organizationId = ActionFilterHelpers.GetId(context.HttpContext, "organizationId");
 
             bool hasRole = !string.IsNullOrEmpty(organizationId) &&
-                navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(organizationId, authorizeOrganizationAttribute
+                navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(Guid.Parse(organizationId), authorizeOrganizationAttribute
                     .UserRole);
 
             if (!hasRole)

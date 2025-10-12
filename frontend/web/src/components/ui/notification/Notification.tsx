@@ -1,11 +1,11 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import { Snackbar } from "../snackbar/Snackbar";
 import { notificationAtom, showNotificationAtom } from "./state";
 
 export function Notification() {
-  const notification = useRecoilValue(notificationAtom);
+  const notification = useAtomValue(notificationAtom);
   const [showNotification, setShowNotification] =
-    useRecoilState(showNotificationAtom);
+    useAtom(showNotificationAtom);
 
   return (
     <Snackbar

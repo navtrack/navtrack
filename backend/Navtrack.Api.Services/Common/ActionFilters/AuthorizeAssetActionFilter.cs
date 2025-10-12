@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Services.Assets;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Services.Assets;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Common.ActionFilters;
@@ -26,7 +26,7 @@ public class AuthorizeAssetActionFilter(
         {
             string? assetId = ActionFilterHelpers.GetId(context.HttpContext, "assetId");
 
-            AssetDocument? asset = !string.IsNullOrEmpty(assetId) ? await assetRepository.GetById(assetId) : null;
+            AssetEntity? asset = await assetRepository.GetById(assetId);
             asset.Return404IfNull();
 
             bool hasRole =

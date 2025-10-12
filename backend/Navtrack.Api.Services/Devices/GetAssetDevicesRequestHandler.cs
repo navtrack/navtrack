@@ -1,29 +1,29 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Devices.Mappers;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
 using Navtrack.Shared.Library.DI;
-using DeviceType = Navtrack.DataAccess.Model.Devices.DeviceType;
+using DeviceType = Navtrack.Database.Model.Devices.DeviceType;
 
 namespace Navtrack.Api.Services.Devices;
 
-[Service(typeof(IRequestHandler<GetAssetDevicesRequest, Model.Common.List<Device>>))]
+[Service(typeof(IRequestHandler<GetAssetDevicesRequest, Model.Common.ListModel<DeviceModel>>))]
 public class GetAssetDevicesRequestHandler(
     IAssetRepository assetRepository,
     IDeviceRepository deviceRepository,
     IDeviceTypeRepository deviceTypeRepository,
     IDeviceMessageRepository deviceMessageRepository)
-    : BaseRequestHandler<GetAssetDevicesRequest, Model.Common.List<Device>>
+    : BaseRequestHandler<GetAssetDevicesRequest, Model.Common.ListModel<DeviceModel>>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<GetAssetDevicesRequest> context)
     {
@@ -31,18 +31,18 @@ public class GetAssetDevicesRequestHandler(
         asset.Return404IfNull();
     }
     
-    public override async Task<Model.Common.List<Device>> Handle(GetAssetDevicesRequest request)
+    public override async Task<Model.Common.ListModel<DeviceModel>> Handle(GetAssetDevicesRequest request)
     {
-        List<DeviceDocument> devices = await deviceRepository.GetDevicesByAssetId(request.AssetId);
+        List<DeviceEntity> devices = await deviceRepository.GetDevicesByAssetId(asset.Id);
         List<DeviceType> deviceTypes = deviceTypeRepository
             .GetDeviceTypes()
             .Where(x => devices.Any(y => y.DeviceTypeId == x.Id))
             .ToList();
 
-        Dictionary<ObjectId, int> locationCount = await deviceMessageRepository
+        Dictionary<Guid, int> locationCount = await deviceMessageRepository
             .GetMessagesCountByDeviceIds(devices.Select(x => x.Id));
 
-        Model.Common.List<Device> result = DeviceListMapper.Map(devices, deviceTypes, locationCount, asset!);
+        Model.Common.ListModel<DeviceModel> result = DeviceListMapper.Map(devices, deviceTypes, locationCount, asset!);
 
         return result;
     }

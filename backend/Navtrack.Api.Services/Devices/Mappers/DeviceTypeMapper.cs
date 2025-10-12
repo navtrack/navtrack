@@ -1,13 +1,14 @@
+using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Protocols.Mappers;
-using DeviceType = Navtrack.Api.Model.Devices.DeviceType;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.Devices.Mappers;
 
 public static class DeviceTypeMapper
 {
-    public static DeviceType Map(DataAccess.Model.Devices.DeviceType source)
+    public static DeviceTypeModel Map(DeviceType source)
     {
-        return new DeviceType
+        return new DeviceTypeModel
         {
             Id = source.Id,
             Manufacturer = source.Manufacturer,

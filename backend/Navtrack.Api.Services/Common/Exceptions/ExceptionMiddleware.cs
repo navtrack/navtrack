@@ -19,7 +19,7 @@ public class ExceptionMiddleware(RequestDelegate next)
         {
             httpContext.Response.StatusCode = (int)exception.HttpStatusCode;
 
-            Error model = ErrorMapper.Map(exception);
+            ErrorModel model = ErrorMapper.Map(exception);
             
             await httpContext.Response.WriteAsJsonAsync(model);
         }
@@ -27,7 +27,7 @@ public class ExceptionMiddleware(RequestDelegate next)
         {
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            Error model = ErrorMapper.Map(exception);
+            ErrorModel model = ErrorMapper.Map(exception);
 
             await httpContext.Response.WriteJsonAsync(model);
         }

@@ -44,7 +44,7 @@ export function useCreateOrganization() {
 
   return {
     handleSubmit,
-    isLoading: createOrganizationMutation.isLoading,
+    isLoading: createOrganizationMutation.isPending,
     validationSchema
   };
 }

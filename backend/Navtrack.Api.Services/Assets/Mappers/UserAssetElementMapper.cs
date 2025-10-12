@@ -1,20 +1,19 @@
 using System;
-using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Assets;
 
 namespace Navtrack.Api.Services.Assets.Mappers;
 
 public static class UserAssetElementMapper
 {
-    public static UserAssetElement Map(ObjectId assetId, AssetUserRole userRole, ObjectId organizationId)
+    public static AssetUserEntity Map(Guid userId, Guid assetId, AssetUserRole userRole, Guid currentUserId)
     {
-        return new UserAssetElement 
+        return new AssetUserEntity
         {
+            UserId = userId,
             AssetId = assetId,
             UserRole = userRole,
-            CreatedDate = DateTime.UtcNow,
-            OrganizationId = organizationId
+            CreatedBy = currentUserId,
+            CreatedDate = DateTime.UtcNow
         };
     }
 }

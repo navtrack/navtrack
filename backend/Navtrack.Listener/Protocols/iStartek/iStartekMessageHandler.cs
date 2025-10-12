@@ -1,4 +1,4 @@
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Listener.Services.Mappers;
@@ -10,22 +10,19 @@ namespace Navtrack.Listener.Protocols.iStartek;
 // ReSharper disable once InconsistentNaming
 public class iStartekMessageHandler : BaseMessageHandler<iStartekProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         string data = input.DataMessage.String[13..^4];
-        GPRMC gprmc = GPRMC.Parse(data.Substring(0, data.IndexOf('|')));
+        GPRMC? gprmc = GPRMC.Parse(data.Substring(0, data.IndexOf('|')));
 
         input.ConnectionContext.SetDevice(string.Join(string.Empty, input.DataMessage.Hex[4..11]).TrimEnd('F'));
 
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = PositionElementMapper.Map(gprmc)
-        };
+        DeviceMessageEntity deviceMessage = new();
+        DeviceMessageEntityMapper.Map(gprmc, deviceMessage);
 
-        deviceMessageDocument.Position.Heading = input.DataMessage.BarSplit.Get<float?>(1);
-        deviceMessageDocument.Position.Altitude = input.DataMessage.BarSplit.Get<float?>(2);
-        // TODO add odometer
+        deviceMessage.Heading = input.DataMessage.BarSplit.Get<short?>(1);
+        deviceMessage.Altitude = input.DataMessage.BarSplit.Get<short?>(2);
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 }

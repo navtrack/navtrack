@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Listener.Services.Mappers;
@@ -10,32 +10,30 @@ namespace Navtrack.Listener.Protocols.VSun;
 [Service(typeof(ICustomMessageHandler<VSunProtocol>))]
 public class VSunMessageHandler : BaseMessageHandler<VSunProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = Parse(input, HandleImei, HandleLocation);
+        DeviceMessageEntity deviceMessage = Parse(input, HandleImei, HandleLocation);
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument HandleLocation(MessageInput input)
+    private static DeviceMessageEntity? HandleLocation(MessageInput input)
     {
-        GPRMC gprmc = GPRMC.Parse(input.DataMessage.String);
+        GPRMC? gprmc = GPRMC.Parse(input.DataMessage.String);
 
         if (gprmc != null)
         {
-            DeviceMessageDocument deviceMessageDocument = new()
-            {
-                // Device = input.ConnectionContext.Device
-                Position = PositionElementMapper.Map(gprmc)
-            };
+            DeviceMessageEntity deviceMessage = new();
+            
+            DeviceMessageEntityMapper.Map(gprmc, deviceMessage);
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
             
         return null;
     }
 
-    private static DeviceMessageDocument HandleImei(MessageInput input)
+    private static DeviceMessageEntity? HandleImei(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {

@@ -13,8 +13,8 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpPost(ApiPaths.Account)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateAccount([FromBody] CreateAccount model)
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel model)
     {
         await requestHandler.Handle(new CreateAccountRequest
         {
@@ -26,8 +26,8 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.AccountForgotPassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> ForgotPassword([FromBody] ForgotPassword model)
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
     {
         await requestHandler.Handle(new ForgotPasswordRequest
         {
@@ -39,8 +39,8 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.AccountResetPassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> ResetPassword([FromBody] ResetPassword model)
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
     {
         await requestHandler.Handle(new ResetPasswordRequest
         {

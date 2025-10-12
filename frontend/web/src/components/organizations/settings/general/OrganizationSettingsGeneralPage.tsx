@@ -86,7 +86,7 @@ export function OrganizationSettingsGeneralPage() {
                             <FormattedMessage id="assets.settings.general.rename" />
                           </Button>
                           <div className="ml-2 w-4">
-                            {renameOrganizationMutation.isLoading && (
+                            {renameOrganizationMutation.isPending && (
                               <LoadingIndicator />
                             )}
                             {renameOrganizationMutation.isSuccess && (

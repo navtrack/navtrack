@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.SinoTrack;
 [Service(typeof(IProtocol))]
 public class SinoTrackProtocol : TkStarProtocol
 {
-    public override int Port => 7012;
+    public override short Port => 7012;
 }

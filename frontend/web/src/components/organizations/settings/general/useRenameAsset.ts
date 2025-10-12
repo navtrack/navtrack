@@ -44,6 +44,6 @@ export function useRenameAsset() {
     submit,
     validationSchema,
     showSuccess,
-    loading: renameAssetMutation.isLoading
+    loading: renameAssetMutation.isPending
   };
 }

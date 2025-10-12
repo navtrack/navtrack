@@ -1,9 +1,9 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
-import { TripReportItem } from "@navtrack/shared/api/model";
+import { TripReportItemModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { useAssetReportTripsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetReportTripsQuery";
@@ -15,7 +15,7 @@ export function AssetReportsTripsPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("reports-trips");
-  const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
+  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
   const tripReport = useAssetReportTripsQuery({
     assetId: currentAsset.data?.id,
     startDate: filters.startDate,
@@ -25,7 +25,7 @@ export function AssetReportsTripsPage() {
   return (
     <>
       <LocationFilter filterPage="reports-trips" />
-      <TableV2<TripReportItem>
+      <TableV2<TripReportItemModel>
         className="h-full"
         columns={[
           {

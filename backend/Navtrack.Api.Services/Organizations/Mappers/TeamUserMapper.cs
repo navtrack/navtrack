@@ -1,15 +1,15 @@
 using System.Linq;
 using Navtrack.Api.Model.Teams;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Model.Users;
 
 namespace Navtrack.Api.Services.Organizations.Mappers;
 
 public static class TeamUserMapper
 {
-    public static TeamUser Map(UserDocument user, TeamDocument team)
+    public static TeamUser Map(UserEntity user, TeamEntity team)
     {
-        UserTeamElement userTeam = user.Teams!.First(x => x.TeamId == team.Id);
+        TeamUserEntity userTeam = user.TeamUsers.First(x => x.TeamId == team.Id);
         
         return new TeamUser
         {

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useMatch } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { currentAssetIdAtom } from "../../state/current";
 
 export function useSetCurrentAssetFromRoute() {
   const [currentAssetId, setCurrentAssetId] =
-    useRecoilState(currentAssetIdAtom);
+    useAtom(currentAssetIdAtom);
   const match = useMatch("/assets/:id/*");
 
   useEffect(() => {

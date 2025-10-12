@@ -4,7 +4,7 @@ import { VectorTileLayer } from "./VectorTileLayer";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { MapZoomControl } from "./MapZoomControl";
 import { LatLong } from "@navtrack/shared/api/model";
 import { MapResizeObserver } from "./MapResizeObserver";
@@ -19,7 +19,7 @@ type MapProps = {
 
 export function Map(props: MapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const appConfig = useRecoilValue(appConfigAtom);
+  const appConfig = useAtomValue(appConfigAtom);
 
   const center = props.center ?? DEFAULT_MAP_CENTER;
 

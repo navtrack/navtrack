@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Queclink;
 [Service(typeof(ICustomMessageHandler<QueclinkProtocol>))]
 public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         Match imeiMatch = new Regex(@",(\d{15}),").Match(input.DataMessage.String);
 
@@ -23,31 +23,25 @@ public class QueclinkMessageHandler : BaseMessageHandler<QueclinkProtocol>
         {
             input.ConnectionContext.SetDevice(imeiMatch.Groups[1].Value);
 
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                Position = new PositionElement
-                {
-                    HDOP = locationMatch.Groups[2].Get<float?>(),
-                    Speed = locationMatch.Groups[3].Get<float?>(),
-                    Heading = locationMatch.Groups[4].Get<float?>(),
-                    Altitude = locationMatch.Groups[5].Get<float?>(),
-                    Longitude = locationMatch.Groups[6].Get<double>(),
-                    Latitude = locationMatch.Groups[7].Get<double>(),
-                    Date = DateTimeUtil.New(locationMatch.Groups[8].Value, locationMatch.Groups[9].Value,
-                        locationMatch.Groups[10].Value,
-                        locationMatch.Groups[11].Value, locationMatch.Groups[12].Value, locationMatch.Groups[13].Value,
-                        add2000Year: false),
-                },
-                Gsm = new GsmElement
-                {
-                    MobileCountryCode = locationMatch.Groups[14].Get<int?>().ToString(),
-                    MobileNetworkCode = locationMatch.Groups[15].Get<int?>().ToString(),
-                    LocationAreaCode = int.Parse(locationMatch.Groups[16].Value, NumberStyles.HexNumber).ToString(),
-                    CellId = int.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber)
-                }
+                HDOP = locationMatch.Groups[2].Get<float?>(),
+                Speed = locationMatch.Groups[3].Get<short?>(),
+                Heading = locationMatch.Groups[4].Get<short?>(),
+                Altitude = locationMatch.Groups[5].Get<short?>(),
+                Longitude = locationMatch.Groups[6].Get<double>(),
+                Latitude = locationMatch.Groups[7].Get<double>(),
+                Date = DateTimeUtil.New(locationMatch.Groups[8].Value, locationMatch.Groups[9].Value,
+                    locationMatch.Groups[10].Value,
+                    locationMatch.Groups[11].Value, locationMatch.Groups[12].Value, locationMatch.Groups[13].Value,
+                    add2000Year: false),
+                GSMMobileCountryCode = locationMatch.Groups[14].Get<int?>().ToString(),
+                GSMMobileNetworkCode = locationMatch.Groups[15].Get<int?>().ToString(),
+                GSMLocationAreaCode = int.Parse(locationMatch.Groups[16].Value, NumberStyles.HexNumber).ToString(),
+                GSMCellId = int.Parse(locationMatch.Groups[17].Value, NumberStyles.HexNumber)
             };
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

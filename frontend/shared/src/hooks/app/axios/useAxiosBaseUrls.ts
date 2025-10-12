@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import { AUTH_AXIOS_INSTANCE } from "../../../axios/authAxiosInstance";
 import { AXIOS_INSTANCE } from "../../../axios/axiosInstance";
 import { appConfigAtom } from "../../../state/appConfig";
 import { axiosConfigAtom } from "../../../state/axiosConfig";
 
 export function useAxiosBaseUrls() {
-  const appConfig = useRecoilValue(appConfigAtom);
-  const [axiosConfig, setAxiosConfig] = useRecoilState(axiosConfigAtom);
+  const appConfig = useAtomValue(appConfigAtom);
+  const [axiosConfig, setAxiosConfig] = useAtom(axiosConfigAtom);
 
   useEffect(() => {
     if (appConfig !== undefined) {

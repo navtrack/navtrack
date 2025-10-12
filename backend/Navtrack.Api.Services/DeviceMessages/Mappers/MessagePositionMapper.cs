@@ -1,15 +1,15 @@
 using Navtrack.Api.Model.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.DeviceMessages.Mappers;
 
 public static class MessagePositionMapper
 {
-    public static MessagePosition Map(PositionElement source)
+    public static PositionDataModel Map(DeviceMessageEntity source)
     {
-        MessagePosition result = new()
+        PositionDataModel result = new()
         {
-            Coordinates = new LatLong(source.Latitude, source.Longitude),
+            Coordinates = new LatLong(source.Coordinates.Y, source.Coordinates.X),
             Date = source.Date,
             Speed = source.Speed ?? 0,
             Heading = source.Heading ?? 0,

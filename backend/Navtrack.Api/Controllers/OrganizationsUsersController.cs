@@ -9,7 +9,7 @@ using Navtrack.Api.Model.Organizations;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Organizations;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
+using Navtrack.Database.Model.Organizations;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;
@@ -20,12 +20,12 @@ namespace Navtrack.Api.Controllers;
 public class OrganizationsUsersController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.OrganizationUsers)]
-    [ProducesResponseType(typeof(List<OrganizationUser>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ListModel<OrganizationUserModel>), StatusCodes.Status200OK)]
     [AuthorizeOrganization(OrganizationUserRole.Member)]
-    public async Task<List<OrganizationUser>> List([FromRoute] string organizationId)
+    public async Task<ListModel<OrganizationUserModel>> List([FromRoute] string organizationId)
     {
-        List<OrganizationUser> result =
-            await requestHandler.Handle<GetOrganizationUsersRequest, List<OrganizationUser>>(
+        ListModel<OrganizationUserModel> result =
+            await requestHandler.Handle<GetOrganizationUsersRequest, ListModel<OrganizationUserModel>>(
                 new GetOrganizationUsersRequest
                 {
                     OrganizationId = organizationId
@@ -36,10 +36,10 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
 
     [HttpPost(ApiPaths.OrganizationUsers)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeOrganization(OrganizationUserRole.Owner)]
-    public async Task<IActionResult> Create([FromRoute] string organizationId, [FromBody] CreateOrganizationUser model)
+    public async Task<IActionResult> Create([FromRoute] string organizationId, [FromBody] CreateOrganizationUserModel model)
     {
         await requestHandler.Handle(new CreateOrganizationUserRequest
         {
@@ -52,11 +52,11 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
 
     [HttpPost(ApiPaths.OrganizationUserById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeOrganization(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string organizationId, [FromRoute] string userId,
-        [FromBody] UpdateOrganizationUser model)
+        [FromBody] UpdateOrganizationUserModel model)
     {
         await requestHandler.Handle(new UpdateOrganizationUserRequest
         {
@@ -70,7 +70,7 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
 
     [HttpDelete(ApiPaths.OrganizationUserById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeOrganization(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string organizationId, [FromRoute] string userId)

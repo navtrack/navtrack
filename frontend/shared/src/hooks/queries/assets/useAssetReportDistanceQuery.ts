@@ -1,4 +1,7 @@
-import { useAssetsReportsGetDistanceReport } from "../../../api";
+import {
+  getAssetsReportsGetDistanceReportQueryKey,
+  useAssetsReportsGetDistanceReport
+} from "../../../api";
 
 export type AssetReportReportQueryProps = {
   assetId?: string;
@@ -17,6 +20,13 @@ export function useAssetReportDistanceQuery(
     },
     {
       query: {
+        queryKey: getAssetsReportsGetDistanceReportQueryKey(
+          `${props.assetId}`,
+          {
+            StartDate: props.startDate,
+            EndDate: props.endDate
+          }
+        ),
         enabled: !!props.assetId && !!props.endDate && !!props.startDate,
         refetchOnWindowFocus: false
       }

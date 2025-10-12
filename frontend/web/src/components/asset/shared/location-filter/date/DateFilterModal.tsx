@@ -10,7 +10,7 @@ import { dateOptions } from "./dateOptions";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { FormikDatePicker } from "../../../../ui/datepicker/FormikDatePicker";
 import { useCallback } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { dateFilterAtom } from "../locationFilterState";
 
 type DateFilterModalProps = {
@@ -18,7 +18,7 @@ type DateFilterModalProps = {
 };
 
 export function DateFilterModal(props: DateFilterModalProps) {
-  const [state, setState] = useRecoilState(dateFilterAtom(props.filterKey));
+  const [state, setState] = useAtom(dateFilterAtom(props.filterKey));
 
   const close = useCallback(
     () => setState((x) => ({ ...x, open: false })),

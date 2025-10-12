@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -9,14 +9,14 @@ namespace Navtrack.Listener.Protocols.Eview;
 [Service(typeof(ICustomMessageHandler<EviewProtocol>))]
 public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = Parse(input, HandleLogin, HandleLocation);
+        DeviceMessageEntity deviceMessageDocument = Parse(input, HandleLogin, HandleLocation);
 
         return deviceMessageDocument;
     }
 
-    private static DeviceMessageDocument HandleLogin(MessageInput input)
+    private static DeviceMessageEntity? HandleLogin(MessageInput input)
     {
         Match imeiMatch = new Regex("!1,(\\d{15})").Match(input.DataMessage.String);
 
@@ -28,7 +28,7 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
         return null;
     }
 
-    private static DeviceMessageDocument HandleLocation(MessageInput input)
+    private static DeviceMessageEntity? HandleLocation(MessageInput input)
     {
         if (input.ConnectionContext.Device != null)
         {
@@ -50,23 +50,19 @@ public class EviewMessageHandler : BaseMessageHandler<EviewProtocol>
 
             if (locationMatch.Success)
             {
-                DeviceMessageDocument deviceMessageDocument = new()
+                DeviceMessageEntity deviceMessage = new()
                 {
-                    // Device = input.ConnectionContext.Device,
-                    Position = new PositionElement
-                    {
-                        Date = DateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
-                            locationMatch.Groups[2].Value),
-                        Latitude = locationMatch.Groups[3].Get<double>(),
-                        Longitude = locationMatch.Groups[4].Get<double>(),
-                        Speed = locationMatch.Groups[5].Get<float?>(),
-                        Heading = locationMatch.Groups[6].Get<float?>(),
-                        Altitude = locationMatch.Groups[9].Get<float?>(),
-                        Satellites = locationMatch.Groups[11].Get<short?>()
-                    }
+                    Date = DateTimeUtil.Convert(DateFormat.DDMMYY_HHMMSS, locationMatch.Groups[1].Value,
+                        locationMatch.Groups[2].Value),
+                    Latitude = locationMatch.Groups[3].Get<double>(),
+                    Longitude = locationMatch.Groups[4].Get<double>(),
+                    Speed = locationMatch.Groups[5].Get<short?>(),
+                    Heading = locationMatch.Groups[6].Get<short?>(),
+                    Altitude = locationMatch.Groups[9].Get<short?>(),
+                    Satellites = locationMatch.Groups[11].Get<short?>()
                 };
 
-                return deviceMessageDocument;
+                return deviceMessage;
             }
         }
 

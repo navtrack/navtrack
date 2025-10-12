@@ -9,8 +9,8 @@ using Navtrack.Api.Model.Teams;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Model.Teams;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Teams;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;
@@ -21,11 +21,11 @@ namespace Navtrack.Api.Controllers;
 public class TeamsController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.OrganizationTeams)]
-    [ProducesResponseType(typeof(List<Team>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ListModel<Team>), StatusCodes.Status200OK)]
     [AuthorizeOrganization(OrganizationUserRole.Member)]
-    public async Task<List<Team>> GetList([FromRoute] string organizationId)
+    public async Task<ListModel<Team>> GetList([FromRoute] string organizationId)
     {
-        List<Team> result = await requestHandler.Handle<GetTeamsRequest, List<Team>>(new GetTeamsRequest
+        ListModel<Team> result = await requestHandler.Handle<GetTeamsRequest, ListModel<Team>>(new GetTeamsRequest
         {
             OrganizationId = organizationId
         });

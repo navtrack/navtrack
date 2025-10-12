@@ -31,6 +31,6 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
 
   return {
     handleSubmit,
-    isLoading: deleteAssetMutation.isLoading
+    isLoading: deleteAssetMutation.isPending
   };
 }

@@ -227,7 +227,7 @@ export function AuthenticatedLayoutNavbar(
       {menuItems.length > 0 && (
         <div className="flex h-14 space-x-8">
           {menuItems.map((item) => {
-            return <AuthenticatedLayoutNavbarItem {...item} />;
+            return <AuthenticatedLayoutNavbarItem {...item} key={item.path} />;
           })}
         </div>
       )}

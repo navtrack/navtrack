@@ -52,5 +52,5 @@ export function useCreateAssetUser(props: CreateAssetUserProps) {
     [currentAsset, mutation, props]
   );
 
-  return { validationSchema, handleSubmit, loading: mutation.isLoading };
+  return { validationSchema, handleSubmit, loading: mutation.isPending };
 }

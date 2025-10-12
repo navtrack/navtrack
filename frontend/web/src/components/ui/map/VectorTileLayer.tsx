@@ -10,7 +10,7 @@ type VectorTileLayerProps = {
 
 export function VectorTileLayer(props: VectorTileLayerProps) {
   const map = useMap();
-  const layer = useRef<L.MaplibreGL>();
+  const layer = useRef<L.MaplibreGL>(null);
 
   useEffect(() => {
     if (layer.current === undefined) {

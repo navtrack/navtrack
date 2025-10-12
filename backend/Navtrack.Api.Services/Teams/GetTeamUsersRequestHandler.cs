@@ -6,30 +6,30 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.Mappers;
 using Navtrack.Api.Services.Organizations.Mappers;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Teams;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Teams;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Teams;
 
-[Service(typeof(IRequestHandler<GetTeamUsersRequest, List<TeamUser>>))]
+[Service(typeof(IRequestHandler<GetTeamUsersRequest, ListModel<TeamUser>>))]
 public class GetTeamUsersRequestHandler(ITeamRepository teamRepository, IUserRepository userRepository)
-    : BaseRequestHandler<GetTeamUsersRequest, List<TeamUser>>
+    : BaseRequestHandler<GetTeamUsersRequest, ListModel<TeamUser>>
 {
-    private TeamDocument? team;
+    private TeamEntity? team;
     public override async Task Validate(RequestValidationContext<GetTeamUsersRequest> context)
     {
         team = await teamRepository.GetById(context.Request.TeamId);
         team.ThrowApiExceptionIfNull(HttpStatusCode.NotFound);
     }
 
-    public override async Task<List<TeamUser>> Handle(GetTeamUsersRequest request)
+    public override async Task<ListModel<TeamUser>> Handle(GetTeamUsersRequest request)
     {
-        System.Collections.Generic.List<UserDocument> users = await userRepository.GetByTeamId(request.TeamId);
+        System.Collections.Generic.List<UserEntity> users = await userRepository.GetByTeamId(team.Id);
 
-        List<TeamUser> result = ListMapper.Map(users, x => TeamUserMapper.Map(x, team!));
+        ListModel<TeamUser> result = ListMapper.Map(users, x => TeamUserMapper.Map(x, team!));
         
         return result;
     }

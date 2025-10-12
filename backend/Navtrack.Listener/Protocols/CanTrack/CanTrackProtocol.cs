@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.CanTrack;
 [Service(typeof(IProtocol))]
 public class CanTrackProtocol : TkStarProtocol
 {
-    public override int Port => 7014;
+    public override short Port => 7014;
 }

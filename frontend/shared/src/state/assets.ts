@@ -1,9 +1,7 @@
-import { atom, atomFamily } from "recoil";
+import { Atom, atom } from "jotai";
+import { atomFamily } from "jotai/utils";
 
-export const scrollToAssetAtom = atom<string | undefined>({
-  key: "Navtrack:Assets:ScrollToAtom",
-  default: undefined
-});
+export const scrollToAssetAtom = atom<string | undefined>(undefined);
 
 type AssetConfiguration = {
   liveTracking: LiveTracking;
@@ -14,15 +12,11 @@ type LiveTracking = {
   zoom: number;
 };
 
-export const assetConfigurationAtom = atomFamily<
-  AssetConfiguration,
-  string | undefined
->({
-  key: "Navtrack:Assets:Configuration",
-  default: {
+export const assetConfigurationAtom = atomFamily(() =>
+  atom<AssetConfiguration>({
     liveTracking: {
       follow: true,
       zoom: 16
     }
-  }
-});
+  })
+);

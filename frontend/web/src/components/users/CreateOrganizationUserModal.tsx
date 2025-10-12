@@ -116,7 +116,7 @@ export function CreateOrganizationUserModal() {
                 <ModalActions cancel={() => setOpen(false)}>
                   <Button
                     type="submit"
-                    isLoading={createOrganizationUserMutation.isLoading}>
+                    isLoading={createOrganizationUserMutation.isPending}>
                     <FormattedMessage id="generic.save" />
                   </Button>
                 </ModalActions>

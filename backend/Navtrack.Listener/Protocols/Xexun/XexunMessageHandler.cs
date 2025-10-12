@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Xexun;
 [Service(typeof(ICustomMessageHandler<XexunProtocol>))]
 public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         // TODO: join patterns
         GroupCollection lgc =
@@ -23,18 +23,15 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
         {
             input.ConnectionContext.SetDevice(lgc[18].Value);
 
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                Position = new PositionElement
-                {
-                    Date = DateTimeUtil.New(lgc[12].Value, lgc[13].Value, lgc[14].Value, lgc[1].Value, lgc[2].Value,
-                        lgc[3].Value, lgc[4].Value),
-                    Valid = lgc[16].Value == "F",
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[6].Value, lgc[7].Value),
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[8].Value, lgc[9].Value),
-                    Speed = SpeedUtil.KnotsToKph(lgc[10].Get<float>()),
-                    Heading = string.IsNullOrEmpty(lgc[11].Value) ? default(float?) : float.Parse(lgc[11].Value)
-                }
+                Date = DateTimeUtil.New(lgc[12].Value, lgc[13].Value, lgc[14].Value, lgc[1].Value, lgc[2].Value,
+                    lgc[3].Value, lgc[4].Value),
+                Valid = lgc[16].Value == "F",
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(lgc[6].Value, lgc[7].Value),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(lgc[8].Value, lgc[9].Value),
+                Speed = SpeedUtil.KnotsToKph(lgc[10].Get<float>()),
+                Heading = (string.IsNullOrEmpty(lgc[11].Value) ? default(float?) : float.Parse(lgc[11].Value)).ToShort()
             };
 
             MatchCollection extra =
@@ -47,19 +44,18 @@ public class XexunMessageHandler : BaseMessageHandler<XexunProtocol>
 
                 if (match.Count == 14)
                 {
-                    deviceMessageDocument.Position.Satellites = short.Parse(match[3].Value);
-                    deviceMessageDocument.Position.Altitude = float.Parse(match[4].Value);
-                    deviceMessageDocument.Gsm = new GsmElement
-                    {
-                        MobileCountryCode = match[10].Value,
-                        MobileNetworkCode = int.Parse(match[11].Value, NumberStyles.HexNumber).ToString(),
-                        LocationAreaCode = int.Parse(match[12].Value, NumberStyles.HexNumber).ToString(),
-                        CellId = int.Parse(match[13].Value, NumberStyles.HexNumber)
-                    };
+                    deviceMessage.Satellites = short.Parse(match[3].Value);
+                    deviceMessage.Altitude = (short)double.Parse(match[4].Value, CultureInfo.InvariantCulture);
+                    deviceMessage.GSMMobileCountryCode = match[10].Value;
+                    deviceMessage.GSMMobileNetworkCode =
+                        int.Parse(match[11].Value, NumberStyles.HexNumber).ToString();
+                    deviceMessage.GSMLocationAreaCode =
+                        int.Parse(match[12].Value, NumberStyles.HexNumber).ToString();
+                    deviceMessage.GSMCellId = int.Parse(match[13].Value, NumberStyles.HexNumber);
                 }
             }
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

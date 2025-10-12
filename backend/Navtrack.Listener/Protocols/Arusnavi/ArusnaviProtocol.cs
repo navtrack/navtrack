@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Arusnavi;
 [Service(typeof(IProtocol))]
 public class ArusnaviProtocol : BaseProtocol
 {
-    public override int Port => 7057;
+    public override short Port => 7057;
 }

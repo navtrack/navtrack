@@ -5,7 +5,7 @@ import { FormikAutocomplete } from "../../ui/form/autocomplete/FormikAutocomplet
 import { generatePath, useNavigate } from "react-router-dom";
 import { DeviceConfiguration } from "./DeviceConfiguration";
 import { useContext, useState } from "react";
-import { DeviceType } from "@navtrack/shared/api/model";
+import { DeviceTypeModel } from "@navtrack/shared/api/model";
 import {
   CreateAssetFormValues,
   DefaultCreateAssetFormValues,
@@ -47,7 +47,8 @@ export function NewAssetPage() {
       navigate(generatePath(Paths.AssetLive, { id: asset.id }));
     }
   });
-  const [selectedDeviceType, setSelectedDeviceType] = useState<DeviceType>();
+  const [selectedDeviceType, setSelectedDeviceType] =
+    useState<DeviceTypeModel>();
 
   return (
     <>

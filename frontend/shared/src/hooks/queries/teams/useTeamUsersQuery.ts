@@ -1,4 +1,4 @@
-import { useTeamsUsersList } from "../../../api";
+import { getTeamsUsersListQueryKey, useTeamsUsersList } from "../../../api";
 
 type UseTeamsQueryProps = {
   teamId?: string;
@@ -7,6 +7,7 @@ type UseTeamsQueryProps = {
 export const useTeamUsersQuery = (props: UseTeamsQueryProps) => {
   const query = useTeamsUsersList(props?.teamId!, {
     query: {
+      queryKey: getTeamsUsersListQueryKey(`${props?.teamId}`),
       refetchOnWindowFocus: false,
       enabled: !!props?.teamId
     }

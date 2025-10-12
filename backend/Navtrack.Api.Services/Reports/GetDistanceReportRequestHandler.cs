@@ -5,23 +5,22 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Reports;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
-using Navtrack.DataAccess.Services.Reports;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
+using Navtrack.Database.Services.Reports;
 using Navtrack.Shared.Library.DI;
-using DistanceReportItem = Navtrack.Api.Model.Reports.DistanceReportItem;
 
 namespace Navtrack.Api.Services.Reports;
 
-[Service(typeof(IRequestHandler<GetDistanceReportRequest, DistanceReport>))]
+[Service(typeof(IRequestHandler<GetDistanceReportRequest, DistanceReportModel>))]
 public class GetDistanceReportRequestHandler(
     IAssetRepository assetRepository,
     IDeviceMessageRepository deviceMessageRepository,
     IReportRepository reportRepository)
-    : BaseRequestHandler<GetDistanceReportRequest, DistanceReport>
+    : BaseRequestHandler<GetDistanceReportRequest, DistanceReportModel>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<GetDistanceReportRequest> context)
     {
@@ -29,14 +28,14 @@ public class GetDistanceReportRequestHandler(
         asset.Return404IfNull();
     }
 
-    public override async Task<DistanceReport> Handle(GetDistanceReportRequest request)
+    public override async Task<DistanceReportModel> Handle(GetDistanceReportRequest request)
     {
-        List<DataAccess.Services.Reports.DistanceReportItem> distanceReportItems =
+        List<DistanceReportItem> distanceReportItems =
             await reportRepository.GetDistanceReportItems(asset!.Id, request.Model.StartDate, request.Model.EndDate);
 
-        DistanceReport result = new()
+        DistanceReportModel result = new()
         {
-            Items = distanceReportItems.Select(x => new DistanceReportItem
+            Items = distanceReportItems.Select(x => new DistanceReportItemModel
             {
                 AverageSpeed = x.AverageSpeed ?? 0,
                 Date = x.Date,

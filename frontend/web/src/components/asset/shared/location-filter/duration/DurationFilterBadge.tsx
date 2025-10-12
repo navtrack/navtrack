@@ -1,7 +1,8 @@
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { useMemo } from "react";
 import { useIntl } from "react-intl";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useAtom } from "jotai";
+import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { durationFilterAtom } from "../locationFilterState";
@@ -11,8 +12,8 @@ type DurationFilterBadgeProps = {
 };
 
 export function DurationFilterBadge(props: DurationFilterBadgeProps) {
-  const [state, setState] = useRecoilState(durationFilterAtom(props.filterKey));
-  const reset = useResetRecoilState(durationFilterAtom(props.filterKey));
+  const [state, setState] = useAtom(durationFilterAtom(props.filterKey));
+  const reset = useResetAtom(durationFilterAtom(props.filterKey));
   const intl = useIntl();
 
   const text = useMemo(() => {

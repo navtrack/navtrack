@@ -1,29 +1,47 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
-import { DistanceReportItem } from "@navtrack/shared/api/model";
+import { DistanceReportItemModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { FormattedMessage } from "react-intl";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { useAssetReportDistanceQuery } from "@navtrack/shared/hooks/queries/assets/useAssetReportDistanceQuery";
+import { AreaChart } from "../../ui/charts/AreaChart";
+import { Card } from "../../ui/card/Card";
 
 export function AssetReportsDistancePage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("reports-distance");
-  const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
+  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
   const distanceReport = useAssetReportDistanceQuery({
     assetId: currentAsset.data?.id,
     startDate: filters.startDate,
     endDate: filters.endDate
   });
 
+  const data =
+    distanceReport.data?.items.map((item) => ({
+      date: show.date(item.date),
+      distance: item.distance
+    })) ?? [];
+
   return (
     <>
       <LocationFilter filterPage="reports-distance" />
-      <TableV2<DistanceReportItem>
+      <Card className="p-4">
+        <AreaChart
+          className="h-60"
+          data={data}
+          index="date"
+          categories={["distance"]}
+          valueFormatter={(value) => show.distance(value) ?? "-"}
+          onValueChange={(v) => console.log(v)}
+        />
+      </Card>
+      <TableV2<DistanceReportItemModel>
         className="h-full"
         columns={[
           {

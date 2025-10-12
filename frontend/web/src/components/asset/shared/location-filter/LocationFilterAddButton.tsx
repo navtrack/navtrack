@@ -12,7 +12,7 @@ import {
 } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import {
   altitudeFilterAtom,
   geofenceFilterAtom,
@@ -33,19 +33,19 @@ type LocationFilterAddButtonProps = {
 };
 
 export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
-  const filtersEnabled = useRecoilValue(
+  const filtersEnabled = useAtomValue(
     filtersEnabledSelector(props.filterKey)
   );
-  const [altitudeFilter, setAltitudeFilter] = useRecoilState(
+  const [altitudeFilter, setAltitudeFilter] = useAtom(
     altitudeFilterAtom(props.filterKey)
   );
-  const [durationFilter, setDurationFilter] = useRecoilState(
+  const [durationFilter, setDurationFilter] = useAtom(
     durationFilterAtom(props.filterKey)
   );
-  const [speedFilter, setSpeedFilter] = useRecoilState(
+  const [speedFilter, setSpeedFilter] = useAtom(
     speedFilterAtom(props.filterKey)
   );
-  const [geofenceFilter, setGeofenceFilter] = useRecoilState(
+  const [geofenceFilter, setGeofenceFilter] = useAtom(
     geofenceFilterAtom(props.filterKey)
   );
   const [filterCount, setFilterCount] = useState(1);

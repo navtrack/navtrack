@@ -15,11 +15,11 @@ namespace Navtrack.Api.Controllers;
 public class DevicesController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.DeviceTypes)]
-    [ProducesResponseType(typeof(List<DeviceType>), StatusCodes.Status200OK)]
-    public async Task<List<DeviceType>> GetList()
+    [ProducesResponseType(typeof(ListModel<DeviceTypeModel>), StatusCodes.Status200OK)]
+    public async Task<ListModel<DeviceTypeModel>> GetList()
     {
-        List<DeviceType> result =
-            await requestHandler.Handle<GetDeviceTypesRequest, List<DeviceType>>(new GetDeviceTypesRequest());
+        ListModel<DeviceTypeModel> result =
+            await requestHandler.Handle<GetDeviceTypesRequest, ListModel<DeviceTypeModel>>(new GetDeviceTypesRequest());
 
         return result;
     }

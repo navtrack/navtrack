@@ -22,7 +22,7 @@ public class MeitrackBinaryProtocolTests : BaseProtocolTests<MeitrackProtocol, M
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV3_LocationIsParsed_CCE()
     {

@@ -7,7 +7,7 @@ import { DeviceConfiguration } from "../../new/DeviceConfiguration";
 import { AssetDevicesTable } from "./AssetDevicesTable";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { object, ObjectSchema, string } from "yup";
-import { DeviceType } from "@navtrack/shared/api/model";
+import { DeviceTypeModel } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetDevicesQuery } from "@navtrack/shared/hooks/queries/assets/useAssetDevicesQuery";
 import { mapErrors } from "@navtrack/shared/utils/formik";
@@ -28,7 +28,8 @@ export function AssetSettingsDevicePage() {
   const currentAsset = useCurrentAsset();
   const changeDeviceMutation = useChangeDeviceMutation();
 
-  const [selectedDeviceType, setSelectedDeviceType] = useState<DeviceType>();
+  const [selectedDeviceType, setSelectedDeviceType] =
+    useState<DeviceTypeModel>();
 
   const devices = useAssetDevicesQuery(currentAsset?.data?.id);
   const { deviceTypes } = useDeviceTypes();
@@ -132,7 +133,7 @@ export function AssetSettingsDevicePage() {
                           deviceTypes === undefined ||
                           currentAsset.data === undefined
                         }
-                        isLoading={changeDeviceMutation.isLoading}>
+                        isLoading={changeDeviceMutation.isPending}>
                         <FormattedMessage id="generic.save" />
                       </Button>
                     </div>

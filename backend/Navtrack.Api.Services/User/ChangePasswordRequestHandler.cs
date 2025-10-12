@@ -6,8 +6,8 @@ using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.Passwords;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.User;
@@ -21,14 +21,17 @@ public class ChangePasswordRequestHandler(
 {
     public override async Task Handle(ChangePasswordRequest request)
     {
-        UserDocument? currentUser = navtrackContextAccessor.NavtrackContext?.User;
+        UserEntity? currentUser = navtrackContextAccessor.NavtrackContext?.User;
         currentUser.ThrowApiExceptionIfNull(HttpStatusCode.Unauthorized);
 
         ValidationApiException apiException = new();
 
-        if (currentUser.Password != null && !passwordHasher.CheckPassword(request.Model.CurrentPassword,
-                currentUser.Password.Hash,
-                currentUser.Password.Salt))
+        bool hasPassword = !string.IsNullOrEmpty(currentUser.PasswordHash) &&
+                           !string.IsNullOrEmpty(currentUser.PasswordSalt);
+
+        if (hasPassword && !passwordHasher.CheckPassword(request.Model.CurrentPassword,
+                currentUser.PasswordHash,
+                currentUser.PasswordSalt))
         {
             apiException.AddValidationError(nameof(request.Model.CurrentPassword),
                 ApiErrorCodes.User_000008_InvalidCurrentPassword);

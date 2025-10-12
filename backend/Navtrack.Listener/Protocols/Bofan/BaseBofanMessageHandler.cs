@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Listener.Services.Mappers;
@@ -8,9 +8,9 @@ namespace Navtrack.Listener.Protocols.Bofan;
 
 public class BaseBofanMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
-        GPRMC gprmc = GPRMC.Parse(input.DataMessage.String);
+        GPRMC? gprmc = GPRMC.Parse(input.DataMessage.String);
 
         if (gprmc != null)
         {
@@ -19,14 +19,12 @@ public class BaseBofanMessageHandler<T> : BaseMessageHandler<T>
             if (deviceIdMatch.Success)
             {
                 input.ConnectionContext.SetDevice(deviceIdMatch.Groups[1].Value);
-                    
-                DeviceMessageDocument deviceMessageDocument = new()
-                {
-                    // Device = input.ConnectionContext.Device,
-                    Position = PositionElementMapper.Map(gprmc)
-                };
 
-                return deviceMessageDocument;
+                DeviceMessageEntity deviceMessage = new();
+
+                DeviceMessageEntityMapper.Map(gprmc, deviceMessage);
+                
+                return deviceMessage;
             }
         }
 

@@ -5,23 +5,22 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Reports;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
-using Navtrack.DataAccess.Services.Reports;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
+using Navtrack.Database.Services.Reports;
 using Navtrack.Shared.Library.DI;
-using FuelConsumptionReportItem = Navtrack.Api.Model.Reports.FuelConsumptionReportItem;
 
 namespace Navtrack.Api.Services.Reports;
 
-[Service(typeof(IRequestHandler<GetFuelConsumptionReportRequest, FuelConsumptionReport>))]
+[Service(typeof(IRequestHandler<GetFuelConsumptionReportRequest, FuelConsumptionReportModel>))]
 public class GetFuelConsumptionReportRequestHandler(
     IAssetRepository assetRepository,
     IDeviceMessageRepository deviceMessageRepository,
     IReportRepository reportRepository)
-    : BaseRequestHandler<GetFuelConsumptionReportRequest, FuelConsumptionReport>
+    : BaseRequestHandler<GetFuelConsumptionReportRequest, FuelConsumptionReportModel>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<GetFuelConsumptionReportRequest> context)
     {
@@ -29,15 +28,15 @@ public class GetFuelConsumptionReportRequestHandler(
         asset.Return404IfNull();
     }
 
-    public override async Task<FuelConsumptionReport> Handle(GetFuelConsumptionReportRequest request)
+    public override async Task<FuelConsumptionReportModel> Handle(GetFuelConsumptionReportRequest request)
     {
-        List<DataAccess.Services.Reports.FuelConsumptionReportItem> res = 
+        List<FuelConsumptionReportItem> res = 
             await reportRepository.GetFuelConsumptionReportItems(asset!.Id, request.Model.StartDate,
             request.Model.EndDate);
 
-        FuelConsumptionReport result = new()
+        FuelConsumptionReportModel result = new()
         {
-            Items = res.Select(x => new FuelConsumptionReportItem
+            Items = res.Select(x => new FuelConsumptionReportItemModel
             {
                 Date = x.Date,
                 Distance = x.Distance,

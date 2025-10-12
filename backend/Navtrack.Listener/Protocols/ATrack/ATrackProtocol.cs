@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.ATrack;
 [Service(typeof(IProtocol))]
 public class ATrackProtocol : BaseProtocol
 {
-    public override int Port => 7061;
+    public override short Port => 7061;
 }
