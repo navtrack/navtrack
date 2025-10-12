@@ -123,7 +123,7 @@ export function CreateTeamUserModal(props: CreateTeamUserModalProps) {
                 <ModalActions cancel={() => setOpen(false)}>
                   <Button
                     type="submit"
-                    isLoading={createTeamUserMutation.isLoading}>
+                    isLoading={createTeamUserMutation.isPending}>
                     <FormattedMessage id="generic.save" />
                   </Button>
                 </ModalActions>

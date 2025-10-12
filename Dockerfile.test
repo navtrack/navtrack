@@ -1,8 +1,9 @@
-FROM ubuntu:24.10 AS build
+FROM ubuntu:24.04 AS build
 
-# Install utilities (.NET 8 needed for NSwag)
 RUN apt-get update
-RUN apt-get install -y ca-certificates curl gnupg dotnet-sdk-8.0 dotnet-sdk-9.0
+RUN apt install -y software-properties-common
+RUN add-apt-repository ppa:dotnet/backports
+RUN apt-get install -y ca-certificates curl gnupg dotnet-sdk-9.0
 
 # Install Node.js
 RUN mkdir -p /etc/apt/keyrings
@@ -11,18 +12,12 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesourc
 RUN apt-get update
 RUN apt-get install nodejs -y
 
-# Install mongo
-RUN curl -fsSL https://pgp.mongodb.com/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
-RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-RUN apt-get update
-RUN apt-get install mongodb-org -y
-RUN mkdir -p /data/db
-
 WORKDIR /src
 COPY . .
 
-RUN cd frontend && npm install && npm run build:web
-RUN dotnet build
+WORKDIR /src/frontend
+RUN npm install
+RUN npm run build:web
 
-RUN chmod +x docker-test.sh
-RUN /src/docker-test.sh
+WORKDIR /src
+RUN dotnet build

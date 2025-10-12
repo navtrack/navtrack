@@ -19,9 +19,9 @@ public class MeiligaoInputMessage(DataMessage frame)
     public const int DataStartIndex = 13;
     public int DataEndIndex => ContainsNewLine ? DataMessage.Bytes.Length - 5 : DataMessage.Bytes.Length - 3;
     public bool HasData => DataEndIndex > DataStartIndex;
-    public string[] DataHex => HasData ? DataMessage.Hex[DataStartIndex..DataEndIndex] : null;
-    public byte[] DataBytes => HasData ? DataMessage.Bytes[DataStartIndex..DataEndIndex] : null;
-    public MeiligaoDataMessage MeiligaoDataMessage => HasData ? new MeiligaoDataMessage(DataBytes) : null;
+    public string[]? DataHex => HasData ? DataMessage.Hex[DataStartIndex..DataEndIndex] : null;
+    public byte[]? DataBytes => HasData ? DataMessage.Bytes[DataStartIndex..DataEndIndex] : null;
+    public MeiligaoDataMessage? MeiligaoDataMessage => HasData ? new MeiligaoDataMessage(DataBytes) : null;
         
     public string[] DeviceIdHex => DataMessage.Hex[4..11];
     public string DeviceIdTrimmed => Join(Empty, DeviceIdHex).TrimEnd('F');

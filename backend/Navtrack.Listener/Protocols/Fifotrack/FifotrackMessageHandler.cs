@@ -1,5 +1,5 @@
 using System;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -9,29 +9,23 @@ namespace Navtrack.Listener.Protocols.Fifotrack;
 [Service(typeof(ICustomMessageHandler<FifotrackProtocol>))]
 public class FifotrackMessageHandler : BaseMessageHandler<FifotrackProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
 
-        DeviceMessageDocument deviceMessageDocument = new()
+        DeviceMessageEntity deviceMessage = new()
         {
-            Position = new PositionElement
-            {
-                Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
-                Valid = input.DataMessage.CommaSplit.Get<string>(6) == "A",
-                Latitude = input.DataMessage.CommaSplit.Get<double>(7),
-                Longitude = input.DataMessage.CommaSplit.Get<double>(8),
-                Speed = input.DataMessage.CommaSplit.Get<float?>(9),
-                Heading = input.DataMessage.CommaSplit.Get<float?>(10),
-                Altitude = input.DataMessage.CommaSplit.Get<float?>(11),
-            },
-            Device = new DeviceElement
-            {
-                Odometer = input.DataMessage.CommaSplit.Get<int?>(12)
-            }
+            Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(5)),
+            Valid = input.DataMessage.CommaSplit.Get<string>(6) == "A",
+            Latitude = input.DataMessage.CommaSplit.Get<double>(7),
+            Longitude = input.DataMessage.CommaSplit.Get<double>(8),
+            Speed = input.DataMessage.CommaSplit.Get<short?>(9),
+            Heading = input.DataMessage.CommaSplit.Get<short?>(10),
+            Altitude = input.DataMessage.CommaSplit.Get<short?>(11),
+            DeviceOdometer = input.DataMessage.CommaSplit.Get<int?>(12)
         };
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     private static DateTime ConvertDate(string date) => DateTimeUtil.New(date[..2], date[2..4], date[4..6],

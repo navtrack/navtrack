@@ -33,20 +33,20 @@ class Program
                 int heading = new Random().Next(0, 360);
 
                 string text =
-                    $"$$F142,123456789012345,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*";
+                    $"$$F142,123456789012346,AAA,35,{location.Item1.ToString("F6", CultureInfo.InvariantCulture)},{location.Item2.ToString("F6", CultureInfo.InvariantCulture)},{date},A,5,30,0,{heading},2.5,{altitude},56364283,8983665,123|4|0000|0000,0421,0200|000E||02EF|00FC,*";
 
                 string checksum = ChecksumUtil.Xor(Encoding.UTF8.GetBytes(text));
                 text += $"{checksum}\r\n";
-            
+
                 Console.Write(text);
-            
+
                 networkStream.Write(Encoding.UTF8.GetBytes(text));
             }
             catch (Exception e)
             {
                 // ignored
             }
-          
+
             Thread.Sleep(5000);
         }
     }

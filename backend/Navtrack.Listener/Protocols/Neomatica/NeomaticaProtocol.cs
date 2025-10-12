@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Neomatica;
 [Service(typeof(IProtocol))]
 public class NeomaticaProtocol : BaseProtocol
 {
-    public override int Port => 7058;
+    public override short Port => 7058;
 }

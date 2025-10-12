@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Services.Organizations;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Services.Organizations;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Organizations;
@@ -11,7 +11,7 @@ namespace Navtrack.Api.Services.Organizations;
 public class DeleteOrganizationRequestHandler(
     IOrganizationRepository organizationRepository) : BaseRequestHandler<DeleteOrganizationRequest>
 {
-    private OrganizationDocument? organization;
+    private OrganizationEntity? organization;
 
     public override async Task Validate(RequestValidationContext<DeleteOrganizationRequest> context)
     {

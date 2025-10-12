@@ -1,38 +1,38 @@
 using System;
 using Navtrack.Api.Model.Stats;
-using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.DataAccess.Services.Devices;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Services.Devices;
 
 namespace Navtrack.Api.Services.Stats.Mappers;
 
 public static class AssetStatItemMapper
 {
-    public static AssetStatItem Map(AssetStatsDateRange dateRange,
-        DeviceMessageDocument? initial,
+    public static AssetStatItemModel Map(AssetStatsDateRange dateRange,
+        DeviceMessageEntity? initial,
         GetFirstAndLastPositionResult current,
         GetFirstAndLastPositionResult previous)
     {
-        AssetStatItem model = new()
+        AssetStatItemModel model = new()
         {
             DateRange = dateRange
         };
 
-        model.Distance = (int?)ComputeDifference(current.FirstOdometer?.Device?.Odometer,
-            current.LastOdometer?.Device?.Odometer, initial?.Device?.Odometer);
-        model.DistancePrevious = (int?)ComputeDifference(previous.FirstOdometer?.Device?.Odometer,
-            previous.LastOdometer?.Device?.Odometer, initial?.Device?.Odometer);
+        model.Distance = (int?)ComputeDifference(current.FirstOdometer?.DeviceOdometer,
+            current.LastOdometer?.DeviceOdometer, initial?.DeviceOdometer);
+        model.DistancePrevious = (int?)ComputeDifference(previous.FirstOdometer?.DeviceOdometer,
+            previous.LastOdometer?.DeviceOdometer, initial?.DeviceOdometer);
         model.DistanceChange = ComputeChange(model.DistancePrevious, model.Distance);
 
-        model.Duration = (int?)ComputeDifference(current.FirstOdometer?.Vehicle?.IgnitionDuration,
-            current.LastOdometer?.Vehicle?.IgnitionDuration);
-        model.DurationPrevious = (int?)ComputeDifference(previous.FirstOdometer?.Vehicle?.IgnitionDuration,
-            previous.LastOdometer?.Vehicle?.IgnitionDuration);
+        model.Duration = (int?)ComputeDifference(current.FirstOdometer?.VehicleIgnitionDuration,
+            current.LastOdometer?.VehicleIgnitionDuration);
+        model.DurationPrevious = (int?)ComputeDifference(previous.FirstOdometer?.VehicleIgnitionDuration,
+            previous.LastOdometer?.VehicleIgnitionDuration);
         model.DurationChange = ComputeChange(model.DurationPrevious, model.Duration);
         
-        model.FuelConsumption = ComputeDifference(current.FirstFuelConsumption?.Vehicle?.FuelConsumption,
-            current.LastFuelConsumption?.Vehicle?.FuelConsumption);
-        model.FuelConsumptionPrevious = ComputeDifference(previous.FirstFuelConsumption?.Vehicle?.FuelConsumption,
-            previous.LastFuelConsumption?.Vehicle?.FuelConsumption);
+        model.FuelConsumption = ComputeDifference(current.FirstFuelConsumption?.VehicleFuelConsumption,
+            current.LastFuelConsumption?.VehicleFuelConsumption);
+        model.FuelConsumptionPrevious = ComputeDifference(previous.FirstFuelConsumption?.VehicleFuelConsumption,
+            previous.LastFuelConsumption?.VehicleFuelConsumption);
         model.FuelConsumptionChange = ComputeChange(model.FuelConsumptionPrevious, model.FuelConsumption);
         
         // Fuel consumption average in l/100km 

@@ -1,7 +1,7 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Card } from "../../ui/card/Card";
 import { Icon } from "../../ui/icon/Icon";
@@ -12,8 +12,7 @@ import { PositionCardItems } from "../shared/position-card/PositionCardItems";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { MessagePosition, Trip } from "@navtrack/shared/api/model";
-import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
+import { PositionDataModel, Trip } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useTripsQuery } from "@navtrack/shared/hooks/queries/assets/useTripsQuery";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
@@ -24,6 +23,7 @@ import { MapCenter } from "../../ui/map/MapCenter";
 import { MapPin } from "../../ui/map/MapPin";
 
 export function AssetTripsPage() {
+  const show = useShow();
   const slots = useContext(SlotContext);
 
   const [selectedTrip, setSelectedTrip] = useState<Trip>();
@@ -39,17 +39,14 @@ export function AssetTripsPage() {
   );
 
   const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
-    MessagePosition | undefined
+    PositionDataModel | undefined
   >(selectedTripPosition);
 
   const [showPin, setShowPin] = useState(false);
 
-  const { showSpeed } = useDistance();
-  const show = useShow();
-
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("trips");
-  const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
+  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
   const query = useTripsQuery({ assetId: currentAsset.data?.id, ...filters });
   const hasTrips = (query.data?.items.length ?? 0) > 0;
 
@@ -104,10 +101,10 @@ export function AssetTripsPage() {
             },
             {
               labelId: "generic.max-speed",
-              row: (row) => showSpeed(row.maxSpeed),
+              row: (row) => show.speed(row.maxSpeed),
               sortValue: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && showSpeed(query.data?.maxSpeed),
+              footer: () => hasTrips && show.speed(query.data?.maxSpeed),
               sortable: true
             },
             // {
@@ -136,7 +133,13 @@ export function AssetTripsPage() {
       <Card className="flex flex-grow">
         <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map>
-            <MapTrip trip={selectedTrip} />
+            <MapTrip
+              trip={selectedTrip}
+              options={{
+                initialZoom: 15,
+                padding: { top: 20, left: 20, bottom: 10, right: 20 }
+              }}
+            />
             {selectedTripPosition && showPin && (
               <>
                 <MapPin

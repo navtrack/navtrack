@@ -1,21 +1,21 @@
 using Navtrack.Api.Model.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.DeviceMessages.Mappers;
 
 public static class MessageMapper
 {
-    public static Message Map(DeviceMessageDocument source)
+    public static DeviceMessageModel Map(DeviceMessageEntity source)
     {
-        Message result = new()
+        DeviceMessageModel result = new()
         {
             Id = source.Id.ToString(),
             Priority = source.MessagePriority ?? MessagePriority.Low,
             CreatedDate = source.CreatedDate,
-            Position = MessagePositionMapper.Map(source.Position),
-            Device = MessageDeviceMapper.Map(source.Device),
-            Vehicle = MessageVehicleMapper.Map(source.Vehicle),
-            Gsm = MessageGsmMapper.Map(source.Gsm),
+            Position = MessagePositionMapper.Map(source),
+            Device = MessageDeviceMapper.Map(source),
+            Vehicle = MessageVehicleMapper.Map(source),
+            Gsm = MessageGsmMapper.Map(source),
         };
 
         return result;

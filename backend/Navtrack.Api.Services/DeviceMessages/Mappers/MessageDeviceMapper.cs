@@ -1,20 +1,21 @@
 using Navtrack.Api.Model.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.DeviceMessages.Mappers;
 
 public static class MessageDeviceMapper
 {
-    public static MessageDevice? Map(DeviceElement? source)
+    public static DeviceDataModel? Map(DeviceMessageEntity source)
     {
-        if (source != null)
+        if (source.DeviceOdometer.HasValue || source.DeviceBatteryLevel.HasValue ||
+            source.DeviceBatteryVoltage.HasValue || source.DeviceBatteryCurrent.HasValue)
         {
-            MessageDevice result = new()
+            DeviceDataModel result = new()
             {
-                Odometer = source.Odometer,
-                BatteryLevel = source.BatteryLevel,
-                BatteryVoltage = source.BatteryVoltage,
-                BatteryCurrent = source.BatteryCurrent
+                Odometer = source.DeviceOdometer,
+                BatteryLevel = source.DeviceBatteryLevel,
+                BatteryVoltage = source.DeviceBatteryVoltage,
+                BatteryCurrent = source.DeviceBatteryCurrent
             };
 
             return result;

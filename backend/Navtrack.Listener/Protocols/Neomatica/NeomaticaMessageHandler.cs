@@ -1,5 +1,5 @@
 using System;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Neomatica;
 [Service(typeof(ICustomMessageHandler<NeomaticaProtocol>))]
 public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         input.DataMessage.ByteReader.Get<short>(); // device id
 
@@ -29,48 +29,44 @@ public class NeomaticaMessageHandler : BaseMessageHandler<NeomaticaProtocol>
     }
 
 
-    private static DeviceMessageDocument GetLocation(MessageInput input, int type)
+    private static DeviceMessageEntity? GetLocation(MessageInput input, int type)
     {
         if (input.ConnectionContext.Device == null)
         {
             return null;
         }
 
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = new PositionElement()
-        };
-
+        DeviceMessageEntity deviceMessage = new();
+        
         input.DataMessage.ByteReader.GetOne();
         input.DataMessage.ByteReader.Get<short>();
 
         short status = input.DataMessage.ByteReader.Get<short>();
-        deviceMessageDocument.Position = new PositionElement();
-        deviceMessageDocument.Position.Valid = !BitUtil.IsTrue(status, 5);
-        deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get<float>();
-        deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.Get<float>();
-        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get<short>() * 0.1f;
-        deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+        deviceMessage.Valid = !BitUtil.IsTrue(status, 5);
+        deviceMessage.Latitude = input.DataMessage.ByteReader.Get<float>();
+        deviceMessage.Longitude = input.DataMessage.ByteReader.Get<float>();
+        deviceMessage.Heading = (input.DataMessage.ByteReader.Get<short>() * 0.1f).ToShort();
+        deviceMessage.Speed = (input.DataMessage.ByteReader.Get<short>() * 0.1f).ToShort();
         input.DataMessage.ByteReader.GetOne();
-        deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get<short>();
-        deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1f;
-        deviceMessageDocument.Position.Satellites = (short?)(input.DataMessage.ByteReader.GetOne() & 0x0f);
-        deviceMessageDocument.Position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+        deviceMessage.Altitude = input.DataMessage.ByteReader.Get<short>();
+        deviceMessage.HDOP = input.DataMessage.ByteReader.GetOne() * 0.1f;
+        deviceMessage.Satellites = (short?)(input.DataMessage.ByteReader.GetOne() & 0x0f);
+        deviceMessage.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
 
-        MarkAsNull(deviceMessageDocument);
+        MarkAsNull(deviceMessage);
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static void MarkAsNull(DeviceMessageDocument deviceMessageDocument)
+    private static void MarkAsNull(DeviceMessageEntity deviceMessageDocument)
     {
-        if (!deviceMessageDocument.Position.Valid.GetValueOrDefault())
+        if (!deviceMessageDocument.Valid.GetValueOrDefault())
         {
-            deviceMessageDocument.Position.Heading = null;
-            deviceMessageDocument.Position.Speed = null;
-            deviceMessageDocument.Position.Altitude = null;
-            deviceMessageDocument.Position.HDOP = null;
-            deviceMessageDocument.Position.Satellites = null;
+            deviceMessageDocument.Heading = null;
+            deviceMessageDocument.Speed = null;
+            deviceMessageDocument.Altitude = null;
+            deviceMessageDocument.HDOP = null;
+            deviceMessageDocument.Satellites = null;
         }
     }
 }

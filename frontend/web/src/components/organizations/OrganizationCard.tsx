@@ -5,10 +5,10 @@ import { Paths } from "../../app/Paths";
 import { Badge, BadgeColor } from "../ui/badge/Badge";
 import { Card } from "../ui/card/Card";
 import { Icon } from "../ui/icon/Icon";
-import { Organization } from "@navtrack/shared/api/model";
+import { OrganizationModel } from "@navtrack/shared/api/model";
 
 type OrganizationCardProps = {
-  organization: Organization;
+  organization: OrganizationModel;
 };
 
 export function OrganizationCard(props: OrganizationCardProps) {

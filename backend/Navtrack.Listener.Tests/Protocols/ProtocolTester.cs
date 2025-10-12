@@ -7,11 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using Moq;
-using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
@@ -32,9 +31,9 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     public ProtocolConnectionContext ConnectionContext { get; }
 
-    public List<DeviceMessageDocument>? LastParsedMessages { get; private set; }
-    public List<DeviceMessageDocument> TotalParsedMessages { get; }
-    public DeviceMessageDocument? LastParsedMessage => LastParsedMessages?.FirstOrDefault();
+    public List<DeviceMessageEntity> LastParsedMessages { get; private set; }
+    public List<DeviceMessageEntity> TotalParsedMessages { get; }
+    public DeviceMessageEntity? LastParsedMessage => LastParsedMessages?.FirstOrDefault();
 
     public ProtocolTester()
     {
@@ -155,7 +154,6 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     private ProtocolConnectionContext GetProtocolClient()
     {
-        return new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(),
-            ObjectId.GenerateNewId());
+        return new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(), Guid.NewGuid());
     }
 }

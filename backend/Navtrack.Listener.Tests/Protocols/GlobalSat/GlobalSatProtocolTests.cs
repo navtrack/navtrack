@@ -31,7 +31,7 @@ public class GlobalSatProtocolTests : BaseProtocolTests<GlobalSatProtocol, Globa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV4_LocationIsParsed()
     {
@@ -40,7 +40,7 @@ public class GlobalSatProtocolTests : BaseProtocolTests<GlobalSatProtocol, Globa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV5_LocationIsParsed()
     {

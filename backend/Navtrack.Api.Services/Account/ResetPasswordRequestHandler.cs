@@ -5,9 +5,8 @@ using Navtrack.Api.Services.Account.Mappers;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.Passwords;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Model.Users.PasswordResets;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Account;
@@ -18,16 +17,16 @@ public class ResetPasswordRequestHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher) : BaseRequestHandler<ResetPasswordRequest>
 {
-    private PasswordResetDocument? passwordReset;
+    private UserPasswordResetEntity? passwordReset;
 
     public override async Task Validate(RequestValidationContext<ResetPasswordRequest> context)
     {
         BasePasswordModelValidator.ValidatePasswords(context.Request.Model, context.ValidationException);
         context.ValidationException.ThrowIfInvalid();
 
-        passwordReset = await passwordResetRepository.GetLatestFromHash(context.Request.Model.Hash);
+        passwordReset = await passwordResetRepository.GetLatestFromId(context.Request.Model.Id);
 
-        if (passwordReset == null || passwordReset.Invalid || passwordReset.Hash != context.Request.Model.Hash)
+        if (passwordReset == null || passwordReset.Invalid || passwordReset.Id != Guid.Parse(context.Request.Model.Id))
         {
             throw new ApiException(ApiErrorCodes.User_000006_InvalidPasswordResetHash);
         }
@@ -42,7 +41,7 @@ public class ResetPasswordRequestHandler(
     {
         (string hash, string salt) = passwordHasher.Hash(request.Model.Password);
 
-        await userRepository.Update(passwordReset!.CreatedBy, new UpdateUser
+        await userRepository.Update(passwordReset.CreatedBy, new UpdateUser
         {
             Password = new PasswordElement
             {
@@ -51,6 +50,6 @@ public class ResetPasswordRequestHandler(
             }
         });
 
-        await passwordResetRepository.MarkAsInvalid(passwordReset.Id);
+        await passwordResetRepository.MarkAsInvalidByUserId(passwordReset.CreatedBy);
     }
 }

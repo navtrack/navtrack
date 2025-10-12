@@ -41,8 +41,8 @@ export function useTokenMutation(props: UseTokenMutationProps) {
     TokenResponse,
     AxiosError<TokenError>,
     TokenRequest
-  >(
-    async (data: TokenRequest) =>
+  >({
+    mutationFn: async (data: TokenRequest) =>
       axiosInstance<TokenResponse>({
         url: `/connect/token`,
         method: "post",
@@ -51,8 +51,8 @@ export function useTokenMutation(props: UseTokenMutationProps) {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }),
-    props.options
-  );
+    ...props.options
+  });
 
   return mutation;
 }

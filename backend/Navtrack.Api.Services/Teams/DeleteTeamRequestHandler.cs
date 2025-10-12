@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Organizations;
-using Navtrack.DataAccess.Services.Teams;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Organizations;
+using Navtrack.Database.Services.Teams;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -20,7 +20,7 @@ public class DeleteTeamRequestHandler(
     IAssetRepository assetRepository)
     : BaseRequestHandler<DeleteTeamRequest>
 {
-    private TeamDocument? team;
+    private TeamEntity? team;
 
     public override async Task Validate(RequestValidationContext<DeleteTeamRequest> context)
     {
@@ -40,7 +40,7 @@ public class DeleteTeamRequestHandler(
     {
         return new TeamDeletedEvent
         {
-            TeamId = request.TeamId,
+            TeamId = team!.Id.ToString(),
             OrganizationId = team!.OrganizationId.ToString()
         };
     }

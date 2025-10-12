@@ -3,7 +3,7 @@ using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Trips;
@@ -12,7 +12,7 @@ namespace Navtrack.Api.Services.Trips;
 public class GetAssetTripsRequestHandler(ITripService tripService, ICurrentContext currentContext) 
     : BaseRequestHandler<GetAssetTripsRequest, TripList>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<GetAssetTripsRequest> context)
     {

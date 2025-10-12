@@ -32,10 +32,10 @@ public class ConcoxProtocolTests : BaseProtocolTests<ConcoxProtocol, ConcoxMessa
             "7878 1F 12 0A03170F3217 CC 026B3F3E 0C465849 00 154C 01CC 00 287D 001FB8 0003 8081 0D0A");
         ProtocolTester.SendHexFromDevice(
             "7878 22 22 0F0101051814 C4 0222518C 04B5AA48 00 4826 02D4 17 04CF 003F35 000E 0100 128F8B0D0A");
-        
+
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-    
+
     [Fact]
     public void DeviceSendsLocation2_LocationIsParsed()
     {

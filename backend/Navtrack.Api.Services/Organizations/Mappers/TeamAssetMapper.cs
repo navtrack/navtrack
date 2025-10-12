@@ -1,21 +1,17 @@
-using System.Linq;
 using Navtrack.Api.Model.Teams;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Teams;
+using Navtrack.Database.Model.Teams;
 
 namespace Navtrack.Api.Services.Organizations.Mappers;
 
 public static class TeamAssetMapper
 {
-    public static TeamAsset Map(AssetDocument asset, TeamDocument team)
+    public static TeamAssetModel Map(TeamAssetEntity source)
     {
-        AssetTeamElement assetTeam = asset.Teams!.First(x => x.TeamId == team.Id);
-        
-        return new TeamAsset
+        return new TeamAssetModel
         {
-            Name = asset.Name,
-            CreatedDate = assetTeam.CreatedDate,
-            AssetId = asset.Id.ToString()
+            Name = source.Asset.Name,
+            CreatedDate = source.CreatedDate,
+            AssetId = source.AssetId.ToString()
         };
     }
 }

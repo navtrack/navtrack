@@ -54,7 +54,7 @@ export function DeleteOrganizationModal() {
         <DeleteModal
           autoClose={false}
           maxWidth="lg"
-          isLoading={deleteOrganizationMutation.isLoading}
+          isLoading={deleteOrganizationMutation.isPending}
           onClose={() => resetForm()}
           onConfirm={() => submitForm()}
           renderButton={(open) => (

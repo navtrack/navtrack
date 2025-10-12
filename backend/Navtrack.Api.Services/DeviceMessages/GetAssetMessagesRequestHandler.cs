@@ -3,10 +3,10 @@ using Navtrack.Api.Model.Messages;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.DeviceMessages.Mappers;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices.Messages.Filters;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Filters;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.DeviceMessages;
@@ -17,9 +17,11 @@ public class GetAssetMessagesRequestHandler(
     IDeviceMessageRepository deviceMessageRepository)
     : BaseRequestHandler<GetAssetMessagesRequest, MessageList>
 {
+    private AssetEntity? asset;
+
     public override async Task Validate(RequestValidationContext<GetAssetMessagesRequest> context)
     {
-        AssetDocument? asset = await assetRepository.GetById(context.Request.AssetId);
+        asset = await assetRepository.GetById(context.Request.AssetId);
         asset.Return404IfNull();
     }
 
@@ -27,7 +29,7 @@ public class GetAssetMessagesRequestHandler(
     {
         GetMessagesResult messages = await deviceMessageRepository.GetMessages(new GetMessagesOptions
         {
-            AssetId = request.AssetId,
+            AssetId = asset.Id,
             PositionFilter = request.Filter,
             Page = request.Page,
             Size = request.Size

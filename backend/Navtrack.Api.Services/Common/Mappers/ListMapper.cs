@@ -6,9 +6,9 @@ namespace Navtrack.Api.Services.Common.Mappers;
 
 public static class ListMapper
 {
-    public static Model.Common.List<TOut> Map<TIn,TOut>(IEnumerable<TIn> items, Func<TIn, TOut> mapper)
+    public static Model.Common.ListModel<TOut> Map<TIn,TOut>(IEnumerable<TIn> items, Func<TIn, TOut> mapper)
     {
-        Model.Common.List<TOut> list = new()
+        Model.Common.ListModel<TOut> list = new()
         {
             Items = items.Select(mapper).ToList()
         };

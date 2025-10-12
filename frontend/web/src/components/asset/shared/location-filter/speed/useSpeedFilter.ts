@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { speedFilterAtom } from "../locationFilterState";
 import { SpeedFilterFormValues } from "../locationFilterTypes";
 import { isNumeric } from "@navtrack/shared/utils/numbers";
 
 export function useSpeedFilter(key: string) {
-  const [state, setState] = useRecoilState(speedFilterAtom(key));
+  const [state, setState] = useAtom(speedFilterAtom(key));
 
   const initialValues = useMemo(
     () => ({

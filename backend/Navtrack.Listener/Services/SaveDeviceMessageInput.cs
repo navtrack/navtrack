@@ -1,13 +1,13 @@
+using System;
 using System.Collections.Generic;
-using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Models;
 
 namespace Navtrack.Listener.Services;
 
 public class SaveDeviceMessageInput
 {
-    public ObjectId ConnectionId { get; set; }
+    public Guid ConnectionId { get; set; }
     public Device Device { get; set; }
-    public IEnumerable<DeviceMessageDocument> Messages { get; set; }
+    public IEnumerable<DeviceMessageEntity> Messages { get; set; }
 }

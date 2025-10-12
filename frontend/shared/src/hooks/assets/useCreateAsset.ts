@@ -59,7 +59,7 @@ export function useCreateAsset(props: UseCreateAssetProps) {
 
   return {
     handleSubmit,
-    isLoading: addAssetMutation.isLoading,
+    isLoading: addAssetMutation.isPending,
     validationSchema
   };
 }

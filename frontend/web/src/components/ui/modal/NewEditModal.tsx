@@ -1,5 +1,5 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { useState, useCallback } from "react";
+import { useState, useCallback, ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { ModalActions } from "./ModalActions";
 import { ModalContainer } from "./ModalContainer";
@@ -13,8 +13,8 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type NewEditModalProps<T extends FormikValues> = {
   onConfirm?: () => Promise<void> | undefined;
-  renderButton?: (open: () => void) => JSX.Element;
-  children?: React.ReactNode;
+  renderButton?: (open: () => void) => Element;
+  children?: ReactNode;
   maxWidth?: "lg";
   disabled?: boolean;
   deleteButtonTitle?: string;

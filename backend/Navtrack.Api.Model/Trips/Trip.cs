@@ -9,13 +9,13 @@ namespace Navtrack.Api.Model.Trips;
 public class Trip
 {
     [Required]
-    public List<MessagePosition> Positions { get; set; } = [];   
+    public List<PositionDataModel> Positions { get; set; } = [];   
  
     [Required]
-    public MessagePosition StartPosition => Positions.First();
+    public PositionDataModel StartPosition => Positions.First();
 
     [Required]
-    public MessagePosition EndPosition => Positions.Last();
+    public PositionDataModel EndPosition => Positions.Last();
 
     [Required]
     public double Duration => Math.Ceiling((EndPosition.Date - StartPosition.Date).TotalSeconds);
@@ -31,7 +31,7 @@ public class Trip
     {
         get
         {
-            List<MessagePosition> positions = Positions.Where(x => x.Speed > 0).ToList();
+            List<PositionDataModel> positions = Positions.Where(x => x.Speed > 0).ToList();
             
             double? average = positions.Count != 0 ? positions.Average(x => x.Speed) : null;
 

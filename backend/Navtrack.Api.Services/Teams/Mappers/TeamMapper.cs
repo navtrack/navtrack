@@ -1,11 +1,11 @@
 using Navtrack.Api.Model.Teams;
-using Navtrack.DataAccess.Model.Teams;
+using Navtrack.Database.Model.Teams;
 
 namespace Navtrack.Api.Services.Teams.Mappers;
 
 public static class TeamMapper
 {
-    public static Team Map(TeamDocument source)
+    public static Team Map(TeamEntity source)
     {
         return new Team
         {

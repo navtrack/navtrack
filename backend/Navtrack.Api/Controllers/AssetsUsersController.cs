@@ -9,7 +9,7 @@ using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Assets;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;
@@ -20,13 +20,13 @@ namespace Navtrack.Api.Controllers;
 public class AssetsUsersController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.AssetUsers)]
-    [ProducesResponseType(typeof(List<AssetUser>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ListModel<AssetUserModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Owner)]
-    public async Task<List<AssetUser>> GetList([FromRoute] string assetId)
+    public async Task<ListModel<AssetUserModel>> GetList([FromRoute] string assetId)
     {
-        List<AssetUser> result =
-            await requestHandler.Handle<GetAssetUsersRequest, List<AssetUser>>(
+        ListModel<AssetUserModel> result =
+            await requestHandler.Handle<GetAssetUsersRequest, ListModel<AssetUserModel>>(
                 new GetAssetUsersRequest
                 {
                     AssetId = assetId
@@ -38,9 +38,9 @@ public class AssetsUsersController(IRequestHandler requestHandler) : ControllerB
     [HttpPost(ApiPaths.AssetUsers)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [AuthorizeAsset(AssetUserRole.Owner)]
-    public async Task<IActionResult> Create([FromRoute] string assetId, [FromBody] CreateAssetUser model)
+    public async Task<IActionResult> Create([FromRoute] string assetId, [FromBody] CreateAssetUserModel model)
     {
         await requestHandler.Handle(new CreateAssetUserRequest
         {
@@ -54,7 +54,7 @@ public class AssetsUsersController(IRequestHandler requestHandler) : ControllerB
     [HttpDelete(ApiPaths.AssetUserById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [AuthorizeAsset(AssetUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string userId)
     {

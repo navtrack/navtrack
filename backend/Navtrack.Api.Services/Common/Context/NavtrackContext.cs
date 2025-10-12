@@ -1,57 +1,50 @@
+using System;
 using System.Linq;
-using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Model.Users;
 
 namespace Navtrack.Api.Services.Common.Context;
 
 public class NavtrackContext
 {
-    public UserDocument? User { get; init; }
+    public UserEntity? User { get; init; }
     public string? OrganizationId { get; set; }
     public string? AssetId { get; set; }
     public string? TeamId { get; set; }
 
-    public bool HasAssetUserRole(AssetDocument? asset, AssetUserRole userRole)
+    public bool HasAssetUserRole(AssetEntity? asset, AssetUserRole userRole)
     {
         if (asset == null || User == null)
         {
             return false;
         }
 
-        if (HasOrganizationUserRole(asset.OrganizationId.ToString(), OrganizationUserRole.Owner))
+        if (HasOrganizationUserRole(asset.OrganizationId, OrganizationUserRole.Owner))
         {
             return true;
         }
 
-        UserAssetElement? userAsset = User.Assets?.FirstOrDefault(x =>
-            x.AssetId == asset.Id);
+        AssetUserEntity? userAsset = User.AssetUsers.FirstOrDefault(x => x.AssetId == asset.Id);
 
         return userRole switch
         {
             AssetUserRole.Owner => userAsset?.UserRole == AssetUserRole.Owner,
             AssetUserRole.Viewer => userAsset?.UserRole is AssetUserRole.Owner or AssetUserRole.Viewer ||
-                                    User.Teams?.Any(x => asset.Teams?.Any(y => y.TeamId == x.TeamId) == true) == true,
+                                    User.Teams.Any(x => asset.TeamAssets.Any(y => y.TeamId == x.Id)),
             _ => false
         };
     }
 
-    public bool HasTeamUserRole(TeamDocument? team, TeamUserRole userRole)
+    public bool HasTeamUserRole(TeamEntity team, TeamUserRole userRole)
     {
-        if (team == null || User == null)
-        {
-            return false;
-        }
-
-        if (HasOrganizationUserRole(team.OrganizationId.ToString(), OrganizationUserRole.Owner))
+        if (HasOrganizationUserRole(team.OrganizationId, OrganizationUserRole.Owner))
         {
             return true;
         }
 
-        UserTeamElement? userTeam = User.Teams?.FirstOrDefault(x =>
-            x.TeamId == team.Id);
+        TeamUserEntity? userTeam = User?.TeamUsers.FirstOrDefault(x => x.TeamId == team.Id);
 
         return userRole switch
         {
@@ -61,15 +54,10 @@ public class NavtrackContext
         };
     }
 
-    public bool HasOrganizationUserRole(string organizationId, OrganizationUserRole userRole)
+    public bool HasOrganizationUserRole(Guid organizationId, OrganizationUserRole userRole)
     {
-        if (!ObjectId.TryParse(organizationId, out ObjectId organizationObjectId))
-        {
-            return false;
-        }
-
-        UserOrganizationElement? userOrganization = User?.Organizations?.FirstOrDefault(x =>
-            x.OrganizationId == organizationObjectId);
+        OrganizationUserEntity? userOrganization =
+            User?.OrganizationUsers.FirstOrDefault(x => x.OrganizationId == organizationId);
 
         return userRole switch
         {

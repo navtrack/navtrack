@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.ManPower;
 [Service(typeof(IProtocol))]
 public class ManPowerProtocol : BaseProtocol
 {
-    public override int Port => 7045;
+    public override short Port => 7045;
 }

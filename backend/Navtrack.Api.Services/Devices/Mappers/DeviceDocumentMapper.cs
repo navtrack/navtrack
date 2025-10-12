@@ -1,20 +1,20 @@
 using System;
-using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.Devices.Mappers;
 
 public static class DeviceDocumentMapper
 {
-    public static DeviceDocument Map(AssetDocument asset, ObjectId userId, string serialNumber, DeviceType deviceType)
+    public static DeviceEntity Map(AssetEntity asset, Guid userId, string serialNumber, DeviceType deviceType)
     {
-        return new DeviceDocument
+        return new DeviceEntity
         {
             AssetId = asset.Id,
             OrganizationId = asset.OrganizationId,
             SerialNumber = serialNumber,
             DeviceTypeId = deviceType.Id,
+            ProtocolPort = deviceType.Protocol.Port,
             CreatedDate = DateTime.UtcNow,
             CreatedBy = userId
         };

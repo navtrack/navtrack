@@ -1,19 +1,20 @@
 using Navtrack.Api.Model.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.DeviceMessages.Mappers;
 
 public static class MessageGsmMapper
 {
-    public static MessageGsm? Map(GsmElement? source)
+    public static GsmDataModel? Map(DeviceMessageEntity source)
     {
-        if (source != null)
+        if (source.GSMSignalLevel.HasValue || !string.IsNullOrEmpty(source.GSMMobileCountryCode) ||
+            !string.IsNullOrEmpty(source.GSMMobileNetworkCode))
         {
-            MessageGsm result = new()
+            GsmDataModel result = new()
             {
-                SignalLevel = source.SignalLevel,
-                MobileCountryCode = source.MobileCountryCode,
-                MobileNetworkCode = source.MobileNetworkCode
+                SignalLevel = source.GSMSignalLevel,
+                MobileCountryCode = source.GSMMobileCountryCode,
+                MobileNetworkCode = source.GSMMobileNetworkCode
             };
 
             return result;

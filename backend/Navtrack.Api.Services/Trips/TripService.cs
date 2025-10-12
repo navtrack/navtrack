@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Driver;
 using Navtrack.Api.Model.Messages;
 using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Trips.Mappers;
 using Navtrack.Api.Services.Trips.Models;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages.Filters;
-using Navtrack.DataAccess.Services.Devices;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Model.Filters;
+using Navtrack.Database.Services.Devices;
 using Navtrack.Shared.Library.DI;
-using DateFilter = Navtrack.DataAccess.Model.Devices.Messages.Filters.DateFilter;
 
 namespace Navtrack.Api.Services.Trips;
 
@@ -23,11 +21,11 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
     private const int MaxDistanceBetweenPositionsInMeters = 1000;
     private const double MaxTimeBetweenTripInMinutes = 5;
 
-    public async Task<TripList> GetTrips(AssetDocument asset, TripFilter tripFilter)
+    public async Task<TripList> GetTrips(AssetEntity asset, TripFilter tripFilter)
     {
         MapFilter(asset, tripFilter);
         
-        List<InternalTrip> trips = await GetInternalTrips(asset.Id.ToString(), tripFilter);
+        List<InternalTrip> trips = await GetInternalTrips(asset.Id, tripFilter);
 
         TripList list = TripListMapper.Map(trips);
 
@@ -36,11 +34,11 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return list;
     }
 
-    private static void MapFilter(AssetDocument asset, TripFilter tripFilter)
+    private static void MapFilter(AssetEntity asset, TripFilter tripFilter)
     {
         if (tripFilter.StartDate == null || tripFilter.EndDate == null)
         {
-            DateTime latestPositionDate = asset.LastPositionMessage?.Position.Date ?? DateTime.UtcNow;
+            DateTime latestPositionDate = asset.LastPositionMessage?.Date ?? DateTime.UtcNow;
             
             tripFilter.StartDate = latestPositionDate.Date;
             tripFilter.EndDate = latestPositionDate.Date;
@@ -52,9 +50,9 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         }
     }
 
-    private async Task<List<InternalTrip>> GetInternalTrips(string assetId, TripFilter tripFilter)
+    private async Task<List<InternalTrip>> GetInternalTrips(Guid assetId, TripFilter tripFilter)
     {
-        List<DeviceMessageDocument> messages = await GetMessages(assetId, tripFilter);
+        List<DeviceMessageEntity> messages = await GetMessages(assetId, tripFilter);
 
         List<InternalTrip> trips = CreateTrips(messages);
 
@@ -64,24 +62,24 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return trips;
     }
 
-    private static List<InternalTrip> CreateTrips(List<DeviceMessageDocument> source)
+    private static List<InternalTrip> CreateTrips(List<DeviceMessageEntity> source)
     {
         List<InternalTrip> trips = [];
 
         InternalTrip? currentTrip = null;
-        DeviceMessageDocument? lastMessage = null;
+        DeviceMessageEntity lastMessage = null;
 
-        foreach (DeviceMessageDocument message in source)
+        foreach (DeviceMessageEntity message in source)
         {
             if (currentTrip == null ||
                 lastMessage == null ||
-                message.Position.Date > lastMessage.Position.Date.AddMinutes(MaxTimeBetweenTripInMinutes) ||
+                message.Date > lastMessage.Date.AddMinutes(MaxTimeBetweenTripInMinutes) ||
                 DistanceCalculator.CalculateDistance(
-                    new LatLong(lastMessage.Position.Latitude, lastMessage.Position.Longitude),
-                    new LatLong(message.Position.Latitude, message.Position.Longitude)) >
+                    new LatLong(lastMessage.Latitude, lastMessage.Longitude),
+                    new LatLong(message.Latitude, lastMessage.Longitude)) >
                 MaxDistanceBetweenPositionsInMeters ||
-                (message.Vehicle?.Ignition != null && lastMessage.Vehicle?.Ignition != null &&
-                 message.Vehicle.Ignition != lastMessage.Vehicle.Ignition)
+                (message.VehicleIgnition != null && lastMessage.VehicleIgnition != null &&
+                 message.VehicleIgnition != lastMessage.VehicleIgnition)
                )
             {
                 currentTrip = new InternalTrip();
@@ -105,8 +103,8 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
     {
         foreach (InternalTrip trip in trips)
         {
-            int firstMovingPosition = trip.Messages.FindIndex(x => x.Position.Speed > 0);
-            int lastMovingPosition = trip.Messages.FindLastIndex(x => x.Position.Speed > 0);
+            int firstMovingPosition = trip.Messages.FindIndex(x => x.Speed > 0);
+            int lastMovingPosition = trip.Messages.FindLastIndex(x => x.Speed > 0);
 
             int firstPositionIndex = firstMovingPosition > 1 ? firstMovingPosition - 1 : 0;
             int lastPositionIndex = lastMovingPosition != -1 && lastMovingPosition < trip.Messages.Count - 2
@@ -123,15 +121,15 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
         foreach (InternalTrip trip in trips)
         {
-            List<DeviceMessageDocument> messages = [];
+            List<DeviceMessageEntity> messages = [];
 
-            DeviceMessageDocument? lastMessage = null;
+            DeviceMessageEntity? lastMessage = null;
 
-            foreach (DeviceMessageDocument message in trip.Messages)
+            foreach (DeviceMessageEntity message in trip.Messages)
             {
                 if (lastMessage == null ||
-                    Math.Abs(lastMessage.Position.Latitude - message.Position.Latitude) > precision ||
-                    Math.Abs(lastMessage.Position.Longitude - message.Position.Longitude) > precision)
+                    Math.Abs(lastMessage.Latitude - message.Latitude) > precision ||
+                    Math.Abs(lastMessage.Longitude - message.Longitude) > precision)
                 {
                     messages.Add(message);
                     lastMessage = message;
@@ -146,29 +144,29 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
     {
         foreach (InternalTrip trip in trips)
         {
-            if (trip.StartMessage.Device?.Odometer != null && trip.EndMessage.Device?.Odometer != null)
+            if (trip.StartMessage.DeviceOdometer != null && trip.EndMessage.DeviceOdometer != null)
             {
-                trip.Distance = trip.EndMessage.Device.Odometer.Value - trip.StartMessage.Device.Odometer.Value;
+                trip.Distance = trip.EndMessage.DeviceOdometer.Value - trip.StartMessage.DeviceOdometer.Value;
             }
             else
             {
                 trip.Distance = DistanceCalculator.CalculateDistance(trip.Messages
-                    .Select(x => (new LatLong(x.Position.Latitude, x.Position.Longitude), (uint?)null)).ToList());
+                    .Select(x => (new LatLong(x.Latitude, x.Longitude), (uint?)null)).ToList());
             }
         }
     }
 
-    private async Task<List<DeviceMessageDocument>> GetMessages(string assetId, DateFilter dateFilter)
+    private async Task<List<DeviceMessageEntity>> GetMessages(Guid assetId, DateFilterModel dateFilter)
     {
         GetMessagesOptions options = new()
         {
             AssetId = assetId,
-            PositionFilter = new PositionFilter
+            PositionFilter = new PositionFilterModel
             {
                 StartDate = dateFilter.StartDate?.AddHours(-6) ?? dateFilter.StartDate,
                 EndDate = dateFilter.EndDate?.AddHours(6) ?? dateFilter.EndDate
             },
-            OrderFunc = Builders<DeviceMessageDocument>.Sort.Ascending(x => x.Position.Date)
+            // OrderFunc = Builders<DeviceMessageEntity>.Sort.Ascending(x => x.Date) TODO
         };
 
         GetMessagesResult result = await repository.GetMessages(options);
@@ -206,7 +204,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
             filteredTrips = filteredTrips
                 .Where(x => x.Messages
                     .Any(y => DistanceCalculator.IsInRadius(
-                        new LatLong(y.Position.Latitude, y.Position.Longitude),
+                        new LatLong(y.Latitude, y.Longitude),
                         new LatLong(tripFilter.Latitude.Value, tripFilter.Longitude.Value),
                         tripFilter.Radius.Value)))
                 .ToList();
@@ -265,18 +263,18 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyDateFilter(DateFilter dateFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyDateFilter(DateFilterModel dateFilter, List<InternalTrip> filteredTrips)
     {
         if (dateFilter.StartDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartMessage.Position.Date >= dateFilter.StartDate.Value.Date).ToList();
+                .Where(x => x.StartMessage.Date >= dateFilter.StartDate.Value.Date).ToList();
         }
 
         if (dateFilter.EndDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartMessage.Position.Date <= dateFilter.EndDate.Value.Date).ToList();
+                .Where(x => x.StartMessage.Date <= dateFilter.EndDate.Value.Date).ToList();
         }
 
         return filteredTrips;
@@ -284,6 +282,6 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
     private static List<InternalTrip> ApplyOrdering(List<InternalTrip> trips)
     {
-        return trips.OrderBy(x => x.StartMessage.Position.Date).ToList();
+        return trips.OrderBy(x => x.StartMessage.Date).ToList();
     }
 }

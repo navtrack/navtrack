@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -26,9 +26,9 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
 
     private const string FlexArrayKey = "FLEX_ARRAY";
 
-    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
-        IEnumerable<DeviceMessageDocument> location = ParseRange(input,
+        IEnumerable<DeviceMessageEntity> location = ParseRange(input,
             Handle_S_Login,
             Handle_FLEX,
             Handle_V1_A_TelemetryArray,
@@ -40,7 +40,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         return location;
     }
 
-    private static IEnumerable<DeviceMessageDocument> Handle_S_Login(MessageInput input)
+    private static IEnumerable<DeviceMessageEntity> Handle_S_Login(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {
@@ -58,7 +58,7 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         return null;
     }
 
-    private IEnumerable<DeviceMessageDocument> Handle_FLEX(MessageInput input)
+    private IEnumerable<DeviceMessageEntity> Handle_FLEX(MessageInput input)
     {
         int? flexStartIndex =
             input.DataMessage.Bytes.GetStartIndex([0x2A, 0x3E, 0x46, 0x4C, 0x45, 0x58]);
@@ -99,47 +99,47 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         return null;
     }
 
-    private List<DeviceMessageDocument> Handle_V1_A_TelemetryArray(MessageInput input)
+    private IEnumerable<DeviceMessageEntity> Handle_V1_A_TelemetryArray(MessageInput input)
     {
         return input.DataMessage.String.StartsWith("~A")
             ? HandleArrayPackage(input, GetFlex10Location)
             : null;
     }
 
-    private IEnumerable<DeviceMessageDocument> Handle_V1_T_Telemetry(MessageInput input)
+    private IEnumerable<DeviceMessageEntity> Handle_V1_T_Telemetry(MessageInput input)
     {
         return input.DataMessage.String.StartsWith("~T")
             ? HandleSinglePackage(input, GetFlex10Location)
             : null;
     }
 
-    private IEnumerable<DeviceMessageDocument> Handle_V2_E_TelemetryArray(MessageInput input)
+    private IEnumerable<DeviceMessageEntity> Handle_V2_E_TelemetryArray(MessageInput input)
     {
         return input.DataMessage.String.StartsWith("~E")
             ? HandleArrayPackage(input, GetFlex20ExtensionLocation)
             : null;
     }
 
-    private IEnumerable<DeviceMessageDocument> Handle_V2_X_telemetry(MessageInput input)
+    private IEnumerable<DeviceMessageEntity> Handle_V2_X_telemetry(MessageInput input)
     {
         return input.DataMessage.String.StartsWith("~X")
             ? HandleSinglePackage(input, GetFlex20ExtensionLocation)
             : null;
     }
 
-    private static List<DeviceMessageDocument> HandleArrayPackage(MessageInput input,
-        Func<MessageInput, ByteReader, DeviceMessageDocument> locationMapper)
+    private static List<DeviceMessageEntity> HandleArrayPackage(MessageInput input,
+        Func<MessageInput, ByteReader, DeviceMessageEntity> locationMapper)
     {
         input.DataMessage.ByteReader.Skip(2);
         byte size = input.DataMessage.ByteReader.GetOne();
 
-        List<DeviceMessageDocument> locations = [];
+        List<DeviceMessageEntity> locations = [];
 
         for (int i = 0; i < size; i++)
         {
-            DeviceMessageDocument deviceMessageDocument = locationMapper(input, input.DataMessage.ByteReader);
+            DeviceMessageEntity deviceMessage = locationMapper(input, input.DataMessage.ByteReader);
 
-            locations.Add(deviceMessageDocument);
+            locations.Add(deviceMessage);
         }
 
         string response = $"{input.DataMessage.Hex[..2].StringJoin()}" + // header
@@ -149,30 +149,30 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         return locations;
     }
 
-    private IEnumerable<DeviceMessageDocument> HandleSinglePackage(MessageInput input,
-        Func<MessageInput, ByteReader, DeviceMessageDocument> locationMapper)
+    private IEnumerable<DeviceMessageEntity> HandleSinglePackage(MessageInput input,
+        Func<MessageInput, ByteReader, DeviceMessageEntity> locationMapper)
     {
         input.DataMessage.ByteReader.Skip(6); // header + event index
-        DeviceMessageDocument deviceMessageDocument = locationMapper(input, input.DataMessage.ByteReader);
+        DeviceMessageEntity deviceMessage = locationMapper(input, input.DataMessage.ByteReader);
 
         string response = $"{input.DataMessage.Hex[..2].StringJoin()}" + // header
                           $"{input.DataMessage.Hex[2..6].StringJoin()}"; // event Index
         SendResponse(response, input.NetworkStream);
 
-        return new[] { deviceMessageDocument };
+        return [deviceMessage];
     }
 
-    private IEnumerable<DeviceMessageDocument> Handle_V1_C_CurrentState(MessageInput input)
+    private IEnumerable<DeviceMessageEntity>? Handle_V1_C_CurrentState(MessageInput input)
     {
         if (input.DataMessage.String.StartsWith("~C"))
         {
             input.DataMessage.ByteReader.Skip(2); // header
-            DeviceMessageDocument deviceMessageDocument = GetFlex10Location(input, input.DataMessage.ByteReader);
+            DeviceMessageEntity deviceMessage = GetFlex10Location(input, input.DataMessage.ByteReader);
 
             string response = $"{input.DataMessage.Hex[..2].StringJoin()}";
             SendResponse(response, input.NetworkStream);
 
-            return new[] { deviceMessageDocument };
+            return [deviceMessage];
         }
 
         return null;
@@ -202,12 +202,9 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(replyWithChecksum));
     }
 
-    private DeviceMessageDocument GetFlex10Location(MessageInput input, ByteReader reader)
+    private DeviceMessageEntity GetFlex10Location(MessageInput input, ByteReader reader)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = new PositionElement()
-        };
+        DeviceMessageEntity deviceMessage = new();
 
         bool[]? flexArray = input.ConnectionContext.GetClientCache<bool[]>(FlexArrayKey);
 
@@ -218,26 +215,25 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
                 switch (i)
                 {
                     case 3:
-                        deviceMessageDocument.Position.Date = DateTime.UnixEpoch.AddSeconds(reader.Get<int>());
+                        deviceMessage.Date = DateTime.UnixEpoch.AddSeconds(reader.Get<int>());
                         break;
                     case 10:
-                        deviceMessageDocument.Position.Latitude = reader.Get<int>() / 600000.0;
+                        deviceMessage.Latitude = reader.Get<int>() / 600000.0;
                         break;
                     case 11:
-                        deviceMessageDocument.Position.Longitude = reader.Get<int>() / 600000.0;
+                        deviceMessage.Longitude = reader.Get<int>() / 600000.0;
                         break;
                     case 12:
-                        deviceMessageDocument.Position.Altitude = reader.Get<int>() / 10;
+                        deviceMessage.Altitude = (short)(reader.Get<int>() / 10);
                         break;
                     case 13:
-                        deviceMessageDocument.Position.Speed = reader.Get<float>();
+                        deviceMessage.Speed = reader.Get<float>().ToShort();
                         break;
                     case 14:
-                        deviceMessageDocument.Position.Heading = reader.Get<short>();
+                        deviceMessage.Heading = reader.Get<short>();
                         break;
                     case 16:
-                        deviceMessageDocument.Device ??= new DeviceElement();
-                        deviceMessageDocument.Device.Odometer = (int?)(reader.Get<float>() * 1000);
+                        deviceMessage.DeviceOdometer = (int?)(reader.Get<float>() * 1000);
                         break;
                     default:
                         reader.Skip(FlexFieldSize[i - 1]);
@@ -246,33 +242,29 @@ public class NavtelecomMessageHandler : BaseMessageHandler<NavtelecomProtocol>
             }
         }
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     [SuppressMessage("ReSharper", "UnusedVariable")]
-    private static DeviceMessageDocument GetFlex20ExtensionLocation(MessageInput input, ByteReader reader)
+    private static DeviceMessageEntity GetFlex20ExtensionLocation(MessageInput input, ByteReader reader)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = new PositionElement()
-        };
-
+        DeviceMessageEntity deviceMessageDocument = new();
+        
         short packageLength = reader.Get<short>();
         Version dataStructureVersion = (Version)reader.GetOne();
         byte staticDataLength = reader.GetOne();
         int packageNumber = reader.Get<int>();
         short eventCode = reader.Get<short>();
         int eventTime = reader.Get<int>();
-        deviceMessageDocument.Position.Date = DateTime.UnixEpoch.AddSeconds(eventTime);
+        deviceMessageDocument.Date = DateTime.UnixEpoch.AddSeconds(eventTime);
         byte navigationSensorState = reader.GetOne();
         int gpsTime = reader.Get<int>();
-        deviceMessageDocument.Position.Latitude = reader.Get<int>() / 600000.0;
-        deviceMessageDocument.Position.Longitude = reader.Get<int>() / 600000.0;
-        deviceMessageDocument.Position.Altitude = reader.Get<int>();
-        deviceMessageDocument.Position.Speed = reader.Get<float>();
-        deviceMessageDocument.Position.Heading = reader.Get<short>();
-        deviceMessageDocument.Device ??= new DeviceElement();
-        deviceMessageDocument.Device.Odometer = (int?)(reader.Get<float>() * 1000);
+        deviceMessageDocument.Latitude = reader.Get<int>() / 600000.0;
+        deviceMessageDocument.Longitude = reader.Get<int>() / 600000.0;
+        deviceMessageDocument.Altitude = (short)reader.Get<int>();
+        deviceMessageDocument.Speed = reader.Get<float>().ToShort();
+        deviceMessageDocument.Heading = reader.Get<short>();
+        deviceMessageDocument.DeviceOdometer = (int?)(reader.Get<float>() * 1000);
 
         int dynamicPartLength = packageLength - staticDataLength - 2;
         reader.Skip(dynamicPartLength);

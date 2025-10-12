@@ -4,5 +4,5 @@ namespace Navtrack.Api.Services.Account;
 
 public class ForgotPasswordRequest
 {
-    public ForgotPassword Model { get; set; }
+    public ForgotPasswordModel Model { get; set; }
 }

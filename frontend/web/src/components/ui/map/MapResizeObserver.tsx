@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useMap } from "./useMap";
 
 type MapResizeObserverProps = {
-  mapContainerRef: React.RefObject<HTMLDivElement>;
+  mapContainerRef: React.RefObject<HTMLDivElement | null>;
 };
 
 // This component is used to observe the resize of the map container and invalidate the map size.

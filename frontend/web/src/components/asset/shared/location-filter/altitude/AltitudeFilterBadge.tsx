@@ -1,7 +1,8 @@
 import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useMemo } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useAtom } from "jotai";
+import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { altitudeFilterAtom } from "../locationFilterState";
@@ -11,9 +12,9 @@ interface IAltitudeFilterBadge {
 }
 
 export function AltitudeFilterBadge(props: IAltitudeFilterBadge) {
-  const [state, setState] = useRecoilState(altitudeFilterAtom(props.filterKey));
+  const [state, setState] = useAtom(altitudeFilterAtom(props.filterKey));
   const units = useCurrentUnits();
-  const reset = useResetRecoilState(altitudeFilterAtom(props.filterKey));
+  const reset = useResetAtom(altitudeFilterAtom(props.filterKey));
 
   const text = useMemo(() => {
     if (state.minAltitude && state.maxAltitude) {

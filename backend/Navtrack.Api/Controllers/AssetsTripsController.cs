@@ -8,7 +8,7 @@ using Navtrack.Api.Model.Trips;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Trips;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;

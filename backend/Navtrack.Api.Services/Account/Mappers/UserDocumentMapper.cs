@@ -1,33 +1,30 @@
 using System;
-using Navtrack.DataAccess.Model.Shared;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Shared;
+using Navtrack.Database.Model.Users;
 using Navtrack.Shared.Library.Extensions;
 
 namespace Navtrack.Api.Services.Account.Mappers;
 
 public static class UserDocumentMapper
 {
-    public static UserDocument Map(string email, string hash, string salt)
+    public static UserEntity Map(string email, string hash, string salt)
     {
-        UserDocument userDocument = Map(email);
-        
-        userDocument.Password = new PasswordElement
-        {
-            Hash = hash,
-            Salt = salt
-        };
+        UserEntity user = Map(email);
 
-        return userDocument;
+        user.PasswordHash = hash;
+        user.PasswordSalt = salt;
+
+        return user;
     }
 
-    public static UserDocument Map(string email, UserDocument? destination = null)
+    public static UserEntity Map(string email, UserEntity? destination = null)
     {
-        UserDocument userDocument = destination ?? new UserDocument();
+        UserEntity user = destination ?? new UserEntity();
+        
+        user.Email = email.TrimAndLower();
+        user.UnitsType = UnitsType.Metric;
+        user.CreatedDate = DateTime.UtcNow;
 
-        userDocument.Email = email.TrimAndLower();
-        userDocument.UnitsType = UnitsType.Metric;
-        userDocument.CreatedDate = DateTime.UtcNow;
-
-        return userDocument;
+        return user;
     }
 }

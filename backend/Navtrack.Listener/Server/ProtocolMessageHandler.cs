@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Services;
@@ -46,7 +46,7 @@ public class ProtocolMessageHandler(
         logger.LogTrace("{ClientProtocol}: received {ConvertHexStringArrayToHexString}", connectionContext.Protocol,
             HexUtil.ConvertHexStringArrayToHexString(messageInput.DataMessage.Hex));
 
-        List<DeviceMessageDocument>? messages = customMessageHandler.ParseRange(messageInput)?.ToList();
+        List<DeviceMessageEntity>? messages = customMessageHandler.ParseRange(messageInput)?.ToList();
 
         if (messages is { Count: > 0 } && connectionContext.Device != null)
         {
@@ -87,13 +87,13 @@ public class ProtocolMessageHandler(
     {
         if (context.Device?.AssetId == null && !string.IsNullOrEmpty(context.Device?.SerialNumber))
         {
-            AssetDocument asset = await assetRepository.Get(context.Device.SerialNumber, context.Protocol.Port);
+            AssetEntity? asset = await assetRepository.Get(context.Device.SerialNumber, context.Protocol.Port);
 
             if (asset is { Device: not null })
             {
                 context.Device.DeviceId = asset.Device.Id;
                 context.Device.AssetId = asset.Id;
-                context.Device.MaxDate = asset.LastPositionMessage?.Position?.Date;
+                context.Device.MaxDate = asset.LastPositionMessage?.Date;
             }
         }
     }

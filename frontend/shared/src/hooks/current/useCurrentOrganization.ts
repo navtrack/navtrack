@@ -1,19 +1,19 @@
 import { useEffect, useMemo } from "react";
 import { useOrganizationsQuery } from "../queries/organizations/useOrganizationsQuery";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import {
   currentOrganizationIdAtom,
   currentOrganizationIdInitializedAtom
 } from "../../state/current";
 
 export function useCurrentOrganization() {
-  const [currentOrganizationId, setCurrentOrganizationId] = useRecoilState(
+  const [currentOrganizationId, setCurrentOrganizationId] = useAtom(
     currentOrganizationIdAtom
   );
   const [
     currentOrganizationIdInitialized,
     setCurrentOrganizationIdInitialized
-  ] = useRecoilState(currentOrganizationIdInitializedAtom);
+  ] = useAtom(currentOrganizationIdInitializedAtom);
 
   const organizations = useOrganizationsQuery();
 
@@ -38,9 +38,6 @@ export function useCurrentOrganization() {
     data: organization,
     initialized: currentOrganizationIdInitialized,
     isLoading: organizations.isLoading,
-    set: setCurrentOrganizationId,
-    reset: () => {
-      setCurrentOrganizationId(undefined);
-    }
+    set: setCurrentOrganizationId
   };
 }
