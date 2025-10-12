@@ -25,6 +25,8 @@ public static class ApiPaths
     public const string AssetMessages = "assets/{assetId}/messages";
     public const string AssetStats = "assets/{assetId}/stats";
     public const string AssetReportsDistance = "assets/{assetId}/reports/distance";
+    public const string AssetReportsFuelConsumption = "assets/{assetId}/reports/fuel-consumption";
+    public const string AssetReportsTrips = "assets/{assetId}/reports/trips";
     
     public const string TeamById = "teams/{teamId}";
     public const string TeamUsers = "teams/{teamId}/users";
@@ -35,6 +37,8 @@ public static class ApiPaths
     public const string DeviceTypes = "devices/types";
     
     public const string Protocols = "protocols";
+    
+    public const string GeocodeReverse = "geocode/reverse";
     
     public const string Health = "health";
 }

@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.Skypatrol;
 [Service(typeof(IProtocol))]
 public class SkypatrolProtocol : GosafeProtocol
 {
-    public override int Port => 7023;
+    public override short Port => 7023;
 }

@@ -4,10 +4,10 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Teams;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -17,8 +17,8 @@ namespace Navtrack.Api.Services.Teams;
 public class DeleteTeamAssetRequestHandler(ITeamRepository teamRepository, IAssetRepository assetRepository)
     : BaseRequestHandler<DeleteTeamAssetRequest>
 {
-    private TeamDocument? team;
-    private AssetDocument? asset;
+    private TeamEntity? team;
+    private AssetEntity? asset;
     
     public override async Task Validate(RequestValidationContext<DeleteTeamAssetRequest> context)
     {
@@ -28,7 +28,7 @@ public class DeleteTeamAssetRequestHandler(ITeamRepository teamRepository, IAsse
         asset = await assetRepository.GetById(context.Request.AssetId);
         asset.Return404IfNull();
 
-        if (asset.Teams?.All(x => x.TeamId != team.Id) ?? false)
+        if (asset.Teams.All(x => x.Id != team.Id))
         {
             throw new ApiException(ApiErrorCodes.Team_000005_AssetNotInTeam);
         }

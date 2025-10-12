@@ -1,15 +1,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Assets.Mappers;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Teams;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -21,8 +20,8 @@ public class CreateTeamAssetRequestHandler(
     IAssetRepository assetRepository,
     INavtrackContextAccessor navtrackContextAccessor) : BaseRequestHandler<CreateTeamAssetRequest>
 {
-    private TeamDocument? team;
-    private AssetDocument? asset;
+    private TeamEntity? team;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<CreateTeamAssetRequest> context)
     {
@@ -38,17 +37,13 @@ public class CreateTeamAssetRequestHandler(
         }
 
         context.ValidationException.AddErrorIfTrue(
-            asset.Teams?.Any(x => x.TeamId == team.Id),
+            asset.Teams.Any(x => x.Id == team.Id),
             nameof(context.Request.Model.AssetId), ApiErrorCodes.Team_000003_AssetAlreadyInTeam);
     }
 
     public override async Task Handle(CreateTeamAssetRequest request)
     {
-        AssetTeamElement element =
-            AssetTeamElementMapper.Map(team!.Id, navtrackContextAccessor.NavtrackContext.User.Id);
-
-        await assetRepository.AddAssetToTeam(asset!.Id, element);
-        await teamRepository.UpdateAssetsCount(team!.Id);
+        await teamRepository.AddAsset(team!.Id, asset!.Id, navtrackContextAccessor.NavtrackContext.User.Id);
     }
 
     public override IEvent GetEvent(CreateTeamAssetRequest request) =>

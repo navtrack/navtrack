@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 
@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Jointech;
 
 public static class JointechV2MessageHandler
 {
-    public static DeviceMessageDocument Parse(MessageInput input)
+    public static DeviceMessageEntity? Parse(MessageInput input)
     {
         byte startFlag = input.DataMessage.ByteReader.GetByte();
         short messageId = input.DataMessage.ByteReader.GetInt16Be();
@@ -21,27 +21,24 @@ public static class JointechV2MessageHandler
         if (messageId == JointechV2Constants.LocationInformationReportMessageId)
         {
             input.ConnectionContext.SetDevice(phoneNumber);
-            DeviceMessageDocument deviceMessageDocument = new()
-            {
-                Position = new PositionElement()
-            };
+            DeviceMessageEntity deviceMessage = new();
 
             int alarm = input.DataMessage.ByteReader.GetInt32Be();
             int status = input.DataMessage.ByteReader.GetInt32Be();
-            deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
-            deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
-            deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.GetInt16Be();
-            deviceMessageDocument.Position.Speed = (float?)(input.DataMessage.ByteReader.GetInt16Be() * 0.1);
-            deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetInt16Be();
+            deviceMessage.Latitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
+            deviceMessage.Longitude = input.DataMessage.ByteReader.GetInt32Be() * 0.000001;
+            deviceMessage.Altitude = input.DataMessage.ByteReader.GetInt16Be();
+            deviceMessage.Speed = (short?)(input.DataMessage.ByteReader.GetInt16Be() * 0.1);
+            deviceMessage.Heading = input.DataMessage.ByteReader.GetInt16Be();
 
             if (BitUtil.IsTrue(status, 2))
             {
-                deviceMessageDocument.Position.Latitude = -deviceMessageDocument.Position.Latitude;
+                deviceMessage.Latitude = -deviceMessage.Latitude;
             }
 
             if (BitUtil.IsTrue(status, 3))
             {
-                deviceMessageDocument.Position.Longitude = -deviceMessageDocument.Position.Longitude;
+                deviceMessage.Longitude = -deviceMessage.Longitude;
             }
 
             int year = input.DataMessage.ByteReader.GetFromHex<int>(1);
@@ -51,7 +48,7 @@ public static class JointechV2MessageHandler
             int minute = input.DataMessage.ByteReader.GetFromHex<int>(1);
             int second = input.DataMessage.ByteReader.GetFromHex<int>(1);
 
-            deviceMessageDocument.Position.Date = new DateTime(year + 2000, month, day, hour, minute, second)
+            deviceMessage.Date = new DateTime(year + 2000, month, day, hour, minute, second)
                 // default is GMT+8 time zone so we subtract that to have GMT
                 .AddHours(-8);
 
@@ -63,13 +60,10 @@ public static class JointechV2MessageHandler
                 switch (additionalInformationId)
                 {
                     case 0x30:
-                        deviceMessageDocument.Gsm = new GsmElement
-                        {
-                            SignalStrength = input.DataMessage.ByteReader.GetByte()
-                        };
+                        deviceMessage.GSMSignalStrength = input.DataMessage.ByteReader.GetByte();
                         break;
                     case 0x31:
-                        deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetByte();
+                        deviceMessage.Satellites = input.DataMessage.ByteReader.GetByte();
                         break;
                     default:
                         byte[] value = input.DataMessage.ByteReader.Get(additionalInformationLength);
@@ -85,7 +79,7 @@ public static class JointechV2MessageHandler
 
             input.NetworkStream.Write(response.ToArray());
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

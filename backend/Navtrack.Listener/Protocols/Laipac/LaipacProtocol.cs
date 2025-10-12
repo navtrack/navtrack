@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Laipac;
 [Service(typeof(IProtocol))]
 public class LaipacProtocol : BaseProtocol
 {
-    public override int Port => 7052;
+    public override short Port => 7052;
 }

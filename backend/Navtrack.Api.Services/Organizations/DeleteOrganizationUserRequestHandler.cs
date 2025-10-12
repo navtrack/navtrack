@@ -4,10 +4,10 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Organizations.Events;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Organizations;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Organizations;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -19,8 +19,8 @@ public class DeleteOrganizationUserRequestHandler(
     IUserRepository userRepository)
     : BaseRequestHandler<DeleteOrganizationUserRequest>
 {
-    private OrganizationDocument? organization;
-    private UserDocument? user;
+    private OrganizationEntity? organization;
+    private UserEntity? user;
 
     public override async Task Validate(RequestValidationContext<DeleteOrganizationUserRequest> context)
     {
@@ -30,8 +30,7 @@ public class DeleteOrganizationUserRequestHandler(
         user = await userRepository.GetById(context.Request.UserId);
         user.Return404IfNull();
 
-        UserOrganizationElement? userOrganization =
-            user.Organizations?.FirstOrDefault(x => x.OrganizationId == organization.Id);
+        OrganizationUserEntity? userOrganization = user.OrganizationUsers.FirstOrDefault(x => x.OrganizationId == organization.Id);
         userOrganization.Return404IfNull();
 
         int ownersCount = await userRepository.GetOrganizationOwnersCount(organization.Id);

@@ -1,4 +1,4 @@
-import { useTeamsAssetsList } from "../../../api";
+import { getTeamsAssetsListQueryKey, useTeamsAssetsList } from "../../../api";
 
 type UseTeamsQueryProps = {
   teamId?: string;
@@ -7,6 +7,7 @@ type UseTeamsQueryProps = {
 export const useTeamAssetsQuery = (props: UseTeamsQueryProps) => {
   const query = useTeamsAssetsList(props?.teamId!, {
     query: {
+      queryKey: getTeamsAssetsListQueryKey(`${props?.teamId}`),
       refetchOnWindowFocus: false,
       enabled: !!props?.teamId
     }

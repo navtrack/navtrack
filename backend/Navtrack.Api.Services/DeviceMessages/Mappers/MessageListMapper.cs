@@ -1,6 +1,6 @@
 using System.Linq;
 using Navtrack.Api.Model.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages.Filters;
+using Navtrack.Database.Model.Filters;
 
 namespace Navtrack.Api.Services.DeviceMessages.Mappers;
 

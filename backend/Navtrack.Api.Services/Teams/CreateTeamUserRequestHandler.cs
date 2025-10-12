@@ -6,10 +6,10 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Api.Services.Teams.Mappers;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Teams;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Teams;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -22,8 +22,8 @@ public class CreateTeamUserRequestHandler(
     INavtrackContextAccessor navtrackContextAccessor)
     : BaseRequestHandler<CreateTeamUserRequest>
 {
-    private TeamDocument? team;
-    private UserDocument? user;
+    private TeamEntity? team;
+    private UserEntity? user;
 
     public override async Task Validate(RequestValidationContext<CreateTeamUserRequest> context)
     {
@@ -35,23 +35,22 @@ public class CreateTeamUserRequestHandler(
             ApiErrorCodes.User_000001_EmailNotFound));
 
         context.ValidationException.AddErrorIfTrue(
-            !user.Organizations?.Any(x => x.OrganizationId == team.OrganizationId),
+            user.OrganizationUsers.All(x => x.OrganizationId != team.OrganizationId),
             nameof(context.Request.Model.Email),
             ApiErrorCodes.Team_000006_UserNotInSameOrganization);
-        
+
         context.ValidationException.AddErrorIfTrue(
-            user.Teams?.Any(x => x.TeamId == team.Id),
+            user.Teams.Any(x => x.Id == team.Id),
             nameof(context.Request.Model.Email),
             ApiErrorCodes.Team_000007_UserAlreadyInTeam);
     }
 
     public override async Task Handle(CreateTeamUserRequest source)
     {
-        UserTeamElement element =
-            UserTeamElementMapper.Map(team!.Id, source.Model.UserRole, navtrackContextAccessor.NavtrackContext.User.Id,
-                team.OrganizationId);
+        TeamUserEntity entity = TeamUserEntityMapper.Map(team!.Id, user!.Id, source.Model.UserRole,
+            navtrackContextAccessor.NavtrackContext.User.Id);
 
-        await userRepository.AddUserToTeam(user!.Id, element);
+        await userRepository.AddUserToTeam(entity);
         await teamRepository.UpdateUsersCount(team.Id);
     }
 
@@ -59,7 +58,7 @@ public class CreateTeamUserRequestHandler(
     {
         return new TeamUserCreatedEvent
         {
-            TeamId = request.TeamId,
+            TeamId = team!.Id.ToString(),
             UserId = user!.Id.ToString()
         };
     }

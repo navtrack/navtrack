@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 export type AppConfig = {
   api: {
@@ -29,7 +29,4 @@ export type AppConfig = {
   };
 };
 
-export const appConfigAtom = atom<AppConfig | undefined>({
-  key: "Navtrack:AppConfig",
-  default: undefined
-});
+export const appConfigAtom = atom<AppConfig | undefined>(undefined);

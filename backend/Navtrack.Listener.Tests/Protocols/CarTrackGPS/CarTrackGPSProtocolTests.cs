@@ -31,7 +31,7 @@ public class CarTrackGPSProtocolTests : BaseProtocolTests<CarTrackGPSProtocol, C
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV4_LocationIsParsed()
     {

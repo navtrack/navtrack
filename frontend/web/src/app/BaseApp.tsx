@@ -1,5 +1,5 @@
 import { IntlProvider } from "react-intl";
-import { RecoilRoot } from "recoil";
+import { Provider } from "jotai";
 import { AppConfig } from "@navtrack/shared/state/appConfig";
 import { AxiosConfigurator } from "@navtrack/shared/components/providers/AxiosConfigurator";
 import { ConfigProvider } from "@navtrack/shared/components/providers/ConfigProvider";
@@ -22,7 +22,7 @@ type BaseAppProps = {
 export function BaseApp(props: BaseAppProps) {
   return (
     <Suspense>
-      <RecoilRoot>
+      <Provider>
         <QueryClientProvider client={queryClient}>
           {props.config.reactQueryDevtools && <ReactQueryDevtools />}
           <ConfigProvider config={props.config}>
@@ -42,7 +42,7 @@ export function BaseApp(props: BaseAppProps) {
             </AxiosConfigurator>
           </ConfigProvider>
         </QueryClientProvider>
-      </RecoilRoot>
+      </Provider>
     </Suspense>
   );
 }

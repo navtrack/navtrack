@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Freedom;
 [Service(typeof(IProtocol))]
 public class FreedomProtocol : BaseProtocol
 {
-    public override int Port => 7049;
+    public override short Port => 7049;
 }

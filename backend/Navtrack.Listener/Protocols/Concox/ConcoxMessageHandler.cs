@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Listener.Server;
@@ -17,12 +17,12 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
     private bool ExtendedPacketLength { get; set; }
     private ProtocolNumber ProtocolNumber { get; set; }
 
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         ExtendedPacketLength = input.DataMessage.Bytes[0] == 0x79 && input.DataMessage.Bytes[1] == 0x79;
         ProtocolNumber = (ProtocolNumber)input.DataMessage.Bytes[GetIndex(3)];
 
-        Dictionary<ProtocolNumber, Func<MessageInput, DeviceMessageDocument>> methods =
+        Dictionary<ProtocolNumber, Func<MessageInput, DeviceMessageEntity?>> methods =
             new()
             {
                 { ProtocolNumber.LoginInformation, LoginInformationHandler },
@@ -34,7 +34,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         return methods.ContainsKey(ProtocolNumber) ? methods[ProtocolNumber](input) : null;
     }
 
-    private DeviceMessageDocument PositioningDataHandler(MessageInput input)
+    private DeviceMessageEntity PositioningDataHandler(MessageInput input)
     {
         string courseAndStatus =
             Convert.ToString(input.DataMessage.Bytes[GetIndex(20)], 2).PadLeft(8, '0') +
@@ -43,42 +43,35 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         CardinalPoint longitudeCardinalPoint = courseAndStatus[4] == '0' ? CardinalPoint.East : CardinalPoint.West;
         CardinalPoint latitudeCardinalPoint = courseAndStatus[5] == '1' ? CardinalPoint.North : CardinalPoint.South;
 
-        DeviceMessageDocument deviceMessageDocument = new()
+        DeviceMessageEntity deviceMessage = new()
         {
-            // Device = input.ConnectionContext.Device,
-            Position = new PositionElement
-            {
-                Date = DateTimeUtil.NewFromHex(input.DataMessage.Hex[GetIndex(4)], input.DataMessage.Hex[GetIndex(5)],
-                    input.DataMessage.Hex[GetIndex(6)], input.DataMessage.Hex[GetIndex(7)],
-                    input.DataMessage.Hex[GetIndex(8)],
-                    input.DataMessage.Hex[GetIndex(9)]),
-                Satellites = short.Parse($"{input.DataMessage.Hex[GetIndex(10)][1]}", NumberStyles.HexNumber),
-                Latitude = GetCoordinate(input.DataMessage.Hex.SubArray(GetIndex(11), GetIndex(15)),
-                    latitudeCardinalPoint),
-                Longitude = GetCoordinate(input.DataMessage.Hex.SubArray(GetIndex(15), GetIndex(19)),
-                    longitudeCardinalPoint),
-                Speed = input.DataMessage.Bytes[GetIndex(19)],
-                Valid = courseAndStatus[3] == '1',
-                Heading = Convert.ToInt32(courseAndStatus[6..], 2)
-            },
-            Gsm = new GsmElement
-            {
-                MobileCountryCode = int.Parse(
-                    Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(22), GetIndex(24))),
-                    NumberStyles.HexNumber).ToString(),
-                MobileNetworkCode = input.DataMessage.Bytes[GetIndex(24)].ToString(),
-                LocationAreaCode = int.Parse(
-                    Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(25), GetIndex(27))),
-                    NumberStyles.HexNumber).ToString(),
-                CellId = int.Parse(Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(27), GetIndex(30))),
-                    NumberStyles.HexNumber)
-            }
+            Date = DateTimeUtil.NewFromHex(input.DataMessage.Hex[GetIndex(4)], input.DataMessage.Hex[GetIndex(5)],
+                input.DataMessage.Hex[GetIndex(6)], input.DataMessage.Hex[GetIndex(7)],
+                input.DataMessage.Hex[GetIndex(8)],
+                input.DataMessage.Hex[GetIndex(9)]),
+            Satellites = short.Parse($"{input.DataMessage.Hex[GetIndex(10)][1]}", NumberStyles.HexNumber),
+            Latitude = GetCoordinate(input.DataMessage.Hex.SubArray(GetIndex(11), GetIndex(15)),
+                latitudeCardinalPoint),
+            Longitude = GetCoordinate(input.DataMessage.Hex.SubArray(GetIndex(15), GetIndex(19)),
+                longitudeCardinalPoint),
+            Speed = input.DataMessage.Bytes[GetIndex(19)],
+            Valid = courseAndStatus[3] == '1',
+            Heading = Convert.ToInt16(courseAndStatus[6..], 2),
+            GSMMobileCountryCode = int.Parse(
+                Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(22), GetIndex(24))),
+                NumberStyles.HexNumber).ToString(),
+            GSMMobileNetworkCode = input.DataMessage.Bytes[GetIndex(24)].ToString(),
+            GSMLocationAreaCode = int.Parse(
+                Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(25), GetIndex(27))),
+                NumberStyles.HexNumber).ToString(),
+            GSMCellId = int.Parse(Join(Empty, input.DataMessage.Hex.SubArray(GetIndex(27), GetIndex(30))),
+                NumberStyles.HexNumber)
         };
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private DeviceMessageDocument LoginInformationHandler(MessageInput input)
+    private DeviceMessageEntity? LoginInformationHandler(MessageInput input)
     {
         try
         {
@@ -103,7 +96,7 @@ public class ConcoxMessageHandler : BaseMessageHandler<ConcoxProtocol>
         return null;
     }
 
-    private DeviceMessageDocument HeartbeatHandler(MessageInput input)
+    private DeviceMessageEntity? HeartbeatHandler(MessageInput input)
     {
         try
         {

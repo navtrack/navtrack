@@ -1,5 +1,6 @@
 import { faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useAtom } from "jotai";
+import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { geofenceFilterAtom } from "../locationFilterState";
@@ -12,8 +13,8 @@ type GeofenceFilterBadgeProps = {
 };
 
 export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
-  const [state, setState] = useRecoilState(geofenceFilterAtom(props.filterKey));
-  const reset = useResetRecoilState(geofenceFilterAtom(props.filterKey));
+  const [state, setState] = useAtom(geofenceFilterAtom(props.filterKey));
+  const reset = useResetAtom(geofenceFilterAtom(props.filterKey));
   const show = useShow();
 
   return (

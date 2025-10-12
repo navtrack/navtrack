@@ -61,7 +61,7 @@ export function UpdateTeamUserModal(props: UpdateTeamUserModalProps) {
       }}
       icon={faUserEdit}
       onSubmit={handleSubmit}
-      isLoading={mutation.isLoading}
+      isLoading={mutation.isPending}
       title="generic.edit-user">
       <TextInput
         name="email"

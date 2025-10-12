@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Model.Common;
@@ -17,7 +19,7 @@ using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.IdentityServer;
 using Navtrack.Api.Services.Common.Mappers;
-using Navtrack.DataAccess.Mongo;
+using Navtrack.Database.Model;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Shared;
@@ -56,9 +58,6 @@ public abstract class BaseApiProgram<T>
             })
             .ConfigureApplicationPartManager(applicationPartManager =>
             {
-                // applicationPartManager.ApplicationParts.Clear();
-                // applicationPartManager.ApplicationParts.Add(new AssemblyPart(assembly));
-
                 IApplicationFeatureProvider applicationFeatureProvider =
                     applicationPartManager.FeatureProviders.First(y =>
                         y.GetType() == typeof(ControllerFeatureProvider));
@@ -72,7 +71,7 @@ public abstract class BaseApiProgram<T>
                 options.InvalidModelStateResponseFactory = context =>
                 {
                     ValidationProblemDetails problemDetails = new(context.ModelState);
-                    Error error = ErrorMapper.Map(problemDetails);
+                    ErrorModel error = ErrorMapper.Map(problemDetails);
 
                     return new BadRequestObjectResult(error);
                 };
@@ -90,8 +89,12 @@ public abstract class BaseApiProgram<T>
         builder.Services.AddLocalApiAuthentication();
         builder.Services.AddLogging();
 
-        builder.Services.AddOptions<MongoOptions>().Bind(builder.Configuration.GetSection(nameof(MongoOptions)));
-        builder.Services.AddSingleton<IClientErrorFactory, CustomClientErrorFactory>();
+        builder.Services.AddSingleton<IClientErrorFactory, CustomClientErrorFactory>();  
+        
+        builder.Services.AddDbContext<NavtrackDbContext>(opt =>
+            opt.UseNpgsql(
+                builder.Configuration.GetConnectionString("Postgres")));
+
 
         baseProgramOptions?.ConfigureServices?.Invoke(builder);
 

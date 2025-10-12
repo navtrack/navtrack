@@ -1,6 +1,6 @@
 import {
   OrganizationUserRole,
-  OrganizationUser
+  OrganizationUserModel
 } from "@navtrack/shared/api/model";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
@@ -16,7 +16,7 @@ import { useNotification } from "../ui/notification/useNotification";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 
 type UpdateUserModalProps = {
-  user: OrganizationUser;
+  user: OrganizationUserModel;
 };
 
 export type UpdateUserFormValues = {
@@ -73,7 +73,7 @@ export function UpdateOrganizationUserModal(props: UpdateUserModalProps) {
       }}
       icon={faUserEdit}
       onSubmit={handleSubmit}
-      isLoading={mutation.isLoading}
+      isLoading={mutation.isPending}
       title="generic.edit-user">
       <TextInput
         name="email"

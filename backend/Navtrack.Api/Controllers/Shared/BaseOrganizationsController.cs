@@ -9,7 +9,7 @@ using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Organizations;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
+using Navtrack.Database.Model.Organizations;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers.Shared;
@@ -23,8 +23,8 @@ public abstract class BaseOrganizationsController(
 {
     [HttpPost(ApiPaths.Organizations)]
     [ProducesResponseType(typeof(Entity), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    public async Task<Entity> Create([FromBody] CreateOrganization model)
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    public async Task<Entity> Create([FromBody] CreateOrganizationModel model)
     {
         Entity result = await requestHandler.Handle<CreateOrganizationRequest, Entity>(new CreateOrganizationRequest
         {
@@ -37,7 +37,7 @@ public abstract class BaseOrganizationsController(
 
     [HttpPost(ApiPaths.OrganizationById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeOrganization(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string organizationId, [FromBody] UpdateOrganizationModel model)

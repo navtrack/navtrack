@@ -1,13 +1,13 @@
 using Navtrack.Api.Model.User;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Assets;
 
 namespace Navtrack.Api.Services.User.Mappers;
 
 public static class UserAssetMapper
 {
-    public static UserAsset Map(UserAssetElement source)
+    public static UserAssetModel Map(AssetUserEntity source)
     {
-        return new UserAsset
+        return new UserAssetModel
         {
             AssetId = source.AssetId.ToString(),
             UserRole = source.UserRole

@@ -8,15 +8,17 @@ public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, Megaste
     [Fact]
     public void DeviceSendsLocationV1_ParsedLocationIsNotNull()
     {
-        ProtocolTester.SendHexFromDevice("4C 4F 47 53 54 58 2C 31 30 32 31 31 30 38 33 30 30 37 34 35 34 32 2C 24 47 50 52 4D 43 2C 31 31 34 32 32 39 2E 30 30 30 2C 41 2C 32 32 33 38 2E 32 30 32 34 2C 4E 2C 31 31 34 30 31 2E 39 36 31 39 2C 45 2C 30 2E 30 30 2C 30 2E 30 30 2C 33 31 30 38 31 31 2C 2C 2C 41 2A 36 34 2C 46 2C 4C 6F 77 42 61 74 74 65 72 79 2C 69 6D 65 69 3A 30 31 32 32 30 37 30 30 35 35 35 33 38 38 35 2C 30 33 2C 31 31 33 2E 31 2C 42 61 74 74 65 72 79 3D 32 34 25 2C 2C 31 2C 34 36 30 2C 30 31 2C 32 35 33 31 2C 36 34 37 45 3B 35 37 0D 0A");
+        ProtocolTester.SendHexFromDevice(
+            "4C 4F 47 53 54 58 2C 31 30 32 31 31 30 38 33 30 30 37 34 35 34 32 2C 24 47 50 52 4D 43 2C 31 31 34 32 32 39 2E 30 30 30 2C 41 2C 32 32 33 38 2E 32 30 32 34 2C 4E 2C 31 31 34 30 31 2E 39 36 31 39 2C 45 2C 30 2E 30 30 2C 30 2E 30 30 2C 33 31 30 38 31 31 2C 2C 2C 41 2A 36 34 2C 46 2C 4C 6F 77 42 61 74 74 65 72 79 2C 69 6D 65 69 3A 30 31 32 32 30 37 30 30 35 35 35 33 38 38 35 2C 30 33 2C 31 31 33 2E 31 2C 42 61 74 74 65 72 79 3D 32 34 25 2C 2C 31 2C 34 36 30 2C 30 31 2C 32 35 33 31 2C 36 34 37 45 3B 35 37 0D 0A");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV2_ParsedLocationIsNotNull()
     {
-        ProtocolTester.SendHexFromDevice("53 54 58 2C 31 30 32 31 31 30 38 33 30 30 37 34 35 34 32 2C 24 47 50 52 4D 43 2C 31 31 34 32 32 39 2E 30 30 30 2C 41 2C 32 32 33 38 2E 32 30 32 34 2C 4E 2C 31 31 34 30 31 2E 39 36 31 39 2C 45 2C 30 2E 30 30 2C 30 2E 30 30 2C 33 31 30 38 31 31 2C 2C 2C 41 2A 36 34 2C 46 2C 4C 6F 77 42 61 74 74 65 72 79 2C 69 6D 65 69 3A 30 31 32 32 30 37 30 30 35 35 35 33 38 38 35 2C 30 33 2C 31 31 33 2E 31 2C 42 61 74 74 65 72 79 3D 32 34 25 2C 2C 31 2C 34 36 30 2C 30 31 2C 32 35 33 31 2C 36 34 37 45 3B 35 37 0D 0A");
+        ProtocolTester.SendHexFromDevice(
+            "53 54 58 2C 31 30 32 31 31 30 38 33 30 30 37 34 35 34 32 2C 24 47 50 52 4D 43 2C 31 31 34 32 32 39 2E 30 30 30 2C 41 2C 32 32 33 38 2E 32 30 32 34 2C 4E 2C 31 31 34 30 31 2E 39 36 31 39 2C 45 2C 30 2E 30 30 2C 30 2E 30 30 2C 33 31 30 38 31 31 2C 2C 2C 41 2A 36 34 2C 46 2C 4C 6F 77 42 61 74 74 65 72 79 2C 69 6D 65 69 3A 30 31 32 32 30 37 30 30 35 35 35 33 38 38 35 2C 30 33 2C 31 31 33 2E 31 2C 42 61 74 74 65 72 79 3D 32 34 25 2C 2C 31 2C 34 36 30 2C 30 31 2C 32 35 33 31 2C 36 34 37 45 3B 35 37 0D 0A");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
@@ -24,7 +26,8 @@ public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, Megaste
     [Fact]
     public void DeviceSendsLocationV3_ParsedLocationIsNotNull()
     {
-        ProtocolTester.SendHexFromDevice("53 54 58 31 32 33 34 35 36 20 20 20 20 20 20 20 20 20 20 02 7D 24 47 50 52 4D 43 2C 30 36 33 37 30 39 2E 30 30 30 2C 41 2C 32 32 33 38 2E 31 39 39 38 2C 4E 2C 31 31 34 30 31 2E 39 36 37 30 2C 45 2C 30 2E 30 30 2C 2C 32 35 30 33 31 33 2C 2C 2C 41 2A 37 46 2C 34 36 30 2C 30 31 2C 32 35 33 31 2C 36 34 37 45 2C 31 31 2C 38 37 2C 31 30 30 30 2C 30 30 31 30 30 31 2C 30 30 30 30 2C 30 2E 30 30 2C 30 2E 30 32 2C 30 2E 30 30 2C 54 69 6D 65 72 3B 34 41 0D 0A");
+        ProtocolTester.SendHexFromDevice(
+            "53 54 58 31 32 33 34 35 36 20 20 20 20 20 20 20 20 20 20 02 7D 24 47 50 52 4D 43 2C 30 36 33 37 30 39 2E 30 30 30 2C 41 2C 32 32 33 38 2E 31 39 39 38 2C 4E 2C 31 31 34 30 31 2E 39 36 37 30 2C 45 2C 30 2E 30 30 2C 2C 32 35 30 33 31 33 2C 2C 2C 41 2A 37 46 2C 34 36 30 2C 30 31 2C 32 35 33 31 2C 36 34 37 45 2C 31 31 2C 38 37 2C 31 30 30 30 2C 30 30 31 30 30 31 2C 30 30 30 30 2C 30 2E 30 30 2C 30 2E 30 32 2C 30 2E 30 30 2C 54 69 6D 65 72 3B 34 41 0D 0A");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
@@ -37,7 +40,7 @@ public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, Megaste
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV5_ParsedLocationIsNotNull()
     {
@@ -46,7 +49,7 @@ public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, Megaste
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV6_ParsedLocationIsNotNull()
     {
@@ -55,7 +58,7 @@ public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, Megaste
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV7_ParsedLocationIsNotNull()
     {
@@ -64,7 +67,7 @@ public class MegastekProtocolTests : BaseProtocolTests<MegastekProtocol, Megaste
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV8_ParsedLocationIsNotNull()
     {

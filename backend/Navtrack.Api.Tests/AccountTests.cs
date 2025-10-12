@@ -8,12 +8,12 @@ using static System.String;
 
 namespace Navtrack.Api.Tests;
 
-public class AccountTests(BaseTestFixture fixture) : BaseTest(fixture)
+public class AccountTests(BaseTestFixture fixture) : BaseApiTest(fixture)
 {
     [Fact]
     public async Task Register_SendRequestTwoTimes_SecondFailsWithEmailUsed()
     {
-        CreateAccount model = new()
+        CreateAccountModel model = new()
         {
             Email = "email_used@navtrack.com",
             Password = "password",
@@ -32,7 +32,7 @@ public class AccountTests(BaseTestFixture fixture) : BaseTest(fixture)
     [Fact]
     public async Task Register_WithEmptyEmail_ReturnsValidationError()
     {
-        CreateAccount model = new()
+        CreateAccountModel model = new()
         {
             Email = Empty,
             Password = "password",

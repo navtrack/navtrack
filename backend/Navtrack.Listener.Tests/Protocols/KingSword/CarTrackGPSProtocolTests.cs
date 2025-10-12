@@ -31,7 +31,7 @@ public class CarTrackGPSProtocolTests : BaseProtocolTests<KingSwordProtocol, Kin
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV4_LocationIsParsed()
     {
@@ -39,9 +39,9 @@ public class CarTrackGPSProtocolTests : BaseProtocolTests<KingSwordProtocol, Kin
             "*ET,135790246811221,HB,A,050915,0C2A27,00CE5954,04132263,0000,0000,01000000,20,4,0000,00F123,100,200#");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
-    }   
-        
-        
+    }
+
+
     [Fact]
     public void DeviceSendsLocationV5_LocationIsParsed()
     {
@@ -49,7 +49,7 @@ public class CarTrackGPSProtocolTests : BaseProtocolTests<KingSwordProtocol, Kin
             "*ET,358155100003016,HB,A,0d081e,07381e,8038ee09,03d2e9be,004f,0000,40c00000,0f,100,0000,00037c,29#");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
-    }   
+    }
 
     [Fact]
     public void DeviceSendsLocationV6_LocationIsParsed()
@@ -58,7 +58,7 @@ public class CarTrackGPSProtocolTests : BaseProtocolTests<KingSwordProtocol, Kin
             "*ET,358155100003016,HB,A,0d081e,073900,8038ee2f,03d2e9fd,0114,0000,40c00000,12,100,0000,00037c,32#");
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
-    }   
+    }
 
     [Fact]
     public void DeviceSendsLocationV7_LocationIsParsed()

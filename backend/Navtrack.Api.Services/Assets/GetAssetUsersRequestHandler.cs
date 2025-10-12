@@ -5,20 +5,16 @@ using Navtrack.Api.Services.Assets.Mappers;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.Mappers;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Services.Assets;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Assets;
 
-[Service(typeof(IRequestHandler<GetAssetUsersRequest, List<AssetUser>>))]
-public class GetAssetUsersRequestHandler(
-    IAssetRepository assetRepository,
-    IUserRepository userRepository) : BaseRequestHandler<GetAssetUsersRequest, List<AssetUser>>
+[Service(typeof(IRequestHandler<GetAssetUsersRequest, ListModel<AssetUserModel>>))]
+public class GetAssetUsersRequestHandler(IAssetRepository assetRepository) : BaseRequestHandler<GetAssetUsersRequest, ListModel<AssetUserModel>>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<GetAssetUsersRequest> context)
     {
@@ -26,11 +22,11 @@ public class GetAssetUsersRequestHandler(
         asset.Return404IfNull();
     }
 
-    public override async Task<List<AssetUser>> Handle(GetAssetUsersRequest request)
+    public override async Task<ListModel<AssetUserModel>> Handle(GetAssetUsersRequest request)
     {
-        System.Collections.Generic.List<UserDocument> users = await userRepository.GetByAssetId(asset!.Id);
+        System.Collections.Generic.List<AssetUserEntity> assetUsers = await assetRepository.GetUsers(asset!.Id);
 
-        List<AssetUser> result = ListMapper.Map(users, x => AssetUserMapper.Map(x, asset));
+        ListModel<AssetUserModel> result = ListMapper.Map(assetUsers, AssetUserMapper.Map);
 
         return result;
     }

@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <PackageReference Include="MongoDB.Bson" Version="2.23.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Navtrack.DataAccess\Navtrack.DataAccess.csproj"/>
-    </ItemGroup>
-</Project>

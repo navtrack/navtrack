@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { assetConfigurationAtom } from "../../state/assets";
 import { useAssetsQuery } from "../queries/assets/useAssetsQuery";
 import {
@@ -10,10 +10,10 @@ import { useAssetQuery } from "../queries/assets/useAssetQuery";
 import { useCurrentOrganization } from "./useCurrentOrganization";
 
 export function useCurrentAsset() {
-  const [currentAssetId, setCurrentAssetId] =
-    useRecoilState(currentAssetIdAtom);
-  const [currentAssetIdInitialized, setCurrentAssetIdInitialized] =
-    useRecoilState(currentAssetIdInitializedAtom);
+  const [currentAssetId, setCurrentAssetId] = useAtom(currentAssetIdAtom);
+  const [currentAssetIdInitialized, setCurrentAssetIdInitialized] = useAtom(
+    currentAssetIdInitializedAtom
+  );
 
   const currentOrganizationId = useCurrentOrganization();
   const asset = useAssetQuery({
@@ -22,12 +22,12 @@ export function useCurrentAsset() {
   const assets = useAssetsQuery({
     organizationId: currentOrganizationId.id ?? asset.data?.organizationId
   });
-  const [assetConfiguration, setAssetConfiguration] = useRecoilState(
+  const [assetConfiguration, setAssetConfiguration] = useAtom(
     assetConfigurationAtom(currentAssetId)
   );
 
   const currentAsset = useMemo(
-    () => assets.data?.items.find((x) => x.id === currentAssetId),
+    () => (assets.data?.items ?? []).find((x) => x.id === currentAssetId),
 
     [assets, currentAssetId]
   );
@@ -50,9 +50,6 @@ export function useCurrentAsset() {
     data: currentAsset,
     configuration: assetConfiguration,
     setConfiguration: setAssetConfiguration,
-    setId: (value: string | undefined) => setCurrentAssetId(value),
-    reset: () => {
-      setCurrentAssetId(undefined);
-    }
+    setId: (value: string | undefined) => setCurrentAssetId(value)
   };
 }

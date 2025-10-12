@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 
 namespace Navtrack.Api.Services.Common.Context;
 
 public interface ICurrentContext
 {
-    Task<AssetDocument?> GetCurrentAsset();
+    Task<AssetEntity?> GetCurrentAsset();
 }

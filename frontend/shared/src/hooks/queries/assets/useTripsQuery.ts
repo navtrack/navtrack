@@ -1,4 +1,7 @@
-import { useAssetsTripsGetList } from "../../../api";
+import {
+  getAssetsTripsGetListQueryKey,
+  useAssetsTripsGetList
+} from "../../../api";
 
 export type UseTripsQueryProps = {
   assetId?: string;
@@ -33,6 +36,19 @@ export const useTripsQuery = (props: UseTripsQueryProps) => {
     },
     {
       query: {
+        queryKey: getAssetsTripsGetListQueryKey(props.assetId!, {
+          StartDate: props.startDate,
+          EndDate: props.endDate,
+          MinAvgSpeed: props.minSpeed,
+          MaxAvgSpeed: props.maxSpeed,
+          MinAvgAltitude: props.minAltitude,
+          MaxAvgAltitude: props.maxAltitude,
+          MinDuration: props.minDuration,
+          MaxDuration: props.maxDuration,
+          Latitude: props.latitude,
+          Longitude: props.longitude,
+          Radius: props.radius
+        }),
         enabled: !!props.assetId,
         refetchOnWindowFocus: false
       }

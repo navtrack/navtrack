@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -15,7 +15,7 @@ namespace Navtrack.Listener.Protocols.Teltonika;
 [Service(typeof(ICustomMessageHandler<TeltonikaProtocol>))]
 public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 {
-    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
         if (input.ConnectionContext.Device == null)
         {
@@ -31,7 +31,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
             return null;
         }
 
-        List<DeviceMessageDocument> positions = GetPositions(input);
+        List<DeviceMessageEntity> positions = GetPositions(input);
 
         if (positions.Count != 0)
         {
@@ -43,9 +43,9 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
         return positions;
     }
 
-    private static List<DeviceMessageDocument> GetPositions(MessageInput input)
+    private static List<DeviceMessageEntity> GetPositions(MessageInput input)
     {
-        List<DeviceMessageDocument> positions = [];
+        List<DeviceMessageEntity> messages = [];
 
         TeltonikaCodecConfiguration? codecConfiguration = GetCodec(input);
 
@@ -58,12 +58,12 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 
         for (byte i = 0; i < noOfLocations; i++)
         {
-            DeviceMessageDocument deviceMessageDocument = GetPosition(input, codecConfiguration);
+            DeviceMessageEntity deviceMessage = GetPosition(input, codecConfiguration);
 
-            positions.Add(deviceMessageDocument);
+            messages.Add(deviceMessage);
         }
 
-        return positions;
+        return messages;
     }
 
     private static TeltonikaCodecConfiguration? GetCodec(MessageInput input)
@@ -86,38 +86,37 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
         return null;
     }
 
-    private static DeviceMessageDocument GetPosition(MessageInput input,
+    private static DeviceMessageEntity GetPosition(MessageInput input,
         TeltonikaCodecConfiguration? teltonikaCodecConfiguration)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = new PositionElement()
-        };
+        DeviceMessageEntity deviceMessage = new();
+        deviceMessage.AdditionalDataDic = new Dictionary<string, string>();
+        
 
-        deviceMessageDocument.Position.Date =
+        deviceMessage.Date =
             DateTime.UnixEpoch.AddMilliseconds(input.DataMessage.ByteReader.Get(8).ToSLong8());
 
         byte priority = input.DataMessage.ByteReader.GetOne();
         
-        deviceMessageDocument.MessagePriority = priority switch
+        deviceMessage.MessagePriority = priority switch
         {
             1 => MessagePriority.High,
             2 => MessagePriority.Emergency,
             _ => null
         };
         
-        deviceMessageDocument.Position.Longitude = GetCoordinate(input.DataMessage.ByteReader.Get(4));
-        deviceMessageDocument.Position.Latitude = GetCoordinate(input.DataMessage.ByteReader.Get(4));
-        deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get(2).ToSShort2();
-        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
-        deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
-        deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get(2).ToUShort2();
+        deviceMessage.Longitude = GetCoordinate(input.DataMessage.ByteReader.Get(4));
+        deviceMessage.Latitude = GetCoordinate(input.DataMessage.ByteReader.Get(4));
+        deviceMessage.Altitude = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        deviceMessage.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        deviceMessage.Satellites = input.DataMessage.ByteReader.GetOne();
+        deviceMessage.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
 
         ushort eventId = teltonikaCodecConfiguration.MainEventIdLength == 2
             ? input.DataMessage.ByteReader.Get(2).ToUShort2()
             : input.DataMessage.ByteReader.Get(1).ToUByte1();
         
-        deviceMessageDocument.AdditionalData[TeltonikaDataIds.EventId.ToString()] = eventId.ToString();
+        deviceMessage.AdditionalDataDic[TeltonikaDataIds.EventId.ToString()] = eventId.ToString();
 
         if (teltonikaCodecConfiguration.HasGenerationType)
         {
@@ -126,18 +125,18 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
 
         byte[] dataPacketsCount = input.DataMessage.ByteReader.Get(teltonikaCodecConfiguration.DataPacketCountBytes);
 
-        MapDataPackets(deviceMessageDocument, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
+        MapDataPackets(deviceMessage, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
             1); // 1 byte events
-        MapDataPackets(deviceMessageDocument, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
+        MapDataPackets(deviceMessage, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
             2); // 2 bytes events
-        MapDataPackets(deviceMessageDocument, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
+        MapDataPackets(deviceMessage, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
             4); // 4 bytes events
-        MapDataPackets(deviceMessageDocument, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
+        MapDataPackets(deviceMessage, input.DataMessage.ByteReader, teltonikaCodecConfiguration,
             8); // 8 bytes events
-        MapDataPackets(deviceMessageDocument, input.DataMessage.ByteReader,
+        MapDataPackets(deviceMessage, input.DataMessage.ByteReader,
             teltonikaCodecConfiguration); // variable bytes events
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     private static double GetCoordinate(byte[] coordinate)
@@ -154,7 +153,7 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
         return convertedCoordinate / 10000000;
     }
 
-    private static void MapDataPackets(DeviceMessageDocument deviceMessageDocument, ByteReader input,
+    private static void MapDataPackets(DeviceMessageEntity deviceMessage, ByteReader input,
         TeltonikaCodecConfiguration? teltonikaCodecConfiguration,
         short? dataPacketBytes = null)
     {
@@ -169,11 +168,11 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
             byte[] value = input.Get(length);
 
 
-            MapDataPacket(id, value, deviceMessageDocument);
+            MapDataPacket(id, value, deviceMessage);
         }
     }
 
-    private static void MapDataPacket(short id, byte[] value, DeviceMessageDocument deviceMessageDocument)
+    private static void MapDataPacket(short id, byte[] value, DeviceMessageEntity deviceMessageDocument)
     {
         try
         {
@@ -181,279 +180,269 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
             {
                 // Permanent I/O elements
                 case 1:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.DigitalInput1.ToString()] = value.ToBoolean().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.DigitalInput1.ToString()] = value.ToBoolean().ToString();
                     return;
                 case 11:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ICCID1.ToString()] = value.ToULong8().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ICCID1.ToString()] = value.ToULong8().ToString();
                     return;
                 case 14:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ICCID2.ToString()] = value.ToULong8().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ICCID2.ToString()] = value.ToULong8().ToString();
                     return;
                 case 15:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.EcoScore.ToString()] = (value.ToUShort2() * 0.01).ToString(CultureInfo.InvariantCulture);
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.EcoScore.ToString()] = (value.ToUShort2() * 0.01).ToString(CultureInfo.InvariantCulture);
                     return;
                 case TeltonikaDataIds.TotalOdometer:
-                    deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.Odometer = value.ToSInt4();
+                    deviceMessageDocument.DeviceOdometer = value.ToSInt4();
                     return;
                 case TeltonikaDataIds.GsmSignal:
-                    deviceMessageDocument.Gsm ??= new GsmElement();
-                    deviceMessageDocument.Gsm.SignalLevel = value.ToUByte1();
+                    deviceMessageDocument.GSMSignalLevel = value.ToUByte1();
                     return;
                 case 24:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.GNSSSpeed.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.GNSSSpeed.ToString()] = value.ToUShort2().ToString();
                     return;
                 case TeltonikaDataIds.ExternalVoltage:
-                    deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.Voltage = value.ToSShort2() * 0.001;
+                    deviceMessageDocument.VehicleVoltage = value.ToSShort2() * 0.001f;
                     return;
                 case TeltonikaDataIds.BatteryVoltage:
-                    deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.BatteryVoltage = value.ToUShort2() * 0.001;
+                    deviceMessageDocument.DeviceBatteryVoltage = value.ToUShort2() * 0.001f;
                     return;
                 case TeltonikaDataIds.BatteryCurrent:
-                    deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.BatteryCurrent = value.ToUShort2() * 0.001;
+                    deviceMessageDocument.DeviceBatteryCurrent = value.ToUShort2() * 0.001f;
                     return;
                 case 69:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.GNSSStatus.ToString()] = value.ToUByte1().ToString();
-                    deviceMessageDocument.Position.Valid = value.ToUByte1() == 1;
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.GNSSStatus.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.Valid = value.ToUByte1() == 1;
                     return;
                 case TeltonikaDataIds.BatteryLevel:
-                    deviceMessageDocument.Device ??= new DeviceElement();
-                    deviceMessageDocument.Device.BatteryLevel = value.ToUByte1();
+                    deviceMessageDocument.DeviceBatteryLevel = value.ToUByte1();
                     return;
                 case TeltonikaDataIds.GNSSPDOP:
-                    deviceMessageDocument.Position.PDOP = value.ToUShort2() * 0.1;
+                    deviceMessageDocument.PDOP = value.ToUShort2() * 0.1f;
                     return;
                 case TeltonikaDataIds.GNSSHDOP:
-                    deviceMessageDocument.Position.HDOP = value.ToUShort2() * 0.1;
+                    deviceMessageDocument.HDOP = value.ToUShort2() * 0.1f;
                     return;
                 case 199:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.TripOdometer.ToString()] = value.ToUInt4().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.TripOdometer.ToString()] = value.ToUInt4().ToString();
                     return;
                 case 200:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.SleepMode.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.SleepMode.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 205:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.GsmCellId.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.GsmCellId.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 206:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.GsmAreaCode.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.GsmAreaCode.ToString()] = value.ToUShort2().ToString();
                     return;
                 case TeltonikaDataIds.Ignition:
-                    deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.Ignition = value.ToBoolean();
+                    deviceMessageDocument.VehicleIgnition = value.ToBoolean();
                     return;
                 case 240:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.Movement.ToString()] = value.ToBoolean().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.Movement.ToString()] = value.ToBoolean().ToString();
                     return;
                 case TeltonikaDataIds.ActiveGSMOperator:
                     string homeNetworkIdentity = $"{value.ToUInt4()}";
 
                     if (homeNetworkIdentity.Length > 4)
                     {
-                        deviceMessageDocument.Gsm ??= new GsmElement();
-                        deviceMessageDocument.Gsm.MobileCountryCode = homeNetworkIdentity[..3];
-                        deviceMessageDocument.Gsm.MobileNetworkCode = homeNetworkIdentity[3..];
+                        deviceMessageDocument.GSMMobileCountryCode = homeNetworkIdentity[..3];
+                        deviceMessageDocument.GSMMobileNetworkCode = homeNetworkIdentity[3..];
                     }
 
                     return;
                 case 636:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.UMTSLTECellID.ToString()] = value.ToUInt4().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.UMTSLTECellID.ToString()] = value.ToUInt4().ToString();
                     return;
 
                 // Event I/O elements
                 case 250:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.EventTrip.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.EventTrip.ToString()] = value.ToUByte1().ToString();
                     return;
                 case TeltonikaDataIds.IgnitionOnCounter:
-                    deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.IgnitionDuration = value.ToSInt4();
+                    deviceMessageDocument.VehicleIgnitionDuration = value.ToSInt4();
                     return;
 
                 // OBD elements
                 case 30:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdDtcCount.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdDtcCount.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 31:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdEngineLoad.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdEngineLoad.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 32:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdCoolantTemperature.ToString()] = value.ToSByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdCoolantTemperature.ToString()] = value.ToSByte1().ToString();
                     return;
                 case 33:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdShortTermFuelTrim.ToString()] = value.ToSByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdShortTermFuelTrim.ToString()] = value.ToSByte1().ToString();
                     return;
                 case 34:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdFuelPressure.ToString()] = value.ToULong8().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdFuelPressure.ToString()] = value.ToULong8().ToString();
                     return;
                 case 35:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdIntakeManifoldAbsolutPressure.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdIntakeManifoldAbsolutPressure.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 36:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdEngineRpm.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdEngineRpm.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 37:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdSpeed.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdSpeed.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 38:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdTimingAdvance.ToString()] = value.ToSByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdTimingAdvance.ToString()] = value.ToSByte1().ToString();
                     return;
                 case 39:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdIntakeAirTemperature.ToString()] = value.ToSByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdIntakeAirTemperature.ToString()] = value.ToSByte1().ToString();
                     return;
                 case 40:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdMAFAirFlowRate.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdMAFAirFlowRate.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 41:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdThrottlePosition.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdThrottlePosition.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 42:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdRuntimeSinceEngineStart.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdRuntimeSinceEngineStart.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 43:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdDistanceTraveledMILOn.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdDistanceTraveledMILOn.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 44:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdRelativeFuelRailPressure.ToString()] = (value.ToUShort2() * 0.1).ToString(CultureInfo.InvariantCulture);
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdRelativeFuelRailPressure.ToString()] = (value.ToUShort2() * 0.1).ToString(CultureInfo.InvariantCulture);
                     return;
                 case 45:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdDirectFuelRailPressure.ToString()] = (value.ToUShort2() * 10).ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdDirectFuelRailPressure.ToString()] = (value.ToUShort2() * 10).ToString();
                     return;
                 case 46:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdCommandedEGR.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdCommandedEGR.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 47:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdEGRError.ToString()] = value.ToSByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdEGRError.ToString()] = value.ToSByte1().ToString();
                     return;
                 case 48:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdFuelLevel.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdFuelLevel.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 49:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdDistanceSinceCodesClear.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdDistanceSinceCodesClear.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 50:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdBarometicPressure.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdBarometicPressure.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 51:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdControlModuleVoltage.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdControlModuleVoltage.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 52:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdAbsoluteLoadValue.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdAbsoluteLoadValue.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 53:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdAmbientAirTemperature.ToString()] = value.ToSByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdAmbientAirTemperature.ToString()] = value.ToSByte1().ToString();
                     return;
                 case 54:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdTimeRunWithMILOn.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdTimeRunWithMILOn.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 55:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdTimeSinceCodesCleared.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdTimeSinceCodesCleared.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 56:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdAbsoluteFuelRailPressure.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdAbsoluteFuelRailPressure.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 57:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdHybridBatteryPackLife.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdHybridBatteryPackLife.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 58:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdEngineOilTemperature.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdEngineOilTemperature.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 59:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdFuelInjectionTiming.ToString()] = (value.ToSShort2() * 0.01).ToString(CultureInfo.InvariantCulture);
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdFuelInjectionTiming.ToString()] = (value.ToSShort2() * 0.01).ToString(CultureInfo.InvariantCulture);
                     return;
                 case 60:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdFuelRate.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdFuelRate.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 256:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdVIN.ToString()] = StringUtil.ConvertByteArrayToString(value);
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdVIN.ToString()] = StringUtil.ConvertByteArrayToString(value);
                     return;
                 case 281:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdFaultCodes.ToString()] =
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdFaultCodes.ToString()] =
                         StringUtil.ConvertByteArrayToString(value);
                     return;
                 case 540:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdThrottlePositionGroup.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdThrottlePositionGroup.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 541:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdCommandedEquivalenceRatio.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdCommandedEquivalenceRatio.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 542:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdIntakeMAP2Bytes.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdIntakeMAP2Bytes.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 543:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdHybridSystemVoltage.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdHybridSystemVoltage.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 544:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdHybridSystemCurrent.ToString()] = value.ToSShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdHybridSystemCurrent.ToString()] = value.ToSShort2().ToString();
                     return;
                 case 759:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdFuelType.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdFuelType.ToString()] = value.ToUByte1().ToString();
                     return;
 
                 // OBD OEM elements
                 case TeltonikaDataIds.ObdOemMileage:
-                    deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.Odometer = value.ToUInt4();
+                    deviceMessageDocument.VehicleOdometer = value.ToSInt4();
                     return;
                 case 390:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemFuelLevel.ToString()] = (value.ToUInt4() * 0.1).ToString(CultureInfo.InvariantCulture);
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemFuelLevel.ToString()] = (value.ToUInt4() * 0.1).ToString(CultureInfo.InvariantCulture);
                     return;
                 case 402:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemDistanceUntilService.ToString()] = value.ToUInt4().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemDistanceUntilService.ToString()] = value.ToUInt4().ToString();
                     return;
                 case 410:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemBatteryChargeState.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemBatteryChargeState.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 411:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemBatteryLevel.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemBatteryLevel.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 412:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemBatteryPowerConsumption.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemBatteryPowerConsumption.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 755:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemRemainingDistance.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemRemainingDistance.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 1151:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemBatteryStateOfHealth.ToString()] = value.ToUShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemBatteryStateOfHealth.ToString()] = value.ToUShort2().ToString();
                     return;
                 case 1152:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.ObdOemBatteryTemperature.ToString()] = value.ToSShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.ObdOemBatteryTemperature.ToString()] = value.ToSShort2().ToString();
                     return;
 
                 // CAN adapters
                 case 90:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanDoorStatus.ToString()] = value.ToSShort2().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanDoorStatus.ToString()] = value.ToSShort2().ToString();
                     return;
                 case 100:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanProgramNumber.ToString()] = value.ToUInt4().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanProgramNumber.ToString()] = value.ToUInt4().ToString();
                     return;
                 case TeltonikaDataIds.CanFuelConsumedCounted:
-                    deviceMessageDocument.Vehicle ??= new VehicleElement();
-                    deviceMessageDocument.Vehicle.FuelConsumption = value.ToSInt4() * 0.1;
+                    deviceMessageDocument.VehicleFuelConsumption = value.ToSInt4() * 0.1f;
                     return;
                 case 123:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanControlStateFlags.ToString()] = value.ToUInt4().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanControlStateFlags.ToString()] = value.ToUInt4().ToString();
                     return;
                 case 124:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanAgriculturalMachineryFlags.ToString()] = value.ToULong8().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanAgriculturalMachineryFlags.ToString()] = value.ToULong8().ToString();
                     return;
                 case 132:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanSecurityStateFlags.ToString()] = value.ToULong8().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanSecurityStateFlags.ToString()] = value.ToULong8().ToString();
                     return;
                 case 232:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanCNGStatus.ToString()] = value.ToUByte1().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanCNGStatus.ToString()] = value.ToUByte1().ToString();
                     return;
                 case 517:
-                    deviceMessageDocument.AdditionalData[TeltonikaDataIds.CanSecurityStateFlagsP4.ToString()] = value.ToULong8().ToString();
+                    deviceMessageDocument.AdditionalDataDic[TeltonikaDataIds.CanSecurityStateFlagsP4.ToString()] = value.ToULong8().ToString();
                     return;
                 default:
 
                     string[] array = HexUtil.ConvertByteArrayToHexStringArray(value);
                     Array.Reverse(array);
 
-                    deviceMessageDocument.AdditionalDataUnhandled[id.ToString()] = HexUtil.ConvertHexStringArrayToHexString(array);
+                    // TODO
+                    // deviceMessageDocument.AdditionalDataUnhandled[id.ToString()] = HexUtil.ConvertHexStringArrayToHexString(array);
 
                     return;
             }
@@ -463,8 +452,9 @@ public class TeltonikaMessageHandler : BaseMessageHandler<TeltonikaProtocol>
             string[] array = HexUtil.ConvertByteArrayToHexStringArray(value);
             Array.Reverse(array);
 
-            deviceMessageDocument.AdditionalDataException[id.ToString()] =
-                HexUtil.ConvertHexStringArrayToHexString(array);
+            // TODO
+            // deviceMessageDocument.AdditionalDataException[id.ToString()] =
+            //     HexUtil.ConvertHexStringArrayToHexString(array);
         }
     }
 

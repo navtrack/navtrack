@@ -11,11 +11,11 @@ namespace Navtrack.Api.Controllers;
 public class UserController(IRequestHandler requestHandler) : UserControllerBase(requestHandler)
 {
     [HttpGet(ApiPaths.User)]
-    [ProducesResponseType(typeof(CurrentUser), StatusCodes.Status200OK)]
-    public async Task<CurrentUser> Get()
+    [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
+    public async Task<CurrentUserModel> Get()
     {
-        CurrentUser result =
-            await requestHandler.Handle<GetCurrentUserRequest, CurrentUser>(new GetCurrentUserRequest());
+        CurrentUserModel result =
+            await requestHandler.Handle<GetCurrentUserRequest, CurrentUserModel>(new GetCurrentUserRequest());
 
         return result;
     }

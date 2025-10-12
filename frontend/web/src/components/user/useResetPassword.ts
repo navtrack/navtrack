@@ -17,7 +17,7 @@ export const InitialResetPasswordFormValues: ResetPasswordFormValues = {
 
 export const useResetPassword = () => {
   const changePasswordMutation = useResetPasswordMutation();
-  const { hash } = useParams<{ hash: string }>();
+  const { id } = useParams<{ id: string }>();
 
   const resetPassword = useCallback(
     (
@@ -27,7 +27,7 @@ export const useResetPassword = () => {
       changePasswordMutation.mutate(
         {
           data: {
-            hash: hash!,
+            id: id!,
             password: values.password,
             confirmPassword: values.confirmPassword
           }
@@ -37,7 +37,7 @@ export const useResetPassword = () => {
         }
       );
     },
-    [changePasswordMutation, hash]
+    [changePasswordMutation, id]
   );
 
   const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
@@ -53,7 +53,7 @@ export const useResetPassword = () => {
   return {
     resetPassword,
     validationSchema,
-    loading: changePasswordMutation.isLoading,
+    loading: changePasswordMutation.isPending,
     success: changePasswordMutation.isSuccess
   };
 };

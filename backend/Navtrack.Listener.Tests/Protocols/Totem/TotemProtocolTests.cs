@@ -22,8 +22,8 @@ public class TotemProtocolTests : BaseProtocolTests<TotemProtocol, TotemMessageH
 
         // Assert.Equal("863835028447675", ProtocolTester.LastParsedPosition.SerialNumber);
     }
-        
-        
+
+
     [Fact]
     public void AT07_DeviceSends4Locations_4LocationsParsed()
     {
@@ -32,7 +32,7 @@ public class TotemProtocolTests : BaseProtocolTests<TotemProtocol, TotemMessageH
 
         // Assert.Equal(4, ProtocolTester.TotalParsedPositions.Count);
     }
-        
+
     [Fact]
     public void AT09_DeviceSendsLocation_ParsedLocationIsNotNull()
     {

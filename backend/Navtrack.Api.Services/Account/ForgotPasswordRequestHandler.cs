@@ -11,9 +11,8 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.Settings;
 using Navtrack.Api.Services.Common.Settings.Models;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Model.Users.PasswordResets;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Account;
@@ -26,7 +25,7 @@ public class ForgotPasswordRequestHandler(
     IEmailService emailService,
     ISettingService settingService) : BaseRequestHandler<ForgotPasswordRequest>
 {
-    private UserDocument? user;
+    private UserEntity? user;
     private string? ipAddress;
     
     public override async Task Validate(RequestValidationContext<ForgotPasswordRequest> context)
@@ -40,12 +39,12 @@ public class ForgotPasswordRequestHandler(
         
         if (passwordResetsIn24H >= ApiConstants.MaxPasswordResetIn24Hours)
         {
-            throw new ValidationApiException(nameof(ForgotPassword.Email),
+            throw new ValidationApiException(nameof(ForgotPasswordModel.Email),
                 ApiErrorCodes.User_000005_MaxPasswordResetsExceeded);
         }
 
         user = await userRepository.GetByEmail(context.Request.Model.Email);
-        user.ReturnValidationErrorIfNull(nameof(ForgotPassword.Email),
+        user.ReturnValidationErrorIfNull(nameof(ForgotPasswordModel.Email),
             ApiErrorCodes.User_000001_EmailNotFound);
     }
 
@@ -53,9 +52,9 @@ public class ForgotPasswordRequestHandler(
     {
         await passwordResetRepository.MarkAsInvalidByUserId(user.Id);
 
-        PasswordResetDocument document =
-            PasswordResetDocumentMapper.Map(request.Model.Email, user.Id, ipAddress!);
-
+        UserPasswordResetEntity document =
+            PasswordResetEntityMapper.Map(request.Model.Email, user!.Id, ipAddress!);
+                                                                
         await passwordResetRepository.Add(document);
 
         string url = await GetResetPasswordUrl(document);
@@ -63,13 +62,13 @@ public class ForgotPasswordRequestHandler(
         await emailService.Send(document.Email, new ResetPasswordEmail(url, 3));
     }
 
-    private async Task<string> GetResetPasswordUrl(PasswordResetDocument document)
+    private async Task<string> GetResetPasswordUrl(UserPasswordResetEntity entity)
     {
         AppSettings? appSettings = await settingService.Get<AppSettings>();
 
         if (!string.IsNullOrEmpty(appSettings?.AppUrl))
         {
-            return ApiConstants.ResetPasswordLink(appSettings.AppUrl, document.Hash);
+            return ApiConstants.ResetPasswordLink(appSettings.AppUrl, entity.Id.ToString());
         }
 
         throw new ArgumentException("App URL not set.");

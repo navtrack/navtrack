@@ -1,4 +1,4 @@
-import { useAssetsGet } from "../../../api";
+import { getAssetsGetQueryKey, useAssetsGet } from "../../../api";
 
 type UseAssetQueryProps = {
   assetId?: string;
@@ -7,6 +7,7 @@ type UseAssetQueryProps = {
 export function useAssetQuery(props: UseAssetQueryProps) {
   const query = useAssetsGet(props.assetId!, {
     query: {
+      queryKey: getAssetsGetQueryKey(`${props.assetId}`),
       refetchOnWindowFocus: true,
       enabled: props.assetId !== undefined
     }

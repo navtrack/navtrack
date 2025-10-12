@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { altitudeFilterAtom } from "../locationFilterState";
 import { AltitudeFilterFormValues } from "../locationFilterTypes";
 
 export function useAltitudeFilter(key: string) {
-  const [state, setState] = useRecoilState(altitudeFilterAtom(key));
+  const [state, setState] = useAtom(altitudeFilterAtom(key));
 
   const initialValues = useMemo(
     () => ({

@@ -1,22 +1,19 @@
-using System.Linq;
 using Navtrack.Api.Model.Assets;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Assets;
 
 namespace Navtrack.Api.Services.Assets.Mappers;
 
 public static class AssetUserMapper
 {
-    public static AssetUser Map(UserDocument user, AssetDocument source)
+    public static AssetUserModel Map(AssetUserEntity assetUser)
     {
-        UserAssetElement assetUser = user.Assets!.First(x => x.AssetId == source.Id);
-        
-        return new AssetUser
+        return new AssetUserModel
         {
-            Email = user.Email,
-            UserId = user.Id.ToString(),
+            Id = assetUser.Id.ToString(),
+            Email = assetUser.User.Email,
+            UserId = assetUser.UserId,
             UserRole = assetUser.UserRole,
-            CreatedDate = source.CreatedDate
+            CreatedDate = assetUser.CreatedDate
         };
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -10,7 +10,7 @@ namespace Navtrack.Listener.Protocols.Meiligao;
 [Service(typeof(ICustomMessageHandler<MeiligaoProtocol>))]
 public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         MeiligaoInputMessage inputMessage = new(input.DataMessage);
 
@@ -20,29 +20,23 @@ public class MeiligaoMessageHandler : BaseMessageHandler<MeiligaoProtocol>
 
         if (inputMessage.MeiligaoDataMessage != null)
         {
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                Position = new PositionElement
-                {
-                    Valid = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[2],
-                        inputMessage.MeiligaoDataMessage.GPRMCArray[3]),
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[4],
-                        inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
-                    Date = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
-                        inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
-                    Speed = SpeedUtil.KnotsToKph(inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float>(6)),
-                    Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float?>(7),
-                    HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(1),
-                    Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(2),
-                },
-                Device = new DeviceElement
-                {
-                    Odometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<int?>(7)
-                }
+                Valid = inputMessage.MeiligaoDataMessage.GPRMCArray[1] == "A",
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[2],
+                    inputMessage.MeiligaoDataMessage.GPRMCArray[3]),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(inputMessage.MeiligaoDataMessage.GPRMCArray[4],
+                    inputMessage.MeiligaoDataMessage.GPRMCArray[5]),
+                Date = GetDateTime(inputMessage.MeiligaoDataMessage.GPRMCArray[0],
+                    inputMessage.MeiligaoDataMessage.GPRMCArray[8]),
+                Speed = SpeedUtil.KnotsToKph(inputMessage.MeiligaoDataMessage.GPRMCArray.Get<float>(6)),
+                Heading = inputMessage.MeiligaoDataMessage.GPRMCArray.Get<short?>(7),
+                HDOP = inputMessage.MeiligaoDataMessage.StringSplit.Get<float?>(1),
+                Altitude = inputMessage.MeiligaoDataMessage.StringSplit.Get<short?>(2),
+                DeviceOdometer = inputMessage.MeiligaoDataMessage.StringSplit.Get<int?>(7)
             };
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

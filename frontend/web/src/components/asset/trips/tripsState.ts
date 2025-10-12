@@ -1,24 +1,15 @@
 import { Trip } from "@navtrack/shared/api/model";
-import { atom, selector } from "recoil";
+import { atom } from "jotai";
 
-export const selectedTripAtom = atom<Trip | undefined>({
-  key: "Trips:SelectedTrip",
-  default: undefined
-});
+export const selectedTripAtom = atom<Trip | undefined>(undefined);
 
-export const selectedTripPositionIndexAtom = atom<number | undefined>({
-  key: "Trips:SelectedTrip:SelectedPosition:Index",
-  default: 1
-});
+export const selectedTripPositionIndexAtom = atom<number | undefined>(1);
 
-export const selectedTripPositionSelector = selector({
-  key: "Trips:SelectedTrip:SelectedPosition",
-  get: ({ get }) => {
-    const selectedTrip = get(selectedTripAtom);
-    const selectedTripLocationIndex = get(selectedTripPositionIndexAtom);
+export const selectedTripPositionSelector = atom((get) => {
+  const selectedTrip = get(selectedTripAtom);
+  const selectedTripLocationIndex = get(selectedTripPositionIndexAtom);
 
-    return selectedTrip !== undefined && selectedTripLocationIndex !== undefined
-      ? selectedTrip.positions[selectedTripLocationIndex - 1]
-      : undefined;
-  }
+  return selectedTrip !== undefined && selectedTripLocationIndex !== undefined
+    ? selectedTrip.positions[selectedTripLocationIndex - 1]
+    : undefined;
 });

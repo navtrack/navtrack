@@ -8,5 +8,5 @@ namespace Navtrack.Listener.Protocols.iTracGPS;
 // ReSharper disable once InconsistentNaming
 public class iTracGPSProtocol : TkStarProtocol
 {
-    public override int Port => 7028;
+    public override short Port => 7028;
 }

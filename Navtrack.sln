@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Shared.Library", "backend\Navtrack.Shared.Library\Navtrack.Shared.Library.csproj", "{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess", "backend\Navtrack.DataAccess\Navtrack.DataAccess.csproj", "{E2510825-1735-410F-B685-BB0F3CA27F05}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener", "backend\Navtrack.Listener\Navtrack.Listener.csproj", "{9E032E6F-F882-49B7-9E12-5DE7A16357E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.Tests", "backend\Navtrack.Listener.Tests\Navtrack.Listener.Tests.csproj", "{703CB45E-01DA-4CF3-8114-E47C20455A83}"
@@ -15,15 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api", "backend\Nav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Listener.DeviceSimulator", "backend\Navtrack.Listener.DeviceSimulator\Navtrack.Listener.DeviceSimulator.csproj", "{D6237E82-B5ED-45B5-96B2-D1159C942146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Model", "backend\Navtrack.DataAccess.Model\Navtrack.DataAccess.Model.csproj", "{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Model", "backend\Navtrack.Api.Model\Navtrack.Api.Model.csproj", "{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Services", "backend\Navtrack.Api.Services\Navtrack.Api.Services.csproj", "{4B5348CD-CD15-4D81-930E-D71BC533C3D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.DataAccess.Services", "backend\Navtrack.DataAccess.Services\Navtrack.DataAccess.Services.csproj", "{0577F018-F560-401E-A5BA-E4F7F7C07BD6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{BE4BBA96-89E3-4187-9D2E-2053A18656DB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{BE4BBA96-89E3-4187-9D2E-2053A18656DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{13772974-C3B3-479F-AB5B-0E756C61CD55}"
 ProjectSection(SolutionItems) = preProject
@@ -38,6 +32,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{30CA56
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Services.Tests", "backend\Navtrack.Api.Services.Tests\Navtrack.Api.Services.Tests.csproj", "{8814F127-0747-4031-AAE1-3126DA52FA2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Database", "backend\Navtrack.Database\Navtrack.Database.csproj", "{E799965A-F10E-4A41-A8F1-5B7A64C52B14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Database.Model", "backend\Navtrack.Database.Model\Navtrack.Database.Model.csproj", "{B915A2C7-629F-4743-BBC0-B3D320BC2FF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Database.Services", "backend\Navtrack.Database.Services\Navtrack.Database.Services.csproj", "{90925822-79D4-4945-8DED-81A380F4FBD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,10 +48,6 @@ Global
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2510825-1735-410F-B685-BB0F3CA27F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2510825-1735-410F-B685-BB0F3CA27F05}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E032E6F-F882-49B7-9E12-5DE7A16357E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,10 +64,6 @@ Global
 		{D6237E82-B5ED-45B5-96B2-D1159C942146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6237E82-B5ED-45B5-96B2-D1159C942146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6237E82-B5ED-45B5-96B2-D1159C942146}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -80,10 +72,6 @@ Global
 		{4B5348CD-CD15-4D81-930E-D71BC533C3D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B5348CD-CD15-4D81-930E-D71BC533C3D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B5348CD-CD15-4D81-930E-D71BC533C3D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0577F018-F560-401E-A5BA-E4F7F7C07BD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0577F018-F560-401E-A5BA-E4F7F7C07BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0577F018-F560-401E-A5BA-E4F7F7C07BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0577F018-F560-401E-A5BA-E4F7F7C07BD6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{816F422C-2680-49E9-9C22-733AE2B66823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{816F422C-2680-49E9-9C22-733AE2B66823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{816F422C-2680-49E9-9C22-733AE2B66823}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -92,6 +80,18 @@ Global
 		{8814F127-0747-4031-AAE1-3126DA52FA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8814F127-0747-4031-AAE1-3126DA52FA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8814F127-0747-4031-AAE1-3126DA52FA2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E799965A-F10E-4A41-A8F1-5B7A64C52B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E799965A-F10E-4A41-A8F1-5B7A64C52B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E799965A-F10E-4A41-A8F1-5B7A64C52B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E799965A-F10E-4A41-A8F1-5B7A64C52B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B915A2C7-629F-4743-BBC0-B3D320BC2FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B915A2C7-629F-4743-BBC0-B3D320BC2FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B915A2C7-629F-4743-BBC0-B3D320BC2FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B915A2C7-629F-4743-BBC0-B3D320BC2FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90925822-79D4-4945-8DED-81A380F4FBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90925822-79D4-4945-8DED-81A380F4FBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90925822-79D4-4945-8DED-81A380F4FBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90925822-79D4-4945-8DED-81A380F4FBD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,9 +100,6 @@ Global
 		SolutionGuid = {CBE2CFA9-1340-426A-B557-B21BB90BE246}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E2510825-1735-410F-B685-BB0F3CA27F05} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
-		{EE5F33EA-8BB2-44E2-8DE9-4B984F3ADC24} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
-		{0577F018-F560-401E-A5BA-E4F7F7C07BD6} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
 		{E7524FB6-F04C-4021-9815-D947D3001532} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
 		{5EB347A7-92D1-4435-A34B-6C1EEB7A6A8B} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
 		{4B5348CD-CD15-4D81-930E-D71BC533C3D6} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
@@ -112,5 +109,8 @@ Global
 		{816F422C-2680-49E9-9C22-733AE2B66823} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
 		{EC0A8BCE-676B-4A73-AEE8-DB5D81D94D4A} = {30CA5669-32EE-40D8-BB12-6DD9543BE2F9}
 		{8814F127-0747-4031-AAE1-3126DA52FA2A} = {13772974-C3B3-479F-AB5B-0E756C61CD55}
+		{E799965A-F10E-4A41-A8F1-5B7A64C52B14} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
+		{B915A2C7-629F-4743-BBC0-B3D320BC2FF9} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
+		{90925822-79D4-4945-8DED-81A380F4FBD3} = {BE4BBA96-89E3-4187-9D2E-2053A18656DB}
 	EndGlobalSection
 EndGlobal

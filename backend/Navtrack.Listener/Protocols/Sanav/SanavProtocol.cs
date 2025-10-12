@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Sanav;
 [Service(typeof(IProtocol))]
 public class SanavProtocol : BaseProtocol
 {
-    public override int Port => 7036;
+    public override short Port => 7036;
 }

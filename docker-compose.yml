@@ -18,9 +18,6 @@ services:
     ports:
       - 3001:8080
     restart: unless-stopped
-    environment:
-      - "MongoOptions__Database=navtrack"
-      - "MongoOptions__ConnectionString=mongodb://database"
 
   listener:
     image: ghcr.io/navtrack/listener:latest
@@ -29,19 +26,17 @@ services:
     ports:
       - "7001-7100:7001-7100"
     restart: unless-stopped
-    environment:
-      - "MongoOptions__Database=navtrack"
-      - "MongoOptions__ConnectionString=mongodb://database"
 
   database:
-    image: mongo
-    restart: unless-stopped
-    networks:
-      - navtrack
+    image: imresamu/postgis:17-3.5.2-alpine3.21
+    restart: always
+    environment:
+      POSTGRES_USER: navtrack
+      POSTGRES_PASSWORD: navtrack
     volumes:
-      - navtrack:/data/db
+      - navtrack-db:/var/lib/postgresql/data
     ports:
-      - 27017:27017
+      - 5432:5432
 
 volumes:
   navtrack:

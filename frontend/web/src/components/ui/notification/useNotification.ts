@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useAtom, useSetAtom } from "jotai";
 import { notificationAtom, showNotificationAtom } from "./state";
 import { Notification } from "./types";
 
 export function useNotification() {
-  const setNotification = useSetRecoilState(notificationAtom);
+  const setNotification = useSetAtom(notificationAtom);
   const [showNotificationState, setShowNotification] =
-    useRecoilState(showNotificationAtom);
+    useAtom(showNotificationAtom);
   const [timeout, setLocalTimeout] = useState<NodeJS.Timeout | undefined>(
     undefined
   );

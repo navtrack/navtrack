@@ -1,4 +1,4 @@
-import { useUserGet } from "../../../api";
+import { getUserGetQueryKey, useUserGet } from "../../../api";
 import { useAuthentication } from "../../app/authentication/useAuthentication";
 
 export const useCurrentUserQuery = () => {
@@ -6,7 +6,8 @@ export const useCurrentUserQuery = () => {
 
   const query = useUserGet({
     query: {
-      enabled: authentication.state.isAuthenticated,
+      queryKey: getUserGetQueryKey(),
+      enabled: authentication.isAuthenticated,
       refetchOnWindowFocus: false,
       refetchOnMount: false
     }

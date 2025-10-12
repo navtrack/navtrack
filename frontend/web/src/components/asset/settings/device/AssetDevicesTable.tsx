@@ -1,4 +1,4 @@
-import { Device } from "@navtrack/shared/api/model";
+import { DeviceModel } from "@navtrack/shared/api/model";
 import { useDeleteDeviceMutation } from "@navtrack/shared/hooks/queries/assets/useDeleteDeviceMutation";
 import { FormattedMessage } from "react-intl";
 import { useNotification } from "../../../ui/notification/useNotification";
@@ -10,7 +10,7 @@ import { TableV1 } from "../../../ui/table/TableV1";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 
 type AssetDevicesTableProps = {
-  rows?: Device[];
+  rows?: DeviceModel[];
   loading: boolean;
 };
 
@@ -20,7 +20,7 @@ export function AssetDevicesTable(props: AssetDevicesTableProps) {
   const { showNotification } = useNotification();
   const currentAsset = useCurrentAsset();
 
-  const columns: ITableColumn<Device>[] = [
+  const columns: ITableColumn<DeviceModel>[] = [
     {
       labelId: "generic.device-type",
       row: (device) => device.deviceType.displayName
@@ -66,11 +66,14 @@ export function AssetDevicesTable(props: AssetDevicesTableProps) {
                           description: "assets.settings.device.delete.success"
                         });
                         if (currentAsset.data) {
-                          queryClient.refetchQueries(
-                            getAssetsDevicesGetListQueryKey(
-                              currentAsset.data.id
-                            )
-                          );
+                          queryClient.refetchQueries({
+                            predicate: (query) =>
+                              currentAsset.data !== undefined &&
+                              query.queryKey[0] ===
+                                getAssetsDevicesGetListQueryKey(
+                                  currentAsset.data.id
+                                )
+                          });
                         }
                       }
                     }

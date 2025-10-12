@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Services.Teams;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Teams;
@@ -11,7 +11,7 @@ namespace Navtrack.Api.Services.Teams;
 [Service(typeof(IRequestHandler<UpdateTeamRequest>))]
 public class UpdateTeamRequestHandler(ITeamRepository teamRepository) : BaseRequestHandler<UpdateTeamRequest>
 {
-    private TeamDocument? team;
+    private TeamEntity? team;
 
     public override async Task Validate(RequestValidationContext<UpdateTeamRequest> context)
     {
@@ -30,7 +30,8 @@ public class UpdateTeamRequestHandler(ITeamRepository teamRepository) : BaseRequ
     {
         if (!string.IsNullOrEmpty(request.Model.Name) && team!.Name != request.Model.Name)
         {
-            await teamRepository.UpdateName(team!.Id, request.Model.Name);
+            team.Name = request.Model.Name;
+            await teamRepository.Update(team);
         }
     }
 }

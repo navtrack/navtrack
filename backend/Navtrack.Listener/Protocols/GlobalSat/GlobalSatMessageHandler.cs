@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -9,14 +9,14 @@ namespace Navtrack.Listener.Protocols.GlobalSat;
 [Service(typeof(ICustomMessageHandler<GlobalSatProtocol>))]
 public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = Parse(input, ParseFormat0, ParseFormatAlternative);
+        DeviceMessageEntity? deviceMessage = Parse(input, ParseFormat0, ParseFormatAlternative);
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument ParseFormat0(MessageInput input)
+    private static DeviceMessageEntity? ParseFormat0(MessageInput input)
     {
         input.NetworkStream.Write(StringUtil.ConvertStringToByteArray("ACK\r"));
 
@@ -39,38 +39,34 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                // Device = input.ConnectionContext.Device,
-                Position = new PositionElement
-                {
-                    Date = DateTimeUtil.New(
-                        locationMatch.Groups[6].Value,
-                        locationMatch.Groups[5].Value,
-                        locationMatch.Groups[4].Value,
-                        locationMatch.Groups[7].Value,
-                        locationMatch.Groups[8].Value,
-                        locationMatch.Groups[9].Value),
-                    Valid = locationMatch.Groups[3].Value != "1",
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value,
-                        locationMatch.Groups[10].Value),
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
-                        locationMatch.Groups[12].Value),
-                    Altitude = locationMatch.Groups[14].Get<float?>(),
-                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<float>()),
-                    Heading = locationMatch.Groups[16].Get<float?>(),
-                    Satellites = locationMatch.Groups[17].Get<short?>(),
-                    HDOP = locationMatch.Groups[18].Get<float?>()
-                }
+                Date = DateTimeUtil.New(
+                    locationMatch.Groups[6].Value,
+                    locationMatch.Groups[5].Value,
+                    locationMatch.Groups[4].Value,
+                    locationMatch.Groups[7].Value,
+                    locationMatch.Groups[8].Value,
+                    locationMatch.Groups[9].Value),
+                Valid = locationMatch.Groups[3].Value != "1",
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[11].Value,
+                    locationMatch.Groups[10].Value),
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
+                    locationMatch.Groups[12].Value),
+                Altitude = locationMatch.Groups[14].Get<short?>(),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<float>()),
+                Heading = locationMatch.Groups[16].Get<short?>(),
+                Satellites = locationMatch.Groups[17].Get<short?>(),
+                HDOP = locationMatch.Groups[18].Get<float?>()
             };
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;
     }
 
-    private static DeviceMessageDocument ParseFormatAlternative(MessageInput input)
+    private static DeviceMessageEntity? ParseFormatAlternative(MessageInput input)
     {
         Match locationMatch =
             new Regex("(\\d+)," + // imei
@@ -91,11 +87,8 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                // Device = input.ConnectionContext.Device,
-                Position = new PositionElement
-                {
                     Date = DateTimeUtil.New(
                         locationMatch.Groups[6].Value,
                         locationMatch.Groups[5].Value,
@@ -108,15 +101,14 @@ public class GlobalSatMessageHandler : BaseMessageHandler<GlobalSatProtocol>
                         locationMatch.Groups[10].Value),
                     Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[13].Value,
                         locationMatch.Groups[12].Value),
-                    Altitude = locationMatch.Groups[14].Get<float?>(),
+                    Altitude = locationMatch.Groups[14].Get<short?>(),
                     Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[15].Get<float>()),
-                    Heading = locationMatch.Groups[16].Get<float?>(),
+                    Heading = locationMatch.Groups[16].Get<short?>(),
                     Satellites = locationMatch.Groups[17].Get<short?>(),
                     HDOP = locationMatch.Groups[18].Get<float?>()
-                }
             };
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

@@ -4,7 +4,7 @@ import { translations } from "@navtrack/shared/translations";
 import "leaflet/dist/leaflet.css";
 import { ReactNode } from "react";
 import { IntlProvider } from "react-intl";
-import { RecoilRoot } from "recoil";
+import { Provider } from "jotai";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -14,9 +14,9 @@ export default function Decorator({ children }: { children: ReactNode }) {
   return (
     <IntlProvider locale="en" messages={translations["en"]}>
       <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
+        <Provider>
           <div className="flex min-h-screen flex-col p-10">{children}</div>
-        </RecoilRoot>
+        </Provider>
       </QueryClientProvider>
     </IntlProvider>
   );

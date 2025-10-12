@@ -4,5 +4,5 @@ namespace Navtrack.Api.Services.Account;
 
 public class CreateAccountRequest
 {
-    public CreateAccount Model { get; set; }
+    public CreateAccountModel Model { get; set; }
 }

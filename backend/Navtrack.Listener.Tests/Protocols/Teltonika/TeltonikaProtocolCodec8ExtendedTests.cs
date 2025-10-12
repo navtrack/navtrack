@@ -27,7 +27,7 @@ public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaP
         Assert.Equal("00000001", ProtocolTester.ReceiveHexInDevice());
         Assert.Single(ProtocolTester.LastParsedMessages);
     }
-        
+
     [Fact]
     public void Codec8Extended_DeviceSendsLocationV2_ServerConfirmsDataReceived()
     {
@@ -42,7 +42,7 @@ public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaP
         Assert.Equal("00000001", ProtocolTester.ReceiveHexInDevice());
         Assert.Single(ProtocolTester.LastParsedMessages);
     }
-    
+
     [Fact]
     public void Codec8Extended_DeviceSendsLocationV3_ServerConfirmsDataReceived()
     {
@@ -57,7 +57,7 @@ public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaP
         Assert.Equal("00000009", ProtocolTester.ReceiveHexInDevice());
         Assert.Equal(9, ProtocolTester.LastParsedMessages.Count);
     }
-    
+
     [Fact]
     public void Codec8Extended_DeviceSendsLocationV4_ServerConfirmsDataReceived()
     {
@@ -72,7 +72,7 @@ public class TeltonikaProtocolCodec8ExtendedTests : BaseProtocolTests<TeltonikaP
         Assert.Equal("00000001", ProtocolTester.ReceiveHexInDevice());
         Assert.Single(ProtocolTester.LastParsedMessages);
     }
-    
+
     [Fact]
     public void Codec8Extended_DeviceSendsLocationV5_ServerConfirmsDataReceived()
     {

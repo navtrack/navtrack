@@ -105,7 +105,7 @@ export function CreateTeamAssetModal(props: CreateTeamUserModalProps) {
                   </ModalBody>
                 </ModalContent>
                 <ModalActions cancel={() => setOpen(false)}>
-                  <Button type="submit" isLoading={createTeamAsset.isLoading}>
+                  <Button type="submit" isLoading={createTeamAsset.isPending}>
                     <FormattedMessage id="generic.save" />
                   </Button>
                 </ModalActions>

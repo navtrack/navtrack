@@ -19,10 +19,10 @@ public class GosafeProtocolTests : BaseProtocolTests<GosafeProtocol, GosafeMessa
     {
         ProtocolTester.SendStringFromDevice(
             "*GS06,356496042429597,154812300713,,SYS:SP2600NS;V1.01;,GPS:A;8;N23.164408;E113.428512;0;56;43;1.20$154822300713,,SYS:SP2600NS;V1.01;,GPS:A;8;N23.164408;E113.428512;0;56;43;1.20$154832300713,,SYS:SP2600NS;V1.01;,GPS:A;8;N23.164408;E113.428512;0;56;43;1.20#");
-            
+
         Assert.Equal(3, ProtocolTester.TotalParsedMessages.Count);
     }
-        
+
     [Fact]
     public void DeviceSends5Locations_5LocationAreParsed()
     {
@@ -31,7 +31,7 @@ public class GosafeProtocolTests : BaseProtocolTests<GosafeProtocol, GosafeMessa
 
         Assert.Equal(5, ProtocolTester.TotalParsedMessages.Count);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV2_LocationIsParsed()
     {
@@ -67,7 +67,7 @@ public class GosafeProtocolTests : BaseProtocolTests<GosafeProtocol, GosafeMessa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV6_LocationIsParsed()
     {

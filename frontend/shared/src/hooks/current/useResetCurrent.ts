@@ -1,12 +1,14 @@
-import { useCurrentAsset } from "./useCurrentAsset";
-import { useCurrentOrganization } from "./useCurrentOrganization";
+import { useSetAtom } from "jotai";
+import {
+  currentAssetIdAtom,
+  currentOrganizationIdAtom
+} from "../../state/current";
 
 export function useResetCurrent() {
-  const currentAsset = useCurrentAsset();
-  const currentOrganization = useCurrentOrganization();
-
+  const setCurrentAssetId = useSetAtom(currentAssetIdAtom);
+  const setCurrentOrganizationId = useSetAtom(currentOrganizationIdAtom);
   return () => {
-    currentAsset.reset();
-    currentOrganization.reset();
+    setCurrentAssetId(undefined);
+    setCurrentOrganizationId(undefined);
   };
 }

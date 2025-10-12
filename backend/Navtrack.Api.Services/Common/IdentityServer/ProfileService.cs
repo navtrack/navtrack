@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Common.IdentityServer;
@@ -16,7 +16,7 @@ public class ProfileService(IUserRepository repository) : IProfileService
     {
         string? userId = context.Subject.GetId();
             
-        UserDocument user = await repository.GetById(userId);
+        UserEntity? user = await repository.GetById(userId);
 
         context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email));
     }

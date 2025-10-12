@@ -36,7 +36,7 @@ export const useRegister = (props?: UseRegisterProps) => {
 
   return {
     register,
-    loading: registerAccountMutation.isLoading,
+    loading: registerAccountMutation.isPending,
     success: registerAccountMutation.isSuccess
   };
 };

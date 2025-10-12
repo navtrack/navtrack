@@ -54,7 +54,7 @@ export function DeleteTeamModal(props: DeleteTeamModalProps) {
     <DeleteModal
       maxWidth="lg"
       onConfirm={handleSubmit}
-      isLoading={deleteTeamMutation.isLoading}
+      isLoading={deleteTeamMutation.isPending}
       renderButton={(open) => (
         <Button color="error" type="submit" size="base" onClick={open}>
           <FormattedMessage id="teams.settings.delete.team" />

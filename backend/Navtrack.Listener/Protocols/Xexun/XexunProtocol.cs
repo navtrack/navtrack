@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Xexun;
 [Service(typeof(IProtocol))]
 public class XexunProtocol : BaseProtocol
 {
-    public override int Port => 7017;
+    public override short Port => 7017;
 }

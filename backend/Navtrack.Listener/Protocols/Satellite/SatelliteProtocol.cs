@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Satellite;
 [Service(typeof(IProtocol))]
 public class SatelliteProtocol : BaseProtocol
 {
-    public override int Port => 7059;
+    public override short Port => 7059;
 }

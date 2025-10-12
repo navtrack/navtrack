@@ -1,13 +1,13 @@
 using Navtrack.Api.Model.User;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Organizations;
 
 namespace Navtrack.Api.Services.User.Mappers;
 
 public static class UserOrganizationMapper
 {
-    public static UserOrganization Map(UserOrganizationElement source)
+    public static UserOrganizationModel Map(OrganizationUserEntity source)
     {
-        return new UserOrganization
+        return new UserOrganizationModel
         {
             OrganizationId = source.OrganizationId.ToString(),
             UserRole = source.UserRole
