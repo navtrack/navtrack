@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Listener.Server;
 
 public class BaseMessageHandler<T> : ICustomMessageHandler<T>
 {
-    public virtual DeviceMessageDocument Parse(MessageInput input)
+    public virtual DeviceMessageEntity? Parse(MessageInput input)
     {
         return null;
     }
 
-    public virtual IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public virtual IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
         try
         {
-            DeviceMessageDocument deviceMessageDocument = Parse(input);
+            DeviceMessageEntity? deviceMessageDocument = Parse(input);
 
             return deviceMessageDocument != null ? new[] {deviceMessageDocument} : null;
         }
@@ -25,19 +25,19 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         }
     }
 
-    protected DeviceMessageDocument Parse(MessageInput input, params Func<MessageInput, DeviceMessageDocument>[] parsers)
+    protected DeviceMessageEntity? Parse(MessageInput input, params Func<MessageInput, DeviceMessageEntity?>[] parsers)
     {
-        foreach (Func<MessageInput,DeviceMessageDocument> parse in parsers)
+        foreach (Func<MessageInput,DeviceMessageEntity?> parse in parsers)
         {
             try
             {
                 input.DataMessage.Reader.Reset();
                 input.DataMessage.ByteReader.Reset();
-                DeviceMessageDocument deviceMessageDocument = parse(input);
+                DeviceMessageEntity? deviceMessage = parse(input);
 
-                if (deviceMessageDocument != null)
+                if (deviceMessage != null)
                 {
-                    return deviceMessageDocument;
+                    return deviceMessage;
                 }
             }
             catch (Exception)
@@ -49,19 +49,19 @@ public class BaseMessageHandler<T> : ICustomMessageHandler<T>
         return null;
     }
         
-    protected IEnumerable<DeviceMessageDocument> ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<DeviceMessageDocument>>[] parsers)
+    protected IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input, params Func<MessageInput, IEnumerable<DeviceMessageEntity>?>[] parsers)
     {
-        foreach (Func<MessageInput,IEnumerable<DeviceMessageDocument>> parse in parsers)
+        foreach (Func<MessageInput,IEnumerable<DeviceMessageEntity>?> parse in parsers)
         {
             try
             {
                 input.DataMessage.Reader.Reset();
                 input.DataMessage.ByteReader.Reset();
-                IEnumerable<DeviceMessageDocument> location = parse(input);
+                IEnumerable<DeviceMessageEntity>? deviceMessages = parse(input);
 
-                if (location != null)
+                if (deviceMessages != null)
                 {
-                    return location;
+                    return deviceMessages;
                 }
             }
             catch (Exception)

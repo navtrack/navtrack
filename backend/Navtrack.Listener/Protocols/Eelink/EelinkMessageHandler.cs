@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -11,11 +11,11 @@ namespace Navtrack.Listener.Protocols.Eelink;
 [Service(typeof(ICustomMessageHandler<EelinkProtocol>))]
 public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         PackageIdentifier packageIdentifier = (PackageIdentifier)input.DataMessage.Bytes[2];
 
-        Dictionary<PackageIdentifier, Func<DeviceMessageDocument>> dictionary = new()
+        Dictionary<PackageIdentifier, Func<DeviceMessageEntity?>> dictionary = new()
         {
             {
                 PackageIdentifier.Login, () =>
@@ -39,7 +39,7 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
             {
                 PackageIdentifier.Message, () =>
                 {
-                    DeviceMessageDocument deviceMessageDocument = GetLocationV20(input);
+                    DeviceMessageEntity deviceMessage = GetLocationV20(input);
 
                     string number =
                         HexUtil.ConvertHexStringArrayToHexString(
@@ -47,7 +47,7 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
 
                     SendAcknowledge(input, number);
 
-                    return deviceMessageDocument;
+                    return deviceMessage;
                 }
             },
             {
@@ -66,54 +66,47 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         return dictionary.ContainsKey(packageIdentifier) ? dictionary[packageIdentifier].Invoke() : null;
     }
 
-    private static DeviceMessageDocument HandleLocationForV20(MessageInput input)
+    private static DeviceMessageEntity HandleLocationForV20(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = GetLocationV20(input);
+        DeviceMessageEntity deviceMessage = GetLocationV20(input);
 
         SendAcknowledge(input);
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument HandleMessageForV18(MessageInput input, bool sendAcknowledge = true)
+    private static DeviceMessageEntity HandleMessageForV18(MessageInput input, bool sendAcknowledge = true)
     {
-        DeviceMessageDocument deviceMessageDocument = GetLocationV18(input, 7);
+        DeviceMessageEntity deviceMessage = GetLocationV18(input, 7);
 
         if (sendAcknowledge)
         {
             SendAcknowledge(input);
         }
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument GetLocationV18(MessageInput input, int startIndex)
+    private static DeviceMessageEntity GetLocationV18(MessageInput input, int startIndex)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            // Device = input.ConnectionContext.Device,
-            Position = new PositionElement()
-        };
+        DeviceMessageEntity deviceMessage = new();
 
         input.DataMessage.ByteReader.Skip(startIndex);
-        deviceMessageDocument.Position.Date =
+        deviceMessage.Date =
             DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToSInt4());
-        deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
-        deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
-        deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
-        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
-        deviceMessageDocument.Gsm = new GsmElement
-        {
-            MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-            MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-            LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-            CellId = GetCellId(input.DataMessage.ByteReader)
-        };
+        deviceMessage.Latitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+        deviceMessage.Longitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+        deviceMessage.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        deviceMessage.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
+        deviceMessage.GSMMobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString();
+        deviceMessage.GSMMobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString();
+        deviceMessage.GSMLocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString();
+        deviceMessage.GSMCellId = GetCellId(input.DataMessage.ByteReader);
 
         string status = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
-        deviceMessageDocument.Position.Valid = status[^1] == '1';
+        deviceMessage.Valid = status[^1] == '1';
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     private static int GetCellId(ByteReader dataMessageByteReader)
@@ -124,44 +117,37 @@ public class EelinkMessageHandler : BaseMessageHandler<EelinkProtocol>
         return array.ToSInt4();
     }
 
-    private static DeviceMessageDocument GetLocationV20(MessageInput input)
+    private static DeviceMessageEntity GetLocationV20(MessageInput input)
     {
         const int locationStartIndex = 7;
 
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            // Device = input.ConnectionContext.Device
-            Position = new PositionElement()
-        };
+        DeviceMessageEntity deviceMessage = new();
 
         input.DataMessage.ByteReader.Skip(locationStartIndex);
-        deviceMessageDocument.Position.Date =
+        deviceMessage.Date =
             DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get(4).ToSInt4());
         string mask = Convert.ToString(input.DataMessage.ByteReader.GetOne(), 2).PadLeft(8, '0');
 
         if (mask[^1] == '1')
         {
-            deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
-            deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
-            deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get(2).ToSShort2();
-            deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
-            deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
-            deviceMessageDocument.Position.Satellites = Convert.ToInt16(input.DataMessage.ByteReader.GetOne());
+            deviceMessage.Latitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+            deviceMessage.Longitude = input.DataMessage.ByteReader.Get(4).ToSInt4() / 1800000.0;
+            deviceMessage.Altitude = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            deviceMessage.Speed = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            deviceMessage.Heading = input.DataMessage.ByteReader.Get(2).ToSShort2();
+            deviceMessage.Satellites = Convert.ToInt16(input.DataMessage.ByteReader.GetOne());
         }
 
         if (mask[^2] == '1')
         {
-            deviceMessageDocument.Gsm = new GsmElement
-            {
-                MobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                MobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                LocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString(),
-                CellId = input.DataMessage.ByteReader.Get(4).ToSInt4(),
-                SignalStrength = input.DataMessage.ByteReader.GetOne()
-            };
+            deviceMessage.GSMMobileCountryCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString();
+            deviceMessage.GSMMobileNetworkCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString();
+            deviceMessage.GSMLocationAreaCode = input.DataMessage.ByteReader.Get(2).ToSShort2().ToString();
+            deviceMessage.GSMCellId = input.DataMessage.ByteReader.Get(4).ToSInt4();
+            deviceMessage.GSMSignalStrength = input.DataMessage.ByteReader.GetOne();
         }
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     private static void HandleLoginPackage(MessageInput input)

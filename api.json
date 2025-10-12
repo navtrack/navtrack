@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Navtrack.Api",
@@ -17,7 +17,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAccount"
+                "$ref": "#/components/schemas/CreateAccountModel"
               }
             }
           },
@@ -33,7 +33,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -52,7 +52,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPassword"
+                "$ref": "#/components/schemas/ForgotPasswordModel"
               }
             }
           },
@@ -68,7 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -87,7 +87,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ResetPassword"
+                "$ref": "#/components/schemas/ResetPasswordModel"
               }
             }
           },
@@ -103,7 +103,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -134,7 +134,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfAsset"
+                  "$ref": "#/components/schemas/ListModelOfAssetModel"
                 }
               }
             }
@@ -162,7 +162,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAsset"
+                "$ref": "#/components/schemas/CreateAssetModel"
               }
             }
           },
@@ -185,7 +185,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -216,7 +216,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Asset"
+                  "$ref": "#/components/schemas/AssetModel"
                 }
               }
             }
@@ -264,7 +264,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAsset"
+                "$ref": "#/components/schemas/UpdateAssetModel"
               }
             }
           },
@@ -280,7 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -353,7 +353,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfDevice"
+                  "$ref": "#/components/schemas/ListModelOfDeviceModel"
                 }
               }
             }
@@ -391,7 +391,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrUpdateAssetDevice"
+                "$ref": "#/components/schemas/CreateOrUpdateAssetDeviceModel"
               }
             }
           },
@@ -417,7 +417,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -470,7 +470,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -672,7 +672,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DistanceReport"
+                  "$ref": "#/components/schemas/DistanceReportModel"
                 }
               }
             }
@@ -731,7 +731,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FuelConsumptionReport"
+                  "$ref": "#/components/schemas/FuelConsumptionReportModel"
                 }
               }
             }
@@ -790,7 +790,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TripReport"
+                  "$ref": "#/components/schemas/TripReportModel"
                 }
               }
             }
@@ -831,7 +831,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetStatList"
+                  "$ref": "#/components/schemas/AssetStatListModel"
                 }
               }
             }
@@ -1023,7 +1023,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfAssetUser"
+                  "$ref": "#/components/schemas/ListModelOfAssetUserModel"
                 }
               }
             }
@@ -1061,7 +1061,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAssetUser"
+                "$ref": "#/components/schemas/CreateAssetUserModel"
               }
             }
           },
@@ -1087,7 +1087,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1140,7 +1140,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1160,7 +1160,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfDeviceType"
+                  "$ref": "#/components/schemas/ListModelOfDeviceTypeModel"
                 }
               }
             }
@@ -1233,7 +1233,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfOrganization"
+                  "$ref": "#/components/schemas/ListModelOfOrganizationModel"
                 }
               }
             }
@@ -1270,7 +1270,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrganization"
+                "$ref": "#/components/schemas/CreateOrganizationModel"
               }
             }
           },
@@ -1293,7 +1293,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1324,7 +1324,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Organization"
+                  "$ref": "#/components/schemas/OrganizationModel"
                 }
               }
             }
@@ -1388,7 +1388,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1461,7 +1461,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfOrganizationUser"
+                  "$ref": "#/components/schemas/ListModelOfOrganizationUserModel"
                 }
               }
             }
@@ -1489,7 +1489,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrganizationUser"
+                "$ref": "#/components/schemas/CreateOrganizationUserModel"
               }
             }
           },
@@ -1505,7 +1505,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1554,7 +1554,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateOrganizationUser"
+                "$ref": "#/components/schemas/UpdateOrganizationUserModel"
               }
             }
           },
@@ -1570,7 +1570,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1621,7 +1621,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1651,7 +1651,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfProtocol"
+                  "$ref": "#/components/schemas/ListModelOfProtocolModel"
                 }
               }
             }
@@ -1682,7 +1682,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfTeamAsset"
+                  "$ref": "#/components/schemas/ListModelOfTeamAssetModel"
                 }
               }
             }
@@ -1736,7 +1736,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1789,7 +1789,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1830,7 +1830,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfTeam"
+                  "$ref": "#/components/schemas/ListModelOfTeam"
                 }
               }
             }
@@ -2007,7 +2007,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOfTeamUser"
+                  "$ref": "#/components/schemas/ListModelOfTeamUser"
                 }
               }
             }
@@ -2061,7 +2061,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -2126,7 +2126,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -2177,7 +2177,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -2207,7 +2207,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CurrentUser"
+                  "$ref": "#/components/schemas/CurrentUserModel"
                 }
               }
             }
@@ -2240,7 +2240,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -2275,7 +2275,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -2286,7 +2286,7 @@
   },
   "components": {
     "schemas": {
-      "Error": {
+      "ErrorModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2309,7 +2309,7 @@
           }
         }
       },
-      "CreateAccount": {
+      "CreateAccountModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2336,7 +2336,7 @@
           }
         }
       },
-      "ForgotPassword": {
+      "ForgotPasswordModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2349,7 +2349,7 @@
           }
         }
       },
-      "ResetPassword": {
+      "ResetPasswordModel": {
         "allOf": [
           {
             "$ref": "#/components/schemas/BasePasswordModel"
@@ -2358,10 +2358,10 @@
             "type": "object",
             "additionalProperties": false,
             "required": [
-              "hash"
+              "id"
             ],
             "properties": {
-              "hash": {
+              "id": {
                 "type": "string",
                 "minLength": 1
               }
@@ -2388,7 +2388,7 @@
           }
         }
       },
-      "ListOfAsset": {
+      "ListModelOfAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2398,12 +2398,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Asset"
+              "$ref": "#/components/schemas/AssetModel"
             }
           }
         }
       },
-      "Asset": {
+      "AssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2437,7 +2437,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Message"
+                "$ref": "#/components/schemas/DeviceMessageModel"
               }
             ]
           },
@@ -2445,7 +2445,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Message"
+                "$ref": "#/components/schemas/DeviceMessageModel"
               }
             ]
           },
@@ -2453,13 +2453,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Device"
+                "$ref": "#/components/schemas/DeviceModel"
               }
             ]
           }
         }
       },
-      "Message": {
+      "DeviceMessageModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2482,13 +2482,13 @@
             ]
           },
           "position": {
-            "$ref": "#/components/schemas/MessagePosition"
+            "$ref": "#/components/schemas/PositionDataModel"
           },
           "device": {
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageDevice"
+                "$ref": "#/components/schemas/DeviceDataModel"
               }
             ]
           },
@@ -2496,7 +2496,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageVehicle"
+                "$ref": "#/components/schemas/VehicleDataModel"
               }
             ]
           },
@@ -2504,7 +2504,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MessageGsm"
+                "$ref": "#/components/schemas/GsmDataModel"
               }
             ]
           }
@@ -2526,7 +2526,7 @@
           "Emergency"
         ]
       },
-      "MessagePosition": {
+      "PositionDataModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2590,7 +2590,7 @@
           }
         }
       },
-      "MessageDevice": {
+      "DeviceDataModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2616,12 +2616,13 @@
           }
         }
       },
-      "MessageVehicle": {
+      "VehicleDataModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "odometer": {
             "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "ignition": {
@@ -2635,7 +2636,7 @@
           }
         }
       },
-      "MessageGsm": {
+      "GsmDataModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2654,7 +2655,7 @@
           }
         }
       },
-      "Device": {
+      "DeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2673,7 +2674,7 @@
             "minLength": 1
           },
           "deviceType": {
-            "$ref": "#/components/schemas/DeviceType"
+            "$ref": "#/components/schemas/DeviceTypeModel"
           },
           "active": {
             "type": "boolean"
@@ -2685,7 +2686,7 @@
           }
         }
       },
-      "DeviceType": {
+      "DeviceTypeModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2713,11 +2714,11 @@
             "minLength": 1
           },
           "protocol": {
-            "$ref": "#/components/schemas/Protocol"
+            "$ref": "#/components/schemas/ProtocolModel"
           }
         }
       },
-      "Protocol": {
+      "ProtocolModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2744,7 +2745,7 @@
           }
         }
       },
-      "CreateAsset": {
+      "CreateAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2796,7 +2797,7 @@
           }
         }
       },
-      "UpdateAsset": {
+      "UpdateAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -2805,7 +2806,7 @@
           }
         }
       },
-      "ListOfDevice": {
+      "ListModelOfDeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2815,12 +2816,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Device"
+              "$ref": "#/components/schemas/DeviceModel"
             }
           }
         }
       },
-      "CreateOrUpdateAssetDevice": {
+      "CreateOrUpdateAssetDeviceModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2841,7 +2842,7 @@
       "MessageList": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfMessage"
+            "$ref": "#/components/schemas/ListModelOfDeviceMessageModel"
           },
           {
             "type": "object",
@@ -2868,7 +2869,7 @@
           }
         ]
       },
-      "ListOfMessage": {
+      "ListModelOfDeviceMessageModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2878,15 +2879,15 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Message"
+              "$ref": "#/components/schemas/DeviceMessageModel"
             }
           }
         }
       },
-      "DistanceReport": {
+      "DistanceReportModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfDistanceReportItem"
+            "$ref": "#/components/schemas/ListModelOfDistanceReportItemModel"
           },
           {
             "type": "object",
@@ -2918,7 +2919,7 @@
           }
         ]
       },
-      "ListOfDistanceReportItem": {
+      "ListModelOfDistanceReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2928,12 +2929,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DistanceReportItem"
+              "$ref": "#/components/schemas/DistanceReportItemModel"
             }
           }
         }
       },
-      "DistanceReportItem": {
+      "DistanceReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -2967,10 +2968,10 @@
           }
         }
       },
-      "FuelConsumptionReport": {
+      "FuelConsumptionReportModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfFuelConsumptionReportItem"
+            "$ref": "#/components/schemas/ListModelOfFuelConsumptionReportItemModel"
           },
           {
             "type": "object",
@@ -3007,7 +3008,7 @@
           }
         ]
       },
-      "ListOfFuelConsumptionReportItem": {
+      "ListModelOfFuelConsumptionReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3017,12 +3018,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FuelConsumptionReportItem"
+              "$ref": "#/components/schemas/FuelConsumptionReportItemModel"
             }
           }
         }
       },
-      "FuelConsumptionReportItem": {
+      "FuelConsumptionReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3061,10 +3062,10 @@
           }
         }
       },
-      "TripReport": {
+      "TripReportModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfTripReportItem"
+            "$ref": "#/components/schemas/ListModelOfTripReportItemModel"
           },
           {
             "type": "object",
@@ -3106,7 +3107,7 @@
           }
         ]
       },
-      "ListOfTripReportItem": {
+      "ListModelOfTripReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3116,12 +3117,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TripReportItem"
+              "$ref": "#/components/schemas/TripReportItemModel"
             }
           }
         }
       },
-      "TripReportItem": {
+      "TripReportItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3130,10 +3131,10 @@
         ],
         "properties": {
           "startPosition": {
-            "$ref": "#/components/schemas/MessagePosition"
+            "$ref": "#/components/schemas/PositionDataModel"
           },
           "endPosition": {
-            "$ref": "#/components/schemas/MessagePosition"
+            "$ref": "#/components/schemas/PositionDataModel"
           },
           "distance": {
             "type": "integer",
@@ -3165,10 +3166,10 @@
           }
         }
       },
-      "AssetStatList": {
+      "AssetStatListModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfAssetStatItem"
+            "$ref": "#/components/schemas/ListModelOfAssetStatItemModel"
           },
           {
             "type": "object",
@@ -3176,7 +3177,7 @@
           }
         ]
       },
-      "ListOfAssetStatItem": {
+      "ListModelOfAssetStatItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3186,12 +3187,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetStatItem"
+              "$ref": "#/components/schemas/AssetStatItemModel"
             }
           }
         }
       },
-      "AssetStatItem": {
+      "AssetStatItemModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3282,7 +3283,7 @@
       "TripList": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListOfTrip"
+            "$ref": "#/components/schemas/ListModelOfTrip"
           },
           {
             "type": "object",
@@ -3324,7 +3325,7 @@
           }
         ]
       },
-      "ListOfTrip": {
+      "ListModelOfTrip": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3353,14 +3354,14 @@
           "positions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MessagePosition"
+              "$ref": "#/components/schemas/PositionDataModel"
             }
           },
           "startPosition": {
-            "$ref": "#/components/schemas/MessagePosition"
+            "$ref": "#/components/schemas/PositionDataModel"
           },
           "endPosition": {
-            "$ref": "#/components/schemas/MessagePosition"
+            "$ref": "#/components/schemas/PositionDataModel"
           },
           "duration": {
             "type": "number",
@@ -3397,7 +3398,7 @@
           }
         }
       },
-      "ListOfAssetUser": {
+      "ListModelOfAssetUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3407,12 +3408,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AssetUser"
+              "$ref": "#/components/schemas/AssetUserModel"
             }
           }
         }
       },
-      "AssetUser": {
+      "AssetUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3422,6 +3423,9 @@
           "createdDate"
         ],
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "email": {
             "type": "string",
             "minLength": 1
@@ -3431,6 +3435,7 @@
           },
           "userId": {
             "type": "string",
+            "format": "guid",
             "minLength": 1
           },
           "createdDate": {
@@ -3452,7 +3457,7 @@
           "Viewer"
         ]
       },
-      "CreateAssetUser": {
+      "CreateAssetUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3469,7 +3474,7 @@
           }
         }
       },
-      "ListOfDeviceType": {
+      "ListModelOfDeviceTypeModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3479,7 +3484,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DeviceType"
+              "$ref": "#/components/schemas/DeviceTypeModel"
             }
           }
         }
@@ -3529,7 +3534,7 @@
           }
         }
       },
-      "ListOfOrganization": {
+      "ListModelOfOrganizationModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3539,12 +3544,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Organization"
+              "$ref": "#/components/schemas/OrganizationModel"
             }
           }
         }
       },
-      "Organization": {
+      "OrganizationModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3577,7 +3582,7 @@
           }
         }
       },
-      "CreateOrganization": {
+      "CreateOrganizationModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3599,7 +3604,7 @@
           }
         }
       },
-      "ListOfOrganizationUser": {
+      "ListModelOfOrganizationUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3609,12 +3614,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/OrganizationUser"
+              "$ref": "#/components/schemas/OrganizationUserModel"
             }
           }
         }
       },
-      "OrganizationUser": {
+      "OrganizationUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3654,7 +3659,7 @@
           "Member"
         ]
       },
-      "CreateOrganizationUser": {
+      "CreateOrganizationUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3671,7 +3676,7 @@
           }
         }
       },
-      "UpdateOrganizationUser": {
+      "UpdateOrganizationUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3683,7 +3688,7 @@
           }
         }
       },
-      "ListOfProtocol": {
+      "ListModelOfProtocolModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3693,12 +3698,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Protocol"
+              "$ref": "#/components/schemas/ProtocolModel"
             }
           }
         }
       },
-      "ListOfTeamAsset": {
+      "ListModelOfTeamAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3708,12 +3713,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TeamAsset"
+              "$ref": "#/components/schemas/TeamAssetModel"
             }
           }
         }
       },
-      "TeamAsset": {
+      "TeamAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3750,7 +3755,7 @@
           }
         }
       },
-      "ListOfTeam": {
+      "ListModelOfTeam": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3821,7 +3826,7 @@
           }
         }
       },
-      "ListOfTeamUser": {
+      "ListModelOfTeamUser": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3905,7 +3910,7 @@
           }
         }
       },
-      "CurrentUser": {
+      "CurrentUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3928,17 +3933,17 @@
           "assets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserAsset"
+              "$ref": "#/components/schemas/UserAssetModel"
             }
           },
           "organizations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserOrganization"
+              "$ref": "#/components/schemas/UserOrganizationModel"
             }
           },
           "authentication": {
-            "$ref": "#/components/schemas/UserAuthentication"
+            "$ref": "#/components/schemas/UserAuthenticationModel"
           }
         }
       },
@@ -3954,7 +3959,7 @@
           "Imperial"
         ]
       },
-      "UserAsset": {
+      "UserAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3971,7 +3976,7 @@
           }
         }
       },
-      "UserOrganization": {
+      "UserOrganizationModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3988,7 +3993,7 @@
           }
         }
       },
-      "UserAuthentication": {
+      "UserAuthenticationModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

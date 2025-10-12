@@ -1,7 +1,8 @@
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useMemo } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useAtom } from "jotai";
+import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
 import { speedFilterAtom } from "../locationFilterState";
@@ -11,8 +12,8 @@ type SpeedFilterBadgeProps = {
 };
 
 export function SpeedFilterBadge(props: SpeedFilterBadgeProps) {
-  const [state, setState] = useRecoilState(speedFilterAtom(props.filterKey));
-  const reset = useResetRecoilState(speedFilterAtom(props.filterKey));
+  const [state, setState] = useAtom(speedFilterAtom(props.filterKey));
+  const reset = useResetAtom(speedFilterAtom(props.filterKey));
   const units = useCurrentUnits();
 
   const text = useMemo(() => {

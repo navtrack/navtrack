@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import {
   DEFAULT_MAP_CENTER,
   GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM
@@ -12,7 +12,7 @@ export function useGeofenceFilter(
   filterKey: string,
   initialMapCenter?: LatLong
 ) {
-  const [state, setState] = useRecoilState(geofenceFilterAtom(filterKey));
+  const [state, setState] = useAtom(geofenceFilterAtom(filterKey));
 
   const close = useCallback(
     () => setState((x) => ({ ...x, open: false })),

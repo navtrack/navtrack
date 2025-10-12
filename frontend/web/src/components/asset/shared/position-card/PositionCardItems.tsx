@@ -1,4 +1,4 @@
-import { MessagePosition } from "@navtrack/shared/api/model";
+import { PositionDataModel } from "@navtrack/shared/api/model";
 import {
   showCoordinate,
   showHeading,
@@ -10,7 +10,7 @@ import { GoogleMapsIconLink } from "../../../ui/helpers/GoogleMapsIconLink";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 type PositionCardItemsProps = {
-  position: MessagePosition;
+  position: PositionDataModel;
 };
 
 export function PositionCardItems(props: PositionCardItemsProps) {

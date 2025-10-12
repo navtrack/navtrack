@@ -1,0 +1,15 @@
+services:
+  build_test:
+    build:
+      dockerfile: Dockerfile.test
+      context: .
+    container_name: navtrack-build-test
+    entrypoint: dotnet
+    command: test
+    working_dir: /src
+    # Enable this if you are using Docker Desktop
+    # environment:
+    #   - TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal
+    volumes:
+      # - ~/.docker/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock

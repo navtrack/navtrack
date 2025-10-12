@@ -108,7 +108,7 @@ export function SettingsAccountPage() {
                   size="lg"
                   type="submit"
                   disabled={!user}
-                  isLoading={updateUserMutation.isLoading}>
+                  isLoading={updateUserMutation.isPending}>
                   <FormattedMessage id="generic.save" />
                 </Button>
               </CardFooter>

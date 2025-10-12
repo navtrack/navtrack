@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Teams;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Teams;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -16,8 +16,8 @@ namespace Navtrack.Api.Services.Teams;
 public class DeleteTeamUserRequestHandler(ITeamRepository teamRepository, IUserRepository userRepository)
     : BaseRequestHandler<DeleteTeamUserRequest>
 {
-    private TeamDocument? team;
-    private UserDocument? user;
+    private TeamEntity? team;
+    private UserEntity? user;
     
     public override async Task Validate(RequestValidationContext<DeleteTeamUserRequest> context)
     {
@@ -27,8 +27,8 @@ public class DeleteTeamUserRequestHandler(ITeamRepository teamRepository, IUserR
         user = await userRepository.GetById(context.Request.UserId);
         user.Return404IfNull();
         
-        UserTeamElement? userTeam = user.Teams?.FirstOrDefault(x => x.TeamId == team.Id);
-        userTeam.Return404IfNull();
+        bool hasTeam = user.Teams.All(x => x.Id != team.Id);
+        hasTeam.Return404IfTrue();
     }
 
     public override async Task Handle(DeleteTeamUserRequest source)
@@ -41,8 +41,8 @@ public class DeleteTeamUserRequestHandler(ITeamRepository teamRepository, IUserR
     {
         return new TeamUserDeletedEvent
         {
-            TeamId = request.TeamId,
-            UserId = request.UserId
+            TeamId = team!.Id.ToString(),
+            UserId = user!.Id.ToString()
         };
     }
 }

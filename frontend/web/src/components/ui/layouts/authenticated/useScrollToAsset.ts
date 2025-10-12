@@ -1,10 +1,10 @@
-import { Asset } from "@navtrack/shared/api/model";
+import { AssetModel } from "@navtrack/shared/api/model";
 import { scrollToAssetAtom } from "@navtrack/shared/state/assets";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 
-export function useScrollToAsset(asset?: Asset) {
-  const [scrollToAsset, setScrollToAsset] = useRecoilState(scrollToAssetAtom);
+export function useScrollToAsset(asset?: AssetModel) {
+  const [scrollToAsset, setScrollToAsset] = useAtom(scrollToAssetAtom);
   const elementRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {

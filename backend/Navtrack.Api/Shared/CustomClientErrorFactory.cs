@@ -19,7 +19,7 @@ public class CustomClientErrorFactory : IClientErrorFactory
         ProblemDetails problemDetails =
             problemDetailsFactory.CreateProblemDetails(actionContext.HttpContext, clientError.StatusCode);
 
-        Error model = ErrorMapper.Map(problemDetails);
+        ErrorModel model = ErrorMapper.Map(problemDetails);
 
         return new JsonResult(model)
         {

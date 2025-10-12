@@ -7,13 +7,13 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.User;
 
-[Service(typeof(IRequestHandler<GetCurrentUserRequest,CurrentUser>))]
+[Service(typeof(IRequestHandler<GetCurrentUserRequest,CurrentUserModel>))]
 public class GetCurrentUserRequestHandler(INavtrackContextAccessor navtrackContextAccessor)
-    : BaseRequestHandler<GetCurrentUserRequest, CurrentUser>
+    : BaseRequestHandler<GetCurrentUserRequest, CurrentUserModel>
 {
-    public override Task<CurrentUser> Handle(GetCurrentUserRequest request)
+    public override Task<CurrentUserModel> Handle(GetCurrentUserRequest request)
     {
-        CurrentUser result = CurrentUserMapper.Map(navtrackContextAccessor.NavtrackContext.User);
+        CurrentUserModel result = CurrentUserMapper.Map(navtrackContextAccessor.NavtrackContext.User);
 
         return Task.FromResult(result);
     }

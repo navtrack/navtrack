@@ -21,7 +21,7 @@ public class MeiligaoProtocolTests : BaseProtocolTests<MeiligaoProtocol, Meiliga
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV2_LocationIsParsed()
     {
@@ -30,7 +30,7 @@ public class MeiligaoProtocolTests : BaseProtocolTests<MeiligaoProtocol, Meiliga
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV3_LocationIsParsed()
     {

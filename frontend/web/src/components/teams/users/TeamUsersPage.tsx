@@ -46,7 +46,7 @@ export function TeamUsersPage() {
         <>
           <UpdateTeamUserModal user={user} teamId={team.data?.id} />
           <DeleteModal
-            isLoading={deleteUser.isLoading}
+            isLoading={deleteUser.isPending}
             onConfirm={(close) => {
               if (team.data) {
                 return deleteUser.mutateAsync(

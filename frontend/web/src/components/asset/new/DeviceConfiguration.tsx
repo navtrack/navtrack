@@ -1,9 +1,9 @@
-import { DeviceType } from "@navtrack/shared/api/model";
+import { DeviceTypeModel } from "@navtrack/shared/api/model";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { FormattedMessage } from "react-intl";
 
 type DeviceConfigurationProps = {
-  deviceType?: DeviceType;
+  deviceType?: DeviceTypeModel;
   className?: string;
 };
 

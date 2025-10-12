@@ -31,7 +31,7 @@ public class SanavProtocolTests : BaseProtocolTests<GotopProtocol, GotopMessageH
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV4_LocationIsParsed()
     {

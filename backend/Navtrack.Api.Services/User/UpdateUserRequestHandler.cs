@@ -4,8 +4,8 @@ using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.User;

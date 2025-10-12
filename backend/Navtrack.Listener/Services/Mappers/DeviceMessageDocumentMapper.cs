@@ -1,39 +1,39 @@
 using System;
-using MongoDB.Bson;
-using Navtrack.DataAccess.Model.Devices.Messages;
-using Navtrack.Listener.Models;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Listener.Services.Mappers;
 
 public static class DeviceMessageDocumentMapper
 {
-    public static DeviceMessageDocument Map(Device device, ObjectId connectionId, DeviceMessageDocument destination)
+    public static DeviceMessageEntity Map(Guid assetId, Guid deviceId, Guid connectionId,
+        DeviceMessageEntity destination)
     {
         destination.ConnectionId = connectionId;
         destination.CreatedDate = DateTime.UtcNow;
-        destination.Metadata = PositionMetadataElementMapper.Map(device);
+        destination.AssetId = assetId;
+        destination.DeviceId = deviceId;
         
-        DeviceMessageDocument cleaned = Clean(destination);
+        // DeviceMessageEntity cleaned = Clean(destination);
 
-        return cleaned;
+        return destination;
     }
 
-    private static DeviceMessageDocument Clean(DeviceMessageDocument destination)
+    private static DeviceMessageEntity Clean(DeviceMessageEntity destination)
     {
-        destination.Position = PositionElementMapper.Map(destination.Position);
-        destination.Device = DeviceElementMapper.Map(destination.Device);
-        destination.Vehicle = VehicleElementMapper.Map(destination.Vehicle);
-        destination.Gsm = GsmElementMapper.Map(destination.Gsm);
-
-        if (destination.AdditionalData?.Count == 0)
-        {
-            destination.AdditionalData = null;
-        }
-
-        if (destination.AdditionalDataUnhandled?.Count == 0)
-        {
-            destination.AdditionalDataUnhandled = null;
-        }
+        // destination.Position = DeviceMessageEntityMapper.Map(destination.Position);
+        // destination.Device = DeviceElementMapper.Map(destination.Device);
+        // destination.Vehicle = VehicleElementMapper.Map(destination.Vehicle);
+        // destination.Gsm = GsmElementMapper.Map(destination.Gsm);
+        //
+        // if (destination.AdditionalData?.Count == 0)
+        // {
+        //     destination.AdditionalData = null;
+        // }
+        //
+        // if (destination.AdditionalDataUnhandled?.Count == 0)
+        // {
+        //     destination.AdditionalDataUnhandled = null;
+        // }
 
         return destination;
     }

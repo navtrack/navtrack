@@ -1,6 +1,6 @@
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useFixtureInput } from "react-cosmos/client";
-import { useSetRecoilState } from "recoil";
+import { useSetAtom } from "jotai";
 import { DEFAULT_MAP_CENTER } from "../../../../constants";
 import { Modal } from "../../modal/Modal";
 import { Map } from "../Map";
@@ -15,7 +15,7 @@ export default {
     );
   },
   "With vector tiles": () => {
-    const setAppConfig = useSetRecoilState(appConfigAtom);
+    const setAppConfig = useSetAtom(appConfigAtom);
 
     setAppConfig((prev) => ({
       ...prev,

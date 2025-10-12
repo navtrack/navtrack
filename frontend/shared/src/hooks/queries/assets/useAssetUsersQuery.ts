@@ -1,4 +1,7 @@
-import { useAssetsUsersGetList } from "../../../api";
+import {
+  getAssetsUsersGetListQueryKey,
+  useAssetsUsersGetList
+} from "../../../api";
 
 type UseAssetUsersQueryProps = {
   assetId: string;
@@ -7,6 +10,7 @@ type UseAssetUsersQueryProps = {
 export const useAssetUsersQuery = (props: UseAssetUsersQueryProps) => {
   const query = useAssetsUsersGetList(props.assetId, {
     query: {
+      queryKey: getAssetsUsersGetListQueryKey(`${props.assetId}`),
       refetchOnWindowFocus: false
     }
   });

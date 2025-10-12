@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <ItemGroup>
-        <PackageReference Include="NSwag.AspNetCore" Version="14.1.0"/>
+        <PackageReference Include="NSwag.AspNetCore" Version="14.6.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSwag.MSBuild" Version="14.1.0">
+        <PackageReference Include="NSwag.MSBuild" Version="14.6.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -12,10 +12,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Navtrack.Api.Services\Navtrack.Api.Services.csproj"/>
+        <ProjectReference Include="..\Navtrack.Database.Model\Navtrack.Database.Model.csproj"/>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-        <Exec Command="$(NSwagExe_Net80) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)"/>
+        <Exec Command="$(NSwagExe_Net90) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)"/>
         <Exec Command="npm run generate" WorkingDirectory="../../frontend/shared"/>
     </Target>
 </Project>

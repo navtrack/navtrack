@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Helpers.Crc;
 using Navtrack.Listener.Server;
@@ -11,18 +11,18 @@ namespace Navtrack.Listener.Protocols.Satellite;
 [Service(typeof(ICustomMessageHandler<SatelliteProtocol>))]
 public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
 {
-    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
         short checksum = input.DataMessage.ByteReader.Get<short>();
         short preamble = input.DataMessage.ByteReader.Get<short>();
         long id = input.DataMessage.ByteReader.Get<int>();
         short length = input.DataMessage.ByteReader.Get<short>();
 
-        List<DeviceMessageDocument> positions = [];
+        List<DeviceMessageEntity> positions = [];
 
         while (input.DataMessage.ByteReader.BytesLeft > 0)
         {
-            DeviceMessageDocument deviceMessageDocument = Position(input, id);
+            DeviceMessageEntity deviceMessageDocument = Position(input, id);
 
             positions.Add(deviceMessageDocument);
         }
@@ -42,7 +42,7 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
         input.NetworkStream.Write(HexUtil.ConvertHexStringToByteArray(response));
     }
 
-    private static DeviceMessageDocument Position(MessageInput input, long id)
+    private static DeviceMessageEntity Position(MessageInput input, long id)
     {
         short checksum = input.DataMessage.ByteReader.Get<short>();
         short preamble = input.DataMessage.ByteReader.Get<short>();
@@ -50,20 +50,17 @@ public class SatelliteMessageHandler : BaseMessageHandler<SatelliteProtocol>
         int length = input.DataMessage.ByteReader.Get<short>();
 
         input.ConnectionContext.SetDevice($"{id}");
-            
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = new PositionElement()
-        };
 
-        deviceMessageDocument.Position.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
-        deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-        deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-        deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>() * 0.01f;
-        deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get<short>();
-        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get<short>();
-        deviceMessageDocument.Position.Valid = input.DataMessage.ByteReader.GetOne() > 0;
-        deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
+        DeviceMessageEntity deviceMessageDocument = new();
+
+        deviceMessageDocument.Date = DateTime.UnixEpoch.AddSeconds(input.DataMessage.ByteReader.Get<int>());
+        deviceMessageDocument.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+        deviceMessageDocument.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+        deviceMessageDocument.Speed = (input.DataMessage.ByteReader.Get<short>() * 0.01f).ToShort();
+        deviceMessageDocument.Altitude = input.DataMessage.ByteReader.Get<short>();
+        deviceMessageDocument.Heading = input.DataMessage.ByteReader.Get<short>();
+        deviceMessageDocument.Valid = input.DataMessage.ByteReader.GetOne() > 0;
+        deviceMessageDocument.Satellites = input.DataMessage.ByteReader.GetOne();
 
         byte @event = input.DataMessage.ByteReader.GetOne();
 

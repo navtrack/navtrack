@@ -1,4 +1,4 @@
-import { LatLong } from "@navtrack/shared/api/model";
+import { LatLong } from "../../../api/model";
 import { useGeocodeReverseQuery } from "../../../hooks/queries/geocode/useGeocodeReverseQuery";
 import { Fragment } from "react";
 

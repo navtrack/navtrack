@@ -1,29 +1,58 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Navtrack.DataAccess.Mongo;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Navtrack.Database.Model;
+using Testcontainers.PostgreSql;
 
 namespace Navtrack.Api.Tests.Helpers;
 
-public class BaseTestFixture : IDisposable
+public class BaseTestFixture : IAsyncLifetime
 {
     protected internal TestWebApplicationFactory<Program> Factory = null!;
-    public bool DatabaseSeeded { get; set; }
-    private readonly string databaseName = $"navtrack-test-{Guid.NewGuid():N}" ;
 
-    public void Initialize(BaseTestFixtureOptions options)
+    private PostgreSqlContainer postgreSqlContainer;
+
+    private const string DatabaseName = "navtrack-test";
+
+    public async Task InitializeAsync()
     {
+        postgreSqlContainer = new PostgreSqlBuilder()
+            .WithDatabase(DatabaseName)
+            .WithUsername("navtrack-test")
+            .WithPassword("navtrack-test")
+            .WithImage("imresamu/postgis:17-3.5.2-alpine3.21")
+            .WithCleanUp(true)
+            .Build();
+
+        await postgreSqlContainer.StartAsync();
+
         Factory = new TestWebApplicationFactory<Program>(new TestWebApplicationFactoryOptions
         {
-            AuthenticatedUserId = options.AuthenticatedUserId,
-            DatabaseName = databaseName
+            AuthenticatedUserId = DatabaseSeed.AuthenticatedUser.Id.ToString(),
+            ConnectionString = postgreSqlContainer.GetConnectionString()
         });
+
+        await SeedDatabase();
     }
 
-    public void Dispose()
+    public async Task DisposeAsync()
     {
-        IServiceScope serviceProvider = Factory.Services.CreateScope();
-        IMongoDatabaseProvider? mongoDatabaseFactory =
-            serviceProvider.ServiceProvider.GetService<IMongoDatabaseProvider>();
-        mongoDatabaseFactory?.DropDatabase();
+        await postgreSqlContainer.DisposeAsync();
+    }
+
+    private async Task SeedDatabase()
+    {
+        DbContextOptions<NavtrackDbContext> options = new DbContextOptionsBuilder<NavtrackDbContext>()
+            .UseNpgsql(postgreSqlContainer.GetConnectionString())
+            .Options;
+
+        NavtrackDbContext dbContext = new(options);
+        await dbContext.Database.EnsureCreatedAsync();
+        
+        dbContext.Add(DatabaseSeed.Organization);
+        dbContext.Add(DatabaseSeed.Asset);
+        dbContext.Add(DatabaseSeed.Device);
+        dbContext.Add(DatabaseSeed.AuthenticatedUser);
+
+        await dbContext.SaveChangesAsync();
     }
 }

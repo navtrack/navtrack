@@ -1,12 +1,13 @@
-using Protocol = Navtrack.Api.Model.Protocols.Protocol;
+using Navtrack.Api.Model.Protocols;
+using Navtrack.Database.Model.Protocols;
 
 namespace Navtrack.Api.Services.Protocols.Mappers;
 
 public static class ProtocolMapper
 {
-    public static Protocol Map(DataAccess.Model.Protocols.Protocol source)
+    public static ProtocolModel Map(Protocol source)
     {
-        return new Protocol
+        return new ProtocolModel
         {
             Name = source.Name,
             Port = source.Port

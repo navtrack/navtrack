@@ -16,7 +16,7 @@ public static class TripListMapper
             {
                 Distance = x.Distance,
                 FuelConsumption = x.FuelConsumption,
-                Positions = x.Messages.Select(y => MessagePositionMapper.Map(y.Position)).ToList()
+                Positions = x.Messages.Select(MessagePositionMapper.Map).ToList()
             })
         };
     }

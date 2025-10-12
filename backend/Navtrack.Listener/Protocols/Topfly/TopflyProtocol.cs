@@ -6,6 +6,6 @@ namespace Navtrack.Listener.Protocols.Topfly;
 [Service(typeof(IProtocol))]
 public class TopflyProtocol : BaseProtocol
 {
-    public override int Port => 7050;
+    public override short Port => 7050;
     public override byte[] MessageStart => [0x23, 0x23];
 }

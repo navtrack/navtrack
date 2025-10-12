@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 type AxiosConfig = {
   interceptor?: {
@@ -8,7 +8,4 @@ type AxiosConfig = {
   baseUrlSet: boolean;
 };
 
-export const axiosConfigAtom = atom<AxiosConfig>({
-  key: "Navtrack:Axios",
-  default: { baseUrlSet: false }
-});
+export const axiosConfigAtom = atom<AxiosConfig>({ baseUrlSet: false });

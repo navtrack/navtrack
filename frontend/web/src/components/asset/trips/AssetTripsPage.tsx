@@ -1,7 +1,7 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Card } from "../../ui/card/Card";
 import { Icon } from "../../ui/icon/Icon";
@@ -12,7 +12,7 @@ import { PositionCardItems } from "../shared/position-card/PositionCardItems";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { MessagePosition, Trip } from "@navtrack/shared/api/model";
+import { PositionDataModel, Trip } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useTripsQuery } from "@navtrack/shared/hooks/queries/assets/useTripsQuery";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
@@ -39,14 +39,14 @@ export function AssetTripsPage() {
   );
 
   const [reverseGeocodePosition, setReverseGeocodePosition] = useState<
-    MessagePosition | undefined
+    PositionDataModel | undefined
   >(selectedTripPosition);
 
   const [showPin, setShowPin] = useState(false);
 
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("trips");
-  const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
+  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
   const query = useTripsQuery({ assetId: currentAsset.data?.id, ...filters });
   const hasTrips = (query.data?.items.length ?? 0) > 0;
 

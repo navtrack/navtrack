@@ -4,7 +4,7 @@ namespace Navtrack.Api.Services.Assets.Mappers;
 
 public static class CreateAssetMapper
 {
-    public static void Map(CreateAsset source)
+    public static void Map(CreateAssetModel source)
     {
         source.Name = source.Name.Trim();
     }

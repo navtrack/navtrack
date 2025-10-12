@@ -6,10 +6,10 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Api.Services.Teams.Mappers;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Services.Organizations;
-using Navtrack.DataAccess.Services.Teams;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Services.Organizations;
+using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -22,7 +22,7 @@ public class CreateTeamRequestHandler(
     INavtrackContextAccessor navtrackContextAccessor)
     : BaseRequestHandler<CreateTeamRequest, Team>
 {
-    private OrganizationDocument? organization;
+    private OrganizationEntity? organization;
 
     public override async Task Validate(RequestValidationContext<CreateTeamRequest> context)
     {
@@ -37,7 +37,7 @@ public class CreateTeamRequestHandler(
 
     public override async Task<Team> Handle(CreateTeamRequest request)
     {
-        TeamDocument team = TeamDocumentMapper.Map(request.Model, request.OrganizationId,
+        TeamEntity team = TeamEntityMapper.Map(request.Model, organization.Id,
             navtrackContextAccessor.NavtrackContext.User.Id);
 
         await teamRepository.Add(team);
@@ -53,7 +53,7 @@ public class CreateTeamRequestHandler(
         return new TeamCreatedEvent
         {
             TeamId = result.Id,
-            OrganizationId = request.OrganizationId
+            OrganizationId = organization!.Id.ToString()
         };
     }
 }

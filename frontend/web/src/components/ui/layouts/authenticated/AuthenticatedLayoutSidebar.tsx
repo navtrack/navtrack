@@ -71,7 +71,7 @@ export function AuthenticatedLayoutSidebar() {
             <LoadingIndicator className="mt-2 text-gray-300" size="lg" />
           ) : (
             <>
-              {assetsQuery.data?.items.length ? (
+              {(assetsQuery.data?.items ?? []).length ? (
                 assetsQuery.data?.items.map((asset) => (
                   <AuthenticatedLayoutSidebarItem
                     key={asset.id}

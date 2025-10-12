@@ -22,7 +22,7 @@ public class ArknavProtocolTests : BaseProtocolTests<ArknavProtocol, ArknavMessa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV3_LocationIsParsed()
     {

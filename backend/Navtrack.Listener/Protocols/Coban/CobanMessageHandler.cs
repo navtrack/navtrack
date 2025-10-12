@@ -1,6 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -11,14 +11,14 @@ namespace Navtrack.Listener.Protocols.Coban;
 [Service(typeof(ICustomMessageHandler<CobanProtocol>))]
 public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = Parse(input, Authentication, Heartbeat, Location);
+        DeviceMessageEntity deviceMessageDocument = Parse(input, Authentication, Heartbeat, Location);
 
         return deviceMessageDocument;
     }
 
-    private static DeviceMessageDocument Authentication(MessageInput input)
+    private static DeviceMessageEntity? Authentication(MessageInput input)
     {
         try
         {
@@ -42,7 +42,7 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
         return null;
     }
 
-    private static DeviceMessageDocument Heartbeat(MessageInput input)
+    private static DeviceMessageEntity? Heartbeat(MessageInput input)
     {
         if (StringUtil.IsDigitsOnly(input.DataMessage.String))
         {
@@ -52,29 +52,26 @@ public class CobanMessageHandler : BaseMessageHandler<CobanProtocol>
         return null;
     }
 
-    private static DeviceMessageDocument Location(MessageInput input)
+    private static DeviceMessageEntity Location(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit.Get<string>(0).Replace("imei:", Empty));
 
-        DeviceMessageDocument deviceMessageDocument = new()
+        DeviceMessageEntity deviceMessage = new()
         {
-            // Device = input.ConnectionContext.Device,
-            Position = new PositionElement
-            {
-                Date = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
-                Valid = input.DataMessage.CommaSplit.Get<string>(4) == "F",
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
-                    input.DataMessage.CommaSplit[8]),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
-                    input.DataMessage.CommaSplit[10]),
-                Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(11)),
-                Heading = input.DataMessage.CommaSplit.Get<string>(12) != "1"
-                    ? input.DataMessage.CommaSplit.Get<float?>(12)
-                    : null,
-                Altitude = input.DataMessage.CommaSplit.Get<float?>(13)
-            }
+            Date = GetDate(input.DataMessage.CommaSplit.Get<string>(2)),
+            Valid = input.DataMessage.CommaSplit.Get<string>(4) == "F",
+            Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
+                input.DataMessage.CommaSplit[8]),
+            Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
+                input.DataMessage.CommaSplit[10]),
+            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(11)),
+            Heading = input.DataMessage.CommaSplit.Get<string>(12) != "1"
+                ? input.DataMessage.CommaSplit.Get<short?>(12)
+                : null,
+            Altitude = input.DataMessage.CommaSplit.Get<short?>(13)
         };
-        return deviceMessageDocument;
+        
+        return deviceMessage;
     }
 
     private static DateTime GetDate(string date)

@@ -4,10 +4,10 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Organizations.Events;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Organizations;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Organizations;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -19,9 +19,9 @@ public class UpdateOrganizationUserRequestHandler(
     IUserRepository userRepository)
     : BaseRequestHandler<UpdateOrganizationUserRequest>
 {
-    private OrganizationDocument? organization;
-    private UserDocument? user;
-    private UserOrganizationElement? userOrganization;
+    private OrganizationEntity? organization;
+    private UserEntity? user;
+    private OrganizationUserEntity? userOrganization;
 
     public override async Task Validate(RequestValidationContext<UpdateOrganizationUserRequest> context)
     {
@@ -31,8 +31,7 @@ public class UpdateOrganizationUserRequestHandler(
         user = await userRepository.GetById(context.Request.UserId);
         user.Return404IfNull();
 
-        userOrganization =
-            user.Organizations?.FirstOrDefault(x => x.OrganizationId == organization.Id);
+        userOrganization = user.OrganizationUsers.FirstOrDefault(x => x.OrganizationId == organization.Id);
         userOrganization.Return404IfNull();
 
         int ownersCount = await userRepository.GetOrganizationOwnersCount(organization.Id);
@@ -59,7 +58,7 @@ public class UpdateOrganizationUserRequestHandler(
         return new UserOrganizationUpdatedEvent
         {
             UserId = user!.Id.ToString(),
-            OrganizationId = userOrganization!.OrganizationId.ToString()
+            OrganizationId = request.OrganizationId
         };
     }
 }

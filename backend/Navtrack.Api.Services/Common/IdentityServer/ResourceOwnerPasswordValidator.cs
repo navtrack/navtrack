@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using IdentityServer4.Validation;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Passwords;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Common.IdentityServer;
@@ -13,9 +13,9 @@ public class ResourceOwnerPasswordValidator(IPasswordHasher hasher, IUserReposit
 {
     public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
     {
-        UserDocument? user = await repository.GetByEmail(context.UserName);
+        UserEntity? user = await repository.GetByEmail(context.UserName);
 
-        if (user is { Password: not null } && hasher.CheckPassword(context.Password, user.Password.Hash, user.Password.Salt))
+        if (user != null && hasher.CheckPassword(context.Password, user.PasswordHash, user.PasswordSalt))
         {
             context.Result = new GrantValidationResult(user.Id.ToString(), "custom", []);
         }

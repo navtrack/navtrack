@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { CreateOrganizationUserModal } from "./CreateOrganizationUserModal";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 import { Heading } from "../ui/heading/Heading";
-import { OrganizationUser } from "@navtrack/shared/api/model";
+import { OrganizationUserModel } from "@navtrack/shared/api/model";
 import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";
@@ -24,7 +24,7 @@ export function OrganizationUsersPage() {
   const show = useShow();
   const { showNotification } = useNotification();
 
-  const columns: ITableColumn<OrganizationUser>[] = [
+  const columns: ITableColumn<OrganizationUserModel>[] = [
     { labelId: "generic.email", row: (user) => user.email },
     {
       labelId: "generic.added-on",
@@ -37,7 +37,7 @@ export function OrganizationUsersPage() {
         <>
           <UpdateOrganizationUserModal user={user} />
           <DeleteModal
-            isLoading={deleteUser.isLoading}
+            isLoading={deleteUser.isPending}
             onConfirm={() => {
               if (currentUser.data && currentOrganization.data) {
                 return deleteUser.mutateAsync(

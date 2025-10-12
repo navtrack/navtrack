@@ -13,7 +13,7 @@ public class GPRMC
     public float? Heading { get; set; }
 
     // Input example: $GPRMC,102156.000,A,2232.4690,N,11403.6847,E,0.00,,180909,,*15
-    public static GPRMC Parse(string input)
+    public static GPRMC? Parse(string input)
     {
         Match match = new Regex("(\\d{2}\\d{2}\\d{2}.\\d+)," + // dd mm yy
                                 "(A|V)," + // gps fix

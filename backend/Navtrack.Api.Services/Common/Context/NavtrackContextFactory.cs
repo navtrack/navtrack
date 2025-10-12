@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Common.IdentityServer;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Common.Context;
@@ -30,11 +30,11 @@ public class NavtrackContextFactory(
         }
     }
 
-    private async Task<UserDocument?> GetUser()
+    private async Task<UserEntity?> GetUser()
     {
         string? userId = httpContextAccessor.HttpContext?.User.GetId();
 
-        UserDocument? user = userId != null ? await userRepository.GetById(userId) : null;
+        UserEntity? user = await userRepository.GetById(userId);
 
         return user;
     }

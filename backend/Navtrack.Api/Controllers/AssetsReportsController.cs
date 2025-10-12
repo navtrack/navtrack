@@ -8,7 +8,7 @@ using Navtrack.Api.Model.Reports;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Reports;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;
@@ -20,13 +20,13 @@ public class AssetsReportsController(IRequestHandler requestHandler)
     : ControllerBase
 {
     [HttpGet(ApiPaths.AssetReportsDistance)]
-    [ProducesResponseType(typeof(DistanceReport), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DistanceReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<DistanceReport> GetDistanceReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilter filter)
+    public async Task<DistanceReportModel> GetDistanceReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilterModel filter)
     {
-        DistanceReport result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReport>(
+        DistanceReportModel result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReportModel>(
             new GetDistanceReportRequest
             {
                 AssetId = assetId,
@@ -37,13 +37,13 @@ public class AssetsReportsController(IRequestHandler requestHandler)
     }
     
     [HttpGet(ApiPaths.AssetReportsFuelConsumption)]
-    [ProducesResponseType(typeof(FuelConsumptionReport), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(FuelConsumptionReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<FuelConsumptionReport> GetFuelConsumptionReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilter filter)
+    public async Task<FuelConsumptionReportModel> GetFuelConsumptionReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilterModel filter)
     {
-        FuelConsumptionReport result = await requestHandler.Handle<GetFuelConsumptionReportRequest, FuelConsumptionReport>(
+        FuelConsumptionReportModel result = await requestHandler.Handle<GetFuelConsumptionReportRequest, FuelConsumptionReportModel>(
             new GetFuelConsumptionReportRequest
             {
                 AssetId = assetId,
@@ -54,13 +54,13 @@ public class AssetsReportsController(IRequestHandler requestHandler)
     }
     
     [HttpGet(ApiPaths.AssetReportsTrips)]
-    [ProducesResponseType(typeof(TripReport), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TripReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<TripReport> GetTripReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilter filter)
+    public async Task<TripReportModel> GetTripReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilterModel filter)
     {
-        TripReport result = await requestHandler.Handle<GetTripReportRequest, TripReport>(
+        TripReportModel result = await requestHandler.Handle<GetTripReportRequest, TripReportModel>(
             new GetTripReportRequest
             {
                 AssetId = assetId,

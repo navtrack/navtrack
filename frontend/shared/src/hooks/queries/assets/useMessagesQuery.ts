@@ -1,4 +1,7 @@
-import { useAssetsMessagesGetList } from "../../../api";
+import {
+  getAssetsMessagesGetListQueryKey,
+  useAssetsMessagesGetList
+} from "../../../api";
 
 export type UsePositionsQueryProps = {
   assetId?: string;
@@ -29,6 +32,17 @@ export function useMessagesQuery(props: UsePositionsQueryProps) {
     },
     {
       query: {
+        queryKey: getAssetsMessagesGetListQueryKey(props.assetId as string, {
+          StartDate: props.startDate,
+          EndDate: props.endDate,
+          MinSpeed: props.minSpeed,
+          MaxSpeed: props.maxSpeed,
+          MinAltitude: props.minAltitude,
+          MaxAltitude: props.maxAltitude,
+          Latitude: props.latitude,
+          Longitude: props.longitude,
+          Radius: props.radius
+        }),
         enabled: !!props.assetId,
         refetchOnWindowFocus: false
       }

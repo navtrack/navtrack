@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Listener.Services.Mappers;
@@ -11,80 +11,67 @@ namespace Navtrack.Listener.Protocols.Megastek;
 [Service(typeof(ICustomMessageHandler<MegastekProtocol>))]
 public class MegastekMessageHandler : BaseMessageHandler<MegastekProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = Parse(input, Parse_V1, Parse_V2, Parse_V3);
+        DeviceMessageEntity deviceMessage = Parse(input, Parse_V1, Parse_V2, Parse_V3);
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument Parse_V1(MessageInput input)
+    private static DeviceMessageEntity Parse_V1(MessageInput input)
     {
-        GPRMC gprmc = GPRMC.Parse(string.Join(",", input.DataMessage.CommaSplit.Skip(2).Take(13)));
+        GPRMC? gprmc = GPRMC.Parse(string.Join(",", input.DataMessage.CommaSplit.Skip(2).Take(13)));
 
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[17].Replace("imei:", string.Empty));
 
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = PositionElementMapper.Map(gprmc),
-        };
+        DeviceMessageEntity deviceMessage = new();
 
-        deviceMessageDocument.Position.Satellites = input.DataMessage.CommaSplit.Get<short>(18);
-        deviceMessageDocument.Position.Altitude = input.DataMessage.CommaSplit.Get<float?>(19);
+        DeviceMessageEntityMapper.Map(gprmc, deviceMessage);
 
-        return deviceMessageDocument;
+        deviceMessage.Satellites = input.DataMessage.CommaSplit.Get<short>(18);
+        deviceMessage.Altitude = input.DataMessage.CommaSplit.Get<short?>(19);
+
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument Parse_V2(MessageInput input)
+    private static DeviceMessageEntity Parse_V2(MessageInput input)
     {
         string imei = input.DataMessage.Reader.Skip(3).Get(16).Replace(" ", string.Empty);
 
-        GPRMC gprmc = GPRMC.Parse(input.DataMessage.Reader.Skip(2).GetUntil('*', 3));
+        GPRMC? gprmc = GPRMC.Parse(input.DataMessage.Reader.Skip(2).GetUntil('*', 3));
 
         input.ConnectionContext.SetDevice(imei);
 
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            Position = PositionElementMapper.Map(gprmc),
-            Gsm = new GsmElement()
-        };
+        DeviceMessageEntity deviceMessage = new();
 
-        // deviceMessageDocument.Device = input.ConnectionContext.Device,
-        deviceMessageDocument.Gsm.SignalStrength = input.DataMessage.CommaSplit.Get<short?>(17);
+        DeviceMessageEntityMapper.Map(gprmc, deviceMessage);
 
-        return deviceMessageDocument;
+        deviceMessage.GSMSignalStrength = input.DataMessage.CommaSplit.Get<short?>(17);
+
+        return deviceMessage;
     }
 
-    private static DeviceMessageDocument Parse_V3(MessageInput input)
+    private static DeviceMessageEntity Parse_V3(MessageInput input)
     {
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
 
-        DeviceMessageDocument deviceMessageDocument = new()
+        DeviceMessageEntity deviceMessage = new()
         {
-            Position = new PositionElement
-            {
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
-                    input.DataMessage.CommaSplit[8]),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
-                    input.DataMessage.CommaSplit[10]),
-                Date = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
-                Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
-                HDOP = input.DataMessage.CommaSplit.Get<float?>(14),
-                Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(15)),
-                Heading = input.DataMessage.CommaSplit.Get<float?>(16),
-                Altitude = input.DataMessage.CommaSplit.Get<float?>(17),
-            },
-            Device = new DeviceElement
-            {
-                Odometer = input.DataMessage.CommaSplit.Get<int?>(18) * 1000,
-            },
-            Gsm = new GsmElement
-            {
-                SignalStrength = input.DataMessage.CommaSplit.Get<short?>(23)
-            }
+            Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[7],
+                input.DataMessage.CommaSplit[8]),
+            Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[9],
+                input.DataMessage.CommaSplit[10]),
+            Date = GetDate(input.DataMessage.CommaSplit[4], input.DataMessage.CommaSplit[5]),
+            Satellites = input.DataMessage.CommaSplit.Get<short?>(12),
+            HDOP = input.DataMessage.CommaSplit.Get<float?>(14),
+            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(15)),
+            Heading = input.DataMessage.CommaSplit.Get<short?>(16),
+            Altitude = input.DataMessage.CommaSplit.Get<short?>(17),
+            DeviceOdometer = input.DataMessage.CommaSplit.Get<int?>(18) * 1000,
+            GSMSignalStrength = input.DataMessage.CommaSplit.Get<short?>(23)
         };
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     private static DateTime GetDate(string date, string time)

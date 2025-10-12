@@ -2,10 +2,10 @@ import { useAssetReportFuelConsumptionQuery } from "@navtrack/shared/hooks/queri
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
-import { FuelConsumptionReportItem } from "@navtrack/shared/api/model";
+import { FuelConsumptionReportItemModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { FormattedMessage } from "react-intl";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 
@@ -13,7 +13,7 @@ export function AssetReportsFuelConsumptionPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("reports-fuel-consumption");
-  const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
+  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
   const fuelConsumptionReport = useAssetReportFuelConsumptionQuery({
     assetId: currentAsset.data?.id,
     startDate: filters.startDate,
@@ -23,7 +23,7 @@ export function AssetReportsFuelConsumptionPage() {
   return (
     <>
       <LocationFilter filterPage="reports-fuel-consumption" />
-      <TableV2<FuelConsumptionReportItem>
+      <TableV2<FuelConsumptionReportItemModel>
         className="h-full"
         columns={[
           {

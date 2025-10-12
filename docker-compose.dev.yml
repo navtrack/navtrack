@@ -1,11 +1,14 @@
 services:
   database:
-    image: mongo:7.0.5
-    restart: unless-stopped
+    image: imresamu/postgis:17-3.5.2-alpine3.21
+    restart: always
+    environment:
+      POSTGRES_USER: navtrack
+      POSTGRES_PASSWORD: navtrack
     volumes:
-      - navtrack:/data/db
+      - navtrack-database:/var/lib/postgresql/data
     ports:
-      - 27017:27017
+      - 5432:5432
 
 volumes:
-  navtrack:
+  navtrack-database:

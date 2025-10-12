@@ -1,6 +1,6 @@
 import { Heading } from "../../ui/heading/Heading";
 import { ITableColumn } from "../../ui/table/useTable";
-import { TeamAsset } from "@navtrack/shared/api/model";
+import { TeamAssetModel } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
 import { TableV2 } from "../../ui/table/TableV2";
@@ -23,7 +23,7 @@ export function TeamAssetsPage() {
   const show = useShow();
   const team = useTeamQuery({ teamId: id });
 
-  const columns: ITableColumn<TeamAsset>[] = [
+  const columns: ITableColumn<TeamAssetModel>[] = [
     {
       labelId: "generic.name",
       row: (asset) => (
@@ -43,7 +43,7 @@ export function TeamAssetsPage() {
       row: (asset) => (
         <>
           <DeleteModal
-            isLoading={deleteAsset.isLoading}
+            isLoading={deleteAsset.isPending}
             onConfirm={(close) => {
               if (team.data) {
                 return deleteAsset.mutateAsync(

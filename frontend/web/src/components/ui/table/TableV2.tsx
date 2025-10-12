@@ -71,7 +71,9 @@ export function TableV2<T>(props: TableProps<T>) {
                     }
                     props.rowClick?.(row);
                   }}
-                  ref={(el) => (table.tableRows.current[rowIndex] = el)}
+                  ref={(el) => {
+                    table.tableRows.current[rowIndex] = el;
+                  }}
                   className={classNames(
                     c(
                       table.selectionEnabled &&

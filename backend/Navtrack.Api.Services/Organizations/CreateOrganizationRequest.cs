@@ -1,10 +1,10 @@
-using MongoDB.Bson;
+using System;
 using Navtrack.Api.Model.Organizations;
 
 namespace Navtrack.Api.Services.Organizations;
 
 public class CreateOrganizationRequest
 {
-    public CreateOrganization Model { get; set; }
-    public ObjectId OwnerId { get; set; }
+    public CreateOrganizationModel Model { get; set; }
+    public Guid OwnerId { get; set; }
 }

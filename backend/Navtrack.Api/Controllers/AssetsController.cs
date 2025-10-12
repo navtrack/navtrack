@@ -7,19 +7,19 @@ using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Assets;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
+using Navtrack.Database.Model.Organizations;
 
 namespace Navtrack.Api.Controllers;
 
 public class AssetsController(IRequestHandler requestHandler) : BaseAssetsController(requestHandler)
 {
     [HttpGet(ApiPaths.OrganizationAssets)]
-    [ProducesResponseType(typeof(List<Asset>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ListModel<AssetModel>), StatusCodes.Status200OK)]
     [AuthorizeOrganization(OrganizationUserRole.Member)]
-    public async Task<List<Asset>> GetList([FromRoute] string organizationId)
+    public async Task<ListModel<AssetModel>> GetList([FromRoute] string organizationId)
     {
-        List<Asset> result =
-            await requestHandler.Handle<GetAssetsRequest, List<Asset>>(
+        ListModel<AssetModel> result =
+            await requestHandler.Handle<GetAssetsRequest, ListModel<AssetModel>>(
                 new GetAssetsRequest
                 {
                     OrganizationId = organizationId

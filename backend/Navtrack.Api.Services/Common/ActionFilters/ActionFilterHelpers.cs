@@ -10,7 +10,7 @@ public static class ActionFilterHelpers
     {
         if (httpContext.Request.Query.TryGetValue(key, out StringValues queryValue))
         {
-            return queryValue;
+            return queryValue.ToString();
         }
 
         if (httpContext.GetRouteData().Values.TryGetValue(key, out object? routeValue))

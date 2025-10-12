@@ -28,7 +28,7 @@ public class PasswordHasher : IPasswordHasher
         return (hash, salt);
     }
 
-    public bool CheckPassword(string password, string hash, string salt)
+    public bool CheckPassword(string password, string? hash, string? salt)
     {
         byte[] keyBytes = Convert.FromBase64String(hash);
         byte[] saltBytes = Convert.FromBase64String(salt);

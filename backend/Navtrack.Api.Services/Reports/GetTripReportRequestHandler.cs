@@ -6,16 +6,16 @@ using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Trips;
-using Navtrack.DataAccess.Model.Assets;
+using Navtrack.Database.Model.Assets;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Reports;
 
-[Service(typeof(IRequestHandler<GetTripReportRequest, TripReport>))]
+[Service(typeof(IRequestHandler<GetTripReportRequest, TripReportModel>))]
 public class GetTripReportRequestHandler(ITripService tripService, ICurrentContext currentContext) 
-    : BaseRequestHandler<GetTripReportRequest, TripReport>
+    : BaseRequestHandler<GetTripReportRequest, TripReportModel>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<GetTripReportRequest> context)
     {
@@ -23,7 +23,7 @@ public class GetTripReportRequestHandler(ITripService tripService, ICurrentConte
         asset.Return404IfNull();
     }
     
-    public override async Task<TripReport> Handle(GetTripReportRequest request)
+    public override async Task<TripReportModel> Handle(GetTripReportRequest request)
     {
         TripList result = await tripService.GetTrips(asset!, new TripFilter
         {
@@ -31,9 +31,9 @@ public class GetTripReportRequestHandler(ITripService tripService, ICurrentConte
             EndDate = request.Model.EndDate
         });
 
-        TripReport report = new()
+        TripReportModel report = new()
         {
-            Items = result.Items.Select(x => new TripReportItem
+            Items = result.Items.Select(x => new TripReportItemModel
             {
                 StartPosition = x.StartPosition,
                 EndPosition = x.EndPosition,

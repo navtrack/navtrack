@@ -1,5 +1,4 @@
 using System;
-using MongoDB.Bson;
 
 namespace Navtrack.Listener.Models;
 
@@ -11,7 +10,7 @@ public class Device
     }
 
     public string SerialNumber { get; init; }
-    public ObjectId? AssetId { get; set; }
-    public ObjectId? DeviceId { get; set; }
+    public Guid? AssetId { get; set; }
+    public Guid? DeviceId { get; set; }
     public DateTime? MaxDate { get; set; }
 }

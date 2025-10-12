@@ -1,31 +1,31 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.Assets.Mappers;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Devices;
-using Navtrack.DataAccess.Services.Organizations;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Devices;
+using Navtrack.Database.Services.Organizations;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Assets;
 
-[Service(typeof(IRequestHandler<GetAssetsRequest, Model.Common.List<Asset>>))]
+[Service(typeof(IRequestHandler<GetAssetsRequest, Model.Common.ListModel<AssetModel>>))]
 public class GetAssetsRequestHandler(
     INavtrackContextAccessor navtrackContextAccessor,
     IDeviceTypeRepository deviceTypeRepository,
     IAssetRepository assetRepository,
     IOrganizationRepository organizationRepository)
-    : BaseRequestHandler<GetAssetsRequest, Model.Common.List<Asset>>
+    : BaseRequestHandler<GetAssetsRequest, Model.Common.ListModel<AssetModel>>
 {
-    private OrganizationDocument? organization;
+    private OrganizationEntity? organization;
 
     public override async Task Validate(RequestValidationContext<GetAssetsRequest> context)
     {
@@ -33,9 +33,9 @@ public class GetAssetsRequestHandler(
         organization.Return404IfNull();
     }
 
-    public override async Task<Model.Common.List<Asset>> Handle(GetAssetsRequest request)
+    public override async Task<Model.Common.ListModel<AssetModel>> Handle(GetAssetsRequest request)
     {
-        List<AssetDocument> assets = await GetAssetsByOrganizationId(organization!.Id);
+        List<AssetEntity> assets = await GetAssetsByOrganizationId(organization!.Id);
 
         List<string> assetDeviceTypes =
             assets.Where(x => x.Device != null)
@@ -46,30 +46,29 @@ public class GetAssetsRequestHandler(
         IEnumerable<DeviceType> deviceTypes =
             deviceTypeRepository.GetDeviceTypes().Where(x => assetDeviceTypes.Contains(x.Id));
 
-        Model.Common.List<Asset> assetList = AssetListMapper.Map(assets, deviceTypes);
+        Model.Common.ListModel<AssetModel> assetList = AssetListMapper.Map(assets, deviceTypes);
 
         return assetList;
     }
     
-    
-    private Task<List<AssetDocument>> GetAssetsByOrganizationId(ObjectId organizationId)
+    private Task<List<AssetEntity>> GetAssetsByOrganizationId(Guid organizationId)
     {
-        if (navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(organizationId.ToString(), OrganizationUserRole.Owner))
+        if (navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(organizationId, OrganizationUserRole.Owner))
         {
             return assetRepository.GetByOrganizationId(organization!.Id);
         }
 
-        List<ObjectId> assetIds =
-            navtrackContextAccessor.NavtrackContext.User?.Assets?
+        List<Guid> assetIds =
+            navtrackContextAccessor.NavtrackContext.User?.Assets
                 .Where(x => x.OrganizationId == organization!.Id)
-                .Select(x => x.AssetId).ToList() ??
+                .Select(x => x.Id).ToList() ??
             [];
 
-        List<ObjectId> teamIds =
+        List<Guid> teamIds =
             navtrackContextAccessor.NavtrackContext.User?.Teams?
                 .Where(x => x.OrganizationId == organization!.Id)
-                .Select(x => x.TeamId).ToList() ?? [];
+                .Select(x => x.Id).ToList() ?? [];
 
-        return assetRepository.GetAssetsByAssetAndTeamIds(assetIds, teamIds);
+        return assetRepository.GetByAssetAndTeamIds(assetIds, teamIds);
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 
@@ -7,29 +7,26 @@ namespace Navtrack.Listener.Protocols.TkStar;
 
 public class BaseTkStarMessageHandler<T> : BaseMessageHandler<T>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         int timeIndex = input.DataMessage.CommaSplit[2] == "V1" || input.DataMessage.CommaSplit[2] == "V2" ? 3 : 5;
 
         input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit.Get<string>(1));
 
-        DeviceMessageDocument deviceMessageDocument = new()
+        DeviceMessageEntity deviceMessage = new()
         {
-            Position = new PositionElement
-            {
-                Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),
-                    input.DataMessage.CommaSplit.Get<string>(timeIndex + 8)),
-                Valid = input.DataMessage.CommaSplit.Get<string>(timeIndex + 1) == "A",
-                Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[timeIndex + 2],
-                    input.DataMessage.CommaSplit[timeIndex + 3]),
-                Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[timeIndex + 4],
-                    input.DataMessage.CommaSplit[timeIndex + 5]),
-                Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(timeIndex + 6)),
-                Heading = input.DataMessage.CommaSplit.Get<float?>(timeIndex + 7)
-            }
+            Date = ConvertDate(input.DataMessage.CommaSplit.Get<string>(timeIndex),
+                input.DataMessage.CommaSplit.Get<string>(timeIndex + 8)),
+            Valid = input.DataMessage.CommaSplit.Get<string>(timeIndex + 1) == "A",
+            Latitude = GpsUtil.ConvertDmmLatToDecimal(input.DataMessage.CommaSplit[timeIndex + 2],
+                input.DataMessage.CommaSplit[timeIndex + 3]),
+            Longitude = GpsUtil.ConvertDmmLongToDecimal(input.DataMessage.CommaSplit[timeIndex + 4],
+                input.DataMessage.CommaSplit[timeIndex + 5]),
+            Speed = SpeedUtil.KnotsToKph(input.DataMessage.CommaSplit.Get<float>(timeIndex + 6)),
+            Heading = input.DataMessage.CommaSplit.Get<float?>(timeIndex + 7).ToShort()
         };
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
     private static DateTime ConvertDate(string time, string date) =>

@@ -6,6 +6,6 @@ namespace Navtrack.Listener.Protocols.Bofan;
 [Service(typeof(IProtocol))]
 public class BofanProtocol : BaseProtocol
 {
-    public override int Port => 7042;
+    public override short Port => 7042;
     public override byte[] MessageStart => [0x24];
 }

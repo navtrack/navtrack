@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Navtrack.DataAccess.Model.Shared;
+using Navtrack.Database.Model.Shared;
 
 namespace Navtrack.Api.Model.User;
 

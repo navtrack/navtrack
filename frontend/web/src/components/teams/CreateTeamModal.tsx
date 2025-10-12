@@ -105,7 +105,7 @@ export function CreateTeamModal() {
                 <ModalActions cancel={() => setOpen(false)}>
                   <Button
                     type="submit"
-                    isLoading={createTeamMutation.isLoading}>
+                    isLoading={createTeamMutation.isPending}>
                     <FormattedMessage id="generic.save" />
                   </Button>
                 </ModalActions>

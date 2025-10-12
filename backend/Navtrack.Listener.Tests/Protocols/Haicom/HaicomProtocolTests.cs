@@ -22,7 +22,7 @@ public class HaicomProtocolTests : BaseProtocolTests<HaicomProtocol, HaicomMessa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV3_LocationIsParsed()
     {
@@ -31,7 +31,7 @@ public class HaicomProtocolTests : BaseProtocolTests<HaicomProtocol, HaicomMessa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV4_LocationIsParsed()
     {

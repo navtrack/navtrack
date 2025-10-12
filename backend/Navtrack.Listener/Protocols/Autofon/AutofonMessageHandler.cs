@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -11,7 +11,7 @@ namespace Navtrack.Listener.Protocols.Autofon;
 [Service(typeof(ICustomMessageHandler<AutofonProtocol>))]
 public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
 {
-    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
         MessageType type = (MessageType)input.DataMessage.ByteReader.GetOne();
 
@@ -26,7 +26,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         };
     }
 
-    private static IEnumerable<DeviceMessageDocument> HandleLoginMessage(MessageInput input, MessageType type)
+    private static IEnumerable<DeviceMessageEntity> HandleLoginMessage(MessageInput input, MessageType type)
     {
         if (type == MessageType.LoginV1)
         {
@@ -41,68 +41,59 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         return null;
     }
 
-    private static DeviceMessageDocument[] HandleLocationV1Message(MessageInput input, bool history = false)
+    private static DeviceMessageEntity[] HandleLocationV1Message(MessageInput input, bool history = false)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            // Device = input.ConnectionContext.Device,
-            Position = new PositionElement()
-        };
+        DeviceMessageEntity deviceMessage = new();
 
         input.DataMessage.ByteReader.Skip(history ? 18 : 53);
 
         int valid = input.DataMessage.ByteReader.GetOne();
-        deviceMessageDocument.Position.Valid = (valid & 0xc0) != 0;
-        deviceMessageDocument.Position.Satellites = (short?)(valid & 0x3f);
-        deviceMessageDocument.Position.Date = GetDateTime(input);
-        deviceMessageDocument.Position.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
-        deviceMessageDocument.Position.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
-        deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.GetLe<short>();
-        deviceMessageDocument.Position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
-        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetOne() * 2.0f;
-        deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessage.Valid = (valid & 0xc0) != 0;
+        deviceMessage.Satellites = (short?)(valid & 0x3f);
+        deviceMessage.Date = GetDateTime(input);
+        deviceMessage.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
+        deviceMessage.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetLe<int>());
+        deviceMessage.Altitude = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessage.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
+        deviceMessage.Heading = (input.DataMessage.ByteReader.GetOne() * 2.0f).ToShort();
+        deviceMessage.HDOP = input.DataMessage.ByteReader.GetLe<short>();
 
         input.DataMessage.ByteReader.Skip(3);
 
-        return [deviceMessageDocument];
+        return [deviceMessage];
     }
 
-    private static IEnumerable<DeviceMessageDocument> HandleHistoryV1Message(MessageInput input)
+    private static List<DeviceMessageEntity> HandleHistoryV1Message(MessageInput input)
     {
         int count = input.DataMessage.ByteReader.GetOne() & 0x0f;
         int totalCount = input.DataMessage.ByteReader.Get<short>();
-        List<DeviceMessageDocument> positions = [];
+        List<DeviceMessageEntity> messages = [];
 
         for (int i = 0; i < count; i++)
         {
-            positions.AddRange(HandleLocationV1Message(input, true));
+            messages.AddRange(HandleLocationV1Message(input, true));
         }
 
-        return positions;
+        return messages;
     }
 
-    private static IEnumerable<DeviceMessageDocument> HandleLocationV2Message(MessageInput input)
+    private static IEnumerable<DeviceMessageEntity> HandleLocationV2Message(MessageInput input)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
-        {
-            // Device = input.ConnectionContext.Device,
-            Position = new PositionElement()
-        };
-
+        DeviceMessageEntity deviceMessage = new();
         input.DataMessage.ByteReader.Skip(14);
 
         int valid = input.DataMessage.ByteReader.GetOne();
-        deviceMessageDocument.Position.Valid = BitUtil.ShiftRight(valid, 6) != 0;
-        deviceMessageDocument.Position.Satellites = (short?)BitUtil.ShiftRight(valid, 6);
-        deviceMessageDocument.Position.Date = GetDateTimeV2(input);
-        deviceMessageDocument.Position.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
+        deviceMessage.Valid = BitUtil.ShiftRight(valid, 6) != 0;
+        deviceMessage.Satellites = (short?)BitUtil.ShiftRight(valid, 6);
+        deviceMessage.Date = GetDateTimeV2(input);
+        deviceMessage.Latitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
             input.DataMessage.ByteReader.GetMediumIntLe());
-        deviceMessageDocument.Position.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
+        deviceMessage.Longitude = GetCoordinate(input.DataMessage.ByteReader.GetOne(),
             input.DataMessage.ByteReader.GetMediumIntLe());
-        deviceMessageDocument.Position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
-        deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetLe<short>();
+        deviceMessage.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
+        deviceMessage.Heading = input.DataMessage.ByteReader.GetLe<short>();
 
-        return new[] { deviceMessageDocument };
+        return [deviceMessage];
     }
 
     private static void SendLoginResponse(MessageInput input)

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -11,17 +11,17 @@ namespace Navtrack.Listener.Protocols.Arusnavi;
 [Service(typeof(ICustomMessageHandler<ArusnaviProtocol>))]
 public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
 {
-    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
-        IEnumerable<DeviceMessageDocument> location =
+        IEnumerable<DeviceMessageEntity> location =
             ParseRange(input, ParseTextMessage, ParseBinaryLogin, ParseLocationMessage);
 
         return location;
     }
 
-    private IEnumerable<DeviceMessageDocument> ParseLocationMessage(MessageInput input)
+    private IEnumerable<DeviceMessageEntity> ParseLocationMessage(MessageInput input)
     {
-        List<DeviceMessageDocument> positions = [];
+        List<DeviceMessageEntity> positions = [];
 
         byte parcelNumber = input.DataMessage.ByteReader.Skip(1).GetOne();
 
@@ -41,14 +41,11 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
         return positions;
     }
 
-    private DeviceMessageDocument GetLocation(MessageInput input, in DateTime dateTime, int length)
+    private static DeviceMessageEntity GetLocation(MessageInput input, in DateTime dateTime, int length)
     {
-        DeviceMessageDocument deviceMessageDocument = new()
+        DeviceMessageEntity deviceMessage = new()
         {
-            Position = new PositionElement
-            {
-                Date = dateTime
-            }
+            Date = dateTime
         };
 
         int bytesRead = 0;
@@ -59,19 +56,19 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
             switch (tag)
             {
                 case 3:
-                    deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get<float>();
+                    deviceMessage.Latitude = input.DataMessage.ByteReader.Get<float>();
                     break;
 
                 case 4:
-                    deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get<float>();
+                    deviceMessage.Latitude = input.DataMessage.ByteReader.Get<float>();
                     break;
 
                 case 5:
-                    deviceMessageDocument.Position.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
+                    deviceMessage.Speed = SpeedUtil.KnotsToKph(input.DataMessage.ByteReader.GetOne());
                     byte satellites = input.DataMessage.ByteReader.GetOne();
-                    deviceMessageDocument.Position.Satellites = (short)(satellites & 0x0F + (satellites >> 4) & 0x0F);
-                    deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.GetOne() * 10;
-                    deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.GetOne() * 2;
+                    deviceMessage.Satellites = (short)(satellites & 0x0F + (satellites >> 4) & 0x0F);
+                    deviceMessage.Altitude = (short)(input.DataMessage.ByteReader.GetOne() * 10);
+                    deviceMessage.Heading = (short)(input.DataMessage.ByteReader.GetOne() * 2);
                     break;
 
                 default:
@@ -82,10 +79,10 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
             bytesRead += 5; // tag id (1) + tag data (4)
         }
 
-        return deviceMessageDocument;
+        return deviceMessage;
     }
 
-    private static IEnumerable<DeviceMessageDocument> ParseBinaryLogin(MessageInput input)
+    private static IEnumerable<DeviceMessageEntity>? ParseBinaryLogin(MessageInput input)
     {
         if (input.DataMessage.ByteReader.GetOne() == 0xFF)
         {
@@ -122,7 +119,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
         input.NetworkStream.Write(response.ToArray());
     }
 
-    private static IEnumerable<DeviceMessageDocument> ParseTextMessage(MessageInput input)
+    private static IEnumerable<DeviceMessageEntity>? ParseTextMessage(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -154,24 +151,21 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[3].Value);
 
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                Position = new PositionElement
-                {
-                    Satellites = locationMatch.Groups[14].Get<short?>(),
-                    Altitude = locationMatch.Groups[15].Get<float?>(),
-                    Date = DateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
-                        $"{locationMatch.Groups[26].Value}{locationMatch.Groups[19].Value}"),
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[20].Value,
-                        locationMatch.Groups[21].Value),
-                    Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[22].Value,
-                        locationMatch.Groups[23].Value),
-                    Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[24].Get<float>()),
-                    Heading = locationMatch.Groups[25].Get<float?>()
-                }
+                Satellites = locationMatch.Groups[14].Get<short?>(),
+                Altitude = locationMatch.Groups[15].Get<short?>(),
+                Date = DateTimeUtil.Convert(DateFormat.DDMMYYHHMMSS,
+                    $"{locationMatch.Groups[26].Value}{locationMatch.Groups[19].Value}"),
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[20].Value,
+                    locationMatch.Groups[21].Value),
+                Longitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[22].Value,
+                    locationMatch.Groups[23].Value),
+                Speed = SpeedUtil.KnotsToKph(locationMatch.Groups[24].Get<float>()),
+                Heading = locationMatch.Groups[25].Get<short?>()
             };
 
-            return new[] { deviceMessageDocument };
+            return [deviceMessage];
         }
 
         return null;
