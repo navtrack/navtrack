@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using Navtrack.Listener.Server;
 
 namespace Navtrack.Listener.Models;
 
-public class ProtocolConnectionContext(INetworkStreamWrapper networkStream, IProtocol protocol, ObjectId connectionId)
+public class ProtocolConnectionContext(INetworkStreamWrapper networkStream, IProtocol protocol, Guid connectionId)
     : IAsyncDisposable
 {
     public IProtocol Protocol { get; } = protocol;
-    public ObjectId ConnectionId { get; } = connectionId;
+    public Guid ConnectionId { get; } = connectionId;
     public Device? Device { get; private set; }
     public INetworkStreamWrapper NetworkStream { get; } = networkStream;
 

@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.LKGPS;
 [Service(typeof(IProtocol))]
 public class LKGPSProtocol : TkStarProtocol
 {
-    public override int Port => 7015;
+    public override short Port => 7015;
 }

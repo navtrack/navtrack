@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Autofon;
 [Service(typeof(IProtocol))]
 public class AutofonProtocol : BaseProtocol
 {
-    public override int Port => 7060;
+    public override short Port => 7060;
 }

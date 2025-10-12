@@ -14,7 +14,7 @@ import {
   InitialLoginFormValues,
   loginFormValuesValidationSchema
 } from "@navtrack/shared/hooks/user/login/LoginFormValues";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UnauthenticatedLayout } from "../ui/layouts/unauthenticated/UnauthenticatedLayout";
 import { Button } from "../ui/button/Button";
 import { SlotContext } from "../../app/SlotContext";
@@ -79,7 +79,7 @@ export function LoginPage() {
                   type="submit"
                   color="secondary"
                   size="lg"
-                  isLoading={authentication.state.isLoading}
+                  isLoading={authentication.isLoading}
                   full>
                   <FormattedMessage id="generic.log-in" />
                 </Button>

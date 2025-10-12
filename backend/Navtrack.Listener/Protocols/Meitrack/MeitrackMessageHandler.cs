@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -10,14 +10,14 @@ namespace Navtrack.Listener.Protocols.Meitrack;
 [Service(typeof(ICustomMessageHandler<MeitrackProtocol>))]
 public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
 {
-    public override IEnumerable<DeviceMessageDocument>? ParseRange(MessageInput input)
+    public override IEnumerable<DeviceMessageEntity>? ParseRange(MessageInput input)
     {
-        IEnumerable<DeviceMessageDocument> locations = ParseRange(input, ParseText, ParseBinary_CCC, ParseBinary_CCE);
+        IEnumerable<DeviceMessageEntity> locations = ParseRange(input, ParseText, ParseBinary_CCC, ParseBinary_CCE);
 
         return locations;
     }
 
-    private static IEnumerable<DeviceMessageDocument> ParseBinary_CCC(MessageInput input)
+    private static IEnumerable<DeviceMessageEntity>? ParseBinary_CCC(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(2); // header
         input.DataMessage.ByteReader.Skip(1); // data identifier
@@ -35,43 +35,38 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             short dataPackets = input.DataMessage.ByteReader.Get<short>();
             int cacheRecords = input.DataMessage.ByteReader.Get<int>();
 
-            List<DeviceMessageDocument> locations = [];
+            List<DeviceMessageEntity> locations = [];
 
             while (input.DataMessage.ByteReader.BytesLeft > 52)
             {
-                DeviceMessageDocument deviceMessageDocument = new()
-                {
-                    Position = new PositionElement(),
-                    Gsm = new GsmElement()
-                };
+                DeviceMessageEntity deviceMessage = new();
 
                 byte eventCode = input.DataMessage.ByteReader.GetOne();
 
-                deviceMessageDocument.Position.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-                deviceMessageDocument.Position.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
-                deviceMessageDocument.Position.Date = new DateTime(2001, 1, 1)
+                deviceMessage.Latitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                deviceMessage.Longitude = input.DataMessage.ByteReader.Get<int>() * 0.000001;
+                deviceMessage.Date = new DateTime(2001, 1, 1)
                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
-                deviceMessageDocument.Position.Valid = input.DataMessage.ByteReader.GetOne() == 0x01;
-                deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
-                deviceMessageDocument.Gsm.SignalStrength = input.DataMessage.ByteReader.GetOne();
-                deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>();
-                deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get<short>();
-                deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
-                deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get<short>();
-                deviceMessageDocument.Device ??= new DeviceElement();
-                deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<int>();
+                deviceMessage.Valid = input.DataMessage.ByteReader.GetOne() == 0x01;
+                deviceMessage.Satellites = input.DataMessage.ByteReader.GetOne();
+                deviceMessage.GSMSignalStrength = input.DataMessage.ByteReader.GetOne();
+                deviceMessage.Speed = input.DataMessage.ByteReader.Get<short>();
+                deviceMessage.Heading = input.DataMessage.ByteReader.Get<short>();
+                deviceMessage.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+                deviceMessage.Altitude = input.DataMessage.ByteReader.Get<short>();
+                deviceMessage.DeviceOdometer = input.DataMessage.ByteReader.Get<int>();
                 int runTime = input.DataMessage.ByteReader.Get<int>();
-                deviceMessageDocument.Gsm.MobileCountryCode =
+                deviceMessage.GSMMobileCountryCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
-                deviceMessageDocument.Gsm.MobileNetworkCode =
+                deviceMessage.GSMMobileNetworkCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
-                deviceMessageDocument.Gsm.LocationAreaCode =
+                deviceMessage.GSMLocationAreaCode =
                     input.DataMessage.ByteReader.Get<short>().ToString();
-                deviceMessageDocument.Gsm.CellId = input.DataMessage.ByteReader.Get<short>();
+                deviceMessage.GSMCellId = input.DataMessage.ByteReader.Get<short>();
 
                 input.DataMessage.ByteReader.Skip(12);
 
-                locations.Add(deviceMessageDocument);
+                locations.Add(deviceMessage);
             }
 
             return locations;
@@ -80,7 +75,7 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
         return null;
     }
 
-    private IEnumerable<DeviceMessageDocument> ParseBinary_CCE(MessageInput input)
+    private IEnumerable<DeviceMessageEntity>? ParseBinary_CCE(MessageInput input)
     {
         input.DataMessage.ByteReader.Skip(2); // header
         input.DataMessage.ByteReader.Skip(1); // data identifier
@@ -97,18 +92,14 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
             int cacheRecords = input.DataMessage.ByteReader.Get<int>();
             short dataPackets = input.DataMessage.ByteReader.Get<short>();
 
-            List<DeviceMessageDocument> locations = [];
+            List<DeviceMessageEntity> deviceMessages = [];
 
             for (int i = 0; i < dataPackets; i++)
             {
                 short dataPacketLength = input.DataMessage.ByteReader.Get<short>();
                 short dataPacketId = input.DataMessage.ByteReader.Get<short>();
 
-                DeviceMessageDocument deviceMessageDocument = new()
-                {
-                    Position = new PositionElement(),
-                    Gsm = new GsmElement()
-                };
+                DeviceMessageEntity deviceMessageDocument = new();
 
                 int[] sizes = [1, 2, 4];
 
@@ -123,42 +114,41 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                         switch (id)
                         {
                             case 0x02:
-                                deviceMessageDocument.Position.Latitude =
+                                deviceMessageDocument.Latitude =
                                     input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x03:
-                                deviceMessageDocument.Position.Longitude =
+                                deviceMessageDocument.Longitude =
                                     input.DataMessage.ByteReader.Get<int>() * 0.000001;
                                 break;
                             case 0x04:
-                                deviceMessageDocument.Position.Date = new DateTime(2001, 1, 1)
+                                deviceMessageDocument.Date = new DateTime(2001, 1, 1)
                                     .AddSeconds(input.DataMessage.ByteReader.Get<int>());
                                 break;
                             case 0x05:
-                                deviceMessageDocument.Position.Valid =
+                                deviceMessageDocument.Valid =
                                     input.DataMessage.ByteReader.GetOne() == 0x01;
                                 break;
                             case 0x06:
-                                deviceMessageDocument.Position.Satellites = input.DataMessage.ByteReader.GetOne();
+                                deviceMessageDocument.Satellites = input.DataMessage.ByteReader.GetOne();
                                 break;
                             case 0x07:
-                                deviceMessageDocument.Gsm.SignalStrength = input.DataMessage.ByteReader.GetOne();
+                                deviceMessageDocument.GSMSignalStrength = input.DataMessage.ByteReader.GetOne();
                                 break;
                             case 0x08:
-                                deviceMessageDocument.Position.Speed = input.DataMessage.ByteReader.Get<short>();
+                                deviceMessageDocument.Speed = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x09:
-                                deviceMessageDocument.Position.Heading = input.DataMessage.ByteReader.Get<short>();
+                                deviceMessageDocument.Heading = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x0A:
-                                deviceMessageDocument.Position.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
+                                deviceMessageDocument.HDOP = input.DataMessage.ByteReader.Get<short>() * 0.1f;
                                 break;
                             case 0x0B:
-                                deviceMessageDocument.Position.Altitude = input.DataMessage.ByteReader.Get<short>();
+                                deviceMessageDocument.Altitude = input.DataMessage.ByteReader.Get<short>();
                                 break;
                             case 0x0C:
-                                deviceMessageDocument.Device ??= new DeviceElement();
-                                deviceMessageDocument.Device.Odometer = input.DataMessage.ByteReader.Get<int>();
+                                deviceMessageDocument.DeviceOdometer = input.DataMessage.ByteReader.Get<int>();
                                 break;
                             default:
                                 byte[] value = input.DataMessage.ByteReader.Get(size);
@@ -175,43 +165,36 @@ public class MeitrackMessageHandler : BaseMessageHandler<MeitrackProtocol>
                     input.DataMessage.ByteReader.Skip(size);
                 }
 
-                locations.Add(deviceMessageDocument);
+                deviceMessages.Add(deviceMessageDocument);
             }
 
-            return locations;
+            return deviceMessages;
         }
 
         return null;
     }
 
-    private static IEnumerable<DeviceMessageDocument> ParseText(MessageInput input)
+    private static IEnumerable<DeviceMessageEntity>? ParseText(MessageInput input)
     {
         if (input.DataMessage.CommaSplit.Length > 14)
         {
             input.ConnectionContext.SetDevice(input.DataMessage.CommaSplit[1]);
 
-            DeviceMessageDocument deviceMessageDocument = new()
-            {
-                Position = new PositionElement(),
-                Gsm = new GsmElement()
-            };
+            DeviceMessageEntity deviceMessage = new();
 
-            // deviceMessageDocument. Device = input.ConnectionContext.Device,
-            deviceMessageDocument.Position.Latitude = input.DataMessage.CommaSplit.Get<double>(4);
-            deviceMessageDocument.Position.Longitude = input.DataMessage.CommaSplit.Get<double>(5);
-            deviceMessageDocument.Position.Date = ConvertDate(input.DataMessage.CommaSplit[6]);
-            deviceMessageDocument.Position.Valid = input.DataMessage.CommaSplit.Get<string>(7) == "A";
-            deviceMessageDocument.Position.Satellites = input.DataMessage.CommaSplit.Get<short>(8);
-            deviceMessageDocument.Gsm.SignalStrength =
-                GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9));
-            deviceMessageDocument.Position.Speed = input.DataMessage.CommaSplit.Get<float?>(10);
-            deviceMessageDocument.Position.Heading = input.DataMessage.CommaSplit.Get<float?>(11);
-            deviceMessageDocument.Position.HDOP = input.DataMessage.CommaSplit.Get<double?>(12);
-            deviceMessageDocument.Position.Altitude = input.DataMessage.CommaSplit.Get<int>(13);
-            deviceMessageDocument.Device ??= new DeviceElement();
-            deviceMessageDocument.Device.Odometer = input.DataMessage.CommaSplit.Get<int>(14);
+            deviceMessage.Latitude = input.DataMessage.CommaSplit.Get<double>(4);
+            deviceMessage.Longitude = input.DataMessage.CommaSplit.Get<double>(5);
+            deviceMessage.Date = ConvertDate(input.DataMessage.CommaSplit[6]);
+            deviceMessage.Valid = input.DataMessage.CommaSplit.Get<string>(7) == "A";
+            deviceMessage.Satellites = input.DataMessage.CommaSplit.Get<short>(8);
+            deviceMessage.GSMSignalStrength = GsmUtil.ConvertSignal(input.DataMessage.CommaSplit.Get<short>(9));
+            deviceMessage.Speed = input.DataMessage.CommaSplit.Get<short?>(10);
+            deviceMessage.Heading = input.DataMessage.CommaSplit.Get<short?>(11);
+            deviceMessage.HDOP = input.DataMessage.CommaSplit.Get<float?>(12);
+            deviceMessage.Altitude = input.DataMessage.CommaSplit.Get<short>(13);
+            deviceMessage.DeviceOdometer = input.DataMessage.CommaSplit.Get<int>(14);
 
-            return [deviceMessageDocument];
+            return [deviceMessage];
         }
 
         return null;

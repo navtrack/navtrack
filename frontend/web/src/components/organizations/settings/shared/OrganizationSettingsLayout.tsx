@@ -22,7 +22,7 @@ export function OrganizationSettingsLayout() {
   const slots = useContext(SlotContext);
 
   const menuItems = useMemo(() => {
-    return currentOrganization.id !== undefined
+    return !!currentOrganization.id
       ? (
           slots?.organizationSettingsMenuItems ??
           defaultOrganizationSettingsMenuItems

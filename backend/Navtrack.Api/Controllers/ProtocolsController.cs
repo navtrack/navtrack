@@ -15,10 +15,10 @@ namespace Navtrack.Api.Controllers;
 public class ProtocolsController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.Protocols)]
-    [ProducesResponseType(typeof(List<Protocol>), StatusCodes.Status200OK)]
-    public async Task<List<Protocol>> GetList()
+    [ProducesResponseType(typeof(ListModel<ProtocolModel>), StatusCodes.Status200OK)]
+    public async Task<ListModel<ProtocolModel>> GetList()
     {
-        List<Protocol> result = await requestHandler.Handle<GetProtocolsRequest, List<Protocol>>(
+        ListModel<ProtocolModel> result = await requestHandler.Handle<GetProtocolsRequest, ListModel<ProtocolModel>>(
             new GetProtocolsRequest()
         );
 

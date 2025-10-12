@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useMatch } from "react-router-dom";
 import { useCurrentAsset } from "./useCurrentAsset";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { currentOrganizationIdAtom } from "../../state/current";
 import { useCurrentTeam } from "./useCurrentTeam";
 
 export function useSetCurrentOrganizationFromRoute() {
-  const [currentOrganizationId, setCurrentOrganizationId] = useRecoilState(
+  const [currentOrganizationId, setCurrentOrganizationId] = useAtom(
     currentOrganizationIdAtom
   );
 

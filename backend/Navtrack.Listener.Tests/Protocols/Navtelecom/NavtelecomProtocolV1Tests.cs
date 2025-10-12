@@ -19,7 +19,7 @@ public class NavtelecomProtocolV1Tests : BaseProtocolTests<NavtelecomProtocol, N
         Assert.Equal("404E544300000000010000000900B1A02A3C464C4558B00A0A",
             ProtocolTester.ReceiveHexInDevice());
     }
-        
+
     [Fact]
     public void DeviceSends_T_ReplyIsReceivedAnd1LocationIsParsed()
     {

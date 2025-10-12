@@ -4,14 +4,11 @@ import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useMessagesQuery } from "@navtrack/shared/hooks/queries/assets/useMessagesQuery";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { Card } from "../../ui/card/Card";
 import { TableV2 } from "../../ui/table/TableV2";
-import { Message } from "@navtrack/shared/api/model";
-import { useDateTime } from "@navtrack/shared/hooks/util/useDateTime";
-import { useDistance } from "@navtrack/shared/hooks/util/useDistance";
+import { DeviceMessageModel } from "@navtrack/shared/api/model";
 import { FormattedMessage } from "react-intl";
 import {
   showCoordinate,
@@ -19,25 +16,27 @@ import {
 } from "@navtrack/shared/utils/coordinates";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapPin } from "../../ui/map/MapPin";
+import { useShow } from "@navtrack/shared/hooks/util/useShow";
+import { useAtom } from "jotai";
 
 export function AssetLogPage() {
+  const show = useShow();
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("log");
-  const filters = useRecoilValue(locationFiltersSelector(locationFilterKey));
+  const filters = useAtom(locationFiltersSelector(locationFilterKey));
   const query = useMessagesQuery({
     assetId: currentAsset.data?.id,
     ...filters
   });
 
-  const { showDateTime } = useDateTime();
-  const { showSpeed, showAltitude } = useDistance();
-
-  const [message, setMessage] = useState<Message | undefined>(undefined);
+  const [message, setMessage] = useState<DeviceMessageModel | undefined>(
+    undefined
+  );
 
   return (
     <>
       <LocationFilter filterPage="log" center={message?.position.coordinates} />
-      <TableV2<Message>
+      <TableV2<DeviceMessageModel>
         columns={[
           {
             labelId: "generic.date",
@@ -75,7 +74,7 @@ export function AssetLogPage() {
             ),
             sort: "desc",
             sortValue: (row) => row.position.date,
-            row: (row) => showDateTime(row.position.date),
+            row: (row) => show.dateTime(row.position.date),
             sortable: true
           },
           {
@@ -88,13 +87,13 @@ export function AssetLogPage() {
           },
           {
             labelId: "generic.altitude",
-            row: (row) => showAltitude(row.position.altitude),
+            row: (row) => show.altitude(row.position.altitude),
             sortValue: (row) => row.position.altitude,
             sortable: true
           },
           {
             labelId: "generic.speed",
-            row: (row) => showSpeed(row.position.speed),
+            row: (row) => show.speed(row.position.speed),
             sortValue: (row) => row.position.speed,
             sortable: true
           },

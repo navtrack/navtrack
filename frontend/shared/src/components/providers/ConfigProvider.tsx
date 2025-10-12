@@ -1,6 +1,6 @@
 import { Fragment, ReactNode, useEffect } from "react";
 import { AppConfig, appConfigAtom } from "../../state/appConfig";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 
 type ConfigProviderProps = {
   children: ReactNode;
@@ -8,7 +8,7 @@ type ConfigProviderProps = {
 };
 
 export function ConfigProvider(props: ConfigProviderProps) {
-  const [state, setState] = useRecoilState(appConfigAtom);
+  const [state, setState] = useAtom(appConfigAtom);
 
   useEffect(() => {
     if (state === undefined) {

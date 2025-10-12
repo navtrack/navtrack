@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
-using Navtrack.DataAccess.Model.Teams;
-using Navtrack.DataAccess.Services.Teams;
+using Navtrack.Database.Model.Teams;
+using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Common.ActionFilters;
@@ -25,10 +25,10 @@ public class AuthorizeTeamActionFilter(INavtrackContextAccessor navtrackContextA
         {
             string? teamId = ActionFilterHelpers.GetId(context.HttpContext, "teamId");
 
-            TeamDocument? team = !string.IsNullOrEmpty(teamId) ? await teamRepository.GetById(teamId) : null;
+            TeamEntity? team = await teamRepository.GetById(teamId);
             team.Return404IfNull();
                 
-            bool hasRole = navtrackContextAccessor.NavtrackContext.HasTeamUserRole(team, authorizeTeamAttribute.UserRole);
+            bool hasRole = (navtrackContextAccessor.NavtrackContext?.HasTeamUserRole(team, authorizeTeamAttribute.UserRole)).GetValueOrDefault();
 
             if (!hasRole)
             {

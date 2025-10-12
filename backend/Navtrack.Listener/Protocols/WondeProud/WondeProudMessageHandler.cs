@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.WondeProud;
 [Service(typeof(ICustomMessageHandler<WondeProudProtocol>))]
 public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex(
@@ -26,22 +26,19 @@ public class WondeProudMessageHandler : BaseMessageHandler<WondeProudProtocol>
         if (locationMatch.Success)
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
-                
-            DeviceMessageDocument deviceMessageDocument = new()
+
+            DeviceMessageEntity deviceMessage = new()
             {
-                Position = new PositionElement
-                {
-                    Date = DateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
-                    Longitude = locationMatch.Groups[3].Get<double>(),
-                    Latitude = locationMatch.Groups[4].Get<double>(),
-                    Speed = locationMatch.Groups[5].Get<float?>(),
-                    Heading = locationMatch.Groups[6].Get<float?>(),
-                    Altitude = locationMatch.Groups[7].Get<float?>(),
-                    Satellites = locationMatch.Groups[8].Get<short?>()
-                }
+                Date = DateTimeUtil.Convert(DateFormat.YYYYMMDDHHMMSS, locationMatch.Groups[2].Value),
+                Longitude = locationMatch.Groups[3].Get<double>(),
+                Latitude = locationMatch.Groups[4].Get<double>(),
+                Speed = locationMatch.Groups[5].Get<float?>().ToShort(),
+                Heading = locationMatch.Groups[6].Get<float?>().ToShort(),
+                Altitude = locationMatch.Groups[7].Get<float?>().ToShort(),
+                Satellites = locationMatch.Groups[8].Get<short?>()
             };
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

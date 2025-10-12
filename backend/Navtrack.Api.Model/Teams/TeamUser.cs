@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Navtrack.DataAccess.Model.Teams;
+using Navtrack.Database.Model.Teams;
 
 namespace Navtrack.Api.Model.Teams;
 

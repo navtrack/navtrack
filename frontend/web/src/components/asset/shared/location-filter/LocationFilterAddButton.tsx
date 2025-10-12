@@ -3,10 +3,16 @@ import {
   faMountain,
   faTachometerAlt
 } from "@fortawesome/free-solid-svg-icons";
-import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition
+} from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import {
   altitudeFilterAtom,
   geofenceFilterAtom,
@@ -27,19 +33,19 @@ type LocationFilterAddButtonProps = {
 };
 
 export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
-  const filtersEnabled = useRecoilValue(
+  const filtersEnabled = useAtomValue(
     filtersEnabledSelector(props.filterKey)
   );
-  const [altitudeFilter, setAltitudeFilter] = useRecoilState(
+  const [altitudeFilter, setAltitudeFilter] = useAtom(
     altitudeFilterAtom(props.filterKey)
   );
-  const [durationFilter, setDurationFilter] = useRecoilState(
+  const [durationFilter, setDurationFilter] = useAtom(
     durationFilterAtom(props.filterKey)
   );
-  const [speedFilter, setSpeedFilter] = useRecoilState(
+  const [speedFilter, setSpeedFilter] = useAtom(
     speedFilterAtom(props.filterKey)
   );
-  const [geofenceFilter, setGeofenceFilter] = useRecoilState(
+  const [geofenceFilter, setGeofenceFilter] = useAtom(
     geofenceFilterAtom(props.filterKey)
   );
   const [filterCount, setFilterCount] = useState(1);
@@ -53,13 +59,13 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
     <>
       {!filtersEnabled.all && (
         <Menu as="div" className="relative order-last inline-block text-left">
-          <Menu.Button as={Fragment}>
+          <MenuButton as={Fragment}>
             <div>
               <Button color="secondary" size="xs">
                 <FormattedMessage id="locations.filter.add" />
               </Button>
             </div>
-          </Menu.Button>
+          </MenuButton>
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"

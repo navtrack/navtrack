@@ -1,5 +1,5 @@
 using System.Text.RegularExpressions;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
@@ -9,7 +9,7 @@ namespace Navtrack.Listener.Protocols.Topfly;
 [Service(typeof(ICustomMessageHandler<TopflyProtocol>))]
 public class TopflyMessageHandler : BaseMessageHandler<TopflyProtocol>
 {
-    public override DeviceMessageDocument Parse(MessageInput input)
+    public override DeviceMessageEntity? Parse(MessageInput input)
     {
         Match locationMatch =
             new Regex("\\((\\d+)" + // imei
@@ -25,22 +25,19 @@ public class TopflyMessageHandler : BaseMessageHandler<TopflyProtocol>
         {
             input.ConnectionContext.SetDevice(locationMatch.Groups[1].Value);
 
-            DeviceMessageDocument deviceMessageDocument = new()
+            DeviceMessageEntity deviceMessage = new()
             {
-                Position = new PositionElement
-                {
-                    Date = DateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
-                    Valid = locationMatch.Groups[4].Value == "A",
-                    Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
-                        locationMatch.Groups[6].Value),
-                    Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[7].Value,
-                        locationMatch.Groups[8].Value),
-                    Speed = locationMatch.Groups[9].Get<float?>(),
-                    Heading = locationMatch.Groups[10].Get<float?>()
-                }
+                Date = DateTimeUtil.Convert(DateFormat.YYMMDDHHMMSS, locationMatch.Groups[3].Value),
+                Valid = locationMatch.Groups[4].Value == "A",
+                Latitude = GpsUtil.ConvertDmmLatToDecimal(locationMatch.Groups[5].Value,
+                    locationMatch.Groups[6].Value),
+                Longitude = GpsUtil.ConvertDmmLongToDecimal(locationMatch.Groups[7].Value,
+                    locationMatch.Groups[8].Value),
+                Speed = locationMatch.Groups[9].Get<float?>().ToShort(),
+                Heading = locationMatch.Groups[10].Get<float?>().ToShort()
             };
 
-            return deviceMessageDocument;
+            return deviceMessage;
         }
 
         return null;

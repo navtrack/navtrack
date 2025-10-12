@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Arknav;
 [Service(typeof(IProtocol))]
 public class ArknavProtocol : BaseProtocol
 {
-    public override int Port => 7031;
+    public override short Port => 7031;
 }

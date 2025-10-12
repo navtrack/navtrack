@@ -1,5 +1,5 @@
 import { Modal } from "./Modal";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { ModalActions } from "./ModalActions";
 import { ModalContainer } from "./ModalContainer";
@@ -12,8 +12,8 @@ import { c, classNames } from "@navtrack/shared/utils/tailwind";
 
 type DeleteModalProps = {
   onConfirm?: (close: () => void) => Promise<void> | undefined;
-  renderButton?: (open: () => void) => JSX.Element;
-  children?: React.ReactNode;
+  renderButton?: (open: () => void) => ReactNode;
+  children?: ReactNode;
   onClose?: () => void;
   maxWidth?: "lg";
   disabled?: boolean;

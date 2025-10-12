@@ -1,11 +1,11 @@
 import { ref } from "yup";
 import { object, ObjectSchema, string } from "yup";
 import { RegisterFormValues } from "./RegisterFormValues";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { appConfigAtom } from "../../../state/appConfig";
 
 export const useRegisterFormValidationSchema = () => {
-  const appConfig = useRecoilValue(appConfigAtom);
+  const appConfig = useAtomValue(appConfigAtom);
 
   const validationSchema: ObjectSchema<RegisterFormValues> = object({
     email: string()

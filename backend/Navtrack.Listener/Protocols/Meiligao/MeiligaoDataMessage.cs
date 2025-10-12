@@ -10,7 +10,7 @@ public class MeiligaoDataMessage
     public string GPRMC;
     public string[] GPRMCArray;
         
-    public MeiligaoDataMessage(byte[] frame)
+    public MeiligaoDataMessage(byte[]? frame)
     {
         StringSplit = StringUtil.ConvertByteArrayToString(frame).Split("|");
         GPRMC = StringSplit[0];

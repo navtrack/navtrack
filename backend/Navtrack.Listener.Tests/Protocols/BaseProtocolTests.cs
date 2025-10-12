@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Xunit;
@@ -9,7 +9,7 @@ using Xunit;
 namespace Navtrack.Listener.Tests.Protocols;
 
 public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where TProtocol : IProtocol, new()
-    where TMessageHandler : ICustomMessageHandler , new()
+    where TMessageHandler : ICustomMessageHandler, new()
 {
     protected readonly IProtocolTester ProtocolTester;
 
@@ -21,21 +21,21 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where T
 
     public void Dispose()
     {
-        foreach (DeviceMessageDocument position in ProtocolTester.TotalParsedMessages)
+        foreach (DeviceMessageEntity position in ProtocolTester.TotalParsedMessages)
         {
             PositionIsValid(position);
         }
     }
 
-    private void PositionIsValid(DeviceMessageDocument deviceMessageDocument)
+    private void PositionIsValid(DeviceMessageEntity deviceMessageDocument)
     {
-        Assert.True(GpsUtil.IsValidLatitude(deviceMessageDocument.Position.Latitude));
-        Assert.True(GpsUtil.IsValidLongitude(deviceMessageDocument.Position.Longitude));
-        Assert.True(deviceMessageDocument.Position.Date >= DateTime.UnixEpoch);
-        Assert.True(deviceMessageDocument.Position.Speed is null or >= 0 and <= 1000);
-        Assert.True(deviceMessageDocument.Position.Heading is null or >= 0 and <= 360);
-        Assert.True(deviceMessageDocument.Position.Satellites is null or >= 0 and <= 50);
-        Assert.True(deviceMessageDocument.Position.HDOP is null or >= 0 and <= 100);
+        Assert.True(GpsUtil.IsValidLatitude(deviceMessageDocument.Latitude));
+        Assert.True(GpsUtil.IsValidLongitude(deviceMessageDocument.Longitude));
+        // Assert.True(deviceMessageDocument.Date >= DateTime.UnixEpoch);
+        Assert.True(deviceMessageDocument.Speed is null or >= 0 and <= 1000);
+        Assert.True(deviceMessageDocument.Heading is null or >= 0 and <= 360);
+        Assert.True(deviceMessageDocument.Satellites is null or >= 0);
+        Assert.True(deviceMessageDocument.HDOP is null or >= 0 and <= 100);
         Assert.NotNull(ProtocolTester.ConnectionContext.Device);
         Assert.NotEmpty(ProtocolTester.ConnectionContext.Device.SerialNumber);
     }

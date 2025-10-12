@@ -1,9 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { OrganizationLiveTrackingPage } from "../components/organizations/OrganizationLiveTrackingPage";
-import { AssetLiveTrackingPage } from "../components/asset/live-tracking/LiveTrackingPage";
+import { AssetLiveTrackingPage } from "../components/asset/live-tracking/AssetLiveTrackingPage";
 import { AssetTripsPage } from "../components/asset/trips/AssetTripsPage";
 import { AssetAlertsPage } from "../components/asset/alerts/AssetAlertsPage";
-import { AssetReportsPage } from "../components/asset/reports/AssetReportsPage";
 import { SettingsAccountPage } from "../components/settings/SettingsAccountPage";
 import { AssetSettingsGeneralPage } from "../components/asset/settings/general/AssetSettingsGeneralPage";
 import { NewAssetPage } from "../components/asset/new/NewAssetPage";
@@ -31,6 +30,9 @@ import { OrganizationsPage } from "../components/organizations/OrganizationsPage
 import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentAssetFromRoute";
 import { useSetCurrentOrganizationFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentOrganizationFromRoute";
 import { AssetUsersPage } from "../components/asset/settings/access/AssetUsersPage";
+import { AssetReportsFuelConsumptionPage } from "../components/asset/reports/AssetReportsFuelConsumptionPage";
+import { AssetReportsTripsPage } from "../components/asset/reports/AssetReportsTripsPage";
+import { AssetReportsDistancePage } from "../components/asset/reports/AssetReportsDistancePage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -53,7 +55,18 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
         <Route path={Paths.AssetDashboard} element={<AssetDashboardPage />} />
         <Route path={Paths.AssetLive} element={<AssetLiveTrackingPage />} />
         <Route path={Paths.AssetLog} element={<AssetLogPage />} />
-        <Route path={Paths.AssetReports} element={<AssetReportsPage />} />
+        <Route
+          path={Paths.AssetReportsDistance}
+          element={<AssetReportsDistancePage />}
+        />
+        <Route
+          path={Paths.AssetReportsFuelConsumption}
+          element={<AssetReportsFuelConsumptionPage />}
+        />
+        <Route
+          path={Paths.AssetReportsTrips}
+          element={<AssetReportsTripsPage />}
+        />
         <Route path={Paths.AssetTrips} element={<AssetTripsPage />} />
         <Route
           path={Paths.OrganizationLive}

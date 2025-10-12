@@ -24,7 +24,7 @@ public class LaipacProtocolTests : BaseProtocolTests<LaipacProtocol, LaipacMessa
 
         Assert.NotNull(ProtocolTester.LastParsedMessage);
     }
-        
+
     [Fact]
     public void DeviceSendsLocationV2_LocationIsParsed()
     {

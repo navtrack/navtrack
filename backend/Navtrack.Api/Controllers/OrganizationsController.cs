@@ -10,7 +10,7 @@ using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Organizations;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
+using Navtrack.Database.Model.Organizations;
 using NSwag.Annotations;
 
 namespace Navtrack.Api.Controllers;
@@ -22,13 +22,13 @@ public class OrganizationsController(INavtrackContextAccessor navtrackContextAcc
     : BaseOrganizationsController(requestHandler, navtrackContextAccessor)
 {
     [HttpGet(ApiPaths.Organizations)]
-    [ProducesResponseType(typeof(List<Organization>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ListModel<OrganizationModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<Organization>> List()
+    public async Task<ListModel<OrganizationModel>> List()
     {
-        List<Organization> result =
-            await requestHandler.Handle<GetOrganizationsRequest, List<Organization>>(
+        ListModel<OrganizationModel> result =
+            await requestHandler.Handle<GetOrganizationsRequest, ListModel<OrganizationModel>>(
                 new GetOrganizationsRequest()
             );
 
@@ -36,13 +36,13 @@ public class OrganizationsController(INavtrackContextAccessor navtrackContextAcc
     }
 
     [HttpGet(ApiPaths.OrganizationById)]
-    [ProducesResponseType(typeof(Organization), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OrganizationModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeOrganization(OrganizationUserRole.Member)]
-    public async Task<Organization> Get([FromRoute] string organizationId)
+    public async Task<OrganizationModel> Get([FromRoute] string organizationId)
     {
-        Organization result = await requestHandler.Handle<GetOrganizationRequest, Organization>(
+        OrganizationModel result = await requestHandler.Handle<GetOrganizationRequest, OrganizationModel>(
             new GetOrganizationRequest
             {
                 OrganizationId = organizationId

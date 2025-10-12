@@ -1,19 +1,19 @@
 using Navtrack.Api.Model.Messages;
-using Navtrack.DataAccess.Model.Devices.Messages;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.DeviceMessages.Mappers;
 
 public static class MessageVehicleMapper
 {
-    public static MessageVehicle? Map(VehicleElement? source)
+    public static VehicleDataModel? Map(DeviceMessageEntity source)
     {
-        if (source != null)
+        if (source.VehicleOdometer.HasValue || source.VehicleIgnition.HasValue || source.VehicleVoltage.HasValue)
         {
-            MessageVehicle result = new()
+            VehicleDataModel result = new()
             {
-                Odometer = source.Odometer,
-                Ignition = source.Ignition,
-                Voltage = source.Voltage
+                Odometer = source.VehicleOdometer,
+                Ignition = source.VehicleIgnition,
+                Voltage = source.VehicleVoltage
             };
 
             return result;

@@ -12,7 +12,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
 
         Assert.Equal("00014104D8F196820001", ProtocolTester.ReceiveHexInDevice());
     }
-        
+
     [Fact]
     public void DeviceSends1Location_1LocationIsParsed_1()
     {
@@ -77,7 +77,7 @@ public class ATrackBinaryProtocolTests : BaseProtocolTests<ATrackProtocol, ATrac
 
         Assert.Single(ProtocolTester.TotalParsedMessages);
     }
-        
+
     [Fact]
     public void DeviceSends2Locations_2LocationAreParsed_1()
     {

@@ -5,7 +5,7 @@ using Navtrack.Api.Tests.Helpers;
 
 namespace Navtrack.Api.Tests;
 
-public class HealthTests(BaseTestFixture fixture) : BaseTest(fixture)
+public class HealthTests(BaseTestFixture fixture) : BaseApiTest(fixture)
 {
     [Fact]
     public async Task Health_Get_ReturnsOk()

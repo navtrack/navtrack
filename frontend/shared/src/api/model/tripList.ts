@@ -4,7 +4,7 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { ListOfTrip } from "./listOfTrip";
+import type { ListModelOfTrip } from "./listModelOfTrip";
 import type { TripListAllOf } from "./tripListAllOf";
 
-export type TripList = ListOfTrip & TripListAllOf;
+export type TripList = ListModelOfTrip & TripListAllOf;

@@ -4,7 +4,7 @@ namespace Navtrack.Listener.Server;
 
 public interface IProtocol
 {
-    int Port { get; }
+    short Port { get; }
     byte[] MessageStart { get; }
     IEnumerable<byte[]> MessageEnd { get; }
     string SplitMessageBy { get; }

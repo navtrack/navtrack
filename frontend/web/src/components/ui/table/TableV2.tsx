@@ -21,7 +21,10 @@ export function TableV2<T>(props: TableProps<T>) {
                     column.sortable ? table.handleHeaderClick(index) : null
                   }
                   key={`${column.labelId}${index}`}
-                  className="sticky top-0 cursor-pointer border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  className={classNames(
+                    "sticky top-0 border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500",
+                    c(column.sortable, "cursor-pointer")
+                  )}>
                   <div className="flex items-center">
                     {column.labelId !== undefined && (
                       <FormattedMessage id={column.labelId} />
@@ -68,7 +71,9 @@ export function TableV2<T>(props: TableProps<T>) {
                     }
                     props.rowClick?.(row);
                   }}
-                  ref={(el) => (table.tableRows.current[rowIndex] = el)}
+                  ref={(el) => {
+                    table.tableRows.current[rowIndex] = el;
+                  }}
                   className={classNames(
                     c(
                       table.selectionEnabled &&

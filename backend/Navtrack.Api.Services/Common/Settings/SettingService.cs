@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using Navtrack.DataAccess.Model.System;
-using Navtrack.DataAccess.Services.Settings;
+using Navtrack.Database.Model;
+using Navtrack.Database.Services.Settings;
 using Navtrack.Shared.Library.DI;
+using Newtonsoft.Json;
 
 namespace Navtrack.Api.Services.Common.Settings;
 
@@ -15,11 +14,11 @@ public class SettingService(ISettingRepository repository) : ISettingService
     {
         string key = GetKey<T>();
 
-        SystemSettingDocument? document = await repository.Get(key);
+        SystemSettingEntity? document = await repository.Get(key);
 
         if (document != null)
         {
-            return BsonSerializer.Deserialize<T>(document.Value);
+            return JsonConvert.DeserializeObject<T>(document.Value);
         }
 
         await Set(new T());
@@ -31,7 +30,7 @@ public class SettingService(ISettingRepository repository) : ISettingService
     {
         string key = GetKey<T>();
 
-        await repository.Save(key, settings.ToBsonDocument());
+        await repository.Save(key, JsonConvert.SerializeObject(settings));
     }
 
     private static string GetKey<T>()

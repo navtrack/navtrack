@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Services.Assets;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Services.Assets;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Assets;
@@ -11,7 +11,7 @@ namespace Navtrack.Api.Services.Assets;
 [Service(typeof(IRequestHandler<UpdateAssetRequest>))]
 public class UpdateAssetRequestHandler(IAssetRepository assetRepository) : BaseRequestHandler<UpdateAssetRequest>
 {
-    private AssetDocument? asset;
+    private AssetEntity? asset;
 
     public override async Task Validate(RequestValidationContext<UpdateAssetRequest> context)
     {
@@ -29,6 +29,8 @@ public class UpdateAssetRequestHandler(IAssetRepository assetRepository) : BaseR
 
     public override Task Handle(UpdateAssetRequest request)
     {
-        return assetRepository.UpdateName(request.AssetId, request.Model.Name);
+        asset!.Name = request.Model.Name;
+        
+        return assetRepository.Update(asset);
     }
 }

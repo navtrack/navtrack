@@ -14,10 +14,10 @@ public class GpsUtilTests
         const CardinalPoint cardinalPoint = CardinalPoint.North;
 
         double result = GpsUtil.ConvertDmmToDecimal(degrees, minutes, cardinalPoint);
-        
+
         Assert.Equal(46.7712, result);
     }
-    
+
     [Fact]
     public void ConvertDdmToDecimal_Longitude()
     {
@@ -26,7 +26,7 @@ public class GpsUtilTests
         const CardinalPoint cardinalPoint = CardinalPoint.East;
 
         double result = GpsUtil.ConvertDmmToDecimal(degrees, minutes, cardinalPoint);
-        
+
         Assert.Equal(23.6236, result);
     }
 }

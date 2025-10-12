@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Navtrack.Api.Services.Assets.Events;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Assets;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Assets;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -17,8 +17,8 @@ public class DeleteAssetUserRequestHandler(
     IAssetRepository assetRepository,
     IUserRepository userRepository) : BaseRequestHandler<DeleteAssetUserRequest>
 {
-    private AssetDocument? asset;
-    private UserDocument? user;
+    private AssetEntity? asset;
+    private UserEntity? user;
 
     public override async Task Validate(RequestValidationContext<DeleteAssetUserRequest> context)
     {
@@ -28,7 +28,7 @@ public class DeleteAssetUserRequestHandler(
         user = await userRepository.GetById(context.Request.UserId);
         user.Return404IfNull();
 
-        UserAssetElement? assetUserRole = user.Assets?.FirstOrDefault(x => x.AssetId == asset.Id);
+        AssetEntity? assetUserRole = user.Assets.FirstOrDefault(x => x.Id == asset.Id);
         assetUserRole.Return404IfNull();
     }
 

@@ -90,6 +90,7 @@ export function OrganizationLiveTrackingPage() {
               key={currentOrganization.id}
               coordinates={coordinates}
               options={{
+                initialZoom: 15,
                 padding: { left: 60, top: 120, right: 10, bottom: 20 }
               }}
             />

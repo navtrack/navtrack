@@ -27,7 +27,7 @@ public class TeltonikaProtocolCodec16Tests : BaseProtocolTests<TeltonikaProtocol
         Assert.Equal("00000002", ProtocolTester.ReceiveHexInDevice());
         Assert.Equal(2, ProtocolTester.LastParsedMessages.Count);
     }
-        
+
     [Fact]
     public void Codec8_DeviceSendsLocationV2_ServerConfirmsDataReceived()
     {

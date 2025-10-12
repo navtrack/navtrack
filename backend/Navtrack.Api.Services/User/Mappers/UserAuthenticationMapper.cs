@@ -1,15 +1,15 @@
 using Navtrack.Api.Model.User;
-using Navtrack.DataAccess.Model.Users;
+using Navtrack.Database.Model.Users;
 
 namespace Navtrack.Api.Services.User.Mappers;
 
 public static class UserAuthenticationMapper
 {
-    public static UserAuthentication Map(UserDocument source, UserAuthentication? destination = null)
+    public static UserAuthenticationModel Map(UserEntity source, UserAuthenticationModel? destination = null)
     {
-        destination ??= new UserAuthentication();
+        destination ??= new UserAuthenticationModel();
         
-        destination.Password = source.Password != null;
+        destination.Password = source.PasswordHash != null;
 
         return destination;
     }

@@ -12,7 +12,7 @@ export function BrowserRouterProvider(props: BrowserRouterProviderProps) {
 
   return (
     <BrowserRouter>
-      {authentication.state.isAuthenticated
+      {authentication.isAuthenticated
         ? props.privateRoutes
         : props.publicRoutes}
     </BrowserRouter>

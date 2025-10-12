@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { AssetUser, AssetUserRole } from "@navtrack/shared/api/model";
+import { AssetUserModel, AssetUserRole } from "@navtrack/shared/api/model";
 import { getError } from "@navtrack/shared/utils/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/assets/useAssetUsersQuery";
@@ -24,7 +24,7 @@ export function AssetUsersPage() {
   const show = useShow();
   const { showNotification } = useNotification();
 
-  const columns: ITableColumn<AssetUser>[] = [
+  const columns: ITableColumn<AssetUserModel>[] = [
     { labelId: "generic.email", row: (user) => user.email },
     {
       labelId: "assets.settings.access.added-on",

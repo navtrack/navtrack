@@ -6,5 +6,5 @@ namespace Navtrack.Listener.Protocols.Navtelecom;
 [Service(typeof(IProtocol))]
 public class NavtelecomProtocol : BaseProtocol
 {
-    public override int Port => 7054;
+    public override short Port => 7054;
 }

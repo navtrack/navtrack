@@ -12,5 +12,9 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "dependencies": {
+    "@remixicon/react": "^4.6.0",
+    "recharts": "^3.1.0"
+  }
 }

@@ -2,12 +2,12 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset"
 import { assetConfigurationAtom } from "@navtrack/shared/state/assets";
 import { useEffect } from "react";
 import { useMapEvents } from "react-leaflet";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { useMap } from "../../ui/map/useMap";
 
 export function useLiveTracking() {
   const currentAsset = useCurrentAsset();
-  const [configuration, setConfiguration] = useRecoilState(
+  const [configuration, setConfiguration] = useAtom(
     assetConfigurationAtom(currentAsset.data?.id)
   );
   const map = useMap();

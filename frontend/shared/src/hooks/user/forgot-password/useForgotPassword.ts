@@ -48,7 +48,7 @@ export function useForgotPassword(props?: UseForgotPasswordProps) {
   return {
     resetPassword,
     validationSchema,
-    loading: resetPasswordMutation.isLoading,
+    loading: resetPasswordMutation.isPending,
     success: resetPasswordMutation.isSuccess
   };
 }

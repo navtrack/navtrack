@@ -10,9 +10,9 @@ namespace Navtrack.Api.Services.Common.Mappers;
 
 public static class ErrorMapper
 {
-    public static Error Map(ApiException exception)
+    public static ErrorModel Map(ApiException exception)
     {
-        Error error = new Error
+        ErrorModel error = new ErrorModel
         {
             Code = exception.Code,
             Message = string.IsNullOrEmpty(exception.Message) ? null : exception.Message,
@@ -26,18 +26,18 @@ public static class ErrorMapper
         return error;
     }
 
-    public static Error Map(Exception exception)
+    public static ErrorModel Map(Exception exception)
     {
-        return new Error
+        return new ErrorModel
         {
             Code = StatusCodes.Status500InternalServerError.ToString(),
             Message = exception.Message
         };
     }
 
-    public static Error Map(ValidationProblemDetails validationProblemDetails)
+    public static ErrorModel Map(ValidationProblemDetails validationProblemDetails)
     {
-        return new Error
+        return new ErrorModel
         {
             Code = StatusCodes.Status400BadRequest.ToString(),
             Message = validationProblemDetails.Title,
@@ -45,9 +45,9 @@ public static class ErrorMapper
         };
     }
 
-    public static Error Map(ProblemDetails problemDetails)
+    public static ErrorModel Map(ProblemDetails problemDetails)
     {
-        return new Error
+        return new ErrorModel
         {
             Code = problemDetails.Status.ToString(),
             Message = problemDetails.Title

@@ -4,7 +4,7 @@ using Navtrack.Api.Model.Common;
 
 namespace Navtrack.Api.Model.Trips;
 
-public class TripList : List<Trip>
+public class TripList : ListModel<Trip>
 {
     [Required]
     public int TotalDistance => Items.Sum(x => x.Distance);

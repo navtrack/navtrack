@@ -1,33 +1,31 @@
 using Navtrack.Api.Model.Devices;
-using Navtrack.DataAccess.Model.Assets;
-using Navtrack.DataAccess.Model.Devices;
-using DeviceType = Navtrack.DataAccess.Model.Devices.DeviceType;
+using Navtrack.Database.Model.Assets;
+using Navtrack.Database.Model.Devices;
 
 namespace Navtrack.Api.Services.Devices.Mappers;
 
 public static class DeviceMapper
 {
-    public static Device Map(DeviceDocument deviceDocument, DeviceType deviceType, AssetDocument? assetDocument,
-        int? locationCount = null)
+    public static DeviceModel Map(DeviceEntity device, DeviceType deviceType, AssetEntity? asset, int? locationCount = null)
     {
-        return new Device
+        return new DeviceModel
         {
-            Id = deviceDocument.Id.ToString(),
-            SerialNumber = deviceDocument.SerialNumber,
+            Id = device.Id.ToString(),
+            SerialNumber = device.SerialNumber,
             DeviceType = DeviceTypeMapper.Map(deviceType),
-            Active = assetDocument?.Device?.Id == deviceDocument.Id,
+            Active = asset?.Device?.Id == device.Id,
             Positions = locationCount
         };
     }
 
-    public static Device? Map(AssetDocument? asset, DeviceType? deviceType)
+    public static DeviceModel? Map(DeviceEntity? device, DeviceType? deviceType)
     {
-        if (asset?.Device != null && deviceType != null)
+        if (device != null && deviceType != null)
         {
-            return new Device
+            return new DeviceModel
             {
-                Id = asset.Device.Id.ToString(),
-                SerialNumber = asset.Device.SerialNumber,
+                Id = device.Id.ToString(),
+                SerialNumber = device.SerialNumber,
                 DeviceType = DeviceTypeMapper.Map(deviceType),
                 Active = true
             };

@@ -5,13 +5,13 @@ using Navtrack.Api.Model.Common;
 
 namespace Navtrack.Api.Model.Messages;
 
-public class MessageList : List<Message>
+public class MessageList : ListModel<DeviceMessageModel>
 {
     public float? AverageSpeed
     {
         get
         {
-            System.Collections.Generic.List<Message> filtered = Items.Where(x => x.Position.Speed > 0).ToList();
+            System.Collections.Generic.List<DeviceMessageModel> filtered = Items.Where(x => x.Position.Speed > 0).ToList();
             
             double? average = filtered.Count != 0 ? filtered.Average(x => x.Position.Speed) : null;
 

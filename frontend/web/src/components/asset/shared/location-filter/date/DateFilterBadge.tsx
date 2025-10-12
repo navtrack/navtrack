@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { FilterBadge } from "../FilterBadge";
 import { dateFilterAtom } from "../locationFilterState";
 import { DateRange } from "../locationFilterTypes";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { useIntl } from "react-intl";
 import { dateOptions } from "./dateOptions";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
@@ -14,7 +14,7 @@ type DateFilterBadgeProps = {
 };
 
 export function DateFilterBadge(props: DateFilterBadgeProps) {
-  const [state, setState] = useRecoilState(dateFilterAtom(props.filterKey));
+  const [state, setState] = useAtom(dateFilterAtom(props.filterKey));
   const intl = useIntl();
 
   const dateFilterText = useMemo(() => {

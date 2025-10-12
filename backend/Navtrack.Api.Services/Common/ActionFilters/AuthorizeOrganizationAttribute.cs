@@ -1,6 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Authorization;
-using Navtrack.DataAccess.Model.Organizations;
+using Navtrack.Database.Model.Organizations;
 
 namespace Navtrack.Api.Services.Common.ActionFilters;
 

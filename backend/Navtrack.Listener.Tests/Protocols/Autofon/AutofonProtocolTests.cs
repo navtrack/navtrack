@@ -18,7 +18,7 @@ public class AutofonProtocolTests : BaseProtocolTests<AutofonProtocol, AutofonMe
     {
         // Send login
         ProtocolTester.SendHexFromDevice("10556103592310314825728F");
-            
+
         // Send location
         ProtocolTester.SendHexFromDevice("02080000251848470AFA010262DAA690013AA4046DA83745F8812560DF010001126A");
 

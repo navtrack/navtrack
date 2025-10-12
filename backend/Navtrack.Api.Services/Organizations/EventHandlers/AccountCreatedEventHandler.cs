@@ -3,8 +3,8 @@ using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Organizations;
 using Navtrack.Api.Services.Account.Events;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -19,14 +19,14 @@ public class AccountCreatedEventHandler(IUserRepository userRepository, IRequest
 {
     public async Task Handle(AccountCreatedEvent payload)
     {
-        UserDocument? user = await userRepository.GetById(payload.UserId);
+        UserEntity? user = await userRepository.GetById(payload.UserId);
 
         if (user != null)
         {
             await requestHandler.Handle<CreateOrganizationRequest, Entity>(new CreateOrganizationRequest
             {
                 OwnerId = user.Id,
-                Model = new CreateOrganization
+                Model = new CreateOrganizationModel
                 {
                     Name = "My Organization",
                 }

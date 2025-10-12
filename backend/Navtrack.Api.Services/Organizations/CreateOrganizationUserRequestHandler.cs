@@ -6,10 +6,10 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Organizations.Events;
 using Navtrack.Api.Services.Organizations.Mappers;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Organizations;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Organizations;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Organizations;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -22,8 +22,8 @@ public class CreateOrganizationUserRequestHandler(
     INavtrackContextAccessor navtrackContextAccessor)
     : BaseRequestHandler<CreateOrganizationUserRequest>
 {
-    private OrganizationDocument? organization;
-    private UserDocument? user;
+    private OrganizationEntity? organization;
+    private UserEntity? user;
 
     public override async Task Validate(RequestValidationContext<CreateOrganizationUserRequest> context)
     {
@@ -35,16 +35,16 @@ public class CreateOrganizationUserRequestHandler(
             ApiErrorCodes.User_000001_EmailNotFound);
         
         context.ValidationException.AddErrorIfTrue(
-            user?.Organizations?.Any(x => x.OrganizationId == organization.Id),
+            user?.OrganizationUsers.Any(x => x.OrganizationId == organization.Id),
             nameof(context.Request.Model.Email), ApiErrorCodes.Organization_000001_UserAlreadyInOrganization);
     }
 
     public override async Task Handle(CreateOrganizationUserRequest request)
     {
-        UserOrganizationElement element = UserOrganizationElementMapper.Map(organization!.Id, request.Model.UserRole,
+        OrganizationUserEntity element = OrganizationUserEntityMapper.Map(organization!.Id, user!.Id, request.Model.UserRole,
             navtrackContextAccessor.NavtrackContext.User.Id);
 
-        await userRepository.AddUserToOrganization(user!.Id, element);
+        await userRepository.AddUserToOrganization(element);
         await organizationRepository.UpdateUsersCount(organization.Id);
     }
 

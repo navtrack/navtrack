@@ -4,8 +4,8 @@ using Navtrack.Api.Services.Account.Events;
 using Navtrack.Api.Services.Account.Mappers;
 using Navtrack.Api.Services.Common.Passwords;
 using Navtrack.Api.Services.Requests;
-using Navtrack.DataAccess.Model.Users;
-using Navtrack.DataAccess.Services.Users;
+using Navtrack.Database.Model.Users;
+using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
 using Navtrack.Shared.Library.Events;
 
@@ -17,7 +17,7 @@ public class CreateAccountRequestHandler(
     IPasswordHasher passwordHasher,
     ICaptchaValidator? captchaValidator = null) : BaseRequestHandler<CreateAccountRequest>
 {
-    private UserDocument? user;
+    private UserEntity user;
     
     public override async Task Validate(RequestValidationContext<CreateAccountRequest> context)
     {
@@ -49,7 +49,7 @@ public class CreateAccountRequestHandler(
     {
         return new AccountCreatedEvent
         {
-            UserId = user!.Id.ToString()
+            UserId = user.Id.ToString()
         };
     }
 }

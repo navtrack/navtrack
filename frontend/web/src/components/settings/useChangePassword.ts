@@ -65,6 +65,6 @@ export function useChangePassword() {
   return {
     validationSchema,
     handleSubmit,
-    isLoading: changePasswordMutation.isLoading
+    isLoading: changePasswordMutation.isPending
   };
 }

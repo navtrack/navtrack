@@ -4,7 +4,7 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { ListOfMessage } from "./listOfMessage";
+import type { ListModelOfDeviceMessageModel } from "./listModelOfDeviceMessageModel";
 import type { MessageListAllOf } from "./messageListAllOf";
 
-export type MessageList = ListOfMessage & MessageListAllOf;
+export type MessageList = ListModelOfDeviceMessageModel & MessageListAllOf;

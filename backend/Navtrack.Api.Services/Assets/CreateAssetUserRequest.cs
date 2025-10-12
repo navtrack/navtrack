@@ -5,5 +5,5 @@ namespace Navtrack.Api.Services.Assets;
 public class CreateAssetUserRequest
 {
     public string AssetId { get; set; }
-    public CreateAssetUser Model { get; set; }
+    public CreateAssetUserModel Model { get; set; }
 }

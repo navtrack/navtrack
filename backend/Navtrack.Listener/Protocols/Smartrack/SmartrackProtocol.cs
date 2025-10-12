@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Protocols.Smartrack;
 [Service(typeof(IProtocol))]
 public class SmartrackProtocol : VjoyCarProtocol
 {
-    public override int Port => 7025;
+    public override short Port => 7025;
 }
