@@ -40,7 +40,7 @@
     "query-string": "^9.1.0",
     "react-cosmos-plugin-open-fixture": "6.1.1",
     "react-cosmos-plugin-vite": "6.1.1",
-    "react-cosmos": "6.2.3",
+    "react-cosmos": "7.0.0",
     "react-dom": "19.1.0",
     "react-intl": "7.1.13",
     "react-leaflet": "5.0.0",
