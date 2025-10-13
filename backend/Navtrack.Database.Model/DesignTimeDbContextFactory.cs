@@ -8,7 +8,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackDb
     public NavtrackDbContext CreateDbContext(string[] args)
     {
         DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder = new();
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=navtrack;Username=navtrack;Password=navtrackl");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=navtrack;Username=navtrack;Password=navtrack");
         
         return new NavtrackDbContext(optionsBuilder.Options);
     }

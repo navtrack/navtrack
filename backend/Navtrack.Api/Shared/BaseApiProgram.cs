@@ -91,11 +91,6 @@ public abstract class BaseApiProgram<T>
 
         builder.Services.AddSingleton<IClientErrorFactory, CustomClientErrorFactory>();  
         
-        builder.Services.AddDbContext<NavtrackDbContext>(opt =>
-            opt.UseNpgsql(
-                builder.Configuration.GetConnectionString("Postgres")));
-
-
         baseProgramOptions?.ConfigureServices?.Invoke(builder);
 
         WebApplication app = builder.Build();
@@ -129,6 +124,13 @@ public abstract class BaseApiProgram<T>
         app.MapControllers();
         // app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));
 
+        if (app.Environment.IsProduction())
+        {
+            using IServiceScope scope = app.Services.CreateScope();
+            DbContext db = scope.ServiceProvider.GetRequiredService<DbContext>();
+            db.Database.Migrate();
+        }
+        
         app.Run();
     }
 

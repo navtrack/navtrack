@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-        <Exec Command="$(NSwagExe_Net90) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" WorkingDirectory="$(ProjectDir)"/>
+        <Exec Command="$(NSwagExe_Net90) aspnetcore2openapi /nobuild:true /output:%22$(ProjectDir)../../api.json%22" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=NSwag" WorkingDirectory="$(ProjectDir)"/>
         <Exec Command="npm run generate" WorkingDirectory="../../frontend/shared"/>
     </Target>
 </Project>

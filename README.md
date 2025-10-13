@@ -15,9 +15,9 @@
 
 #### Requirements
 
-- .NET 8 SDK (https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- .NET 9 SDK (https://dotnet.microsoft.com/download/dotnet/9.0)
 - Node.js (https://nodejs.org/)
-- Docker (to run MongoDB) (https://docs.docker.com/get-docker/)
+- Docker (to run PostgreSQL) (https://docs.docker.com/get-docker/)
 - Optional: Rider or Visual Studio
 
 #### Steps
@@ -37,7 +37,7 @@ npm install
 dotnet build
 ```
 
-4. (Optional) Start MongoDB using our development docker-compose file or if you already have a MongoDB instance running you can configure the connection strings in the following 2 files, one for the API and one for the Listener service.
+4. (Optional) Start PostgreSQL using our development docker-compose file or if you already have a PostgreSQL instance running you can configure the connection strings in the following 2 files, one for the API and one for the Listener service.
 
 ```
 docker-compose -f docker-compose.dev.yml up
@@ -69,7 +69,7 @@ npm start
 
 ## Running with Docker containers
 
-#### 1. Install docker
+#### 1. Install Docker
 
 #### 2. Get the latest docker-compose.yml
 
@@ -79,10 +79,6 @@ curl https://raw.githubusercontent.com/navtrack/navtrack/main/docker-compose.yml
 
 #### 3. Run Docker Compose
 
-```
-docker-compose up
-```
-or
 ```
 docker compose up
 ```

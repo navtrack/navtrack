@@ -1,8 +1,8 @@
 {
   "name": "@navtrack/frontend",
   "workspaces": [
-    "web",
-    "shared"
+    "frontend/web",
+    "frontend/shared"
   ],
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
@@ -33,7 +33,7 @@
     "jotai": "^2.15.0",
     "leaflet": "^1.9.4",
     "maplibre-gl": "^4.7.1",
-    "orval": "^7.13.2",
+    "orval": "^6.31.0",
     "postcss": "8.4.40",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "prettier": "^3.3.3",
@@ -55,7 +55,7 @@
   "scripts": {
     "start:web": "cd web && npm run start",
     "build:web": "cd web && npm run build",
-    "clean": "rm -rf node_modules && rm -rf shared/node_modules && rm -rf web/node_modules && rm -rf package-lock.json"
+    "clean": "rm -rf node_modules && rm -rf frontend/shared/node_modules && rm -rf frontend/web/node_modules && rm -rf package-lock.json"
   },
   "eslintConfig": {
     "rules": {
