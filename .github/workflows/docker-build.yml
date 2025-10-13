@@ -31,6 +31,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker build and push
         run: |
-          docker buildx build -t ghcr.io/navtrack/web:${{ env.version }} --platform linux/amd64,linux/arm64 -f frontend/Dockerfile --push --provenance=false frontend
+          docker buildx build -t ghcr.io/navtrack/web:${{ env.version }} --platform linux/amd64,linux/arm64 -f frontend/Dockerfile --push --provenance=false .
           docker buildx build -t ghcr.io/navtrack/api:${{ env.version }} --platform linux/amd64,linux/arm64 -f backend/Navtrack.Api/Dockerfile --push --provenance=false .
           docker buildx build -t ghcr.io/navtrack/listener:${{ env.version }} --platform linux/amd64,linux/arm64 -f backend/Navtrack.Listener/Dockerfile --push --provenance=false .
