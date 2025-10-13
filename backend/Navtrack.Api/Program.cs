@@ -18,7 +18,8 @@ public class Program
                 webApplicationBuilder.Services.AddDbContext<DbContext, NavtrackDbContext>(opt =>
                     opt.UseNpgsql(
                         webApplicationBuilder.Configuration.GetConnectionString("Postgres")));
-            }
+            },
+            MigrateDatabase = true
         });
     }
 }

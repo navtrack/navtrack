@@ -124,7 +124,7 @@ public abstract class BaseApiProgram<T>
         app.MapControllers();
         // app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));
 
-        if (app.Environment.IsProduction())
+        if (app.Environment.IsProduction() && baseProgramOptions?.MigrateDatabase == true)
         {
             using IServiceScope scope = app.Services.CreateScope();
             DbContext db = scope.ServiceProvider.GetRequiredService<DbContext>();
