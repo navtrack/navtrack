@@ -15,9 +15,6 @@ RUN apt-get install nodejs -y
 WORKDIR /src
 COPY . .
 
-WORKDIR /src/frontend
 RUN npm install
 RUN npm run build
-
-WORKDIR /src
 RUN dotnet build
