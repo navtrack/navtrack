@@ -10,15 +10,8 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener;
 
 [Service(typeof(IHostedService), ServiceLifetime.Singleton)]
-public class ListenerHostedService : IHostedService
+public class ListenerHostedService(IServiceScopeFactory serviceScopeFactory) : IHostedService
 {
-    private readonly IServiceScopeFactory serviceScopeFactory;
-
-    public ListenerHostedService(IServiceScopeFactory serviceScopeFactory)
-    {
-        this.serviceScopeFactory = serviceScopeFactory;
-    }
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using IServiceScope scope = serviceScopeFactory.CreateScope();

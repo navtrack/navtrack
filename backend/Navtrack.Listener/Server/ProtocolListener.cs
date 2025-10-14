@@ -3,25 +3,25 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Navtrack.Database.Model.Devices;
 using Navtrack.Database.Services.Devices;
 using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
+using Sentry;
 
 namespace Navtrack.Listener.Server;
 
 [Service(typeof(IProtocolListener))]
 public class ProtocolListener(
     ILogger<ProtocolListener> logger,
-    IProtocolConnectionHandler protocolConnectionHandler,
-    IDeviceConnectionRepository deviceConnectionRepository) : IProtocolListener
+    IDeviceConnectionRepository deviceConnectionRepository,
+    IServiceProvider serviceProvider) : IProtocolListener
 {
     public async Task Start(IProtocol protocol, CancellationToken cancellationToken)
     {
-        TcpListener? listener = null;
-        
-        listener = new TcpListener(IPAddress.Any, protocol.Port);
+        TcpListener listener = new(IPAddress.Any, protocol.Port);
         listener.Start();
         logger.LogDebug("{Protocol}: listening on {ProtocolPort}", protocol, protocol.Port);
 
@@ -31,22 +31,26 @@ public class ProtocolListener(
             {
                 TcpClient tcpClient = await listener.AcceptTcpClientAsync(cancellationToken);
                 ProtocolConnectionContext connectionContext = await GetConnectionContext(protocol, tcpClient);
-
+                
+                using IServiceScope scope = serviceProvider.CreateScope();
+                IProtocolConnectionHandler protocolConnectionHandler = scope.ServiceProvider.GetRequiredService<IProtocolConnectionHandler>();
+              
                 _ = protocolConnectionHandler.HandleConnection(connectionContext, cancellationToken);
             }
             catch (Exception exception)
             {
                 logger.LogCritical(exception, "{Protocol}", protocol);
+                SentrySdk.CaptureException(exception);
             }
         }
-        
+
         listener.Stop();
     }
 
     private async Task<ProtocolConnectionContext> GetConnectionContext(IProtocol protocol, TcpClient tcpClient)
     {
         NetworkStreamWrapper networkStream = new(tcpClient);
-        
+
         DeviceConnectionEntity deviceConnectionDocument = new()
         {
             Port = protocol.Port,
@@ -57,7 +61,7 @@ public class ProtocolListener(
 
         ProtocolConnectionContext connectionContext =
             new(networkStream, protocol, deviceConnectionDocument.Id);
-        
+
         return connectionContext;
     }
 }
