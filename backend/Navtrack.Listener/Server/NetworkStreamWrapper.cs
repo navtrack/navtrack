@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Navtrack.Listener.Server;
 
-public class NetworkStreamWrapper(TcpClient tcpClient) : INetworkStreamWrapper
+public class NetworkStreamWrapper(TcpClientAdapter tcpClient) : INetworkStreamWrapper
 {
     private readonly NetworkStream networkStream = tcpClient.GetStream();
-    public TcpClient TcpClient { get; } = tcpClient;
-    public string? RemoteEndPoint => TcpClient.Client.RemoteEndPoint?.ToString();
+    public TcpClientAdapter TcpClient { get; } = tcpClient;
+    public string? RemoteEndPoint => TcpClient.GetRemoteEndPoint();
 
     public ValueTask DisposeAsync()
     {

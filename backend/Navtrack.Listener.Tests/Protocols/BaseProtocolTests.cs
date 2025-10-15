@@ -31,7 +31,6 @@ public class BaseProtocolTests<TProtocol, TMessageHandler> : IDisposable where T
     {
         Assert.True(GpsUtil.IsValidLatitude(deviceMessageDocument.Latitude));
         Assert.True(GpsUtil.IsValidLongitude(deviceMessageDocument.Longitude));
-        // Assert.True(deviceMessageDocument.Date >= DateTime.UnixEpoch);
         Assert.True(deviceMessageDocument.Speed is null or >= 0 and <= 1000);
         Assert.True(deviceMessageDocument.Heading is null or >= 0 and <= 360);
         Assert.True(deviceMessageDocument.Satellites is null or >= 0);

@@ -11,9 +11,7 @@ using Sentry;
 namespace Navtrack.Listener.Server;
 
 [Service(typeof(IProtocolListener), ServiceLifetime.Singleton)]
-public class ProtocolListener(
-    ILogger<ProtocolListener> logger,
-    IServiceProvider serviceProvider) : IProtocolListener
+public class ProtocolListener(IServiceProvider serviceProvider, ILogger<ProtocolListener> logger) : IProtocolListener
 {
     public async Task Start(IProtocol protocol, CancellationToken cancellationToken)
     {
@@ -27,12 +25,14 @@ public class ProtocolListener(
             {
                 TcpClient tcpClient = await listener.AcceptTcpClientAsync(cancellationToken);
 
+                TcpClientAdapter tcpClientAdapter = new(tcpClient);
+
                 IServiceScope serviceScope = serviceProvider.CreateScope();
 
                 IProtocolConnectionHandler protocolConnectionHandler =
                     serviceScope.ServiceProvider.GetRequiredService<IProtocolConnectionHandler>();
 
-                _ = protocolConnectionHandler.HandleConnection(protocol, tcpClient, cancellationToken);
+                _ = protocolConnectionHandler.HandleConnection(tcpClientAdapter, protocol, cancellationToken);
             }
             catch (Exception exception)
             {

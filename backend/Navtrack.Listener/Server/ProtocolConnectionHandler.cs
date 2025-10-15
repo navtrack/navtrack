@@ -1,11 +1,7 @@
-using System;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Navtrack.Database.Model.Devices;
-using Navtrack.Database.Services.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
@@ -15,40 +11,42 @@ namespace Navtrack.Listener.Server;
 [Service(typeof(IProtocolConnectionHandler))]
 public class ProtocolConnectionHandler(
     IProtocolMessageHandler handler,
-    IDeviceConnectionRepository deviceConnectionRepository,
+    IProtocolConnectionContextFactory protocolConnectionContextFactory,
     ILogger<ProtocolConnectionHandler> logger)
     : IProtocolConnectionHandler
 {
-    public async Task HandleConnection(IProtocol protocol, TcpClient tcpClient, CancellationToken cancellationToken)
+    public async Task HandleConnection(TcpClientAdapter tcpClient, IProtocol protocol,
+        CancellationToken cancellationToken)
     {
-        ProtocolConnectionContext connectionContext = await GetConnectionContext(protocol, tcpClient);
+        ProtocolConnectionContext protocolConnectionContext =
+            await protocolConnectionContextFactory.GetConnectionContext(protocol, tcpClient);
 
-        logger.LogDebug("{Protocol}: connected {EndPoint}", connectionContext.Protocol,
-            connectionContext.NetworkStream.RemoteEndPoint);
+        logger.LogDebug("{Protocol}: connected {EndPoint}", protocolConnectionContext.Protocol,
+            protocolConnectionContext.NetworkStream.RemoteEndPoint);
 
         byte[] buffer = new byte[ServerVariables.BufferLength];
         int length;
 
         do
         {
-            length = ReadMessage(connectionContext.NetworkStream, buffer, connectionContext.Protocol,
+            length = ReadMessage(protocolConnectionContext.NetworkStream, buffer, protocolConnectionContext.Protocol,
                 cancellationToken);
 
             if (length > 0)
             {
-                logger.LogDebug("{ClientProtocol}: received {Length} bytes", connectionContext.Protocol, length);
+                logger.LogDebug("{ClientProtocol}: received {Length} bytes", protocolConnectionContext.Protocol, length);
 
-                int startIndex = GetStartIndex(buffer, length, connectionContext.Protocol);
+                int startIndex = GetStartIndex(buffer, length, protocolConnectionContext.Protocol);
 
-                await handler.HandleMessage(connectionContext, connectionContext.NetworkStream,
+                await handler.HandleMessage(protocolConnectionContext, protocolConnectionContext.NetworkStream,
                     buffer[startIndex..length]);
             }
-        } while (!cancellationToken.IsCancellationRequested && length > 0 && connectionContext.NetworkStream.CanRead);
+        } while (!cancellationToken.IsCancellationRequested && length > 0 && protocolConnectionContext.NetworkStream.CanRead);
 
-        logger.LogDebug("{ClientProtocol}: disconnected {EndPoint}", connectionContext.Protocol,
-            connectionContext.NetworkStream.RemoteEndPoint);
+        logger.LogDebug("{ClientProtocol}: disconnected {EndPoint}", protocolConnectionContext.Protocol,
+            protocolConnectionContext.NetworkStream.RemoteEndPoint);
 
-        await connectionContext.DisposeAsync();
+        await protocolConnectionContext.DisposeAsync();
     }
 
     private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
@@ -106,24 +104,5 @@ public class ProtocolConnectionHandler(
 
             return startIndex > 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
         });
-    }
-
-
-    private async Task<ProtocolConnectionContext> GetConnectionContext(IProtocol protocol, TcpClient tcpClient)
-    {
-        NetworkStreamWrapper networkStream = new(tcpClient);
-
-        DeviceConnectionEntity deviceConnectionDocument = new()
-        {
-            Port = protocol.Port,
-            IPAddress = networkStream.RemoteEndPoint,
-            CreatedDate = DateTime.UtcNow
-        };
-        await deviceConnectionRepository.Add(deviceConnectionDocument);
-
-        ProtocolConnectionContext connectionContext =
-            new(networkStream, protocol, deviceConnectionDocument.Id);
-
-        return connectionContext;
     }
 }

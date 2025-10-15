@@ -7,5 +7,5 @@ namespace Navtrack.Listener.Server;
 
 public interface IProtocolConnectionHandler
 {
-    Task HandleConnection(IProtocol protocol, TcpClient tcpClient, CancellationToken cancellationToken);
+    Task HandleConnection(TcpClientAdapter tcpClient, IProtocol protocol, CancellationToken cancellationToken);
 }

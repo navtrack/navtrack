@@ -27,6 +27,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
     private readonly ProtocolConnectionHandler protocolConnectionHandler;
     private readonly Mock<INetworkStreamWrapper> networkStreamWrapperMock;
     private readonly Mock<IDeviceMessageService> locationServiceMock;
+    private readonly Mock<TcpClientAdapter> tcpClientAdapterMock;
     private readonly CancellationTokenSource cancellationTokenSource;
 
     public ProtocolConnectionContext ConnectionContext { get; }
@@ -41,16 +42,24 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         TotalParsedMessages = [];
 
         locationServiceMock = GetPositionService();
-        protocolConnectionHandler = GetProtocolClientHandler();
+        
         networkStreamWrapperMock = SetupNetworkStreamMock();
-        ConnectionContext = GetProtocolClient();
+        
+        ConnectionContext = new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(), Guid.NewGuid());
+        
+        protocolConnectionHandler = GetProtocolClientHandler();
+        
+        tcpClientAdapterMock = new Mock<TcpClientAdapter>();
+        tcpClientAdapterMock.Setup(x => x.GetRemoteEndPoint()).Returns("12.34.56.78");
     }
 
     public void SendBytesFromDevice(byte[] value)
     {
         sendStream = new MemoryStream(value);
 
-        CallStreamHandler().Wait();
+        protocolConnectionHandler.HandleConnection(tcpClientAdapterMock.Object, 
+            new Mock<IProtocol>().Object,
+            cancellationTokenSource.Token).Wait();
     }
 
     public void SendStringFromDevice(string value)
@@ -79,11 +88,6 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         int length = receiveStream.Read(buffer, 0, ServerVariables.BufferLength);
 
         return StringUtil.ConvertByteArrayToString(buffer[..length]);
-    }
-
-    private async Task CallStreamHandler()
-    {
-        await protocolConnectionHandler.HandleConnection(cancellationTokenSource.Token);
     }
 
     private Mock<IDeviceMessageService> GetPositionService()
@@ -123,8 +127,14 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
             new Mock<IAssetRepository>().Object,
             new Mock<IDeviceConnectionRepository>().Object);
 
-        ProtocolConnectionHandler handler = new(new Mock<ILogger<ProtocolConnectionHandler>>().Object,
-            protocolMessageHandler);
+        Mock<IProtocolConnectionContextFactory> protocolConnectionContextFactoryMock = new();
+        protocolConnectionContextFactoryMock
+            .Setup(x => x.GetConnectionContext(It.IsAny<IProtocol>(), It.IsAny<TcpClientAdapter>()))
+            .ReturnsAsync(ConnectionContext);
+
+        ProtocolConnectionHandler handler = new(protocolMessageHandler,
+            protocolConnectionContextFactoryMock.Object,
+            new Mock<ILogger<ProtocolConnectionHandler>>().Object);
 
         return handler;
     }
@@ -147,13 +157,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
             .Callback<byte>(x => { receiveStream = new MemoryStream([x]); });
         mock.Setup(x => x.CanRead).Returns(true);
         mock.Setup(x => x.DataAvailable).Returns(true);
-        mock.Setup(x => x.TcpClient).Returns(new TcpClient());
 
         return mock;
-    }
-
-    private ProtocolConnectionContext GetProtocolClient()
-    {
-        return new ProtocolConnectionContext(networkStreamWrapperMock.Object, new TProtocol(), Guid.NewGuid());
     }
 }
