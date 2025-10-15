@@ -10,16 +10,13 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener;
 
 [Service(typeof(IHostedService), ServiceLifetime.Singleton)]
-public class ListenerHostedService(IServiceScopeFactory serviceScopeFactory) : IHostedService
+public class ListenerHostedService(IProtocolListener protocolListener, IEnumerable<IProtocol> protocols) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using IServiceScope scope = serviceScopeFactory.CreateScope();
+        List<IProtocol> orderedProtocols = protocols.OrderBy(x => x.Port).ToList();
 
-        IProtocolListener protocolListener = scope.ServiceProvider.GetRequiredService<IProtocolListener>();
-        List<IProtocol> protocols = scope.ServiceProvider.GetServices<IProtocol>().OrderBy(x => x.Port).ToList();
-
-        foreach (IProtocol protocol in protocols)
+        foreach (IProtocol protocol in orderedProtocols)
         {
             _ = protocolListener.Start(protocol, cancellationToken);
         }

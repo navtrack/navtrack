@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.iStartek;
 
-[Service(typeof(IProtocol))]
+[Service(typeof(IProtocol), ServiceLifetime.Singleton)]
 // ReSharper disable once InconsistentNaming
 public class iStartekProtocol : BaseProtocol
 {

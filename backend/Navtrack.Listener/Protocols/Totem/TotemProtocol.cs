@@ -1,10 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Totem;
 
-[Service(typeof(IProtocol))]
+[Service(typeof(IProtocol), ServiceLifetime.Singleton)]
 public class TotemProtocol : BaseProtocol
 {
     public override short Port => 7005;

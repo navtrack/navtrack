@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.VjoyCar;
 
-[Service(typeof(IProtocol))]
+[Service(typeof(IProtocol), ServiceLifetime.Singleton)]
 public class VjoyCarProtocol : BaseProtocol
 {
     public override short Port => 7020;

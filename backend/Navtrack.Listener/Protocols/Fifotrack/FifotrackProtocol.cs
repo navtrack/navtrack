@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Listener.Server;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Listener.Protocols.Fifotrack;
 
-[Service(typeof(IProtocol))]
+[Service(typeof(IProtocol), ServiceLifetime.Singleton)]
 public class FifotrackProtocol : BaseProtocol
 {
     public override short Port => 7009;

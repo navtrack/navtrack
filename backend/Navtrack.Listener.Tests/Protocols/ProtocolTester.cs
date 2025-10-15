@@ -83,7 +83,7 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
 
     private async Task CallStreamHandler()
     {
-        await protocolConnectionHandler.HandleConnection(ConnectionContext, cancellationTokenSource.Token);
+        await protocolConnectionHandler.HandleConnection(cancellationTokenSource.Token);
     }
 
     private Mock<IDeviceMessageService> GetPositionService()

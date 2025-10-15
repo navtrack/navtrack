@@ -5,18 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Navtrack.Database.Model.Devices;
-using Navtrack.Database.Services.Devices;
-using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
 using Sentry;
 
 namespace Navtrack.Listener.Server;
 
-[Service(typeof(IProtocolListener))]
+[Service(typeof(IProtocolListener), ServiceLifetime.Singleton)]
 public class ProtocolListener(
     ILogger<ProtocolListener> logger,
-    IDeviceConnectionRepository deviceConnectionRepository,
     IServiceProvider serviceProvider) : IProtocolListener
 {
     public async Task Start(IProtocol protocol, CancellationToken cancellationToken)
@@ -30,12 +26,13 @@ public class ProtocolListener(
             try
             {
                 TcpClient tcpClient = await listener.AcceptTcpClientAsync(cancellationToken);
-                ProtocolConnectionContext connectionContext = await GetConnectionContext(protocol, tcpClient);
-                
-                using IServiceScope scope = serviceProvider.CreateScope();
-                IProtocolConnectionHandler protocolConnectionHandler = scope.ServiceProvider.GetRequiredService<IProtocolConnectionHandler>();
-              
-                _ = protocolConnectionHandler.HandleConnection(connectionContext, cancellationToken);
+
+                IServiceScope serviceScope = serviceProvider.CreateScope();
+
+                IProtocolConnectionHandler protocolConnectionHandler =
+                    serviceScope.ServiceProvider.GetRequiredService<IProtocolConnectionHandler>();
+
+                _ = protocolConnectionHandler.HandleConnection(protocol, tcpClient, cancellationToken);
             }
             catch (Exception exception)
             {
@@ -45,23 +42,5 @@ public class ProtocolListener(
         }
 
         listener.Stop();
-    }
-
-    private async Task<ProtocolConnectionContext> GetConnectionContext(IProtocol protocol, TcpClient tcpClient)
-    {
-        NetworkStreamWrapper networkStream = new(tcpClient);
-
-        DeviceConnectionEntity deviceConnectionDocument = new()
-        {
-            Port = protocol.Port,
-            IPAddress = networkStream.RemoteEndPoint,
-            CreatedDate = DateTime.UtcNow
-        };
-        await deviceConnectionRepository.Add(deviceConnectionDocument);
-
-        ProtocolConnectionContext connectionContext =
-            new(networkStream, protocol, deviceConnectionDocument.Id);
-
-        return connectionContext;
     }
 }

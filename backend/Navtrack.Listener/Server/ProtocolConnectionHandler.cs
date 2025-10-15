@@ -1,7 +1,11 @@
+using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Services.Devices;
 using Navtrack.Listener.Helpers;
 using Navtrack.Listener.Models;
 using Navtrack.Shared.Library.DI;
@@ -9,11 +13,16 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener.Server;
 
 [Service(typeof(IProtocolConnectionHandler))]
-public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger, IProtocolMessageHandler handler)
+public class ProtocolConnectionHandler(
+    IProtocolMessageHandler handler,
+    IDeviceConnectionRepository deviceConnectionRepository,
+    ILogger<ProtocolConnectionHandler> logger)
     : IProtocolConnectionHandler
 {
-    public async Task HandleConnection(ProtocolConnectionContext connectionContext, CancellationToken cancellationToken)
+    public async Task HandleConnection(IProtocol protocol, TcpClient tcpClient, CancellationToken cancellationToken)
     {
+        ProtocolConnectionContext connectionContext = await GetConnectionContext(protocol, tcpClient);
+
         logger.LogDebug("{Protocol}: connected {EndPoint}", connectionContext.Protocol,
             connectionContext.NetworkStream.RemoteEndPoint);
 
@@ -97,5 +106,24 @@ public class ProtocolConnectionHandler(ILogger<ProtocolConnectionHandler> logger
 
             return startIndex > 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
         });
+    }
+
+
+    private async Task<ProtocolConnectionContext> GetConnectionContext(IProtocol protocol, TcpClient tcpClient)
+    {
+        NetworkStreamWrapper networkStream = new(tcpClient);
+
+        DeviceConnectionEntity deviceConnectionDocument = new()
+        {
+            Port = protocol.Port,
+            IPAddress = networkStream.RemoteEndPoint,
+            CreatedDate = DateTime.UtcNow
+        };
+        await deviceConnectionRepository.Add(deviceConnectionDocument);
+
+        ProtocolConnectionContext connectionContext =
+            new(networkStream, protocol, deviceConnectionDocument.Id);
+
+        return connectionContext;
     }
 }
