@@ -34,13 +34,13 @@ export function TextInput(props: TextInputProps) {
   return (
     <div>
       <InputLabel name={props.name} label={props.label} />
-      <div className="relative flex rounded-md shadow-sm">
+      <div className="relative flex">
         {props.leftAddon}
         <input
           name={props.name}
           type={props.type ?? "text"}
           className={classNames(
-            "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500",
+            "px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500",
             c(props.size === "sm", "py-1 text-sm"),
             c(props.size === "xs", "py-1 text-xs"),
             c(!!props.error, "ring-red-600"),

@@ -20,7 +20,7 @@ export function AuthenticatedLayoutTwoColumns(
         <div className="ml-64 flex flex-1 flex-col">
           <AuthenticatedLayoutNavbar hideLogo />
           <div
-            className="flex flex-grow flex-col gap-y-4 overflow-y-scroll p-6"
+            className="flex grow flex-col gap-y-4 overflow-y-scroll p-6"
             style={{
               height: "calc(100vh - 112px)"
             }}>

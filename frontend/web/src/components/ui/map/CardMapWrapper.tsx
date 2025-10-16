@@ -8,7 +8,7 @@ type CardMapWrapperProps = {
 export function CardMapWrapper(props: CardMapWrapperProps) {
   return (
     <div
-      className="flex flex-grow overflow-hidden rounded-md"
+      className="flex grow overflow-hidden rounded-md"
       style={props.style}>
       {props.children}
     </div>

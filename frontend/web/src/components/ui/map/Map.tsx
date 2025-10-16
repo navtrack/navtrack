@@ -24,7 +24,7 @@ export function Map(props: MapProps) {
   const center = props.center ?? DEFAULT_MAP_CENTER;
 
   return (
-    <div className="relative flex flex-grow" ref={mapContainerRef}>
+    <div className="relative flex grow" ref={mapContainerRef}>
       <MapContainer
         center={[center.latitude, center.longitude]}
         zoom={props.initialZoom ?? DEFAULT_MAP_ZOOM}

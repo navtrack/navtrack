@@ -19,7 +19,7 @@ export function NtwNotification(props: NtwNotificationProps) {
         "rounded-md p-4"
       )}>
       <div className="flex">
-        <div className="flex flex-shrink-0 items-center">
+        <div className="flex shrink-0 items-center">
           <NtwIcon
             icon={faCheckCircle}
             className={classNames(

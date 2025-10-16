@@ -8,7 +8,7 @@ type ModalBodyProps = {
 
 export function ModalBody(props: ModalBodyProps) {
   return (
-    <div className={classNames("flex-grow p-6", props.className)}>
+    <div className={classNames("grow p-6", props.className)}>
       {props.children}
     </div>
   );

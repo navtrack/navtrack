@@ -32,7 +32,7 @@ export function LocationFilter(props: LocationFilterProps) {
   return (
     <>
       <div className="flex">
-        <Card className="flex h-10 flex-grow items-center space-x-2 p-2 text-xs text-gray-600">
+        <Card className="flex h-10 grow items-center space-x-2 p-2 text-xs text-gray-600">
           <Icon icon={faFilter} />
           <DateFilterBadge filterKey={filterKey} />
           <GeofenceFilterBadge filterKey={filterKey} />

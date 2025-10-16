@@ -21,7 +21,7 @@ export function FilterBadge(props: FilterBadgeProps) {
             props.onCloseClick?.();
           }}
           type="button"
-          className="ml-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-gray-600 hover:bg-gray-200 hover:text-gray-500 focus:bg-gray-500 focus:text-white focus:outline-none">
+          className="ml-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-gray-600 hover:bg-gray-200 hover:text-gray-500 focus:bg-gray-500 focus:text-white focus:outline-none">
           <svg
             className="h-2 w-2"
             stroke="currentColor"

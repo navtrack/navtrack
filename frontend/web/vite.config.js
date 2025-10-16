@@ -2,6 +2,7 @@ import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dns from "dns";
+import tailwindcss from "@tailwindcss/vite";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -21,6 +22,6 @@ export default defineConfig(() => {
     build: {
       outDir: "build"
     },
-    plugins: [react()]
+    plugins: [react(), tailwindcss()]
   };
 });

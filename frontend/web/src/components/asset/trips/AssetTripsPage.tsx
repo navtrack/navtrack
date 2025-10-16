@@ -127,10 +127,10 @@ export function AssetTripsPage() {
           ]}
           rows={query.data?.items}
           setSelectedItem={setSelectedTrip}
-          className="flex h-48 flex-grow"
+          className="flex h-48 grow"
         />
       </div>
-      <Card className="flex flex-grow">
+      <Card className="flex grow">
         <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map>
             <MapTrip
@@ -169,7 +169,7 @@ export function AssetTripsPage() {
               </div>
             </div>
             <div className="flex" style={{ flexBasis: 0 }}>
-              <div className="flex flex-grow bg-white px-3">
+              <div className="flex grow bg-white px-3">
                 <Slider
                   step={1}
                   min={0}

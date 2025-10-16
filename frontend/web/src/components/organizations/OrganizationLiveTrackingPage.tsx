@@ -70,7 +70,7 @@ export function OrganizationLiveTrackingPage() {
           />
         </div>
       </div>
-      <Card className="flex flex-grow">
+      <Card className="flex grow">
         <CardMapWrapper>
           <Map center={DEFAULT_MAP_CENTER} initialZoom={DEFAULT_MAP_ZOOM}>
             {assetsWithPosition.map((asset) => (

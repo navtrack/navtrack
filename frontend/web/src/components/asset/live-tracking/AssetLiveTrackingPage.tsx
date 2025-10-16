@@ -25,7 +25,7 @@ export function AssetLiveTrackingPage() {
             </div>
             {slots?.assetLiveTrackingPositionCardExtraItems?.(position)}
           </Card>
-          <Card className="flex flex-grow">
+          <Card className="flex grow">
             <CardMapWrapper>
               <Map
                 key={currentAsset.id}

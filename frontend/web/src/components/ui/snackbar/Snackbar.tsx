@@ -43,7 +43,7 @@ export function Snackbar(props: SnackbarProps) {
       leaveFrom="transform scale-100 opacity-100"
       leaveTo="transform scale-95 opacity-0">
       <div
-        className="absolute bottom-8 left-1/2 right-auto flex max-w-md rounded-lg border bg-white p-5 shadow-md"
+        className="absolute bottom-8 left-1/2 right-auto flex max-w-md rounded-lg border border-gray-200 bg-white p-5 shadow-md"
         style={{ transform: "translateX(-50%)" }}>
         <div
           className={classNames("mr-5", c(!props.title, "flex items-center"))}>

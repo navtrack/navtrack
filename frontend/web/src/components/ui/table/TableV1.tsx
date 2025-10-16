@@ -9,7 +9,7 @@ export function TableV1<T>(props: TableProps<T>) {
 
   return (
     <table className="w-full border">
-      <thead className="border bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500 ">
+      <thead className="border border-gray-200 bg-gray-50 text-xs font-medium uppercase tracking-wider text-gray-500 ">
         <tr>
           {props.columns.map((column, index) => (
             <td key={`header${index}`} className="p-2">
@@ -20,22 +20,22 @@ export function TableV1<T>(props: TableProps<T>) {
           ))}
         </tr>
       </thead>
-      <tbody className="border-b text-sm text-gray-900">
+      <tbody className="border-b border-gray-200 text-sm text-gray-900">
         {table.sortedRows === undefined ? (
-          <tr className="border">
+          <tr className="border border-gray-200">
             <td className="p-2 text-center" colSpan={props.columns.length}>
               <LoadingIndicator className="text-base" />
             </td>
           </tr>
         ) : table.sortedRows.length === 0 ? (
-          <tr className="border">
+          <tr className="border border-gray-200">
             <td className="p-2 text-center" colSpan={props.columns.length}>
               <FormattedMessage id="ui.table.no-items" />
             </td>
           </tr>
         ) : (
           table.sortedRows.map((row, rowIndex) => (
-            <tr key={`row${rowIndex}`} className="border">
+            <tr key={`row${rowIndex}`} className="border border-gray-200">
               {props.columns.map((column, columnIndex) => (
                 <td
                   key={`row${rowIndex}col${columnIndex}`}

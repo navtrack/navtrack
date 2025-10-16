@@ -28,7 +28,7 @@ export function Modal(props: ModalProps) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0">
             <div
-              className="fixed inset-0 bg-gray-900 bg-opacity-40 transition-opacity"
+              className="fixed inset-0 bg-gray-900/40 transition-opacity"
               onClick={() => props.close()}
             />
           </TransitionChild>

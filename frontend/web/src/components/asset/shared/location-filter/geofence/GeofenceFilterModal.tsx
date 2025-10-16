@@ -40,14 +40,14 @@ export function GeofenceFilterModal(props: GeofenceFilterModalProps) {
     <Modal
       open={filter.state.open}
       close={filter.close}
-      className="flex max-w-screen-md flex-grow">
+      className="flex max-w-(--breakpoint-md) grow">
       <Formik<CircleGeofenceFormValues>
         initialValues={{ geofence: filter.state.geofence }}
         onSubmit={(values) =>
           values.geofence ? filter.handleSubmit(values.geofence) : undefined
         }>
         {({ values, setValues }) => (
-          <Form className="flex flex-grow">
+          <Form className="flex grow">
             <FilterModal
               icon={faMapMarkedAlt}
               onCancel={filter.close}
@@ -55,7 +55,7 @@ export function GeofenceFilterModal(props: GeofenceFilterModalProps) {
               <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="locations.filter.geofence.title" />
               </h3>
-              <div className="mt-4 flex flex-grow" style={{ height: "400px" }}>
+              <div className="mt-4 flex grow" style={{ height: "400px" }}>
                 {renderMap && (
                   <Map center={filter.center} initialZoom={filter.zoom}>
                     <MapMove onMove={filter.handleMapMove} />

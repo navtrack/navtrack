@@ -13,31 +13,31 @@ export function DeviceConfiguration(props: DeviceConfigurationProps) {
       <h1 className="font-semibold">
         <FormattedMessage id="assets.settings.device.configuration.title" />
       </h1>
-      <table className="mt-2 w-full border">
+      <table className="mt-2 w-full border border-gray-200">
         <tbody>
           <tr>
             <td
-              className="border bg-gray-100 p-2 text-xs font-medium text-gray-700"
+              className="border border-gray-200 bg-gray-100 p-2 text-xs font-medium text-gray-700"
               style={{ width: "120px" }}>
               <FormattedMessage id="generic.hostname" />
             </td>
-            <td className="border p-2 font-medium">
+            <td className="border border-gray-200 p-2 font-medium">
               {import.meta.env.VITE_LISTENER_HOSTNAME}
             </td>
           </tr>
           <tr>
-            <td className="border bg-gray-100 p-2 text-xs font-medium text-gray-700">
+            <td className="border border-gray-200 bg-gray-100 p-2 text-xs font-medium text-gray-700">
               <FormattedMessage id="generic.ip-address" />
             </td>
-            <td className="border p-2 font-medium">
+            <td className="border border-gray-200 p-2 font-medium">
               {import.meta.env.VITE_LISTENER_IP}
             </td>
           </tr>
           <tr>
-            <td className="border bg-gray-100 p-2 text-xs font-medium text-gray-700">
+            <td className="border border-gray-200 bg-gray-100 p-2 text-xs font-medium text-gray-700">
               <FormattedMessage id="generic.port" />
             </td>
-            <td className="border p-2 font-medium">
+            <td className="border border-gray-200 p-2 font-medium">
               {props.deviceType ? (
                 props.deviceType.protocol.port
               ) : (

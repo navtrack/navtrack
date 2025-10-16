@@ -115,10 +115,10 @@ export function AssetLogPage() {
         className="flex h-44 flex-grow"
       />
       <Card className="flex flex-grow">
-        <CardMapWrapper>
+        <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map
             center={message ? message.position.coordinates : DEFAULT_MAP_CENTER}
-            initialZoom={14}>
+            initialZoom={10}>
             {message?.position.coordinates && (
               <MapPin
                 pin={{

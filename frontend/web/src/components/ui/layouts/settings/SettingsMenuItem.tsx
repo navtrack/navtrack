@@ -34,7 +34,7 @@ export function SettingsMenuItem(props: SettingsMenuItemProps) {
                   "text-gray-900 group-hover:text-gray-900",
                   "text-gray-500 group-hover:text-gray-900"
                 ),
-                "-ml-1 mr-3 h-6 w-6 flex-shrink-0"
+                "-ml-1 mr-3 h-6 w-6 shrink-0"
               )}
             />
             <span className="truncate">

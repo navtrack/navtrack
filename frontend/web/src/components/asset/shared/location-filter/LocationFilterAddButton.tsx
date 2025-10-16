@@ -33,9 +33,7 @@ type LocationFilterAddButtonProps = {
 };
 
 export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
-  const filtersEnabled = useAtomValue(
-    filtersEnabledSelector(props.filterKey)
-  );
+  const filtersEnabled = useAtomValue(filtersEnabledSelector(props.filterKey));
   const [altitudeFilter, setAltitudeFilter] = useAtom(
     altitudeFilterAtom(props.filterKey)
   );
@@ -75,7 +73,7 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95">
             <MenuItems
-              className="absolute left-0 mt-2 w-44 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              className="absolute left-0 mt-2 w-44 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
               style={{ zIndex: ZINDEX_MENU }}>
               <div className="py-1">
                 {!altitudeFilter.enabled && (
