@@ -14,7 +14,7 @@ import {
   InitialLoginFormValues,
   loginFormValuesValidationSchema
 } from "@navtrack/shared/hooks/user/login/LoginFormValues";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UnauthenticatedLayout } from "../ui/layouts/unauthenticated/UnauthenticatedLayout";
 import { Button } from "../ui/button/Button";
 import { SlotContext } from "../../app/SlotContext";
