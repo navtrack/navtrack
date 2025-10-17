@@ -29,6 +29,7 @@
     "eslint": "^8.5.7",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-react-hooks": "4.6.2",
+    "flowbite-react": "^0.12.9",
     "formik": "2.4.6",
     "jotai": "2.15.0",
     "leaflet": "1.9.4",
@@ -57,7 +58,8 @@
     "start": "cd frontend/web && npm run start",
     "watch": "tsc --noEmit --watch",
     "build": "cd frontend/web && npm run build",
-    "clean": "rm -rf node_modules && rm -rf frontend/shared/node_modules && rm -rf frontend/web/node_modules && rm -rf package-lock.json"
+    "clean": "rm -rf node_modules && rm -rf frontend/shared/node_modules && rm -rf frontend/web/node_modules && rm -rf package-lock.json",
+    "postinstall": "flowbite-react register"
   },
   "eslintConfig": {
     "rules": {

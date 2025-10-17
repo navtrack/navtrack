@@ -1,4 +1,9 @@
-import { Transition, Dialog, TransitionChild } from "@headlessui/react";
+import {
+  Transition,
+  Dialog,
+  TransitionChild,
+  DialogBackdrop
+} from "@headlessui/react";
 import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Fragment, ReactNode } from "react";
 import { ZINDEX_MODAL } from "../../../constants";
@@ -14,24 +19,11 @@ export function Modal(props: ModalProps) {
   return (
     <Transition show={props.open} as={Fragment}>
       <Dialog
-        as="div"
-        className="fixed inset-0 overflow-y-auto"
+        className="relative"
         style={{ zIndex: ZINDEX_MODAL }}
         onClose={() => props.close()}>
-        <div className="flex min-h-screen items-center justify-center p-4">
-          <TransitionChild
-            as={Fragment}
-            enter="ease-out duration-200"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0">
-            <div
-              className="fixed inset-0 bg-gray-900/40 transition-opacity"
-              onClick={() => props.close()}
-            />
-          </TransitionChild>
+        <DialogBackdrop className="fixed inset-0 bg-black/30" />
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-200"

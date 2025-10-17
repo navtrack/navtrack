@@ -7,12 +7,14 @@ import { IntlProvider } from "react-intl";
 import { Provider } from "jotai";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeInit } from "../.flowbite-react/init";
 
 const queryClient = new QueryClient();
 
 export default function Decorator({ children }: { children: ReactNode }) {
   return (
     <IntlProvider locale="en" messages={translations["en"]}>
+      <ThemeInit />
       <QueryClientProvider client={queryClient}>
         <Provider>
           <div className="flex min-h-screen flex-col p-10">{children}</div>
