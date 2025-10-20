@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dns from "dns";
 import tailwindcss from "@tailwindcss/vite";
-import flowbiteReact from "flowbite-react/plugin/vite";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -11,7 +10,7 @@ dns.setDefaultResultOrder("verbatim");
 export default defineConfig(() => {
   return {
     server: {
-      host: "localhost",
+      host: "0.0.0.0",
       port: 3000,
       open: true
     },
@@ -23,6 +22,6 @@ export default defineConfig(() => {
     build: {
       outDir: "build"
     },
-    plugins: [react(), tailwindcss(), flowbiteReact()]
+    plugins: [react(), tailwindcss()]
   };
 });

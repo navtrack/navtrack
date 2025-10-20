@@ -1,86 +1,31 @@
-import { Datepicker } from "flowbite-react";
 import { InputLabel } from "../form/InputLabel";
-import { useIntl } from "react-intl";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { formatDate } from "date-fns";
+
+import { Calendar } from "../calendar/Calendar";
 
 export type DatePickerProps = {
-  value?: Date;
+  value: Date;
   onChange: (date: Date) => void;
   disabled?: boolean;
   label?: string;
+  range?: boolean;
 };
 
 export function DatePicker(props: DatePickerProps) {
-  const intl = useIntl();
-
   return (
     <div>
       <InputLabel label={props.label} />
-      <Datepicker
-        labelClearButton={intl.formatMessage({ id: "generic.close" })}
-        value={props.value}
-        disabled={props.disabled}
-        onChange={(date) => (date !== null ? props.onChange(date) : undefined)}
-        theme={{
-          root: {
-            input: {
-              field: {
-                input: {
-                  sizes: {
-                    sm: "p-2 sm:text-xs",
-                    md: "p-1.5 text-sm",
-                    lg: "sm:text-md p-4"
-                  },
-                  colors: {
-                    gray: "bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                  },
-                  withIcon: {
-                    on: "pl-10"
-                  }
-                }
-              }
-            }
-          },
-          popup: {
-            footer: {
-              button: {
-                today:
-                  "bg-blue-700 text-white hover:bg-blue-800 focus:ring-0 rounded-md"
-              }
-            }
-          },
-          views: {
-            days: {
-              items: {
-                item: {
-                  selected: "bg-blue-700 text-white hover:bg-blue-600",
-                  disabled: "text-gray-500"
-                }
-              }
-            },
-            months: {
-              items: {
-                item: {
-                  selected: "bg-blue-700 text-white hover:bg-blue-600"
-                }
-              }
-            },
-            years: {
-              items: {
-                item: {
-                  selected: "bg-blue-700 text-white hover:bg-blue-600"
-                }
-              }
-            },
-            decades: {
-              items: {
-                item: {
-                  selected: "bg-blue-700 text-white hover:bg-blue-600"
-                }
-              }
-            }
-          }
-        }}
-      />
+      <Popover>
+        <PopoverButton className="bg-white hover:cursor-pointer hover:bg-gray-100 px-3 rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400">
+          {formatDate(props.value, "yyyy-MM-dd")}
+        </PopoverButton>
+        <PopoverPanel transition anchor="bottom start">
+          <div className="border border-gray-200 mt-2 bg-white rounded-md p-4 w-100">
+            <Calendar selectedDate={props.value} onChange={props.onChange} />
+          </div>
+        </PopoverPanel>
+      </Popover>
     </div>
   );
 }

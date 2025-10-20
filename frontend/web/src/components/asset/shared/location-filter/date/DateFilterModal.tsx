@@ -12,6 +12,7 @@ import { FormikDatePicker } from "../../../../ui/datepicker/FormikDatePicker";
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 import { dateFilterAtom } from "../locationFilterState";
+import { FormikDateRangePicker } from "../../../../ui/datepicker/FormikDateRangePicker";
 
 type DateFilterModalProps = {
   filterKey: string;
@@ -42,7 +43,10 @@ export function DateFilterModal(props: DateFilterModalProps) {
       <Formik<DateFilter> initialValues={state} onSubmit={handleSubmit}>
         {({ values, setFieldValue }) => (
           <Form>
-            <FilterModal icon={faCalendarAlt} onCancel={close}>
+            <FilterModal
+              icon={faCalendarAlt}
+              onCancel={close}
+              className="w-100">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="locations.filter.date.title" />
               </h3>
@@ -117,10 +121,24 @@ export function DateFilterModal(props: DateFilterModalProps) {
                   </RadioGroup>
                 </div>
                 <div className="mt-2 flex gap-x-4">
-                  <FormikDatePicker
+                  <FormikDateRangePicker
+                    startDateName={nameOf<DateFilter>("startDate")}
+                    endDateName={nameOf<DateFilter>("endDate")}
+                    value={[values.startDate, values.endDate]}
+                    onChange={(date) => {
+                      setFieldValue(
+                        nameOf<DateFilter>("range"),
+                        DateRange.Custom
+                      );
+                      setFieldValue(nameOf<DateFilter>("startDate"), date[0]);
+                      setFieldValue(nameOf<DateFilter>("endDate"), date[1]);
+                    }}
+                  />
+                  {/* <FormikDatePicker
                     name={nameOf<DateFilter>("startDate")}
                     label="generic.from"
                     key={`startDate-${values.startDate?.toString()}`}
+                    value={values.startDate}
                     onChange={(date) => {
                       setFieldValue(
                         nameOf<DateFilter>("range"),
@@ -139,6 +157,7 @@ export function DateFilterModal(props: DateFilterModalProps) {
                     name={nameOf<DateFilter>("endDate")}
                     label="generic.to"
                     key={`endDate-${values.endDate?.toString()}`}
+                    value={values.endDate}
                     onChange={(date) => {
                       if (date) {
                         setFieldValue(
@@ -154,7 +173,7 @@ export function DateFilterModal(props: DateFilterModalProps) {
                         }
                       }
                     }}
-                  />
+                  /> */}
                 </div>
               </div>
             </FilterModal>

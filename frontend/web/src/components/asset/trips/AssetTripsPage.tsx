@@ -157,7 +157,7 @@ export function AssetTripsPage() {
       {selectedTrip !== undefined && (
         <>
           <Card>
-            <div className="flex rounded-t-lg border-b bg-gray-50 p-2 text-xs tracking-wider text-gray-500">
+            <div className="flex rounded-t-lg border-b border-gray-900/5 bg-gray-50 p-2 text-xs tracking-wider text-gray-500">
               <div className="font-medium uppercase">
                 <FormattedMessage id="generic.position" />
               </div>

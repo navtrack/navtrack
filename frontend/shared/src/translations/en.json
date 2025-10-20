@@ -147,6 +147,7 @@
   "generic.first-name": "First name",
   "generic.from": "From",
   "generic.fuel-consumed": "Fuel consumed",
+  "generic.fuel-consumption": "Fuel consumption",
   "generic.average-fuel-consumption": "Average fuel consumption",
   "generic.avg-fuel-consumption": "Avg. fuel consumption",
   "generic.no-data-found": "No data found.",

@@ -25,7 +25,7 @@ export function Button(props: ButtonProps) {
       title={props.title}
       disabled={props.isLoading || props.disabled}
       className={classNames(
-        "whitespace-nowrap font-semibold shadow-sm",
+        "whitespace-nowrap font-semibold shadow-sm hover:cursor-pointer",
         c(props.size === "xs", "h-6 rounded px-2 text-xs"),
         c(props.size === "sm", "h-7 rounded px-2.5 text-sm"),
         c(

@@ -8,7 +8,6 @@ import { BrowserRouterProvider } from "./BrowserRouterProvider";
 import { AuthenticationProvider } from "@navtrack/shared/components/providers/AuthenticationProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ThemeInit } from "../../.flowbite-react/init";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +23,6 @@ export function BaseApp(props: BaseAppProps) {
   return (
     <Suspense>
       <Provider>
-        <ThemeInit />
         <QueryClientProvider client={queryClient}>
           {props.config.reactQueryDevtools && <ReactQueryDevtools />}
           <ConfigProvider config={props.config}>
