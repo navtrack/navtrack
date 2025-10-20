@@ -28,7 +28,7 @@ public class GetAssetStatsRequestHandler(
 
     public override async Task<AssetStatListModel> Handle(GetAssetStatsRequest request)
     {
-        DeviceMessageEntity? initialOdometer = await deviceMessageRepository.GetFirstOdometer(asset.Id);
+        int? initialOdometer = await deviceMessageRepository.GetFirstOdometer(asset!.Id);
 
         List<AssetStatItemModel> items = [];
         

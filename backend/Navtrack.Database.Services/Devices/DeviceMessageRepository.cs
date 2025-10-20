@@ -124,15 +124,19 @@ public class DeviceMessageRepository(IPostgresRepository repository)
         {
             FirstOdometer = await query.Where(x => x.DeviceOdometer > 0)
                 .OrderBy(x => x.Date)
+                .Select(x => x.DeviceOdometer)
                 .FirstOrDefaultAsync(),
             LastOdometer = await query.Where(x => x.DeviceOdometer > 0)
                 .OrderByDescending(x => x.Date)
+                .Select(x => x.DeviceOdometer)
                 .FirstOrDefaultAsync(),
             FirstFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderBy(x => x.Date)
+                .Select(x => x.VehicleFuelConsumption)
                 .FirstOrDefaultAsync(),
             LastFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderByDescending(x => x.Date)
+                .Select(x => x.VehicleFuelConsumption)
                 .FirstOrDefaultAsync(),
         };
 
@@ -153,29 +157,34 @@ public class DeviceMessageRepository(IPostgresRepository repository)
         {
             FirstOdometer = await query.Where(x => x.DeviceOdometer > 0)
                 .OrderBy(x => x.Date)
+                .Select(x => x.DeviceOdometer)
                 .FirstOrDefaultAsync(),
             LastOdometer = await query.Where(x => x.DeviceOdometer > 0)
                 .OrderByDescending(x => x.Date)
+                .Select(x => x.DeviceOdometer)
                 .FirstOrDefaultAsync(),
             FirstFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderBy(x => x.Date)
+                .Select(x => x.VehicleFuelConsumption)
                 .FirstOrDefaultAsync(),
             LastFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderByDescending(x => x.Date)
+                .Select(x => x.VehicleFuelConsumption)
                 .FirstOrDefaultAsync(),
         };
 
         return result;
     }
 
-    public async Task<DeviceMessageEntity?> GetFirstOdometer(Guid assetId)
+    public async Task<int?> GetFirstOdometer(Guid assetId)
     {
-        DeviceMessageEntity? first = await repository.GetQueryable<DeviceMessageEntity>()
+        int? odometer = await repository.GetQueryable<DeviceMessageEntity>()
             .Where(x => x.AssetId == assetId && x.DeviceOdometer > 0)
             .OrderBy(x => x.Date)
+            .Select(x => x.DeviceOdometer)
             .FirstOrDefaultAsync();
 
-        return first;
+        return odometer;
     }
 
     private static IQueryable<DeviceMessageEntity> ApplyPositionValidFilter(

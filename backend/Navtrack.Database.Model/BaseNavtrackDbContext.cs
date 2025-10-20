@@ -94,6 +94,10 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
 
             entity.Property(x => x.AdditionalData)
                 .HasColumnType("jsonb");
+
+            entity.HasIndex(x => x.AssetId);
+
+            entity.HasIndex(e => new { e.AssetId, e.Date });
         });
 
         modelBuilder.Entity<OrganizationEntity>(entity =>

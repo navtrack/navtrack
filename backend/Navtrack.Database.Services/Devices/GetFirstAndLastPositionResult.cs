@@ -4,8 +4,8 @@ namespace Navtrack.Database.Services.Devices;
 
 public class GetFirstAndLastPositionResult
 {
-    public DeviceMessageEntity? FirstOdometer { get; set; }
-    public DeviceMessageEntity? LastOdometer { get; set; }
-    public DeviceMessageEntity? FirstFuelConsumption { get; set; }
-    public DeviceMessageEntity? LastFuelConsumption { get; set; }
+    public int? FirstOdometer { get; set; }
+    public int? LastOdometer { get; set; }
+    public float? FirstFuelConsumption { get; set; }
+    public float? LastFuelConsumption { get; set; }
 }

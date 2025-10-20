@@ -17,5 +17,5 @@ public interface IDeviceMessageRepository: IGenericPostgresRepository<DeviceMess
         DateTime? startDate, DateTime? endDate);
     Task<GetFirstAndLastPositionResult> GetFirstAndLast(Guid assetId,
         DateTime date);
-    Task<DeviceMessageEntity?> GetFirstOdometer(Guid assetId);
+    Task<int?> GetFirstOdometer(Guid assetId);
 }
