@@ -87,8 +87,13 @@ export function AuthenticatedLayoutSidebar() {
           )}
         </div>
       </div>
-      <div className="flex h-12 items-center justify-center bg-gray-800 text-xs text-white">
-        <Copyright />
+      <div className="flex h-12 flex-col items-center justify-center bg-gray-800 text-xs text-white">
+        <div className="">
+          <Copyright />
+        </div>
+        <div className="absolute bottom-0 right-0 text-gray-800 hover:text-gray-500 cursor-default pr-1">
+          {import.meta.env.VITE_VERSION}
+        </div>
       </div>
     </div>
   );
