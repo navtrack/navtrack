@@ -1,5 +1,3 @@
-using Navtrack.Database.Model.Devices;
-
 namespace Navtrack.Database.Services.Devices;
 
 public class GetFirstAndLastPositionResult

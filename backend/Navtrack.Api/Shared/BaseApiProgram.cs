@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Model.Common;
@@ -19,7 +18,6 @@ using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.IdentityServer;
 using Navtrack.Api.Services.Common.Mappers;
-using Navtrack.Database.Model;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Shared;
