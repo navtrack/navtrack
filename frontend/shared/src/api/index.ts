@@ -17,7 +17,8 @@ import type {
 
 import type {
   AssetModel,
-  AssetStatListModel,
+  AssetStatsModel,
+  AssetStatsPeriod,
   AssetsMessagesGetListParams,
   AssetsReportsGetDistanceReportParams,
   AssetsReportsGetFuelConsumptionReportParams,
@@ -1273,16 +1274,23 @@ export function useAssetsReportsGetTripReport<
   return query;
 }
 
-export const assetsStatsGet = (assetId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<AssetStatListModel>({
-    url: `/assets/${assetId}/stats`,
+export const assetsStatsGet = (
+  assetId: string,
+  period: AssetStatsPeriod,
+  signal?: AbortSignal
+) => {
+  return authAxiosInstance<AssetStatsModel>({
+    url: `/assets/${assetId}/stats/${period}`,
     method: "GET",
     signal
   });
 };
 
-export const getAssetsStatsGetQueryKey = (assetId?: string) => {
-  return [`/assets/${assetId}/stats`] as const;
+export const getAssetsStatsGetQueryKey = (
+  assetId?: string,
+  period?: AssetStatsPeriod
+) => {
+  return [`/assets/${assetId}/stats/${period}`] as const;
 };
 
 export const getAssetsStatsGetQueryOptions = <
@@ -1290,6 +1298,7 @@ export const getAssetsStatsGetQueryOptions = <
   TError = ProblemDetails
 >(
   assetId: string,
+  period: AssetStatsPeriod,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof assetsStatsGet>>,
@@ -1300,16 +1309,17 @@ export const getAssetsStatsGetQueryOptions = <
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getAssetsStatsGetQueryKey(assetId);
+  const queryKey =
+    queryOptions?.queryKey ?? getAssetsStatsGetQueryKey(assetId, period);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof assetsStatsGet>>> = ({
     signal
-  }) => assetsStatsGet(assetId, signal);
+  }) => assetsStatsGet(assetId, period, signal);
 
   return {
     queryKey,
     queryFn,
-    enabled: !!assetId,
+    enabled: !!(assetId && period),
     ...queryOptions
   } as UseQueryOptions<
     Awaited<ReturnType<typeof assetsStatsGet>>,
@@ -1328,6 +1338,7 @@ export function useAssetsStatsGet<
   TError = ProblemDetails
 >(
   assetId: string,
+  period: AssetStatsPeriod,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof assetsStatsGet>>,
@@ -1336,7 +1347,7 @@ export function useAssetsStatsGet<
     >;
   }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getAssetsStatsGetQueryOptions(assetId, options);
+  const queryOptions = getAssetsStatsGetQueryOptions(assetId, period, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

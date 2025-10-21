@@ -120,16 +120,22 @@ public class DeviceMessageRepository(IPostgresRepository repository)
                         x.Date >= DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc) &&
                         x.Date <= DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc));
 
+        var firstOdo = await query.Where(x => x.DeviceOdometer > 0)
+            .OrderBy(x => x.Date)
+            .Select(x => new { x.DeviceOdometer, x.VehicleIgnitionDuration })
+            .FirstOrDefaultAsync();
+
+        var lastOdo = await query.Where(x => x.DeviceOdometer > 0)
+            .OrderByDescending(x => x.Date)
+            .Select(x => new { x.DeviceOdometer, x.VehicleIgnitionDuration })
+            .FirstOrDefaultAsync();
+        
         GetFirstAndLastPositionResult result = new()
         {
-            FirstOdometer = await query.Where(x => x.DeviceOdometer > 0)
-                .OrderBy(x => x.Date)
-                .Select(x => x.DeviceOdometer)
-                .FirstOrDefaultAsync(),
-            LastOdometer = await query.Where(x => x.DeviceOdometer > 0)
-                .OrderByDescending(x => x.Date)
-                .Select(x => x.DeviceOdometer)
-                .FirstOrDefaultAsync(),
+            FirstOdometer = firstOdo?.DeviceOdometer,
+            FirstIgnitionDuration = firstOdo?.VehicleIgnitionDuration,
+            LastOdometer = lastOdo?.DeviceOdometer,
+            LastIgnitionDuration = lastOdo?.VehicleIgnitionDuration,
             FirstFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderBy(x => x.Date)
                 .Select(x => x.VehicleFuelConsumption)

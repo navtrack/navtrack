@@ -2,11 +2,11 @@ import { classNames } from "@navtrack/shared/utils/tailwind";
 import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
-import { AssetStatsDateRange } from "@navtrack/shared/api/model";
+import { AssetStatsPeriod } from "@navtrack/shared/api/model";
 import { Skeleton } from "../../ui/skeleton/Skeleton";
 
 type DashboardItemProps = {
-  dateRange: AssetStatsDateRange;
+  period: AssetStatsPeriod;
   labelId: string;
   mainStat?: string;
   secondaryStat?: string;
@@ -14,11 +14,11 @@ type DashboardItemProps = {
   loading?: boolean;
 };
 
-const previousDateRangeLabelIds: Record<AssetStatsDateRange, string> = {
-  [AssetStatsDateRange.Today]: "generic.yesterday",
-  [AssetStatsDateRange.ThisWeek]: "generic.last-week",
-  [AssetStatsDateRange.ThisMonth]: "generic.last-month",
-  [AssetStatsDateRange.ThisYear]: "generic.last-year"
+const perivousPeriodLabelIds: Record<AssetStatsPeriod, string> = {
+  [AssetStatsPeriod.Day]: "generic.yesterday",
+  [AssetStatsPeriod.Week]: "generic.last-week",
+  [AssetStatsPeriod.Month]: "generic.last-month",
+  [AssetStatsPeriod.Year]: "generic.last-year"
 };
 
 export function DashboardItem(props: DashboardItemProps) {
@@ -37,9 +37,7 @@ export function DashboardItem(props: DashboardItemProps) {
           <div className="mt-1 flex text-nowrap text-sm font-medium text-gray-500">
             <div className="flex-1">
               <div className="text-sm">
-                <FormattedMessage
-                  id={previousDateRangeLabelIds[props.dateRange]}
-                />
+                <FormattedMessage id={perivousPeriodLabelIds[props.period]} />
               </div>
               <div className="text-base">{props.secondaryStat ?? "-"}</div>
             </div>

@@ -4,10 +4,8 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { AssetStatsDateRange } from "./assetStatsDateRange";
 
-export interface AssetStatItemModel {
-  dateRange: AssetStatsDateRange;
+export interface AssetStatsModel {
   /** @nullable */
   distance?: number | null;
   /** @nullable */

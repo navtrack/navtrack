@@ -1,12 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Navtrack.Api.Model.Stats;
 
-public class AssetStatItemModel
+public class AssetStatsModel
 {
-    [Required]
-    public AssetStatsDateRange DateRange { get; set; }
-    
     public int? Distance { get; set; }
     public int? DistancePrevious { get; set; }
     public int? DistanceChange { get; set; }

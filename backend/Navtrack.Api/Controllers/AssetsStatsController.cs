@@ -19,15 +19,16 @@ namespace Navtrack.Api.Controllers;
 public class AssetsStatsController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.AssetStats)]
-    [ProducesResponseType(typeof(AssetStatListModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AssetStatsModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<AssetStatListModel> Get([FromRoute] string assetId)
+    public async Task<AssetStatsModel> Get([FromRoute] string assetId, [FromRoute] AssetStatsPeriod period)
     {
-        AssetStatListModel result =
-            await requestHandler.Handle<GetAssetStatsRequest, AssetStatListModel>(new GetAssetStatsRequest
+        AssetStatsModel result =
+            await requestHandler.Handle<GetAssetStatsRequest, AssetStatsModel>(new GetAssetStatsRequest
             {
-                AssetId = assetId
+                AssetId = assetId,
+                Period = period
             });
 
         return result;

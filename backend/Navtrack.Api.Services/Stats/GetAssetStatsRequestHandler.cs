@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Stats;
 using Navtrack.Api.Services.Common.Exceptions;
@@ -12,10 +11,10 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Stats;
 
-[Service(typeof(IRequestHandler<GetAssetStatsRequest, AssetStatListModel>))]
+[Service(typeof(IRequestHandler<GetAssetStatsRequest, AssetStatsModel>))]
 public class GetAssetStatsRequestHandler(
     IAssetRepository assetRepository,
-    IDeviceMessageRepository deviceMessageRepository) : BaseRequestHandler<GetAssetStatsRequest, AssetStatListModel>
+    IDeviceMessageRepository deviceMessageRepository) : BaseRequestHandler<GetAssetStatsRequest, AssetStatsModel>
 {
     private AssetEntity? asset;
 
@@ -25,36 +24,22 @@ public class GetAssetStatsRequestHandler(
         asset.Return404IfNull();
     }
 
-    public override async Task<AssetStatListModel> Handle(GetAssetStatsRequest request)
+    public override async Task<AssetStatsModel> Handle(GetAssetStatsRequest request)
     {
         int? initialOdometer = await deviceMessageRepository.GetFirstOdometer(asset!.Id);
 
-        List<AssetStatItemModel> items = [];
-        
-        AssetStatsDateRange[] dateRanges = Enum.GetValues<AssetStatsDateRange>();
+        DateTime? middle = AssetStatsDateRangeMapper.GetMidDate(request.Period);
+        DateTime? first = AssetStatsDateRangeMapper.GetFirstDate(request.Period, middle);
+        DateTime? last = AssetStatsDateRangeMapper.GetEndDate(request.Period, middle);
 
-        foreach (AssetStatsDateRange dateRange in dateRanges)
-        {
-            DateTime? middle = AssetStatsDateRangeMapper.GetMidDate(dateRange);
-            DateTime? first = AssetStatsDateRangeMapper.GetFirstDate(dateRange, middle);
-            DateTime? last = AssetStatsDateRangeMapper.GetEndDate(dateRange, middle);
+        GetFirstAndLastPositionResult currentRangePositions =
+            await deviceMessageRepository.GetFirstAndLast(asset!.Id, middle, last);
+        GetFirstAndLastPositionResult previousRangePositions =
+            await deviceMessageRepository.GetFirstAndLast(asset!.Id, first, middle);
 
-            GetFirstAndLastPositionResult currentRangePositions =
-                await deviceMessageRepository.GetFirstAndLast(asset!.Id, middle, last);
-            GetFirstAndLastPositionResult previousRangePositions =
-                await deviceMessageRepository.GetFirstAndLast(asset!.Id, first, middle);
+        AssetStatsModel model =
+            AssetStatItemMapper.Map(initialOdometer, currentRangePositions, previousRangePositions);
 
-            AssetStatItemModel model =
-                AssetStatItemMapper.Map(dateRange, initialOdometer, currentRangePositions, previousRangePositions);
-
-            items.Add(model);
-        }
-        
-        AssetStatListModel result = new()
-        {
-            Items = items
-        };
-        
-        return result;
+        return model;
     }
 }

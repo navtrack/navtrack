@@ -6,43 +6,43 @@ namespace Navtrack.Api.Services.Stats.Mappers;
 
 public static class AssetStatsDateRangeMapper
 {
-    public static DateTime? GetMidDate(AssetStatsDateRange dateRange)
+    public static DateTime? GetMidDate(AssetStatsPeriod period)
     {
         DateTime now = DateTime.UtcNow;
 
-        DateTime? result = dateRange switch
+        DateTime? result = period switch
         {
-            AssetStatsDateRange.Today => new DateTime(now.Year, now.Month, now.Day),
-            AssetStatsDateRange.ThisWeek => new DateTime(now.Year, now.Month, now.Day).AddDays(
+            AssetStatsPeriod.Day => new DateTime(now.Year, now.Month, now.Day),
+            AssetStatsPeriod.Week => new DateTime(now.Year, now.Month, now.Day).AddDays(
                 -now.DayOfWeek(DayOfWeek.Monday)),
-            AssetStatsDateRange.ThisMonth => new DateTime(now.Year, now.Month, 1),
-            AssetStatsDateRange.ThisYear => new DateTime(now.Year, 1, 1),
+            AssetStatsPeriod.Month => new DateTime(now.Year, now.Month, 1),
+            AssetStatsPeriod.Year => new DateTime(now.Year, 1, 1),
             _ => null
         };
 
         return result;
     }
 
-    public static DateTime? GetFirstDate(AssetStatsDateRange dateRangeType, DateTime? date)
+    public static DateTime? GetFirstDate(AssetStatsPeriod period, DateTime? date)
     {
-        return dateRangeType switch
+        return period switch
         {
-            AssetStatsDateRange.Today => date?.AddDays(-1),
-            AssetStatsDateRange.ThisWeek => date?.AddDays(-7),
-            AssetStatsDateRange.ThisMonth => date?.AddMonths(-1),
-            AssetStatsDateRange.ThisYear => date?.AddYears(-1),
+            AssetStatsPeriod.Day => date?.AddDays(-1),
+            AssetStatsPeriod.Week => date?.AddDays(-7),
+            AssetStatsPeriod.Month => date?.AddMonths(-1),
+            AssetStatsPeriod.Year => date?.AddYears(-1),
             _ => null
         };
     }
 
-    public static DateTime? GetEndDate(AssetStatsDateRange dateRange, DateTime? date)
+    public static DateTime? GetEndDate(AssetStatsPeriod period, DateTime? date)
     {
-        return dateRange switch
+        return period switch
         {
-            AssetStatsDateRange.Today => date?.AddDays(1),
-            AssetStatsDateRange.ThisWeek => date?.AddDays(7),
-            AssetStatsDateRange.ThisMonth => date?.AddMonths(1),
-            AssetStatsDateRange.ThisYear => date?.AddYears(1),
+            AssetStatsPeriod.Day => date?.AddDays(1),
+            AssetStatsPeriod.Week => date?.AddDays(7),
+            AssetStatsPeriod.Month => date?.AddMonths(1),
+            AssetStatsPeriod.Year => date?.AddYears(1),
             _ => null
         };
     }

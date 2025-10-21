@@ -6,33 +6,30 @@ namespace Navtrack.Api.Services.Stats.Mappers;
 
 public static class AssetStatItemMapper
 {
-    public static AssetStatItemModel Map(AssetStatsDateRange dateRange,
-        int? initialOdometer,
-        GetFirstAndLastPositionResult current,
+    public static AssetStatsModel Map(int? initialOdometer, GetFirstAndLastPositionResult current,
         GetFirstAndLastPositionResult previous)
     {
-        AssetStatItemModel model = new()
-        {
-            DateRange = dateRange
-        };
+        AssetStatsModel model = new();
 
         model.Distance = (int?)ComputeDifference(current.FirstOdometer, current.LastOdometer, initialOdometer);
-        model.DistancePrevious = (int?)ComputeDifference(previous.FirstOdometer, previous.LastOdometer, initialOdometer);
+        model.DistancePrevious =
+            (int?)ComputeDifference(previous.FirstOdometer, previous.LastOdometer, initialOdometer);
         model.DistanceChange = ComputeChange(model.DistancePrevious, model.Distance);
 
-        model.Duration = (int?)ComputeDifference(current.FirstOdometer, current.LastOdometer);
-        model.DurationPrevious = (int?)ComputeDifference(previous.FirstOdometer, previous.LastOdometer);
+        model.Duration = (int?)ComputeDifference(current.FirstIgnitionDuration, current.LastIgnitionDuration);
+        model.DurationPrevious = (int?)ComputeDifference(previous.FirstIgnitionDuration, previous.LastIgnitionDuration);
         model.DurationChange = ComputeChange(model.DurationPrevious, model.Duration);
-        
+
         model.FuelConsumption = ComputeDifference(current.FirstFuelConsumption, current.LastFuelConsumption);
         model.FuelConsumptionPrevious = ComputeDifference(previous.FirstFuelConsumption, previous.LastFuelConsumption);
         model.FuelConsumptionChange = ComputeChange(model.FuelConsumptionPrevious, model.FuelConsumption);
-        
+
         // Fuel consumption average in l/100km 
         // 100 km * 1000 m * total fuel consumption / distance in meters
         model.FuelConsumptionAverage = 100 * 1000 * model.FuelConsumption / model.Distance;
         model.FuelConsumptionAveragePrevious = 100 * 1000 * model.FuelConsumptionPrevious / model.DistancePrevious;
-        model.FuelConsumptionAverageChange = ComputeChange(model.FuelConsumptionAveragePrevious, model.FuelConsumptionAverage);
+        model.FuelConsumptionAverageChange =
+            ComputeChange(model.FuelConsumptionAveragePrevious, model.FuelConsumptionAverage);
 
         return model;
     }
@@ -64,7 +61,7 @@ public static class AssetStatItemMapper
         if (to != null)
         {
             double diff = to.Value - (from ?? 0);
-            
+
             if (initial.HasValue && !from.HasValue && to.Value > initial)
             {
                 diff -= initial.Value;

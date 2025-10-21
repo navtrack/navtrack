@@ -808,7 +808,7 @@
         }
       }
     },
-    "/assets/{assetId}/stats": {
+    "/assets/{assetId}/stats/{period}": {
       "get": {
         "tags": [
           "Assets - Stats"
@@ -823,6 +823,15 @@
               "type": "string"
             },
             "x-position": 1
+          },
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/AssetStatsPeriod"
+            },
+            "x-position": 2
           }
         ],
         "responses": {
@@ -831,7 +840,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssetStatListModel"
+                  "$ref": "#/components/schemas/AssetStatsModel"
                 }
               }
             }
@@ -3166,42 +3175,10 @@
           }
         }
       },
-      "AssetStatListModel": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ListModelOfAssetStatItemModel"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false
-          }
-        ]
-      },
-      "ListModelOfAssetStatItemModel": {
+      "AssetStatsModel": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "items"
-        ],
         "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AssetStatItemModel"
-            }
-          }
-        }
-      },
-      "AssetStatItemModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "dateRange"
-        ],
-        "properties": {
-          "dateRange": {
-            "$ref": "#/components/schemas/AssetStatsDateRange"
-          },
           "distance": {
             "type": "integer",
             "format": "int32",
@@ -3264,20 +3241,20 @@
           }
         }
       },
-      "AssetStatsDateRange": {
+      "AssetStatsPeriod": {
         "type": "string",
         "description": "",
         "x-enumNames": [
-          "Today",
-          "ThisWeek",
-          "ThisMonth",
-          "ThisYear"
+          "Day",
+          "Week",
+          "Month",
+          "Year"
         ],
         "enum": [
-          "Today",
-          "ThisWeek",
-          "ThisMonth",
-          "ThisYear"
+          "Day",
+          "Week",
+          "Month",
+          "Year"
         ]
       },
       "TripList": {
