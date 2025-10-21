@@ -27,16 +27,16 @@ public class GetReverseGeocodeRequestHandler(IConfiguration configuration)
 
     private async Task<Place?> GetPlace(double latitude, double longitude)
     {
-        string? nomatimUrl = configuration["NomatimUrl"];
+        string? nominatimUrl = configuration["NominatimUrl"];
         
-        if (!string.IsNullOrEmpty(nomatimUrl) && latitude != 0 && longitude != 0)
+        if (!string.IsNullOrEmpty(nominatimUrl) && latitude != 0 && longitude != 0)
         {
             try
             {
                 HttpClient httpClient = new();
 
                 string url =
-                    $"{nomatimUrl}/reverse?format=jsonv2&lon={Convert.ToString(longitude, CultureInfo.InvariantCulture)}&lat={Convert.ToString(latitude, CultureInfo.InvariantCulture)}";
+                    $"{nominatimUrl}/reverse?format=jsonv2&lon={Convert.ToString(longitude, CultureInfo.InvariantCulture)}&lat={Convert.ToString(latitude, CultureInfo.InvariantCulture)}";
 
                 Place? place = await httpClient.GetFromJsonAsync<Place>(url);
 
