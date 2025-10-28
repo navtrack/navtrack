@@ -21,7 +21,6 @@ import { OrganizationUsersPage } from "../components/users/OrganizationUsersPage
 import { TeamUsersPage } from "../components/teams/users/TeamUsersPage";
 import { TeamSettingsPage } from "../components/teams/settings/TeamSettingsPage";
 import { TeamAssetsPage } from "../components/teams/assets/TeamAssetsPage";
-import { OrganizationDashboardPage } from "../components/dashboard/OrganizationDashboardPage";
 import { OrganizationReportsPage } from "../components/reports/OrganizationReportsPage";
 import { OrganizationSettingsLayout } from "../components/organizations/settings/shared/OrganizationSettingsLayout";
 import { NotFoundPage } from "../components/shared/NotFoundPage";
@@ -33,6 +32,7 @@ import { AssetUsersPage } from "../components/asset/settings/access/AssetUsersPa
 import { AssetReportsFuelConsumptionPage } from "../components/asset/reports/AssetReportsFuelConsumptionPage";
 import { AssetReportsTripsPage } from "../components/asset/reports/AssetReportsTripsPage";
 import { AssetReportsDistancePage } from "../components/asset/reports/AssetReportsDistancePage";
+import { OrganizationDashboardPage } from "../components/organizations/dashboard/OrganizationDashboardPage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;

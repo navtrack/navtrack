@@ -6,12 +6,12 @@ import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { Card } from "../../ui/card/Card";
 import { AssetStatsPeriod } from "@navtrack/shared/api/model";
 
-type DashboardRowProps = {
+type AssetDashboardRowProps = {
   period: AssetStatsPeriod;
   labelId: string;
 };
 
-export function DashboardRow(props: DashboardRowProps) {
+export function AssetDashboardRow(props: AssetDashboardRowProps) {
   const currentAsset = useCurrentAsset();
   const show = useShow();
   const statsQuery = useAssetStatsQuery({
@@ -29,43 +29,34 @@ export function DashboardRow(props: DashboardRowProps) {
           <DashboardItem
             period={props.period}
             labelId="generic.distance"
-            mainStat={show.distance(statsQuery.data?.distance, true)}
-            secondaryStat={show.distance(
-              statsQuery.data?.distancePrevious,
-              true
-            )}
-            change={statsQuery.data?.distanceChange}
-            loading={statsQuery.isLoading}
+            showFunction={(value) => show.distance(value, true)}
+            mainValue={statsQuery.data?.distance}
+            secondaryValue={statsQuery.data?.distancePrevious}
+            isLoading={statsQuery.isLoading}
           />
           <DashboardItem
             period={props.period}
             labelId="generic.duration"
-            mainStat={show.duration(statsQuery.data?.duration)}
-            secondaryStat={show.duration(statsQuery.data?.durationPrevious)}
-            change={statsQuery.data?.durationChange}
-            loading={statsQuery.isLoading}
+            showFunction={show.duration}
+            mainValue={statsQuery.data?.duration}
+            secondaryValue={statsQuery.data?.durationPrevious}
+            isLoading={statsQuery.isLoading}
           />
           <DashboardItem
             period={props.period}
             labelId="generic.fuel-consumed"
-            mainStat={show.volume(statsQuery.data?.fuelConsumption)}
-            secondaryStat={show.volume(
-              statsQuery.data?.fuelConsumptionPrevious
-            )}
-            change={statsQuery.data?.fuelConsumptionChange}
-            loading={statsQuery.isLoading}
+            showFunction={show.volume}
+            mainValue={statsQuery.data?.fuelConsumption}
+            secondaryValue={statsQuery.data?.fuelConsumptionPrevious}
+            isLoading={statsQuery.isLoading}
           />
           <DashboardItem
             period={props.period}
             labelId="generic.average-fuel-consumption"
-            mainStat={show.fuelConsumption(
-              statsQuery.data?.fuelConsumptionAverage
-            )}
-            secondaryStat={show.fuelConsumption(
-              statsQuery.data?.fuelConsumptionAveragePrevious
-            )}
-            change={statsQuery.data?.fuelConsumptionAverageChange}
-            loading={statsQuery.isLoading}
+            showFunction={show.fuelConsumption}
+            mainValue={statsQuery.data?.fuelConsumptionAverage}
+            secondaryValue={statsQuery.data?.fuelConsumptionAveragePrevious}
+            isLoading={statsQuery.isLoading}
           />
         </dl>
       </Card>

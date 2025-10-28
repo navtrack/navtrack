@@ -3189,22 +3189,12 @@
             "format": "int32",
             "nullable": true
           },
-          "distanceChange": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "duration": {
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
           "durationPrevious": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "durationChange": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -3219,11 +3209,6 @@
             "format": "double",
             "nullable": true
           },
-          "fuelConsumptionChange": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "fuelConsumptionAverage": {
             "type": "number",
             "format": "double",
@@ -3232,11 +3217,6 @@
           "fuelConsumptionAveragePrevious": {
             "type": "number",
             "format": "double",
-            "nullable": true
-          },
-          "fuelConsumptionAverageChange": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         }

@@ -46,8 +46,8 @@ export function useShow() {
     }
 
     return seconds > 3600
-      ? `${Math.floor(seconds / 60 / 60)} h ${Math.round(seconds % 60)} m`
-      : `${Math.round(seconds / 60)} m`;
+      ? `${Math.floor(seconds / 60 / 60)}h ${Math.round(seconds % 60)}m`
+      : `${Math.round(seconds / 60)}m`;
   }, []);
 
   const showVolume = useCallback(

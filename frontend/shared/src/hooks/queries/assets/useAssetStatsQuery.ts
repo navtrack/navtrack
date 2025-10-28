@@ -7,8 +7,6 @@ export type UseAssetStatsQueryProps = {
 };
 
 export const useAssetStatsQuery = (props: UseAssetStatsQueryProps) => {
-  console.log(props.period);
-
   const query = useAssetsStatsGet(props.assetId as string, props.period, {
     query: {
       queryKey: getAssetsStatsGetQueryKey(props.assetId, props.period),

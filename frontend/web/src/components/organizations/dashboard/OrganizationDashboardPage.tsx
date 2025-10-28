@@ -1,5 +1,5 @@
 import { AssetStatsPeriod } from "@navtrack/shared/api/model";
-import { AssetDashboardRow } from "./AssetDashboardRow";
+import { OrganizationDashboardRow } from "./OrganizationDashboardRow";
 
 const periods = [
   { period: AssetStatsPeriod.Day, labelId: "generic.today" },
@@ -8,11 +8,11 @@ const periods = [
   { period: AssetStatsPeriod.Year, labelId: "generic.this-year" }
 ];
 
-export function AssetDashboardPage() {
+export function OrganizationDashboardPage() {
   return (
     <>
       {periods.map((item) => (
-        <AssetDashboardRow
+        <OrganizationDashboardRow
           key={item.labelId}
           period={item.period}
           labelId={item.labelId}

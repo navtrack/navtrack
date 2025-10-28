@@ -11,23 +11,15 @@ export interface AssetStatsModel {
   /** @nullable */
   distancePrevious?: number | null;
   /** @nullable */
-  distanceChange?: number | null;
-  /** @nullable */
   duration?: number | null;
   /** @nullable */
   durationPrevious?: number | null;
-  /** @nullable */
-  durationChange?: number | null;
   /** @nullable */
   fuelConsumption?: number | null;
   /** @nullable */
   fuelConsumptionPrevious?: number | null;
   /** @nullable */
-  fuelConsumptionChange?: number | null;
-  /** @nullable */
   fuelConsumptionAverage?: number | null;
   /** @nullable */
   fuelConsumptionAveragePrevious?: number | null;
-  /** @nullable */
-  fuelConsumptionAverageChange?: number | null;
 }
