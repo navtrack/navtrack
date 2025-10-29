@@ -5,5 +5,5 @@ namespace Navtrack.Api.Services.Teams;
 public class CreateTeamRequest
 {
     public string OrganizationId { get; set; }
-    public CreateTeam Model { get; set; }
+    public CreateTeamModel Model { get; set; }
 }

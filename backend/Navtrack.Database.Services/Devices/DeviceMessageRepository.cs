@@ -7,6 +7,7 @@ using Navtrack.Database.Model.Devices;
 using Navtrack.Database.Model.Filters;
 using Navtrack.Database.Postgres;
 using Navtrack.Shared.Library.DI;
+using NetTopologySuite.Geometries;
 
 namespace Navtrack.Database.Services.Devices;
 
@@ -22,7 +23,7 @@ public class DeviceMessageRepository(IPostgresRepository repository)
 
         long count = await query.CountAsync();
 
-        query = query.OrderBy(x => x.Date);
+        query = options.OrderFunc != null ? options.OrderFunc(query) : query.OrderBy(x => x.Date);
 
         query = hasPagination
             ? query
@@ -80,9 +81,10 @@ public class DeviceMessageRepository(IPostgresRepository repository)
         {
             double radiusInKm = positionFilter.Radius.Value / 1000d;
 
-            // TODO
-            // filter &= Builders<DeviceMessageDocument>.Filter.GeoWithinCenterSphere(x => x.Position.Coordinates,
-            //     positionFilter.Longitude.Value, positionFilter.Latitude.Value, radiusInKm / 6378.1);
+            filter = filter.Where(e =>
+                EF.Functions.IsWithinDistance(e.NewCoordinates,
+                    new Point(positionFilter.Longitude.Value, positionFilter.Latitude.Value),
+                    positionFilter.Radius.Value, false));
         }
 
         return filter;
@@ -129,7 +131,7 @@ public class DeviceMessageRepository(IPostgresRepository repository)
             .OrderByDescending(x => x.Date)
             .Select(x => new { x.DeviceOdometer, x.VehicleIgnitionDuration })
             .FirstOrDefaultAsync();
-        
+
         GetFirstAndLastPositionResult result = new()
         {
             FirstOdometer = firstOdo?.DeviceOdometer,
@@ -143,7 +145,7 @@ public class DeviceMessageRepository(IPostgresRepository repository)
             LastFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderByDescending(x => x.Date)
                 .Select(x => x.VehicleFuelConsumption)
-                .FirstOrDefaultAsync(),
+                .FirstOrDefaultAsync()
         };
 
         return result;
@@ -176,7 +178,7 @@ public class DeviceMessageRepository(IPostgresRepository repository)
             LastFuelConsumption = await query.Where(x => x.VehicleFuelConsumption > 0)
                 .OrderByDescending(x => x.Date)
                 .Select(x => x.VehicleFuelConsumption)
-                .FirstOrDefaultAsync(),
+                .FirstOrDefaultAsync()
         };
 
         return result;

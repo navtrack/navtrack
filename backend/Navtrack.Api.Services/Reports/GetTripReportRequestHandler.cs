@@ -25,7 +25,7 @@ public class GetTripReportRequestHandler(ITripService tripService, ICurrentConte
     
     public override async Task<TripReportModel> Handle(GetTripReportRequest request)
     {
-        TripList result = await tripService.GetTrips(asset!, new TripFilter
+        TripListModel result = await tripService.GetTrips(asset!, new TripFilterModel
         {
             StartDate = request.Model.StartDate,
             EndDate = request.Model.EndDate

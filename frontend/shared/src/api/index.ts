@@ -31,9 +31,9 @@ import type {
   CreateOrUpdateAssetDeviceModel,
   CreateOrganizationModel,
   CreateOrganizationUserModel,
-  CreateTeam,
-  CreateTeamAsset,
-  CreateTeamUser,
+  CreateTeamAssetModel,
+  CreateTeamModel,
+  CreateTeamUserModel,
   CurrentUserModel,
   DistanceReportModel,
   Entity,
@@ -48,22 +48,22 @@ import type {
   ListModelOfOrganizationModel,
   ListModelOfOrganizationUserModel,
   ListModelOfProtocolModel,
-  ListModelOfTeam,
   ListModelOfTeamAssetModel,
-  ListModelOfTeamUser,
+  ListModelOfTeamModel,
+  ListModelOfTeamUserModel,
   LocationModel,
   MessageList,
   OrganizationModel,
   ProblemDetails,
   ResetPasswordModel,
-  Team,
-  TripList,
+  TeamModel,
+  TripListModel,
   TripReportModel,
   UpdateAssetModel,
   UpdateOrganizationModel,
   UpdateOrganizationUserModel,
-  UpdateTeam,
-  UpdateTeamUser,
+  UpdateTeamModel,
+  UpdateTeamUserModel,
   UpdateUserModel
 } from "./model";
 
@@ -1363,7 +1363,7 @@ export const assetsTripsGetList = (
   params?: AssetsTripsGetListParams,
   signal?: AbortSignal
 ) => {
-  return authAxiosInstance<TripList>({
+  return authAxiosInstance<TripListModel>({
     url: `/assets/${assetId}/trips`,
     method: "GET",
     params,
@@ -2688,14 +2688,14 @@ export function useTeamsAssetsList<
 
 export const teamsAssetsCreate = (
   teamId: string,
-  createTeamAsset: CreateTeamAsset,
+  createTeamAssetModel: CreateTeamAssetModel,
   signal?: AbortSignal
 ) => {
   return authAxiosInstance<void>({
     url: `/teams/${teamId}/assets`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createTeamAsset,
+    data: createTeamAssetModel,
     signal
   });
 };
@@ -2707,13 +2707,13 @@ export const getTeamsAssetsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsAssetsCreate>>,
     TError,
-    { teamId: string; data: CreateTeamAsset },
+    { teamId: string; data: CreateTeamAssetModel },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsAssetsCreate>>,
   TError,
-  { teamId: string; data: CreateTeamAsset },
+  { teamId: string; data: CreateTeamAssetModel },
   TContext
 > => {
   const mutationKey = ["teamsAssetsCreate"];
@@ -2727,7 +2727,7 @@ export const getTeamsAssetsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsAssetsCreate>>,
-    { teamId: string; data: CreateTeamAsset }
+    { teamId: string; data: CreateTeamAssetModel }
   > = (props) => {
     const { teamId, data } = props ?? {};
 
@@ -2740,7 +2740,7 @@ export const getTeamsAssetsCreateMutationOptions = <
 export type TeamsAssetsCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsAssetsCreate>>
 >;
-export type TeamsAssetsCreateMutationBody = CreateTeamAsset;
+export type TeamsAssetsCreateMutationBody = CreateTeamAssetModel;
 export type TeamsAssetsCreateMutationError = ErrorModel | ProblemDetails;
 
 export const useTeamsAssetsCreate = <
@@ -2750,13 +2750,13 @@ export const useTeamsAssetsCreate = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsAssetsCreate>>,
     TError,
-    { teamId: string; data: CreateTeamAsset },
+    { teamId: string; data: CreateTeamAssetModel },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<typeof teamsAssetsCreate>>,
   TError,
-  { teamId: string; data: CreateTeamAsset },
+  { teamId: string; data: CreateTeamAssetModel },
   TContext
 > => {
   const mutationOptions = getTeamsAssetsCreateMutationOptions(options);
@@ -2836,7 +2836,7 @@ export const useTeamsAssetsDelete = <
 };
 
 export const teamsGetList = (organizationId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfTeam>({
+  return authAxiosInstance<ListModelOfTeamModel>({
     url: `/organizations/${organizationId}/teams`,
     method: "GET",
     signal
@@ -2912,14 +2912,14 @@ export function useTeamsGetList<
 
 export const teamsCreate = (
   organizationId: string,
-  createTeam: CreateTeam,
+  createTeamModel: CreateTeamModel,
   signal?: AbortSignal
 ) => {
-  return authAxiosInstance<Team>({
+  return authAxiosInstance<TeamModel>({
     url: `/organizations/${organizationId}/teams`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createTeam,
+    data: createTeamModel,
     signal
   });
 };
@@ -2931,13 +2931,13 @@ export const getTeamsCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsCreate>>,
     TError,
-    { organizationId: string; data: CreateTeam },
+    { organizationId: string; data: CreateTeamModel },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { organizationId: string; data: CreateTeam },
+  { organizationId: string; data: CreateTeamModel },
   TContext
 > => {
   const mutationKey = ["teamsCreate"];
@@ -2951,7 +2951,7 @@ export const getTeamsCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsCreate>>,
-    { organizationId: string; data: CreateTeam }
+    { organizationId: string; data: CreateTeamModel }
   > = (props) => {
     const { organizationId, data } = props ?? {};
 
@@ -2964,20 +2964,20 @@ export const getTeamsCreateMutationOptions = <
 export type TeamsCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsCreate>>
 >;
-export type TeamsCreateMutationBody = CreateTeam;
+export type TeamsCreateMutationBody = CreateTeamModel;
 export type TeamsCreateMutationError = unknown;
 
 export const useTeamsCreate = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsCreate>>,
     TError,
-    { organizationId: string; data: CreateTeam },
+    { organizationId: string; data: CreateTeamModel },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<typeof teamsCreate>>,
   TError,
-  { organizationId: string; data: CreateTeam },
+  { organizationId: string; data: CreateTeamModel },
   TContext
 > => {
   const mutationOptions = getTeamsCreateMutationOptions(options);
@@ -2986,7 +2986,7 @@ export const useTeamsCreate = <TError = unknown, TContext = unknown>(options?: {
 };
 
 export const teamsGet = (teamId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<Team>({
+  return authAxiosInstance<TeamModel>({
     url: `/teams/${teamId}`,
     method: "GET",
     signal
@@ -3059,14 +3059,14 @@ export function useTeamsGet<
 
 export const teamsUpdate = (
   teamId: string,
-  updateTeam: UpdateTeam,
+  updateTeamModel: UpdateTeamModel,
   signal?: AbortSignal
 ) => {
   return authAxiosInstance<Blob>({
     url: `/teams/${teamId}`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: updateTeam,
+    data: updateTeamModel,
     responseType: "blob",
     signal
   });
@@ -3079,13 +3079,13 @@ export const getTeamsUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUpdate>>,
     TError,
-    { teamId: string; data: UpdateTeam },
+    { teamId: string; data: UpdateTeamModel },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { teamId: string; data: UpdateTeam },
+  { teamId: string; data: UpdateTeamModel },
   TContext
 > => {
   const mutationKey = ["teamsUpdate"];
@@ -3099,7 +3099,7 @@ export const getTeamsUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsUpdate>>,
-    { teamId: string; data: UpdateTeam }
+    { teamId: string; data: UpdateTeamModel }
   > = (props) => {
     const { teamId, data } = props ?? {};
 
@@ -3112,20 +3112,20 @@ export const getTeamsUpdateMutationOptions = <
 export type TeamsUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsUpdate>>
 >;
-export type TeamsUpdateMutationBody = UpdateTeam;
+export type TeamsUpdateMutationBody = UpdateTeamModel;
 export type TeamsUpdateMutationError = unknown;
 
 export const useTeamsUpdate = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUpdate>>,
     TError,
-    { teamId: string; data: UpdateTeam },
+    { teamId: string; data: UpdateTeamModel },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<typeof teamsUpdate>>,
   TError,
-  { teamId: string; data: UpdateTeam },
+  { teamId: string; data: UpdateTeamModel },
   TContext
 > => {
   const mutationOptions = getTeamsUpdateMutationOptions(options);
@@ -3202,7 +3202,7 @@ export const useTeamsDelete = <
 };
 
 export const teamsUsersList = (teamId: string, signal?: AbortSignal) => {
-  return authAxiosInstance<ListModelOfTeamUser>({
+  return authAxiosInstance<ListModelOfTeamUserModel>({
     url: `/teams/${teamId}/users`,
     method: "GET",
     signal
@@ -3277,14 +3277,14 @@ export function useTeamsUsersList<
 
 export const teamsUsersCreate = (
   teamId: string,
-  createTeamUser: CreateTeamUser,
+  createTeamUserModel: CreateTeamUserModel,
   signal?: AbortSignal
 ) => {
   return authAxiosInstance<void>({
     url: `/teams/${teamId}/users`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createTeamUser,
+    data: createTeamUserModel,
     signal
   });
 };
@@ -3296,13 +3296,13 @@ export const getTeamsUsersCreateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUsersCreate>>,
     TError,
-    { teamId: string; data: CreateTeamUser },
+    { teamId: string; data: CreateTeamUserModel },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsUsersCreate>>,
   TError,
-  { teamId: string; data: CreateTeamUser },
+  { teamId: string; data: CreateTeamUserModel },
   TContext
 > => {
   const mutationKey = ["teamsUsersCreate"];
@@ -3316,7 +3316,7 @@ export const getTeamsUsersCreateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsUsersCreate>>,
-    { teamId: string; data: CreateTeamUser }
+    { teamId: string; data: CreateTeamUserModel }
   > = (props) => {
     const { teamId, data } = props ?? {};
 
@@ -3329,7 +3329,7 @@ export const getTeamsUsersCreateMutationOptions = <
 export type TeamsUsersCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsUsersCreate>>
 >;
-export type TeamsUsersCreateMutationBody = CreateTeamUser;
+export type TeamsUsersCreateMutationBody = CreateTeamUserModel;
 export type TeamsUsersCreateMutationError = ErrorModel | ProblemDetails;
 
 export const useTeamsUsersCreate = <
@@ -3339,13 +3339,13 @@ export const useTeamsUsersCreate = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUsersCreate>>,
     TError,
-    { teamId: string; data: CreateTeamUser },
+    { teamId: string; data: CreateTeamUserModel },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<typeof teamsUsersCreate>>,
   TError,
-  { teamId: string; data: CreateTeamUser },
+  { teamId: string; data: CreateTeamUserModel },
   TContext
 > => {
   const mutationOptions = getTeamsUsersCreateMutationOptions(options);
@@ -3356,14 +3356,14 @@ export const useTeamsUsersCreate = <
 export const teamsUsersUpdate = (
   teamId: string,
   userId: string,
-  updateTeamUser: UpdateTeamUser,
+  updateTeamUserModel: UpdateTeamUserModel,
   signal?: AbortSignal
 ) => {
   return authAxiosInstance<void>({
     url: `/teams/${teamId}/users/${userId}`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: updateTeamUser,
+    data: updateTeamUserModel,
     signal
   });
 };
@@ -3375,13 +3375,13 @@ export const getTeamsUsersUpdateMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUsersUpdate>>,
     TError,
-    { teamId: string; userId: string; data: UpdateTeamUser },
+    { teamId: string; userId: string; data: UpdateTeamUserModel },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof teamsUsersUpdate>>,
   TError,
-  { teamId: string; userId: string; data: UpdateTeamUser },
+  { teamId: string; userId: string; data: UpdateTeamUserModel },
   TContext
 > => {
   const mutationKey = ["teamsUsersUpdate"];
@@ -3395,7 +3395,7 @@ export const getTeamsUsersUpdateMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof teamsUsersUpdate>>,
-    { teamId: string; userId: string; data: UpdateTeamUser }
+    { teamId: string; userId: string; data: UpdateTeamUserModel }
   > = (props) => {
     const { teamId, userId, data } = props ?? {};
 
@@ -3408,7 +3408,7 @@ export const getTeamsUsersUpdateMutationOptions = <
 export type TeamsUsersUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof teamsUsersUpdate>>
 >;
-export type TeamsUsersUpdateMutationBody = UpdateTeamUser;
+export type TeamsUsersUpdateMutationBody = UpdateTeamUserModel;
 export type TeamsUsersUpdateMutationError = ErrorModel | ProblemDetails;
 
 export const useTeamsUsersUpdate = <
@@ -3418,13 +3418,13 @@ export const useTeamsUsersUpdate = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof teamsUsersUpdate>>,
     TError,
-    { teamId: string; userId: string; data: UpdateTeamUser },
+    { teamId: string; userId: string; data: UpdateTeamUserModel },
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<typeof teamsUsersUpdate>>,
   TError,
-  { teamId: string; userId: string; data: UpdateTeamUser },
+  { teamId: string; userId: string; data: UpdateTeamUserModel },
   TContext
 > => {
   const mutationOptions = getTeamsUsersUpdateMutationOptions(options);

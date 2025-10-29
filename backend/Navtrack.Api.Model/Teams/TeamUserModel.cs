@@ -4,7 +4,7 @@ using Navtrack.Database.Model.Teams;
 
 namespace Navtrack.Api.Model.Teams;
 
-public class TeamUser
+public class TeamUserModel
 {
     [Required]
     public string UserId { get; set; }

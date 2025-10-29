@@ -14,7 +14,6 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
     public DbSet<AssetUserEntity> AssetUsers { get; set; }
     public DbSet<AuthRefreshTokenEntity> AuthRefreshTokens { get; set; }
     public DbSet<DeviceConnectionEntity> DeviceConnections { get; set; }
-
     public DbSet<DeviceConnectionDataEntity> DeviceConnectionData { get; set; }
     public DbSet<DeviceEntity> Devices { get; set; }
     public DbSet<DeviceMessageEntity> DeviceMessages { get; set; }
@@ -98,6 +97,9 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
             entity.HasIndex(x => x.AssetId);
 
             entity.HasIndex(e => new { e.AssetId, e.Date });
+
+            entity.Property(x => x.NewCoordinates)
+                .HasColumnType("geography (point)");
         });
 
         modelBuilder.Entity<OrganizationEntity>(entity =>

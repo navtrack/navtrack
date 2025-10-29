@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface Team {
+export interface TeamModel {
   /** @minLength 1 */
   id: string;
   /** @minLength 1 */

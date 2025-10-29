@@ -6,5 +6,5 @@ public class UpdateTeamUserRequest
 {
     public string TeamId { get; set; }
     public string UserId { get; set; }
-    public UpdateTeamUser Model { get; set; }
+    public UpdateTeamUserModel Model { get; set; }
 }

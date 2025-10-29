@@ -28,7 +28,7 @@ public class AccountCreatedEventHandler(IUserRepository userRepository, IRequest
                 OwnerId = user.Id,
                 Model = new CreateOrganizationModel
                 {
-                    Name = "My Organization",
+                    Name = "My Organization"
                 }
             });
         }

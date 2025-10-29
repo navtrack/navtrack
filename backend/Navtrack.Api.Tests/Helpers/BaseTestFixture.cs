@@ -42,12 +42,13 @@ public class BaseTestFixture : IAsyncLifetime
     private async Task SeedDatabase()
     {
         DbContextOptions<NavtrackDbContext> options = new DbContextOptionsBuilder<NavtrackDbContext>()
-            .UseNpgsql(postgreSqlContainer.GetConnectionString())
+            .UseNpgsql(postgreSqlContainer.GetConnectionString(), postgresOptions =>
+                postgresOptions.UseNetTopologySuite())
             .Options;
 
         NavtrackDbContext dbContext = new(options);
         await dbContext.Database.EnsureCreatedAsync();
-        
+
         dbContext.Add(DatabaseSeed.Organization);
         dbContext.Add(DatabaseSeed.Asset);
         dbContext.Add(DatabaseSeed.Device);

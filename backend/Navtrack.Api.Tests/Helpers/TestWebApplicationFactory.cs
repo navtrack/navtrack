@@ -30,8 +30,7 @@ public class TestWebApplicationFactory<TProgram>(TestWebApplicationFactoryOption
                 services.Remove(dbContext);
             }
 
-            services.AddDbContext<DbContext, NavtrackDbContext>(opt =>
-                opt.UseNpgsql(options.ConnectionString));
+            DbContextUtils.AddDbContext<NavtrackDbContext>(services, options.ConnectionString);
         });
 
         return base.CreateHost(hostBuilder);

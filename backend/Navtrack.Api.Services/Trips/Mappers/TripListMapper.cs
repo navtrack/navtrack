@@ -8,11 +8,11 @@ namespace Navtrack.Api.Services.Trips.Mappers;
 
 public static class TripListMapper
 {
-    public static TripList Map(List<InternalTrip> source)
+    public static TripListModel Map(List<InternalTrip> source)
     {
-        return new TripList
+        return new TripListModel
         {
-            Items = source.Select(x => new Trip
+            Items = source.Select(x => new TripModel
             {
                 Distance = x.Distance,
                 FuelConsumption = x.FuelConsumption,

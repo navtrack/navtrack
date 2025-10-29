@@ -1,7 +1,7 @@
-import { Trip } from "@navtrack/shared/api/model";
+import { TripModel } from "@navtrack/shared/api/model";
 import { atom } from "jotai";
 
-export const selectedTripAtom = atom<Trip | undefined>(undefined);
+export const selectedTripAtom = atom<TripModel | undefined>(undefined);
 
 export const selectedTripPositionIndexAtom = atom<number | undefined>(1);
 

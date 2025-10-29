@@ -6,7 +6,7 @@
  */
 import type { TeamUserRole } from "./teamUserRole";
 
-export interface TeamUser {
+export interface TeamUserModel {
   /** @minLength 1 */
   userId: string;
   /** @minLength 1 */

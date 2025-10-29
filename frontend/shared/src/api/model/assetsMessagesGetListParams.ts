@@ -45,7 +45,7 @@ export type AssetsMessagesGetListParams = {
   page?: number;
   /**
    * @minimum 0
-   * @maximum 10000
+   * @maximum 1000
    */
   size?: number;
 };

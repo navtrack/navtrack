@@ -4,8 +4,8 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { Team } from "./team";
+import type { TripModel } from "./tripModel";
 
-export interface ListModelOfTeam {
-  items: Team[];
+export interface ListModelOfTripModel {
+  items: TripModel[];
 }

@@ -3,13 +3,13 @@ import { Paths } from "../../app/Paths";
 import { AuthenticatedLayoutTwoColumns } from "../ui/layouts/authenticated/AuthenticatedLayoutTwoColumns";
 import { Heading } from "../ui/heading/Heading";
 import { TabMenuItemProps, TabsLayout } from "../ui/layouts/tabs/TabsLayout";
-import { Team } from "@navtrack/shared/api/model";
+import { TeamModel } from "@navtrack/shared/api/model";
 import { Skeleton } from "../ui/skeleton/Skeleton";
 import { FormattedMessage } from "react-intl";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 
 export type TeamLayoutProps = {
-  team?: Team;
+  team?: TeamModel;
   isLoading?: boolean;
   children?: React.ReactNode;
 };

@@ -41,7 +41,7 @@ public class GetDistanceReportRequestHandler(
                 Date = x.Date,
                 Distance = x.Distance ?? 0,
                 Duration = x.Duration ?? 0,
-                MaxSpeed = x.MaxSpeed ?? 0,
+                MaxSpeed = x.MaxSpeed ?? 0
             })
         };
 

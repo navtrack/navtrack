@@ -5,5 +5,5 @@ public enum AssetStatsPeriod
     Day,
     Week,
     Month,
-    Year,
+    Year
 }

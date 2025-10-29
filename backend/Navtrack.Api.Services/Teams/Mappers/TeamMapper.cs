@@ -5,9 +5,9 @@ namespace Navtrack.Api.Services.Teams.Mappers;
 
 public static class TeamMapper
 {
-    public static Team Map(TeamEntity source)
+    public static TeamModel Map(TeamEntity source)
     {
-        return new Team
+        return new TeamModel
         {
             Id = source.Id.ToString(),
             Name = source.Name,

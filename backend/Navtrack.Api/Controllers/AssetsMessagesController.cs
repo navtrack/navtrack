@@ -27,7 +27,7 @@ public class AssetsMessagesController(IRequestHandler requestHandler) : Controll
         [FromRoute] string assetId,
         [FromQuery] MessageFilterModel filter,
         [FromQuery] int page = 0,
-        [FromQuery] [Range(0, 10000)] int size = 10000)
+        [FromQuery] [Range(0, 1000)] int size = 1000)
     {
         MessageList result = await requestHandler.Handle<GetAssetMessagesRequest, MessageList>(
             new GetAssetMessagesRequest

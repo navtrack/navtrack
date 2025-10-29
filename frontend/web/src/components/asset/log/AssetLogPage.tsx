@@ -17,13 +17,13 @@ import {
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapPin } from "../../ui/map/MapPin";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
 export function AssetLogPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("log");
-  const filters = useAtom(locationFiltersSelector(locationFilterKey));
+  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
   const query = useMessagesQuery({
     assetId: currentAsset.data?.id,
     ...filters

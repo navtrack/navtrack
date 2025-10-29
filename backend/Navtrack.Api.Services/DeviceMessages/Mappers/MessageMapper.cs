@@ -15,7 +15,7 @@ public static class MessageMapper
             Position = MessagePositionMapper.Map(source),
             Device = MessageDeviceMapper.Map(source),
             Vehicle = MessageVehicleMapper.Map(source),
-            Gsm = MessageGsmMapper.Map(source),
+            Gsm = MessageGsmMapper.Map(source)
         };
 
         return result;

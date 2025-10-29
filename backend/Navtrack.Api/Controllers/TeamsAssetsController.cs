@@ -40,7 +40,7 @@ public class TeamsAssetsController(IRequestHandler requestHandler) : ControllerB
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeTeam(TeamUserRole.Owner)]
-    public async Task<IActionResult> Create([FromRoute] string teamId, [FromBody] CreateTeamAsset model)
+    public async Task<IActionResult> Create([FromRoute] string teamId, [FromBody] CreateTeamAssetModel model)
     {
         await requestHandler.Handle(new CreateTeamAssetRequest
             {

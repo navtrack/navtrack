@@ -6,7 +6,7 @@
  */
 import type { PositionDataModel } from "./positionDataModel";
 
-export interface Trip {
+export interface TripModel {
   positions: PositionDataModel[];
   startPosition: PositionDataModel;
   endPosition: PositionDataModel;

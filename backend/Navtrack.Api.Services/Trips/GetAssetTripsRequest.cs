@@ -5,5 +5,5 @@ namespace Navtrack.Api.Services.Trips;
 public class GetAssetTripsRequest
 {
     public string AssetId { get; set; }
-    public TripFilter Filter { get; set; }
+    public TripFilterModel Filter { get; set; }
 }

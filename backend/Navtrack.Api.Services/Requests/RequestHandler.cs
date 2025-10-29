@@ -20,7 +20,7 @@ public class RequestHandler(IServiceProvider serviceProvider, IPost post) : IReq
         await handler.Validate(new RequestValidationContext<TRequest>
         {
             Request = request,
-            ValidationException = validationException,
+            ValidationException = validationException
         });
 
         validationException.ThrowIfInvalid();
@@ -42,7 +42,7 @@ public class RequestHandler(IServiceProvider serviceProvider, IPost post) : IReq
         await handler.Validate(new RequestValidationContext<TRequest>
         {
             Request = request,
-            ValidationException = validationException,
+            ValidationException = validationException
         });
 
         validationException.ThrowIfInvalid();

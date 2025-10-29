@@ -6,7 +6,7 @@ namespace Navtrack.Api.Services.Teams.Mappers;
 
 public static class TeamEntityMapper
 {
-    public static TeamEntity Map(CreateTeam source, Guid organizationId, Guid userId)
+    public static TeamEntity Map(CreateTeamModel source, Guid organizationId, Guid userId)
     {
         TeamEntity destination = new()
         {

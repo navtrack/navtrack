@@ -8,9 +8,9 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Trips;
 
-[Service(typeof(IRequestHandler<GetAssetTripsRequest, TripList>))]
+[Service(typeof(IRequestHandler<GetAssetTripsRequest, TripListModel>))]
 public class GetAssetTripsRequestHandler(ITripService tripService, ICurrentContext currentContext) 
-    : BaseRequestHandler<GetAssetTripsRequest, TripList>
+    : BaseRequestHandler<GetAssetTripsRequest, TripListModel>
 {
     private AssetEntity? asset;
 
@@ -20,9 +20,9 @@ public class GetAssetTripsRequestHandler(ITripService tripService, ICurrentConte
         asset.Return404IfNull();
     }
     
-    public override async Task<TripList> Handle(GetAssetTripsRequest request)
+    public override async Task<TripListModel> Handle(GetAssetTripsRequest request)
     {
-        TripList result = await tripService.GetTrips(asset!, request.Filter);
+        TripListModel result = await tripService.GetTrips(asset!, request.Filter);
         
         return result;
     }

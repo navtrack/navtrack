@@ -7,11 +7,11 @@ namespace Navtrack.Api.Services.Organizations.Mappers;
 
 public static class TeamUserMapper
 {
-    public static TeamUser Map(UserEntity user, TeamEntity team)
+    public static TeamUserModel Map(UserEntity user, TeamEntity team)
     {
         TeamUserEntity userTeam = user.TeamUsers.First(x => x.TeamId == team.Id);
         
-        return new TeamUser
+        return new TeamUserModel
         {
             Email = user.Email,
             UserId = user.Id.ToString(),

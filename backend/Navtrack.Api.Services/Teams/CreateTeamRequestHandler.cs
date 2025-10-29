@@ -15,12 +15,12 @@ using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Teams;
 
-[Service(typeof(IRequestHandler<CreateTeamRequest, Team>))]
+[Service(typeof(IRequestHandler<CreateTeamRequest, TeamModel>))]
 public class CreateTeamRequestHandler(
     ITeamRepository teamRepository,
     IOrganizationRepository organizationRepository,
     INavtrackContextAccessor navtrackContextAccessor)
-    : BaseRequestHandler<CreateTeamRequest, Team>
+    : BaseRequestHandler<CreateTeamRequest, TeamModel>
 {
     private OrganizationEntity? organization;
 
@@ -35,7 +35,7 @@ public class CreateTeamRequestHandler(
             ApiErrorCodes.Team_000001_NameIsUsed);
     }
 
-    public override async Task<Team> Handle(CreateTeamRequest request)
+    public override async Task<TeamModel> Handle(CreateTeamRequest request)
     {
         TeamEntity team = TeamEntityMapper.Map(request.Model, organization.Id,
             navtrackContextAccessor.NavtrackContext.User.Id);
@@ -43,12 +43,12 @@ public class CreateTeamRequestHandler(
         await teamRepository.Add(team);
         await organizationRepository.UpdateTeamsCount(organization!.Id);
 
-        Team result = TeamMapper.Map(team);
+        TeamModel result = TeamMapper.Map(team);
 
         return result;
     }
 
-    public override IEvent GetEvent(CreateTeamRequest request, Team result)
+    public override IEvent GetEvent(CreateTeamRequest request, TeamModel result)
     {
         return new TeamCreatedEvent
         {

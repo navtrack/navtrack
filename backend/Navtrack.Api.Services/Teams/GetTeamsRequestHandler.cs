@@ -17,12 +17,12 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Teams;
 
-[Service(typeof(IRequestHandler<GetTeamsRequest, ListModel<Team>>))]
+[Service(typeof(IRequestHandler<GetTeamsRequest, ListModel<TeamModel>>))]
 public class GetTeamsRequestHandler(
     ITeamRepository teamRepository,
     IOrganizationRepository organizationRepository,
     INavtrackContextAccessor navtrackContextAccessor)
-    : BaseRequestHandler<GetTeamsRequest, ListModel<Team>>
+    : BaseRequestHandler<GetTeamsRequest, ListModel<TeamModel>>
 {
     private OrganizationEntity? organization;
     
@@ -32,11 +32,11 @@ public class GetTeamsRequestHandler(
         organization.Return404IfNull();
     }
 
-    public override async Task<ListModel<Team>> Handle(GetTeamsRequest request)
+    public override async Task<ListModel<TeamModel>> Handle(GetTeamsRequest request)
     {
         List<TeamEntity> teams = await GetTeams(organization!.Id);
 
-        ListModel<Team> result = ListMapper.Map(teams, TeamMapper.Map);
+        ListModel<TeamModel> result = ListMapper.Map(teams, TeamMapper.Map);
 
         return result;
     }

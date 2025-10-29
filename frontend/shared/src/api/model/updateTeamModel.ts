@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface UpdateTeam {
+export interface UpdateTeamModel {
   /** @nullable */
   name?: string | null;
 }

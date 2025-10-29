@@ -1,6 +1,6 @@
 namespace Navtrack.Api.Model.Teams;
 
-public class UpdateTeam
+public class UpdateTeamModel
 {
     public string? Name { get; set; }
 }

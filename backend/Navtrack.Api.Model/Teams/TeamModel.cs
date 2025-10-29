@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Api.Model.Teams;
 
-public class Team
+public class TeamModel
 {
     [Required]
     public string Id { get; set; }

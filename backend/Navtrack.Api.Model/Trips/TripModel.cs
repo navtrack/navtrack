@@ -6,7 +6,7 @@ using Navtrack.Api.Model.Messages;
 
 namespace Navtrack.Api.Model.Trips;
 
-public class Trip
+public class TripModel
 {
     [Required]
     public List<PositionDataModel> Positions { get; set; } = [];   
@@ -49,16 +49,5 @@ public class Trip
         }
     }
     
-    public double? AverageFuelConsumption
-    {
-        get
-        {
-            if (FuelConsumption.HasValue)
-            {
-                return FuelConsumption * 100 / Distance * 1000;
-            }
-
-            return null;
-        }
-    }
+    public double? AverageFuelConsumption => FuelConsumption * 100 / Distance * 1000;
 }

@@ -3,11 +3,8 @@ using Navtrack.Database.Model.Teams;
 
 namespace Navtrack.Api.Model.Teams;
 
-public class CreateTeamUser
+public class UpdateTeamUserModel
 {
-    [Required]
-    public string Email { get; set; }
-
     [Required]
     public TeamUserRole UserRole { get; set; }
 }

@@ -12,7 +12,7 @@ import { PositionCardItems } from "../shared/position-card/PositionCardItems";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
-import { PositionDataModel, Trip } from "@navtrack/shared/api/model";
+import { PositionDataModel, TripModel } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useTripsQuery } from "@navtrack/shared/hooks/queries/assets/useTripsQuery";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
@@ -26,7 +26,7 @@ export function AssetTripsPage() {
   const show = useShow();
   const slots = useContext(SlotContext);
 
-  const [selectedTrip, setSelectedTrip] = useState<Trip>();
+  const [selectedTrip, setSelectedTrip] = useState<TripModel>();
   const [selectedTripLocationIndex, setSelectedTripLocationIndex] =
     useState<number>(0);
 
@@ -65,7 +65,7 @@ export function AssetTripsPage() {
     <>
       <LocationFilter filterPage="trips" duration avgAltitude avgSpeed />
       <div>
-        <TableV2<Trip>
+        <TableV2<TripModel>
           columns={[
             {
               labelId: "generic.start-date",

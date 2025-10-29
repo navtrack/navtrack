@@ -1,6 +1,6 @@
 import { Heading } from "../../ui/heading/Heading";
 import { ITableColumn } from "../../ui/table/useTable";
-import { TeamUser } from "@navtrack/shared/api/model";
+import { TeamUserModel } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
 import { TableV2 } from "../../ui/table/TableV2";
@@ -24,7 +24,7 @@ export function TeamUsersPage() {
   const show = useShow();
   const team = useTeamQuery({ teamId: id });
 
-  const columns: ITableColumn<TeamUser>[] = [
+  const columns: ITableColumn<TeamUserModel>[] = [
     {
       labelId: "generic.email",
       row: (user) => (

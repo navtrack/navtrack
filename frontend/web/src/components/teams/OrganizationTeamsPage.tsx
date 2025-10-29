@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { Heading } from "../ui/heading/Heading";
 import { useTeamsQuery } from "@navtrack/shared/hooks/queries/teams/useTeamsQuery";
 import { ITableColumn } from "../ui/table/useTable";
-import { Team } from "@navtrack/shared/api/model";
+import { TeamModel } from "@navtrack/shared/api/model";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { generatePath, Link, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";
@@ -13,7 +13,7 @@ export function OrganizationTeamsPage() {
   const currentOrganization = useCurrentOrganization();
   const teams = useTeamsQuery({ organizationId: currentOrganization.data?.id });
 
-  const columns: ITableColumn<Team>[] = [
+  const columns: ITableColumn<TeamModel>[] = [
     {
       labelId: "generic.name",
       row: (team) => (

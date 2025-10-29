@@ -6,8 +6,6 @@
  */
 import type { TeamUserRole } from "./teamUserRole";
 
-export interface CreateTeamUser {
-  /** @minLength 1 */
-  email: string;
+export interface UpdateTeamUserModel {
   userRole: TeamUserRole;
 }

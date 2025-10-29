@@ -600,8 +600,8 @@
             "schema": {
               "type": "integer",
               "format": "int32",
-              "default": 10000,
-              "maximum": 10000.0,
+              "default": 1000,
+              "maximum": 1000.0,
               "minimum": 0.0
             },
             "x-position": 12
@@ -991,7 +991,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TripList"
+                  "$ref": "#/components/schemas/TripListModel"
                 }
               }
             }
@@ -1729,7 +1729,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTeamAsset"
+                "$ref": "#/components/schemas/CreateTeamAssetModel"
               }
             }
           },
@@ -1839,7 +1839,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfTeam"
+                  "$ref": "#/components/schemas/ListModelOfTeamModel"
                 }
               }
             }
@@ -1867,7 +1867,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTeam"
+                "$ref": "#/components/schemas/CreateTeamModel"
               }
             }
           },
@@ -1880,7 +1880,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Team"
+                  "$ref": "#/components/schemas/TeamModel"
                 }
               }
             }
@@ -1911,7 +1911,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Team"
+                  "$ref": "#/components/schemas/TeamModel"
                 }
               }
             }
@@ -1939,7 +1939,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTeam"
+                "$ref": "#/components/schemas/UpdateTeamModel"
               }
             }
           },
@@ -2016,7 +2016,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListModelOfTeamUser"
+                  "$ref": "#/components/schemas/ListModelOfTeamUserModel"
                 }
               }
             }
@@ -2054,7 +2054,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTeamUser"
+                "$ref": "#/components/schemas/CreateTeamUserModel"
               }
             }
           },
@@ -2119,7 +2119,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTeamUser"
+                "$ref": "#/components/schemas/UpdateTeamUserModel"
               }
             }
           },
@@ -3237,10 +3237,10 @@
           "Year"
         ]
       },
-      "TripList": {
+      "TripListModel": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ListModelOfTrip"
+            "$ref": "#/components/schemas/ListModelOfTripModel"
           },
           {
             "type": "object",
@@ -3282,7 +3282,7 @@
           }
         ]
       },
-      "ListModelOfTrip": {
+      "ListModelOfTripModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3292,12 +3292,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Trip"
+              "$ref": "#/components/schemas/TripModel"
             }
           }
         }
       },
-      "Trip": {
+      "TripModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3699,7 +3699,7 @@
           }
         }
       },
-      "CreateTeamAsset": {
+      "CreateTeamAssetModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3712,7 +3712,7 @@
           }
         }
       },
-      "ListModelOfTeam": {
+      "ListModelOfTeamModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3722,12 +3722,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Team"
+              "$ref": "#/components/schemas/TeamModel"
             }
           }
         }
       },
-      "Team": {
+      "TeamModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3760,7 +3760,7 @@
           }
         }
       },
-      "CreateTeam": {
+      "CreateTeamModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3773,7 +3773,7 @@
           }
         }
       },
-      "UpdateTeam": {
+      "UpdateTeamModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3783,7 +3783,7 @@
           }
         }
       },
-      "ListModelOfTeamUser": {
+      "ListModelOfTeamUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3793,12 +3793,12 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TeamUser"
+              "$ref": "#/components/schemas/TeamUserModel"
             }
           }
         }
       },
-      "TeamUser": {
+      "TeamUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3838,7 +3838,7 @@
           "Member"
         ]
       },
-      "CreateTeamUser": {
+      "CreateTeamUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -3855,7 +3855,7 @@
           }
         }
       },
-      "UpdateTeamUser": {
+      "UpdateTeamUserModel": {
         "type": "object",
         "additionalProperties": false,
         "required": [

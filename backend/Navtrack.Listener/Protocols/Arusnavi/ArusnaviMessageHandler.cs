@@ -60,7 +60,7 @@ public class ArusnaviMessageHandler : BaseMessageHandler<ArusnaviProtocol>
                     break;
 
                 case 4:
-                    deviceMessage.Latitude = input.DataMessage.ByteReader.Get<float>();
+                    deviceMessage.Longitude = input.DataMessage.ByteReader.Get<float>();
                     break;
 
                 case 5:

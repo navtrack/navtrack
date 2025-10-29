@@ -1,4 +1,4 @@
-import { TeamUserRole, TeamUser } from "@navtrack/shared/api/model";
+import { TeamUserRole, TeamUserModel } from "@navtrack/shared/api/model";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
 import { FormikSelect } from "../../ui/form/select/FormikSelect";
@@ -11,7 +11,7 @@ import { useUpdateTeamUserMutation } from "@navtrack/shared/hooks/queries/teams/
 import { teamRoles } from "./teamRoles";
 
 type UpdateTeamUserModalProps = {
-  user: TeamUser;
+  user: TeamUserModel;
   teamId?: string;
 };
 

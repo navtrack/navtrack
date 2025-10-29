@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navtrack.Api.Model.Teams;
 
-public class CreateTeamAsset
+public class CreateTeamModel
 {
     [Required]
-    public string AssetId { get; set; }
+    public string Name { get; set; }
 }

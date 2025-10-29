@@ -4,8 +4,10 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
+import type { TeamUserRole } from "./teamUserRole";
 
-export interface CreateTeamAsset {
+export interface CreateTeamUserModel {
   /** @minLength 1 */
-  assetId: string;
+  email: string;
+  userRole: TeamUserRole;
 }

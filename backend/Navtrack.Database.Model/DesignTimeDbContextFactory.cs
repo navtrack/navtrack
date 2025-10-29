@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -8,8 +9,14 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<NavtrackDb
     public NavtrackDbContext CreateDbContext(string[] args)
     {
         DbContextOptionsBuilder<NavtrackDbContext> optionsBuilder = new();
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=navtrack;Username=navtrack;Password=navtrack");
-        
+
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=navtrack;Username=navtrack;Password=navtrack",
+            postgresOptions =>
+            {
+                postgresOptions.UseNetTopologySuite();
+                postgresOptions.CommandTimeout(TimeSpan.FromMinutes(10).Seconds);
+            });
+
         return new NavtrackDbContext(optionsBuilder.Options);
     }
 }

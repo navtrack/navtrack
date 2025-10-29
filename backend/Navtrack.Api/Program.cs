@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Api.Shared;
 using Navtrack.Database.Model;
 
@@ -15,9 +12,8 @@ public class Program
         {
             ConfigureServices = delegate(WebApplicationBuilder webApplicationBuilder)
             {
-                webApplicationBuilder.Services.AddDbContext<DbContext, NavtrackDbContext>(opt =>
-                    opt.UseNpgsql(
-                        webApplicationBuilder.Configuration.GetConnectionString("Postgres")));
+                DbContextUtils.AddDbContext<NavtrackDbContext>(webApplicationBuilder.Services,
+                    webApplicationBuilder.Configuration);
             },
             MigrateDatabase = true
         });

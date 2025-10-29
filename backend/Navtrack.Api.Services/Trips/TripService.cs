@@ -21,20 +21,18 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
     private const int MaxDistanceBetweenPositionsInMeters = 1000;
     private const double MaxTimeBetweenTripInMinutes = 5;
 
-    public async Task<TripList> GetTrips(AssetEntity asset, TripFilter tripFilter)
+    public async Task<TripListModel> GetTrips(AssetEntity asset, TripFilterModel tripFilter)
     {
         MapFilter(asset, tripFilter);
         
         List<InternalTrip> trips = await GetInternalTrips(asset.Id, tripFilter);
 
-        TripList list = TripListMapper.Map(trips);
-
-        var filtered = list.Items.Where(x => x.FuelConsumption > 200).ToList();
+        TripListModel list = TripListMapper.Map(trips);
 
         return list;
     }
 
-    private static void MapFilter(AssetEntity asset, TripFilter tripFilter)
+    private static void MapFilter(AssetEntity asset, TripFilterModel tripFilter)
     {
         if (tripFilter.StartDate == null || tripFilter.EndDate == null)
         {
@@ -50,7 +48,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         }
     }
 
-    private async Task<List<InternalTrip>> GetInternalTrips(Guid assetId, TripFilter tripFilter)
+    private async Task<List<InternalTrip>> GetInternalTrips(Guid assetId, TripFilterModel tripFilter)
     {
         List<DeviceMessageEntity> messages = await GetMessages(assetId, tripFilter);
 
@@ -163,10 +161,10 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
             AssetId = assetId,
             PositionFilter = new PositionFilterModel
             {
-                StartDate = dateFilter.StartDate?.AddHours(-6) ?? dateFilter.StartDate,
-                EndDate = dateFilter.EndDate?.AddHours(6) ?? dateFilter.EndDate
+                StartDate = dateFilter.StartDate?.AddHours(-6),
+                EndDate = dateFilter.EndDate?.AddHours(6)
             },
-            // OrderFunc = Builders<DeviceMessageEntity>.Sort.Ascending(x => x.Date) TODO
+            OrderFunc = query => query.OrderBy(x => x.Date)
         };
 
         GetMessagesResult result = await repository.GetMessages(options);
@@ -174,7 +172,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return result.Messages;
     }
 
-    private static List<InternalTrip> ApplyFiltering(List<InternalTrip> trips, TripFilter tripFilter)
+    private static List<InternalTrip> ApplyFiltering(List<InternalTrip> trips, TripFilterModel tripFilter)
     {
         List<InternalTrip> filteredTrips = trips.ToList();
 
@@ -197,7 +195,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyGeofenceFilter(TripFilter tripFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyGeofenceFilter(TripFilterModel tripFilter, List<InternalTrip> filteredTrips)
     {
         if (tripFilter is { Latitude: not null, Longitude: not null, Radius: not null })
         {
@@ -213,7 +211,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyDurationFilter(TripFilter tripFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyDurationFilter(TripFilterModel tripFilter, List<InternalTrip> filteredTrips)
     {
         if (tripFilter.MinDuration.HasValue)
         {
@@ -230,7 +228,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyAvgSpeedFilter(TripFilter tripFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyAvgSpeedFilter(TripFilterModel tripFilter, List<InternalTrip> filteredTrips)
     {
         int minAvgSpeed = tripFilter.MinAvgSpeed ?? 1;
 
@@ -246,7 +244,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyAvgAltitudeFilter(TripFilter tripFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyAvgAltitudeFilter(TripFilterModel tripFilter, List<InternalTrip> filteredTrips)
     {
         if (tripFilter.MaxAvgAltitude.HasValue)
         {
@@ -274,7 +272,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         if (dateFilter.EndDate.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.StartMessage.Date <= dateFilter.EndDate.Value.Date).ToList();
+                .Where(x => x.StartMessage.Date <= dateFilter.EndDate.Value.Date.AddDays(1)).ToList();
         }
 
         return filteredTrips;

@@ -9,8 +9,8 @@ using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Teams;
 
-[Service(typeof(IRequestHandler<GetTeamRequest, Team>))]
-public class GetTeamRequestHandler(ITeamRepository teamRepository) : BaseRequestHandler<GetTeamRequest, Team>
+[Service(typeof(IRequestHandler<GetTeamRequest, TeamModel>))]
+public class GetTeamRequestHandler(ITeamRepository teamRepository) : BaseRequestHandler<GetTeamRequest, TeamModel>
 {
     private TeamEntity? team;
 
@@ -20,9 +20,9 @@ public class GetTeamRequestHandler(ITeamRepository teamRepository) : BaseRequest
         team.Return404IfNull();
     }
 
-    public override Task<Team> Handle(GetTeamRequest request)
+    public override Task<TeamModel> Handle(GetTeamRequest request)
     {
-        Team result = TeamMapper.Map(team!);
+        TeamModel result = TeamMapper.Map(team!);
 
         return Task.FromResult(result);
     }
