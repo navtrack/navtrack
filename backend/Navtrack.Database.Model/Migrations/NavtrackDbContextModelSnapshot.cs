@@ -321,7 +321,6 @@ namespace Navtrack.Database.Model.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("OldMessage")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<float?>("PDOP")

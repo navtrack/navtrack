@@ -24,7 +24,7 @@ public class DeviceMessageEntity : BaseEntity
 
     public NpgsqlPoint Coordinates { get; set; }
     public Point? NewCoordinates { get; set; }
-    public string OldMessage { get; set; }
+    public string? OldMessage { get; set; }
 
     [NotMapped]
     public double Latitude

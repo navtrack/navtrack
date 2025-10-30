@@ -14,7 +14,7 @@ using NpgsqlTypes;
 namespace Navtrack.Database.Model.Migrations
 {
     [DbContext(typeof(NavtrackDbContext))]
-    [Migration("20251029211750_AddNewCoordinates")]
+    [Migration("20251030164603_AddNewCoordinates")]
     partial class AddNewCoordinates
     {
         /// <inheritdoc />
@@ -324,7 +324,6 @@ namespace Navtrack.Database.Model.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("OldMessage")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<float?>("PDOP")
