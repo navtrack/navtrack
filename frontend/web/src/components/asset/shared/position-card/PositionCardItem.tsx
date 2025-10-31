@@ -9,11 +9,12 @@ type PositionCardItemProps = {
   value: ReactNode;
   isLoading?: boolean;
   copyable?: boolean;
+  className?: string;
 };
 
 export function PositionCardItem(props: PositionCardItemProps) {
   return (
-    <div>
+    <div className={props.className}>
       <div className="text-xs font-medium uppercase tracking-wider text-gray-500">
         <FormattedMessage id={props.label} />
         {props.copyable && props.value && (

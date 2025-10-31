@@ -1,5 +1,5 @@
 import { format, subDays } from "date-fns";
-import { Atom, atom } from "jotai";
+import { atom } from "jotai";
 import { atomFamily, atomWithReset } from "jotai/utils";
 import {
   AltitudeFilter,
@@ -11,13 +11,11 @@ import {
   SpeedFilter
 } from "./locationFilterTypes";
 
-export const altitudeFilterAtom = atomFamily(
-  () =>
-    atomWithReset<AltitudeFilter>({
-      open: false,
-      enabled: false
-    })
-  // (a, b) => a === b
+export const altitudeFilterAtom = atomFamily(() =>
+  atomWithReset<AltitudeFilter>({
+    open: false,
+    enabled: false
+  })
 );
 
 export const durationFilterAtom = atomFamily(() =>
@@ -43,9 +41,9 @@ export const geofenceFilterAtom = atomFamily(() =>
 
 export const dateFilterAtom = atomFamily(() =>
   atomWithReset<DateFilter>({
-    startDate: subDays(new Date(), 28),
+    startDate: subDays(new Date(), 7),
     endDate: new Date(),
-    range: DateRange.Last28Days,
+    range: DateRange.Last7Days,
     open: false
   })
 );
