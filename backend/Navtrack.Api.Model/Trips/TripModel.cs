@@ -25,9 +25,11 @@ public class TripModel
 
     public double? FuelConsumption { get; set; }
 
-    public double? MaxSpeed => Positions.Max(x => x.Speed);
+    public double MaxSpeed => Positions.Max(x => x.Speed);
+    
+    public double MaxAltitude => Positions.Max(x => x.Altitude);
 
-    public float? AverageSpeed
+    public double AverageSpeed
     {
         get
         {
@@ -35,19 +37,11 @@ public class TripModel
             
             double? average = positions.Count != 0 ? positions.Average(x => x.Speed) : null;
 
-            return average.HasValue ? (float?)Math.Round(average.Value) : null;
+            return average.HasValue ? Math.Round(average.Value) : 0;
         }
     }
 
-    public float? AverageAltitude
-    {
-        get
-        {
-            double? average = Positions.Average(x => x.Altitude);
+    public double AverageAltitude => Positions.Average(x => x.Altitude);
 
-            return average.HasValue ? (float?)Math.Round(average.Value) : null;
-        }
-    }
-    
     public double? AverageFuelConsumption => FuelConsumption * 100 / Distance * 1000;
 }

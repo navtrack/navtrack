@@ -1,6 +1,6 @@
-import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { ReactNode } from "react";
 import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
+import { c, classNames } from "../../../../utils/tailwind";
 
 type SkeletonProps = {
   children: ReactNode;
@@ -23,6 +23,7 @@ export function Skeleton(props: SkeletonProps) {
         </div>
       );
     }
+
     return (
       <div className={classNames("relative overflow-hidden", props.className)}>
         <div className="absolute h-full w-full rounded-md bg-gray-200" />

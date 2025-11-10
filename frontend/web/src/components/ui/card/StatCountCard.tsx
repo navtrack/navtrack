@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Card } from "./Card";
 import { FormattedMessage } from "react-intl";
 import { classNames } from "@navtrack/shared/utils/tailwind";
-import { Skeleton } from "../skeleton/Skeleton";
+import { Skeleton } from "@navtrack/shared/components/components/ui/skeleton/Skeleton";
 
 export type StatCountCardProps = {
   labelId: string;

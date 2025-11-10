@@ -16,13 +16,23 @@ export function useDurationFilter(key: string) {
 
   const handleSubmit = useCallback(
     (values: DurationFilterFormValues) => {
-      const minDuration = parseInt(values.minDuration);
-      const maxDuration = parseInt(values.maxDuration);
+      const minDuration = values.minDuration
+        ? parseInt(values.minDuration)
+        : undefined;
+      const maxDuration = values.maxDuration
+        ? parseInt(values.maxDuration)
+        : undefined;
 
       setState((x) => ({
         ...x,
-        minDuration: isNaN(minDuration) ? undefined : minDuration,
-        maxDuration: isNaN(maxDuration) ? undefined : maxDuration,
+        minDuration:
+          minDuration !== undefined && isNaN(minDuration)
+            ? undefined
+            : minDuration,
+        maxDuration:
+          maxDuration !== undefined && isNaN(maxDuration)
+            ? undefined
+            : maxDuration,
         enabled: !!values.minDuration || !!values.maxDuration,
         open: false
       }));

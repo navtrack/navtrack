@@ -1,10 +1,10 @@
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { FormattedMessage } from "react-intl";
-import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 import { Card } from "../card/Card";
 import { Icon } from "../icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { TableProps, useTable } from "./useTable";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function TableV2<T>(props: TableProps<T>) {
   const table = useTable(props);
@@ -23,7 +23,8 @@ export function TableV2<T>(props: TableProps<T>) {
                   key={`${column.labelId}${index}`}
                   className={classNames(
                     "sticky top-0 border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500",
-                    c(column.sortable, "cursor-pointer")
+                    c(column.sortable, "cursor-pointer"),
+                    column.headerClassName
                   )}>
                   <div className="flex items-center">
                     {column.labelId !== undefined && (
@@ -49,7 +50,7 @@ export function TableV2<T>(props: TableProps<T>) {
             </tr>
           </thead>
           <tbody className="text-sm text-gray-900">
-            {table.sortedRows === undefined ? (
+            {table.sortedRows === undefined || props.isLoading ? (
               <tr>
                 <td className="p-3 text-center" colSpan={props.columns.length}>
                   <LoadingIndicator className="text-xl" />
@@ -121,7 +122,7 @@ export function TableV2<T>(props: TableProps<T>) {
                       colSpan={column.footerColSpan}
                       key={`footer${index}`}
                       className={classNames(
-                        "sticky bottom-0 h-6 border-t border-gray-900/5 bg-gray-50 px-2 py-1.5 text-left text-xs text-gray-900",
+                        "sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
                         column.footerClassName
                       )}>
                       {column.footer?.(props.rows)}

@@ -22,7 +22,7 @@ type LocationFilterProps = {
   center?: LatLong;
   duration?: boolean;
   avgSpeed?: boolean;
-  avgAltitude?: boolean;
+  altitude?: boolean;
   filterPage: LocationFilterPage;
 };
 
@@ -42,7 +42,7 @@ export function LocationFilter(props: LocationFilterProps) {
           <LocationFilterAddButton
             filterKey={filterKey}
             duration={props.duration}
-            avgAltitude={props.avgAltitude}
+            altitude={props.altitude}
             avgSpeed={props.avgSpeed}
           />
         </Card>
@@ -53,7 +53,7 @@ export function LocationFilter(props: LocationFilterProps) {
         initialMapCenter={props.center}
       />
       <SpeedFilterModal filterKey={filterKey} average={props.avgSpeed} />
-      <AltitudeFilterModal filterKey={filterKey} average={props.avgAltitude} />
+      <AltitudeFilterModal filterKey={filterKey} average={props.altitude} />
       {props.duration && <DurationFilterModal filterKey={filterKey} />}
     </>
   );

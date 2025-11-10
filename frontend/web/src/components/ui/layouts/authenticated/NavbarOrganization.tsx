@@ -16,10 +16,10 @@ import { Paths } from "../../../../app/Paths";
 import { faBuilding } from "@fortawesome/free-regular-svg-icons";
 import { CreateOrganizationModal } from "./CreateOrganizationModal";
 import { Badge, BadgeColor } from "../../badge/Badge";
-import { LoadingIndicator } from "../../loading-indicator/LoadingIndicator";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useOrganizationsQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationsQuery";
 import { ZINDEX_MENU } from "../../../../constants";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function NavbarOrganization() {
   const currentOrganization = useCurrentOrganization();

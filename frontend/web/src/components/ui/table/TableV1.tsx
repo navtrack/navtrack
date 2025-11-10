@@ -1,8 +1,7 @@
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
-
 import { FormattedMessage } from "react-intl";
-import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 import { TableProps, useTable } from "./useTable";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function TableV1<T>(props: TableProps<T>) {
   const table = useTable(props);

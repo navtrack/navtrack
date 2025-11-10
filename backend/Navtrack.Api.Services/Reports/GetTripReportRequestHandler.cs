@@ -27,8 +27,8 @@ public class GetTripReportRequestHandler(ITripService tripService, ICurrentConte
     {
         TripListModel result = await tripService.GetTrips(asset!, new TripFilterModel
         {
-            StartDate = request.Model.StartDate,
-            EndDate = request.Model.EndDate
+            Date = request.Model.StartDate,
+            // EndDate = request.Model.EndDate
         });
 
         TripReportModel report = new()

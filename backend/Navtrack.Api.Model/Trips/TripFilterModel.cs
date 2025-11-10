@@ -1,11 +1,12 @@
-using Navtrack.Database.Model.Filters;
+using System;
 
 namespace Navtrack.Api.Model.Trips;
 
-public class TripFilterModel : DateFilterModel
+public class TripFilterModel
 {
-    public int? MinAvgAltitude { get; set; }
-    public int? MaxAvgAltitude { get; set; }
+    public DateTime Date { get; set; }
+    public int? MinAltitude { get; set; }
+    public int? MaxAltitude { get; set; }
     public int? MinAvgSpeed { get; set; }
     public int? MaxAvgSpeed { get; set; }
     public int? MinDuration { get; set; }

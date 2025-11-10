@@ -9,7 +9,12 @@ export type TripListModelAllOf = {
   totalDistance: number;
   totalDuration: number;
   totalPositions: number;
-  avgSpeed: number;
-  avgAltitude: number;
+  averageSpeed: number;
   maxSpeed: number;
+  averageAltitude: number;
+  maxAltitude: number;
+  /** @nullable */
+  fuelConsumption?: number | null;
+  /** @nullable */
+  averageFuelConsumption?: number | null;
 };

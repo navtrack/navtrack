@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { c, classNames } from "@navtrack/shared/utils/tailwind";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Icon } from "../icon/Icon";
-import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 type ButtonProps = {
   children?: ReactNode;

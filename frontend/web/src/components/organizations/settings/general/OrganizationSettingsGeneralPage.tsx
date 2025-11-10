@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { DeleteOrganizationModal } from "./DeleteOrganizationModal";
 import { Icon } from "../../../ui/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { LoadingIndicator } from "../../../ui/loading-indicator/LoadingIndicator";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
@@ -15,6 +14,7 @@ import { useCallback, useState } from "react";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { DeleteCard } from "../../../ui/card/DeleteCard";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export type RenameOrganizationFormValues = {
   name: string;

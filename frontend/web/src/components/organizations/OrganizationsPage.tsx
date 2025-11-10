@@ -3,11 +3,10 @@ import { Heading } from "../ui/heading/Heading";
 import { useOrganizationsQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationsQuery";
 import { Icon } from "../ui/icon/Icon";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Skeleton } from "../ui/skeleton/Skeleton";
 import { OrganizationCard } from "./OrganizationCard";
 import { CreateOrganizationModal } from "../ui/layouts/authenticated/CreateOrganizationModal";
 import { useState } from "react";
-import { LoadingIndicator } from "../ui/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function OrganizationsPage() {
   const organizations = useOrganizationsQuery();

@@ -1,13 +1,17 @@
 import { getGeocodeReverseQueryKey, useGeocodeReverse } from "../../../api";
 import { GeocodeReverseParams } from "../../../api/model";
 
-export function useGeocodeReverseQuery(props: GeocodeReverseParams) {
+type GeocodeReverseQueryProps = GeocodeReverseParams & { isEnabled?: boolean };
+
+export function useGeocodeReverseQuery(props: GeocodeReverseQueryProps) {
   const query = useGeocodeReverse(props, {
     query: {
-      queryKey: getGeocodeReverseQueryKey(props),
+      queryKey: getGeocodeReverseQueryKey({ lat: props.lat, lon: props.lon }),
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      staleTime: Infinity,
       enabled:
+        (props.isEnabled || props.isEnabled === undefined) &&
         props.lat !== undefined &&
         props.lon !== undefined &&
         props.lat !== 0 &&

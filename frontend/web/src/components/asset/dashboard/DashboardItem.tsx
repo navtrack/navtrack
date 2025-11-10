@@ -3,9 +3,9 @@ import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
 import { AssetStatsPeriod } from "@navtrack/shared/api/model";
-import { Skeleton } from "../../ui/skeleton/Skeleton";
-import { LoadingIndicator } from "../../ui/loading-indicator/LoadingIndicator";
+import { Skeleton } from "../../../../../shared/src/components/components/ui/skeleton/Skeleton";
 import { useChangePercentage } from "@navtrack/shared/hooks/util/useChangePercentage";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 type DashboardItemProps = {
   period: AssetStatsPeriod;

@@ -1,6 +1,9 @@
 {
   "generic.all": "All",
   "generic.trips": "Trips",
+  "generic.trips.count": "{count} trips",
+  "generic.trips.count.single": "{count} trip",
+  "generic.no-trips": "No trips",
   "generic.start-location": "Start location",
   "generic.end-location": "End location",
   "assets.add.name.placeholder": "John's car",
@@ -297,7 +300,6 @@
   "navbar.asset.log": "Log",
   "navbar.asset.reports": "Reports",
   "navbar.asset.settings": "Settings",
-  "navbar.asset.trips": "Trips",
   "navbar.new-asset": "New asset",
   "navbar.profile.logged-in-as": "Logged in as",
   "navbar.profile.settings": "Settings",

@@ -7,14 +7,14 @@ namespace Navtrack.Api.Model.Reports;
 public class DistanceReportModel : ListModel<DistanceReportItemModel>
 {
     [Required]
-    public double? TotalDistance => Items.Sum(x => x.Distance);
+    public double TotalDistance => Items.Sum(x => x.Distance);
 
     [Required]
-    public double? TotalDuration => Items.Sum(x => x.Duration);
+    public double TotalDuration => Items.Sum(x => x.Duration);
     
     [Required]
-    public double? AverageSpeed => Items.Any(x => x.AverageSpeed != null) ? Items.Average(x => x.AverageSpeed) : null;
+    public double? AverageSpeed => Items.Any() ? Items.Average(x => x.AverageSpeed) : null;
     
     [Required]
-    public double? MaxSpeed => Items.Max(x => x.MaxSpeed);
+    public double? MaxSpeed => Items.Any() ? Items.Max(x => x.MaxSpeed) : null;
 }

@@ -5,12 +5,12 @@ import { FormattedMessage } from "react-intl";
 import { DeleteAssetModal } from "./DeleteAssetModal";
 import { Icon } from "../../../ui/icon/Icon";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { LoadingIndicator } from "../../../ui/loading-indicator/LoadingIndicator";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { Card } from "../../../ui/card/Card";
 import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
 import { Button } from "../../../ui/button/Button";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function AssetSettingsGeneralPage() {
   const renameAsset = useRenameAsset();

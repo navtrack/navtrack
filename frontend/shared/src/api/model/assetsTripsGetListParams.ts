@@ -6,14 +6,15 @@
  */
 
 export type AssetsTripsGetListParams = {
+  Date?: string;
   /**
    * @nullable
    */
-  MinAvgAltitude?: number | null;
+  MinAltitude?: number | null;
   /**
    * @nullable
    */
-  MaxAvgAltitude?: number | null;
+  MaxAltitude?: number | null;
   /**
    * @nullable
    */
@@ -42,12 +43,4 @@ export type AssetsTripsGetListParams = {
    * @nullable
    */
   Radius?: number | null;
-  /**
-   * @nullable
-   */
-  StartDate?: string | null;
-  /**
-   * @nullable
-   */
-  EndDate?: string | null;
 };

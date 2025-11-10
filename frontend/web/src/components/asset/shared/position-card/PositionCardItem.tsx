@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { ReactNode } from "react";
-import { Skeleton } from "../../../ui/skeleton/Skeleton";
+import { Skeleton } from "../../../../../../shared/src/components/components/ui/skeleton/Skeleton";
 import { Copy } from "../../../ui/helpers/Copy";
 
 type PositionCardItemProps = {

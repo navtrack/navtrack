@@ -7,7 +7,7 @@ export type AssetStatsQueriesProps = {
   period: AssetStatsPeriod;
 };
 
-export const useAssetStatsQueries = (props: AssetStatsQueriesProps) => {
+export function useAssetStatsQueries(props: AssetStatsQueriesProps) {
   const queries = useQueries({
     queries: props.assetIds.map((assetId) => ({
       queryKey: getAssetsStatsGetQueryKey(assetId, props.period),
@@ -17,4 +17,4 @@ export const useAssetStatsQueries = (props: AssetStatsQueriesProps) => {
   });
 
   return queries;
-};
+}

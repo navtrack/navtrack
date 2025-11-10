@@ -5,7 +5,6 @@ import { Paths } from "../../../../app/Paths";
 import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetsQuery";
-import { LoadingIndicator } from "../../loading-indicator/LoadingIndicator";
 import { AuthenticatedLayoutSidebarItem } from "./AuthenticatedLayoutSidebarItem";
 import { Button } from "../../button/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +13,7 @@ import { faHdd } from "@fortawesome/free-regular-svg-icons";
 import { useMemo } from "react";
 import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
 import { OrganizationUserRole } from "@navtrack/shared/api/model";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function AuthenticatedLayoutSidebar() {
   const currentOrganization = useCurrentOrganization();

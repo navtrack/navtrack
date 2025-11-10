@@ -3,7 +3,7 @@ import { AuthenticatedLayoutNavbar } from "./AuthenticatedLayoutNavbar";
 import { Outlet } from "react-router-dom";
 import { AuthenticatedLayoutSidebar } from "./AuthenticatedLayoutSidebar";
 import { ReactNode } from "react";
-import { LoadingIndicator } from "../../loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 type AuthenticatedLayoutTwoColumnsProps = {
   children?: ReactNode;
@@ -29,7 +29,7 @@ export function AuthenticatedLayoutTwoColumns(
                 <LoadingIndicator size="xl" className="text-gray-900" />
               </div>
             ) : (
-              props.children ?? <Outlet />
+              (props.children ?? <Outlet />)
             )}
           </div>
         </div>

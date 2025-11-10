@@ -155,6 +155,21 @@ export function useShow() {
     []
   );
 
+  const showCount = useCallback(
+    (id: string, count?: number | null, onlyIfPositive?: boolean) => {
+      if (count !== undefined && count !== null) {
+        if (count > 0 || !onlyIfPositive) {
+          if (count === 1) {
+            return intl.formatMessage({ id: `${id}.single` }, { count });
+          } else {
+            return intl.formatMessage({ id: `${id}` }, { count });
+          }
+        }
+      }
+    },
+    [intl]
+  );
+
   return {
     distance: showDistance,
     duration: showDuration,
@@ -165,6 +180,7 @@ export function useShow() {
     fuelConsumption: showFuelConsumption,
     altitude: showAltitude,
     heading: showHeading,
-    speed: showSpeed
+    speed: showSpeed,
+    count: showCount
   };
 }

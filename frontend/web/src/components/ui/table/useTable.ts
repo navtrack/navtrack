@@ -11,6 +11,7 @@ import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
 export interface ITableColumn<T> {
   labelId?: string;
   row: (row: T) => ReactNode;
+  headerClassName?: string;
   rowClassName?: string;
   footer?: (rows?: T[]) => ReactNode;
   footerClassName?: string;
@@ -22,6 +23,7 @@ export interface ITableColumn<T> {
 
 export type TableProps<T> = {
   columns: ITableColumn<T>[];
+  isLoading?: boolean;
   rows?: T[];
   className?: string;
   equals?: (a: T, b: T) => boolean;

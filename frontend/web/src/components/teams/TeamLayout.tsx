@@ -4,7 +4,7 @@ import { AuthenticatedLayoutTwoColumns } from "../ui/layouts/authenticated/Authe
 import { Heading } from "../ui/heading/Heading";
 import { TabMenuItemProps, TabsLayout } from "../ui/layouts/tabs/TabsLayout";
 import { TeamModel } from "@navtrack/shared/api/model";
-import { Skeleton } from "../ui/skeleton/Skeleton";
+import { Skeleton } from "../../../../shared/src/components/components/ui/skeleton/Skeleton";
 import { FormattedMessage } from "react-intl";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 

@@ -27,7 +27,7 @@ import { ZINDEX_MENU } from "../../../../constants";
 
 type LocationFilterAddButtonProps = {
   duration?: boolean;
-  avgAltitude?: boolean;
+  altitude?: boolean;
   avgSpeed?: boolean;
   filterKey: string;
 };
@@ -80,11 +80,7 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
                   <MenuItem>
                     <LocationFilterAddButtonMenuItem
                       icon={faMountain}
-                      labelId={
-                        props.avgAltitude
-                          ? "locations.filter.avg-altitude"
-                          : "locations.filter.altitude"
-                      }
+                      labelId="locations.filter.altitude"
                       onClick={() =>
                         setAltitudeFilter((x) => ({
                           ...x,

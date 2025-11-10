@@ -14,12 +14,10 @@ export interface TripModel {
   distance: number;
   /** @nullable */
   fuelConsumption?: number | null;
-  /** @nullable */
-  maxSpeed?: number | null;
-  /** @nullable */
-  averageSpeed?: number | null;
-  /** @nullable */
-  averageAltitude?: number | null;
+  maxSpeed?: number;
+  maxAltitude?: number;
+  averageSpeed?: number;
+  averageAltitude?: number;
   /** @nullable */
   averageFuelConsumption?: number | null;
 }

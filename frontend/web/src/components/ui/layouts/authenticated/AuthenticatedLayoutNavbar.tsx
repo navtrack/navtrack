@@ -60,7 +60,7 @@ const assetNavbarMenuitems: NavbarMenuItem[] = [
     order: 15
   },
   {
-    label: "navbar.asset.trips",
+    label: "generic.trips",
     path: Paths.AssetTrips,
     icon: faRoute,
     order: 20

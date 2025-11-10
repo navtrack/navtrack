@@ -9,10 +9,10 @@ public class FuelConsumptionReportItemModel
     public DateTime Date { get; set; }
 
     [Required]
-    public double? Distance { get; set; }
+    public double Distance { get; set; }
 
     [Required]
-    public double? Duration { get; set; }
+    public double Duration { get; set; }
 
     public double? FuelConsumption { get; set; }
 
@@ -20,9 +20,9 @@ public class FuelConsumptionReportItemModel
     {
         get
         {
-            if (Distance.HasValue && FuelConsumption.HasValue)
+            if (FuelConsumption.HasValue)
             {
-                return Math.Round(FuelConsumption.Value * 100 / Distance.Value * 1000, 2);
+                return Math.Round(FuelConsumption.Value * 100 / Distance * 1000, 2);
             }
 
             return null;

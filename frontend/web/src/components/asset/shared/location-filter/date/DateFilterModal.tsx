@@ -8,7 +8,6 @@ import { FilterModal } from "../FilterModal";
 import { DateFilter, DateRange } from "../locationFilterTypes";
 import { dateOptions } from "./dateOptions";
 import { classNames } from "@navtrack/shared/utils/tailwind";
-import { FormikDatePicker } from "../../../../ui/datepicker/FormikDatePicker";
 import { useCallback } from "react";
 import { useAtom } from "jotai";
 import { dateFilterAtom } from "../locationFilterState";

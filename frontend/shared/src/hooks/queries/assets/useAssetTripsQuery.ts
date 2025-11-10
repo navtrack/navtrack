@@ -1,12 +1,13 @@
+import { parseISO } from "date-fns";
 import {
   getAssetsTripsGetListQueryKey,
   useAssetsTripsGetList
 } from "../../../api";
+import { formatApiDate } from "../../../utils/api";
 
-export type UseTripsQueryProps = {
+export type AssetTripsQueryProps = {
   assetId?: string;
-  startDate?: string;
-  endDate?: string;
+  date?: string;
   minAltitude?: number;
   maxAltitude?: number;
   minDuration?: number;
@@ -18,16 +19,15 @@ export type UseTripsQueryProps = {
   radius?: number;
 };
 
-export const useTripsQuery = (props: UseTripsQueryProps) => {
+export function useAssetTripsQuery(props: AssetTripsQueryProps) {
   const query = useAssetsTripsGetList(
     props.assetId!,
     {
-      StartDate: props.startDate,
-      EndDate: props.endDate,
+      Date: formatApiDate(parseISO(props.date!)),
       MinAvgSpeed: props.minSpeed,
       MaxAvgSpeed: props.maxSpeed,
-      MinAvgAltitude: props.minAltitude,
-      MaxAvgAltitude: props.maxAltitude,
+      MinAltitude: props.minAltitude,
+      MaxAltitude: props.maxAltitude,
       MinDuration: props.minDuration,
       MaxDuration: props.maxDuration,
       Latitude: props.latitude,
@@ -37,12 +37,11 @@ export const useTripsQuery = (props: UseTripsQueryProps) => {
     {
       query: {
         queryKey: getAssetsTripsGetListQueryKey(props.assetId!, {
-          StartDate: props.startDate,
-          EndDate: props.endDate,
+          Date: props.date,
           MinAvgSpeed: props.minSpeed,
           MaxAvgSpeed: props.maxSpeed,
-          MinAvgAltitude: props.minAltitude,
-          MaxAvgAltitude: props.maxAltitude,
+          MinAltitude: props.minAltitude,
+          MaxAltitude: props.maxAltitude,
           MinDuration: props.minDuration,
           MaxDuration: props.maxDuration,
           Latitude: props.latitude,
@@ -56,4 +55,4 @@ export const useTripsQuery = (props: UseTripsQueryProps) => {
   );
 
   return query;
-};
+}

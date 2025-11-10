@@ -10,12 +10,10 @@ export enum LocationFilterType {
 }
 
 export enum DateRange {
-  Last7Days,
-  Last14Days,
-  Last28Days,
-  Last3Months,
-  Last6Months,
-  Last12Months,
+  ThisWeek,
+  LastWeek,
+  ThisMonth,
+  LastMonth,
   Custom
 }
 
@@ -66,6 +64,6 @@ export type DurationFilter = FilterOptions & {
 };
 
 export type DurationFilterFormValues = {
-  minDuration: string;
-  maxDuration: string;
+  minDuration?: string;
+  maxDuration?: string;
 };

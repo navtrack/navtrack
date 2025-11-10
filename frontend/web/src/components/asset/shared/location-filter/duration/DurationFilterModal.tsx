@@ -45,7 +45,10 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                     }
                     onBlur={(e) => {
                       const newValue = parseInt(e.target.value);
-                      if (newValue > parseInt(values.maxDuration)) {
+                      if (
+                        !!values.maxDuration &&
+                        newValue > parseInt(values.maxDuration)
+                      ) {
                         setFieldValue(
                           nameOf<DurationFilterFormValues>("maxDuration"),
                           newValue
@@ -62,7 +65,10 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                     }
                     onBlur={(e) => {
                       const newValue = parseInt(e.target.value);
-                      if (newValue < parseInt(values.minDuration)) {
+                      if (
+                        !!values.minDuration &&
+                        newValue < parseInt(values.minDuration)
+                      ) {
                         setFieldValue(
                           nameOf<DurationFilterFormValues>("minDuration"),
                           newValue

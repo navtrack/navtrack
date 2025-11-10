@@ -23,29 +23,11 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
 
     public async Task<TripListModel> GetTrips(AssetEntity asset, TripFilterModel tripFilter)
     {
-        MapFilter(asset, tripFilter);
-        
         List<InternalTrip> trips = await GetInternalTrips(asset.Id, tripFilter);
 
         TripListModel list = TripListMapper.Map(trips);
 
         return list;
-    }
-
-    private static void MapFilter(AssetEntity asset, TripFilterModel tripFilter)
-    {
-        if (tripFilter.StartDate == null || tripFilter.EndDate == null)
-        {
-            DateTime latestPositionDate = asset.LastPositionMessage?.Date ?? DateTime.UtcNow;
-            
-            tripFilter.StartDate = latestPositionDate.Date;
-            tripFilter.EndDate = latestPositionDate.Date;
-        }
-
-        if (tripFilter.StartDate == tripFilter.EndDate)
-        {
-            tripFilter.EndDate = tripFilter.EndDate.Value.AddDays(1);
-        }
     }
 
     private async Task<List<InternalTrip>> GetInternalTrips(Guid assetId, TripFilterModel tripFilter)
@@ -65,7 +47,7 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         List<InternalTrip> trips = [];
 
         InternalTrip? currentTrip = null;
-        DeviceMessageEntity lastMessage = null;
+        DeviceMessageEntity? lastMessage = null;
 
         foreach (DeviceMessageEntity message in source)
         {
@@ -154,15 +136,15 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         }
     }
 
-    private async Task<List<DeviceMessageEntity>> GetMessages(Guid assetId, DateFilterModel dateFilter)
+    private async Task<List<DeviceMessageEntity>> GetMessages(Guid assetId, TripFilterModel dateFilter)
     {
         GetMessagesOptions options = new()
         {
             AssetId = assetId,
             PositionFilter = new PositionFilterModel
             {
-                StartDate = dateFilter.StartDate?.AddHours(-6),
-                EndDate = dateFilter.EndDate?.AddHours(6)
+                StartDate = dateFilter.Date.Date.AddHours(-6),
+                EndDate = dateFilter.Date.Date.AddHours(6)
             },
             OrderFunc = query => query.OrderBy(x => x.Date)
         };
@@ -244,36 +226,30 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyAvgAltitudeFilter(TripFilterModel tripFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyAvgAltitudeFilter(TripFilterModel tripFilter,
+        List<InternalTrip> filteredTrips)
     {
-        if (tripFilter.MaxAvgAltitude.HasValue)
+        if (tripFilter.MaxAltitude.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.AverageAltitude <= tripFilter.MaxAvgAltitude.Value).ToList();
+                .Where(x => x.Messages.All(y => y.Altitude <= tripFilter.MaxAltitude.Value)).ToList();
         }
 
-        if (tripFilter.MinAvgAltitude.HasValue)
+        if (tripFilter.MinAltitude.HasValue)
         {
             filteredTrips = filteredTrips
-                .Where(x => x.AverageAltitude >= tripFilter.MinAvgAltitude.Value).ToList();
+                .Where(x => x.Messages.All(y => y.Altitude >= tripFilter.MinAltitude.Value)).ToList();
         }
 
         return filteredTrips;
     }
 
-    private static List<InternalTrip> ApplyDateFilter(DateFilterModel dateFilter, List<InternalTrip> filteredTrips)
+    private static List<InternalTrip> ApplyDateFilter(TripFilterModel dateFilter, List<InternalTrip> filteredTrips)
     {
-        if (dateFilter.StartDate.HasValue)
-        {
-            filteredTrips = filteredTrips
-                .Where(x => x.StartMessage.Date >= dateFilter.StartDate.Value.Date).ToList();
-        }
-
-        if (dateFilter.EndDate.HasValue)
-        {
-            filteredTrips = filteredTrips
-                .Where(x => x.StartMessage.Date <= dateFilter.EndDate.Value.Date.AddDays(1)).ToList();
-        }
+        filteredTrips = filteredTrips
+            .Where(x => x.StartMessage.Date >= dateFilter.Date.Date
+                        && x.StartMessage.Date < dateFilter.Date.Date.AddDays(1)
+            ).ToList();
 
         return filteredTrips;
     }

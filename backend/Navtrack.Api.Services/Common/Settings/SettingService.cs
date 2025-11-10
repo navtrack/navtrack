@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Database.Model;
 using Navtrack.Database.Services.Settings;
 using Navtrack.Shared.Library.DI;
@@ -7,18 +9,31 @@ using Newtonsoft.Json;
 
 namespace Navtrack.Api.Services.Common.Settings;
 
-[Service(typeof(ISettingService))]
-public class SettingService(ISettingRepository repository) : ISettingService
+[Service(typeof(ISettingService), ServiceLifetime.Singleton)]
+public class SettingService(IServiceProvider serviceProvider) : ISettingService
 {
+    private Dictionary<string, object> cache = new();
+    
     public async Task<T?> Get<T>() where T : new()
     {
         string key = GetKey<T>();
+        
+        if (cache.TryGetValue(key, out object? value))
+        {
+            return (T)value;
+        }
 
+        using IServiceScope scope = serviceProvider.CreateScope();
+        ISettingRepository repository = scope.ServiceProvider.GetRequiredService<ISettingRepository>();
         SystemSettingEntity? document = await repository.Get(key);
 
         if (document != null)
         {
-            return JsonConvert.DeserializeObject<T>(document.Value);
+            T deserializeObject = JsonConvert.DeserializeObject<T>(document.Value);
+            
+            cache[key] = deserializeObject;
+            
+            return deserializeObject;
         }
 
         await Set(new T());
@@ -30,6 +45,8 @@ public class SettingService(ISettingRepository repository) : ISettingService
     {
         string key = GetKey<T>();
 
+        using IServiceScope scope = serviceProvider.CreateScope();
+        ISettingRepository repository = scope.ServiceProvider.GetRequiredService<ISettingRepository>();
         await repository.Save(key, JsonConvert.SerializeObject(settings));
     }
 

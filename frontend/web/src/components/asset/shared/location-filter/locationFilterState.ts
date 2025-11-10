@@ -43,7 +43,7 @@ export const dateFilterAtom = atomFamily(() =>
   atomWithReset<DateFilter>({
     startDate: subDays(new Date(), 7),
     endDate: new Date(),
-    range: DateRange.Last7Days,
+    range: DateRange.ThisWeek,
     open: false
   })
 );

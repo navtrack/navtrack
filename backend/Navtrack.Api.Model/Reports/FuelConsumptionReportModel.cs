@@ -7,10 +7,10 @@ namespace Navtrack.Api.Model.Reports;
 public class FuelConsumptionReportModel : ListModel<FuelConsumptionReportItemModel>
 {
     [Required]
-    public double? TotalDistance => Items.Sum(x => x.Distance);
+    public double TotalDistance => Items.Sum(x => x.Distance);
 
     [Required]
-    public double? TotalDuration => Items.Sum(x => x.Duration);
+    public double TotalDuration => Items.Sum(x => x.Duration);
 
     [Required]
     public double? TotalFuelConsumption => Items.Any(x => x.FuelConsumption != null) ? Items.Sum(x => x.FuelConsumption) : null;
