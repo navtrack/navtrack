@@ -29,6 +29,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Tests", "backend\Navtrack.Api.Tests\Navtrack.Api.Tests.csproj", "{816F422C-2680-49E9-9C22-733AE2B66823}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{30CA5669-32EE-40D8-BB12-6DD9543BE2F9}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navtrack.Api.Services.Tests", "backend\Navtrack.Api.Services.Tests\Navtrack.Api.Services.Tests.csproj", "{8814F127-0747-4031-AAE1-3126DA52FA2A}"
 EndProject

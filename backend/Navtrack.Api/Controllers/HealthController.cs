@@ -12,7 +12,8 @@ public class HealthController : ControllerBase
     public IActionResult Get()
     {
         Version? version = GetType().Assembly.GetName().Version;
+        Version dotnetVersion = Environment.Version;
         
-        return Ok($"Choco and Milk says hi from version {version}. :)");
+        return Ok($"Choco and Milk says hi from version {version} running .NET {dotnetVersion}. :)");
     }
 }
