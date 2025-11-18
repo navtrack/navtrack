@@ -1,7 +1,7 @@
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useFixtureInput } from "react-cosmos/client";
 import { useSetAtom } from "jotai";
-import { DEFAULT_MAP_CENTER } from "../../../../constants";
+import { DEFAULT_MAP_CENTER } from "@navtrack/shared/constants";
 import { Modal } from "../../modal/Modal";
 import { Map } from "../Map";
 import { GeofenceCircle } from "./GeofenceCircle";

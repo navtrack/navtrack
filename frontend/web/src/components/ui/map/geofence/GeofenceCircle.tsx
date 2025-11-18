@@ -3,7 +3,7 @@ import { showCoordinate } from "@navtrack/shared/utils/coordinates";
 import { useEffect, useState } from "react";
 import { useMap } from "../useMap";
 import { Circle, circle } from "leaflet";
-import { GEOFENCE_CIRCLE_MAX_RADIUS_METERS as GEOFENCE_CIRCLE_MAX_RADIUS } from "../../../../constants";
+import { GEOFENCE_CIRCLE_MAX_RADIUS_METERS as GEOFENCE_CIRCLE_MAX_RADIUS } from "@navtrack/shared/constants";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 
 export type CircleGeofence = {

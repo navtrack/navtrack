@@ -53,7 +53,9 @@ export function LocationFilter(props: LocationFilterProps) {
         initialMapCenter={props.center}
       />
       <SpeedFilterModal filterKey={filterKey} average={props.avgSpeed} />
-      <AltitudeFilterModal filterKey={filterKey} average={props.altitude} />
+      {props.altitude && (
+        <AltitudeFilterModal filterKey={filterKey} average={props.altitude} />
+      )}
       {props.duration && <DurationFilterModal filterKey={filterKey} />}
     </>
   );

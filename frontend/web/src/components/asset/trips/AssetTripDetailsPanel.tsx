@@ -8,7 +8,12 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ZINDEX_PANEL } from "../../../constants";
 import { PositionDataModel, TripModel } from "@navtrack/shared/api/model";
-import { faArrowRight, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faCar,
+  faFlagCheckered,
+  faInfoCircle
+} from "@fortawesome/free-solid-svg-icons";
 import { FormattedMessage } from "react-intl";
 import { Card } from "../../ui/card/Card";
 import { MapCenter } from "../../ui/map/MapCenter";
@@ -22,13 +27,19 @@ import { SlotContext } from "../../../app/SlotContext";
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { PositionCardItem } from "../shared/position-card/PositionCardItem";
 import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
+import { TimelineItem } from "../../ui/timeline/TimelineItem";
+import { faFlag } from "@fortawesome/free-regular-svg-icons";
+import { Button } from "../../ui/button/Button";
 
 type AssetTripDetailsPanelProps = {
   trip: TripModel;
   open: boolean;
   close: () => void;
+  previous: () => void;
+  next: () => void;
+  nextDisabled: boolean;
+  previousDisabled: boolean;
 };
 
 export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
@@ -77,83 +88,119 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                   <DialogTitle className="text-base font-semibold text-gray-900">
                     <FormattedMessage id="generic.trip-details" />
                   </DialogTitle>
-                  <button
-                    type="button"
-                    onClick={props.close}
-                    className="relative rounded-md text-gray-400 hover:text-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    <XMarkIcon aria-hidden="true" className="size-6" />
-                  </button>
-                </div>
-                <div className="px-6 flex border-b border-gray-200 space-x-6 pb-4">
-                  <PositionCardItem
-                    label="generic.start"
-                    value={
-                      <div>
-                        <div>
-                          {show.dateTime(props.trip.startPosition.date)}
-                        </div>
-                        <div>
-                          <GeocodeReverse
-                            coordinates={props.trip.startPosition.coordinates}
-                          />
-                        </div>
-                      </div>
-                    }
-                  />
-                  <div className="flex items-center">
-                    <Icon icon={faArrowRight} />
+                  <div className="flex space-x-2">
+                    <Button
+                      onClick={props.previous}
+                      size="sm"
+                      color="white"
+                      disabled={props.previousDisabled}>
+                      <FormattedMessage id="generic.previous" />
+                    </Button>
+                    <Button
+                      onClick={props.next}
+                      size="sm"
+                      color="white"
+                      disabled={props.nextDisabled}>
+                      <FormattedMessage id="generic.next" />
+                    </Button>
+                    <button
+                      type="button"
+                      onClick={props.close}
+                      className="cursor-pointer relative rounded-md text-gray-400 hover:text-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      <XMarkIcon aria-hidden="true" className="size-6" />
+                    </button>
                   </div>
-                  <PositionCardItem
-                    label="generic.end"
-                    value={
+                </div>
+                <div className="px-6 flex flex-col border-b border-gray-200 space-x-6 pb-4">
+                  <TimelineItem
+                    icon={faFlag}
+                    title={
+                      <GeocodeReverse
+                        coordinates={props.trip.startPosition.coordinates}
+                      />
+                    }
+                    subTitle={
+                      <FormattedMessage
+                        id="generic.departed-at"
+                        values={{
+                          date: show.dateTime(props.trip.startPosition.date)
+                        }}
+                      />
+                    }
+                  />
+                  <TimelineItem
+                    icon={faCar}
+                    title={
+                      <FormattedMessage
+                        id="generic.trip-details.title"
+                        values={{
+                          length: show.distance(props.trip.distance),
+                          duration: show.duration(props.trip.duration)
+                        }}
+                      />
+                    }
+                    subTitle={
                       <div>
-                        <div>{show.dateTime(props.trip.endPosition.date)}</div>
                         <div>
-                          <GeocodeReverse
-                            coordinates={props.trip.endPosition.coordinates}
+                          <FormattedMessage
+                            id="generic.trip-details.speed"
+                            values={{
+                              avgSpeed: (
+                                <span className="font-bold">
+                                  {show.speed(props.trip.averageSpeed)}
+                                </span>
+                              ),
+                              maxSpeed: (
+                                <span className="font-bold">
+                                  {show.speed(props.trip.maxSpeed)}
+                                </span>
+                              )
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <FormattedMessage
+                            id="generic.trip-details.fuel-consumption"
+                            values={{
+                              avgFuelConsumption: (
+                                <span className="font-bold">
+                                  {show.fuelConsumption(
+                                    props.trip.averageFuelConsumption
+                                  )}
+                                </span>
+                              ),
+                              fuelConsumed: (
+                                <span className="font-bold">
+                                  {show.volume(props.trip.fuelConsumption)}
+                                </span>
+                              )
+                            }}
                           />
                         </div>
                       </div>
                     }
                   />
-                </div>
-                <div className="px-6 pb-4 flex space-x-4 border-b border-gray-200">
-                  <PositionCardItem
-                    label="generic.distance"
-                    value={show.distance(props.trip.distance)}
-                    className="col-span-1"
-                  />
-                  <PositionCardItem
-                    label="generic.duration"
-                    value={show.duration(props.trip.duration)}
-                    className="col-span-1"
-                  />
-                  <PositionCardItem
-                    label="generic.average-speed"
-                    value={show.speed(props.trip.averageSpeed)}
-                    className="col-span-1"
-                  />
-                  <PositionCardItem
-                    label="generic.max-speed"
-                    value={show.speed(props.trip.maxSpeed)}
-                    className="col-span-1"
-                  />
-                  <PositionCardItem
-                    label="generic.average-fuel-consumption"
-                    value={show.fuelConsumption(
-                      props.trip.averageFuelConsumption
-                    )}
-                    className="col-span-1"
-                  />
-                  <PositionCardItem
-                    label="generic.fuel-consumption"
-                    value={show.volume(props.trip.fuelConsumption)}
-                    className="col-span-1"
+                  <TimelineItem
+                    last
+                    icon={faFlagCheckered}
+                    title={
+                      <GeocodeReverse
+                        coordinates={props.trip.endPosition.coordinates}
+                      />
+                    }
+                    subTitle={
+                      <FormattedMessage
+                        id="generic.arrived-at"
+                        values={{
+                          date: show.dateTime(props.trip.endPosition.date)
+                        }}
+                      />
+                    }
                   />
                 </div>
                 <div
                   className="grow px-6 border-b border-gray-200 flex pb-4"
-                  style={{ minHeight: 300 }}>
+                  style={{ minHeight: 250 }}>
                   <CardMapWrapper>
                     <Map>
                       <MapTrip

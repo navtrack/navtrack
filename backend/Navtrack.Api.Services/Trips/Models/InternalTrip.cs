@@ -13,7 +13,7 @@ public class InternalTrip
     public DeviceMessageEntity StartMessage => Messages.First();
 
     public DeviceMessageEntity EndMessage => Messages.Last();
-    public double Duration => Math.Ceiling((EndMessage.Date - StartMessage.Date).TotalMinutes);
+    public double Duration => Math.Ceiling((EndMessage.Date - StartMessage.Date).TotalSeconds);
 
     public double? MaxSpeed => Messages.Max(x => x.Speed);
 

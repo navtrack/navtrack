@@ -33,6 +33,7 @@ import { AssetReportsFuelConsumptionPage } from "../components/asset/reports/Ass
 import { AssetReportsTripsPage } from "../components/asset/reports/AssetReportsTripsPage";
 import { AssetReportsDistancePage } from "../components/asset/reports/AssetReportsDistancePage";
 import { OrganizationDashboardPage } from "../components/organizations/dashboard/OrganizationDashboardPage";
+import { AssetReportsTripStopsPage } from "../components/asset/reports/AssetReportsTripStopsPage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -66,6 +67,10 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
         <Route
           path={Paths.AssetReportsTrips}
           element={<AssetReportsTripsPage />}
+        />
+        <Route
+          path={Paths.AssetReportsStops}
+          element={<AssetReportsTripStopsPage />}
         />
         <Route path={Paths.AssetTrips} element={<AssetTripsPage />} />
         <Route

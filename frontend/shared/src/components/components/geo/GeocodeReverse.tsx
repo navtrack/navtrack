@@ -2,7 +2,7 @@ import { LatLong } from "../../../api/model";
 import { useGeocodeReverseQuery } from "../../../hooks/queries/geocode/useGeocodeReverseQuery";
 import { Skeleton } from "../ui/skeleton/Skeleton";
 import { c, classNames } from "../../../utils/tailwind";
-import { useOnScreen } from "./useOnScreen";
+import { useOnScreen } from "../../../hooks/util/useOnScreen";
 
 type GeocodeReverseProps = {
   coordinates?: LatLong;

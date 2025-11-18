@@ -133,46 +133,6 @@ export function DateFilterModal(props: DateFilterModalProps) {
                       setFieldValue(nameOf<DateFilter>("endDate"), date[1]);
                     }}
                   />
-                  {/* <FormikDatePicker
-                    name={nameOf<DateFilter>("startDate")}
-                    label="generic.from"
-                    key={`startDate-${values.startDate?.toString()}`}
-                    value={values.startDate}
-                    onChange={(date) => {
-                      setFieldValue(
-                        nameOf<DateFilter>("range"),
-                        DateRange.Custom
-                      );
-                      setFieldValue(nameOf<DateFilter>("startDate"), date);
-                      if (
-                        values.startDate !== undefined &&
-                        date > values.startDate
-                      ) {
-                        setFieldValue(nameOf<DateFilter>("endDate"), date);
-                      }
-                    }}
-                  />
-                  <FormikDatePicker
-                    name={nameOf<DateFilter>("endDate")}
-                    label="generic.to"
-                    key={`endDate-${values.endDate?.toString()}`}
-                    value={values.endDate}
-                    onChange={(date) => {
-                      if (date) {
-                        setFieldValue(
-                          nameOf<DateFilter>("range"),
-                          DateRange.Custom
-                        );
-                        setFieldValue(nameOf<DateFilter>("endDate"), date);
-                        if (
-                          values.startDate !== undefined &&
-                          date < values.startDate
-                        ) {
-                          setFieldValue(nameOf<DateFilter>("startDate"), date);
-                        }
-                      }
-                    }}
-                  /> */}
                 </div>
               </div>
             </FilterModal>

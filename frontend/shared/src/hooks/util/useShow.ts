@@ -46,7 +46,7 @@ export function useShow() {
     }
 
     return seconds > 3600
-      ? `${Math.floor(seconds / 60 / 60)}h ${Math.round(seconds % 60)}m`
+      ? `${Math.floor(seconds / 3600)}h ${Math.round(Math.floor((seconds % 3600) / 60))}m`
       : `${Math.round(seconds / 60)}m`;
   }, []);
 
@@ -131,6 +131,10 @@ export function useShow() {
 
   const showSpeed = useCallback(
     (speed?: number | null) => {
+      if (speed === undefined || speed === null) {
+        return "";
+      }
+
       const convertedSpeed =
         units.unitsType === UnitsType.Imperial
           ? convertKphToMph(speed ?? 0)

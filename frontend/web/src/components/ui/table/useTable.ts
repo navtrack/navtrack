@@ -10,7 +10,7 @@ import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
 
 export interface ITableColumn<T> {
   labelId?: string;
-  row: (row: T) => ReactNode;
+  row: (row: T, index: number) => ReactNode;
   headerClassName?: string;
   rowClassName?: string;
   footer?: (rows?: T[]) => ReactNode;
@@ -18,7 +18,6 @@ export interface ITableColumn<T> {
   footerColSpan?: number;
   sort?: "asc" | "desc";
   sortValue?: (row: T) => string | number | null | undefined;
-  sortable?: boolean;
 }
 
 export type TableProps<T> = {
@@ -28,8 +27,9 @@ export type TableProps<T> = {
   className?: string;
   equals?: (a: T, b: T) => boolean;
   selectedItem?: T;
-  setSelectedItem?: (item?: T) => void;
+  setSelectedItem?: (item?: T, index?: number) => void;
   rowClick?: (row: T) => void;
+  height?: string | number;
 };
 
 function getInitialSort<T>(columns: ITableColumn<T>[]): {
@@ -136,7 +136,7 @@ export function useTable<T>(props: TableProps<T>) {
       (props.selectedItem === undefined ||
         !props.equals?.(props.selectedItem, selectedItem))
     ) {
-      props.setSelectedItem?.(selectedItem);
+      props.setSelectedItem?.(selectedItem, selectedIndex);
     }
   }, [props, selectedIndex, selectedItem, selectionEnabled]);
 

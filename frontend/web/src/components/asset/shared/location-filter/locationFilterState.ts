@@ -10,6 +10,7 @@ import {
   LocationFilterType,
   SpeedFilter
 } from "./locationFilterTypes";
+import { dateOptions } from "./date/dateOptions";
 
 export const altitudeFilterAtom = atomFamily(() =>
   atomWithReset<AltitudeFilter>({
@@ -41,8 +42,8 @@ export const geofenceFilterAtom = atomFamily(() =>
 
 export const dateFilterAtom = atomFamily(() =>
   atomWithReset<DateFilter>({
-    startDate: subDays(new Date(), 7),
-    endDate: new Date(),
+    startDate: dateOptions[0].startDate!,
+    endDate: dateOptions[0].endDate!,
     range: DateRange.ThisWeek,
     open: false
   })

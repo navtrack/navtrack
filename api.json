@@ -2983,12 +2983,12 @@
             ],
             "properties": {
               "totalDistance": {
-                "type": "number",
-                "format": "double"
+                "type": "integer",
+                "format": "int32"
               },
               "totalDuration": {
-                "type": "number",
-                "format": "double"
+                "type": "integer",
+                "format": "int32"
               },
               "totalFuelConsumption": {
                 "type": "number",
@@ -3036,12 +3036,12 @@
             "minLength": 1
           },
           "distance": {
-            "type": "number",
-            "format": "double"
+            "type": "integer",
+            "format": "int32"
           },
           "duration": {
-            "type": "number",
-            "format": "double"
+            "type": "integer",
+            "format": "int32"
           },
           "fuelConsumption": {
             "type": "number",

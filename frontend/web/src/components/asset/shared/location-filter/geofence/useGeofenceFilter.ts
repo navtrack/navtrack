@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { useAtom } from "jotai";
-import {
-  DEFAULT_MAP_CENTER,
-  GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM
-} from "../../../../../constants";
 import { geofenceFilterAtom } from "../locationFilterState";
 import { CircleGeofence } from "../../../../ui/map/geofence/GeofenceCircle";
 import { LatLong } from "@navtrack/shared/api/model";
+import {
+  DEFAULT_MAP_CENTER,
+  GEOFENCE_CIRCLE_DEFAULT_MAP_ZOOM
+} from "@navtrack/shared/constants";
 
 export function useGeofenceFilter(
   filterKey: string,

@@ -7,6 +7,7 @@ import {
   faHdd,
   faMapMarkerAlt,
   faRoute,
+  faStop,
   faTachometer,
   faUser,
   faUsers
@@ -30,6 +31,7 @@ import {
 } from "@navtrack/shared/api/model";
 import { SlotContext } from "../../../../app/SlotContext";
 import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
+import { faStopCircle } from "@fortawesome/free-regular-svg-icons";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
@@ -88,6 +90,12 @@ const assetNavbarMenuitems: NavbarMenuItem[] = [
         path: Paths.AssetReportsTrips,
         icon: faRoute,
         order: 30
+      },
+      {
+        label: "generic.stops",
+        path: Paths.AssetReportsStops,
+        icon: faStopCircle,
+        order: 40
       }
     ]
   },

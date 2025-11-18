@@ -43,7 +43,7 @@ export function TableV1<T>(props: TableProps<T>) {
                     c(rowIndex % 2 !== 0, "bg-gray-50"),
                     column.rowClassName
                   )}>
-                  {column.row(row)}
+                  {column.row(row, rowIndex)}
                 </td>
               ))}
             </tr>

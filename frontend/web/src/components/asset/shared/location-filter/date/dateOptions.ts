@@ -1,18 +1,18 @@
-import { subDays } from "date-fns";
+import { startOfWeek, subDays, subWeeks } from "date-fns";
 import { DateRange } from "../locationFilterTypes";
 
 export const dateOptions = [
   {
     range: DateRange.ThisWeek,
     name: "generic.this-week",
-    startDate: subDays(new Date(), new Date().getDay() - 1),
+    startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
     endDate: new Date()
   },
   {
     range: DateRange.LastWeek,
     name: "generic.last-week",
-    startDate: subDays(new Date(), new Date().getDay() + 7),
-    endDate: subDays(new Date(), new Date().getDay())
+    startDate: subWeeks(startOfWeek(new Date(), { weekStartsOn: 1 }), 1),
+    endDate: subDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)
   },
   {
     range: DateRange.ThisMonth,

@@ -2,12 +2,15 @@ import { ReactNode, useRef } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { VectorTileLayer } from "./VectorTileLayer";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../../constants";
 import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useAtomValue } from "jotai";
 import { MapZoomControl } from "./MapZoomControl";
 import { LatLong } from "@navtrack/shared/api/model";
 import { MapResizeObserver } from "./MapResizeObserver";
+import {
+  DEFAULT_MAP_CENTER,
+  DEFAULT_MAP_ZOOM
+} from "@navtrack/shared/constants";
 
 type MapProps = {
   center?: LatLong;

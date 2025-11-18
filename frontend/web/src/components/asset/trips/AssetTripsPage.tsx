@@ -21,7 +21,10 @@ import { LoadingIndicator } from "@navtrack/shared/components/components/ui/load
 
 export function AssetTripsPage() {
   const show = useShow();
-  const [selectedTrip, setSelectedTrip] = useState<TripModel>();
+  const [selectedTrip, setSelectedTrip] = useState<TripModel | undefined>(
+    undefined
+  );
+  const [selectedTripIndex, setSelectedTripIndex] = useState(0);
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("trips");
   const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
@@ -32,17 +35,18 @@ export function AssetTripsPage() {
 
   const [showTripPanel, setShowTripPanel] = useState(false);
 
-  const trips = useMemo(
-    () => query.queries.flatMap((q) => q.data?.items || []),
-    [query]
-  );
-  const hasTrips = (trips.length ?? 0) > 0;
+  const hasTrips = query.items.length > 0;
   useOnChange(query.totalDistance, () => {
     if (query.totalTrips === 0) {
+      setSelectedTripIndex(0);
       setSelectedTrip(undefined);
       setShowTripPanel(false);
     }
   });
+
+  const selectedTripForModal = useMemo(() => {
+    return query.items[selectedTripIndex];
+  }, [selectedTripIndex, query.items]);
 
   function LocationAndTimeCell(props: { position: PositionDataModel }) {
     return (
@@ -55,14 +59,30 @@ export function AssetTripsPage() {
     );
   }
 
+  const selectNextTrip = () => {
+    setSelectedTripIndex((prevIndex) =>
+      prevIndex < query.items.length - 1 ? prevIndex + 1 : prevIndex
+    );
+  };
+
+  const selectPreviousTrip = () => {
+    setSelectedTripIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : prevIndex
+    );
+  };
+
   return (
     <>
       <LocationFilter filterPage="trips" duration altitude avgSpeed />
-      {selectedTrip && (
+      {selectedTripForModal && (
         <AssetTripDetailsPanel
-          trip={selectedTrip}
+          trip={selectedTripForModal}
           open={showTripPanel}
           close={() => setShowTripPanel(false)}
+          previous={selectPreviousTrip}
+          next={selectNextTrip}
+          previousDisabled={selectedTripIndex === 0}
+          nextDisabled={selectedTripIndex === query.items.length - 1}
         />
       )}
       <div>
@@ -77,11 +97,12 @@ export function AssetTripsPage() {
                 <LocationAndTimeCell position={row.startPosition} />
               ),
               headerClassName: "z-10",
-              sortable: true,
               footerColSpan: 2,
               footer: () => (
                 <div className="flex">
-                  <span>{show.count("generic.trips.count", trips.length)}</span>
+                  <span>
+                    {show.count("generic.trips.count", query.items.length)}
+                  </span>
                   <LoadingIndicator
                     isLoading={query.isLoading}
                     className="ml-2"
@@ -95,8 +116,7 @@ export function AssetTripsPage() {
               labelId: "generic.end",
               sortValue: (row) => row.endPosition.date,
               rowClassName: "align-top w-1/2",
-              row: (row) => <LocationAndTimeCell position={row.endPosition} />,
-              sortable: true
+              row: (row) => <LocationAndTimeCell position={row.endPosition} />
             },
             {
               rowClassName: "w-24",
@@ -104,8 +124,7 @@ export function AssetTripsPage() {
               row: (row) => show.duration(row.duration),
               sortValue: (row) => row.duration,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && show.duration(query.totalDuration),
-              sortable: true
+              footer: () => hasTrips && show.duration(query.totalDuration)
             },
             {
               rowClassName: "w-24",
@@ -113,8 +132,7 @@ export function AssetTripsPage() {
               row: (row) => show.distance(row.distance),
               sortValue: (row) => row.distance,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && show.distance(query.totalDistance),
-              sortable: true
+              footer: () => hasTrips && show.distance(query.totalDistance)
             },
             {
               rowClassName: "w-24",
@@ -122,8 +140,7 @@ export function AssetTripsPage() {
               row: (row) => show.speed(row.averageSpeed),
               sortValue: (row) => row.averageSpeed,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && show.speed(query.averageSpeed),
-              sortable: true
+              footer: () => hasTrips && show.speed(query.averageSpeed)
             },
             {
               rowClassName: "w-24",
@@ -131,8 +148,7 @@ export function AssetTripsPage() {
               row: (row) => show.speed(row.maxSpeed),
               sortValue: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && show.speed(query.maxSpeed),
-              sortable: true
+              footer: () => hasTrips && show.speed(query.maxSpeed)
             },
             {
               rowClassName: "w-32",
@@ -141,8 +157,7 @@ export function AssetTripsPage() {
               sortValue: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
               footer: () =>
-                hasTrips && show.fuelConsumption(query.averageFuelConsumption),
-              sortable: true
+                hasTrips && show.fuelConsumption(query.averageFuelConsumption)
             },
             {
               rowClassName: "w-32",
@@ -150,8 +165,7 @@ export function AssetTripsPage() {
               row: (row) => show.volume(row.fuelConsumption),
               sortValue: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
-              footer: () => hasTrips && show.volume(query.totalFuelConsumption),
-              sortable: true
+              footer: () => hasTrips && show.volume(query.totalFuelConsumption)
             },
             {
               row: () => (
@@ -161,6 +175,7 @@ export function AssetTripsPage() {
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
+                    setSelectedTripIndex(selectedTripIndex);
                     setShowTripPanel(true);
                   }}
                 />
@@ -168,15 +183,11 @@ export function AssetTripsPage() {
               footer: () => <></>
             }
           ]}
-          rows={trips}
-          setSelectedItem={(trip) => {
-            setSelectedTrip(trip);
-          }}
-          isLoading={query.isLoading}
-          className="flex h-80 "
+          rows={query.items}
+          setSelectedItem={(trip) => setSelectedTrip(trip)}
+          className="flex h-80"
         />
       </div>
-
       <Card className="flex grow">
         <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map>

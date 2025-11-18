@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFixtureInput } from "react-cosmos/client";
-import { DEFAULT_MAP_CENTER } from "../../../constants";
+import { DEFAULT_MAP_CENTER } from "@navtrack/shared/constants";
 import { Map } from "./Map";
 import { MapFollowControl } from "./MapFollowControl";
 import { MapPin } from "./MapPin";

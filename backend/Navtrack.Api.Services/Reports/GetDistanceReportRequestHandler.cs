@@ -37,8 +37,8 @@ public class GetDistanceReportRequestHandler(
         {
             Items = distanceReportItems.Select(x => new DistanceReportItemModel
             {
-                AverageSpeed = x.AverageSpeed ?? 0,
                 Date = x.Date,
+                AverageSpeed = x.AverageSpeed ?? 0,
                 Distance = x.Distance ?? 0,
                 Duration = x.Duration ?? 0,
                 MaxSpeed = x.MaxSpeed ?? 0

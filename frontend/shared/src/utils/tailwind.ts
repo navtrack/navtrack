@@ -15,4 +15,6 @@ export function classNames(...classNames: ClassName[]) {
   return classNames.join(" ");
 }
 
-export const TailwindColors = colors;
+export type TailwindColorType = typeof colors;
+
+export const TailwindColors: TailwindColorType = colors;

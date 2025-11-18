@@ -11,26 +11,28 @@ export function TableV2<T>(props: TableProps<T>) {
 
   return (
     <Card className="overflow-hidden">
-      <div className={classNames("overflow-y-auto", props.className)}>
-        <table className="w-full border-separate border-spacing-0">
+      <div
+        className={classNames("overflow-y-auto", props.className)}
+        style={{ height: props.height }}>
+        <table className="w-full border-separate border-spacing-0 h-full">
           <thead>
             <tr>
               {props.columns.map((column, index) => (
                 <th
                   onClick={() =>
-                    column.sortable ? table.handleHeaderClick(index) : null
+                    !!column.sortValue ? table.handleHeaderClick(index) : null
                   }
                   key={`${column.labelId}${index}`}
                   className={classNames(
                     "sticky top-0 border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500",
-                    c(column.sortable, "cursor-pointer"),
+                    c(!!column.sortValue, "cursor-pointer"),
                     column.headerClassName
                   )}>
                   <div className="flex items-center">
                     {column.labelId !== undefined && (
                       <FormattedMessage id={column.labelId} />
                     )}
-                    {column.sortable && (
+                    {!!column.sortValue && (
                       <div className="w-6">
                         {table.sort.column === index && (
                           <Icon
@@ -102,7 +104,7 @@ export function TableV2<T>(props: TableProps<T>) {
                         ),
                         column.rowClassName
                       )}>
-                      {column.row(row)}
+                      {column.row(row, rowIndex)}
                     </td>
                   ))}
                 </tr>

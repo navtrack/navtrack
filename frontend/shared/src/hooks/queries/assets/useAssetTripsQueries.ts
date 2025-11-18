@@ -5,6 +5,7 @@ import {
 } from "../../../api";
 import { eachDayOfInterval } from "date-fns";
 import { formatApiDate } from "../../../utils/api";
+import { useMemo } from "react";
 
 export type AssetTripsQueriesProps = {
   assetId?: string;
@@ -62,35 +63,41 @@ export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
     }))
   });
 
-  return {
-    queries,
-    isLoading: queries.some((q) => q.isLoading),
-    totalTrips: queries.reduce(
-      (sum, q) => sum + (q.data?.items.length || 0),
-      0
-    ),
-    totalDuration: queries.reduce(
-      (sum, q) => sum + (q.data?.totalDuration || 0),
-      0
-    ),
-    totalDistance: queries.reduce(
-      (sum, q) => sum + (q.data?.totalDistance || 0),
-      0
-    ),
-    averageSpeed:
-      queries.reduce((sum, q) => sum + (q.data?.averageSpeed || 0), 0) /
-      (queries.filter((q) => q.data?.averageSpeed !== undefined).length || 1),
-    maxSpeed: Math.max(...queries.map((q) => q.data?.maxSpeed || 0)),
-    averageFuelConsumption:
-      queries.reduce(
-        (sum, q) => sum + (q.data?.averageFuelConsumption || 0),
+  const result = useMemo(
+    () => ({
+      queries,
+      items: queries.flatMap((q) => q.data?.items || []),
+      isLoading: queries.some((q) => q.isLoading),
+      totalTrips: queries.reduce(
+        (sum, q) => sum + (q.data?.items.length || 0),
         0
-      ) /
-      (queries.filter((q) => q.data?.averageFuelConsumption !== undefined)
-        .length || 1),
-    totalFuelConsumption: queries.reduce(
-      (sum, q) => sum + (q.data?.fuelConsumption || 0),
-      0
-    )
-  };
+      ),
+      totalDuration: queries.reduce(
+        (sum, q) => sum + (q.data?.totalDuration || 0),
+        0
+      ),
+      totalDistance: queries.reduce(
+        (sum, q) => sum + (q.data?.totalDistance || 0),
+        0
+      ),
+      averageSpeed:
+        queries.reduce((sum, q) => sum + (q.data?.averageSpeed || 0), 0) /
+        (queries.filter((q) => q.data?.averageSpeed !== undefined).length || 1),
+      maxSpeed: Math.max(...queries.map((q) => q.data?.maxSpeed || 0)),
+      averageFuelConsumption:
+        queries.reduce(
+          (sum, q) => sum + (q.data?.averageFuelConsumption || 0),
+          0
+        ) /
+        (queries.filter((q) => q.data?.averageFuelConsumption !== undefined)
+          .length || 1),
+      totalFuelConsumption: queries.reduce(
+        (sum, q) => sum + (q.data?.fuelConsumption || 0),
+        0
+      )
+    }),
+    [queries]
+  );
+
+  return result;
 }

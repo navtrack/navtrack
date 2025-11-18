@@ -11,7 +11,10 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../app/Paths";
 import { MapShowAllControl } from "../ui/map/MapShowAllControl";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
-import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "../../constants";
+import {
+  DEFAULT_MAP_CENTER,
+  DEFAULT_MAP_ZOOM
+} from "@navtrack/shared/constants";
 
 export function OrganizationLiveTrackingPage() {
   const navigate = useNavigate();

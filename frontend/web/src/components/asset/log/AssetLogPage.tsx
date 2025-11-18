@@ -1,6 +1,5 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Map } from "../../ui/map/Map";
-import { DEFAULT_MAP_CENTER } from "../../../constants";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useMessagesQuery } from "@navtrack/shared/hooks/queries/assets/useMessagesQuery";
 import { useState } from "react";
@@ -18,6 +17,7 @@ import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapPin } from "../../ui/map/MapPin";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useAtomValue } from "jotai";
+import { DEFAULT_MAP_CENTER } from "@navtrack/shared/constants";
 
 export function AssetLogPage() {
   const show = useShow();
@@ -74,8 +74,7 @@ export function AssetLogPage() {
             ),
             sort: "desc",
             sortValue: (row) => row.position.date,
-            row: (row) => show.dateTime(row.position.date),
-            sortable: true
+            row: (row) => show.dateTime(row.position.date)
           },
           {
             labelId: "generic.latitude",
@@ -88,33 +87,29 @@ export function AssetLogPage() {
           {
             labelId: "generic.altitude",
             row: (row) => show.altitude(row.position.altitude),
-            sortValue: (row) => row.position.altitude,
-            sortable: true
+            sortValue: (row) => row.position.altitude
           },
           {
             labelId: "generic.speed",
             row: (row) => show.speed(row.position.speed),
-            sortValue: (row) => row.position.speed,
-            sortable: true
+            sortValue: (row) => row.position.speed
           },
           {
             labelId: "generic.heading",
             row: (row) => showHeading(row.position.heading),
-            sortValue: (row) => row.position.heading,
-            sortable: true
+            sortValue: (row) => row.position.heading
           },
           {
             labelId: "generic.satellites",
             row: (row) => `${row.position.satellites}`,
-            sortValue: (row) => row.position.satellites,
-            sortable: true
+            sortValue: (row) => row.position.satellites
           }
         ]}
         rows={query.data?.items}
         setSelectedItem={setMessage}
-        className="flex h-44 flex-grow"
+        className="flex h-44 grow"
       />
-      <Card className="flex flex-grow">
+      <Card className="flex grow">
         <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map
             center={message ? message.position.coordinates : DEFAULT_MAP_CENTER}

@@ -17,15 +17,13 @@ const columns: ITableColumn<User>[] = [
     labelId: "generic.email",
     rowClassName: "py-1",
     sortValue: (user) => user.email,
-    row: (user) => user.email,
-    sortable: true
+    row: (user) => user.email
   },
   {
     labelId: "generic.role",
     rowClassName: "py-1",
     sortValue: (user) => user.role,
-    row: (user) => user.role,
-    sortable: true
+    row: (user) => user.role
   }
 ];
 

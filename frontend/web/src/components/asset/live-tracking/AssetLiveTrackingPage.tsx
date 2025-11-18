@@ -8,7 +8,7 @@ import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { MapFollowControl } from "../../ui/map/MapFollowControl";
 import { useContext } from "react";
 import { SlotContext } from "../../../app/SlotContext";
-import { DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING } from "../../../constants";
+import { DEFAULT_MAP_ZOOM_FOR_LIVE_TRACKING } from "@navtrack/shared/constants";
 
 export function AssetLiveTrackingPage() {
   const currentAsset = useCurrentAsset();

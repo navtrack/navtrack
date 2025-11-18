@@ -6,6 +6,7 @@ export const Paths = {
   AssetReportsDistance: "/assets/:id/reports/distance",
   AssetReportsFuelConsumption: "/assets/:id/reports/fuel-consumption",
   AssetReportsTrips: "/assets/:id/reports/trips",
+  AssetReportsStops: "/assets/:id/reports/stops",
   AssetSettings: "/assets/:id/settings",
   AssetSettingsAccess: "/assets/:id/settings/access",
   AssetSettingsDevice: "/assets/:id/settings/device",
