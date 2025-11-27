@@ -10,8 +10,8 @@ RUN apt-get install -y nodejs libicu-dev libssl-dev zlib1g
 
 RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh && \
     chmod +x dotnet-install.sh && \
-    ./dotnet-install.sh --channel 10.0 --architecture arm64 --install-dir /usr/share/dotnet && \
-    ./dotnet-install.sh --channel 9.0 --architecture arm64 --install-dir /usr/share/dotnet 
+    ./dotnet-install.sh --channel 10.0 --install-dir /usr/share/dotnet && \
+    ./dotnet-install.sh --channel 9.0 --install-dir /usr/share/dotnet 
 
 ENV PATH="/usr/share/dotnet:/root/.dotnet:$PATH"
 
