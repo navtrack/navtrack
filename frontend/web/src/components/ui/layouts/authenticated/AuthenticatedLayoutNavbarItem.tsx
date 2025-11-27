@@ -18,7 +18,7 @@ export function AuthenticatedLayoutNavbarItem(props: NavbarMenuItem) {
   const getPath = useCallback(
     (path: string) => {
       const isAsset = path.includes("/assets/:id");
-      const isOrganization = path.includes("/orgs/:id");
+      const isOrganization = path.includes("/organizations/:id");
 
       return generatePath(path, {
         id: `${

@@ -4,6 +4,7 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
+import type { WorkScheduleModel } from "./workScheduleModel";
 
 export interface OrganizationModel {
   /** @minLength 1 */
@@ -13,4 +14,5 @@ export interface OrganizationModel {
   assetsCount: number;
   usersCount: number;
   teamsCount: number;
+  workSchedule: WorkScheduleModel;
 }

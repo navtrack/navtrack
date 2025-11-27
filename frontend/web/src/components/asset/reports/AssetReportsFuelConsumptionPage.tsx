@@ -142,8 +142,7 @@ export function AssetReportsFuelConsumptionPage() {
               {
                 labelId: "generic.date",
                 row: (item) => <>{show.date(item.date)}</>,
-                footer: () => <></>,
-                sortValue: (item) => item.date,
+                value: (item) => item.date,
                 sort: "desc"
               },
               {
@@ -154,7 +153,7 @@ export function AssetReportsFuelConsumptionPage() {
                     {show.distance(fuelConsumptionReport.data?.totalDistance)}
                   </span>
                 ),
-                sortValue: (item) => item.distance
+                value: (item) => item.distance
               },
               {
                 labelId: "generic.duration",
@@ -164,7 +163,7 @@ export function AssetReportsFuelConsumptionPage() {
                     {show.duration(fuelConsumptionReport.data?.totalDuration)}
                   </span>
                 ),
-                sortValue: (item) => item.duration
+                value: (item) => item.duration
               },
               {
                 labelId: "generic.average-speed",
@@ -174,7 +173,7 @@ export function AssetReportsFuelConsumptionPage() {
                     {show.speed(fuelConsumptionReport.data?.averageSpeed)}
                   </span>
                 ),
-                sortValue: (item) => item.averageSpeed
+                value: (item) => item.averageSpeed
               },
               {
                 labelId: "generic.fuel-consumption",
@@ -186,7 +185,7 @@ export function AssetReportsFuelConsumptionPage() {
                     )}
                   </span>
                 ),
-                sortValue: (item) => item.fuelConsumption
+                value: (item) => item.fuelConsumption
               },
               {
                 labelId: "generic.average-fuel-consumption",
@@ -202,7 +201,7 @@ export function AssetReportsFuelConsumptionPage() {
                     )}
                   </span>
                 ),
-                sortValue: (item) => item.averageFuelConsumption
+                value: (item) => item.averageFuelConsumption
               }
             ]}
             rows={fuelConsumptionReport.data?.items}

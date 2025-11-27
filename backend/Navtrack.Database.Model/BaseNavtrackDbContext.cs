@@ -109,6 +109,9 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
             entity.HasMany(x => x.Users)
                 .WithMany(x => x.Organizations)
                 .UsingEntity<OrganizationUserEntity>();
+            
+            entity.Property(x => x.WorkSchedule)
+                .HasColumnType("jsonb");
         });
 
         modelBuilder.Entity<OrganizationUserEntity>(entity =>

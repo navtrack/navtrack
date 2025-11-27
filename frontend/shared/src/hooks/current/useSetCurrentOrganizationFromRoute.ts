@@ -10,7 +10,7 @@ export function useSetCurrentOrganizationFromRoute() {
     currentOrganizationIdAtom
   );
 
-  const orgMatch = useMatch("/orgs/:id/*");
+  const orgMatch = useMatch("/organizations/:id/*");
 
   const assetMatch = useMatch("/assets/:id/*");
   const currentAsset = useCurrentAsset();

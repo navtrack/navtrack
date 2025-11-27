@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ public class AssetsTripsController(IRequestHandler requestHandler) : ControllerB
     [ProducesResponseType(typeof(TripListModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<TripListModel> GetList([FromRoute] string assetId, [FromQuery] TripFilterModel filter)
+    public async Task<TripListModel> GetList([FromRoute] Guid assetId, [FromQuery] TripFilterModel filter)
     {
         TripListModel result = await requestHandler.Handle<GetAssetTripsRequest, TripListModel>(
             new GetAssetTripsRequest

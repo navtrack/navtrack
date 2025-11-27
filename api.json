@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Navtrack.Api",
@@ -870,7 +870,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "guid"
             },
             "x-position": 1
           },
@@ -3519,7 +3520,8 @@
           "name",
           "assetsCount",
           "usersCount",
-          "teamsCount"
+          "teamsCount",
+          "workSchedule"
         ],
         "properties": {
           "id": {
@@ -3541,8 +3543,65 @@
           "teamsCount": {
             "type": "integer",
             "format": "int32"
+          },
+          "workSchedule": {
+            "$ref": "#/components/schemas/WorkScheduleModel"
           }
         }
+      },
+      "WorkScheduleModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "days": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkScheduleDayModel"
+            }
+          }
+        }
+      },
+      "WorkScheduleDayModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dayOfWeek"
+        ],
+        "properties": {
+          "dayOfWeek": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "time"
+          }
+        }
+      },
+      "DayOfWeek": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "enum": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ]
       },
       "CreateOrganizationModel": {
         "type": "object",
@@ -3562,7 +3621,15 @@
         "additionalProperties": false,
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "workSchedules": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/WorkScheduleDayModel"
+            }
           }
         }
       },

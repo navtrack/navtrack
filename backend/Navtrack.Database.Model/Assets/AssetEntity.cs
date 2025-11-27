@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Navtrack.Database.Model.Devices;
 using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Shared;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Postgres;

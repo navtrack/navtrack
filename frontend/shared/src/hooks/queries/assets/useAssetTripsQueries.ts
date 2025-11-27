@@ -1,4 +1,4 @@
-import { useQueries } from "@tanstack/react-query";
+import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import {
   assetsTripsGetList,
   getAssetsTripsGetListQueryKey
@@ -6,6 +6,7 @@ import {
 import { eachDayOfInterval } from "date-fns";
 import { formatApiDate } from "../../../utils/api";
 import { useMemo } from "react";
+import { TripListModel, TripModel } from "../../../api/model";
 
 export type AssetTripsQueriesProps = {
   assetId?: string;
@@ -22,11 +23,33 @@ export type AssetTripsQueriesProps = {
   radius?: number;
 };
 
+export type TripsResult = {
+  queries: TripGroup[];
+  allTrips: TripModel[];
+  isLoading: boolean;
+  totalTrips: number;
+  totalDuration: number;
+  totalDistance: number;
+  averageSpeed: number;
+  maxSpeed: number;
+  averageFuelConsumption: number;
+  totalFuelConsumption: number;
+};
+
+export type TripGroup = {
+  date: Date;
+  query: UseQueryResult<TripListModel, Error>;
+};
+
 export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
-  const days = eachDayOfInterval({
-    start: props.startDate ?? new Date(),
-    end: props.endDate ?? new Date()
-  });
+  const days = useMemo(
+    () =>
+      eachDayOfInterval({
+        start: props.startDate ?? new Date(),
+        end: props.endDate ?? new Date()
+      }),
+    [props.endDate, props.startDate]
+  );
 
   const queries = useQueries({
     queries: days.map((day) => ({
@@ -59,14 +82,18 @@ export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
           },
           q.signal
         ),
-      staleTime: Infinity
+      staleTime: Infinity,
+      enabled: !!props.assetId
     }))
   });
 
-  const result = useMemo(
-    () => ({
-      queries,
-      items: queries.flatMap((q) => q.data?.items || []),
+  const result: TripsResult = useMemo(() => {
+    const model: TripsResult = {
+      queries: queries.map((q, index) => ({
+        date: days[index],
+        query: q
+      })),
+      allTrips: queries.flatMap((q) => q.data?.items || []),
       isLoading: queries.some((q) => q.isLoading),
       totalTrips: queries.reduce(
         (sum, q) => sum + (q.data?.items.length || 0),
@@ -95,9 +122,10 @@ export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
         (sum, q) => sum + (q.data?.fuelConsumption || 0),
         0
       )
-    }),
-    [queries]
-  );
+    };
+
+    return model;
+  }, [days, queries]);
 
   return result;
 }

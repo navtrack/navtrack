@@ -35,7 +35,7 @@ export function AssetTripsPage() {
 
   const [showTripPanel, setShowTripPanel] = useState(false);
 
-  const hasTrips = query.items.length > 0;
+  const hasTrips = query.allTrips.length > 0;
   useOnChange(query.totalDistance, () => {
     if (query.totalTrips === 0) {
       setSelectedTripIndex(0);
@@ -45,8 +45,8 @@ export function AssetTripsPage() {
   });
 
   const selectedTripForModal = useMemo(() => {
-    return query.items[selectedTripIndex];
-  }, [selectedTripIndex, query.items]);
+    return query.allTrips[selectedTripIndex];
+  }, [selectedTripIndex, query.allTrips]);
 
   function LocationAndTimeCell(props: { position: PositionDataModel }) {
     return (
@@ -61,7 +61,7 @@ export function AssetTripsPage() {
 
   const selectNextTrip = () => {
     setSelectedTripIndex((prevIndex) =>
-      prevIndex < query.items.length - 1 ? prevIndex + 1 : prevIndex
+      prevIndex < query.allTrips.length - 1 ? prevIndex + 1 : prevIndex
     );
   };
 
@@ -82,7 +82,7 @@ export function AssetTripsPage() {
           previous={selectPreviousTrip}
           next={selectNextTrip}
           previousDisabled={selectedTripIndex === 0}
-          nextDisabled={selectedTripIndex === query.items.length - 1}
+          nextDisabled={selectedTripIndex === query.allTrips.length - 1}
         />
       )}
       <div>
@@ -91,7 +91,7 @@ export function AssetTripsPage() {
             {
               labelId: "generic.start",
               sort: "desc",
-              sortValue: (row) => row.startPosition.date,
+              value: (row) => row.startPosition.date,
               rowClassName: "align-top w-1/2",
               row: (row) => (
                 <LocationAndTimeCell position={row.startPosition} />
@@ -101,7 +101,7 @@ export function AssetTripsPage() {
               footer: () => (
                 <div className="flex">
                   <span>
-                    {show.count("generic.trips.count", query.items.length)}
+                    {show.count("generic.trips.count", query.allTrips.length)}
                   </span>
                   <LoadingIndicator
                     isLoading={query.isLoading}
@@ -114,7 +114,7 @@ export function AssetTripsPage() {
             {
               headerClassName: "z-10",
               labelId: "generic.end",
-              sortValue: (row) => row.endPosition.date,
+              value: (row) => row.endPosition.date,
               rowClassName: "align-top w-1/2",
               row: (row) => <LocationAndTimeCell position={row.endPosition} />
             },
@@ -122,7 +122,7 @@ export function AssetTripsPage() {
               rowClassName: "w-24",
               labelId: "generic.duration",
               row: (row) => show.duration(row.duration),
-              sortValue: (row) => row.duration,
+              value: (row) => row.duration,
               footerClassName: "font-semibold",
               footer: () => hasTrips && show.duration(query.totalDuration)
             },
@@ -130,7 +130,7 @@ export function AssetTripsPage() {
               rowClassName: "w-24",
               labelId: "generic.distance",
               row: (row) => show.distance(row.distance),
-              sortValue: (row) => row.distance,
+              value: (row) => row.distance,
               footerClassName: "font-semibold",
               footer: () => hasTrips && show.distance(query.totalDistance)
             },
@@ -138,7 +138,7 @@ export function AssetTripsPage() {
               rowClassName: "w-24",
               labelId: "generic.average-speed",
               row: (row) => show.speed(row.averageSpeed),
-              sortValue: (row) => row.averageSpeed,
+              value: (row) => row.averageSpeed,
               footerClassName: "font-semibold",
               footer: () => hasTrips && show.speed(query.averageSpeed)
             },
@@ -146,7 +146,7 @@ export function AssetTripsPage() {
               rowClassName: "w-24",
               labelId: "generic.max-speed",
               row: (row) => show.speed(row.maxSpeed),
-              sortValue: (row) => row.maxSpeed,
+              value: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
               footer: () => hasTrips && show.speed(query.maxSpeed)
             },
@@ -154,7 +154,7 @@ export function AssetTripsPage() {
               rowClassName: "w-32",
               labelId: "generic.average-fuel-consumption",
               row: (row) => show.fuelConsumption(row.averageFuelConsumption),
-              sortValue: (row) => row.maxSpeed,
+              value: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
               footer: () =>
                 hasTrips && show.fuelConsumption(query.averageFuelConsumption)
@@ -163,7 +163,7 @@ export function AssetTripsPage() {
               rowClassName: "w-32",
               labelId: "generic.fuel-consumption",
               row: (row) => show.volume(row.fuelConsumption),
-              sortValue: (row) => row.maxSpeed,
+              value: (row) => row.maxSpeed,
               footerClassName: "font-semibold",
               footer: () => hasTrips && show.volume(query.totalFuelConsumption)
             },
@@ -179,11 +179,10 @@ export function AssetTripsPage() {
                     setShowTripPanel(true);
                   }}
                 />
-              ),
-              footer: () => <></>
+              )
             }
           ]}
-          rows={query.items}
+          rows={query.allTrips}
           setSelectedItem={(trip) => setSelectedTrip(trip)}
           className="flex h-80"
         />

@@ -14,6 +14,7 @@ public static class OrganizationModelMapper
         destination.AssetsCount = source.AssetsCount;
         destination.UsersCount = source.UsersCount;
         destination.TeamsCount = source.TeamsCount;
+        destination.WorkSchedule = WorkScheduleModelMapper.Map(source.WorkSchedule);
 
         return destination;
     }

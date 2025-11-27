@@ -68,8 +68,7 @@ export function AssetReportsTripStopsPage() {
                 <div className="flex-1">{show.dateTime(item.arrivalDate)}</div>
               </div>
             ),
-            footer: () => undefined,
-            sortValue: (item) => item.arrivalDate,
+            value: (item) => item.arrivalDate,
             sort: "desc"
           },
           {
@@ -81,14 +80,13 @@ export function AssetReportsTripStopsPage() {
                 </div>
               </div>
             ),
-            footer: () => undefined,
-            sortValue: (item) => item.departureDate
+            value: (item) => item.departureDate
           },
           {
             labelId: "generic.duration",
             row: (item) => <>{show.duration(item.duration)}</>,
             footer: () => <span className="font-semibold"></span>,
-            sortValue: (item) => item.duration
+            value: (item) => item.duration
           },
           {
             labelId: "generic.location",
@@ -98,8 +96,7 @@ export function AssetReportsTripStopsPage() {
                   <GeocodeReverse coordinates={item.arrivalCoordinates} />
                 </div>
               </div>
-            ),
-            footer: () => undefined
+            )
           },
           {
             row: (item, index) => (
@@ -113,8 +110,7 @@ export function AssetReportsTripStopsPage() {
                   setShowTripPanel(true);
                 }}
               />
-            ),
-            footer: () => <></>
+            )
           }
         ]}
         rows={tripsStopsReport}

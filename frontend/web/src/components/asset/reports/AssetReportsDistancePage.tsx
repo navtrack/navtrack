@@ -140,8 +140,7 @@ export function AssetReportsDistancePage() {
               {
                 labelId: "generic.date",
                 row: (item) => <>{show.date(item.date)}</>,
-                footer: () => <></>,
-                sortValue: (item) => item.date,
+                value: (item) => item.date,
                 sort: "desc"
               },
               {
@@ -152,7 +151,7 @@ export function AssetReportsDistancePage() {
                     {show.distance(distanceReport.data?.totalDistance)}
                   </span>
                 ),
-                sortValue: (item) => item.distance
+                value: (item) => item.distance
               },
               {
                 labelId: "generic.duration",
@@ -162,7 +161,7 @@ export function AssetReportsDistancePage() {
                     {show.duration(distanceReport.data?.totalDuration)}
                   </span>
                 ),
-                sortValue: (item) => item.duration
+                value: (item) => item.duration
               },
               {
                 labelId: "generic.average-speed",
@@ -172,7 +171,7 @@ export function AssetReportsDistancePage() {
                     {show.speed(distanceReport.data?.averageSpeed)}
                   </span>
                 ),
-                sortValue: (item) => item.averageSpeed
+                value: (item) => item.averageSpeed
               },
               {
                 labelId: "generic.max-speed",
@@ -182,7 +181,7 @@ export function AssetReportsDistancePage() {
                     {show.speed(distanceReport.data?.maxSpeed)}
                   </span>
                 ),
-                sortValue: (item) => item.maxSpeed
+                value: (item) => item.maxSpeed
               }
             ]}
             rows={distanceReport.data?.items}

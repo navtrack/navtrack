@@ -34,6 +34,8 @@ import { AssetReportsTripsPage } from "../components/asset/reports/AssetReportsT
 import { AssetReportsDistancePage } from "../components/asset/reports/AssetReportsDistancePage";
 import { OrganizationDashboardPage } from "../components/organizations/dashboard/OrganizationDashboardPage";
 import { AssetReportsTripStopsPage } from "../components/asset/reports/AssetReportsTripStopsPage";
+import { AssetReportsWorkingHoursPage } from "../components/asset/reports/AssetReportsWorkingHoursPage";
+import { OrganizationSettingsWorkSchedulePage } from "../components/organizations/settings/work-schedule/OrganizationSettingsWorkSchedulePage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -72,6 +74,10 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
           path={Paths.AssetReportsStops}
           element={<AssetReportsTripStopsPage />}
         />
+        <Route
+          path={Paths.AssetReportsWorkingHours}
+          element={<AssetReportsWorkingHoursPage />}
+        />
         <Route path={Paths.AssetTrips} element={<AssetTripsPage />} />
         <Route
           path={Paths.OrganizationLive}
@@ -99,6 +105,10 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
         <Route
           path={Paths.OrganizationSettings}
           element={<OrganizationSettingsGeneralPage />}
+        />
+        <Route
+          path={Paths.OrganizationSettingsWorkSchedule}
+          element={<OrganizationSettingsWorkSchedulePage />}
         />
       </Route>
       <Route>

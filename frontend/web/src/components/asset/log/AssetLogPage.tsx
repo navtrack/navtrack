@@ -36,95 +36,105 @@ export function AssetLogPage() {
   return (
     <>
       <LocationFilter filterPage="log" center={message?.position.coordinates} />
-      <TableV2<DeviceMessageModel>
-        columns={[
-          {
-            labelId: "generic.date",
-            rowClassName: "py-0.5",
-            footerColSpan: 7,
-            footer: (rows) => (
-              <>
-                {rows !== undefined &&
-                  rows.length > 0 &&
-                  (query.data?.totalCount! > query.data?.items.length! ? (
-                    <FormattedMessage
-                      id="assets.log.table.positions-over"
-                      values={{
-                        count: (
-                          <span className="font-semibold">{rows.length}</span>
-                        ),
-                        total: (
-                          <span className="font-semibold">
-                            {query.data?.totalCount}
-                          </span>
-                        )
-                      }}
-                    />
-                  ) : (
-                    <FormattedMessage
-                      id="assets.log.table.positions"
-                      values={{
-                        count: (
-                          <span className="font-semibold">{rows.length}</span>
-                        )
-                      }}
-                    />
-                  ))}
-              </>
-            ),
-            sort: "desc",
-            sortValue: (row) => row.position.date,
-            row: (row) => show.dateTime(row.position.date)
-          },
-          {
-            labelId: "generic.latitude",
-            row: (row) => showCoordinate(row.position.coordinates.latitude)
-          },
-          {
-            labelId: "generic.longitude",
-            row: (row) => showCoordinate(row.position.coordinates.longitude)
-          },
-          {
-            labelId: "generic.altitude",
-            row: (row) => show.altitude(row.position.altitude),
-            sortValue: (row) => row.position.altitude
-          },
-          {
-            labelId: "generic.speed",
-            row: (row) => show.speed(row.position.speed),
-            sortValue: (row) => row.position.speed
-          },
-          {
-            labelId: "generic.heading",
-            row: (row) => showHeading(row.position.heading),
-            sortValue: (row) => row.position.heading
-          },
-          {
-            labelId: "generic.satellites",
-            row: (row) => `${row.position.satellites}`,
-            sortValue: (row) => row.position.satellites
-          }
-        ]}
-        rows={query.data?.items}
-        setSelectedItem={setMessage}
-        className="flex h-44 grow"
-      />
-      <Card className="flex grow">
-        <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
-          <Map
-            center={message ? message.position.coordinates : DEFAULT_MAP_CENTER}
-            initialZoom={10}>
-            {message?.position.coordinates && (
-              <MapPin
-                pin={{
-                  coordinates: message?.position.coordinates,
-                  follow: true
-                }}
-              />
-            )}
-          </Map>
-        </CardMapWrapper>
-      </Card>
+      <div className="flex flex-col space-y-4">
+        <div className="h-1/2">
+          <TableV2<DeviceMessageModel>
+            columns={[
+              {
+                labelId: "generic.date",
+                rowClassName: "py-0.5",
+                footerColSpan: 7,
+                footer: () => (
+                  <>
+                    {query.data?.items !== undefined &&
+                      query.data?.items.length > 0 &&
+                      (query.data?.totalCount! > query.data?.items.length! ? (
+                        <FormattedMessage
+                          id="assets.log.table.positions-over"
+                          values={{
+                            count: (
+                              <span className="font-semibold">
+                                {query.data?.items.length}
+                              </span>
+                            ),
+                            total: (
+                              <span className="font-semibold">
+                                {query.data?.totalCount}
+                              </span>
+                            )
+                          }}
+                        />
+                      ) : (
+                        <FormattedMessage
+                          id="assets.log.table.positions"
+                          values={{
+                            count: (
+                              <span className="font-semibold">
+                                {query.data?.items.length}
+                              </span>
+                            )
+                          }}
+                        />
+                      ))}
+                  </>
+                ),
+                sort: "desc",
+                value: (row) => row.position.date,
+                row: (row) => show.dateTime(row.position.date)
+              },
+              {
+                labelId: "generic.latitude",
+                row: (row) => showCoordinate(row.position.coordinates.latitude)
+              },
+              {
+                labelId: "generic.longitude",
+                row: (row) => showCoordinate(row.position.coordinates.longitude)
+              },
+              {
+                labelId: "generic.altitude",
+                row: (row) => show.altitude(row.position.altitude),
+                value: (row) => row.position.altitude
+              },
+              {
+                labelId: "generic.speed",
+                row: (row) => show.speed(row.position.speed),
+                value: (row) => row.position.speed
+              },
+              {
+                labelId: "generic.heading",
+                row: (row) => showHeading(row.position.heading),
+                value: (row) => row.position.heading
+              },
+              {
+                labelId: "generic.satellites",
+                row: (row) => `${row.position.satellites}`,
+                value: (row) => row.position.satellites
+              }
+            ]}
+            rows={query.data?.items}
+            setSelectedItem={setMessage}
+            className="flex h-44 grow"
+          />
+        </div>
+        <Card className="flex grow h-1/2">
+          <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
+            <Map
+              center={
+                message ? message.position.coordinates : DEFAULT_MAP_CENTER
+              }
+              initialZoom={10}>
+              {message?.position.coordinates && (
+                <MapPin
+                  pin={{
+                    coordinates: message?.position.coordinates,
+                    follow: true
+                  }}
+                />
+              )}
+            </Map>
+          </CardMapWrapper>
+        </Card>
+      </div>
     </>
   );
 }

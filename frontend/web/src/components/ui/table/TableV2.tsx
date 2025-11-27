@@ -20,31 +20,38 @@ export function TableV2<T>(props: TableProps<T>) {
               {props.columns.map((column, index) => (
                 <th
                   onClick={() =>
-                    !!column.sortValue ? table.handleHeaderClick(index) : null
+                    !!column.value ? table.handleHeaderClick(index) : null
                   }
                   key={`${column.labelId}${index}`}
                   className={classNames(
                     "sticky top-0 border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500",
-                    c(!!column.sortValue, "cursor-pointer"),
+                    c(!!column.value, "cursor-pointer"),
                     column.headerClassName
-                  )}>
-                  <div className="flex items-center">
-                    {column.labelId !== undefined && (
-                      <FormattedMessage id={column.labelId} />
-                    )}
-                    {!!column.sortValue && (
-                      <div className="w-6">
-                        {table.sort.column === index && (
-                          <Icon
-                            className="ml-2"
-                            icon={
-                              table.sort.direction === "asc"
-                                ? faArrowUp
-                                : faArrowDown
-                            }
-                          />
+                  )}
+                  style={{ zIndex: 1 }}>
+                  <div className="flex items-center h-full">
+                    {column.header !== undefined ? (
+                      column.header(index)
+                    ) : (
+                      <>
+                        {column.labelId !== undefined && (
+                          <FormattedMessage id={column.labelId} />
                         )}
-                      </div>
+                        {!!column.value && (
+                          <div className="w-6">
+                            {table.sort.column === index && (
+                              <Icon
+                                className="ml-2"
+                                icon={
+                                  table.sort.direction === "asc"
+                                    ? faArrowUp
+                                    : faArrowDown
+                                }
+                              />
+                            )}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </th>
@@ -52,7 +59,8 @@ export function TableV2<T>(props: TableProps<T>) {
             </tr>
           </thead>
           <tbody className="text-sm text-gray-900">
-            {table.sortedRows === undefined || props.isLoading ? (
+            {table.sortedRows === undefined ||
+            (props.isLoading && table.sortedRows.length === 0) ? (
               <tr>
                 <td className="p-3 text-center" colSpan={props.columns.length}>
                   <LoadingIndicator className="text-xl" />
@@ -114,22 +122,25 @@ export function TableV2<T>(props: TableProps<T>) {
           {table.hasFooter && (
             <tfoot>
               <tr>
-                {props.columns
-                  .filter(
-                    (x) =>
-                      x.footer !== undefined || x.footerColSpan !== undefined
-                  )
-                  .map((column, index) => (
-                    <td
-                      colSpan={column.footerColSpan}
-                      key={`footer${index}`}
-                      className={classNames(
-                        "sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
-                        column.footerClassName
-                      )}>
-                      {column.footer?.(props.rows)}
-                    </td>
-                  ))}
+                {props.columns.map((column, index) => (
+                  <td
+                    colSpan={column.footerColSpan}
+                    key={`footer${index}`}
+                    className={classNames(
+                      "font-bold sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
+                      column.footerClassName
+                    )}>
+                    {index === 0 &&
+                    column.footer === undefined &&
+                    props.isLoading &&
+                    (table.sortedRows ?? []).length > 0 ? (
+                      <div className="flex">
+                        <LoadingIndicator />
+                      </div>
+                    ) : null}
+                    {column.footer?.(table.getColumnTotal(column))}
+                  </td>
+                ))}
               </tr>
             </tfoot>
           )}

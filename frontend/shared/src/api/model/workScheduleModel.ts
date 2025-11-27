@@ -6,9 +6,6 @@
  */
 import type { WorkScheduleDayModel } from "./workScheduleDayModel";
 
-export interface UpdateOrganizationModel {
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  workSchedules?: WorkScheduleDayModel[] | null;
+export interface WorkScheduleModel {
+  days?: WorkScheduleDayModel[];
 }

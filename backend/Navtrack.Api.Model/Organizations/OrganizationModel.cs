@@ -18,4 +18,7 @@ public class OrganizationModel
     
     [Required]
     public int TeamsCount { get; set; }
+    
+    [Required]
+    public WorkScheduleModel WorkSchedule { get; set; }
 }

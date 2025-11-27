@@ -19,6 +19,7 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.IdentityServer;
 using Navtrack.Api.Services.Common.Mappers;
 using Navtrack.Shared.Library.DI;
+using Npgsql;
 
 namespace Navtrack.Api.Shared;
 

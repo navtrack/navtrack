@@ -9,7 +9,7 @@ import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
 import { Button } from "../../../ui/button/Button";
 import { object, ObjectSchema, string } from "yup";
-import { useRenameOrganizationMutation } from "@navtrack/shared/hooks/queries/organizations/useRenameOrganizationMutation";
+import { useUpdateOrganizationMutation } from "@navtrack/shared/hooks/queries/organizations/useUpdateOrganizationMutation";
 import { useCallback, useState } from "react";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { DeleteCard } from "../../../ui/card/DeleteCard";
@@ -22,7 +22,7 @@ export type RenameOrganizationFormValues = {
 
 export function OrganizationSettingsGeneralPage() {
   const currentOrganization = useCurrentOrganization();
-  const renameOrganizationMutation = useRenameOrganizationMutation();
+  const renameOrganizationMutation = useUpdateOrganizationMutation();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const submit = useCallback(

@@ -10,14 +10,15 @@ import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
 
 export interface ITableColumn<T> {
   labelId?: string;
+  header?: (index: number) => ReactNode;
   row: (row: T, index: number) => ReactNode;
   headerClassName?: string;
   rowClassName?: string;
-  footer?: (rows?: T[]) => ReactNode;
+  footer?: (total?: number) => ReactNode;
   footerClassName?: string;
   footerColSpan?: number;
   sort?: "asc" | "desc";
-  sortValue?: (row: T) => string | number | null | undefined;
+  value?: (row: T) => string | number | null | undefined;
 }
 
 export type TableProps<T> = {
@@ -83,9 +84,9 @@ export function useTable<T>(props: TableProps<T>) {
     sorted.sort((a, b) => {
       const column = props.columns[sort.column];
 
-      if (column.sortValue !== undefined) {
-        const aValue = column.sortValue(a);
-        const bValue = column.sortValue(b);
+      if (column.value !== undefined) {
+        const aValue = column.value(a);
+        const bValue = column.value(b);
 
         if (
           aValue !== null &&
@@ -179,8 +180,30 @@ export function useTable<T>(props: TableProps<T>) {
     [selectedIndex, setIndex, sort.column, sort.direction]
   );
 
+  const getColumnTotal = useCallback(
+    (column: ITableColumn<T>) => {
+      if (
+        props.rows === undefined ||
+        column.value === undefined ||
+        props.rows[0] === undefined ||
+        !(typeof column.value(props.rows[0]) === "number")
+      ) {
+        return undefined;
+      }
+
+      const total = props.rows.reduce(
+        (sum, row) => sum + (column.value?.(row) as number),
+        0
+      );
+
+      return total;
+    },
+    [props.rows]
+  );
+
   return {
     handleHeaderClick,
+    getColumnTotal,
     sort,
     sortedRows,
     hasFooter,

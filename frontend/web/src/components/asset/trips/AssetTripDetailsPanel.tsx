@@ -65,8 +65,6 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
   useOnChange(props.trip, () => {
     setShowPin(false);
     setSelectedTripLocationIndex(0);
-
-    console.log("Trip changed");
   });
 
   return (

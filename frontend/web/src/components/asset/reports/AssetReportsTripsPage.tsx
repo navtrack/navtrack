@@ -50,8 +50,7 @@ export function AssetReportsTripsPage() {
                 </div>
               </div>
             ),
-            footer: () => undefined,
-            sortValue: (item) => item.startPosition.date
+            value: (item) => item.startPosition.date
           },
           {
             labelId: "generic.location",
@@ -67,7 +66,6 @@ export function AssetReportsTripsPage() {
                 </div>
               </div>
             ),
-            footer: () => undefined,
             rowClassName: "w-full"
           },
           {
@@ -78,7 +76,7 @@ export function AssetReportsTripsPage() {
                 {show.distance(tripReport.data?.totalDistance)}
               </span>
             ),
-            sortValue: (item) => item.distance
+            value: (item) => item.distance
           },
           {
             labelId: "generic.duration",
@@ -88,7 +86,7 @@ export function AssetReportsTripsPage() {
                 {show.duration(tripReport.data?.totalDuration)}
               </span>
             ),
-            sortValue: (item) => item.distance
+            value: (item) => item.distance
           },
           {
             labelId: "generic.fuel-consumption",
@@ -98,7 +96,7 @@ export function AssetReportsTripsPage() {
                 {show.volume(tripReport.data?.totalFuelConsumption)}
               </span>
             ),
-            sortValue: (item) => item.fuelConsumption
+            value: (item) => item.fuelConsumption
           },
           {
             labelId: "generic.average-fuel-consumption",
@@ -110,7 +108,7 @@ export function AssetReportsTripsPage() {
                 {show.fuelConsumption(tripReport.data?.averageFuelConsumption)}
               </span>
             ),
-            sortValue: (item) => item.averageFuelConsumption
+            value: (item) => item.averageFuelConsumption
           }
         ]}
         rows={tripReport.data?.items}

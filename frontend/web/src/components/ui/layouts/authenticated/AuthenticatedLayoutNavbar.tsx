@@ -1,17 +1,3 @@
-import {
-  faChartLine,
-  faCog,
-  faDatabase,
-  faGasPump,
-  faGauge,
-  faHdd,
-  faMapMarkerAlt,
-  faRoute,
-  faStop,
-  faTachometer,
-  faUser,
-  faUsers
-} from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { AuthenticatedLayoutNavbarProfile } from "./AuthenticatedLayoutNavbarProfile";
@@ -31,7 +17,8 @@ import {
 } from "@navtrack/shared/api/model";
 import { SlotContext } from "../../../../app/SlotContext";
 import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
-import { faStopCircle } from "@fortawesome/free-regular-svg-icons";
+import { useNavbarAssetMenuItems } from "./useNavbarAssetMenuItems";
+import { useNavbarOrganizationMenuItems } from "./useNavbarOrganizationMenuItems";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
@@ -48,72 +35,6 @@ export type NavbarMenuItem = {
   subMenuItems?: NavbarMenuItem[];
 };
 
-const assetNavbarMenuitems: NavbarMenuItem[] = [
-  {
-    label: "navbar.asset.live-tracking",
-    path: Paths.AssetLive,
-    icon: faMapMarkerAlt,
-    order: 10
-  },
-  {
-    label: "generic.dashboard",
-    path: Paths.AssetDashboard,
-    icon: faGauge,
-    order: 15
-  },
-  {
-    label: "generic.trips",
-    path: Paths.AssetTrips,
-    icon: faRoute,
-    order: 20
-  },
-  {
-    label: "navbar.asset.reports",
-    path: "",
-    icon: faChartLine,
-    order: 25,
-    subMenuItems: [
-      {
-        label: "generic.distance",
-        path: Paths.AssetReportsDistance,
-        icon: faTachometer,
-        order: 10
-      },
-      {
-        label: "generic.fuel-consumption",
-        path: Paths.AssetReportsFuelConsumption,
-        icon: faGasPump,
-        order: 20
-      },
-      {
-        label: "generic.trips",
-        path: Paths.AssetReportsTrips,
-        icon: faRoute,
-        order: 30
-      },
-      {
-        label: "generic.stops",
-        path: Paths.AssetReportsStops,
-        icon: faStopCircle,
-        order: 40
-      }
-    ]
-  },
-  {
-    label: "navbar.asset.log",
-    path: Paths.AssetLog,
-    icon: faDatabase,
-    order: 30
-  },
-  {
-    label: "navbar.asset.settings",
-    path: Paths.AssetSettings,
-    icon: faCog,
-    order: 40,
-    assetRole: AssetUserRole.Owner
-  }
-];
-
 export function AuthenticatedLayoutNavbar(
   props: AuthenticatedLayoutNavbarProps
 ) {
@@ -121,83 +42,29 @@ export function AuthenticatedLayoutNavbar(
   const currentOrganization = useCurrentOrganization();
   const slots = useContext(SlotContext);
   const authorize = useAuthorize();
-
-  const organizationNavbarMenuItems: NavbarMenuItem[] = useMemo(
-    () => [
-      {
-        label: "navbar.asset.live-tracking",
-        path: Paths.OrganizationLive,
-        icon: faMapMarkerAlt,
-        order: 10
-      },
-      {
-        label: "generic.dashboard",
-        path: Paths.OrganizationDashboard,
-        icon: faGauge,
-        order: 20
-      },
-      {
-        label: "generic.reports",
-        path: Paths.OrganizationReports,
-        icon: faChartLine,
-        order: 20
-      },
-      {
-        label: "generic.assets",
-        path: Paths.OrganizationAssets,
-        icon: faHdd,
-        order: 25,
-        count: currentOrganization.data?.assetsCount
-      },
-      {
-        label: "generic.teams",
-        path: Paths.OrganizationTeams,
-        icon: faUsers,
-        order: 30,
-        count: currentOrganization.data?.teamsCount
-      },
-      {
-        label: "generic.users",
-        path: Paths.OrganizationUsers,
-        icon: faUser,
-        order: 35,
-        count: currentOrganization.data?.usersCount,
-        organizationRole: OrganizationUserRole.Owner
-      },
-      {
-        label: "generic.settings",
-        path: Paths.OrganizationSettings,
-        icon: faCog,
-        order: 40,
-        organizationRole: OrganizationUserRole.Owner
-      }
-    ],
-    [
-      currentOrganization.data?.assetsCount,
-      currentOrganization.data?.teamsCount,
-      currentOrganization.data?.usersCount
-    ]
-  );
+  const assetMenuItems = useNavbarAssetMenuItems();
+  const organizationMenuItems = useNavbarOrganizationMenuItems();
 
   const menuItems = useMemo(
     () =>
       currentAsset.id !== undefined
-        ? assetNavbarMenuitems.filter(
+        ? assetMenuItems.filter(
             (item) =>
               item.assetRole === undefined || authorize.asset(item.assetRole)
           )
         : currentOrganization.id !== undefined
-          ? organizationNavbarMenuItems.filter(
+          ? organizationMenuItems.filter(
               (item) =>
                 item.organizationRole === undefined ||
                 authorize.organization(item.organizationRole)
             )
           : [],
     [
+      assetMenuItems,
       authorize,
       currentAsset.id,
       currentOrganization.id,
-      organizationNavbarMenuItems
+      organizationMenuItems
     ]
   );
 

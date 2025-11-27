@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Organizations;
+using Navtrack.Database.Model.Shared;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Postgres;
@@ -68,5 +69,12 @@ public class OrganizationRepository(IPostgresRepository repository)
             .Where(x => x.OrganizationId == organizationId)
             .OrderBy(x => x.User.Email)
             .ToListAsync();
+    }
+
+    public Task UpdateWorkSchedules(string organizationId, WorkScheduleEntity workSchedule)
+    {
+        return repository.GetQueryable<OrganizationEntity>()
+            .Where(x => x.Id == Guid.Parse(organizationId))
+            .ExecuteUpdateAsync(x => x.SetProperty(y => y.WorkSchedule, workSchedule));
     }
 }

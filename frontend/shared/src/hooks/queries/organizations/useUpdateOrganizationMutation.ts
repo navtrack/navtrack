@@ -5,7 +5,7 @@ import {
   useOrganizationsUpdate
 } from "../../../api";
 
-export function useRenameOrganizationMutation() {
+export function useUpdateOrganizationMutation() {
   const queryClient = useQueryClient();
 
   const mutation = useOrganizationsUpdate({
