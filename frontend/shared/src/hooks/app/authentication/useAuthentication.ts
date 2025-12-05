@@ -10,8 +10,9 @@ import { add, isAfter, parseISO, sub } from "date-fns";
 import { randomInteger } from "../../../utils/numbers";
 import { LoginFormValues } from "../../user/login/LoginFormValues";
 import { useResetCurrent } from "../../current/useResetCurrent";
-import { atomWithStorage } from "jotai/utils";
+import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { getFromAsyncStorage } from "../../../utils/asyncStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ExternalAuthenticationProvider = "apple" | "microsoft" | "google";
 
@@ -65,7 +66,7 @@ const authenticationAtom = atomWithStorage<AuthenticationState>(
   {
     initialized: false
   },
-  undefined,
+  createJSONStorage<AuthenticationState>(() => AsyncStorage),
   { getOnInit: true }
 );
 
@@ -78,9 +79,9 @@ export function useAuthentication() {
   const tokenMutation = useTokenMutation({
     options: {
       onMutate: () => {
-        setState((prev) => {
+        setState(async (prev) => {
           const newState: AuthenticationState = {
-            ...prev,
+            ...(await prev),
             error: undefined
           };
           return newState;
@@ -96,9 +97,9 @@ export function useAuthentication() {
           date: new Date().toISOString()
         };
 
-        setState((prev) => {
+        setState(async (prev) => {
           const newState: AuthenticationState = {
-            ...prev,
+            ...(await prev),
             error: undefined,
             external: undefined,
             token
@@ -113,16 +114,17 @@ export function useAuthentication() {
 
         resetCurrent();
 
-        setState((prev) => {
+        setState(async (prev) => {
+          const p = await prev;
           const newState: AuthenticationState = {
-            ...prev,
+            ...p,
             token: undefined,
             error: accountNotLinkedError
               ? undefined
               : error.response?.data.code,
             external:
-              prev.external !== undefined
-                ? prev.external
+              p.external !== undefined
+                ? p.external
                 : accountNotLinkedError
                   ? {
                       provider:
