@@ -44,7 +44,7 @@
     "react-dom": "19.1.0",
     "react-intl": "7.1.14",
     "react-leaflet": "5.0.0",
-    "react-native": "0.81.4",
+    "react-native": "0.81.5",
     "react-router-dom": "6.26.0",
     "recharts": "3.4.1",
     "tailwindcss": "^4.1.14",

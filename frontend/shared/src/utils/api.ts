@@ -7,6 +7,6 @@ export const getError = (error: any) => {
   return response;
 };
 
-export const formatApiDate = (date: Date) => {
-  return format(date, "yyyy-MM-dd");
+export const formatApiDate = (date?: Date) => {
+  return date ? format(date, "yyyy-MM-dd") : undefined;
 };
