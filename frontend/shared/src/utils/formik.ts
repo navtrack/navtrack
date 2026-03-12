@@ -4,9 +4,6 @@ import { getError } from "./api";
 export const mapErrors = <T>(error: any, formikHelpers: FormikHelpers<T>) => {
   const response = getError(error);
 
-  console.log(error);
-  console.log(response);
-
   formikHelpers.setSubmitting(false);
 
   if (response.errors !== undefined && response.errors !== null) {

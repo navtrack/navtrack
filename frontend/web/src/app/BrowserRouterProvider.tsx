@@ -1,6 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { ReactNode } from "react";
 import { useAuthentication } from "@navtrack/shared/hooks/app/authentication/useAuthentication";
+import { CurrentContextProvider } from "@navtrack/shared/hooks/current/CurrentContextProvider";
 
 type BrowserRouterProviderProps = {
   privateRoutes: ReactNode;
@@ -12,9 +13,11 @@ export function BrowserRouterProvider(props: BrowserRouterProviderProps) {
 
   return (
     <BrowserRouter>
-      {authentication.isAuthenticated
-        ? props.privateRoutes
-        : props.publicRoutes}
+      <CurrentContextProvider>
+        {authentication.isAuthenticated
+          ? props.privateRoutes
+          : props.publicRoutes}
+      </CurrentContextProvider>
     </BrowserRouter>
   );
 }

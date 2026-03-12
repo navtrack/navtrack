@@ -4,7 +4,6 @@ import { AppConfig } from "@navtrack/shared/state/appConfig";
 import { BaseApp } from "./BaseApp";
 import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
 import { UnauthenticatedRoutes } from "./UnauthenticatedRoutes";
-import { SlotProvider } from "./SlotProvider";
 
 const config: AppConfig = {
   api: {
@@ -25,7 +24,6 @@ export function App() {
       privateRoutes={<AuthenticatedRoutes />}
       config={config}
       translations={translations["en"]}
-      slotProvider={(props) => <SlotProvider {...props} />}
     />
   );
 }

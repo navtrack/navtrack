@@ -1,10 +1,9 @@
-import { appConfigAtom } from "@navtrack/shared/state/appConfig";
 import { useFixtureInput } from "react-cosmos/client";
-import { useSetAtom } from "jotai";
 import { DEFAULT_MAP_CENTER } from "@navtrack/shared/constants";
 import { Modal } from "../../modal/Modal";
 import { Map } from "../Map";
 import { GeofenceCircle } from "./GeofenceCircle";
+import { appConfigStore } from "@navtrack/shared/state/appConfig";
 
 export default {
   Default: () => {
@@ -15,10 +14,8 @@ export default {
     );
   },
   "With vector tiles": () => {
-    const setAppConfig = useSetAtom(appConfigAtom);
-
-    setAppConfig((prev) => ({
-      ...prev,
+    appConfigStore.config = {
+      ...appConfigStore.config,
       authentication: {
         clientId: "test"
       },
@@ -28,7 +25,7 @@ export default {
       map: {
         tileUrl: "https://tiles.stadiamaps.com/styles/osm_bright.json"
       }
-    }));
+    };
 
     return (
       <Map center={DEFAULT_MAP_CENTER}>

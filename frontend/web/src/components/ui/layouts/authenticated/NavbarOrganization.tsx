@@ -82,7 +82,7 @@ export function NavbarOrganization() {
                 )}
               </MenuItem>
             </div>
-            {organizations.data?.items.map((organization) => (
+            {(organizations.data?.items ?? []).map((organization) => (
               <MenuItem key={organization.id}>
                 {({ active }) => (
                   <button

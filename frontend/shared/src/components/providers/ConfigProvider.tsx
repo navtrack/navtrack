@@ -1,20 +1,15 @@
-import { Fragment, ReactNode, useEffect } from "react";
-import { AppConfig, appConfigAtom } from "../../state/appConfig";
-import { useAtom } from "jotai";
+import { Fragment, ReactNode } from "react";
+import { appConfigStore, AppConfig } from "../../state/appConfig";
 
 type ConfigProviderProps = {
-  children: ReactNode;
+  children?: ReactNode;
   config: AppConfig;
 };
 
 export function ConfigProvider(props: ConfigProviderProps) {
-  const [state, setState] = useAtom(appConfigAtom);
+  if (appConfigStore.config === undefined) {
+    appConfigStore.config = props.config;
+  }
 
-  useEffect(() => {
-    if (state === undefined) {
-      setState(props.config);
-    }
-  }, [props.config, setState, state]);
-
-  return <Fragment>{state !== undefined && props.children}</Fragment>;
+  return <Fragment>{props.children}</Fragment>;
 }

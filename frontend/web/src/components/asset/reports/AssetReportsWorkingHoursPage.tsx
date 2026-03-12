@@ -304,8 +304,6 @@ function ComputeTripDurations(
   workEndHour: number,
   workEndMinute: number
 ): CustomDuration {
-  console.log;
-
   let totalWorkMs = 0;
   let totalOffMs = 0;
 

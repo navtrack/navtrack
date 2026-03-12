@@ -25,7 +25,7 @@ export function Button(props: ButtonProps) {
       title={props.title}
       disabled={props.isLoading || props.disabled}
       className={classNames(
-        "whitespace-nowrap font-semibold shadow-sm hover:cursor-pointer",
+        "whitespace-nowrap font-semibold shadow-sm hover:cursor-pointer disabled:cursor-auto",
         c(props.size === "xs", "h-6 rounded px-2 text-xs"),
         c(props.size === "sm", "h-7 rounded px-2.5 text-sm"),
         c(
@@ -48,7 +48,7 @@ export function Button(props: ButtonProps) {
         ),
         c(
           props.color === "success",
-          "bg-green-600 text-white hover:border-green-700 hover:bg-green-700 disabled:bg-green-600 disabled:opacity-90"
+          "bg-green-700 text-white hover:border-green-600 hover:bg-green-600 disabled:bg-green-700 disabled:opacity-60"
         ),
         c(
           props.color === "error",

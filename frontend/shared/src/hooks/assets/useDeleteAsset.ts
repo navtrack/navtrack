@@ -17,7 +17,6 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
           { assetId: assetId },
           {
             onSuccess: () => {
-              currentAsset.setId(undefined);
               props.onSuccess();
             }
           }
@@ -26,7 +25,7 @@ export function useDeleteAsset(props: UseDeleteAssetProps) {
 
       return Promise.resolve();
     },
-    [currentAsset, deleteAssetMutation, props]
+    [currentAsset.data, deleteAssetMutation, props]
   );
 
   return {

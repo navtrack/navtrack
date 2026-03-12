@@ -1,12 +1,9 @@
 import { ref } from "yup";
 import { object, ObjectSchema, string } from "yup";
 import { RegisterFormValues } from "./RegisterFormValues";
-import { useAtomValue } from "jotai";
-import { appConfigAtom } from "../../../state/appConfig";
+import { appConfigStore } from "../../../state/appConfig";
 
 export const useRegisterFormValidationSchema = () => {
-  const appConfig = useAtomValue(appConfigAtom);
-
   const validationSchema: ObjectSchema<RegisterFormValues> = object({
     email: string()
       .email("generic.email.invalid")
@@ -18,7 +15,7 @@ export const useRegisterFormValidationSchema = () => {
       .required("generic.confirm-password.required")
       .min(8, "generic.password.requirements.length")
       .oneOf([ref("password")], "generic.confirm-password.requirements.match"),
-    captcha: appConfig?.captcha?.siteKey
+    captcha: appConfigStore.config?.captcha?.siteKey
       ? string().required("register.captcha")
       : string().optional()
   }).defined();

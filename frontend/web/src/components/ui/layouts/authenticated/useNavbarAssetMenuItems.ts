@@ -1,5 +1,4 @@
 import {
-  faBusinessTime,
   faChartLine,
   faClock,
   faCog,

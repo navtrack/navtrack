@@ -29,4 +29,8 @@ export type AppConfig = {
   };
 };
 
-export const appConfigAtom = atom<AppConfig | undefined>(undefined);
+class AppConfigStore {
+  public config: AppConfig | undefined = undefined;
+}
+
+export const appConfigStore = new AppConfigStore();

@@ -1,12 +1,13 @@
-import { useMatch } from "react-router-dom";
 import { useTeamQuery } from "../queries/teams/useTeamQuery";
+import { useContext } from "react";
+import { CurrentContext } from "./CurrentContextProvider";
 
 export function useCurrentTeam() {
-  const match = useMatch("/teams/:id/*");
-  const team = useTeamQuery({ teamId: match?.params.id });
+  const current = useContext(CurrentContext);
+  const team = useTeamQuery({ teamId: current.teamId });
 
   return {
-    id: match?.params.id,
+    id: team.data?.id,
     data: team.data,
     isLoading: team.isLoading
   };
