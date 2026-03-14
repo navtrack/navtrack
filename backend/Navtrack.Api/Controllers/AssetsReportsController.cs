@@ -36,23 +36,6 @@ public class AssetsReportsController(IRequestHandler requestHandler)
         return result;
     }
     
-    [HttpGet(ApiPaths.AssetReportsFuelConsumption)]
-    [ProducesResponseType(typeof(FuelConsumptionReportModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<FuelConsumptionReportModel> GetFuelConsumptionReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilterModel filter)
-    {
-        FuelConsumptionReportModel result = await requestHandler.Handle<GetFuelConsumptionReportRequest, FuelConsumptionReportModel>(
-            new GetFuelConsumptionReportRequest
-            {
-                AssetId = assetId,
-                Model = filter
-            });
-
-        return result;
-    }
-    
     [HttpGet(ApiPaths.AssetReportsTrips)]
     [ProducesResponseType(typeof(TripReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

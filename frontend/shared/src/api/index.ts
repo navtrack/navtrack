@@ -21,7 +21,6 @@ import type {
   AssetStatsPeriod,
   AssetsMessagesGetListParams,
   AssetsReportsGetDistanceReportParams,
-  AssetsReportsGetFuelConsumptionReportParams,
   AssetsReportsGetTripReportParams,
   AssetsTripsGetListParams,
   ChangePasswordModel,
@@ -39,7 +38,6 @@ import type {
   Entity,
   ErrorModel,
   ForgotPasswordModel,
-  FuelConsumptionReportModel,
   GeocodeReverseParams,
   ListModelOfAssetModel,
   ListModelOfAssetUserModel,
@@ -1073,100 +1071,6 @@ export function useAssetsReportsGetDistanceReport<
   }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAssetsReportsGetDistanceReportQueryOptions(
-    assetId,
-    params,
-    options
-  );
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const assetsReportsGetFuelConsumptionReport = (
-  assetId: string,
-  params?: AssetsReportsGetFuelConsumptionReportParams,
-  signal?: AbortSignal
-) => {
-  return authAxiosInstance<FuelConsumptionReportModel>({
-    url: `/assets/${assetId}/reports/fuel-consumption`,
-    method: "GET",
-    params,
-    signal
-  });
-};
-
-export const getAssetsReportsGetFuelConsumptionReportQueryKey = (
-  assetId?: string,
-  params?: AssetsReportsGetFuelConsumptionReportParams
-) => {
-  return [
-    `/assets/${assetId}/reports/fuel-consumption`,
-    ...(params ? [params] : [])
-  ] as const;
-};
-
-export const getAssetsReportsGetFuelConsumptionReportQueryOptions = <
-  TData = Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>,
-  TError = ProblemDetails
->(
-  assetId: string,
-  params?: AssetsReportsGetFuelConsumptionReportParams,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>,
-      TError,
-      TData
-    >;
-  }
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getAssetsReportsGetFuelConsumptionReportQueryKey(assetId, params);
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>
-  > = ({ signal }) =>
-    assetsReportsGetFuelConsumptionReport(assetId, params, signal);
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!assetId,
-    ...queryOptions
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type AssetsReportsGetFuelConsumptionReportQueryResult = NonNullable<
-  Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>
->;
-export type AssetsReportsGetFuelConsumptionReportQueryError = ProblemDetails;
-
-export function useAssetsReportsGetFuelConsumptionReport<
-  TData = Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>,
-  TError = ProblemDetails
->(
-  assetId: string,
-  params?: AssetsReportsGetFuelConsumptionReportParams,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof assetsReportsGetFuelConsumptionReport>>,
-      TError,
-      TData
-    >;
-  }
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getAssetsReportsGetFuelConsumptionReportQueryOptions(
     assetId,
     params,
     options

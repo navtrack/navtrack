@@ -32,9 +32,13 @@ export function OrganizationCard(props: OrganizationCardProps) {
           <div className="flex-1 text-lg font-semibold mx-2 h-14 line-clamp-2">
             {props.organization.name}
           </div>
-          <div>
-            <Badge color={BadgeColor.Blue}>{userOrganization?.userRole}</Badge>
-          </div>
+          {userOrganization?.userRole && (
+            <div>
+              <Badge color={BadgeColor.Blue}>
+                {userOrganization?.userRole}
+              </Badge>
+            </div>
+          )}
         </div>
         <div className="flex space-x-4 text-sm text-gray-500">
           <div>

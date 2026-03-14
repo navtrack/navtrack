@@ -15,6 +15,6 @@ public class TripReportItemModel
     public double Duration { get; set; }
     public double? FuelConsumption { get; set; }
     public double? AverageFuelConsumption { get; set; }
-    public double? MaxSpeed { get; set; }
-    public double? AverageSpeed { get; set; }
+    public double MaxSpeed { get; set; }
+    public double AverageSpeed { get; set; }
 }

@@ -41,7 +41,8 @@ public class GetDistanceReportRequestHandler(
                 AverageSpeed = x.AverageSpeed ?? 0,
                 Distance = x.Distance ?? 0,
                 Duration = x.Duration ?? 0,
-                MaxSpeed = x.MaxSpeed ?? 0
+                MaxSpeed = x.MaxSpeed ?? 0,
+                FuelConsumption = x.FuelConsumption ?? 0
             })
         };
 

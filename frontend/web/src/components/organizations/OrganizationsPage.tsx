@@ -24,7 +24,7 @@ export function OrganizationsPage() {
           </div>
         ) : (
           <>
-            {organizations.data?.items.map((organization) => (
+            {(organizations.data?.items ?? []).map((organization) => (
               <OrganizationCard
                 key={organization.id}
                 organization={organization}

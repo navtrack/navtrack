@@ -12,4 +12,8 @@ export interface DistanceReportItemModel {
   duration: number;
   averageSpeed: number;
   maxSpeed: number;
+  /** @nullable */
+  fuelConsumption?: number | null;
+  /** @nullable */
+  averageFuelConsumption?: number | null;
 }

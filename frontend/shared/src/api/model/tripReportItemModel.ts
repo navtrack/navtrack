@@ -15,8 +15,6 @@ export interface TripReportItemModel {
   fuelConsumption?: number | null;
   /** @nullable */
   averageFuelConsumption?: number | null;
-  /** @nullable */
-  maxSpeed?: number | null;
-  /** @nullable */
-  averageSpeed?: number | null;
+  maxSpeed?: number;
+  averageSpeed?: number;
 }

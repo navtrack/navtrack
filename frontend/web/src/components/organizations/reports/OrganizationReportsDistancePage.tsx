@@ -1,177 +1,44 @@
-import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
-import { DistanceReportItemModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useAtomValue } from "jotai";
-import { useAssetReportDistanceQuery } from "@navtrack/shared/hooks/queries/assets/useAssetReportDistanceQuery";
 import { Card } from "../../ui/card/Card";
-import {
-  CustomBarChart,
-  CustomBarChartProps
-} from "../../ui/charts/bar/CustomBarChart";
+import { CustomBarChart } from "../../ui/charts/bar/CustomBarChart";
 import { useElementSize } from "@navtrack/shared/hooks/util/useElementSize";
-import { use, useMemo, useRef, useState } from "react";
-import { format } from "date-fns";
-import { useConvert } from "@navtrack/shared/hooks/util/useConvert";
-import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
-import { ButtonGroup, ButtonGroupOption } from "../../ui/button/ButtonGroup";
+import { useRef } from "react";
+import { ButtonGroup } from "../../ui/button/ButtonGroup";
 import { useLocationFilterKey } from "../../asset/shared/location-filter/useLocationFilterKey";
 import { locationFiltersSelector } from "../../asset/shared/location-filter/locationFilterState";
 import { LocationFilter } from "../../asset/shared/location-filter/LocationFilter";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetsQuery";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
-import { useAssetReportDistanceQueries } from "@navtrack/shared/hooks/queries/assets/useAssetReportDistanceQueries";
-
-type ChartItem = {
-  date: string;
-  distance: number;
-  duration: number;
-  averageSpeed: number;
-  maxSpeed: number;
-};
-
-const chartOptions: ButtonGroupOption[] = [
-  { label: "generic.distance", value: "distance" },
-  { label: "generic.duration", value: "duration" },
-  { label: "generic.average-speed", value: "average-speed" },
-  { label: "generic.max-speed", value: "max-speed" }
-];
+import { useDistanceReport } from "../../asset/reports/useDistanceReport";
+import {
+  DistanceReportChartItem,
+  useDistanceReportChart
+} from "../../asset/reports/useDistanceReportChart";
+import { DistanceReportItemModel } from "@navtrack/shared/api/model";
 
 export function OrganizationReportsDistancePage() {
   const show = useShow();
-  const convert = useConvert();
-  const units = useCurrentUnits();
   const currentOrganization = useCurrentOrganization();
   const locationFilterKey = useLocationFilterKey("reports-distance");
   const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
 
+  const tableRef = useRef<HTMLDivElement>(null);
+  const tableSize = useElementSize(tableRef);
+
   const assets = useAssetsQuery({
     organizationId: currentOrganization.data?.id
   });
-  const distanceQueries = useAssetReportDistanceQueries({
+
+  const distanceReport = useDistanceReport({
     assetIds: assets.data?.items.map((asset) => asset.id) || [],
     startDate: filters.startDate,
     endDate: filters.endDate
   });
-
-  const items: DistanceReportItemModel[] = useMemo(() => {
-    const mergedItems: DistanceReportItemModel[] = [];
-
-    distanceQueries.forEach((query) => {
-      if (query.data?.items) {
-        query.data?.items.forEach((item) => {
-          // Check if the item for the same date already exists
-          const existingItem = mergedItems.find(
-            (mergedItem) => mergedItem.date === item.date
-          );
-
-          if (existingItem) {
-            // If it exists, aggregate the values
-            existingItem.distance += item.distance;
-            existingItem.duration += item.duration;
-            existingItem.averageSpeed =
-              (existingItem.averageSpeed + item.averageSpeed) / 2;
-            existingItem.maxSpeed = Math.max(
-              existingItem.maxSpeed,
-              item.maxSpeed
-            );
-          } else {
-            // If it doesn't exist, add a new entry
-            mergedItems.push({ ...item });
-          }
-        });
-      }
-    });
-
-    // Optionally, sort the merged items by date
-    mergedItems.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-
-    return mergedItems;
-  }, [distanceQueries]);
-
-  const tableRef = useRef<HTMLDivElement>(null);
-  const tableSize = useElementSize(tableRef);
-
-  const chartItems: ChartItem[] = useMemo(
-    () =>
-      items.map((item) => ({
-        date: format(new Date(item.date), "MMM dd"),
-        distance: convert.distance(item.distance) ?? 0,
-        duration: convert.durationToHours(item.duration) ?? 0,
-        averageSpeed: convert.speed(item.averageSpeed) ?? 0,
-        maxSpeed: convert.speed(item.maxSpeed) ?? 0
-      })) ?? [],
-    [items, convert]
-  );
-
-  const distanceChartConfig: CustomBarChartProps<ChartItem> = {
-    bars: [
-      {
-        key: "distance",
-        labelId: "generic.distance"
-      }
-    ],
-    xAxis: { dataKey: "date" },
-    yAxis: { dataKey: "distance", unit: units.lengthK }
-  };
-
-  const durationChartConfig: CustomBarChartProps<ChartItem> = {
-    bars: [
-      {
-        key: "duration",
-        labelId: "generic.duration"
-      }
-    ],
-    xAxis: { dataKey: "date" },
-    yAxis: {
-      dataKey: "duration",
-      unit: "h"
-    }
-  };
-
-  const averageSpeedChartConfig: CustomBarChartProps<ChartItem> = {
-    bars: [
-      {
-        key: "averageSpeed",
-        labelId: "generic.average-speed"
-      }
-    ],
-    xAxis: { dataKey: "date" },
-    yAxis: { dataKey: "averageSpeed", unit: units.speed }
-  };
-
-  const maxSpeedChartConfig: CustomBarChartProps<ChartItem> = {
-    bars: [
-      {
-        key: "maxSpeed",
-        labelId: "generic.max-speed"
-      }
-    ],
-    xAxis: { dataKey: "date" },
-    yAxis: { dataKey: "maxSpeed", unit: units.speed }
-  };
-
-  const [chartConfig, setChartConfig] =
-    useState<CustomBarChartProps<ChartItem>>(distanceChartConfig);
-
-  const onChartTypeChange = (value: string) => {
-    switch (value) {
-      case "distance":
-        setChartConfig(distanceChartConfig);
-        break;
-      case "duration":
-        setChartConfig(durationChartConfig);
-        break;
-      case "average-speed":
-        setChartConfig(averageSpeedChartConfig);
-        break;
-      case "max-speed":
-        setChartConfig(maxSpeedChartConfig);
-        break;
-    }
-  };
+  const distanceReportChart = useDistanceReportChart({
+    data: distanceReport.data ?? []
+  });
 
   return (
     <>
@@ -180,7 +47,7 @@ export function OrganizationReportsDistancePage() {
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>
             height={tableSize.height}
-            rows={items}
+            rows={distanceReport.data}
             columns={[
               {
                 labelId: "generic.date",
@@ -193,7 +60,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {/* {show.distance(distanceReport.data?.totalDistance)} */}
+                    {show.distance(distanceReport.totalDistance)}
                   </span>
                 ),
                 value: (item) => item.distance
@@ -203,7 +70,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {/* {show.duration(distanceReport.data?.totalDuration)} */}
+                    {show.duration(distanceReport.totalDuration)}
                   </span>
                 ),
                 value: (item) => item.duration
@@ -213,7 +80,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {/* {show.speed(distanceReport.data?.averageSpeed)} */}
+                    {show.speed(distanceReport.averageSpeed)}
                   </span>
                 ),
                 value: (item) => item.averageSpeed
@@ -223,7 +90,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.speed(item.maxSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {/* {show.speed(distanceReport.data?.maxSpeed)} */}
+                    {show.speed(distanceReport.maxSpeed)}
                   </span>
                 ),
                 value: (item) => item.maxSpeed
@@ -233,12 +100,15 @@ export function OrganizationReportsDistancePage() {
         </div>
         <Card className="flex-1 p-2 mt-4 flex flex-col">
           <div className="flex justify-center">
-            <ButtonGroup options={chartOptions} onChange={onChartTypeChange} />
+            <ButtonGroup
+              options={distanceReportChart.distanceChartOptions}
+              onChange={distanceReportChart.onChartTypeChange}
+            />
           </div>
           <div className="mt-4 flex-1">
-            <CustomBarChart<ChartItem>
-              {...chartConfig}
-              data={chartItems}
+            <CustomBarChart<DistanceReportChartItem>
+              {...distanceReportChart.chartConfig}
+              data={distanceReportChart.chartItems}
               hideLegend
             />
           </div>

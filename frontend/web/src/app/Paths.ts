@@ -19,7 +19,9 @@ export const Paths = {
   OrganizationAssetsNew: "/organizations/:id/assets/new",
   OrganizationDashboard: "/organizations/:id/dashboard",
   OrganizationLive: "/organizations/:id/live",
-  OrganizationReports: "/organizations/:id/reports",
+  OrganizationReportsDistance: "/organizations/:id/reports/distance",
+  OrganizationReportsFuelConsumption:
+    "/organizations/:id/reports/fuel-consumption",
   Organizations: "/organizations",
   OrganizationSettings: "/organizations/:id/settings",
   OrganizationSettingsWorkSchedule: "/organizations/:id/settings/work-schedule",

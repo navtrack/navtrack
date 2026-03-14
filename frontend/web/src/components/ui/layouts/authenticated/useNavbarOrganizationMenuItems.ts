@@ -1,9 +1,11 @@
 import {
   faChartLine,
   faCog,
+  faGasPump,
   faGauge,
   faHdd,
   faMapMarkerAlt,
+  faTachometer,
   faUser,
   faUsers
 } from "@fortawesome/free-solid-svg-icons";
@@ -31,10 +33,24 @@ export function useNavbarOrganizationMenuItems() {
         order: 20
       },
       {
-        label: "generic.reports",
-        path: Paths.OrganizationReports,
+        label: "navbar.asset.reports",
+        path: "",
         icon: faChartLine,
-        order: 20
+        order: 25,
+        subMenuItems: [
+          {
+            label: "generic.distance",
+            path: Paths.OrganizationReportsDistance,
+            icon: faTachometer,
+            order: 10
+          },
+          {
+            label: "generic.fuel-consumption",
+            path: Paths.OrganizationReportsFuelConsumption,
+            icon: faGasPump,
+            order: 20
+          }
+        ]
       },
       {
         label: "generic.assets",

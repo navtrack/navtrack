@@ -690,65 +690,6 @@
         }
       }
     },
-    "/assets/{assetId}/reports/fuel-consumption": {
-      "get": {
-        "tags": [
-          "Assets - Reports"
-        ],
-        "operationId": "AssetsReports_GetFuelConsumptionReport",
-        "parameters": [
-          {
-            "name": "assetId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "StartDate",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "EndDate",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "x-position": 3
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FuelConsumptionReportModel"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/assets/{assetId}/reports/trips": {
       "get": {
         "tags": [
@@ -2913,6 +2854,16 @@
               "maxSpeed": {
                 "type": "number",
                 "format": "double"
+              },
+              "totalFuelConsumption": {
+                "type": "number",
+                "format": "double",
+                "nullable": true
+              },
+              "averageFuelConsumption": {
+                "type": "number",
+                "format": "double",
+                "nullable": true
               }
             }
           }
@@ -2964,85 +2915,6 @@
           "maxSpeed": {
             "type": "number",
             "format": "double"
-          }
-        }
-      },
-      "FuelConsumptionReportModel": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ListModelOfFuelConsumptionReportItemModel"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "totalDistance",
-              "totalDuration",
-              "totalFuelConsumption",
-              "averageFuelConsumption",
-              "averageSpeed"
-            ],
-            "properties": {
-              "totalDistance": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "totalDuration": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "totalFuelConsumption": {
-                "type": "number",
-                "format": "double"
-              },
-              "averageFuelConsumption": {
-                "type": "number",
-                "format": "double"
-              },
-              "averageSpeed": {
-                "type": "number",
-                "format": "double"
-              }
-            }
-          }
-        ]
-      },
-      "ListModelOfFuelConsumptionReportItemModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "items"
-        ],
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FuelConsumptionReportItemModel"
-            }
-          }
-        }
-      },
-      "FuelConsumptionReportItemModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "date",
-          "distance",
-          "duration"
-        ],
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date-time",
-            "minLength": 1
-          },
-          "distance": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "duration": {
-            "type": "integer",
-            "format": "int32"
           },
           "fuelConsumption": {
             "type": "number",
@@ -3050,11 +2922,6 @@
             "nullable": true
           },
           "averageFuelConsumption": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "averageSpeed": {
             "type": "number",
             "format": "double",
             "nullable": true
@@ -3155,13 +3022,11 @@
           },
           "maxSpeed": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "averageSpeed": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           }
         }
       },
