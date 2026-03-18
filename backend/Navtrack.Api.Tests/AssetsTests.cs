@@ -27,12 +27,12 @@ public class AssetsTests(BaseTestFixture fixture) : BaseApiTest(fixture)
     }
 
     [Fact]
-    public async Task GetById_RandomAssetId_ReturnsNotFound()
+    public async Task GetById_RandomAssetId_ReturnsForbidden()
     {
         HttpResponseMessage response =
             await HttpClient.GetAsync(
                 GetUrl(ApiPaths.AssetById, new KeyValuePair<string, string>("assetId", Guid.NewGuid().ToString())));
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 }
