@@ -22,7 +22,7 @@ public class TeamsAssetsController(IRequestHandler requestHandler) : ControllerB
     [HttpGet(ApiPaths.TeamAssets)]
     [ProducesResponseType(typeof(ListModel<TeamAssetModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Member)]
+    [NavtrackAuthorize(TeamUserRole.Member)]
     public async Task<ListModel<TeamAssetModel>> List([FromRoute] string teamId)
     {
         ListModel<TeamAssetModel> result =
@@ -39,7 +39,7 @@ public class TeamsAssetsController(IRequestHandler requestHandler) : ControllerB
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Owner)]
+    [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string teamId, [FromBody] CreateTeamAssetModel model)
     {
         await requestHandler.Handle(new CreateTeamAssetRequest
@@ -55,7 +55,7 @@ public class TeamsAssetsController(IRequestHandler requestHandler) : ControllerB
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Owner)]
+    [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string teamId, [FromRoute] string assetId)
     {
         await requestHandler.Handle(new DeleteTeamAssetRequest

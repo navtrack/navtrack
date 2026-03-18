@@ -15,6 +15,7 @@ import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 import { CreateTeamUserModal } from "./CreateTeamUserModal";
 import { UpdateTeamUserModal } from "./UpdateTeamUserModal";
+import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
 
 export function TeamUsersPage() {
   const { id } = useParams();
@@ -43,7 +44,7 @@ export function TeamUsersPage() {
     {
       rowClassName: "flex justify-end space-x-2",
       row: (user) => (
-        <>
+        <Authorize teamUserRole="Owner">
           <UpdateTeamUserModal user={user} teamId={team.data?.id} />
           <DeleteModal
             isLoading={deleteUser.isPending}
@@ -81,7 +82,7 @@ export function TeamUsersPage() {
               }}
             />
           </DeleteModal>
-        </>
+        </Authorize>
       )
     }
   ];
@@ -92,7 +93,9 @@ export function TeamUsersPage() {
         <Heading type="h1">
           <FormattedMessage id="generic.manage-users" />
         </Heading>
-        <CreateTeamUserModal teamId={id} />
+        <Authorize teamUserRole="Owner">
+          <CreateTeamUserModal teamId={id} />
+        </Authorize>
       </div>
       <TableV2 rows={users.data?.items} columns={columns} />
     </TeamLayout>

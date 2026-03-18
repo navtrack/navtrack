@@ -1,28 +1,26 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Trips;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
-using Navtrack.Database.Model.Assets;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Trips;
 
 [Service(typeof(IRequestHandler<GetAssetTripsRequest, TripListModel>))]
-public class GetAssetTripsRequestHandler(ITripService tripService, ICurrentContext currentContext) 
+public class GetAssetTripsRequestHandler(ITripService tripService, INavtrackRequestContextAccessor navtrackRequestContextAccessor) 
     : BaseRequestHandler<GetAssetTripsRequest, TripListModel>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<GetAssetTripsRequest> context)
+    public override Task Validate(RequestValidationContext<GetAssetTripsRequest> context)
     {
-        asset = await currentContext.GetCurrentAsset();
-        asset.Return404IfNull();
+        navtrackRequestContextAccessor.NavtrackContext?.Asset.Return404IfNull();
+        
+        return base.Validate(context);
     }
     
     public override async Task<TripListModel> Handle(GetAssetTripsRequest request)
     {
-        TripListModel result = await tripService.GetTrips(asset!, request.Filter);
+        TripListModel result = await tripService.GetTrips(navtrackRequestContextAccessor.NavtrackContext?.Asset!, request.Filter);
         
         return result;
     }

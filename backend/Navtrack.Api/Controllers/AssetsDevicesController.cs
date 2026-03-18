@@ -22,7 +22,7 @@ public class AssetsDevicesController(IRequestHandler requestHandler) : Controlle
     [HttpGet(ApiPaths.AssetDevices)]
     [ProducesResponseType(typeof(ListModel<DeviceModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Owner)]
+    [NavtrackAuthorize(AssetUserRole.Owner)]
     public async Task<ListModel<DeviceModel>> GetList([FromRoute] string assetId)
     {
         ListModel<DeviceModel> result =
@@ -39,7 +39,7 @@ public class AssetsDevicesController(IRequestHandler requestHandler) : Controlle
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-    [AuthorizeAsset(AssetUserRole.Owner)]
+    [NavtrackAuthorize(AssetUserRole.Owner)]
     public async Task<IActionResult> CreateOrUpdate([FromRoute] string assetId, [FromBody] CreateOrUpdateAssetDeviceModel model)
     {
         await requestHandler.Handle(new CreateOrUpdateAssetDeviceRequest
@@ -55,7 +55,7 @@ public class AssetsDevicesController(IRequestHandler requestHandler) : Controlle
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-    [AuthorizeAsset(AssetUserRole.Owner)]
+    [NavtrackAuthorize(AssetUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string deviceId)
     {
         await requestHandler.Handle(new DeleteAssetDeviceRequest

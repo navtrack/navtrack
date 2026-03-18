@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Services.Assets;
-using Navtrack.Database.Services.Devices;
 using Navtrack.Database.Services.Reports;
 using Navtrack.Shared.Library.DI;
 
@@ -16,7 +14,6 @@ namespace Navtrack.Api.Services.Reports;
 [Service(typeof(IRequestHandler<GetDistanceReportRequest, DistanceReportModel>))]
 public class GetDistanceReportRequestHandler(
     IAssetRepository assetRepository,
-    IDeviceMessageRepository deviceMessageRepository,
     IReportRepository reportRepository)
     : BaseRequestHandler<GetDistanceReportRequest, DistanceReportModel>
 {
@@ -42,38 +39,10 @@ public class GetDistanceReportRequestHandler(
                 Distance = x.Distance ?? 0,
                 Duration = x.Duration ?? 0,
                 MaxSpeed = x.MaxSpeed ?? 0,
-                FuelConsumption = x.FuelConsumption ?? 0
+                FuelConsumption = x.FuelConsumption
             })
         };
 
         return result;
-    }
-
-
-    private static int? ComputeDifference(int? start, int? end)
-    {
-        if (start.HasValue && end.HasValue)
-        {
-            return ComputeDifference(start.Value, end.Value);
-        }
-
-        return null;
-    }
-
-    private static int ComputeDifference(int start, int end)
-    {
-        return Math.Max(end - start, 0);
-    }
-
-    private static List<DateTime> GetDatesInRange(DateTime start, DateTime end)
-    {
-        List<DateTime> dates = [];
-
-        for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
-        {
-            dates.Add(date);
-        }
-
-        return dates;
     }
 }

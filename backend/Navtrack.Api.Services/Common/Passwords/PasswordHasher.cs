@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Cryptography;
 using Navtrack.Shared.Library.DI;
 

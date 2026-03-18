@@ -22,7 +22,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpGet(ApiPaths.OrganizationTeams)]
     [ProducesResponseType(typeof(ListModel<TeamModel>), StatusCodes.Status200OK)]
-    [AuthorizeOrganization(OrganizationUserRole.Member)]
+    [NavtrackAuthorize(OrganizationUserRole.Member)]
     public async Task<ListModel<TeamModel>> GetList([FromRoute] string organizationId)
     {
         ListModel<TeamModel> result = await requestHandler.Handle<GetTeamsRequest, ListModel<TeamModel>>(new GetTeamsRequest
@@ -35,7 +35,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.OrganizationTeams)]
     [ProducesResponseType(typeof(TeamModel), StatusCodes.Status200OK)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string organizationId, [FromBody] CreateTeamModel model)
     {
         TeamModel result = await requestHandler.Handle<CreateTeamRequest,TeamModel>(new CreateTeamRequest
@@ -49,7 +49,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
     
     [HttpGet(ApiPaths.TeamById)]
     [ProducesResponseType(typeof(TeamModel), StatusCodes.Status200OK)]
-    [AuthorizeTeam(TeamUserRole.Member)]
+    [NavtrackAuthorize(TeamUserRole.Member)]
     public async Task<TeamModel> Get([FromRoute] string teamId)
     {
         TeamModel result = await requestHandler.Handle<GetTeamRequest, TeamModel>(new GetTeamRequest
@@ -61,7 +61,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
     }
 
     [HttpPost(ApiPaths.TeamById)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string teamId, [FromBody] UpdateTeamModel model)
     {
         await requestHandler.Handle(new UpdateTeamRequest
@@ -76,7 +76,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
     [HttpDelete(ApiPaths.TeamById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string teamId)
     {
         await requestHandler.Handle(new DeleteTeamRequest

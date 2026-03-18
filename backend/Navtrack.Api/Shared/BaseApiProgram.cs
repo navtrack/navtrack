@@ -14,12 +14,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Common.ActionFilters;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.IdentityServer;
 using Navtrack.Api.Services.Common.Mappers;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Shared.Library.DI;
-using Npgsql;
 
 namespace Navtrack.Api.Shared;
 
@@ -49,9 +48,7 @@ public abstract class BaseApiProgram<T>
 
         builder.Services.AddControllers(options =>
             {
-                options.Filters.Add<AuthorizeOrganizationActionFilter>();
-                options.Filters.Add<AuthorizeTeamActionFilter>();
-                options.Filters.Add<AuthorizeAssetActionFilter>();
+                options.Filters.Add<NavtrackAuthorizeActionFilter>();
 
                 baseProgramOptions?.Filters?.ForEach(x => options.Filters.Add(x));
             })
@@ -118,7 +115,7 @@ public abstract class BaseApiProgram<T>
         app.UseIdentityServer();
 
         app.UseMiddleware<ExceptionMiddleware>();
-        app.UseMiddleware<NavtrackContextMiddleware>();
+        app.UseMiddleware<NavtrackRequestContextMiddleware>();
 
         app.MapControllers();
         // app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));

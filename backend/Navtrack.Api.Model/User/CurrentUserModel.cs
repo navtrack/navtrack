@@ -19,5 +19,7 @@ public class CurrentUserModel
     
     public IEnumerable<UserOrganizationModel> Organizations { get; set; }
     
+    public IEnumerable<UserTeamModel> Teams { get; set; }
+    
     public UserAuthenticationModel Authentication { get; set; }
 }

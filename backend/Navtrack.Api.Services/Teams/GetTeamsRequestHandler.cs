@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Teams;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.Mappers;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Mappers;
 using Navtrack.Database.Model.Organizations;
@@ -21,7 +21,7 @@ namespace Navtrack.Api.Services.Teams;
 public class GetTeamsRequestHandler(
     ITeamRepository teamRepository,
     IOrganizationRepository organizationRepository,
-    INavtrackContextAccessor navtrackContextAccessor)
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<GetTeamsRequest, ListModel<TeamModel>>
 {
     private OrganizationEntity? organization;
@@ -43,12 +43,12 @@ public class GetTeamsRequestHandler(
 
     private Task<List<TeamEntity>> GetTeams(Guid organizationId)
     {
-        if (navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(organizationId, OrganizationUserRole.Owner))
+        if (navtrackRequestContextAccessor.NavtrackContext.HasOrganizationUserRole(OrganizationUserRole.Owner))
         {
             return teamRepository.GetByOrganizationId(organizationId);
         }
 
-        List<Guid> teamIds = navtrackContextAccessor.NavtrackContext.User?.Teams
+        List<Guid> teamIds = navtrackRequestContextAccessor.NavtrackContext.CurrentUser?.Teams
             .Where(x => x.OrganizationId == organizationId)
             .Select(x => x.Id).ToList() ?? [];
 

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useAssetReportDistanceQueries } from "@navtrack/shared/hooks/queries/assets/useAssetReportDistanceQueries";
 import { DistanceReportItemModel } from "@navtrack/shared/api/model";
+import { isNumeric } from "@navtrack/shared/utils/numbers";
 
 type DistanceReportProps = {
   assetIds: string[];
@@ -33,8 +34,10 @@ export function useDistanceReport(props: DistanceReportProps) {
     let totalDuration = 0;
     let averageSpeed = 0;
     let maxSpeed = 0;
-    let totalFuelConsumption = 0;
-    let averageFuelConsumption = 0;
+    let totalFuelConsumption: number | undefined = undefined;
+    let averageFuelConsumption: number | undefined = undefined;
+
+    console.log("here");
 
     distanceQueries.forEach((query) => {
       if (query.data?.items) {
@@ -59,7 +62,7 @@ export function useDistanceReport(props: DistanceReportProps) {
                 (item.averageFuelConsumption ?? 0)) /
               2;
           } else {
-            mergedItems.push(item);
+            mergedItems.push({ ...item });
           }
 
           totalDistance += item.distance;
@@ -68,13 +71,21 @@ export function useDistanceReport(props: DistanceReportProps) {
             item.averageSpeed > 0
               ? (averageSpeed + item.averageSpeed) / 2
               : averageSpeed;
-          maxSpeed = Math.max(maxSpeed, item.maxSpeed);
-          totalFuelConsumption += item.fuelConsumption ?? 0;
-          averageFuelConsumption =
-            (item.averageFuelConsumption ?? 0) > 0
-              ? (averageFuelConsumption + (item.averageFuelConsumption ?? 0)) /
+
+          const hasFuelConsumption = isNumeric(item.fuelConsumption);
+          totalFuelConsumption = hasFuelConsumption
+            ? (totalFuelConsumption ?? 0) + (item.fuelConsumption ?? 0)
+            : totalFuelConsumption;
+          const hasAverageFuelConsumption = isNumeric(
+            item.averageFuelConsumption
+          );
+          averageFuelConsumption = hasAverageFuelConsumption
+            ? isNumeric(averageFuelConsumption)
+              ? ((averageFuelConsumption ?? 0) +
+                  (item.averageFuelConsumption ?? 0)) /
                 2
-              : averageFuelConsumption;
+              : (item.averageFuelConsumption ?? 0)
+            : averageFuelConsumption;
         });
       }
     });

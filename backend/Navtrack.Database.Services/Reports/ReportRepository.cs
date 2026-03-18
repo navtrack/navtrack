@@ -27,7 +27,7 @@ public class ReportRepository(IPostgresRepository repository) : IReportRepositor
                 MaxSpeed = g.Max(x => x.Speed),
                 Distance = g.Max(x => x.DeviceOdometer) - g.Min(x => x.DeviceOdometer),
                 Duration = g.Max(x => x.VehicleIgnitionDuration) - g.Min(x => x.VehicleIgnitionDuration),
-                FuelConsumption = g.Max(x => x.VehicleFuelConsumption) - g.Min(x => x.VehicleFuelConsumption) ?? 0
+                FuelConsumption = g.Max(x => x.VehicleFuelConsumption) - g.Min(x => x.VehicleFuelConsumption)
             })
             .OrderBy(x => x.Date)
             .ToListAsync();

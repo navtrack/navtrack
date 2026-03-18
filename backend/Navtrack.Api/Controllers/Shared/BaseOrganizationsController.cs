@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Organizations;
 using Navtrack.Api.Services.Common.ActionFilters;
-using Navtrack.Api.Services.Common.Context;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Organizations;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Organizations;
@@ -19,7 +19,7 @@ namespace Navtrack.Api.Controllers.Shared;
 [OpenApiTag(ControllerTags.Organizations)]
 public abstract class BaseOrganizationsController(
     IRequestHandler requestHandler,
-    INavtrackContextAccessor navtrackContextAccessor) : ControllerBase
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor) : ControllerBase
 {
     [HttpPost(ApiPaths.Organizations)]
     [ProducesResponseType(typeof(Entity), StatusCodes.Status200OK)]
@@ -28,7 +28,7 @@ public abstract class BaseOrganizationsController(
     {
         Entity result = await requestHandler.Handle<CreateOrganizationRequest, Entity>(new CreateOrganizationRequest
         {
-            OwnerId = navtrackContextAccessor.NavtrackContext.User.Id,
+            OwnerId = navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id,
             Model = model
         });
 
@@ -39,7 +39,7 @@ public abstract class BaseOrganizationsController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string organizationId, [FromBody] UpdateOrganizationModel model)
     {
         await requestHandler.Handle(new UpdateOrganizationRequest
@@ -54,7 +54,7 @@ public abstract class BaseOrganizationsController(
     [HttpDelete(ApiPaths.OrganizationById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string organizationId)
     {
         await requestHandler.Handle(new DeleteOrganizationRequest

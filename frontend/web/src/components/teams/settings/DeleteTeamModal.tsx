@@ -38,7 +38,7 @@ export function DeleteTeamModal(props: DeleteTeamModalProps) {
               );
               showNotification({
                 type: "success",
-                description: "assets.settings.general.delete-asset.success"
+                description: "team.delete.succes"
               });
             }
           }

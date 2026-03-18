@@ -85,7 +85,7 @@ export function AssetReportsFuelConsumptionPage() {
                 row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.volume(distanceReport.totalFuelConsumption)}
+                    {show.volume(distanceReport.totalFuelConsumption) ?? "-"}
                   </span>
                 ),
                 value: (item) => item.fuelConsumption
@@ -101,7 +101,7 @@ export function AssetReportsFuelConsumptionPage() {
                   <span className="font-semibold">
                     {show.fuelConsumption(
                       distanceReport.averageFuelConsumption
-                    )}
+                    ) ?? "-"}
                   </span>
                 ),
                 value: (item) => item.averageFuelConsumption

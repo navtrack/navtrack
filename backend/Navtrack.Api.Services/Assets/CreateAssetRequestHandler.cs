@@ -3,8 +3,8 @@ using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Assets.Events;
 using Navtrack.Api.Services.Assets.Mappers;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Devices.Mappers;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
@@ -23,7 +23,7 @@ public class CreateAssetRequestHandler(
     IAssetRepository assetRepository,
     IDeviceTypeRepository deviceTypeRepository,
     IDeviceRepository deviceRepository,
-    INavtrackContextAccessor navtrackContextAccessor,
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor,
     IOrganizationRepository organizationRepository)
     : BaseRequestHandler<CreateAssetRequest, Entity>
 {
@@ -62,10 +62,10 @@ public class CreateAssetRequestHandler(
 
     private async Task<AssetEntity> CreateAsset(CreateAssetRequest source)
     {
-        AssetEntity asset = AssetEntityMapper.Map(organization.Id, source.Model, navtrackContextAccessor.NavtrackContext.User.Id);
+        AssetEntity asset = AssetEntityMapper.Map(organization.Id, source.Model, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
         await assetRepository.Add(asset);
 
-        DeviceEntity device = DeviceDocumentMapper.Map(asset, navtrackContextAccessor.NavtrackContext.User.Id,
+        DeviceEntity device = DeviceDocumentMapper.Map(asset, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id,
             source.Model.SerialNumber, deviceType!);
         await deviceRepository.Add(device);
 

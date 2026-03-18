@@ -22,7 +22,7 @@ public class AssetsReportsController(IRequestHandler requestHandler)
     [HttpGet(ApiPaths.AssetReportsDistance)]
     [ProducesResponseType(typeof(DistanceReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
+    [NavtrackAuthorize(AssetUserRole.Viewer)]
     public async Task<DistanceReportModel> GetDistanceReport([FromRoute] string assetId,
         [FromQuery] BaseReportFilterModel filter)
     {
@@ -39,7 +39,7 @@ public class AssetsReportsController(IRequestHandler requestHandler)
     [HttpGet(ApiPaths.AssetReportsTrips)]
     [ProducesResponseType(typeof(TripReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
+    [NavtrackAuthorize(AssetUserRole.Viewer)]
     public async Task<TripReportModel> GetTripReport([FromRoute] string assetId,
         [FromQuery] BaseReportFilterModel filter)
     {

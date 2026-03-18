@@ -96,6 +96,7 @@ export * from "./updateUserModelUnitsType";
 export * from "./userAssetModel";
 export * from "./userAuthenticationModel";
 export * from "./userOrganizationModel";
+export * from "./userTeamModel";
 export * from "./vehicleDataModel";
 export * from "./workScheduleDayModel";
 export * from "./workScheduleModel";

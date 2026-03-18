@@ -21,7 +21,7 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
 {
     [HttpGet(ApiPaths.OrganizationUsers)]
     [ProducesResponseType(typeof(ListModel<OrganizationUserModel>), StatusCodes.Status200OK)]
-    [AuthorizeOrganization(OrganizationUserRole.Member)]
+    [NavtrackAuthorize(OrganizationUserRole.Member)]
     public async Task<ListModel<OrganizationUserModel>> List([FromRoute] string organizationId)
     {
         ListModel<OrganizationUserModel> result =
@@ -38,7 +38,7 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string organizationId, [FromBody] CreateOrganizationUserModel model)
     {
         await requestHandler.Handle(new CreateOrganizationUserRequest
@@ -54,7 +54,7 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string organizationId, [FromRoute] string userId,
         [FromBody] UpdateOrganizationUserModel model)
     {
@@ -72,7 +72,7 @@ public class OrganizationsUsersController(IRequestHandler requestHandler) : Cont
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string organizationId, [FromRoute] string userId)
     {
         await requestHandler.Handle(new DeleteOrganizationUserRequest

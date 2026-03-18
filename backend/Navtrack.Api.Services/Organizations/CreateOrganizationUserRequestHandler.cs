@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Organizations.Events;
 using Navtrack.Api.Services.Organizations.Mappers;
 using Navtrack.Api.Services.Requests;
@@ -19,7 +19,7 @@ namespace Navtrack.Api.Services.Organizations;
 public class CreateOrganizationUserRequestHandler(
     IOrganizationRepository organizationRepository,
     IUserRepository userRepository,
-    INavtrackContextAccessor navtrackContextAccessor)
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<CreateOrganizationUserRequest>
 {
     private OrganizationEntity? organization;
@@ -42,7 +42,7 @@ public class CreateOrganizationUserRequestHandler(
     public override async Task Handle(CreateOrganizationUserRequest request)
     {
         OrganizationUserEntity element = OrganizationUserEntityMapper.Map(organization!.Id, user!.Id, request.Model.UserRole,
-            navtrackContextAccessor.NavtrackContext.User.Id);
+            navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
         await userRepository.AddUserToOrganization(element);
         await organizationRepository.UpdateUsersCount(organization.Id);

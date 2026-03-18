@@ -129,6 +129,7 @@
   "generic.days.sunday": "Sunday",
   "generic.days.thursday": "Thursday",
   "generic.days.tuesday": "Tuesday",
+  "team.delete.succes": "The asset was deleted successfully.",
   "generic.days.wednesday": "Wednesday",
   "generic.default": "Default",
   "generic.delete-asset": "Delete Asset",

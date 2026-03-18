@@ -15,7 +15,7 @@ public class AssetsController(IRequestHandler requestHandler) : BaseAssetsContro
 {
     [HttpGet(ApiPaths.OrganizationAssets)]
     [ProducesResponseType(typeof(ListModel<AssetModel>), StatusCodes.Status200OK)]
-    [AuthorizeOrganization(OrganizationUserRole.Member)]
+    [NavtrackAuthorize(OrganizationUserRole.Member)]
     public async Task<ListModel<AssetModel>> GetList([FromRoute] string organizationId)
     {
         ListModel<AssetModel> result =

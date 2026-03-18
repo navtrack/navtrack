@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Assets;
 using Navtrack.Api.Services.Assets.Mappers;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Devices;
@@ -19,7 +19,7 @@ namespace Navtrack.Api.Services.Assets;
 
 [Service(typeof(IRequestHandler<GetAssetsRequest, Model.Common.ListModel<AssetModel>>))]
 public class GetAssetsRequestHandler(
-    INavtrackContextAccessor navtrackContextAccessor,
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor,
     IDeviceTypeRepository deviceTypeRepository,
     IAssetRepository assetRepository,
     IOrganizationRepository organizationRepository)
@@ -53,19 +53,19 @@ public class GetAssetsRequestHandler(
     
     private Task<List<AssetEntity>> GetAssetsByOrganizationId(Guid organizationId)
     {
-        if (navtrackContextAccessor.NavtrackContext.HasOrganizationUserRole(organizationId, OrganizationUserRole.Owner))
+        if (navtrackRequestContextAccessor.NavtrackContext.HasOrganizationUserRole(OrganizationUserRole.Owner))
         {
             return assetRepository.GetByOrganizationId(organization!.Id);
         }
 
         List<Guid> assetIds =
-            navtrackContextAccessor.NavtrackContext.User?.Assets
+            navtrackRequestContextAccessor.NavtrackContext.CurrentUser?.Assets
                 .Where(x => x.OrganizationId == organization!.Id)
                 .Select(x => x.Id).ToList() ??
             [];
 
         List<Guid> teamIds =
-            navtrackContextAccessor.NavtrackContext.User?.Teams?
+            navtrackRequestContextAccessor.NavtrackContext.CurrentUser?.Teams?
                 .Where(x => x.OrganizationId == organization!.Id)
                 .Select(x => x.Id).ToList() ?? [];
 

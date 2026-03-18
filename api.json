@@ -3836,6 +3836,12 @@
               "$ref": "#/components/schemas/UserOrganizationModel"
             }
           },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTeamModel"
+            }
+          },
           "authentication": {
             "$ref": "#/components/schemas/UserAuthenticationModel"
           }
@@ -3884,6 +3890,23 @@
           },
           "userRole": {
             "$ref": "#/components/schemas/OrganizationUserRole"
+          }
+        }
+      },
+      "UserTeamModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "teamId",
+          "userRole"
+        ],
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/TeamUserRole"
           }
         }
       },

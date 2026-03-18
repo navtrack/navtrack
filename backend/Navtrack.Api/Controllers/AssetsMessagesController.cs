@@ -22,7 +22,7 @@ public class AssetsMessagesController(IRequestHandler requestHandler) : Controll
     [HttpGet(ApiPaths.AssetMessages)]
     [ProducesResponseType(typeof(MessageList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
+    [NavtrackAuthorize(AssetUserRole.Viewer)]
     public async Task<MessageList> GetList(
         [FromRoute] string assetId,
         [FromQuery] MessageFilterModel filter,

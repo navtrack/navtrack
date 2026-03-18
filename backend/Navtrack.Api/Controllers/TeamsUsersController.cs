@@ -22,7 +22,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
     [HttpGet(ApiPaths.TeamUsers)]
     [ProducesResponseType(typeof(ListModel<TeamUserModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Member)]
+    [NavtrackAuthorize(TeamUserRole.Member)]
     public async Task<ListModel<TeamUserModel>> List([FromRoute] string teamId)
     {
         ListModel<TeamUserModel> result = await requestHandler.Handle<GetTeamUsersRequest, ListModel<TeamUserModel>>(
@@ -38,7 +38,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Owner)]
+    [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string teamId, [FromBody] CreateTeamUserModel model)
     {
         await requestHandler.Handle(new CreateTeamUserRequest
@@ -54,7 +54,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Owner)]
+    [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string teamId, [FromRoute] string userId,
         [FromBody] UpdateTeamUserModel model)
     {
@@ -72,7 +72,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeTeam(TeamUserRole.Owner)]
+    [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string teamId, [FromRoute] string userId)
     {
         await requestHandler.Handle(new DeleteTeamUserRequest

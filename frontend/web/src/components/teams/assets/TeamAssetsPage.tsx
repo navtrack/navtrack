@@ -14,6 +14,7 @@ import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery"
 import { CreateTeamAssetModal } from "./CreateTeamAssetModal";
 import { useTeamAssetsQuery } from "@navtrack/shared/hooks/queries/teams/useTeamAssetsQuery";
 import { useDeleteTeamAssetMutation } from "@navtrack/shared/hooks/queries/teams/useDeleteTeamAssetMutation";
+import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
 
 export function TeamAssetsPage() {
   const { id } = useParams();
@@ -41,7 +42,7 @@ export function TeamAssetsPage() {
     {
       rowClassName: "flex justify-end space-x-2",
       row: (asset) => (
-        <>
+        <Authorize teamUserRole="Owner">
           <DeleteModal
             isLoading={deleteAsset.isPending}
             onConfirm={(close) => {
@@ -78,7 +79,7 @@ export function TeamAssetsPage() {
               }}
             />
           </DeleteModal>
-        </>
+        </Authorize>
       )
     }
   ];
@@ -89,7 +90,9 @@ export function TeamAssetsPage() {
         <Heading type="h1">
           <FormattedMessage id="teams.assets.title" />
         </Heading>
-        <CreateTeamAssetModal teamId={id} />
+        <Authorize teamUserRole="Owner">
+          <CreateTeamAssetModal teamId={id} />
+        </Authorize>
       </div>
       <TableV2 rows={assets.data?.items} columns={columns} />
     </TeamLayout>

@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Api.Services.Teams.Mappers;
@@ -19,7 +19,7 @@ namespace Navtrack.Api.Services.Teams;
 public class CreateTeamUserRequestHandler(
     ITeamRepository teamRepository,
     IUserRepository userRepository,
-    INavtrackContextAccessor navtrackContextAccessor)
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<CreateTeamUserRequest>
 {
     private TeamEntity? team;
@@ -48,7 +48,7 @@ public class CreateTeamUserRequestHandler(
     public override async Task Handle(CreateTeamUserRequest source)
     {
         TeamUserEntity entity = TeamUserEntityMapper.Map(team!.Id, user!.Id, source.Model.UserRole,
-            navtrackContextAccessor.NavtrackContext.User.Id);
+            navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
         await userRepository.AddUserToTeam(entity);
         await teamRepository.UpdateUsersCount(team.Id);

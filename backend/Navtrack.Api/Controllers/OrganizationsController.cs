@@ -7,7 +7,7 @@ using Navtrack.Api.Controllers.Shared;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Organizations;
 using Navtrack.Api.Services.Common.ActionFilters;
-using Navtrack.Api.Services.Common.Context;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Organizations;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Organizations;
@@ -18,8 +18,8 @@ namespace Navtrack.Api.Controllers;
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 [OpenApiTag(ControllerTags.Organizations)]
-public class OrganizationsController(INavtrackContextAccessor navtrackContextAccessor, IRequestHandler requestHandler)
-    : BaseOrganizationsController(requestHandler, navtrackContextAccessor)
+public class OrganizationsController(INavtrackRequestContextAccessor navtrackRequestContextAccessor, IRequestHandler requestHandler)
+    : BaseOrganizationsController(requestHandler, navtrackRequestContextAccessor)
 {
     [HttpGet(ApiPaths.Organizations)]
     [ProducesResponseType(typeof(ListModel<OrganizationModel>), StatusCodes.Status200OK)]
@@ -39,7 +39,7 @@ public class OrganizationsController(INavtrackContextAccessor navtrackContextAcc
     [ProducesResponseType(typeof(OrganizationModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Member)]
+    [NavtrackAuthorize(OrganizationUserRole.Member)]
     public async Task<OrganizationModel> Get([FromRoute] string organizationId)
     {
         OrganizationModel result = await requestHandler.Handle<GetOrganizationRequest, OrganizationModel>(

@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Database.Model.Assets;
@@ -18,7 +18,7 @@ namespace Navtrack.Api.Services.Teams;
 public class CreateTeamAssetRequestHandler(
     ITeamRepository teamRepository,
     IAssetRepository assetRepository,
-    INavtrackContextAccessor navtrackContextAccessor) : BaseRequestHandler<CreateTeamAssetRequest>
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor) : BaseRequestHandler<CreateTeamAssetRequest>
 {
     private TeamEntity? team;
     private AssetEntity? asset;
@@ -43,7 +43,7 @@ public class CreateTeamAssetRequestHandler(
 
     public override async Task Handle(CreateTeamAssetRequest request)
     {
-        await teamRepository.AddAsset(team!.Id, asset!.Id, navtrackContextAccessor.NavtrackContext.User.Id);
+        await teamRepository.AddAsset(team!.Id, asset!.Id, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
     }
 
     public override IEvent GetEvent(CreateTeamAssetRequest request) =>

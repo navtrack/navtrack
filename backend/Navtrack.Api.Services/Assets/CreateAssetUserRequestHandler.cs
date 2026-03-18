@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Assets.Events;
 using Navtrack.Api.Services.Assets.Mappers;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Users;
@@ -16,7 +16,7 @@ using Navtrack.Shared.Library.Events;
 namespace Navtrack.Api.Services.Assets;
 
 [Service(typeof(IRequestHandler<CreateAssetUserRequest>))]
-public class CreateAssetUserRequestHandler(IAssetRepository assetRepository, IUserRepository userRepository, INavtrackContextAccessor navtrackContextAccessor)
+public class CreateAssetUserRequestHandler(IAssetRepository assetRepository, IUserRepository userRepository, INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<CreateAssetUserRequest>
 {
     private AssetEntity? asset;
@@ -38,7 +38,7 @@ public class CreateAssetUserRequestHandler(IAssetRepository assetRepository, IUs
 
     public override async Task Handle(CreateAssetUserRequest request)
     {
-        AssetUserEntity userAsset = UserAssetElementMapper.Map(user.Id, asset!.Id, request.Model.UserRole, navtrackContextAccessor.NavtrackContext.User.Id);
+        AssetUserEntity userAsset = UserAssetElementMapper.Map(user.Id, asset!.Id, request.Model.UserRole, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
         await userRepository.AddAssetToUser(user!.Id, userAsset);
     }

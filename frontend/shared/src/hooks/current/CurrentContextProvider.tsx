@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { useAssetQuery } from "../queries/assets/useAssetQuery";
+import { useTeamQuery } from "../queries/teams/useTeamQuery";
 
 type CurrentIdRouteProviderProps = {
   children?: ReactNode;
@@ -20,7 +21,7 @@ export function CurrentContextProvider(props: CurrentIdRouteProviderProps) {
   const teamMatch = useMatch("/teams/:id/*");
 
   const assetQuery = useAssetQuery({ assetId: assetMatch?.params.id });
-  const teamQuery = useAssetQuery({ assetId: teamMatch?.params.id });
+  const teamQuery = useTeamQuery({ teamId: teamMatch?.params.id });
 
   const [organizationId, setOrganizationId] = useState<string | undefined>();
 

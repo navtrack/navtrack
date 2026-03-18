@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Devices.Mappers;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
@@ -21,7 +21,7 @@ public class CreateOrUpdateAssetDeviceRequestHandler(
     IAssetRepository assetRepository,
     IDeviceRepository deviceRepository,
     IDeviceTypeRepository deviceTypeRepository,
-    INavtrackContextAccessor navtrackContextAccessor) : BaseRequestHandler<CreateOrUpdateAssetDeviceRequest>
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor) : BaseRequestHandler<CreateOrUpdateAssetDeviceRequest>
 {
     private AssetEntity? asset;
     private DeviceType? deviceType;
@@ -55,7 +55,7 @@ public class CreateOrUpdateAssetDeviceRequestHandler(
         }
         else
         {
-            DeviceEntity newDevice = DeviceDocumentMapper.Map(asset!, navtrackContextAccessor.NavtrackContext.User.Id,
+            DeviceEntity newDevice = DeviceDocumentMapper.Map(asset!, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id,
                 model.SerialNumber, deviceType!);
 
             await deviceRepository.Add(newDevice);

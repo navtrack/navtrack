@@ -21,7 +21,7 @@ public class AssetsStatsController(IRequestHandler requestHandler) : ControllerB
     [HttpGet(ApiPaths.AssetStats)]
     [ProducesResponseType(typeof(AssetStatsModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
+    [NavtrackAuthorize(AssetUserRole.Viewer)]
     public async Task<AssetStatsModel> Get([FromRoute] string assetId, [FromRoute] AssetStatsPeriod period)
     {
         AssetStatsModel result =

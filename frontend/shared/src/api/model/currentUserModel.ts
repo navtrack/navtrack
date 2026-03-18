@@ -7,6 +7,7 @@
 import type { UnitsType } from "./unitsType";
 import type { UserAssetModel } from "./userAssetModel";
 import type { UserOrganizationModel } from "./userOrganizationModel";
+import type { UserTeamModel } from "./userTeamModel";
 import type { UserAuthenticationModel } from "./userAuthenticationModel";
 
 export interface CurrentUserModel {
@@ -17,5 +18,6 @@ export interface CurrentUserModel {
   units: UnitsType;
   assets?: UserAssetModel[];
   organizations?: UserOrganizationModel[];
+  teams?: UserTeamModel[];
   authentication?: UserAuthenticationModel;
 }

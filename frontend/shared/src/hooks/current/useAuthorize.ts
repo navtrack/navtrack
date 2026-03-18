@@ -1,6 +1,10 @@
 import { useCallback } from "react";
 import { useCurrentUserQuery } from "../queries/user/useCurrentUserQuery";
-import { AssetUserRole, OrganizationUserRole } from "../../api/model";
+import {
+  AssetUserRole,
+  OrganizationUserRole,
+  TeamUserRole
+} from "../../api/model";
 import { useCurrentOrganization } from "./useCurrentOrganization";
 import { useCurrentAsset } from "./useCurrentAsset";
 
@@ -59,5 +63,38 @@ export function useAuthorize() {
     [authorizeOrganization, currentAsset.id, currentUser.data?.assets]
   );
 
-  return { organization: authorizeOrganization, asset: assetAuthorize };
+  const authorizeTeam = useCallback(
+    (userRole: TeamUserRole) => {
+      const isOrganizationOwner = authorizeOrganization(
+        OrganizationUserRole.Owner
+      );
+
+      if (isOrganizationOwner) {
+        return true;
+      }
+
+      const team = currentUser.data?.teams?.find(
+        (x) => x.teamId === currentOrganization.id
+      );
+
+      switch (userRole) {
+        case TeamUserRole.Owner:
+          return team?.userRole === TeamUserRole.Owner;
+        case TeamUserRole.Member:
+          return (
+            team?.userRole === TeamUserRole.Owner ||
+            team?.userRole === TeamUserRole.Member
+          );
+        default:
+          return false;
+      }
+    },
+    [currentOrganization.id, currentUser.data?.teams]
+  );
+
+  return {
+    organization: authorizeOrganization,
+    asset: assetAuthorize,
+    team: authorizeTeam
+  };
 }
