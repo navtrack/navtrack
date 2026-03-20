@@ -5,7 +5,7 @@ import {
 } from "../../../api";
 
 export type AssetReportReportQueriesProps = {
-  assetIds: string[];
+  assetIds?: string[];
   startDate?: string;
   endDate?: string;
 };
@@ -14,7 +14,7 @@ export function useAssetReportDistanceQueries(
   props: AssetReportReportQueriesProps
 ) {
   const queries = useQueries({
-    queries: props.assetIds.map((assetId) => ({
+    queries: (props.assetIds ?? []).map((assetId) => ({
       queryKey: getAssetsReportsGetDistanceReportQueryKey(assetId, {
         StartDate: props.startDate,
         EndDate: props.endDate

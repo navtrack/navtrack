@@ -2,7 +2,7 @@ import { useContext, useMemo } from "react";
 import { useAtom } from "jotai";
 import { assetConfigurationAtom } from "../../state/assets";
 import { useAssetsQuery } from "../queries/assets/useAssetsQuery";
-import { CurrentContext } from "./CurrentContextProvider";
+import { CurrentContext } from "./CurrentContext";
 
 export function useCurrentAsset() {
   const current = useContext(CurrentContext);

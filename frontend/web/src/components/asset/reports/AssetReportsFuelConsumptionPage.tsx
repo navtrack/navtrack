@@ -10,12 +10,12 @@ import { ButtonGroup } from "../../ui/button/ButtonGroup";
 import { Card } from "../../ui/card/Card";
 import { CustomBarChart } from "../../ui/charts/bar/CustomBarChart";
 import { useElementSize } from "@navtrack/shared/hooks/util/useElementSize";
-import { useDistanceReport } from "./useDistanceReport";
+import { DistanceReportItemModel } from "@navtrack/shared/api/model";
+import { useDistanceReport } from "@navtrack/shared/hooks/reports/useDistanceReport";
 import {
   DistanceReportChartItem,
   useDistanceReportChart
-} from "./useDistanceReportChart";
-import { DistanceReportItemModel } from "@navtrack/shared/api/model";
+} from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 
 export function AssetReportsFuelConsumptionPage() {
   const show = useShow();
@@ -30,7 +30,7 @@ export function AssetReportsFuelConsumptionPage() {
   });
 
   const distanceReportChart = useDistanceReportChart({
-    data: distanceReport.data ?? []
+    items: distanceReport.result.items
   });
 
   const tableRef = useRef<HTMLDivElement>(null);
@@ -55,7 +55,7 @@ export function AssetReportsFuelConsumptionPage() {
                 row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.distance(distanceReport.totalDistance)}
+                    {show.distance(distanceReport.result.totalDistance)}
                   </span>
                 ),
                 value: (item) => item.distance
@@ -65,7 +65,7 @@ export function AssetReportsFuelConsumptionPage() {
                 row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.duration(distanceReport.totalDuration)}
+                    {show.duration(distanceReport.result.totalDuration)}
                   </span>
                 ),
                 value: (item) => item.duration
@@ -75,7 +75,7 @@ export function AssetReportsFuelConsumptionPage() {
                 row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.speed(distanceReport.averageSpeed)}
+                    {show.speed(distanceReport.result.averageSpeed)}
                   </span>
                 ),
                 value: (item) => item.averageSpeed
@@ -85,7 +85,8 @@ export function AssetReportsFuelConsumptionPage() {
                 row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.volume(distanceReport.totalFuelConsumption) ?? "-"}
+                    {show.volume(distanceReport.result.totalFuelConsumption) ??
+                      "-"}
                   </span>
                 ),
                 value: (item) => item.fuelConsumption
@@ -100,14 +101,14 @@ export function AssetReportsFuelConsumptionPage() {
                 footer: () => (
                   <span className="font-semibold">
                     {show.fuelConsumption(
-                      distanceReport.averageFuelConsumption
+                      distanceReport.result.averageFuelConsumption
                     ) ?? "-"}
                   </span>
                 ),
                 value: (item) => item.averageFuelConsumption
               }
             ]}
-            rows={distanceReport.data}
+            rows={distanceReport.result.items}
           />
         </div>
         <Card className="flex-1 p-2 mt-4 flex flex-col">

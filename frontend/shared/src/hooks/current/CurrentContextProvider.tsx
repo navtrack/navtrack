@@ -1,19 +1,12 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { useAssetQuery } from "../queries/assets/useAssetQuery";
 import { useTeamQuery } from "../queries/teams/useTeamQuery";
+import { CurrentContext } from "./CurrentContext";
 
 type CurrentIdRouteProviderProps = {
   children?: ReactNode;
 };
-
-export type CurrentIds = {
-  assetId?: string;
-  organizationId?: string;
-  teamId?: string;
-};
-
-export const CurrentContext = createContext<CurrentIds>({});
 
 export function CurrentContextProvider(props: CurrentIdRouteProviderProps) {
   const assetMatch = useMatch("/assets/:id/*");

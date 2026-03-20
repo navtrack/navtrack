@@ -1,10 +1,10 @@
-import { CustomBarChartProps } from "../../ui/charts/bar/CustomBarChart";
+import { CustomBarChartProps } from "../../../../web/src/components/ui/charts/bar/CustomBarChart";
 import { useCallback, useMemo, useState } from "react";
 import { format } from "date-fns";
-import { useConvert } from "@navtrack/shared/hooks/util/useConvert";
-import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
-import { ButtonGroupOption } from "../../ui/button/ButtonGroup";
-import { DistanceReportItemModel } from "@navtrack/shared/api/model";
+import { ButtonGroupOption } from "../../../../web/src/components/ui/button/ButtonGroup";
+import { DistanceReportItemModel } from "../../api/model";
+import { useConvert } from "../util/useConvert";
+import { useCurrentUnits } from "../util/useCurrentUnits";
 
 export type DistanceReportChartItem = {
   date: string;
@@ -17,7 +17,7 @@ export type DistanceReportChartItem = {
 };
 
 type DistanceReportChartProps = {
-  data: DistanceReportItemModel[];
+  items?: DistanceReportItemModel[];
 };
 
 const enum ChartKeys {
@@ -35,7 +35,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
 
   const chartItems: DistanceReportChartItem[] = useMemo(
     () =>
-      props.data.map((item) => ({
+      (props.items ?? []).map((item) => ({
         date: format(new Date(item.date), "MMM dd"),
         distance: convert.distance(item.distance) ?? 0,
         duration: convert.durationToHours(item.duration) ?? 0,
@@ -45,7 +45,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         averageFuelConsumption:
           convert.fuelConsumption(item.averageFuelConsumption) ?? 0
       })) ?? [],
-    [props.data, convert]
+    [props.items, convert]
   );
 
   const distanceChartConfig: CustomBarChartProps<DistanceReportChartItem> =

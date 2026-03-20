@@ -11,12 +11,12 @@ import { locationFiltersSelector } from "../../asset/shared/location-filter/loca
 import { LocationFilter } from "../../asset/shared/location-filter/LocationFilter";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetsQuery";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
-import { useDistanceReport } from "../../asset/reports/useDistanceReport";
+import { DistanceReportItemModel } from "@navtrack/shared/api/model";
+import { useDistanceReport } from "@navtrack/shared/hooks/reports/useDistanceReport";
 import {
   DistanceReportChartItem,
   useDistanceReportChart
-} from "../../asset/reports/useDistanceReportChart";
-import { DistanceReportItemModel } from "@navtrack/shared/api/model";
+} from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 
 export function OrganizationReportsDistancePage() {
   const show = useShow();
@@ -37,7 +37,7 @@ export function OrganizationReportsDistancePage() {
     endDate: filters.endDate
   });
   const distanceReportChart = useDistanceReportChart({
-    data: distanceReport.data ?? []
+    items: distanceReport.result.items
   });
 
   return (
@@ -47,7 +47,7 @@ export function OrganizationReportsDistancePage() {
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>
             height={tableSize.height}
-            rows={distanceReport.data}
+            rows={distanceReport.result.items}
             columns={[
               {
                 labelId: "generic.date",
@@ -60,7 +60,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.distance(distanceReport.totalDistance)}
+                    {show.distance(distanceReport.result.totalDistance)}
                   </span>
                 ),
                 value: (item) => item.distance
@@ -70,7 +70,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.duration(distanceReport.totalDuration)}
+                    {show.duration(distanceReport.result.totalDuration)}
                   </span>
                 ),
                 value: (item) => item.duration
@@ -80,7 +80,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.speed(distanceReport.averageSpeed)}
+                    {show.speed(distanceReport.result.averageSpeed)}
                   </span>
                 ),
                 value: (item) => item.averageSpeed
@@ -90,7 +90,7 @@ export function OrganizationReportsDistancePage() {
                 row: (item) => <>{show.speed(item.maxSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.speed(distanceReport.maxSpeed)}
+                    {show.speed(distanceReport.result.maxSpeed)}
                   </span>
                 ),
                 value: (item) => item.maxSpeed

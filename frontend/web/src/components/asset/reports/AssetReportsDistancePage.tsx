@@ -11,11 +11,11 @@ import { CustomBarChart } from "../../ui/charts/bar/CustomBarChart";
 import { useElementSize } from "@navtrack/shared/hooks/util/useElementSize";
 import { useRef } from "react";
 import { ButtonGroup } from "../../ui/button/ButtonGroup";
-import { useDistanceReport } from "./useDistanceReport";
+import { useDistanceReport } from "@navtrack/shared/hooks/reports/useDistanceReport";
 import {
   DistanceReportChartItem,
   useDistanceReportChart
-} from "./useDistanceReportChart";
+} from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 
 export function AssetReportsDistancePage() {
   const show = useShow();
@@ -27,13 +27,13 @@ export function AssetReportsDistancePage() {
   const tableSize = useElementSize(tableRef);
 
   const distanceReport = useDistanceReport({
-    assetIds: currentAsset.data ? [currentAsset.data.id] : [],
+    assetIds: currentAsset.data ? [currentAsset.data.id] : undefined,
     startDate: filters.startDate,
     endDate: filters.endDate
   });
 
   const distanceReportChart = useDistanceReportChart({
-    data: distanceReport.data ?? []
+    items: distanceReport.result.items
   });
 
   return (
@@ -55,7 +55,7 @@ export function AssetReportsDistancePage() {
                 row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.distance(distanceReport.totalDistance)}
+                    {show.distance(distanceReport.result.totalDistance)}
                   </span>
                 ),
                 value: (item) => item.distance
@@ -65,7 +65,7 @@ export function AssetReportsDistancePage() {
                 row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.duration(distanceReport.totalDuration)}
+                    {show.duration(distanceReport.result.totalDuration)}
                   </span>
                 ),
                 value: (item) => item.duration
@@ -75,7 +75,7 @@ export function AssetReportsDistancePage() {
                 row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.speed(distanceReport.averageSpeed)}
+                    {show.speed(distanceReport.result.averageSpeed)}
                   </span>
                 ),
                 value: (item) => item.averageSpeed
@@ -85,13 +85,13 @@ export function AssetReportsDistancePage() {
                 row: (item) => <>{show.speed(item.maxSpeed) ?? "-"}</>,
                 footer: () => (
                   <span className="font-semibold">
-                    {show.speed(distanceReport.maxSpeed)}
+                    {show.speed(distanceReport.result.maxSpeed)}
                   </span>
                 ),
                 value: (item) => item.maxSpeed
               }
             ]}
-            rows={distanceReport.data}
+            rows={distanceReport.result.items}
           />
         </div>
         <Card className="flex-1 p-2 mt-4 flex flex-col">

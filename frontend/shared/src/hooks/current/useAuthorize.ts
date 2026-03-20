@@ -89,7 +89,7 @@ export function useAuthorize() {
           return false;
       }
     },
-    [currentOrganization.id, currentUser.data?.teams]
+    [authorizeOrganization, currentOrganization.id, currentUser.data?.teams]
   );
 
   return {

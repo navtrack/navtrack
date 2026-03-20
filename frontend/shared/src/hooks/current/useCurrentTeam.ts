@@ -1,6 +1,6 @@
 import { useTeamQuery } from "../queries/teams/useTeamQuery";
 import { useContext } from "react";
-import { CurrentContext } from "./CurrentContextProvider";
+import { CurrentContext } from "./CurrentContext";
 
 export function useCurrentTeam() {
   const current = useContext(CurrentContext);
