@@ -8,9 +8,12 @@ import {
 import { add, isAfter, parseISO, sub } from "date-fns";
 import { randomInteger } from "../../../utils/numbers";
 import { LoginFormValues } from "../../user/login/LoginFormValues";
-import { atomWithStorage } from "jotai/utils";
+import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { appConfigStore } from "../../../state/appConfig";
 import { jotaiStore } from "../../../state/store";
+import { AsyncLocalStorage } from "../../../utils/asyncLocalStorage";
+import { IS_WEB } from "../../../utils/web";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ExternalAuthenticationProvider = "apple" | "microsoft" | "google";
 
@@ -56,18 +59,22 @@ type AuthenticationState = {
   };
 };
 
-const storageKey = "Navtrack:Authentication";
-
 const authenticationAtom = atomWithStorage<AuthenticationState>(
-  storageKey,
+  "Navtrack:Authentication",
   {},
-  undefined,
+  IS_WEB
+    ? createJSONStorage(() => AsyncLocalStorage)
+    : createJSONStorage(() => AsyncStorage),
   { getOnInit: true }
 );
 
-export function useAuthentication() {
-  const queryClient = useQueryClient();
+type AuthenticationProps = {
+  onLogin?: () => void;
+  onLogout?: () => void;
+};
 
+export function useAuthentication(props?: AuthenticationProps) {
+  const queryClient = useQueryClient();
   const [state, setState] = useAtom(authenticationAtom);
 
   const tokenMutation = useTokenMutation({
@@ -78,6 +85,7 @@ export function useAuthentication() {
             ...prev,
             error: undefined
           };
+
           return newState;
         });
       },
@@ -91,7 +99,8 @@ export function useAuthentication() {
           date: new Date().toISOString()
         };
 
-        setState((prev) => {
+        setState(async (p) => {
+          const prev = await p;
           const newState: AuthenticationState = {
             ...prev,
             error: undefined,
@@ -106,7 +115,8 @@ export function useAuthentication() {
         const accountNotLinkedError =
           error.response?.data.code === "LOGIN_000002";
 
-        setState((prev) => {
+        setState(async (p) => {
+          const prev = await p;
           const newState: AuthenticationState = {
             ...prev,
             token: undefined,
@@ -129,8 +139,8 @@ export function useAuthentication() {
         });
       },
       onSettled: () => {
-        setState((prev) => ({
-          ...prev,
+        setState(async (prev) => ({
+          ...(await prev),
           isLoading: false
         }));
       }
@@ -139,7 +149,7 @@ export function useAuthentication() {
 
   const getAccessToken = useCallback(async () => {
     await clearRefreshLock();
-    const state = jotaiStore.get(authenticationAtom);
+    const state = await jotaiStore.get(authenticationAtom);
 
     if (
       !localRefreshLock &&
@@ -179,8 +189,9 @@ export function useAuthentication() {
       };
 
       tokenMutation.mutate(data);
+      props?.onLogin?.();
     },
-    [tokenMutation]
+    [props, tokenMutation]
   );
 
   const externalLogin = useCallback(
@@ -198,8 +209,9 @@ export function useAuthentication() {
       };
 
       tokenMutation.mutate(data);
+      props?.onLogin?.();
     },
-    [tokenMutation]
+    [props, tokenMutation]
   );
 
   const logout = useCallback(() => {
@@ -209,7 +221,8 @@ export function useAuthentication() {
       external: undefined
     });
     queryClient.clear();
-  }, [queryClient, setState]);
+    props?.onLogout?.();
+  }, [props, queryClient, setState]);
 
   const clearErrors = useCallback(
     () =>

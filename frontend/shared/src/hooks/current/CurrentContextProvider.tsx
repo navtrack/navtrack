@@ -4,19 +4,19 @@ import { useAssetQuery } from "../queries/assets/useAssetQuery";
 import { useTeamQuery } from "../queries/teams/useTeamQuery";
 import { CurrentContext } from "./CurrentContext";
 
-type CurrentIdRouteProviderProps = {
+type CurrentContextProviderProps = {
   children?: ReactNode;
 };
 
-export function CurrentContextProvider(props: CurrentIdRouteProviderProps) {
+export function CurrentContextProvider(props: CurrentContextProviderProps) {
+  const [organizationId, setOrganizationId] = useState<string | undefined>();
+
   const assetMatch = useMatch("/assets/:id/*");
   const organizationMatch = useMatch("/organizations/:id/*");
   const teamMatch = useMatch("/teams/:id/*");
 
   const assetQuery = useAssetQuery({ assetId: assetMatch?.params.id });
   const teamQuery = useTeamQuery({ teamId: teamMatch?.params.id });
-
-  const [organizationId, setOrganizationId] = useState<string | undefined>();
 
   useEffect(() => {
     if (organizationMatch?.params.id) {

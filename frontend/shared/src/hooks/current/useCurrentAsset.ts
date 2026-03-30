@@ -6,7 +6,6 @@ import { CurrentContext } from "./CurrentContext";
 
 export function useCurrentAsset() {
   const current = useContext(CurrentContext);
-
   const assets = useAssetsQuery({ organizationId: current.organizationId });
   const [assetConfiguration, setAssetConfiguration] = useAtom(
     assetConfigurationAtom(current.assetId)

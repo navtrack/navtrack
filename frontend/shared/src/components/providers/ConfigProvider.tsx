@@ -7,8 +7,9 @@ type ConfigProviderProps = {
 };
 
 export function ConfigProvider(props: ConfigProviderProps) {
-  if (appConfigStore.config === undefined) {
+  if (!appConfigStore.initialized) {
     appConfigStore.config = props.config;
+    appConfigStore.initialized = true;
   }
 
   return <Fragment>{props.children}</Fragment>;
