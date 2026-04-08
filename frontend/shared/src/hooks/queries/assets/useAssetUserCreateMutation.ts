@@ -9,8 +9,8 @@ export function useAssetUserCreateMutation() {
 
   const mutation = useAssetsUsersCreate({
     mutation: {
-      onSuccess: (_, variables) => {
-        return Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getAssetsUsersGetListQueryKey(variables.assetId)
           })

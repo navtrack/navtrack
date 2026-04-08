@@ -10,15 +10,16 @@ export function useCreateTeamMutation() {
 
   const mutation = useTeamsCreate({
     mutation: {
-      onSuccess: (_, variables) =>
-        Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getOrganizationsGetQueryKey(variables.organizationId)
           }),
           queryClient.invalidateQueries({
             queryKey: getTeamsGetListQueryKey(variables.organizationId)
           })
-        ])
+        ]);
+      }
     }
   });
 

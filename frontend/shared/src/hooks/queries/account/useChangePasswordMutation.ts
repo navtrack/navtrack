@@ -6,8 +6,8 @@ export function useChangePasswordMutation() {
 
   const mutation = useUserChangePassword({
     mutation: {
-      onSuccess: () => {
-        return queryClient.refetchQueries({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
           queryKey: getUserGetQueryKey()
         });
       }

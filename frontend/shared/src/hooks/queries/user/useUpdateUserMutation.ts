@@ -6,8 +6,8 @@ export function useUpdateUserMutation() {
 
   const mutation = useUserUpdate({
     mutation: {
-      onSuccess: () => {
-        return queryClient.refetchQueries({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
           queryKey: getUserGetQueryKey()
         });
       }

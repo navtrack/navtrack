@@ -8,8 +8,8 @@ export function useDeleteAssetMutation() {
 
   const mutation = useAssetsDelete({
     mutation: {
-      onSuccess: () => {
-        return queryClient.refetchQueries({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
           queryKey: getAssetsGetListQueryKey(currentOrganization.id!)
         });
       }

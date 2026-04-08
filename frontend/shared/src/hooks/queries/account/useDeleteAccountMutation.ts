@@ -9,8 +9,8 @@ export function useDeleteAccountMutation(props: UseDeleteAccountMutationProps) {
   const queryClient = useQueryClient();
   const mutation = useAccountDelete({
     mutation: {
-      onSuccess: () => {
-        queryClient.clear();
+      onSuccess: async () => {
+        await queryClient.clear();
 
         props.onSuccess?.();
       }

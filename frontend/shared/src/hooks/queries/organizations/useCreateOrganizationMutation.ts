@@ -10,8 +10,8 @@ export function useCreateOrganizationMutation() {
 
   const mutation = useOrganizationsCreate({
     mutation: {
-      onSuccess: (_, variables) => {
-        return Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getUserGetQueryKey()
           }),
