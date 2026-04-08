@@ -39,6 +39,39 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_Delete",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteAccountModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/account/forgot-password": {
@@ -2273,6 +2306,15 @@
           "captcha": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "DeleteAccountModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "password": {
+            "type": "string"
           }
         }
       },

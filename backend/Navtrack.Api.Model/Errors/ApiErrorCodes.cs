@@ -26,6 +26,8 @@ public abstract class ApiErrorCodes
     public static readonly ApiError User_000007_ExpiredPasswordResetHash = new("User", "000007", "The password reset hash provided is expired.");
     public static readonly ApiError User_000008_InvalidCurrentPassword = new("User", "000008", "The current password is not valid.");
     public static readonly ApiError User_000009_PasswordMustBeDifferent = new("User", "000009", "Your new password must be different than the current one.");
+    public static readonly ApiError User_000010_InvalidPassword = new("User", "000010", "The password is not valid.");
+    public static readonly ApiError User_000011_SoleOrganizationOwner = new("User", "000011", "You are the sole owner of one or more organizations. Please delete the organization or add another owner before deleting your account.");
     
     public static readonly ApiError Organization_000001_UserAlreadyInOrganization = new("Organization", "000001", "The user is already part of the organization.");
     public static readonly ApiError Organization_000002_OneOwnerRequired = new("Organization", "000002", "There must be at least one owner on an organization.");

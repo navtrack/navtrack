@@ -31,6 +31,7 @@ export * from "./createTeamModel";
 export * from "./createTeamUserModel";
 export * from "./currentUserModel";
 export * from "./dayOfWeek";
+export * from "./deleteAccountModel";
 export * from "./deviceDataModel";
 export * from "./deviceMessageModel";
 export * from "./deviceMessageModelDevice";

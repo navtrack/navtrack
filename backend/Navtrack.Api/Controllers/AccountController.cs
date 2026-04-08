@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Account;
@@ -17,6 +19,20 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
     public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel model)
     {
         await requestHandler.Handle(new CreateAccountRequest
+        {
+            Model = model
+        });
+
+        return Ok();
+    }
+
+    [HttpDelete(ApiPaths.Account)]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete([FromBody] DeleteAccountModel model)
+    {
+        await requestHandler.Handle(new DeleteAccountRequest
         {
             Model = model
         });
@@ -46,7 +62,7 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
         {
             Model = model
         });
-        
+
         return Ok();
     }
 }

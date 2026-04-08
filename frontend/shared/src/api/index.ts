@@ -34,6 +34,7 @@ import type {
   CreateTeamModel,
   CreateTeamUserModel,
   CurrentUserModel,
+  DeleteAccountModel,
   DistanceReportModel,
   Entity,
   ErrorModel,
@@ -143,6 +144,79 @@ export const useAccountCreateAccount = <
   TContext
 > => {
   const mutationOptions = getAccountCreateAccountMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const accountDelete = (deleteAccountModel: DeleteAccountModel) => {
+  return authAxiosInstance<void>({
+    url: `/account`,
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    data: deleteAccountModel
+  });
+};
+
+export const getAccountDeleteMutationOptions = <
+  TError = ErrorModel,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof accountDelete>>,
+    TError,
+    { data: DeleteAccountModel },
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof accountDelete>>,
+  TError,
+  { data: DeleteAccountModel },
+  TContext
+> => {
+  const mutationKey = ["accountDelete"];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof accountDelete>>,
+    { data: DeleteAccountModel }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return accountDelete(data);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AccountDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof accountDelete>>
+>;
+export type AccountDeleteMutationBody = DeleteAccountModel;
+export type AccountDeleteMutationError = ErrorModel;
+
+export const useAccountDelete = <
+  TError = ErrorModel,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof accountDelete>>,
+    TError,
+    { data: DeleteAccountModel },
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof accountDelete>>,
+  TError,
+  { data: DeleteAccountModel },
+  TContext
+> => {
+  const mutationOptions = getAccountDeleteMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

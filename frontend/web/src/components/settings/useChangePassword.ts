@@ -1,4 +1,4 @@
-import { useChangePasswordMutation } from "@navtrack/shared/hooks/queries/users/useChangePasswordMutation";
+import { useChangePasswordMutation } from "@navtrack/shared/hooks/queries/account/useChangePasswordMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";

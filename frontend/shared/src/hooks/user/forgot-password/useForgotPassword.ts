@@ -1,6 +1,6 @@
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
-import { useForgotPasswordMutation } from "../../queries/users/useForgotPasswordMutation";
+import { useForgotPasswordMutation } from "../../queries/account/useForgotPasswordMutation";
 import { mapErrors } from "../../../utils/formik";
 import { object, ObjectSchema, string } from "yup";
 
