@@ -359,7 +359,7 @@
   "organizations.users.title": "Manage users",
   "register.back": "Back to login",
   "register.button": "Create account",
-  "register.captcha": "Please complete the captcha.",
+  "errors.register.captcha": "Please complete the captcha.",
   "register.continue": "Continue to login.",
   "register.existing.action": "Go to login.",
   "register.existing.question": "Already have an account?",

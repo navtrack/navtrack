@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import { FormikTextInput } from "../../../ui/form/text-input/FormikTextInput";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { nameOf } from "@navtrack/shared/utils/typescript";
-import { useDeleteAsset } from "@navtrack/shared/hooks/assets/useDeleteAsset";
 import { useNotification } from "../../../ui/notification/useNotification";
 import { generatePath, useNavigate } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
@@ -12,9 +11,10 @@ import { Button } from "../../../ui/button/Button";
 import { ObjectSchema, object, string } from "yup";
 import { useContext } from "react";
 import { SlotContext } from "../../../../app/SlotContext";
+import { useDeleteAssetMutation } from "@navtrack/shared/hooks/queries/assets/useDeleteAssetMutation";
 
 export type DeleteAssetFormValues = {
-  name?: string; // TODO make required
+  name: string;
 };
 
 export function DeleteAssetModal() {
@@ -23,7 +23,7 @@ export function DeleteAssetModal() {
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
-  const deleteAssetMutation = useDeleteAsset({
+  const deleteAssetMutation = useDeleteAssetMutation({
     onSuccess: () => {
       navigate(
         generatePath(Paths.OrganizationLive, {
@@ -37,16 +37,14 @@ export function DeleteAssetModal() {
     }
   });
 
-  const validationSchema: ObjectSchema<DeleteAssetFormValues> = object()
-    .shape({
-      name: string()
-        .required("generic.name.required")
-        .equals(
-          [`${currentAsset.data?.name}`],
-          "assets.settings.general.delete-asset.name-match"
-        )
-    })
-    .defined();
+  const validationSchema: ObjectSchema<DeleteAssetFormValues> = object({
+    name: string()
+      .required("generic.name.required")
+      .oneOf(
+        [`${currentAsset.data?.name}`],
+        "assets.settings.general.delete-asset.name-match"
+      )
+  }).defined();
 
   return (
     <Formik<DeleteAssetFormValues>
@@ -55,7 +53,9 @@ export function DeleteAssetModal() {
       validationSchema={validationSchema}
       onSubmit={() => {
         if (currentAsset.data?.id) {
-          return deleteAssetMutation.handleSubmit(currentAsset.data.id);
+          return deleteAssetMutation.mutateAsync({
+            assetId: currentAsset.data.id
+          });
         }
       }}>
       {({ values, submitForm, resetForm }) => (
@@ -64,7 +64,7 @@ export function DeleteAssetModal() {
           maxWidth="lg"
           onClose={() => resetForm()}
           onConfirm={() => submitForm()}
-          isLoading={deleteAssetMutation.isLoading}
+          isLoading={deleteAssetMutation.isPending}
           renderButton={(open) => (
             <Button color="error" type="submit" size="base" onClick={open}>
               <FormattedMessage id="assets.settings.general.delete-asset" />

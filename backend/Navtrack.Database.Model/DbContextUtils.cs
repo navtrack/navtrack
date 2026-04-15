@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Navtrack.Database.Interceptors;
 
 namespace Navtrack.Database.Model;
 
@@ -17,12 +18,16 @@ public static class DbContextUtils
     {
         if (!string.IsNullOrEmpty(connectionString))
         {
-            services.AddDbContext<DbContext, T>(dbContextOptions =>
-                dbContextOptions.UseNpgsql(connectionString, postgresOptions =>
-                    postgresOptions.UseNetTopologySuite().ConfigureDataSource(dataSourceBuilder =>
-                    {
-                        dataSourceBuilder.EnableDynamicJson();
-                    })));
+            services.AddScoped<EntitySaveChangesInterceptor>();
+
+            services.AddDbContext<DbContext, T>((serviceProvider, dbContextOptions) =>
+                dbContextOptions
+                    .UseNpgsql(connectionString, postgresOptions =>
+                        postgresOptions.UseNetTopologySuite().ConfigureDataSource(dataSourceBuilder =>
+                        {
+                            dataSourceBuilder.EnableDynamicJson();
+                        }))
+                    .AddInterceptors(serviceProvider.GetRequiredService<EntitySaveChangesInterceptor>()));
         }
     }
 }
