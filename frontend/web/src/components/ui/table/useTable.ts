@@ -7,6 +7,7 @@ import {
   useState
 } from "react";
 import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
+import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 
 export interface ITableColumn<T> {
   labelId?: string;
@@ -25,6 +26,7 @@ export type TableProps<T> = {
   columns: ITableColumn<T>[];
   isLoading?: boolean;
   rows?: T[];
+  setSortedRows?: (rows: T[]) => void;
   className?: string;
   equals?: (a: T, b: T) => boolean;
   selectedItem?: T;
@@ -107,7 +109,11 @@ export function useTable<T>(props: TableProps<T>) {
     });
 
     return sorted;
-  }, [props.columns, props.rows, sort.column, sort.direction]);
+  }, [props, sort.column, sort.direction]);
+
+  useOnChange(sortedRows, () => {
+    props.setSortedRows?.(sortedRows ?? []);
+  });
 
   const scrollToElement = useCallback((index: number) => {
     tableRows.current[index]?.scrollIntoView({

@@ -32,6 +32,7 @@ export function AssetTripsPage() {
     assetId: currentAsset.data?.id,
     ...filters
   });
+  const [tableTrips, setTableTrips] = useState<TripModel[]>([]);
 
   const [showTripPanel, setShowTripPanel] = useState(false);
 
@@ -45,8 +46,8 @@ export function AssetTripsPage() {
   });
 
   const selectedTripForModal = useMemo(() => {
-    return query.allTrips[selectedTripIndex];
-  }, [selectedTripIndex, query.allTrips]);
+    return tableTrips[selectedTripIndex];
+  }, [selectedTripIndex, tableTrips]);
 
   function LocationAndTimeCell(props: { position: PositionDataModel }) {
     return (
@@ -85,108 +86,104 @@ export function AssetTripsPage() {
           nextDisabled={selectedTripIndex === query.allTrips.length - 1}
         />
       )}
-      <div>
-        <TableV2<TripModel>
-          columns={[
-            {
-              labelId: "generic.start",
-              sort: "desc",
-              value: (row) => row.startPosition.date,
-              rowClassName: "align-top w-1/2",
-              row: (row) => (
-                <LocationAndTimeCell position={row.startPosition} />
-              ),
-              headerClassName: "z-10",
-              footerColSpan: 2,
-              footer: () => (
-                <div className="flex">
-                  <span>
-                    {show.count("generic.trips.count", query.allTrips.length)}
-                  </span>
-                  <LoadingIndicator
-                    isLoading={query.isLoading}
-                    className="ml-2"
-                  />
-                </div>
-              ),
-              footerClassName: "font-semibold"
-            },
-            {
-              headerClassName: "z-10",
-              labelId: "generic.end",
-              value: (row) => row.endPosition.date,
-              rowClassName: "align-top w-1/2",
-              row: (row) => <LocationAndTimeCell position={row.endPosition} />
-            },
-            {
-              rowClassName: "w-24",
-              labelId: "generic.duration",
-              row: (row) => show.duration(row.duration),
-              value: (row) => row.duration,
-              footerClassName: "font-semibold",
-              footer: () => hasTrips && show.duration(query.totalDuration)
-            },
-            {
-              rowClassName: "w-24",
-              labelId: "generic.distance",
-              row: (row) => show.distance(row.distance),
-              value: (row) => row.distance,
-              footerClassName: "font-semibold",
-              footer: () => hasTrips && show.distance(query.totalDistance)
-            },
-            {
-              rowClassName: "w-24",
-              labelId: "generic.average-speed",
-              row: (row) => show.speed(row.averageSpeed),
-              value: (row) => row.averageSpeed,
-              footerClassName: "font-semibold",
-              footer: () => hasTrips && show.speed(query.averageSpeed)
-            },
-            {
-              rowClassName: "w-24",
-              labelId: "generic.max-speed",
-              row: (row) => show.speed(row.maxSpeed),
-              value: (row) => row.maxSpeed,
-              footerClassName: "font-semibold",
-              footer: () => hasTrips && show.speed(query.maxSpeed)
-            },
-            {
-              rowClassName: "w-32",
-              labelId: "generic.average-fuel-consumption",
-              row: (row) => show.fuelConsumption(row.averageFuelConsumption),
-              value: (row) => row.maxSpeed,
-              footerClassName: "font-semibold",
-              footer: () =>
-                hasTrips && show.fuelConsumption(query.averageFuelConsumption)
-            },
-            {
-              rowClassName: "w-32",
-              labelId: "generic.fuel-consumption",
-              row: (row) => show.volume(row.fuelConsumption),
-              value: (row) => row.maxSpeed,
-              footerClassName: "font-semibold",
-              footer: () => hasTrips && show.volume(query.totalFuelConsumption)
-            },
-            {
-              row: () => (
-                <Button
-                  icon={faMagnifyingGlass}
-                  color="white"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedTripIndex(selectedTripIndex);
-                    setShowTripPanel(true);
-                  }}
+      <TableV2<TripModel>
+        columns={[
+          {
+            labelId: "generic.start",
+            sort: "desc",
+            value: (row) => row.startPosition.date,
+            rowClassName: "align-top w-1/2",
+            row: (row) => <LocationAndTimeCell position={row.startPosition} />,
+            headerClassName: "z-10",
+            footer: () => (
+              <div className="flex">
+                <span>
+                  {show.count("generic.trips.count", query.allTrips.length)}
+                </span>
+                <LoadingIndicator
+                  isLoading={query.isLoading}
+                  className="ml-2"
                 />
-              )
-            }
-          ]}
-          rows={query.allTrips}
-          setSelectedItem={(trip) => setSelectedTrip(trip)}
-          className="flex h-80"
-        />
-      </div>
+              </div>
+            ),
+            footerClassName: "font-semibold"
+          },
+          {
+            headerClassName: "z-10",
+            labelId: "generic.end",
+            value: (row) => row.endPosition.date,
+            rowClassName: "align-top w-1/2",
+            row: (row) => <LocationAndTimeCell position={row.endPosition} />
+          },
+          {
+            rowClassName: "w-24",
+            labelId: "generic.duration",
+            row: (row) => show.duration(row.duration),
+            value: (row) => row.duration,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && show.duration(query.totalDuration)
+          },
+          {
+            rowClassName: "w-24",
+            labelId: "generic.distance",
+            row: (row) => show.distance(row.distance),
+            value: (row) => row.distance,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && show.distance(query.totalDistance)
+          },
+          {
+            rowClassName: "w-24",
+            labelId: "generic.average-speed",
+            row: (row) => show.speed(row.averageSpeed),
+            value: (row) => row.averageSpeed,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && show.speed(query.averageSpeed)
+          },
+          {
+            rowClassName: "w-24",
+            labelId: "generic.max-speed",
+            row: (row) => show.speed(row.maxSpeed),
+            value: (row) => row.maxSpeed,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && show.speed(query.maxSpeed)
+          },
+          {
+            rowClassName: "w-32",
+            labelId: "generic.average-fuel-consumption",
+            row: (row) => show.fuelConsumption(row.averageFuelConsumption),
+            value: (row) => row.maxSpeed,
+            footerClassName: "font-semibold",
+            footer: () =>
+              hasTrips && show.fuelConsumption(query.averageFuelConsumption)
+          },
+          {
+            rowClassName: "w-32",
+            labelId: "generic.fuel-consumption",
+            row: (row) => show.volume(row.fuelConsumption),
+            value: (row) => row.maxSpeed,
+            footerClassName: "font-semibold",
+            footer: () => hasTrips && show.volume(query.totalFuelConsumption)
+          },
+          {
+            row: (_, index) => (
+              <Button
+                icon={faMagnifyingGlass}
+                color="white"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedTripIndex(index);
+                  setShowTripPanel(true);
+                }}
+              />
+            )
+          }
+        ]}
+        rows={query.allTrips}
+        setSortedRows={setTableTrips}
+        setSelectedItem={(trip) => setSelectedTrip(trip)}
+        className="flex h-80"
+      />
       <Card className="flex grow">
         <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
           <Map>
