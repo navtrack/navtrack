@@ -1186,7 +1186,18 @@
         "tags": [
           "Health"
         ],
-        "operationId": "Health_Get",
+        "operationId": "Health_GetGET",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "head": {
+        "tags": [
+          "Health"
+        ],
+        "operationId": "Health_GetHEAD",
         "responses": {
           "200": {
             "description": ""
