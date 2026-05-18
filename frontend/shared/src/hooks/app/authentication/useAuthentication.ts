@@ -80,7 +80,9 @@ export function useAuthentication(props?: AuthenticationProps) {
   const tokenMutation = useTokenMutation({
     options: {
       onMutate: () => {
-        setState((prev) => {
+        setState(async (p) => {
+          const prev = await p;
+
           const newState: AuthenticationState = {
             ...prev,
             error: undefined
@@ -139,10 +141,14 @@ export function useAuthentication(props?: AuthenticationProps) {
         });
       },
       onSettled: () => {
-        setState(async (prev) => ({
-          ...(await prev),
-          isLoading: false
-        }));
+        setState(async (p) => {
+          const prev = await p;
+
+          return {
+            ...prev,
+            isLoading: false
+          };
+        });
       }
     }
   });
