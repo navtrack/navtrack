@@ -1785,47 +1785,55 @@ export function useGeocodeReverse<
   return query;
 }
 
-export const healthGet = (signal?: AbortSignal) => {
+export const healthGetGET = (signal?: AbortSignal) => {
   return authAxiosInstance<void>({ url: `/health`, method: "GET", signal });
 };
 
-export const getHealthGetQueryKey = () => {
+export const getHealthGetGETQueryKey = () => {
   return [`/health`] as const;
 };
 
-export const getHealthGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof healthGet>>,
+export const getHealthGetGETQueryOptions = <
+  TData = Awaited<ReturnType<typeof healthGetGET>>,
   TError = unknown
 >(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof healthGet>>, TError, TData>;
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof healthGetGET>>,
+    TError,
+    TData
+  >;
 }) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getHealthGetQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getHealthGetGETQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthGet>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthGetGET>>> = ({
     signal
-  }) => healthGet(signal);
+  }) => healthGetGET(signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof healthGet>>,
+    Awaited<ReturnType<typeof healthGetGET>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type HealthGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof healthGet>>
+export type HealthGetGETQueryResult = NonNullable<
+  Awaited<ReturnType<typeof healthGetGET>>
 >;
-export type HealthGetQueryError = unknown;
+export type HealthGetGETQueryError = unknown;
 
-export function useHealthGet<
-  TData = Awaited<ReturnType<typeof healthGet>>,
+export function useHealthGetGET<
+  TData = Awaited<ReturnType<typeof healthGetGET>>,
   TError = unknown
 >(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof healthGet>>, TError, TData>;
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof healthGetGET>>,
+    TError,
+    TData
+  >;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getHealthGetQueryOptions(options);
+  const queryOptions = getHealthGetGETQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -1835,6 +1843,72 @@ export function useHealthGet<
 
   return query;
 }
+
+export const healthGetHEAD = (signal?: AbortSignal) => {
+  return authAxiosInstance<void>({ url: `/health`, method: "HEAD", signal });
+};
+
+export const getHealthGetHEADMutationOptions = <
+  TError = unknown,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof healthGetHEAD>>,
+    TError,
+    void,
+    TContext
+  >;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof healthGetHEAD>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["healthGetHEAD"];
+  const { mutation: mutationOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey } };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof healthGetHEAD>>,
+    void
+  > = () => {
+    return healthGetHEAD();
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type HealthGetHEADMutationResult = NonNullable<
+  Awaited<ReturnType<typeof healthGetHEAD>>
+>;
+
+export type HealthGetHEADMutationError = unknown;
+
+export const useHealthGetHEAD = <
+  TError = unknown,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof healthGetHEAD>>,
+    TError,
+    void,
+    TContext
+  >;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof healthGetHEAD>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getHealthGetHEADMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
 
 export const organizationsList = (signal?: AbortSignal) => {
   return authAxiosInstance<ListModelOfOrganizationModel>({
