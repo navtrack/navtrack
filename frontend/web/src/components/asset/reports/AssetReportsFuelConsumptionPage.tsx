@@ -14,6 +14,7 @@ import { DistanceReportItemModel } from "@navtrack/shared/api/model";
 import { useDistanceReport } from "@navtrack/shared/hooks/reports/useDistanceReport";
 import {
   DistanceReportChartItem,
+  DistanceReportChartKeys,
   useDistanceReportChart
 } from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 
@@ -30,7 +31,8 @@ export function AssetReportsFuelConsumptionPage() {
   });
 
   const distanceReportChart = useDistanceReportChart({
-    items: distanceReport.result.items
+    items: distanceReport.result.items,
+    default: DistanceReportChartKeys.FuelConsumption
   });
 
   const tableRef = useRef<HTMLDivElement>(null);

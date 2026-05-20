@@ -18,9 +18,10 @@ export type DistanceReportChartItem = {
 
 type DistanceReportChartProps = {
   items?: DistanceReportItemModel[];
+  default?: DistanceReportChartKeys;
 };
 
-const enum ChartKeys {
+export const enum DistanceReportChartKeys {
   Distance = "distance",
   Duration = "duration",
   AverageSpeed = "averageSpeed",
@@ -53,12 +54,15 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
       () => ({
         bars: [
           {
-            key: ChartKeys.Distance,
+            key: DistanceReportChartKeys.Distance,
             labelId: "generic.distance"
           }
         ],
         xAxis: { dataKey: "date" },
-        yAxis: { dataKey: ChartKeys.Distance, unit: units.lengthK }
+        yAxis: {
+          dataKey: DistanceReportChartKeys.Distance,
+          unit: units.lengthK
+        }
       }),
       [units.lengthK]
     );
@@ -68,13 +72,13 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
       () => ({
         bars: [
           {
-            key: ChartKeys.Duration,
+            key: DistanceReportChartKeys.Duration,
             labelId: "generic.duration"
           }
         ],
         xAxis: { dataKey: "date" },
         yAxis: {
-          dataKey: ChartKeys.Duration,
+          dataKey: DistanceReportChartKeys.Duration,
           unit: "h"
         }
       }),
@@ -86,12 +90,15 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
       () => ({
         bars: [
           {
-            key: ChartKeys.AverageSpeed,
+            key: DistanceReportChartKeys.AverageSpeed,
             labelId: "generic.average-speed"
           }
         ],
         xAxis: { dataKey: "date" },
-        yAxis: { dataKey: ChartKeys.AverageSpeed, unit: units.speed }
+        yAxis: {
+          dataKey: DistanceReportChartKeys.AverageSpeed,
+          unit: units.speed
+        }
       }),
       [units.speed]
     );
@@ -101,12 +108,12 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
       () => ({
         bars: [
           {
-            key: ChartKeys.MaxSpeed,
+            key: DistanceReportChartKeys.MaxSpeed,
             labelId: "generic.max-speed"
           }
         ],
         xAxis: { dataKey: "date" },
-        yAxis: { dataKey: ChartKeys.MaxSpeed, unit: units.speed }
+        yAxis: { dataKey: DistanceReportChartKeys.MaxSpeed, unit: units.speed }
       }),
       [units.speed]
     );
@@ -116,12 +123,15 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
       () => ({
         bars: [
           {
-            key: ChartKeys.FuelConsumption,
+            key: DistanceReportChartKeys.FuelConsumption,
             labelId: "generic.fuel-consumption"
           }
         ],
         xAxis: { dataKey: "date" },
-        yAxis: { dataKey: ChartKeys.FuelConsumption, unit: units.volume }
+        yAxis: {
+          dataKey: DistanceReportChartKeys.FuelConsumption,
+          unit: units.volume
+        }
       }),
       [units.volume]
     );
@@ -131,45 +141,29 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
       () => ({
         bars: [
           {
-            key: ChartKeys.AverageFuelConsumption,
+            key: DistanceReportChartKeys.AverageFuelConsumption,
             labelId: "generic.average-fuel-consumption"
           }
         ],
         xAxis: { dataKey: "date" },
         yAxis: {
-          dataKey: ChartKeys.AverageFuelConsumption,
+          dataKey: DistanceReportChartKeys.AverageFuelConsumption,
           unit: units.fuelConsumption
         }
       }),
       [units.fuelConsumption]
     );
 
-  const [chartConfig, setChartConfig] =
-    useState<CustomBarChartProps<DistanceReportChartItem>>(distanceChartConfig);
-
-  const onChartTypeChange = useCallback(
-    (value: string) => {
-      switch (value) {
-        case ChartKeys.Distance:
-          setChartConfig(distanceChartConfig);
-          break;
-        case ChartKeys.Duration:
-          setChartConfig(durationChartConfig);
-          break;
-        case ChartKeys.AverageSpeed:
-          setChartConfig(averageSpeedChartConfig);
-          break;
-        case ChartKeys.MaxSpeed:
-          setChartConfig(maxSpeedChartConfig);
-          break;
-        case ChartKeys.FuelConsumption:
-          setChartConfig(fuelConsumptionChartConfig);
-          break;
-        case ChartKeys.AverageFuelConsumption:
-          setChartConfig(averageFuelConsumptionChartConfig);
-          break;
-      }
-    },
+  const chartConfigs = useMemo(
+    () => ({
+      [DistanceReportChartKeys.Distance]: distanceChartConfig,
+      [DistanceReportChartKeys.Duration]: durationChartConfig,
+      [DistanceReportChartKeys.AverageSpeed]: averageSpeedChartConfig,
+      [DistanceReportChartKeys.MaxSpeed]: maxSpeedChartConfig,
+      [DistanceReportChartKeys.FuelConsumption]: fuelConsumptionChartConfig,
+      [DistanceReportChartKeys.AverageFuelConsumption]:
+        averageFuelConsumptionChartConfig
+    }),
     [
       averageFuelConsumptionChartConfig,
       averageSpeedChartConfig,
@@ -180,21 +174,40 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
     ]
   );
 
+  const [chartConfig, setChartConfig] = useState<
+    CustomBarChartProps<DistanceReportChartItem>
+  >(chartConfigs[props.default ?? DistanceReportChartKeys.Distance]);
+
+  const onChartTypeChange = useCallback(
+    (value: string) => {
+      setChartConfig(
+        chartConfigs[value as DistanceReportChartKeys] ?? distanceChartConfig
+      );
+    },
+    [chartConfigs, distanceChartConfig]
+  );
+
   const distanceChartOptions: ButtonGroupOption[] = [
-    { label: "generic.distance", value: ChartKeys.Distance },
-    { label: "generic.duration", value: ChartKeys.Duration },
-    { label: "generic.average-speed", value: ChartKeys.AverageSpeed },
-    { label: "generic.max-speed", value: ChartKeys.MaxSpeed }
+    { label: "generic.distance", value: DistanceReportChartKeys.Distance },
+    { label: "generic.duration", value: DistanceReportChartKeys.Duration },
+    {
+      label: "generic.average-speed",
+      value: DistanceReportChartKeys.AverageSpeed
+    },
+    { label: "generic.max-speed", value: DistanceReportChartKeys.MaxSpeed }
   ];
 
   const fuelConsumptionChartOptions: ButtonGroupOption[] = [
-    { label: "generic.fuel-consumption", value: ChartKeys.FuelConsumption },
+    {
+      label: "generic.fuel-consumption",
+      value: DistanceReportChartKeys.FuelConsumption
+    },
     {
       label: "generic.average-fuel-consumption",
-      value: ChartKeys.AverageFuelConsumption
+      value: DistanceReportChartKeys.AverageFuelConsumption
     },
-    { label: "generic.distance", value: ChartKeys.Distance },
-    { label: "generic.duration", value: ChartKeys.Duration }
+    { label: "generic.distance", value: DistanceReportChartKeys.Distance },
+    { label: "generic.duration", value: DistanceReportChartKeys.Duration }
   ];
 
   return {

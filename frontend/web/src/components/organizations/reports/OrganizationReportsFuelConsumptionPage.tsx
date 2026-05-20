@@ -15,6 +15,7 @@ import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurren
 import { useDistanceReport } from "@navtrack/shared/hooks/reports/useDistanceReport";
 import {
   DistanceReportChartItem,
+  DistanceReportChartKeys,
   useDistanceReportChart
 } from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 
@@ -37,7 +38,8 @@ export function OrganizationReportsFuelConsumptionPage() {
     endDate: filters.endDate
   });
   const distanceReportChart = useDistanceReportChart({
-    items: distanceReport.result.items
+    items: distanceReport.result.items,
+    default: DistanceReportChartKeys.FuelConsumption
   });
 
   return (
