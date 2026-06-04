@@ -22,5 +22,5 @@ public class TripReportModel : ListModel<TripReportItemModel>
     public double? AverageSpeed => Items.Any(x => x.AverageSpeed != null) ? Items.Average(x => x.AverageSpeed) : null;
     
     [Required]
-    public double? MaxSpeed => Items.Max(x => x.MaxSpeed);
+    public double? MaxSpeed => Items.Any(x => x.MaxSpeed != null) ? Items.Max(x => x.MaxSpeed) : null;
 }
