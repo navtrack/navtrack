@@ -25,7 +25,7 @@ export type AssetTripsQueriesProps = {
 
 export type TripsResult = {
   queries: TripGroup[];
-  allTrips: TripModel[];
+  allTrips?: TripModel[];
   isLoading: boolean;
   totalTrips: number;
   totalDuration: number;
@@ -93,7 +93,9 @@ export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
         date: days[index],
         query: q
       })),
-      allTrips: queries.flatMap((q) => q.data?.items || []),
+      allTrips: queries.some((q) => q.data?.items !== undefined)
+        ? queries.flatMap((q) => q.data?.items || [])
+        : undefined,
       isLoading: queries.some((q) => q.isLoading),
       totalTrips: queries.reduce(
         (sum, q) => sum + (q.data?.items.length || 0),

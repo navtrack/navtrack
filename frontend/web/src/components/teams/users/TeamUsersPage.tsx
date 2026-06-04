@@ -1,5 +1,5 @@
 import { Heading } from "../../ui/heading/Heading";
-import { ITableColumn } from "../../ui/table/useTable";
+import { ITableColumn, useTable } from "../../ui/table/useTable";
 import { TeamUserModel } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
@@ -86,6 +86,7 @@ export function TeamUsersPage() {
       )
     }
   ];
+  const table = useTable({ rows: users.data?.items, columns });
 
   return (
     <TeamLayout team={team.data} isLoading={team.isLoading}>
@@ -97,7 +98,7 @@ export function TeamUsersPage() {
           <CreateTeamUserModal teamId={id} />
         </Authorize>
       </div>
-      <TableV2 rows={users.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </TeamLayout>
   );
 }

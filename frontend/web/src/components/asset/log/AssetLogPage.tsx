@@ -2,7 +2,6 @@ import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Map } from "../../ui/map/Map";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useMessagesQuery } from "@navtrack/shared/hooks/queries/assets/useMessagesQuery";
-import { useState } from "react";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { Card } from "../../ui/card/Card";
@@ -18,6 +17,7 @@ import { MapPin } from "../../ui/map/MapPin";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useAtomValue } from "jotai";
 import { DEFAULT_MAP_CENTER } from "@navtrack/shared/constants";
+import { useTable } from "../../ui/table/useTable";
 
 export function AssetLogPage() {
   const show = useShow();
@@ -29,112 +29,107 @@ export function AssetLogPage() {
     ...filters
   });
 
-  const [message, setMessage] = useState<DeviceMessageModel | undefined>(
-    undefined
-  );
+  const table = useTable<DeviceMessageModel>({
+    selection: true,
+    rows: query.data?.items,
+    columns: [
+      {
+        labelId: "generic.date",
+        footer: () => (
+          <>
+            {query.data?.items !== undefined &&
+              query.data?.items.length > 0 &&
+              (query.data?.totalCount! > query.data?.items.length! ? (
+                <FormattedMessage
+                  id="assets.log.table.positions-over"
+                  values={{
+                    count: (
+                      <span className="font-semibold">
+                        {query.data?.items.length}
+                      </span>
+                    ),
+                    total: (
+                      <span className="font-semibold">
+                        {query.data?.totalCount}
+                      </span>
+                    )
+                  }}
+                />
+              ) : (
+                <FormattedMessage
+                  id="assets.log.table.positions"
+                  values={{
+                    count: (
+                      <span className="font-semibold">
+                        {query.data?.items.length}
+                      </span>
+                    )
+                  }}
+                />
+              ))}
+          </>
+        ),
+        sort: "desc",
+        value: (row) => row.position.date,
+        row: (row) => show.dateTime(row.position.date)
+      },
+      {
+        labelId: "generic.latitude",
+        row: (row) => showCoordinate(row.position.coordinates.latitude)
+      },
+      {
+        labelId: "generic.longitude",
+        row: (row) => showCoordinate(row.position.coordinates.longitude)
+      },
+      {
+        labelId: "generic.altitude",
+        row: (row) => show.altitude(row.position.altitude),
+        value: (row) => row.position.altitude
+      },
+      {
+        labelId: "generic.speed",
+        row: (row) => show.speed(row.position.speed),
+        value: (row) => row.position.speed
+      },
+      {
+        labelId: "generic.heading",
+        row: (row) => showHeading(row.position.heading),
+        value: (row) => row.position.heading
+      },
+      {
+        labelId: "generic.satellites",
+        row: (row) => `${row.position.satellites}`,
+        value: (row) => row.position.satellites
+      }
+    ]
+  });
 
   return (
     <>
-      <LocationFilter filterPage="log" center={message?.position.coordinates} />
-      <div className="flex flex-col space-y-4">
-        <div className="h-1/2">
-          <TableV2<DeviceMessageModel>
-            columns={[
-              {
-                labelId: "generic.date",
-                rowClassName: "py-0.5",
-                footerColSpan: 7,
-                footer: () => (
-                  <>
-                    {query.data?.items !== undefined &&
-                      query.data?.items.length > 0 &&
-                      (query.data?.totalCount! > query.data?.items.length! ? (
-                        <FormattedMessage
-                          id="assets.log.table.positions-over"
-                          values={{
-                            count: (
-                              <span className="font-semibold">
-                                {query.data?.items.length}
-                              </span>
-                            ),
-                            total: (
-                              <span className="font-semibold">
-                                {query.data?.totalCount}
-                              </span>
-                            )
-                          }}
-                        />
-                      ) : (
-                        <FormattedMessage
-                          id="assets.log.table.positions"
-                          values={{
-                            count: (
-                              <span className="font-semibold">
-                                {query.data?.items.length}
-                              </span>
-                            )
-                          }}
-                        />
-                      ))}
-                  </>
-                ),
-                sort: "desc",
-                value: (row) => row.position.date,
-                row: (row) => show.dateTime(row.position.date)
-              },
-              {
-                labelId: "generic.latitude",
-                row: (row) => showCoordinate(row.position.coordinates.latitude)
-              },
-              {
-                labelId: "generic.longitude",
-                row: (row) => showCoordinate(row.position.coordinates.longitude)
-              },
-              {
-                labelId: "generic.altitude",
-                row: (row) => show.altitude(row.position.altitude),
-                value: (row) => row.position.altitude
-              },
-              {
-                labelId: "generic.speed",
-                row: (row) => show.speed(row.position.speed),
-                value: (row) => row.position.speed
-              },
-              {
-                labelId: "generic.heading",
-                row: (row) => showHeading(row.position.heading),
-                value: (row) => row.position.heading
-              },
-              {
-                labelId: "generic.satellites",
-                row: (row) => `${row.position.satellites}`,
-                value: (row) => row.position.satellites
-              }
-            ]}
-            rows={query.data?.items}
-            setSelectedItem={setMessage}
-            className="flex h-44 grow"
-          />
-        </div>
-        <Card className="flex grow h-1/2">
-          <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
-            <Map
-              center={
-                message ? message.position.coordinates : DEFAULT_MAP_CENTER
-              }
-              initialZoom={10}>
-              {message?.position.coordinates && (
-                <MapPin
-                  pin={{
-                    coordinates: message?.position.coordinates,
-                    follow: true
-                  }}
-                />
-              )}
-            </Map>
-          </CardMapWrapper>
-        </Card>
-      </div>
+      <LocationFilter
+        filterPage="log"
+        center={table.selectedItem?.position.coordinates}
+      />
+      <TableV2<DeviceMessageModel> className="flex h-80" {...table.props} />
+      <Card className="flex grow">
+        <CardMapWrapper style={{ flexGrow: 2, minHeight: 250 }}>
+          <Map
+            center={
+              table.selectedItem
+                ? table.selectedItem.position.coordinates
+                : DEFAULT_MAP_CENTER
+            }>
+            {table.selectedItem?.position.coordinates && (
+              <MapPin
+                pin={{
+                  coordinates: table.selectedItem.position.coordinates,
+                  follow: true
+                }}
+              />
+            )}
+          </Map>
+        </CardMapWrapper>
+      </Card>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { Heading } from "../ui/heading/Heading";
 import { useTeamsQuery } from "@navtrack/shared/hooks/queries/teams/useTeamsQuery";
-import { ITableColumn } from "../ui/table/useTable";
+import { ITableColumn, useTable } from "../ui/table/useTable";
 import { TeamModel } from "@navtrack/shared/api/model";
 import { CreateTeamModal } from "./CreateTeamModal";
 import { generatePath, Link, useNavigate } from "react-router-dom";
@@ -29,6 +29,7 @@ export function OrganizationTeamsPage() {
   ];
 
   const navigate = useNavigate();
+  const table = useTable({ rows: teams.data?.items, columns });
 
   return (
     <>
@@ -39,9 +40,8 @@ export function OrganizationTeamsPage() {
         <CreateTeamModal />
       </div>
       <TableV2
-        rows={teams.data?.items}
-        columns={columns}
-        rowClick={(row) =>
+        {...table.props}
+        rowClickHandler={(row) =>
           navigate(generatePath(Paths.TeamUsers, { id: row.id }))
         }
       />

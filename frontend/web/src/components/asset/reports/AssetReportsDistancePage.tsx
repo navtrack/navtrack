@@ -16,6 +16,7 @@ import {
   DistanceReportChartItem,
   useDistanceReportChart
 } from "@navtrack/shared/hooks/reports/useDistanceReportChart";
+import { useTable } from "../../ui/table/useTable";
 
 export function AssetReportsDistancePage() {
   const show = useShow();
@@ -35,6 +36,57 @@ export function AssetReportsDistancePage() {
   const distanceReportChart = useDistanceReportChart({
     items: distanceReport.result.items
   });
+  const table = useTable<DistanceReportItemModel>({
+    rows: distanceReport.result.items,
+    columns: [
+      {
+        labelId: "generic.date",
+        row: (item) => <>{show.date(item.date)}</>,
+        value: (item) => item.date,
+        sort: "desc"
+      },
+      {
+        labelId: "generic.distance",
+        row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.distance(distanceReport.result.totalDistance)}
+          </span>
+        ),
+        value: (item) => item.distance
+      },
+      {
+        labelId: "generic.duration",
+        row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.duration(distanceReport.result.totalDuration)}
+          </span>
+        ),
+        value: (item) => item.duration
+      },
+      {
+        labelId: "generic.average-speed",
+        row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.speed(distanceReport.result.averageSpeed)}
+          </span>
+        ),
+        value: (item) => item.averageSpeed
+      },
+      {
+        labelId: "generic.max-speed",
+        row: (item) => <>{show.speed(item.maxSpeed) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.speed(distanceReport.result.maxSpeed)}
+          </span>
+        ),
+        value: (item) => item.maxSpeed
+      }
+    ]
+  });
 
   return (
     <>
@@ -43,55 +95,7 @@ export function AssetReportsDistancePage() {
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>
             height={tableSize.height}
-            columns={[
-              {
-                labelId: "generic.date",
-                row: (item) => <>{show.date(item.date)}</>,
-                value: (item) => item.date,
-                sort: "desc"
-              },
-              {
-                labelId: "generic.distance",
-                row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.distance(distanceReport.result.totalDistance)}
-                  </span>
-                ),
-                value: (item) => item.distance
-              },
-              {
-                labelId: "generic.duration",
-                row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.duration(distanceReport.result.totalDuration)}
-                  </span>
-                ),
-                value: (item) => item.duration
-              },
-              {
-                labelId: "generic.average-speed",
-                row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.speed(distanceReport.result.averageSpeed)}
-                  </span>
-                ),
-                value: (item) => item.averageSpeed
-              },
-              {
-                labelId: "generic.max-speed",
-                row: (item) => <>{show.speed(item.maxSpeed) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.speed(distanceReport.result.maxSpeed)}
-                  </span>
-                ),
-                value: (item) => item.maxSpeed
-              }
-            ]}
-            rows={distanceReport.result.items}
+            {...table.props}
           />
         </div>
         <Card className="flex-1 p-2 mt-4 flex flex-col">

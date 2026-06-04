@@ -1,5 +1,5 @@
 import { TableV1 } from "./TableV1";
-import { ITableColumn } from "./useTable";
+import { ITableColumn, useTable } from "./useTable";
 
 type User = {
   email: string;
@@ -27,7 +27,19 @@ const columns: ITableColumn<User>[] = [
 ];
 
 export default {
-  Default: <TableV1 columns={columns} rows={users} />,
-  Loading: <TableV1 columns={columns} rows={undefined} />,
-  "No Items": <TableV1 columns={columns} rows={[]} />
+  Default: () => {
+    const table = useTable({ columns, rows: users });
+
+    return <TableV1 {...table.props} />;
+  },
+  Loading: () => {
+    const table = useTable({ columns, rows: undefined });
+
+    return <TableV1 {...table.props} />;
+  },
+  "No Items": () => {
+    const table = useTable({ columns, rows: [] });
+
+    return <TableV1 {...table.props} />;
+  }
 };

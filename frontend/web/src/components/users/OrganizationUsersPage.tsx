@@ -6,7 +6,7 @@ import { OrganizationUserModel } from "@navtrack/shared/api/model";
 import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";
-import { ITableColumn } from "../ui/table/useTable";
+import { ITableColumn, useTable } from "../ui/table/useTable";
 import { UpdateOrganizationUserModal } from "./UpdateOrganizationUserModal";
 import { useDeleteOrganizationUserMutation } from "@navtrack/shared/hooks/queries/organizations/useDeleteOrganizationUserMutation";
 import { TableV2 } from "../ui/table/TableV2";
@@ -80,6 +80,7 @@ export function OrganizationUsersPage() {
       )
     }
   ];
+  const table = useTable({ rows: organizationUsers.data?.items, columns });
 
   return (
     <>
@@ -89,7 +90,7 @@ export function OrganizationUsersPage() {
         </Heading>
         <CreateOrganizationUserModal />
       </div>
-      <TableV2 rows={organizationUsers.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </>
   );
 }

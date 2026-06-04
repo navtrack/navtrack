@@ -14,6 +14,7 @@ import { Button } from "../../ui/button/Button";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useMemo, useState } from "react";
 import { AssetTripStopDetailsPanel } from "./AssetTripStopDetailsPanel";
+import { useTable } from "../../ui/table/useTable";
 
 export function AssetReportsTripStopsPage() {
   const show = useShow();
@@ -43,6 +44,60 @@ export function AssetReportsTripStopsPage() {
       prevIndex > 0 ? prevIndex - 1 : prevIndex
     );
   };
+  const table = useTable<TripStopModel>({
+    rows: tripsStopsReport,
+    columns: [
+      {
+        labelId: "generic.arrival-date",
+        row: (item) => (
+          <div className="whitespace-nowrap h-full flex flex-col">
+            <div className="flex-1">{show.dateTime(item.arrivalDate)}</div>
+          </div>
+        ),
+        value: (item) => item.arrivalDate,
+        sort: "desc"
+      },
+      {
+        labelId: "generic.departure-date",
+        row: (item) => (
+          <div className="whitespace-nowrap h-full flex flex-col">
+            <div className="flex-1">{show.dateTime(item.departureDate)}</div>
+          </div>
+        ),
+        value: (item) => item.departureDate
+      },
+      {
+        labelId: "generic.duration",
+        row: (item) => <>{show.duration(item.duration)}</>,
+        footer: () => <span className="font-semibold"></span>,
+        value: (item) => item.duration
+      },
+      {
+        labelId: "generic.location",
+        row: (item) => (
+          <div className="whitespace-nowrap text-ellipsis">
+            <div>
+              <GeocodeReverse coordinates={item.arrivalCoordinates} />
+            </div>
+          </div>
+        )
+      },
+      {
+        row: (item, index) => (
+          <Button
+            icon={faMagnifyingGlass}
+            color="white"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedStopIndex(index);
+              setShowTripPanel(true);
+            }}
+          />
+        )
+      }
+    ]
+  });
 
   return (
     <>
@@ -58,63 +113,7 @@ export function AssetReportsTripStopsPage() {
         />
       )}
       <LocationFilter filterPage="reports-trips" />
-      <TableV2<TripStopModel>
-        className="h-full"
-        columns={[
-          {
-            labelId: "generic.arrival-date",
-            row: (item) => (
-              <div className="whitespace-nowrap h-full flex flex-col">
-                <div className="flex-1">{show.dateTime(item.arrivalDate)}</div>
-              </div>
-            ),
-            value: (item) => item.arrivalDate,
-            sort: "desc"
-          },
-          {
-            labelId: "generic.departure-date",
-            row: (item) => (
-              <div className="whitespace-nowrap h-full flex flex-col">
-                <div className="flex-1">
-                  {show.dateTime(item.departureDate)}
-                </div>
-              </div>
-            ),
-            value: (item) => item.departureDate
-          },
-          {
-            labelId: "generic.duration",
-            row: (item) => <>{show.duration(item.duration)}</>,
-            footer: () => <span className="font-semibold"></span>,
-            value: (item) => item.duration
-          },
-          {
-            labelId: "generic.location",
-            row: (item) => (
-              <div className="whitespace-nowrap text-ellipsis">
-                <div>
-                  <GeocodeReverse coordinates={item.arrivalCoordinates} />
-                </div>
-              </div>
-            )
-          },
-          {
-            row: (item, index) => (
-              <Button
-                icon={faMagnifyingGlass}
-                color="white"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedStopIndex(index);
-                  setShowTripPanel(true);
-                }}
-              />
-            )
-          }
-        ]}
-        rows={tripsStopsReport}
-      />
+      <TableV2<TripStopModel> className="h-full" {...table.props} />
     </>
   );
 }

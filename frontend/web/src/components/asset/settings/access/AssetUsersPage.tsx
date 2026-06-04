@@ -4,7 +4,7 @@ import { getError } from "@navtrack/shared/utils/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/assets/useAssetUsersQuery";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
-import { ITableColumn } from "../../../ui/table/useTable";
+import { ITableColumn, useTable } from "../../../ui/table/useTable";
 import { Heading } from "../../../ui/heading/Heading";
 import { TableV2 } from "../../../ui/table/TableV2";
 import { useDeleteAssetUserMutation } from "@navtrack/shared/hooks/queries/assets/useDeleteAssetUserMutation";
@@ -72,6 +72,7 @@ export function AssetUsersPage() {
       )
     }
   ];
+  const table = useTable({ rows: assetUsers.data?.items, columns });
 
   return (
     <>
@@ -81,7 +82,7 @@ export function AssetUsersPage() {
         </Heading>
         <CreateAssetUserModal />
       </div>
-      <TableV2 rows={assetUsers.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </>
   );
 }

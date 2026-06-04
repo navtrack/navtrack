@@ -26,6 +26,7 @@ import { useAssetTripsQueries } from "@navtrack/shared/hooks/queries/assets/useA
 import { Tooltip } from "../../ui/tooltip/Tooltip";
 import { FormattedMessage } from "react-intl";
 import { useOrganizationWorkSchedule } from "./useOrganizationWorkSchedule";
+import { useTable } from "../../ui/table/useTable";
 
 type WorkingHoursTableRow = {
   date: Date;
@@ -101,179 +102,178 @@ export function AssetReportsWorkingHoursPage() {
     },
     [pixelsPerMinute]
   );
+  const table = useTable<WorkingHoursTableRow>({
+    rows: query.isLoading ? undefined : tableRows,
+    columns: [
+      {
+        labelId: "generic.date",
+        row: (item) => (
+          <div className="whitespace-nowrap">{show.date(item.date)}</div>
+        ),
+        value: (item) => item.date.toISOString(),
+        sort: "desc"
+      },
+      {
+        labelId: "generic.location",
+        header: () => (
+          <div className="flex h-full flex-1 bg-gray-100 space-x-px border-x border-gray-200">
+            {[...Array(24).keys()].map((_, index) => (
+              <div
+                className="h-full flex-1 bg-gray-50 flex items-center justify-center text-xs"
+                key={index}>
+                {index}
+              </div>
+            ))}
+          </div>
+        ),
+        headerClassName: "pt-0 pb-0",
+        rowClassName: "w-full pt-0 pb-0",
+        row: (item, rowIndex) => (
+          <div
+            className="flex h-full relative w-full border-x border-gray-200"
+            ref={elementSize.ref}>
+            {[...Array(24).keys()].map((_, index) => (
+              <div
+                key={index}
+                className={classNames(
+                  "h-full flex-1",
+                  c(index !== 0, "border-l border-gray-100"),
+                  c(rowIndex % 2 !== 0, "bg-gray-50", "bg-white")
+                )}></div>
+            ))}
+            <div
+              className={classNames(
+                "rounded-md absolute top-1 bottom-1 bg-blue-500/20"
+              )}
+              style={{
+                marginLeft: getTripLeftMargin(
+                  workSchedule.getStartTime(item.date)!
+                ),
+                width: getTripWidth(
+                  workSchedule.getStartTime(item.date)!,
+                  workSchedule.getEndTime(item.date)!
+                ),
+                minWidth: 4
+              }}></div>
+            {item.trips.map((trip, index) => (
+              <div
+                key={index}
+                className="rounded-md absolute top-1 bottom-1 bg-blue-500/80 overflow-hidden"
+                style={{
+                  marginLeft: getTripLeftMargin(
+                    new Date(trip.startPosition.date)
+                  ),
+                  width: getTripWidth(
+                    new Date(trip.startPosition.date),
+                    new Date(trip.endPosition.date)
+                  ),
+                  minWidth: 4
+                }}>
+                <Tooltip
+                  content={
+                    <table className="text-xs">
+                      <tbody>
+                        <tr>
+                          <td className="pr-1">
+                            <FormattedMessage id="generic.start" />
+                          </td>
+                          <td>{show.time(trip.startPosition.date)}</td>
+                        </tr>
+                        <tr>
+                          <td className="pr-1">
+                            <FormattedMessage id="generic.end" />
+                          </td>
+                          <td>{show.time(trip.endPosition.date)}</td>
+                        </tr>
+                        <tr>
+                          <td className="pr-1">
+                            <FormattedMessage id="generic.duration" />
+                          </td>
+                          <td>{show.duration(trip.duration)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  }
+                  className="h-full w-full hover:bg-blue-600"></Tooltip>
+              </div>
+            ))}
+          </div>
+        )
+      },
+      {
+        labelId: "generic.during-schedule",
+        row: (item) => (
+          <div className="whitespace-nowrap">
+            {show.duration(item.workHoursDuration)}
+          </div>
+        ),
+        value: (item) => item.workHoursDuration,
+        footer: (total) => <>{show.duration(total)}</>
+      },
+      {
+        labelId: "generic.off-schedule",
+        row: (item) => (
+          <div className="whitespace-nowrap">
+            {show.duration(item.offHoursDuration)}
+          </div>
+        ),
+        value: (item) => item.offHoursDuration,
+        footer: (total) => <>{show.duration(total)}</>
+      },
+      {
+        labelId: "generic.trips-total",
+        row: (item) => (
+          <div className="whitespace-nowrap">
+            {show.duration(item.totalDuration)}
+          </div>
+        ),
+        value: (item) => item.totalDuration,
+        footer: (total) => <>{show.duration(total)}</>
+      },
+      {
+        labelId: "generic.start-time",
+        row: (item) => (
+          <div className="whitespace-nowrap">
+            {show.time(item.trips[0]?.startPosition.date)}
+          </div>
+        ),
+        value: (item) => item.trips[0]?.startPosition.date
+      },
+      {
+        labelId: "generic.end-time",
+        row: (item) => (
+          <div className="whitespace-nowrap">
+            {show.time(item.trips[item.trips.length - 1]?.endPosition.date)}
+          </div>
+        ),
+        value: (item) => item.trips[item.trips.length - 1]?.endPosition.date
+      },
+      {
+        labelId: "generic.total-duration",
+        row: (item) => (
+          <div className="whitespace-nowrap">
+            {show.duration(
+              differenceInSeconds(
+                item.trips[item.trips.length - 1]?.endPosition.date,
+                item.trips[0]?.startPosition.date
+              )
+            )}
+          </div>
+        ),
+        value: (item) =>
+          differenceInSeconds(
+            item.trips[item.trips.length - 1]?.endPosition.date,
+            item.trips[0]?.startPosition.date
+          ),
+        footer: (total) => <>{show.duration(total)}</>
+      }
+    ]
+  });
 
   return (
     <>
       <LocationFilter filterPage="reports-trips" />
-      <TableV2<WorkingHoursTableRow>
-        className="h-full"
-        columns={[
-          {
-            labelId: "generic.date",
-            row: (item) => (
-              <div className="whitespace-nowrap">{show.date(item.date)}</div>
-            ),
-            value: (item) => item.date.toISOString(),
-            sort: "desc"
-          },
-          {
-            labelId: "generic.location",
-            header: () => (
-              <div className="flex h-full flex-1 bg-gray-100 space-x-px border-x border-gray-200">
-                {[...Array(24).keys()].map((_, index) => (
-                  <div
-                    className="h-full flex-1 bg-gray-50 flex items-center justify-center text-xs"
-                    key={index}>
-                    {index}
-                  </div>
-                ))}
-              </div>
-            ),
-            headerClassName: "pt-0 pb-0",
-            rowClassName: "w-full pt-0 pb-0",
-            row: (item, rowIndex) => (
-              <div
-                className="flex h-full relative w-full border-x border-gray-200"
-                ref={elementSize.ref}>
-                {[...Array(24).keys()].map((_, index) => (
-                  <div
-                    key={index}
-                    className={classNames(
-                      "h-full flex-1",
-                      c(index !== 0, "border-l border-gray-100"),
-                      c(rowIndex % 2 !== 0, "bg-gray-50", "bg-white")
-                    )}></div>
-                ))}
-                <div
-                  className={classNames(
-                    "rounded-md absolute top-1 bottom-1 bg-blue-500/20"
-                  )}
-                  style={{
-                    marginLeft: getTripLeftMargin(
-                      workSchedule.getStartTime(item.date)!
-                    ),
-                    width: getTripWidth(
-                      workSchedule.getStartTime(item.date)!,
-                      workSchedule.getEndTime(item.date)!
-                    ),
-                    minWidth: 4
-                  }}></div>
-                {item.trips.map((trip, index) => (
-                  <div
-                    key={index}
-                    className="rounded-md absolute top-1 bottom-1 bg-blue-500/80 overflow-hidden"
-                    style={{
-                      marginLeft: getTripLeftMargin(
-                        new Date(trip.startPosition.date)
-                      ),
-                      width: getTripWidth(
-                        new Date(trip.startPosition.date),
-                        new Date(trip.endPosition.date)
-                      ),
-                      minWidth: 4
-                    }}>
-                    <Tooltip
-                      content={
-                        <table className="text-xs">
-                          <tbody>
-                            <tr>
-                              <td className="pr-1">
-                                <FormattedMessage id="generic.start" />
-                              </td>
-                              <td>{show.time(trip.startPosition.date)}</td>
-                            </tr>
-                            <tr>
-                              <td className="pr-1">
-                                <FormattedMessage id="generic.end" />
-                              </td>
-                              <td>{show.time(trip.endPosition.date)}</td>
-                            </tr>
-                            <tr>
-                              <td className="pr-1">
-                                <FormattedMessage id="generic.duration" />
-                              </td>
-                              <td>{show.duration(trip.duration)}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      }
-                      className="h-full w-full hover:bg-blue-600"></Tooltip>
-                  </div>
-                ))}
-              </div>
-            )
-          },
-          {
-            labelId: "generic.during-schedule",
-            row: (item) => (
-              <div className="whitespace-nowrap">
-                {show.duration(item.workHoursDuration)}
-              </div>
-            ),
-            value: (item) => item.workHoursDuration,
-            footer: (total) => <>{show.duration(total)}</>
-          },
-          {
-            labelId: "generic.off-schedule",
-            row: (item) => (
-              <div className="whitespace-nowrap">
-                {show.duration(item.offHoursDuration)}
-              </div>
-            ),
-            value: (item) => item.offHoursDuration,
-            footer: (total) => <>{show.duration(total)}</>
-          },
-          {
-            labelId: "generic.trips-total",
-            row: (item) => (
-              <div className="whitespace-nowrap">
-                {show.duration(item.totalDuration)}
-              </div>
-            ),
-            value: (item) => item.totalDuration,
-            footer: (total) => <>{show.duration(total)}</>
-          },
-          {
-            labelId: "generic.start-time",
-            row: (item) => (
-              <div className="whitespace-nowrap">
-                {show.time(item.trips[0]?.startPosition.date)}
-              </div>
-            ),
-            value: (item) => item.trips[0]?.startPosition.date
-          },
-          {
-            labelId: "generic.end-time",
-            row: (item) => (
-              <div className="whitespace-nowrap">
-                {show.time(item.trips[item.trips.length - 1]?.endPosition.date)}
-              </div>
-            ),
-            value: (item) => item.trips[item.trips.length - 1]?.endPosition.date
-          },
-          {
-            labelId: "generic.total-duration",
-            row: (item) => (
-              <div className="whitespace-nowrap">
-                {show.duration(
-                  differenceInSeconds(
-                    item.trips[item.trips.length - 1]?.endPosition.date,
-                    item.trips[0]?.startPosition.date
-                  )
-                )}
-              </div>
-            ),
-            value: (item) =>
-              differenceInSeconds(
-                item.trips[item.trips.length - 1]?.endPosition.date,
-                item.trips[0]?.startPosition.date
-              ),
-            footer: (total) => <>{show.duration(total)}</>
-          }
-        ]}
-        rows={tableRows}
-        isLoading={query.isLoading}
-      />
+      <TableV2<WorkingHoursTableRow> className="h-full" {...table.props} />
     </>
   );
 }

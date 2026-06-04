@@ -10,6 +10,7 @@ import { useAssetReportTripsQuery } from "@navtrack/shared/hooks/queries/assets/
 import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
+import { useTable } from "../../ui/table/useTable";
 
 export function AssetReportsTripsPage() {
   const show = useShow();
@@ -21,98 +22,96 @@ export function AssetReportsTripsPage() {
     startDate: filters.startDate,
     endDate: filters.endDate
   });
+  const table = useTable<TripReportItemModel>({
+    rows: tripReport.data?.items,
+    columns: [
+      {
+        labelId: "generic.date",
+        row: (item) => (
+          <div className="whitespace-nowrap h-full flex flex-col">
+            <div className="flex-1">
+              <Icon
+                icon={faArrowUp}
+                className="text-green-500 mr-1"
+                size="sm"
+              />
+              {show.dateTime(item.startPosition.date)}
+            </div>
+            <div className="flex-1">
+              <Icon
+                icon={faArrowDown}
+                className="text-red-500 mr-1"
+                size="sm"
+              />
+              {show.dateTime(item.endPosition.date)}
+            </div>
+          </div>
+        ),
+        value: (item) => item.startPosition.date
+      },
+      {
+        labelId: "generic.location",
+        row: (item) => (
+          <div className="whitespace-nowrap text-ellipsis">
+            <div className="">
+              <GeocodeReverse coordinates={item.startPosition.coordinates} />
+            </div>
+            <div>
+              <GeocodeReverse coordinates={item.endPosition.coordinates} />
+            </div>
+          </div>
+        ),
+        rowClassName: "w-full"
+      },
+      {
+        labelId: "generic.distance",
+        row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.distance(tripReport.data?.totalDistance)}
+          </span>
+        ),
+        value: (item) => item.distance
+      },
+      {
+        labelId: "generic.duration",
+        row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.duration(tripReport.data?.totalDuration)}
+          </span>
+        ),
+        value: (item) => item.distance
+      },
+      {
+        labelId: "generic.fuel-consumption",
+        row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.volume(tripReport.data?.totalFuelConsumption)}
+          </span>
+        ),
+        value: (item) => item.fuelConsumption
+      },
+      {
+        labelId: "generic.average-fuel-consumption",
+        row: (item) => (
+          <>{show.fuelConsumption(item.averageFuelConsumption) ?? "-"}</>
+        ),
+        footer: () => (
+          <span className="font-semibold">
+            {show.fuelConsumption(tripReport.data?.averageFuelConsumption)}
+          </span>
+        ),
+        value: (item) => item.averageFuelConsumption
+      }
+    ]
+  });
 
   return (
     <>
       <LocationFilter filterPage="reports-trips" />
-      <TableV2<TripReportItemModel>
-        className="h-full"
-        columns={[
-          {
-            labelId: "generic.date",
-            row: (item) => (
-              <div className="whitespace-nowrap h-full flex flex-col">
-                <div className="flex-1">
-                  <Icon
-                    icon={faArrowUp}
-                    className="text-green-500 mr-1"
-                    size="sm"
-                  />
-                  {show.dateTime(item.startPosition.date)}
-                </div>
-                <div className="flex-1">
-                  <Icon
-                    icon={faArrowDown}
-                    className="text-red-500 mr-1"
-                    size="sm"
-                  />
-                  {show.dateTime(item.endPosition.date)}
-                </div>
-              </div>
-            ),
-            value: (item) => item.startPosition.date
-          },
-          {
-            labelId: "generic.location",
-            row: (item) => (
-              <div className="whitespace-nowrap text-ellipsis">
-                <div className="">
-                  <GeocodeReverse
-                    coordinates={item.startPosition.coordinates}
-                  />
-                </div>
-                <div>
-                  <GeocodeReverse coordinates={item.endPosition.coordinates} />
-                </div>
-              </div>
-            ),
-            rowClassName: "w-full"
-          },
-          {
-            labelId: "generic.distance",
-            row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
-            footer: () => (
-              <span className="font-semibold">
-                {show.distance(tripReport.data?.totalDistance)}
-              </span>
-            ),
-            value: (item) => item.distance
-          },
-          {
-            labelId: "generic.duration",
-            row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
-            footer: () => (
-              <span className="font-semibold">
-                {show.duration(tripReport.data?.totalDuration)}
-              </span>
-            ),
-            value: (item) => item.distance
-          },
-          {
-            labelId: "generic.fuel-consumption",
-            row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
-            footer: () => (
-              <span className="font-semibold">
-                {show.volume(tripReport.data?.totalFuelConsumption)}
-              </span>
-            ),
-            value: (item) => item.fuelConsumption
-          },
-          {
-            labelId: "generic.average-fuel-consumption",
-            row: (item) => (
-              <>{show.fuelConsumption(item.averageFuelConsumption) ?? "-"}</>
-            ),
-            footer: () => (
-              <span className="font-semibold">
-                {show.fuelConsumption(tripReport.data?.averageFuelConsumption)}
-              </span>
-            ),
-            value: (item) => item.averageFuelConsumption
-          }
-        ]}
-        rows={tripReport.data?.items}
-      />
+      <TableV2<TripReportItemModel> className="h-full" {...table.props} />
     </>
   );
 }

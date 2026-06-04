@@ -1,5 +1,5 @@
 import { Heading } from "../../ui/heading/Heading";
-import { ITableColumn } from "../../ui/table/useTable";
+import { ITableColumn, useTable } from "../../ui/table/useTable";
 import { TeamAssetModel } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
@@ -83,6 +83,7 @@ export function TeamAssetsPage() {
       )
     }
   ];
+  const table = useTable({ rows: assets.data?.items, columns });
 
   return (
     <TeamLayout team={team.data} isLoading={team.isLoading}>
@@ -94,7 +95,7 @@ export function TeamAssetsPage() {
           <CreateTeamAssetModal teamId={id} />
         </Authorize>
       </div>
-      <TableV2 rows={assets.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </TeamLayout>
   );
 }

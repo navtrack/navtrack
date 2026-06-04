@@ -18,6 +18,7 @@ import {
   DistanceReportChartKeys,
   useDistanceReportChart
 } from "@navtrack/shared/hooks/reports/useDistanceReportChart";
+import { useTable } from "../../ui/table/useTable";
 
 export function OrganizationReportsFuelConsumptionPage() {
   const show = useShow();
@@ -41,6 +42,71 @@ export function OrganizationReportsFuelConsumptionPage() {
     items: distanceReport.result.items,
     default: DistanceReportChartKeys.FuelConsumption
   });
+  const table = useTable<DistanceReportItemModel>({
+    rows: distanceReport.result.items,
+    columns: [
+      {
+        labelId: "generic.date",
+        row: (item) => <>{show.date(item.date)}</>,
+        value: (item) => item.date,
+        sort: "desc"
+      },
+      {
+        labelId: "generic.distance",
+        row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.distance(distanceReport.result.totalDistance)}
+          </span>
+        ),
+        value: (item) => item.distance
+      },
+      {
+        labelId: "generic.duration",
+        row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.duration(distanceReport.result.totalDuration)}
+          </span>
+        ),
+        value: (item) => item.duration
+      },
+      {
+        labelId: "generic.average-speed",
+        row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.speed(distanceReport.result.averageSpeed)}
+          </span>
+        ),
+        value: (item) => item.averageSpeed
+      },
+      {
+        labelId: "generic.fuel-consumption",
+        row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
+        footer: () => (
+          <span className="font-semibold">
+            {show.volume(distanceReport.result.totalFuelConsumption) ?? "-"}
+          </span>
+        ),
+        value: (item) => item.fuelConsumption
+      },
+      {
+        labelId: "generic.average-fuel-consumption",
+        row: (item) => (
+          <>{show.fuelConsumption(item.averageFuelConsumption) ?? "-"}</>
+        ),
+        footer: () => (
+          <span className="font-semibold">
+            {show.fuelConsumption(
+              distanceReport.result.averageFuelConsumption
+            ) ?? "-"}
+          </span>
+        ),
+        value: (item) => item.averageFuelConsumption
+      }
+    ]
+  });
 
   return (
     <>
@@ -48,73 +114,8 @@ export function OrganizationReportsFuelConsumptionPage() {
       <div className="h-full flex flex-col">
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>
-            rows={distanceReport.result.items}
             height={tableSize.height}
-            columns={[
-              {
-                labelId: "generic.date",
-                row: (item) => <>{show.date(item.date)}</>,
-                value: (item) => item.date,
-                sort: "desc"
-              },
-              {
-                labelId: "generic.distance",
-                row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.distance(distanceReport.result.totalDistance)}
-                  </span>
-                ),
-                value: (item) => item.distance
-              },
-              {
-                labelId: "generic.duration",
-                row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.duration(distanceReport.result.totalDuration)}
-                  </span>
-                ),
-                value: (item) => item.duration
-              },
-              {
-                labelId: "generic.average-speed",
-                row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.speed(distanceReport.result.averageSpeed)}
-                  </span>
-                ),
-                value: (item) => item.averageSpeed
-              },
-              {
-                labelId: "generic.fuel-consumption",
-                row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.volume(distanceReport.result.totalFuelConsumption) ??
-                      "-"}
-                  </span>
-                ),
-                value: (item) => item.fuelConsumption
-              },
-              {
-                labelId: "generic.average-fuel-consumption",
-                row: (item) => (
-                  <>
-                    {show.fuelConsumption(item.averageFuelConsumption) ?? "-"}
-                  </>
-                ),
-                footer: () => (
-                  <span className="font-semibold">
-                    {show.fuelConsumption(
-                      distanceReport.result.averageFuelConsumption
-                    ) ?? "-"}
-                  </span>
-                ),
-                value: (item) => item.averageFuelConsumption
-              }
-            ]}
+            {...table.props}
           />
         </div>
         <Card className="flex-1 p-2 mt-4 flex flex-col">

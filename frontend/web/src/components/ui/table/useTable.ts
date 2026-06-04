@@ -1,13 +1,5 @@
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import { ReactNode, useCallback, useMemo, useRef, useState } from "react";
 import { useKeyPress } from "@navtrack/shared/hooks/util/useKeyPress";
-import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 
 export interface ITableColumn<T> {
   labelId?: string;
@@ -24,15 +16,31 @@ export interface ITableColumn<T> {
 
 export type TableProps<T> = {
   columns: ITableColumn<T>[];
-  isLoading?: boolean;
   rows?: T[];
-  setSortedRows?: (rows: T[]) => void;
   className?: string;
-  equals?: (a: T, b: T) => boolean;
-  selectedItem?: T;
-  setSelectedItem?: (item?: T, index?: number) => void;
-  rowClick?: (row: T) => void;
   height?: string | number;
+  rowClickHandler?: (row: T) => void;
+  headerClickHandler?: (index: number) => void;
+  getColumnTotal?: (column: ITableColumn<T>) => number | undefined;
+  sort?: {
+    column: number;
+    direction: "asc" | "desc";
+  };
+  selection?: boolean;
+  selectedIndex?: number;
+  setSelectedIndex?: (index: number) => void;
+  tableRows?: {
+    current: Array<HTMLDivElement | null>;
+  };
+};
+
+export type UseTableProps<T> = {
+  columns: ITableColumn<T>[];
+  rows?: T[];
+  equals?: (a: T, b: T) => boolean;
+  getColumnTotal?: (column: ITableColumn<T>) => number | undefined;
+  selection?: boolean;
+  selectedIndex?: number;
 };
 
 function getInitialSort<T>(columns: ITableColumn<T>[]): {
@@ -49,26 +57,8 @@ function getInitialSort<T>(columns: ITableColumn<T>[]): {
   return { column: 0, direction: "asc" };
 }
 
-function getInitialSelectedIndex<T>(props: TableProps<T>): number | undefined {
-  if (
-    props.selectedItem !== undefined &&
-    props.equals !== undefined &&
-    props.rows !== undefined
-  ) {
-    return props.rows.findIndex((row) =>
-      props.equals?.(row, props.selectedItem!)
-    );
-  }
-
-  return 0;
-}
-
-export function useTable<T>(props: TableProps<T>) {
-  const selectionEnabled = props.setSelectedItem !== undefined;
-  const hasFooter = props.columns.some((column) => column.footer !== undefined);
-  const [selectedIndex, setSelectedIndex] = useState(
-    getInitialSelectedIndex(props)
-  );
+export function useTable<T>(props: UseTableProps<T>) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const tableRows = useRef<Array<HTMLDivElement | null>>([]);
 
   const [sort, setSort] = useState<{
@@ -76,7 +66,7 @@ export function useTable<T>(props: TableProps<T>) {
     direction: "asc" | "desc";
   }>(getInitialSort(props.columns));
 
-  const sortedRows = useMemo(() => {
+  const rows = useMemo(() => {
     if (props.rows === undefined) {
       return undefined;
     }
@@ -86,7 +76,7 @@ export function useTable<T>(props: TableProps<T>) {
     sorted.sort((a, b) => {
       const column = props.columns[sort.column];
 
-      if (column.value !== undefined) {
+      if (column?.value !== undefined) {
         const aValue = column.value(a);
         const bValue = column.value(b);
 
@@ -109,11 +99,7 @@ export function useTable<T>(props: TableProps<T>) {
     });
 
     return sorted;
-  }, [props, sort.column, sort.direction]);
-
-  useOnChange(sortedRows, () => {
-    props.setSortedRows?.(sortedRows ?? []);
-  });
+  }, [props.columns, props.rows, sort.column, sort.direction]);
 
   const scrollToElement = useCallback((index: number) => {
     tableRows.current[index]?.scrollIntoView({
@@ -131,21 +117,8 @@ export function useTable<T>(props: TableProps<T>) {
   );
 
   const selectedItem = useMemo(() => {
-    return selectedIndex !== undefined
-      ? sortedRows?.[selectedIndex]
-      : undefined;
-  }, [selectedIndex, sortedRows]);
-
-  useEffect(() => {
-    if (
-      selectionEnabled &&
-      selectedItem !== undefined &&
-      (props.selectedItem === undefined ||
-        !props.equals?.(props.selectedItem, selectedItem))
-    ) {
-      props.setSelectedItem?.(selectedItem, selectedIndex);
-    }
-  }, [props, selectedIndex, selectedItem, selectionEnabled]);
+    return selectedIndex !== undefined ? rows?.[selectedIndex] : undefined;
+  }, [selectedIndex, rows]);
 
   const setPreviousIndex = useCallback(() => {
     if (selectedIndex !== undefined) {
@@ -169,8 +142,8 @@ export function useTable<T>(props: TableProps<T>) {
     }
   }, [props.rows, selectedIndex, setIndex]);
 
-  useKeyPress("ArrowDown", selectionEnabled ? setNextIndex : undefined);
-  useKeyPress("ArrowUp", selectionEnabled ? setPreviousIndex : undefined);
+  useKeyPress("ArrowDown", props.selection ? setNextIndex : undefined);
+  useKeyPress("ArrowUp", props.selection ? setPreviousIndex : undefined);
 
   const handleHeaderClick = useCallback(
     (index: number) => {
@@ -208,14 +181,18 @@ export function useTable<T>(props: TableProps<T>) {
   );
 
   return {
-    handleHeaderClick,
-    getColumnTotal,
-    sort,
-    sortedRows,
-    hasFooter,
-    selectionEnabled,
-    setIndex,
-    tableRows,
-    selectedIndex
+    selectedItem,
+    props: {
+      columns: props.columns,
+      handleHeaderClick,
+      getColumnTotal,
+      sort,
+      rows,
+      selection: props.selection,
+      setIndex,
+      tableRows,
+      selectedIndex,
+      setSelectedIndex
+    }
   };
 }
