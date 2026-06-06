@@ -124,6 +124,7 @@ export function useDistanceReport(props: DistanceReportProps): DistanceReport {
             item.averageSpeed > 0
               ? (averageSpeed + item.averageSpeed) / 2
               : averageSpeed;
+          maxSpeed = Math.max(maxSpeed, item.maxSpeed);
 
           const hasFuelConsumption = isNumeric(item.fuelConsumption);
           totalFuelConsumption = hasFuelConsumption
