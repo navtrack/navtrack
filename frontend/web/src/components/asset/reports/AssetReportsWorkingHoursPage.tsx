@@ -9,7 +9,6 @@ import { useLocationFilterKey } from "../shared/location-filter/useLocationFilte
 import { useCallback } from "react";
 import {
   addDays,
-  addHours,
   differenceInMinutes,
   differenceInSeconds,
   endOfDay,
@@ -102,6 +101,7 @@ export function AssetReportsWorkingHoursPage() {
     },
     [pixelsPerMinute]
   );
+
   const table = useTable<WorkingHoursTableRow>({
     rows: query.isLoading ? undefined : tableRows,
     columns: [
@@ -252,19 +252,10 @@ export function AssetReportsWorkingHoursPage() {
         labelId: "generic.total-duration",
         row: (item) => (
           <div className="whitespace-nowrap">
-            {show.duration(
-              differenceInSeconds(
-                item.trips[item.trips.length - 1]?.endPosition.date,
-                item.trips[0]?.startPosition.date
-              )
-            )}
+            {show.duration(getTotalDuration(item))}
           </div>
         ),
-        value: (item) =>
-          differenceInSeconds(
-            item.trips[item.trips.length - 1]?.endPosition.date,
-            item.trips[0]?.startPosition.date
-          ),
+        value: (item) => getTotalDuration(item),
         footer: (total) => <>{show.duration(total)}</>
       }
     ]
@@ -282,6 +273,19 @@ type CustomDuration = {
   workHoursMs: number;
   offHoursMs: number;
 };
+
+function getTotalDuration(item: WorkingHoursTableRow): number {
+  const startDate = item.trips[0]?.startPosition.date;
+  const endDate = item.trips[item.trips.length - 1]?.endPosition.date;
+
+  if (startDate === undefined || endDate === undefined) {
+    return 0;
+  }
+
+  const duration = differenceInSeconds(endDate, startDate);
+
+  return Number.isFinite(duration) ? duration : 0;
+}
 
 function ComputeOverlapDuration(
   start1: Date,
