@@ -29,21 +29,6 @@ export function AssetReportsTripStopsPage() {
   const [showTripPanel, setShowTripPanel] = useState(false);
   const [selectedStopIndex, setSelectedStopIndex] = useState(0);
 
-  const selectedStop = useMemo(() => {
-    return tripsStopsReport[selectedStopIndex];
-  }, [selectedStopIndex, tripsStopsReport]);
-
-  const selectNextStop = () => {
-    setSelectedStopIndex((prevIndex) =>
-      prevIndex < tripsStopsReport.length - 1 ? prevIndex + 1 : prevIndex
-    );
-  };
-
-  const selectPreviousStop = () => {
-    setSelectedStopIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : prevIndex
-    );
-  };
   const table = useTable<TripStopModel>({
     rows: tripsStopsReport,
     columns: [
@@ -99,6 +84,24 @@ export function AssetReportsTripStopsPage() {
     ]
   });
 
+  const selectedStop = useMemo(() => {
+    return table.props.rows?.[selectedStopIndex];
+  }, [selectedStopIndex, table.props.rows]);
+
+  const selectNextStop = () => {
+    setSelectedStopIndex((prevIndex) =>
+      prevIndex < (table.props.rows?.length ?? 0) - 1
+        ? prevIndex + 1
+        : prevIndex
+    );
+  };
+
+  const selectPreviousStop = () => {
+    setSelectedStopIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : prevIndex
+    );
+  };
+
   return (
     <>
       {selectedStop && (
@@ -109,7 +112,9 @@ export function AssetReportsTripStopsPage() {
           previous={selectPreviousStop}
           next={selectNextStop}
           previousDisabled={selectedStopIndex === 0}
-          nextDisabled={selectedStopIndex === tripsStopsReport.length - 1}
+          nextDisabled={
+            selectedStopIndex === (table.props.rows?.length ?? 0) - 1
+          }
         />
       )}
       <LocationFilter filterPage="reports-trips" />
