@@ -22,7 +22,9 @@ export function TableV2<T>(props: TableProps<T>) {
               {props.columns.map((column, index) => (
                 <th
                   onClick={() =>
-                    !!column.value ? props.headerClickHandler!(index) : null
+                    column.value !== undefined
+                      ? props.headerClickHandler?.(index)
+                      : undefined
                   }
                   key={`${column.labelId}${index}`}
                   className={classNames(

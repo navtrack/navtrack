@@ -145,7 +145,7 @@ export function useTable<T>(props: UseTableProps<T>) {
   useKeyPress("ArrowDown", props.selection ? setNextIndex : undefined);
   useKeyPress("ArrowUp", props.selection ? setPreviousIndex : undefined);
 
-  const handleHeaderClick = useCallback(
+  const headerClickHandler = useCallback(
     (index: number) => {
       setSort({
         column: index,
@@ -184,7 +184,7 @@ export function useTable<T>(props: UseTableProps<T>) {
     selectedItem,
     props: {
       columns: props.columns,
-      handleHeaderClick,
+      headerClickHandler,
       getColumnTotal,
       sort,
       rows,
