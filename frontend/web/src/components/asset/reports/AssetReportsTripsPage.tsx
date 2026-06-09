@@ -1,12 +1,12 @@
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
-import { TripReportItemModel } from "@navtrack/shared/api/model";
+import { TripModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useAtomValue } from "jotai";
 import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
 import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
-import { useAssetReportTripsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetReportTripsQuery";
+import { useAssetTripsQueries } from "@navtrack/shared/hooks/queries/assets/useAssetTripsQueries";
 import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
@@ -17,13 +17,12 @@ export function AssetReportsTripsPage() {
   const currentAsset = useCurrentAsset();
   const locationFilterKey = useLocationFilterKey("reports-trips");
   const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
-  const tripReport = useAssetReportTripsQuery({
+  const query = useAssetTripsQueries({
     assetId: currentAsset.data?.id,
-    startDate: filters.startDate,
-    endDate: filters.endDate
+    ...filters
   });
-  const table = useTable<TripReportItemModel>({
-    rows: tripReport.data?.items,
+  const table = useTable<TripModel>({
+    rows: query.allTrips,
     columns: [
       {
         labelId: "generic.date",
@@ -68,7 +67,7 @@ export function AssetReportsTripsPage() {
         row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
-            {show.distance(tripReport.data?.totalDistance)}
+            {show.distance(query.totalDistance)}
           </span>
         ),
         value: (item) => item.distance
@@ -78,7 +77,7 @@ export function AssetReportsTripsPage() {
         row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
-            {show.duration(tripReport.data?.totalDuration)}
+            {show.duration(query.totalDuration)}
           </span>
         ),
         value: (item) => item.distance
@@ -88,7 +87,7 @@ export function AssetReportsTripsPage() {
         row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
-            {show.volume(tripReport.data?.totalFuelConsumption)}
+            {show.volume(query.totalFuelConsumption)}
           </span>
         ),
         value: (item) => item.fuelConsumption
@@ -100,7 +99,7 @@ export function AssetReportsTripsPage() {
         ),
         footer: () => (
           <span className="font-semibold">
-            {show.fuelConsumption(tripReport.data?.averageFuelConsumption)}
+            {show.fuelConsumption(query.averageFuelConsumption)}
           </span>
         ),
         value: (item) => item.averageFuelConsumption
@@ -111,7 +110,7 @@ export function AssetReportsTripsPage() {
   return (
     <>
       <LocationFilter filterPage="reports-trips" />
-      <TableV2<TripReportItemModel> className="h-full" {...table.props} />
+      <TableV2<TripModel> className="h-full" {...table.props} />
     </>
   );
 }

@@ -21,7 +21,6 @@ import type {
   AssetStatsPeriod,
   AssetsMessagesGetListParams,
   AssetsReportsGetDistanceReportParams,
-  AssetsReportsGetTripReportParams,
   AssetsTripsGetListParams,
   ChangePasswordModel,
   CreateAccountModel,
@@ -57,7 +56,6 @@ import type {
   ResetPasswordModel,
   TeamModel,
   TripListModel,
-  TripReportModel,
   UpdateAssetModel,
   UpdateOrganizationModel,
   UpdateOrganizationUserModel,
@@ -1145,99 +1143,6 @@ export function useAssetsReportsGetDistanceReport<
   }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAssetsReportsGetDistanceReportQueryOptions(
-    assetId,
-    params,
-    options
-  );
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const assetsReportsGetTripReport = (
-  assetId: string,
-  params?: AssetsReportsGetTripReportParams,
-  signal?: AbortSignal
-) => {
-  return authAxiosInstance<TripReportModel>({
-    url: `/assets/${assetId}/reports/trips`,
-    method: "GET",
-    params,
-    signal
-  });
-};
-
-export const getAssetsReportsGetTripReportQueryKey = (
-  assetId?: string,
-  params?: AssetsReportsGetTripReportParams
-) => {
-  return [
-    `/assets/${assetId}/reports/trips`,
-    ...(params ? [params] : [])
-  ] as const;
-};
-
-export const getAssetsReportsGetTripReportQueryOptions = <
-  TData = Awaited<ReturnType<typeof assetsReportsGetTripReport>>,
-  TError = ProblemDetails
->(
-  assetId: string,
-  params?: AssetsReportsGetTripReportParams,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof assetsReportsGetTripReport>>,
-      TError,
-      TData
-    >;
-  }
-) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getAssetsReportsGetTripReportQueryKey(assetId, params);
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof assetsReportsGetTripReport>>
-  > = ({ signal }) => assetsReportsGetTripReport(assetId, params, signal);
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!assetId,
-    ...queryOptions
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof assetsReportsGetTripReport>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type AssetsReportsGetTripReportQueryResult = NonNullable<
-  Awaited<ReturnType<typeof assetsReportsGetTripReport>>
->;
-export type AssetsReportsGetTripReportQueryError = ProblemDetails;
-
-export function useAssetsReportsGetTripReport<
-  TData = Awaited<ReturnType<typeof assetsReportsGetTripReport>>,
-  TError = ProblemDetails
->(
-  assetId: string,
-  params?: AssetsReportsGetTripReportParams,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof assetsReportsGetTripReport>>,
-      TError,
-      TData
-    >;
-  }
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getAssetsReportsGetTripReportQueryOptions(
     assetId,
     params,
     options

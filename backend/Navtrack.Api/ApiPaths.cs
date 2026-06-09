@@ -25,7 +25,6 @@ public static class ApiPaths
     public const string AssetMessages = "assets/{assetId}/messages";
     public const string AssetStats = "assets/{assetId}/stats/{period}";
     public const string AssetReportsDistance = "assets/{assetId}/reports/distance";
-    public const string AssetReportsTrips = "assets/{assetId}/reports/trips";
     
     public const string TeamById = "teams/{teamId}";
     public const string TeamUsers = "teams/{teamId}/users";

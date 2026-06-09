@@ -35,21 +35,4 @@ public class AssetsReportsController(IRequestHandler requestHandler)
 
         return result;
     }
-    
-    [HttpGet(ApiPaths.AssetReportsTrips)]
-    [ProducesResponseType(typeof(TripReportModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [NavtrackAuthorize(AssetUserRole.Viewer)]
-    public async Task<TripReportModel> GetTripReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilterModel filter)
-    {
-        TripReportModel result = await requestHandler.Handle<GetTripReportRequest, TripReportModel>(
-            new GetTripReportRequest
-            {
-                AssetId = assetId,
-                Model = filter
-            });
-
-        return result;
-    }
 }
