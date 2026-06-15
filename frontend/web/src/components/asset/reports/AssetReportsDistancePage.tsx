@@ -3,9 +3,6 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset"
 import { TableV2 } from "../../ui/table/TableV2";
 import { DistanceReportItemModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtomValue } from "jotai";
-import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
-import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { Card } from "../../ui/card/Card";
 import { CustomBarChart } from "../../ui/charts/bar/CustomBarChart";
 import { useElementSize } from "@navtrack/shared/hooks/util/useElementSize";
@@ -17,20 +14,22 @@ import {
   useDistanceReportChart
 } from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 import { useTable } from "../../ui/table/useTable";
+import { useLocationFilter } from "../shared/location-filter/useLocationFilter";
 
 export function AssetReportsDistancePage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
-  const locationFilterKey = useLocationFilterKey("reports-distance");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-reports-distance"
+  });
 
   const tableRef = useRef<HTMLDivElement>(null);
   const tableSize = useElementSize(tableRef);
 
   const distanceReport = useDistanceReport({
     assetIds: currentAsset.data ? [currentAsset.data.id] : undefined,
-    startDate: filters.startDate,
-    endDate: filters.endDate
+    startDate: filter.filters.startDate,
+    endDate: filter.filters.endDate
   });
 
   const distanceReportChart = useDistanceReportChart({
@@ -90,7 +89,7 @@ export function AssetReportsDistancePage() {
 
   return (
     <>
-      <LocationFilter filterPage="reports-distance" />
+      <LocationFilter configuration={filter.configuration} />
       <div className="h-full flex flex-col">
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>

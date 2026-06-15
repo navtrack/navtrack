@@ -1,4 +1,4 @@
-import { format, subDays } from "date-fns";
+import { format } from "date-fns";
 import { atom } from "jotai";
 import { atomFamily, atomWithReset } from "jotai/utils";
 import {
@@ -12,34 +12,6 @@ import {
 } from "./locationFilterTypes";
 import { dateOptions } from "./date/dateOptions";
 
-export const altitudeFilterAtom = atomFamily(() =>
-  atomWithReset<AltitudeFilter>({
-    open: false,
-    enabled: false
-  })
-);
-
-export const durationFilterAtom = atomFamily(() =>
-  atomWithReset<DurationFilter>({
-    open: false,
-    enabled: false
-  })
-);
-
-export const speedFilterAtom = atomFamily(() =>
-  atomWithReset<SpeedFilter>({
-    open: false,
-    enabled: false
-  })
-);
-
-export const geofenceFilterAtom = atomFamily(() =>
-  atomWithReset<CircleGeofenceFilter>({
-    open: false,
-    enabled: false
-  })
-);
-
 export const dateFilterAtom = atomFamily(() =>
   atomWithReset<DateFilter>({
     startDate: dateOptions[0].startDate!,
@@ -49,44 +21,135 @@ export const dateFilterAtom = atomFamily(() =>
   })
 );
 
-export const filtersEnabledSelector = atomFamily((key: string) =>
+export const altitudeFilterAtom = atomFamily(() =>
+  atomWithReset<AltitudeFilter>({
+    open: false,
+    active: false
+  })
+);
+
+export const durationFilterAtom = atomFamily(() =>
+  atomWithReset<DurationFilter>({
+    open: false,
+    active: false
+  })
+);
+
+export const speedFilterAtom = atomFamily(() =>
+  atomWithReset<SpeedFilter>({
+    open: false,
+    active: false
+  })
+);
+export const averageSpeedFilterAtom = atomFamily(() =>
+  atomWithReset<SpeedFilter>({
+    open: false,
+    active: false
+  })
+);
+
+export const geofenceFilterAtom = atomFamily(() =>
+  atomWithReset<CircleGeofenceFilter>({
+    open: false,
+    active: false
+  })
+);
+
+const activeFilterAtoms = [
+  [LocationFilterType.Altitude, altitudeFilterAtom],
+  [LocationFilterType.Speed, speedFilterAtom],
+  [LocationFilterType.AvgSpeed, averageSpeedFilterAtom],
+  [LocationFilterType.Geofence, geofenceFilterAtom],
+  [LocationFilterType.Duration, durationFilterAtom]
+] as const;
+
+export const locationFiltersActiveListSelector = atomFamily((key: string) =>
   atom((get) => {
-    return {
-      [LocationFilterType.Altitude]: get(altitudeFilterAtom(key)).enabled,
-      [LocationFilterType.Speed]: get(speedFilterAtom(key)).enabled,
-      [LocationFilterType.Geofence]: get(geofenceFilterAtom(key)).enabled,
-      [LocationFilterType.Duration]: get(durationFilterAtom(key)).enabled,
-      all:
-        get(altitudeFilterAtom(key)).enabled &&
-        get(speedFilterAtom(key)).enabled &&
-        get(geofenceFilterAtom(key)).enabled &&
-        get(durationFilterAtom(key)).enabled
+    const activeFilters: LocationFilterType[] = activeFilterAtoms
+      .filter(([, filterAtom]) => get(filterAtom(key)).active)
+      .map(([type]) => type);
+
+    return activeFilters;
+  })
+);
+
+type OpenLocationFilterInput = {
+  type: LocationFilterType;
+  order: number;
+};
+
+export const locationFilterOpenSelector = atomFamily((key: string) =>
+  atom(null, (_, set, input: OpenLocationFilterInput) => {
+    const value = {
+      open: true,
+      order: input.order
     };
+
+    switch (input.type) {
+      case LocationFilterType.Altitude:
+        set(altitudeFilterAtom(key), (prev) => ({ ...prev, ...value }));
+        break;
+      case LocationFilterType.Duration:
+        set(durationFilterAtom(key), (prev) => ({ ...prev, ...value }));
+        break;
+      case LocationFilterType.Geofence:
+        set(geofenceFilterAtom(key), (prev) => ({ ...prev, ...value }));
+        break;
+      case LocationFilterType.Speed:
+        set(speedFilterAtom(key), (prev) => ({ ...prev, ...value }));
+        break;
+      case LocationFilterType.AvgSpeed:
+        set(averageSpeedFilterAtom(key), (prev) => ({ ...prev, ...value }));
+        break;
+    }
   })
 );
 
 export const locationFiltersSelector = atomFamily((key: string) =>
   atom((get) => {
-    const altitude = get(altitudeFilterAtom(key));
-    const duration = get(durationFilterAtom(key));
-    const speed = get(speedFilterAtom(key));
-    const geofence = get(geofenceFilterAtom(key));
-    const date = get(dateFilterAtom(key));
+    const dateFilter = get(dateFilterAtom(key));
+    const durationFilter = get(durationFilterAtom(key));
+    const geofenceFilter = get(geofenceFilterAtom(key));
+    const speedFilter = get(speedFilterAtom(key));
+    const averageSpeedFilter = get(averageSpeedFilterAtom(key));
+    const altitudeFilter = get(altitudeFilterAtom(key));
 
     return {
-      startDate: date.startDate
-        ? format(date.startDate, "yyyy-MM-dd")
+      startDate: dateFilter.startDate
+        ? format(dateFilter.startDate, "yyyy-MM-dd")
         : undefined,
-      endDate: date.endDate ? format(date.endDate, "yyyy-MM-dd") : undefined,
-      minAltitude: altitude?.enabled ? altitude.minAltitude : undefined,
-      maxAltitude: altitude?.enabled ? altitude.maxAltitude : undefined,
-      minDuration: duration?.enabled ? duration.minDuration : undefined,
-      maxDuration: duration?.enabled ? duration.maxDuration : undefined,
-      minSpeed: speed?.enabled ? speed.minSpeed : undefined,
-      maxSpeed: speed?.enabled ? speed.maxSpeed : undefined,
-      latitude: geofence?.enabled ? geofence.geofence?.latitude : undefined,
-      longitude: geofence?.enabled ? geofence.geofence?.longitude : undefined,
-      radius: geofence?.enabled ? geofence.geofence?.radius : undefined
+      endDate: dateFilter.endDate
+        ? format(dateFilter.endDate, "yyyy-MM-dd")
+        : undefined,
+      minAltitude: altitudeFilter.active
+        ? altitudeFilter.minAltitude
+        : undefined,
+      maxAltitude: altitudeFilter.active
+        ? altitudeFilter.maxAltitude
+        : undefined,
+      minDuration: durationFilter.active
+        ? durationFilter.minDuration
+        : undefined,
+      maxDuration: durationFilter.active
+        ? durationFilter.maxDuration
+        : undefined,
+      minSpeed: speedFilter.active ? speedFilter.minSpeed : undefined,
+      maxSpeed: speedFilter.active ? speedFilter.maxSpeed : undefined,
+      minAvgSpeed: averageSpeedFilter.active
+        ? averageSpeedFilter.minSpeed
+        : undefined,
+      maxAvgSpeed: averageSpeedFilter.active
+        ? averageSpeedFilter.maxSpeed
+        : undefined,
+      latitude: geofenceFilter.active
+        ? geofenceFilter.geofence?.latitude
+        : undefined,
+      longitude: geofenceFilter.active
+        ? geofenceFilter.geofence?.longitude
+        : undefined,
+      radius: geofenceFilter.active
+        ? geofenceFilter.geofence?.radius
+        : undefined
     };
   })
 );

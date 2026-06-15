@@ -6,10 +6,12 @@ import { Modal } from "../../../../ui/modal/Modal";
 import { TextInputRightAddon } from "../../../../ui/form/text-input/TextInputRightAddon";
 import { FilterModal } from "../FilterModal";
 import { DurationFilterFormValues } from "../locationFilterTypes";
-import { useDurationFilter } from "./useDurationFilter";
-import { useDurationFilterFormValidation } from "./useDurationFilterFormValidation";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
+import { useAtom } from "jotai";
+import { useCallback } from "react";
+import { number, object, ObjectSchema } from "yup";
+import { durationFilterAtom } from "../locationFilterState";
 
 type DurationFilterModalProps = {
   filterKey: string;
@@ -17,20 +19,46 @@ type DurationFilterModalProps = {
 
 export function DurationFilterModal(props: DurationFilterModalProps) {
   const units = useCurrentUnits();
-  const validationSchema = useDurationFilterFormValidation();
-  const { initialValues, state, close, handleSubmit } = useDurationFilter(
-    props.filterKey
+  const [state, setState] = useAtom(durationFilterAtom(props.filterKey));
+
+  const handleSubmit = useCallback(
+    (values: DurationFilterFormValues) => {
+      setState({
+        ...state,
+        minDuration:
+          values.minDuration !== undefined && isNaN(values.minDuration)
+            ? undefined
+            : values.minDuration,
+        maxDuration:
+          values.maxDuration !== undefined && isNaN(values.maxDuration)
+            ? undefined
+            : values.maxDuration,
+        active: !!values.minDuration || !!values.maxDuration,
+        open: false
+      });
+    },
+    [setState, state]
   );
 
+  const validationSchema: ObjectSchema<DurationFilterFormValues> = object({
+    minDuration: number().typeError("generic.number.required"),
+    maxDuration: number().typeError("generic.number.required")
+  }).defined();
+
   return (
-    <Modal open={state.open} close={close}>
+    <Modal
+      open={state.open}
+      close={() => setState((prev) => ({ ...prev, open: false }))}>
       <Formik<DurationFilterFormValues>
-        initialValues={initialValues}
+        initialValues={state}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}>
         {({ values, setFieldValue }) => (
           <Form>
-            <FilterModal icon={faClock} className="max-w-sm" onCancel={close}>
+            <FilterModal
+              icon={faClock}
+              className="max-w-sm"
+              onCancel={() => setState((prev) => ({ ...prev, open: false }))}>
               <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="locations.filter.duration.title" />
               </h3>
@@ -40,6 +68,7 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                     name={nameOf<DurationFilterFormValues>("minDuration")}
                     label="generic.min"
                     value={values.minDuration}
+                    type="number"
                     rightAddon={
                       <TextInputRightAddon>{units.length}</TextInputRightAddon>
                     }
@@ -47,7 +76,7 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                       const newValue = parseInt(e.target.value);
                       if (
                         !!values.maxDuration &&
-                        newValue > parseInt(values.maxDuration)
+                        newValue > values.maxDuration
                       ) {
                         setFieldValue(
                           nameOf<DurationFilterFormValues>("maxDuration"),
@@ -60,6 +89,7 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                     name={nameOf<DurationFilterFormValues>("maxDuration")}
                     label="generic.max"
                     value={values.maxDuration}
+                    type="number"
                     rightAddon={
                       <TextInputRightAddon>{units.length}</TextInputRightAddon>
                     }
@@ -67,7 +97,7 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                       const newValue = parseInt(e.target.value);
                       if (
                         !!values.minDuration &&
-                        newValue < parseInt(values.minDuration)
+                        newValue < values.minDuration
                       ) {
                         setFieldValue(
                           nameOf<DurationFilterFormValues>("minDuration"),

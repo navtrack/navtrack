@@ -10,52 +10,82 @@ import {
   MenuItems,
   Transition
 } from "@headlessui/react";
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import {
-  altitudeFilterAtom,
-  geofenceFilterAtom,
-  filtersEnabledSelector,
-  speedFilterAtom,
-  durationFilterAtom
+  locationFilterOpenSelector,
+  locationFiltersActiveListSelector
 } from "./locationFilterState";
 import { LocationFilterAddButtonMenuItem } from "./LocationFilterAddButtonMenuItem";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "../../../ui/button/Button";
 import { ZINDEX_MENU } from "../../../../constants";
+import {
+  LocationFilterConfiguration,
+  LocationFilterType
+} from "./locationFilterTypes";
+
+const filters = [
+  {
+    icon: faMountain,
+    labelId: "locations.filter.altitude",
+    type: LocationFilterType.Altitude
+  },
+  {
+    icon: faClock,
+    labelId: "locations.filter.duration",
+    type: LocationFilterType.Duration
+  },
+  {
+    icon: faMapMarkedAlt,
+    labelId: "locations.filter.geofence",
+    type: LocationFilterType.Geofence
+  },
+  {
+    icon: faTachometerAlt,
+    labelId: "locations.filter.speed",
+    type: LocationFilterType.Speed
+  },
+  {
+    icon: faTachometerAlt,
+    labelId: "locations.filter.avg-speed",
+    type: LocationFilterType.AvgSpeed
+  }
+];
 
 type LocationFilterAddButtonProps = {
-  duration?: boolean;
-  altitude?: boolean;
-  avgSpeed?: boolean;
-  filterKey: string;
+  configuration: LocationFilterConfiguration;
 };
 
 export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
-  const filtersEnabled = useAtomValue(filtersEnabledSelector(props.filterKey));
-  const [altitudeFilter, setAltitudeFilter] = useAtom(
-    altitudeFilterAtom(props.filterKey)
+  const activeFilters = useAtomValue(
+    locationFiltersActiveListSelector(props.configuration.filterKey)
   );
-  const [durationFilter, setDurationFilter] = useAtom(
-    durationFilterAtom(props.filterKey)
-  );
-  const [speedFilter, setSpeedFilter] = useAtom(
-    speedFilterAtom(props.filterKey)
-  );
-  const [geofenceFilter, setGeofenceFilter] = useAtom(
-    geofenceFilterAtom(props.filterKey)
-  );
+
   const [filterCount, setFilterCount] = useState(1);
 
   const getOrder = useCallback(() => {
     setFilterCount((x) => ++x);
+
     return filterCount;
   }, [filterCount]);
 
+  const openFilter = useSetAtom(
+    locationFilterOpenSelector(props.configuration.filterKey)
+  );
+
+  const filterMenuItems = useMemo(() => {
+    return filters.filter(
+      (x) =>
+        props.configuration.filters.includes(x.type) &&
+        !activeFilters.includes(x.type)
+    );
+  }, [activeFilters, props.configuration.filters]);
+
   return (
     <>
-      {!filtersEnabled.all && (
+      {filterMenuItems.length > 0 && (
         <Menu as="div" className="relative order-last inline-block text-left">
           <MenuButton as={Fragment}>
             <div>
@@ -76,70 +106,19 @@ export function LocationFilterAddButton(props: LocationFilterAddButtonProps) {
               className="absolute left-0 mt-2 w-44 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
               style={{ zIndex: ZINDEX_MENU }}>
               <div className="py-1">
-                {!altitudeFilter.enabled && (
+                {filterMenuItems.map((item) => (
                   <MenuItem>
                     <LocationFilterAddButtonMenuItem
-                      icon={faMountain}
-                      labelId="locations.filter.altitude"
-                      onClick={() =>
-                        setAltitudeFilter((x) => ({
-                          ...x,
-                          open: true,
-                          order: getOrder()
-                        }))
-                      }
+                      icon={item.icon}
+                      labelId={item.labelId}
+                      onClick={() => {
+                        const order = getOrder();
+
+                        openFilter({ type: item.type, order });
+                      }}
                     />
                   </MenuItem>
-                )}
-                {props.duration && !durationFilter.enabled && (
-                  <MenuItem>
-                    <LocationFilterAddButtonMenuItem
-                      icon={faClock}
-                      labelId="locations.filter.duration"
-                      onClick={() =>
-                        setDurationFilter((x) => ({
-                          ...x,
-                          open: true,
-                          order: getOrder()
-                        }))
-                      }
-                    />
-                  </MenuItem>
-                )}
-                {!geofenceFilter.enabled && (
-                  <MenuItem>
-                    <LocationFilterAddButtonMenuItem
-                      icon={faMapMarkedAlt}
-                      labelId="locations.filter.geofence"
-                      onClick={() =>
-                        setGeofenceFilter((x) => ({
-                          ...x,
-                          open: true,
-                          order: getOrder()
-                        }))
-                      }
-                    />
-                  </MenuItem>
-                )}
-                {!speedFilter.enabled && (
-                  <MenuItem>
-                    <LocationFilterAddButtonMenuItem
-                      icon={faTachometerAlt}
-                      labelId={
-                        props.avgSpeed
-                          ? "locations.filter.avg-speed"
-                          : "locations.filter.speed"
-                      }
-                      onClick={() =>
-                        setSpeedFilter((x) => ({
-                          ...x,
-                          open: true,
-                          order: getOrder()
-                        }))
-                      }
-                    />
-                  </MenuItem>
-                )}
+                ))}
               </div>
             </MenuItems>
           </Transition>

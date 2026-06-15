@@ -123,24 +123,26 @@ export function TableV2<T>(props: TableProps<T>) {
           {hasFooter && (
             <tfoot>
               <tr>
-                {props.columns.map((column, index) => (
-                  <td
-                    colSpan={column.footerColSpan}
-                    key={`footer${index}`}
-                    className={classNames(
-                      "font-bold sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
-                      column.footerClassName
-                    )}>
-                    {index === 0 &&
-                    column.footer === undefined &&
-                    props.rows === undefined ? (
-                      <div className="flex">
-                        <LoadingIndicator />
-                      </div>
-                    ) : null}
-                    {column.footer?.(props.getColumnTotal?.(column))}
-                  </td>
-                ))}
+                {props.columns
+                  .filter((column) => column.footer !== null)
+                  .map((column, index) => (
+                    <td
+                      colSpan={column.footerColSpan}
+                      key={`footer${index}`}
+                      className={classNames(
+                        "font-bold sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
+                        column.footerClassName
+                      )}>
+                      {index === 0 &&
+                      column.footer === undefined &&
+                      props.rows === undefined ? (
+                        <div className="flex">
+                          <LoadingIndicator />
+                        </div>
+                      ) : null}
+                      {column.footer?.(props.getColumnTotal?.(column))}
+                    </td>
+                  ))}
               </tr>
             </tfoot>
           )}

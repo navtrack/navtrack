@@ -1,13 +1,11 @@
 import { TableV2 } from "../../ui/table/TableV2";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtomValue } from "jotai";
 import { Card } from "../../ui/card/Card";
 import { CustomBarChart } from "../../ui/charts/bar/CustomBarChart";
 import { useElementSize } from "@navtrack/shared/hooks/util/useElementSize";
 import { useRef } from "react";
 import { ButtonGroup } from "../../ui/button/ButtonGroup";
-import { useLocationFilterKey } from "../../asset/shared/location-filter/useLocationFilterKey";
-import { locationFiltersSelector } from "../../asset/shared/location-filter/locationFilterState";
+import { useLocationFilter } from "../../asset/shared/location-filter/useLocationFilter";
 import { LocationFilter } from "../../asset/shared/location-filter/LocationFilter";
 import { useAssetsQuery } from "@navtrack/shared/hooks/queries/assets/useAssetsQuery";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
@@ -22,8 +20,10 @@ import { useTable } from "../../ui/table/useTable";
 export function OrganizationReportsDistancePage() {
   const show = useShow();
   const currentOrganization = useCurrentOrganization();
-  const locationFilterKey = useLocationFilterKey("reports-distance");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-reports-distance",
+    filters: []
+  });
 
   const tableRef = useRef<HTMLDivElement>(null);
   const tableSize = useElementSize(tableRef);
@@ -34,8 +34,8 @@ export function OrganizationReportsDistancePage() {
 
   const distanceReport = useDistanceReport({
     assetIds: assets.data?.items.map((asset) => asset.id) || [],
-    startDate: filters.startDate,
-    endDate: filters.endDate
+    startDate: filter.filters.startDate,
+    endDate: filter.filters.endDate
   });
   const distanceReportChart = useDistanceReportChart({
     items: distanceReport.result.items
@@ -94,7 +94,7 @@ export function OrganizationReportsDistancePage() {
 
   return (
     <>
-      <LocationFilter filterPage="reports-distance" />
+      <LocationFilter configuration={filter.configuration} />
       <div className="h-full flex flex-col">
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>

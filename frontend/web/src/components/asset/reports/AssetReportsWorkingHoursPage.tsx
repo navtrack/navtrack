@@ -3,9 +3,7 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset"
 import { TableV2 } from "../../ui/table/TableV2";
 import { TripModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtomValue } from "jotai";
-import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
-import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
+import { useLocationFilter } from "../shared/location-filter/useLocationFilter";
 import { useCallback } from "react";
 import {
   addDays,
@@ -38,13 +36,14 @@ type WorkingHoursTableRow = {
 export function AssetReportsWorkingHoursPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
-  const locationFilterKey = useLocationFilterKey("reports-trips");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-reports-trips"
+  });
   const workSchedule = useOrganizationWorkSchedule();
 
   const query = useAssetTripsQueries({
     assetId: currentAsset.data?.id,
-    ...filters
+    ...filter.filters
   });
 
   const tableRows: WorkingHoursTableRow[] = query.queries
@@ -263,7 +262,7 @@ export function AssetReportsWorkingHoursPage() {
 
   return (
     <>
-      <LocationFilter filterPage="reports-trips" />
+      <LocationFilter configuration={filter.configuration} />
       <TableV2<WorkingHoursTableRow> className="h-full" {...table.props} />
     </>
   );

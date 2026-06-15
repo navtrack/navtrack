@@ -7,7 +7,7 @@ export interface ITableColumn<T> {
   row: (row: T, index: number) => ReactNode;
   headerClassName?: string;
   rowClassName?: string;
-  footer?: (total?: number) => ReactNode;
+  footer?: ((total?: number) => ReactNode) | null;
   footerClassName?: string;
   footerColSpan?: number;
   sort?: "asc" | "desc";

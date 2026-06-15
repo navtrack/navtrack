@@ -1,20 +1,20 @@
 import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { useMemo } from "react";
-import { useAtom } from "jotai";
-import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
+import { useAtom } from "jotai";
 import { altitudeFilterAtom } from "../locationFilterState";
+import { useResetAtom } from "jotai/utils";
 
-interface IAltitudeFilterBadge {
+type AltitudeFilterBadgeProps = {
   filterKey: string;
-}
+};
 
-export function AltitudeFilterBadge(props: IAltitudeFilterBadge) {
+export function AltitudeFilterBadge(props: AltitudeFilterBadgeProps) {
   const [state, setState] = useAtom(altitudeFilterAtom(props.filterKey));
-  const units = useCurrentUnits();
   const reset = useResetAtom(altitudeFilterAtom(props.filterKey));
+  const units = useCurrentUnits();
 
   const text = useMemo(() => {
     if (state.minAltitude && state.maxAltitude) {
@@ -24,14 +24,14 @@ export function AltitudeFilterBadge(props: IAltitudeFilterBadge) {
     } else if (state.maxAltitude) {
       return `< ${state.maxAltitude} (${units.length})`;
     }
-  }, [state.maxAltitude, state.minAltitude, units.length]);
+  }, [state, units.length]);
 
   return (
     <>
-      {state.enabled && (
+      {state.active && (
         <FilterBadge
           order={state.order}
-          onClick={() => setState((x) => ({ ...x, open: true }))}
+          onClick={() => setState((prev) => ({ ...prev, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faMountain}>{text}</IconWithText>
         </FilterBadge>

@@ -16,8 +16,8 @@ export type AssetTripsQueriesProps = {
   maxAltitude?: number;
   minDuration?: number;
   maxDuration?: number;
-  minSpeed?: number;
-  maxSpeed?: number;
+  minAvgSpeed?: number;
+  maxAvgSpeed?: number;
   latitude?: number;
   longitude?: number;
   radius?: number;
@@ -55,8 +55,8 @@ export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
     queries: days.map((day) => ({
       queryKey: getAssetsTripsGetListQueryKey(props.assetId!, {
         Date: formatApiDate(day),
-        MinAvgSpeed: props.minSpeed,
-        MaxAvgSpeed: props.maxSpeed,
+        MinAvgSpeed: props.minAvgSpeed,
+        MaxAvgSpeed: props.maxAvgSpeed,
         MinAltitude: props.minAltitude,
         MaxAltitude: props.maxAltitude,
         MinDuration: props.minDuration,
@@ -70,8 +70,8 @@ export function useAssetTripsQueries(props: AssetTripsQueriesProps) {
           props.assetId!,
           {
             Date: formatApiDate(day),
-            MinAvgSpeed: props.minSpeed,
-            MaxAvgSpeed: props.maxSpeed,
+            MinAvgSpeed: props.minAvgSpeed,
+            MaxAvgSpeed: props.maxAvgSpeed,
             MinAltitude: props.minAltitude,
             MaxAltitude: props.maxAltitude,
             MinDuration: props.minDuration,

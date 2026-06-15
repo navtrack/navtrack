@@ -8,10 +8,9 @@ import { FilterModal } from "../FilterModal";
 import { DateFilter, DateRange } from "../locationFilterTypes";
 import { dateOptions } from "./dateOptions";
 import { classNames } from "@navtrack/shared/utils/tailwind";
-import { useCallback } from "react";
 import { useAtom } from "jotai";
-import { dateFilterAtom } from "../locationFilterState";
 import { FormikDateRangePicker } from "../../../../ui/datepicker/FormikDateRangePicker";
+import { dateFilterAtom } from "../locationFilterState";
 
 type DateFilterModalProps = {
   filterKey: string;
@@ -20,31 +19,25 @@ type DateFilterModalProps = {
 export function DateFilterModal(props: DateFilterModalProps) {
   const [state, setState] = useAtom(dateFilterAtom(props.filterKey));
 
-  const close = useCallback(
-    () => setState((x) => ({ ...x, open: false })),
-    [setState]
-  );
-
-  const handleSubmit = useCallback(
-    (values: DateFilter) => {
-      setState((x) => ({
-        startDate: values.startDate,
-        endDate: values.endDate,
-        range: values.range,
-        open: false
-      }));
-    },
-    [setState]
-  );
-
   return (
-    <Modal open={state.open} close={close}>
-      <Formik<DateFilter> initialValues={state} onSubmit={handleSubmit}>
+    <Modal
+      open={state.open}
+      close={() => setState((x) => ({ ...x, open: false }))}>
+      <Formik<DateFilter>
+        initialValues={state}
+        onSubmit={(values: DateFilter) => {
+          setState({
+            startDate: values.startDate,
+            endDate: values.endDate,
+            range: values.range,
+            open: false
+          });
+        }}>
         {({ values, setFieldValue }) => (
           <Form>
             <FilterModal
               icon={faCalendarAlt}
-              onCancel={close}
+              onCancel={() => setState((x) => ({ ...x, open: false }))}
               className="w-100">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage id="locations.filter.date.title" />

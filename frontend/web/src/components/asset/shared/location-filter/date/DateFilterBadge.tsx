@@ -1,13 +1,13 @@
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
+import { useAtom } from "jotai";
 import { useMemo } from "react";
 import { FilterBadge } from "../FilterBadge";
-import { dateFilterAtom } from "../locationFilterState";
 import { DateRange } from "../locationFilterTypes";
-import { useAtom } from "jotai";
 import { useIntl } from "react-intl";
 import { dateOptions } from "./dateOptions";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
+import { dateFilterAtom } from "../locationFilterState";
 
 type DateFilterBadgeProps = {
   filterKey: string;
@@ -29,11 +29,11 @@ export function DateFilterBadge(props: DateFilterBadgeProps) {
     if (dateOption) {
       return intl.formatMessage({ id: dateOption.name });
     }
-  }, [intl, state.endDate, state.range, state.startDate]);
+  }, [intl, state]);
 
   return (
     <FilterBadge
-      onClick={() => setState((x) => ({ ...x, open: true }))}
+      onClick={() => setState((prev) => ({ ...prev, open: true }))}
       order={0}>
       <IconWithText icon={faCalendarAlt}>{dateFilterText}</IconWithText>
     </FilterBadge>

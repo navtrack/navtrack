@@ -2,9 +2,6 @@ import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtomValue } from "jotai";
-import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
-import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
 import {
   TripStopModel,
@@ -15,16 +12,18 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useMemo, useState } from "react";
 import { AssetTripStopDetailsPanel } from "./AssetTripStopDetailsPanel";
 import { useTable } from "../../ui/table/useTable";
+import { useLocationFilter } from "../shared/location-filter/useLocationFilter";
 
 export function AssetReportsTripStopsPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
-  const locationFilterKey = useLocationFilterKey("reports-trips");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-reports-stops"
+  });
   const tripsStopsReport = useAssetTripsStopsQueries({
     assetId: currentAsset.data?.id,
-    startDate: filters.startDate,
-    endDate: filters.endDate
+    startDate: filter.filters.startDate,
+    endDate: filter.filters.endDate
   });
   const [showTripPanel, setShowTripPanel] = useState(false);
   const [selectedStopIndex, setSelectedStopIndex] = useState(0);
@@ -117,7 +116,7 @@ export function AssetReportsTripStopsPage() {
           }
         />
       )}
-      <LocationFilter filterPage="reports-trips" />
+      <LocationFilter configuration={filter.configuration} />
       <TableV2<TripStopModel> className="h-full" {...table.props} />
     </>
   );

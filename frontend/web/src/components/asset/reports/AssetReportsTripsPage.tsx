@@ -3,24 +3,24 @@ import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset"
 import { TableV2 } from "../../ui/table/TableV2";
 import { TripModel } from "@navtrack/shared/api/model";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtomValue } from "jotai";
-import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
-import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { useAssetTripsQueries } from "@navtrack/shared/hooks/queries/assets/useAssetTripsQueries";
 import { Icon } from "../../ui/icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
 import { useTable } from "../../ui/table/useTable";
+import { useLocationFilter } from "../shared/location-filter/useLocationFilter";
 
 export function AssetReportsTripsPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
-  const locationFilterKey = useLocationFilterKey("reports-trips");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-reports-trips"
+  });
   const query = useAssetTripsQueries({
     assetId: currentAsset.data?.id,
-    ...filters
+    ...filter.filters
   });
+
   const table = useTable<TripModel>({
     rows: query.allTrips,
     columns: [
@@ -109,7 +109,7 @@ export function AssetReportsTripsPage() {
 
   return (
     <>
-      <LocationFilter filterPage="reports-trips" />
+      <LocationFilter configuration={filter.configuration} />
       <TableV2<TripModel> className="h-full" {...table.props} />
     </>
   );

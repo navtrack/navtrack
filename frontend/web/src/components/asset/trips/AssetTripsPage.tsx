@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useAtomValue } from "jotai";
 import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { Card } from "../../ui/card/Card";
 import { Map } from "../../ui/map/Map";
@@ -8,8 +7,7 @@ import { CardMapWrapper } from "../../ui/map/CardMapWrapper";
 import { TableV2 } from "../../ui/table/TableV2";
 import { PositionDataModel, TripModel } from "@navtrack/shared/api/model";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
-import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
-import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
+import { useLocationFilter } from "../shared/location-filter/useLocationFilter";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { GeocodeReverse } from "@navtrack/shared/components/components/geo/GeocodeReverse";
 import { AssetTripDetailsPanel } from "./AssetTripDetailsPanel";
@@ -19,16 +17,24 @@ import { useAssetTripsQueries } from "@navtrack/shared/hooks/queries/assets/useA
 import { useOnChange } from "@navtrack/shared/hooks/util/useOnChange";
 import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 import { useTable } from "../../ui/table/useTable";
+import { LocationFilterType } from "../shared/location-filter/locationFilterTypes";
 
 export function AssetTripsPage() {
   const show = useShow();
   const [selectedTripIndex, setSelectedTripIndex] = useState(0);
   const currentAsset = useCurrentAsset();
-  const locationFilterKey = useLocationFilterKey("trips");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-trips",
+    filters: [
+      LocationFilterType.Altitude,
+      LocationFilterType.Duration,
+      LocationFilterType.Geofence,
+      LocationFilterType.AvgSpeed
+    ]
+  });
   const query = useAssetTripsQueries({
     assetId: currentAsset.data?.id,
-    ...filters
+    ...filter.filters
   });
 
   const [showTripPanel, setShowTripPanel] = useState(false);
@@ -165,7 +171,7 @@ export function AssetTripsPage() {
 
   return (
     <>
-      <LocationFilter filterPage="trips" duration altitude avgSpeed />
+      <LocationFilter configuration={filter.configuration} />
       {selectedTripForModal && (
         <AssetTripDetailsPanel
           trip={selectedTripForModal}

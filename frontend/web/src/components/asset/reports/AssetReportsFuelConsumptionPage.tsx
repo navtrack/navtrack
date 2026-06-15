@@ -2,9 +2,6 @@ import { LocationFilter } from "../shared/location-filter/LocationFilter";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { TableV2 } from "../../ui/table/TableV2";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
-import { useAtomValue } from "jotai";
-import { locationFiltersSelector } from "../shared/location-filter/locationFilterState";
-import { useLocationFilterKey } from "../shared/location-filter/useLocationFilterKey";
 import { useRef } from "react";
 import { ButtonGroup } from "../../ui/button/ButtonGroup";
 import { Card } from "../../ui/card/Card";
@@ -18,17 +15,19 @@ import {
   useDistanceReportChart
 } from "@navtrack/shared/hooks/reports/useDistanceReportChart";
 import { useTable } from "../../ui/table/useTable";
+import { useLocationFilter } from "../shared/location-filter/useLocationFilter";
 
 export function AssetReportsFuelConsumptionPage() {
   const show = useShow();
   const currentAsset = useCurrentAsset();
-  const locationFilterKey = useLocationFilterKey("reports-fuel-consumption");
-  const filters = useAtomValue(locationFiltersSelector(locationFilterKey));
+  const filter = useLocationFilter({
+    page: "asset-reports-fuel-consumption"
+  });
 
   const distanceReport = useDistanceReport({
     assetIds: currentAsset.data ? [currentAsset.data.id] : [],
-    startDate: filters.startDate,
-    endDate: filters.endDate
+    startDate: filter.filters.startDate,
+    endDate: filter.filters.endDate
   });
 
   const distanceReportChart = useDistanceReportChart({
@@ -106,7 +105,7 @@ export function AssetReportsFuelConsumptionPage() {
 
   return (
     <>
-      <LocationFilter filterPage="reports-fuel-consumption" />
+      <LocationFilter configuration={filter.configuration} />
       <div className="h-full flex flex-col">
         <div className="flex-1" ref={tableRef}>
           <TableV2<DistanceReportItemModel>

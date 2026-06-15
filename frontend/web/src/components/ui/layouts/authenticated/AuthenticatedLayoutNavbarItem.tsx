@@ -10,11 +10,7 @@ import { useCallback, useMemo } from "react";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { Icon } from "../../icon/Icon";
-import {
-  faAngleDown,
-  faArrowDownShortWide,
-  faCaretDown
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 export function AuthenticatedLayoutNavbarItem(props: NavbarMenuItem) {
   const currentAsset = useCurrentAsset();
