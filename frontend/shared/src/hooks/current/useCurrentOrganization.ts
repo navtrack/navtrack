@@ -15,7 +15,7 @@ export function useCurrentOrganization() {
   );
 
   return {
-    id: organization?.id,
+    id: current.organizationId,
     data: organization,
     isLoading: organizations.isLoading
   };

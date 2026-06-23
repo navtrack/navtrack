@@ -7,7 +7,7 @@ export function useCurrentTeam() {
   const team = useTeamQuery({ teamId: current.teamId });
 
   return {
-    id: team.data?.id,
+    id: current.teamId,
     data: team.data,
     isLoading: team.isLoading
   };
