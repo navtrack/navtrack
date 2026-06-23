@@ -2,14 +2,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
-using Navtrack.Api.Services.Organizations.Events;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Organizations;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Services.Organizations;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Organizations;
 
@@ -45,14 +43,5 @@ public class DeleteOrganizationUserRequestHandler(
     {
         await userRepository.DeleteUserFromOrganization(user!.Id, organization!.Id);
         await organizationRepository.UpdateUsersCount(organization.Id);
-    }
-
-    public override IEvent GetEvent(DeleteOrganizationUserRequest request)
-    {
-        return new UserOrganizationDeletedEvent
-        {
-            UserId = user!.Id.ToString(),
-            OrganizationId = organization!.Id.ToString()
-        };
     }
 }

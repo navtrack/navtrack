@@ -4,14 +4,12 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
-using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Api.Services.Teams.Mappers;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Services.Teams;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Teams;
 
@@ -52,14 +50,5 @@ public class CreateTeamUserRequestHandler(
 
         await userRepository.AddUserToTeam(entity);
         await teamRepository.UpdateUsersCount(team.Id);
-    }
-
-    public override IEvent GetEvent(CreateTeamUserRequest request)
-    {
-        return new TeamUserCreatedEvent
-        {
-            TeamId = team!.Id.ToString(),
-            UserId = user!.Id.ToString()
-        };
     }
 }

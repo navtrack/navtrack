@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Navtrack.Api.Services.Assets.Events;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
@@ -8,7 +7,6 @@ using Navtrack.Database.Model.Users;
 using Navtrack.Database.Services.Assets;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Assets;
 
@@ -35,10 +33,5 @@ public class DeleteAssetUserRequestHandler(
     public override Task Handle(DeleteAssetUserRequest request)
     {
         return userRepository.RemoveAssetFromUser(asset!.Id, user!.Id);
-    }
-
-    public override IEvent GetEvent(DeleteAssetUserRequest request)
-    {
-        return new AssetUserDeletedEvent(asset!.Id.ToString(), user!.Id.ToString());
     }
 }

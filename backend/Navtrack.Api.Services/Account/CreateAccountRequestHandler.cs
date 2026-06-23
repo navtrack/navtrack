@@ -1,13 +1,11 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Account.Events;
 using Navtrack.Api.Services.Account.Mappers;
 using Navtrack.Api.Services.Common.Passwords;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Account;
 
@@ -43,13 +41,5 @@ public class CreateAccountRequestHandler(
         user = UserDocumentMapper.Map(request.Model.Email, hash, salt);
         
         await userRepository.Add(user);
-    }
-
-    public override IEvent GetEvent(CreateAccountRequest request)
-    {
-        return new AccountCreatedEvent
-        {
-            UserId = user.Id.ToString()
-        };
     }
 }

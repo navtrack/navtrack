@@ -1,14 +1,12 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Services.Assets;
 using Navtrack.Database.Services.Organizations;
 using Navtrack.Database.Services.Teams;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Teams;
 
@@ -34,14 +32,5 @@ public class DeleteTeamRequestHandler(
         await organizationRepository.UpdateTeamsCount(team!.OrganizationId);
         await userRepository.RemoveTeamFromUsers(team.Id);
         await assetRepository.RemoveTeamFromAssets(team.Id);
-    }
-
-    public override IEvent GetEvent(DeleteTeamRequest request)
-    {
-        return new TeamDeletedEvent
-        {
-            TeamId = team!.Id.ToString(),
-            OrganizationId = team!.OrganizationId.ToString()
-        };
     }
 }

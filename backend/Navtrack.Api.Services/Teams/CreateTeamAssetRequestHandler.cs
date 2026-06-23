@@ -4,13 +4,11 @@ using Navtrack.Api.Model.Errors;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
-using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Services.Assets;
 using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Teams;
 
@@ -45,11 +43,4 @@ public class CreateTeamAssetRequestHandler(
     {
         await teamRepository.AddAsset(team!.Id, asset!.Id, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
     }
-
-    public override IEvent GetEvent(CreateTeamAssetRequest request) =>
-        new TeamAssetCreatedEvent
-        {
-            AssetId = asset!.Id.ToString(),
-            TeamId = team!.Id.ToString()
-        };
 }

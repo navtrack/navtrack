@@ -11,5 +11,6 @@ public interface IGenericPostgresRepository<T> where T : class
     Task Update(T entity);
     Task AddRange(IEnumerable<T> entities);
     Task<T?> GetById(string? id);
+    Task<T?> GetById(Guid? id);
     Task Delete(T entity);
 }

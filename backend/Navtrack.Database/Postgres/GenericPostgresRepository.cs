@@ -42,8 +42,15 @@ public class GenericPostgresRepository<T> : IGenericPostgresRepository<T> where 
 
     public virtual Task<T?> GetById(string? id)
     {
-        return !string.IsNullOrEmpty(id)
-            ? repository.GetQueryable<T>().FirstOrDefaultAsync(x => x.Id == Guid.Parse(id))
+        return !string.IsNullOrEmpty(id) && Guid.TryParse(id, out Guid guid)
+            ? repository.GetQueryable<T>().FirstOrDefaultAsync(x => x.Id == guid)
+            : Task.FromResult<T?>(null);
+    }
+
+    public Task<T?> GetById(Guid? id)
+    {
+        return id.HasValue
+            ? repository.GetQueryable<T>().FirstOrDefaultAsync(x => x.Id == id.Value)
             : Task.FromResult<T?>(null);
     }
 

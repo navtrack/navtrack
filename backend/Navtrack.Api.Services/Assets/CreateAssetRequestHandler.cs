@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Assets.Events;
 using Navtrack.Api.Services.Assets.Mappers;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.RequestContext;
@@ -14,7 +13,6 @@ using Navtrack.Database.Services.Assets;
 using Navtrack.Database.Services.Devices;
 using Navtrack.Database.Services.Organizations;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Assets;
 
@@ -75,7 +73,4 @@ public class CreateAssetRequestHandler(
 
         return asset;
     }
-    
-    public override IEvent GetEvent(CreateAssetRequest _, Entity result) =>
-        new AssetCreatedEvent(result.Id, organization!.Id.ToString());
 }

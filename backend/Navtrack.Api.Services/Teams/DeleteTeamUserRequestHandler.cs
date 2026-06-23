@@ -2,13 +2,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Requests;
-using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Services.Teams;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Teams;
 
@@ -35,14 +33,5 @@ public class DeleteTeamUserRequestHandler(ITeamRepository teamRepository, IUserR
     {
         await userRepository.RemoveTeamFromUser(user!.Id, team!.Id);
         await teamRepository.UpdateUsersCount(team.Id);
-    }
-
-    public override IEvent GetEvent(DeleteTeamUserRequest request)
-    {
-        return new TeamUserDeletedEvent
-        {
-            TeamId = team!.Id.ToString(),
-            UserId = user!.Id.ToString()
-        };
     }
 }

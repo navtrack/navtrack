@@ -19,7 +19,6 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
     public DbSet<DeviceMessageEntity> DeviceMessages { get; set; }
     public DbSet<OrganizationEntity> Organizations { get; set; }
     public DbSet<OrganizationUserEntity> OrganizationUsers { get; set; }
-    public DbSet<SystemEventEntity> SystemEvents { get; set; }
     public DbSet<SystemSettingEntity> SystemSettings { get; set; }
     public DbSet<TeamAssetEntity> TeamAssets { get; set; }
     public DbSet<TeamEntity> Teams { get; set; }
@@ -119,13 +118,6 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
             entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
 
             entity.HasAlternateKey(x => new { x.OrganizationId, x.UserId });
-        });
-
-        modelBuilder.Entity<SystemEventEntity>(entity =>
-        {
-            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
-
-            entity.Property(x => x.Payload).HasColumnType("jsonb");
         });
 
         modelBuilder.Entity<SystemSettingEntity>(entity =>

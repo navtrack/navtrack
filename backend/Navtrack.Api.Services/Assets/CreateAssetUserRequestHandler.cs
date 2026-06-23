@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Assets.Events;
 using Navtrack.Api.Services.Assets.Mappers;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.RequestContext;
@@ -11,7 +10,6 @@ using Navtrack.Database.Model.Users;
 using Navtrack.Database.Services.Assets;
 using Navtrack.Database.Services.Users;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Assets;
 
@@ -41,10 +39,5 @@ public class CreateAssetUserRequestHandler(IAssetRepository assetRepository, IUs
         AssetUserEntity userAsset = UserAssetElementMapper.Map(user.Id, asset!.Id, request.Model.UserRole, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
         await userRepository.AddAssetToUser(user!.Id, userAsset);
-    }
-
-    public override IEvent GetEvent(CreateAssetUserRequest request)
-    {
-        return new AssetUserCreatedEvent(asset!.Id.ToString(), user!.Id.ToString());
     }
 }
