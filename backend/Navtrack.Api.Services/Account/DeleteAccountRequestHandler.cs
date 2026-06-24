@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -39,11 +40,11 @@ public class DeleteAccountRequestHandler(
 
         apiException.ThrowIfInvalid();
 
-        var ownedOrganizations = currentUser.OrganizationUsers
+        List<OrganizationUserEntity> ownedOrganizations = currentUser.OrganizationUsers
             .Where(x => x.UserRole == OrganizationUserRole.Owner)
             .ToList();
 
-        foreach (var orgUser in ownedOrganizations)
+        foreach (OrganizationUserEntity orgUser in ownedOrganizations)
         {
             int ownersCount = await userRepository.GetOrganizationOwnersCount(orgUser.OrganizationId);
 
