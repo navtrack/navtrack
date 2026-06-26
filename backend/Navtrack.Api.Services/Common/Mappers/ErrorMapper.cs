@@ -19,10 +19,17 @@ public static class ErrorMapper
             Errors = exception.ValidationErrors.GroupBy(x => x.PropertyName.ToCamelCase())
                 .ToDictionary(x => x.Key, x => x.Select(y => y.Code).ToArray())
         };
-        
-        error.Errors = error.Errors.Any() ? error.Errors : null;
-        
-        
+
+        if (error.Errors.Count == 1)
+        {
+            error.Message = error.Errors.First().Value.First();
+        }
+        else if (error.Errors.Count == 0)
+        {
+            error.Errors = error.Errors.Any() ? error.Errors : null;
+        }
+
+
         return error;
     }
 

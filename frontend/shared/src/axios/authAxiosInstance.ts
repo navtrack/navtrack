@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 // custom-instance.ts
 
 import Axios, { AxiosRequestConfig } from "axios";
@@ -12,7 +14,14 @@ export const authAxiosInstance = <T>(
   const promise = AUTH_AXIOS_INSTANCE({
     ...config,
     cancelToken: source.token
-  }).then(({ data }) => data);
+  })
+    .then(({ data }) => data)
+    .catch((error) => {
+      console.log(error);
+      console.log(error.response?.data);
+
+      return Promise.reject(error.response?.data);
+    });
 
   // @ts-ignore
 
