@@ -24,7 +24,7 @@ public class UpdateAssetRequestHandler(IAssetRepository assetRepository) : BaseR
         context.ValidationException.AddErrorIfTrue(
             nameIsUsed,
             nameof(context.Request.Model.Name),
-            ApiErrorCodes.Asset_000002_NameAlreadyUsed);
+            ApiErrorCodes.Asset_NameAlreadyUsed);
     }
 
     public override Task Handle(UpdateAssetRequest request)

@@ -41,13 +41,13 @@ export function AssetReportsFuelConsumptionPage() {
     rows: distanceReport.result.items,
     columns: [
       {
-        labelId: "generic.date",
+        labelId: "date",
         row: (item) => <>{show.date(item.date)}</>,
         value: (item) => item.date,
         sort: "desc"
       },
       {
-        labelId: "generic.distance",
+        labelId: "distance",
         row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -57,7 +57,7 @@ export function AssetReportsFuelConsumptionPage() {
         value: (item) => item.distance
       },
       {
-        labelId: "generic.duration",
+        labelId: "duration",
         row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -67,7 +67,7 @@ export function AssetReportsFuelConsumptionPage() {
         value: (item) => item.duration
       },
       {
-        labelId: "generic.average-speed",
+        labelId: "average-speed",
         row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -77,7 +77,7 @@ export function AssetReportsFuelConsumptionPage() {
         value: (item) => item.averageSpeed
       },
       {
-        labelId: "generic.fuel-consumption",
+        labelId: "fuel-consumption",
         row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -87,7 +87,7 @@ export function AssetReportsFuelConsumptionPage() {
         value: (item) => item.fuelConsumption
       },
       {
-        labelId: "generic.average-fuel-consumption",
+        labelId: "average-fuel-consumption",
         row: (item) => (
           <>{show.fuelConsumption(item.averageFuelConsumption) ?? "-"}</>
         ),

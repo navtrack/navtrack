@@ -23,7 +23,7 @@ public class UpdateTeamRequestHandler(ITeamRepository teamRepository) : BaseRequ
                                                        team.OrganizationId,
                                                        team.Id),
             nameof(context.Request.Model.Name),
-            ApiErrorCodes.Team_000001_NameIsUsed);
+            ApiErrorCodes.Team_NameIsUsed);
     }
 
     public override async Task Handle(UpdateTeamRequest request)

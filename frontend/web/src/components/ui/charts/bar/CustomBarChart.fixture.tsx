@@ -79,7 +79,7 @@ export default {
   Default: () => {
     const units = useCurrentUnits();
     const bars: BarConfig<ChartItem>[] = [
-      { key: "distance", labelId: "generic.distance" }
+      { key: "distance", labelId: "distance" }
     ];
     const convert = useConvert();
 

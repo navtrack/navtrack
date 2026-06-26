@@ -27,7 +27,7 @@ public class UpdateUserRequestHandler(IUserRepository userRepository, INavtrackR
                 if (await userRepository.EmailIsUsed(request.Model.Email))
                 {
                     throw new ValidationApiException().AddValidationError(nameof(UpdateUserModel.Email),
-                        ApiErrorCodes.User_000002_EmailAlreadyUsed);
+                        ApiErrorCodes.User_EmailAlreadyUsed);
                 }
 
                 updateUser.Email = request.Model.Email;

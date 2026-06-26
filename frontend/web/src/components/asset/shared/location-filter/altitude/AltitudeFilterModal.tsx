@@ -46,8 +46,8 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
   );
 
   const validationSchema: ObjectSchema<AltitudeFilterFormValues> = object({
-    minAltitude: number().typeError("generic.number.required"),
-    maxAltitude: number().typeError("generic.number.required")
+    minAltitude: number().typeError("number.required"),
+    maxAltitude: number().typeError("number.required")
   }).defined();
 
   return (
@@ -77,7 +77,7 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
                 <div className="flex space-x-4">
                   <FormikTextInput
                     name={nameOf<AltitudeFilterFormValues>("minAltitude")}
-                    label="generic.min"
+                    label="min"
                     value={values.minAltitude}
                     type="number"
                     rightAddon={
@@ -98,7 +98,7 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
                   />
                   <FormikTextInput
                     name={nameOf<AltitudeFilterFormValues>("maxAltitude")}
-                    label="generic.max"
+                    label="max"
                     value={values.maxAltitude}
                     type="number"
                     rightAddon={

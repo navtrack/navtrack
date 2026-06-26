@@ -50,7 +50,7 @@ export function ForgotPasswordPage() {
                   <Form className="space-y-3">
                     <FormikTextInput
                       name="email"
-                      label={"generic.email"}
+                      label={"email"}
                       value={values.email}
                       autoComplete="username"
                       className="pl-8"

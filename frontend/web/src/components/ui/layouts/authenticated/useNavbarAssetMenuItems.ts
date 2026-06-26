@@ -23,13 +23,13 @@ export function useNavbarAssetMenuItems() {
       order: 10
     },
     {
-      label: "generic.dashboard",
+      label: "dashboard",
       path: Paths.AssetDashboard,
       icon: faGauge,
       order: 15
     },
     {
-      label: "generic.trips",
+      label: "trips",
       path: Paths.AssetTrips,
       icon: faRoute,
       order: 20
@@ -41,31 +41,31 @@ export function useNavbarAssetMenuItems() {
       order: 25,
       subMenuItems: [
         {
-          label: "generic.distance",
+          label: "distance",
           path: Paths.AssetReportsDistance,
           icon: faTachometer,
           order: 10
         },
         {
-          label: "generic.fuel-consumption",
+          label: "fuel-consumption",
           path: Paths.AssetReportsFuelConsumption,
           icon: faGasPump,
           order: 20
         },
         {
-          label: "generic.trips",
+          label: "trips",
           path: Paths.AssetReportsTrips,
           icon: faRoute,
           order: 30
         },
         {
-          label: "generic.stops",
+          label: "stops",
           path: Paths.AssetReportsStops,
           icon: faStopCircle,
           order: 40
         },
         {
-          label: "generic.working-hours",
+          label: "working-hours",
           path: Paths.AssetReportsWorkingHours,
           icon: faClock,
           order: 50

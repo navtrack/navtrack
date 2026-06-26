@@ -19,13 +19,13 @@ export type RenameOrganizationFormValues = {
 };
 
 const days = [
-  { dayOfWeek: DayOfWeek.Monday, labelId: "generic.days.monday" },
-  { dayOfWeek: DayOfWeek.Tuesday, labelId: "generic.days.tuesday" },
-  { dayOfWeek: DayOfWeek.Wednesday, labelId: "generic.days.wednesday" },
-  { dayOfWeek: DayOfWeek.Thursday, labelId: "generic.days.thursday" },
-  { dayOfWeek: DayOfWeek.Friday, labelId: "generic.days.friday" },
-  { dayOfWeek: DayOfWeek.Saturday, labelId: "generic.days.saturday" },
-  { dayOfWeek: DayOfWeek.Sunday, labelId: "generic.days.sunday" }
+  { dayOfWeek: DayOfWeek.Monday, labelId: "days.monday" },
+  { dayOfWeek: DayOfWeek.Tuesday, labelId: "days.tuesday" },
+  { dayOfWeek: DayOfWeek.Wednesday, labelId: "days.wednesday" },
+  { dayOfWeek: DayOfWeek.Thursday, labelId: "days.thursday" },
+  { dayOfWeek: DayOfWeek.Friday, labelId: "days.friday" },
+  { dayOfWeek: DayOfWeek.Saturday, labelId: "days.saturday" },
+  { dayOfWeek: DayOfWeek.Sunday, labelId: "days.sunday" }
 ];
 
 type WorkScheduleFormValues = {
@@ -107,14 +107,14 @@ export function OrganizationSettingsWorkSchedulePage() {
           <Card>
             <CardBody>
               <Heading type="h2">
-                <FormattedMessage id="generic.work-schedule" />
+                <FormattedMessage id="work-schedule" />
               </Heading>
               <div className="mt-4 grid grid-cols-12 gap-x-6 gap-y-3 font-medium text-gray-900 text-sm">
                 <div className="col-span-2 col-start-3">
-                  <FormattedMessage id="generic.start-time" />
+                  <FormattedMessage id="start-time" />
                 </div>
                 <div className="col-span-2">
-                  <FormattedMessage id="generic.end-time" />
+                  <FormattedMessage id="end-time" />
                 </div>
                 {days.map((day) => {
                   const value = values.items.find(
@@ -174,7 +174,7 @@ export function OrganizationSettingsWorkSchedulePage() {
                 <div className="col-start1 col-span-6 border-t border-gray-900/10"></div>
                 <div className="col-start-1 grid grid-cols-12 gap-x-6 gap-y-3 col-span-12">
                   <div className="col-span-2 col-start-1 flex items-center">
-                    <FormattedMessage id="generic.set-all" />
+                    <FormattedMessage id="set-all" />
                   </div>
                   <div className="col-span-2">
                     <TimePicker
@@ -221,7 +221,7 @@ export function OrganizationSettingsWorkSchedulePage() {
                 type="submit"
                 size="lg"
                 isLoading={updateOrganization.isPending}>
-                <FormattedMessage id="generic.save" />
+                <FormattedMessage id="save" />
               </Button>
             </CardFooter>
           </Card>

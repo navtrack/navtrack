@@ -72,12 +72,12 @@ export function NewAssetPage() {
                   <div className="col-span-3 grid gap-6">
                     <FormikTextInput
                       name="name"
-                      label="generic.name"
+                      label="name"
                       placeholder="assets.add.name.placeholder"
                     />
                     <FormikAutocomplete
                       name="deviceTypeId"
-                      label="generic.device-type"
+                      label="device-type"
                       placeholder="devices.search-placeholder"
                       options={deviceTypes.map((x) => ({
                         value: x.id,
@@ -91,7 +91,7 @@ export function NewAssetPage() {
                     />
                     <FormikTextInput
                       name="serialNumber"
-                      label="generic.serial-number"
+                      label="serial-number"
                       placeholder="assets.add.serial-number.placeholder"
                     />
                   </div>
@@ -106,7 +106,7 @@ export function NewAssetPage() {
                   type="submit"
                   isLoading={createAsset.isLoading}
                   size="lg">
-                  <FormattedMessage id="generic.save" />
+                  <FormattedMessage id="save" />
                 </Button>
               </CardFooter>
             </Form>

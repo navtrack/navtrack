@@ -25,12 +25,12 @@ export function AssetUsersPage() {
   const { showNotification } = useNotification();
 
   const columns: ITableColumn<AssetUserModel>[] = [
-    { labelId: "generic.email", row: (user) => user.email },
+    { labelId: "email", row: (user) => user.email },
     {
       labelId: "assets.settings.access.added-on",
       row: (user) => show.date(user.createdDate)
     },
-    { labelId: "generic.role", row: (user) => user.userRole },
+    { labelId: "role", row: (user) => user.userRole },
     {
       rowClassName: "flex justify-end",
       row: (assetUser) => (

@@ -31,12 +31,12 @@ public class CreateTeamAssetRequestHandler(
 
         if (team.OrganizationId != asset.OrganizationId)
         {
-            throw new ApiException(ApiErrorCodes.Team_000002_TeamAndAssetNotInSameOrganization);
+            throw new ApiException(ApiErrorCodes.Team_TeamAndAssetNotInSameOrganization);
         }
 
         context.ValidationException.AddErrorIfTrue(
             asset.Teams.Any(x => x.Id == team.Id),
-            nameof(context.Request.Model.AssetId), ApiErrorCodes.Team_000003_AssetAlreadyInTeam);
+            nameof(context.Request.Model.AssetId), ApiErrorCodes.Team_AssetAlreadyInTeam);
     }
 
     public override async Task Handle(CreateTeamAssetRequest request)

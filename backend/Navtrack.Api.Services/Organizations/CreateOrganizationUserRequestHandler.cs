@@ -30,11 +30,11 @@ public class CreateOrganizationUserRequestHandler(
 
         user = await userRepository.GetByEmail(context.Request.Model.Email);
         context.ValidationException.AddErrorIfNull(user, nameof(context.Request.Model.Email),
-            ApiErrorCodes.User_000001_EmailNotFound);
+            ApiErrorCodes.User_EmailNotFound);
         
         context.ValidationException.AddErrorIfTrue(
             user?.OrganizationUsers.Any(x => x.OrganizationId == organization.Id),
-            nameof(context.Request.Model.Email), ApiErrorCodes.Organization_000001_UserAlreadyInOrganization);
+            nameof(context.Request.Model.Email), ApiErrorCodes.Organization_UserAlreadyInOrganization);
     }
 
     public override async Task Handle(CreateOrganizationUserRequest request)

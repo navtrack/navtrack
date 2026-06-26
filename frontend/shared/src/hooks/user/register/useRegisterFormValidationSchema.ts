@@ -6,15 +6,15 @@ import { appConfigStore } from "../../../state/appConfig";
 export const useRegisterFormValidationSchema = () => {
   const validationSchema: ObjectSchema<RegisterFormValues> = object({
     email: string()
-      .email("generic.email.invalid")
-      .required("generic.email.required"),
+      .email("email.invalid")
+      .required("email.required"),
     password: string()
-      .required("generic.password.required")
-      .min(8, "generic.password.requirements.length"),
+      .required("password.required")
+      .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .required("generic.confirm-password.required")
-      .min(8, "generic.password.requirements.length")
-      .oneOf([ref("password")], "generic.confirm-password.requirements.match"),
+      .required("confirm-password.required")
+      .min(8, "password.requirements.length")
+      .oneOf([ref("password")], "confirm-password.requirements.match"),
     captcha: appConfigStore.config?.captcha?.siteKey
       ? string().required("register.captcha")
       : string().optional()

@@ -21,7 +21,7 @@ public class ResourceOwnerPasswordValidator(IPasswordHasher hasher, IUserReposit
         }
         else
         {
-            context.Result = GrantValidationResultMapper.Map(ApiErrorCodes.User_000004_InvalidUsernameOrPassword);
+            context.Result = GrantValidationResultMapper.Map(ApiErrorCodes.User_InvalidUsernameOrPassword);
         }
     }
 }

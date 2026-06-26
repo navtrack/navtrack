@@ -41,8 +41,8 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
   );
 
   const validationSchema: ObjectSchema<DurationFilterFormValues> = object({
-    minDuration: number().typeError("generic.number.required"),
-    maxDuration: number().typeError("generic.number.required")
+    minDuration: number().typeError("number.required"),
+    maxDuration: number().typeError("number.required")
   }).defined();
 
   return (
@@ -66,7 +66,7 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                 <div className="flex space-x-4">
                   <FormikTextInput
                     name={nameOf<DurationFilterFormValues>("minDuration")}
-                    label="generic.min"
+                    label="min"
                     value={values.minDuration}
                     type="number"
                     rightAddon={
@@ -87,7 +87,7 @@ export function DurationFilterModal(props: DurationFilterModalProps) {
                   />
                   <FormikTextInput
                     name={nameOf<DurationFilterFormValues>("maxDuration")}
-                    label="generic.max"
+                    label="max"
                     value={values.maxDuration}
                     type="number"
                     rightAddon={

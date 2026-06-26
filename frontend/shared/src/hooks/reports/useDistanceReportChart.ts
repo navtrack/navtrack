@@ -55,7 +55,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         bars: [
           {
             key: DistanceReportChartKeys.Distance,
-            labelId: "generic.distance"
+            labelId: "distance"
           }
         ],
         xAxis: { dataKey: "date" },
@@ -73,7 +73,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         bars: [
           {
             key: DistanceReportChartKeys.Duration,
-            labelId: "generic.duration"
+            labelId: "duration"
           }
         ],
         xAxis: { dataKey: "date" },
@@ -91,7 +91,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         bars: [
           {
             key: DistanceReportChartKeys.AverageSpeed,
-            labelId: "generic.average-speed"
+            labelId: "average-speed"
           }
         ],
         xAxis: { dataKey: "date" },
@@ -109,7 +109,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         bars: [
           {
             key: DistanceReportChartKeys.MaxSpeed,
-            labelId: "generic.max-speed"
+            labelId: "max-speed"
           }
         ],
         xAxis: { dataKey: "date" },
@@ -124,7 +124,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         bars: [
           {
             key: DistanceReportChartKeys.FuelConsumption,
-            labelId: "generic.fuel-consumption"
+            labelId: "fuel-consumption"
           }
         ],
         xAxis: { dataKey: "date" },
@@ -142,7 +142,7 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
         bars: [
           {
             key: DistanceReportChartKeys.AverageFuelConsumption,
-            labelId: "generic.average-fuel-consumption"
+            labelId: "average-fuel-consumption"
           }
         ],
         xAxis: { dataKey: "date" },
@@ -188,26 +188,26 @@ export function useDistanceReportChart(props: DistanceReportChartProps) {
   );
 
   const distanceChartOptions: ButtonGroupOption[] = [
-    { label: "generic.distance", value: DistanceReportChartKeys.Distance },
-    { label: "generic.duration", value: DistanceReportChartKeys.Duration },
+    { label: "distance", value: DistanceReportChartKeys.Distance },
+    { label: "duration", value: DistanceReportChartKeys.Duration },
     {
-      label: "generic.average-speed",
+      label: "average-speed",
       value: DistanceReportChartKeys.AverageSpeed
     },
-    { label: "generic.max-speed", value: DistanceReportChartKeys.MaxSpeed }
+    { label: "max-speed", value: DistanceReportChartKeys.MaxSpeed }
   ];
 
   const fuelConsumptionChartOptions: ButtonGroupOption[] = [
     {
-      label: "generic.fuel-consumption",
+      label: "fuel-consumption",
       value: DistanceReportChartKeys.FuelConsumption
     },
     {
-      label: "generic.average-fuel-consumption",
+      label: "average-fuel-consumption",
       value: DistanceReportChartKeys.AverageFuelConsumption
     },
-    { label: "generic.distance", value: DistanceReportChartKeys.Distance },
-    { label: "generic.duration", value: DistanceReportChartKeys.Duration }
+    { label: "distance", value: DistanceReportChartKeys.Distance },
+    { label: "duration", value: DistanceReportChartKeys.Duration }
   ];
 
   return {

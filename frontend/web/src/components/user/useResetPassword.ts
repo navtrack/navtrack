@@ -42,12 +42,12 @@ export const useResetPassword = () => {
 
   const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
     password: string()
-      .required("generic.password.required")
-      .min(8, "generic.password.requirements.length"),
+      .required("password.required")
+      .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .required("generic.confirm-password.required")
-      .min(8, "generic.password.requirements.length")
-      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
+      .required("confirm-password.required")
+      .min(8, "password.requirements.length")
+      .oneOf([ref("password")], "confirm-password.requirements.match")
   }).defined();
 
   return {

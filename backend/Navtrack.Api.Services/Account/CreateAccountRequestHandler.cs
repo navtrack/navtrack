@@ -21,17 +21,17 @@ public class CreateAccountRequestHandler(
     {
         context.ValidationException.AddErrorIfTrue(await userRepository.EmailIsUsed(context.Request.Model.Email),
             nameof(context.Request.Model.Email),
-            ApiErrorCodes.User_000002_EmailAlreadyUsed);
+            ApiErrorCodes.User_EmailAlreadyUsed);
 
         context.ValidationException.AddErrorIfTrue(
             context.Request.Model.Password != context.Request.Model.ConfirmPassword,
             nameof(context.Request.Model.ConfirmPassword),
-            ApiErrorCodes.User_000003_PasswordsNotEqual);
+            ApiErrorCodes.User_PasswordsNotEqual);
 
         context.ValidationException.AddErrorIfTrue(
             captchaValidator != null && !await captchaValidator.Validate(context.Request.Model.Captcha),
             nameof(context.Request.Model.Captcha),
-            ApiErrorCodes.Validation_000002_InvalidCaptcha);
+            ApiErrorCodes.Validation_InvalidCaptcha);
     }
 
     public override async Task Handle(CreateAccountRequest request)

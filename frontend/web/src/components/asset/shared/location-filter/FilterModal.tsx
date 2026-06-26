@@ -24,10 +24,10 @@ export function FilterModal(props: FilterModalProps) {
       </div>
       <div className="flex flex-row-reverse space-x-4 space-x-reverse rounded-b-lg bg-gray-50 px-4 py-3">
         <Button color="primary" type="submit">
-          <FormattedMessage id="generic.save" />
+          <FormattedMessage id="save" />
         </Button>
         <Button color="white" onClick={props.onCancel}>
-          <FormattedMessage id="generic.cancel" />
+          <FormattedMessage id="cancel" />
         </Button>
       </div>
     </div>

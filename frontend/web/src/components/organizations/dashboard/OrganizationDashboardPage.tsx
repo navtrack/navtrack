@@ -2,10 +2,10 @@ import { AssetStatsPeriod } from "@navtrack/shared/api/model";
 import { OrganizationDashboardRow } from "./OrganizationDashboardRow";
 
 const periods = [
-  { period: AssetStatsPeriod.Day, labelId: "generic.today" },
-  { period: AssetStatsPeriod.Week, labelId: "generic.this-week" },
-  { period: AssetStatsPeriod.Month, labelId: "generic.this-month" },
-  { period: AssetStatsPeriod.Year, labelId: "generic.this-year" }
+  { period: AssetStatsPeriod.Day, labelId: "today" },
+  { period: AssetStatsPeriod.Week, labelId: "this-week" },
+  { period: AssetStatsPeriod.Month, labelId: "this-month" },
+  { period: AssetStatsPeriod.Year, labelId: "this-year" }
 ];
 
 export function OrganizationDashboardPage() {

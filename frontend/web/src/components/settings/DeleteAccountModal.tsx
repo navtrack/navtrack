@@ -30,7 +30,7 @@ export function DeleteAccountModal() {
 
   const validationSchema: ObjectSchema<DeleteAccountFormValues> = object()
     .shape({
-      password: string().required("generic.password.required")
+      password: string().required("password.required")
     })
     .defined();
 

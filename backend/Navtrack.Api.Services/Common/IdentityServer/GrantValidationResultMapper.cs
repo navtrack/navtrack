@@ -13,6 +13,6 @@ public static class GrantValidationResultMapper
 
         extraData["code"] = apiError.Code;
 
-        return new GrantValidationResult(TokenRequestErrors.InvalidRequest, apiError.Message, extraData);
+        return new GrantValidationResult(TokenRequestErrors.InvalidRequest, customResponse: extraData);
     }
 }

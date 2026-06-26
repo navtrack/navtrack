@@ -39,7 +39,7 @@ export function DeleteAssetModal() {
 
   const validationSchema: ObjectSchema<DeleteAssetFormValues> = object({
     name: string()
-      .required("generic.name.required")
+      .required("name.required")
       .oneOf(
         [`${currentAsset.data?.name}`],
         "assets.settings.general.delete-asset.name-match"

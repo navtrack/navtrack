@@ -52,9 +52,9 @@ export function useCreateAsset(props: UseCreateAssetProps) {
   );
 
   const validationSchema: ObjectSchema<CreateAssetFormValues> = object({
-    name: string().required("generic.name.required"),
-    deviceTypeId: string().required("generic.device-type.required"),
-    serialNumber: string().required("generic.serial-number.required")
+    name: string().required("name.required"),
+    deviceTypeId: string().required("device-type.required"),
+    serialNumber: string().required("serial-number.required")
   }).defined();
 
   return {

@@ -1,3 +1,3 @@
 export function formatErrorMessage(message?: string | null) {
-  return `errors.${message ?? "generic"}`;
+  return message ? `errors.${message}` : "errors";
 }

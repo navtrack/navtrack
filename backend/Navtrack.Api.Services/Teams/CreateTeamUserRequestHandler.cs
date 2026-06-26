@@ -30,17 +30,17 @@ public class CreateTeamUserRequestHandler(
 
         user = await userRepository.GetByEmail(context.Request.Model.Email);
         user.ThrowValidationApiIfNull(x => x.AddValidationError(nameof(context.Request.Model.Email),
-            ApiErrorCodes.User_000001_EmailNotFound));
+            ApiErrorCodes.User_EmailNotFound));
 
         context.ValidationException.AddErrorIfTrue(
             user.OrganizationUsers.All(x => x.OrganizationId != team.OrganizationId),
             nameof(context.Request.Model.Email),
-            ApiErrorCodes.Team_000006_UserNotInSameOrganization);
+            ApiErrorCodes.Team_UserNotInSameOrganization);
 
         context.ValidationException.AddErrorIfTrue(
             user.Teams.Any(x => x.Id == team.Id),
             nameof(context.Request.Model.Email),
-            ApiErrorCodes.Team_000007_UserAlreadyInTeam);
+            ApiErrorCodes.Team_UserAlreadyInTeam);
     }
 
     public override async Task Handle(CreateTeamUserRequest source)

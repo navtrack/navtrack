@@ -16,7 +16,7 @@ export const defaultOrganizationSettingsMenuItems: SettingsMenuItemProps[] = [
     priority: 100
   },
   {
-    label: "generic.work-schedule",
+    label: "work-schedule",
     path: Paths.OrganizationSettingsWorkSchedule,
     icon: faClock,
     priority: 100

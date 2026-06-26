@@ -13,13 +13,13 @@ const users: User[] = Array.from({ length: 1000 }, (_, i) => ({
 
 const columns: ITableColumn<User>[] = [
   {
-    labelId: "generic.email",
+    labelId: "email",
     rowClassName: "py-1",
     value: (user) => user.email,
     row: (user) => user.email
   },
   {
-    labelId: "generic.role",
+    labelId: "role",
     rowClassName: "py-1",
     value: (user) => user.role,
     row: (user) => user.role

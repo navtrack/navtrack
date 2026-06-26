@@ -12,7 +12,7 @@ export const InitialLoginFormValues: LoginFormValues = {
 
 export const loginFormValuesValidationSchema: ObjectSchema<LoginFormValues> = object({
     email: string()
-        .email("generic.email.invalid")
-        .required("generic.email.required"),
-    password: string().required("generic.password.required")
+        .email("email.invalid")
+        .required("email.required"),
+    password: string().required("password.required")
 }).defined();

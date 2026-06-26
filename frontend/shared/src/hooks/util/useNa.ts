@@ -7,7 +7,7 @@ export function useNa() {
   const na = useCallback(
     (value?: string) => {
       if (!value) {
-        return intl.formatMessage({ id: "generic.na" });
+        return intl.formatMessage({ id: "na" });
       }
       return value;
     },

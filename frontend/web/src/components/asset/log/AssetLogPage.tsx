@@ -41,7 +41,7 @@ export function AssetLogPage() {
     rows: query.data?.items,
     columns: [
       {
-        labelId: "generic.date",
+        labelId: "date",
         footerColSpan: 2,
         rowClassName: "text-nowrap",
         footer: () => (
@@ -83,7 +83,7 @@ export function AssetLogPage() {
         row: (row) => show.dateTime(row.position.date)
       },
       {
-        labelId: "generic.location",
+        labelId: "location",
         footer: null,
         row: (item) => (
           <div className="text-ellipsis">
@@ -94,30 +94,30 @@ export function AssetLogPage() {
         )
       },
       {
-        labelId: "generic.latitude",
+        labelId: "latitude",
         row: (row) => showCoordinate(row.position.coordinates.latitude)
       },
       {
-        labelId: "generic.longitude",
+        labelId: "longitude",
         row: (row) => showCoordinate(row.position.coordinates.longitude)
       },
       {
-        labelId: "generic.altitude",
+        labelId: "altitude",
         row: (row) => show.altitude(row.position.altitude),
         value: (row) => row.position.altitude
       },
       {
-        labelId: "generic.speed",
+        labelId: "speed",
         row: (row) => show.speed(row.position.speed),
         value: (row) => row.position.speed
       },
       {
-        labelId: "generic.heading",
+        labelId: "heading",
         row: (row) => showHeading(row.position.heading),
         value: (row) => row.position.heading
       },
       {
-        labelId: "generic.satellites",
+        labelId: "satellites",
         row: (row) => `${row.position.satellites}`,
         value: (row) => row.position.satellites
       }

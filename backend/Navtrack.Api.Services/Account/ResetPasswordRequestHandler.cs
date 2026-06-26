@@ -28,12 +28,12 @@ public class ResetPasswordRequestHandler(
 
         if (passwordReset == null || passwordReset.Invalid || passwordReset.Id != Guid.Parse(context.Request.Model.Id))
         {
-            throw new ApiException(ApiErrorCodes.User_000006_InvalidPasswordResetHash);
+            throw new ApiException(ApiErrorCodes.User_InvalidPasswordResetHash);
         }
 
         if (passwordReset.CreatedDate < DateTime.UtcNow.AddHours(-ApiConstants.PasswordResetLinkExpirationHours))
         {
-            throw new ApiException(ApiErrorCodes.User_000007_ExpiredPasswordResetHash);
+            throw new ApiException(ApiErrorCodes.User_ExpiredPasswordResetHash);
         }
     }
 

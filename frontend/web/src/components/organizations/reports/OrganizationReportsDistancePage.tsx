@@ -44,13 +44,13 @@ export function OrganizationReportsDistancePage() {
     rows: distanceReport.result.items,
     columns: [
       {
-        labelId: "generic.date",
+        labelId: "date",
         row: (item) => <>{show.date(item.date)}</>,
         value: (item) => item.date,
         sort: "desc"
       },
       {
-        labelId: "generic.distance",
+        labelId: "distance",
         row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -60,7 +60,7 @@ export function OrganizationReportsDistancePage() {
         value: (item) => item.distance
       },
       {
-        labelId: "generic.duration",
+        labelId: "duration",
         row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -70,7 +70,7 @@ export function OrganizationReportsDistancePage() {
         value: (item) => item.duration
       },
       {
-        labelId: "generic.average-speed",
+        labelId: "average-speed",
         row: (item) => <>{show.speed(item.averageSpeed) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -80,7 +80,7 @@ export function OrganizationReportsDistancePage() {
         value: (item) => item.averageSpeed
       },
       {
-        labelId: "generic.max-speed",
+        labelId: "max-speed",
         row: (item) => <>{show.speed(item.maxSpeed) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">

@@ -20,19 +20,19 @@ export function DurationFilterBadge(props: DurationFilterBadgeProps) {
     if (state.minDuration && state.maxDuration) {
       return `${state.minDuration} - ${state.maxDuration} (${intl.formatMessage(
         {
-          id: "generic.mins"
+          id: "mins"
         }
       )})`;
     } else if (state.minDuration) {
       return `> ${state.minDuration} (${intl.formatMessage(
         {
-          id: "generic.mins"
+          id: "mins"
         }
       )})`;
     } else if (state.maxDuration) {
       return `< ${state.maxDuration} (${intl.formatMessage(
         {
-          id: "generic.mins"
+          id: "mins"
         }
       )})`;
     }

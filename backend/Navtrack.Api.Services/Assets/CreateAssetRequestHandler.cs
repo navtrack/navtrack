@@ -36,19 +36,19 @@ public class CreateAssetRequestHandler(
         context.ValidationException.AddErrorIfTrue(
             await assetRepository.NameIsUsed(organization.Id, context.Request.Model.Name),
             nameof(context.Request.Model.Name),
-            ApiErrorCodes.Asset_000002_NameAlreadyUsed);
+            ApiErrorCodes.Asset_NameAlreadyUsed);
 
         deviceType = deviceTypeRepository.GetById(context.Request.Model.DeviceTypeId);
 
         context.ValidationException.AddErrorIfNull(
             deviceType,
             nameof(context.Request.Model.DeviceTypeId),
-            ApiErrorCodes.Device_000001_DeviceTypeInvalid);
+            ApiErrorCodes.Device_DeviceTypeInvalid);
 
         context.ValidationException.AddErrorIfTrue(
             await deviceRepository.SerialNumberIsUsed(context.Request.Model.SerialNumber, deviceType.Protocol.Port),
             nameof(context.Request.Model.SerialNumber),
-            ApiErrorCodes.Device_000002_SerialNumberUsed);
+            ApiErrorCodes.Device_SerialNumberUsed);
     }
 
     public override async Task<Entity> Handle(CreateAssetRequest request)

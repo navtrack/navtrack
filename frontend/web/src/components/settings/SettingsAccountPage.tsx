@@ -26,11 +26,11 @@ type AccountSettingsFormValues = {
 
 const units: SelectOption[] = [
   {
-    label: "generic.units.metric",
+    label: "units.metric",
     value: `${UnitsType.Metric}`
   },
   {
-    label: "generic.units.imperial",
+    label: "units.imperial",
     value: `${UnitsType.Imperial}`
   }
 ];
@@ -90,7 +90,7 @@ export function SettingsAccountPage() {
                   <div className="col-span-3">
                     <FormikTextInput
                       name={nameOf<AccountSettingsFormValues>("email")}
-                      label="generic.email"
+                      label="email"
                       loading={user.isLoading}
                     />
                   </div>
@@ -98,7 +98,7 @@ export function SettingsAccountPage() {
                   <div className="col-span-3">
                     <FormikSelect
                       name={nameOf<AccountSettingsFormValues>("units")}
-                      label="generic.units"
+                      label="units"
                       options={units}
                       loading={user.isLoading}
                     />
@@ -111,7 +111,7 @@ export function SettingsAccountPage() {
                   type="submit"
                   disabled={!user}
                   isLoading={updateUserMutation.isPending}>
-                  <FormattedMessage id="generic.save" />
+                  <FormattedMessage id="save" />
                 </Button>
               </CardFooter>
             </Form>

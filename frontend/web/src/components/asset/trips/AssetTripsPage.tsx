@@ -76,7 +76,7 @@ export function AssetTripsPage() {
     selection: true,
     columns: [
       {
-        labelId: "generic.start",
+        labelId: "start",
         sort: "desc",
         value: (row) => row.startPosition.date,
         rowClassName: "align-top w-1/2",
@@ -85,7 +85,7 @@ export function AssetTripsPage() {
         footer: () => (
           <div className="flex">
             <span>
-              {show.count("generic.trips.count", query.allTrips?.length ?? 0)}
+              {show.count("trips.count", query.allTrips?.length ?? 0)}
             </span>
             <LoadingIndicator isLoading={query.isLoading} className="ml-2" />
           </div>
@@ -94,14 +94,14 @@ export function AssetTripsPage() {
       },
       {
         headerClassName: "z-10",
-        labelId: "generic.end",
+        labelId: "end",
         value: (row) => row.endPosition.date,
         rowClassName: "align-top w-1/2",
         row: (row) => <LocationAndTimeCell position={row.endPosition} />
       },
       {
         rowClassName: "w-24",
-        labelId: "generic.duration",
+        labelId: "duration",
         row: (row) => show.duration(row.duration),
         value: (row) => row.duration,
         footerClassName: "font-semibold",
@@ -109,7 +109,7 @@ export function AssetTripsPage() {
       },
       {
         rowClassName: "w-24",
-        labelId: "generic.distance",
+        labelId: "distance",
         row: (row) => show.distance(row.distance),
         value: (row) => row.distance,
         footerClassName: "font-semibold",
@@ -117,7 +117,7 @@ export function AssetTripsPage() {
       },
       {
         rowClassName: "w-24",
-        labelId: "generic.average-speed",
+        labelId: "average-speed",
         row: (row) => show.speed(row.averageSpeed),
         value: (row) => row.averageSpeed,
         footerClassName: "font-semibold",
@@ -125,7 +125,7 @@ export function AssetTripsPage() {
       },
       {
         rowClassName: "w-24",
-        labelId: "generic.max-speed",
+        labelId: "max-speed",
         row: (row) => show.speed(row.maxSpeed),
         value: (row) => row.maxSpeed,
         footerClassName: "font-semibold",
@@ -133,7 +133,7 @@ export function AssetTripsPage() {
       },
       {
         rowClassName: "w-32",
-        labelId: "generic.average-fuel-consumption",
+        labelId: "average-fuel-consumption",
         row: (row) => show.fuelConsumption(row.averageFuelConsumption),
         value: (row) => row.maxSpeed,
         footerClassName: "font-semibold",
@@ -142,7 +142,7 @@ export function AssetTripsPage() {
       },
       {
         rowClassName: "w-32",
-        labelId: "generic.fuel-consumption",
+        labelId: "fuel-consumption",
         row: (row) => show.volume(row.fuelConsumption),
         value: (row) => row.maxSpeed,
         footerClassName: "font-semibold",

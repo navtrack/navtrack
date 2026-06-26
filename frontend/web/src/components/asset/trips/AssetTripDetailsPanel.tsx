@@ -84,7 +84,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
               <div className="relative flex h-full flex-col overflow-y-auto bg-white py-6 shadow-xl space-y-4">
                 <div className="px-4 border-b border-gray-200 flex justify-between pb-4 items-center">
                   <DialogTitle className="text-base font-semibold text-gray-900">
-                    <FormattedMessage id="generic.trip-details" />
+                    <FormattedMessage id="trip-details" />
                   </DialogTitle>
                   <div className="flex space-x-2">
                     <Button
@@ -92,14 +92,14 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                       size="sm"
                       color="white"
                       disabled={props.previousDisabled}>
-                      <FormattedMessage id="generic.previous" />
+                      <FormattedMessage id="previous" />
                     </Button>
                     <Button
                       onClick={props.next}
                       size="sm"
                       color="white"
                       disabled={props.nextDisabled}>
-                      <FormattedMessage id="generic.next" />
+                      <FormattedMessage id="next" />
                     </Button>
                     <button
                       type="button"
@@ -119,7 +119,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                     }
                     subTitle={
                       <FormattedMessage
-                        id="generic.departed-at"
+                        id="departed-at"
                         values={{
                           date: show.dateTime(props.trip.startPosition.date)
                         }}
@@ -130,7 +130,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                     icon={faCar}
                     title={
                       <FormattedMessage
-                        id="generic.trip-details.title"
+                        id="trip-details.title"
                         values={{
                           length: show.distance(props.trip.distance),
                           duration: show.duration(props.trip.duration)
@@ -141,7 +141,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                       <div>
                         <div>
                           <FormattedMessage
-                            id="generic.trip-details.speed"
+                            id="trip-details.speed"
                             values={{
                               avgSpeed: (
                                 <span className="font-bold">
@@ -158,7 +158,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                         </div>
                         <div>
                           <FormattedMessage
-                            id="generic.trip-details.fuel-consumption"
+                            id="trip-details.fuel-consumption"
                             values={{
                               avgFuelConsumption: (
                                 <span className="font-bold">
@@ -188,7 +188,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                     }
                     subTitle={
                       <FormattedMessage
-                        id="generic.arrived-at"
+                        id="arrived-at"
                         values={{
                           date: show.dateTime(props.trip.endPosition.date)
                         }}
@@ -233,7 +233,7 @@ export function AssetTripDetailsPanel(props: AssetTripDetailsPanelProps) {
                   <Card>
                     <div className="flex rounded-t-lg border-b border-gray-900/5 bg-gray-50 p-2 text-xs tracking-wider text-gray-500">
                       <div className="font-medium uppercase">
-                        <FormattedMessage id="generic.position" />
+                        <FormattedMessage id="position" />
                       </div>
                       <div className="w-full text-right tracking-normal">
                         <Icon icon={faInfoCircle} />

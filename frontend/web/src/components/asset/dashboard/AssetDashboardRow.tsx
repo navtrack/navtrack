@@ -28,7 +28,7 @@ export function AssetDashboardRow(props: AssetDashboardRowProps) {
         <dl className="mt-2 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden md:grid-cols-4 md:divide-x md:divide-y-0">
           <DashboardItem
             period={props.period}
-            labelId="generic.distance"
+            labelId="distance"
             showFunction={(value) => show.distance(value, true)}
             mainValue={statsQuery.data?.distance}
             secondaryValue={statsQuery.data?.distancePrevious}
@@ -36,7 +36,7 @@ export function AssetDashboardRow(props: AssetDashboardRowProps) {
           />
           <DashboardItem
             period={props.period}
-            labelId="generic.duration"
+            labelId="duration"
             showFunction={show.duration}
             mainValue={statsQuery.data?.duration}
             secondaryValue={statsQuery.data?.durationPrevious}
@@ -44,7 +44,7 @@ export function AssetDashboardRow(props: AssetDashboardRowProps) {
           />
           <DashboardItem
             period={props.period}
-            labelId="generic.fuel-consumed"
+            labelId="fuel-consumed"
             showFunction={show.volume}
             mainValue={statsQuery.data?.fuelConsumption}
             secondaryValue={statsQuery.data?.fuelConsumptionPrevious}
@@ -52,7 +52,7 @@ export function AssetDashboardRow(props: AssetDashboardRowProps) {
           />
           <DashboardItem
             period={props.period}
-            labelId="generic.average-fuel-consumption"
+            labelId="average-fuel-consumption"
             showFunction={show.fuelConsumption}
             mainValue={statsQuery.data?.fuelConsumptionAverage}
             secondaryValue={statsQuery.data?.fuelConsumptionAveragePrevious}

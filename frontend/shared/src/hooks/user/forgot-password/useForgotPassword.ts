@@ -41,8 +41,8 @@ export function useForgotPassword(props?: UseForgotPasswordProps) {
 
   const validationSchema: ObjectSchema<ForgotPasswordFormValues> = object({
     email: string()
-      .email("generic.email.invalid")
-      .required("generic.email.required")
+      .email("email.invalid")
+      .required("email.required")
   }).defined();
 
   return {

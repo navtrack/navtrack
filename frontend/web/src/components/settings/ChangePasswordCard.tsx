@@ -54,7 +54,7 @@ export function ChangePasswordCard() {
                   <FormikTextInput
                     autoComplete="new-password"
                     type="password"
-                    label="generic.password"
+                    label="password"
                     name={nameOf<ChangePasswordFormValues>("password")}
                   />
                 </div>
@@ -62,7 +62,7 @@ export function ChangePasswordCard() {
                   <FormikTextInput
                     autoComplete="new-password"
                     type="password"
-                    label="generic.confirm-password"
+                    label="confirm-password"
                     name={nameOf<ChangePasswordFormValues>("confirmPassword")}
                   />
                 </div>
@@ -73,7 +73,7 @@ export function ChangePasswordCard() {
                 type="submit"
                 size="lg"
                 isLoading={changePassword.isLoading}>
-                <FormattedMessage id="generic.save" />
+                <FormattedMessage id="save" />
               </Button>
             </CardFooter>
           </Card>

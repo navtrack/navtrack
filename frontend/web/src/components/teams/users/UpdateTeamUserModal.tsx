@@ -62,17 +62,17 @@ export function UpdateTeamUserModal(props: UpdateTeamUserModalProps) {
       icon={faUserEdit}
       onSubmit={handleSubmit}
       isLoading={mutation.isPending}
-      title="generic.edit-user">
+      title="edit-user">
       <TextInput
         name="email"
-        label="generic.email"
+        label="email"
         autoComplete="off"
         value={props.user.email}
         disabled
       />
       <FormikSelect
         name="role"
-        label="generic.role"
+        label="role"
         placeholder="Select a role"
         options={teamRoles}
       />

@@ -35,7 +35,7 @@ public class DeleteOrganizationUserRequestHandler(
 
         if (ownersCount == 1 && userOrganization.UserRole == OrganizationUserRole.Owner)
         {
-            throw new ApiException(ApiErrorCodes.Organization_000002_OneOwnerRequired);
+            throw new ApiException(ApiErrorCodes.Organization_OneOwnerRequired);
         }
     }
 

@@ -15,7 +15,7 @@ export function OrganizationsPage() {
   return (
     <div className="mx-auto max-w-7xl gap-x-6 p-8">
       <Heading type="h1">
-        <FormattedMessage id="generic.organizations" />
+        <FormattedMessage id="organizations" />
       </Heading>
       <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {organizations.isLoading ? (
@@ -34,7 +34,7 @@ export function OrganizationsPage() {
               onClick={() => setOpen(true)}
               className="flex h-28 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-500 hover:border-gray-600 hover:bg-gray-200">
               <Icon icon={faPlus} className="mr-2" />
-              <FormattedMessage id="generic.new-organization" />
+              <FormattedMessage id="new-organization" />
             </div>
             <CreateOrganizationModal open={open} setOpen={setOpen} />
           </>

@@ -38,10 +38,10 @@ export enum GroupBy {
 }
 
 export const groupByLabels: Record<GroupBy, string> = {
-  [GroupBy.Day]: "generic.day",
-  [GroupBy.Week]: "generic.week",
-  [GroupBy.Month]: "generic.month",
-  [GroupBy.Year]: "generic.year"
+  [GroupBy.Day]: "day",
+  [GroupBy.Week]: "week",
+  [GroupBy.Month]: "month",
+  [GroupBy.Year]: "year"
 };
 
 function getGroupByDateKey(group: GroupBy) {

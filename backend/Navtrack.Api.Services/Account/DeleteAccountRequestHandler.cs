@@ -35,7 +35,7 @@ public class DeleteAccountRequestHandler(
                 currentUser.PasswordSalt))
         {
             apiException.AddValidationError(nameof(context.Request.Model.Password),
-                ApiErrorCodes.User_000010_InvalidPassword);
+                ApiErrorCodes.User_InvalidPassword);
         }
 
         apiException.ThrowIfInvalid();
@@ -50,7 +50,7 @@ public class DeleteAccountRequestHandler(
 
             if (ownersCount == 1)
             {
-                throw new ApiException(ApiErrorCodes.User_000011_SoleOrganizationOwner);
+                throw new ApiException(ApiErrorCodes.User_SoleOrganizationOwner);
             }
         }
     }

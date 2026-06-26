@@ -30,7 +30,7 @@ public class CreateTeamRequestHandler(
         context.ValidationException.AddErrorIfTrue(
             await teamRepository.NameIsUsed(context.Request.Model.Name, organization.Id),
             nameof(context.Request.Model.Name),
-            ApiErrorCodes.Team_000001_NameIsUsed);
+            ApiErrorCodes.Team_NameIsUsed);
     }
 
     public override async Task<TeamModel> Handle(CreateTeamRequest request)

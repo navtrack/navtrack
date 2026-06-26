@@ -22,8 +22,8 @@ const users: User[] = [
 ];
 
 const columns: ITableColumn<User>[] = [
-  { labelId: "generic.email", row: (user) => user.email },
-  { labelId: "generic.role", row: (user) => user.role }
+  { labelId: "email", row: (user) => user.email },
+  { labelId: "role", row: (user) => user.role }
 ];
 
 export default {

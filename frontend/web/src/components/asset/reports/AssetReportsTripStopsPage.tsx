@@ -32,7 +32,7 @@ export function AssetReportsTripStopsPage() {
     rows: tripsStopsReport,
     columns: [
       {
-        labelId: "generic.arrival-date",
+        labelId: "arrival-date",
         row: (item) => (
           <div className="whitespace-nowrap h-full flex flex-col">
             <div className="flex-1">{show.dateTime(item.arrivalDate)}</div>
@@ -42,7 +42,7 @@ export function AssetReportsTripStopsPage() {
         sort: "desc"
       },
       {
-        labelId: "generic.departure-date",
+        labelId: "departure-date",
         row: (item) => (
           <div className="whitespace-nowrap h-full flex flex-col">
             <div className="flex-1">{show.dateTime(item.departureDate)}</div>
@@ -51,13 +51,13 @@ export function AssetReportsTripStopsPage() {
         value: (item) => item.departureDate
       },
       {
-        labelId: "generic.duration",
+        labelId: "duration",
         row: (item) => <>{show.duration(item.duration)}</>,
         footer: () => <span className="font-semibold"></span>,
         value: (item) => item.duration
       },
       {
-        labelId: "generic.location",
+        labelId: "location",
         row: (item) => (
           <div className="whitespace-nowrap text-ellipsis">
             <div>

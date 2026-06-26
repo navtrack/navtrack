@@ -91,7 +91,7 @@ function SpeedFilterModalBase(props: SpeedFilterModalBaseProps) {
                 <div className="flex space-x-4">
                   <FormikTextInput
                     name={nameOf<SpeedFilterFormValues>("minSpeed")}
-                    label="generic.min"
+                    label="min"
                     value={values.minSpeed}
                     type="number"
                     rightAddon={
@@ -119,7 +119,7 @@ function SpeedFilterModalBase(props: SpeedFilterModalBaseProps) {
                   />
                   <FormikTextInput
                     name={nameOf<SpeedFilterFormValues>("maxSpeed")}
-                    label="generic.max"
+                    label="max"
                     value={values.maxSpeed}
                     type="number"
                     rightAddon={

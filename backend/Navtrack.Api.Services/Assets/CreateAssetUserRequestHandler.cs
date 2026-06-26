@@ -27,11 +27,11 @@ public class CreateAssetUserRequestHandler(IAssetRepository assetRepository, IUs
 
         user = await userRepository.GetByEmail(context.Request.Model.Email);
         context.ValidationException.AddErrorIfNull(user, nameof(context.Request.Model.Email),
-            ApiErrorCodes.User_000001_EmailNotFound);
+            ApiErrorCodes.User_EmailNotFound);
 
         context.ValidationException.AddErrorIfTrue(
             user?.Assets.Any(x => x.Id == asset.Id),
-            nameof(context.Request.Model.Email), ApiErrorCodes.Asset_000001_UserAlreadyHasRole);
+            nameof(context.Request.Model.Email), ApiErrorCodes.Asset_UserAlreadyHasRole);
     }
 
     public override async Task Handle(CreateAssetUserRequest request)

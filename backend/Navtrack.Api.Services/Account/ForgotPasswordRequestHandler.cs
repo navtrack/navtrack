@@ -40,12 +40,12 @@ public class ForgotPasswordRequestHandler(
         if (passwordResetsIn24H >= ApiConstants.MaxPasswordResetIn24Hours)
         {
             throw new ValidationApiException(nameof(ForgotPasswordModel.Email),
-                ApiErrorCodes.User_000005_MaxPasswordResetsExceeded);
+                ApiErrorCodes.User_MaxPasswordResetsExceeded);
         }
 
         user = await userRepository.GetByEmail(context.Request.Model.Email);
         user.ReturnValidationErrorIfNull(nameof(ForgotPasswordModel.Email),
-            ApiErrorCodes.User_000001_EmailNotFound);
+            ApiErrorCodes.User_EmailNotFound);
     }
 
     public override async Task Handle(ForgotPasswordRequest request)

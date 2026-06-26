@@ -41,9 +41,9 @@ export function CreateTeamUserModal(props: CreateTeamUserModalProps) {
 
   const validationSchema: ObjectSchema<CreateUserFormValues> = object({
     email: string()
-      .email("generic.email.invalid")
-      .required("generic.email.required"),
-    role: string().required("generic.password.required")
+      .email("email.invalid")
+      .required("email.required"),
+    role: string().required("password.required")
   }).defined();
 
   const handleSubmit = useCallback(
@@ -80,7 +80,7 @@ export function CreateTeamUserModal(props: CreateTeamUserModalProps) {
   return (
     <>
       <Button onClick={() => setOpen(true)} icon={faUserPlus}>
-        <FormattedMessage id="generic.add-user" />
+        <FormattedMessage id="add-user" />
       </Button>
       <Modal
         open={open}
@@ -102,7 +102,7 @@ export function CreateTeamUserModal(props: CreateTeamUserModalProps) {
                     <div className="mt-2 space-y-4">
                       <FormikAutocomplete
                         name={nameOf<CreateUserFormValues>("email")}
-                        label="generic.user"
+                        label="user"
                         placeholder="teams.users.add.search-placeholder"
                         options={organizationsUsersQuery.data?.items.map(
                           (user) => ({
@@ -113,7 +113,7 @@ export function CreateTeamUserModal(props: CreateTeamUserModalProps) {
                       />
                       <FormikSelect
                         name={nameOf<CreateUserFormValues>("role")}
-                        label="generic.role"
+                        label="role"
                         placeholder="Select a role"
                         options={teamRoles}
                       />
@@ -124,7 +124,7 @@ export function CreateTeamUserModal(props: CreateTeamUserModalProps) {
                   <Button
                     type="submit"
                     isLoading={createTeamUserMutation.isPending}>
-                    <FormattedMessage id="generic.save" />
+                    <FormattedMessage id="save" />
                   </Button>
                 </ModalActions>
               </ModalContainer>

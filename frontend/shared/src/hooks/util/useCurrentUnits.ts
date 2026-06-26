@@ -20,21 +20,21 @@ export function useCurrentUnits() {
     if (currentUser.data?.units === UnitsType.Imperial) {
       return {
         unitsType: UnitsType.Imperial,
-        speed: intl.formatMessage({ id: "generic.units.mph" }),
-        length: intl.formatMessage({ id: "generic.units.ft" }),
-        lengthK: intl.formatMessage({ id: "generic.units.miles" }),
-        volume: intl.formatMessage({ id: "generic.units.gal" }),
-        fuelConsumption: intl.formatMessage({ id: "generic.units.mpg" })
+        speed: intl.formatMessage({ id: "units.mph" }),
+        length: intl.formatMessage({ id: "units.ft" }),
+        lengthK: intl.formatMessage({ id: "units.miles" }),
+        volume: intl.formatMessage({ id: "units.gal" }),
+        fuelConsumption: intl.formatMessage({ id: "units.mpg" })
       };
     }
 
     return {
       unitsType: UnitsType.Metric,
-      speed: intl.formatMessage({ id: "generic.units.kph" }),
-      length: intl.formatMessage({ id: "generic.units.m" }),
-      lengthK: intl.formatMessage({ id: "generic.units.km" }),
-      volume: intl.formatMessage({ id: "generic.units.l" }),
-      fuelConsumption: intl.formatMessage({ id: "generic.units.l100km" })
+      speed: intl.formatMessage({ id: "units.kph" }),
+      length: intl.formatMessage({ id: "units.m" }),
+      lengthK: intl.formatMessage({ id: "units.km" }),
+      volume: intl.formatMessage({ id: "units.l" }),
+      fuelConsumption: intl.formatMessage({ id: "units.l100km" })
     };
   }, [currentUser.data?.units, intl]);
 

@@ -33,12 +33,12 @@ public class CreateOrUpdateAssetDeviceRequestHandler(
 
         deviceType = deviceTypeRepository.GetById(context.Request.Model.DeviceTypeId);
         context.ValidationException.AddErrorIfNull(
-            deviceType, nameof(context.Request.Model.DeviceTypeId), ApiErrorCodes.Device_000001_DeviceTypeInvalid);
+            deviceType, nameof(context.Request.Model.DeviceTypeId), ApiErrorCodes.Device_DeviceTypeInvalid);
 
         context.ValidationException.AddErrorIfTrue(
             await deviceRepository.SerialNumberIsUsed(context.Request.Model.SerialNumber, deviceType.Protocol.Port,
                 asset.Id),
-            nameof(context.Request.Model.SerialNumber), ApiErrorCodes.Device_000002_SerialNumberUsed);
+            nameof(context.Request.Model.SerialNumber), ApiErrorCodes.Device_SerialNumberUsed);
     }
 
     public override async Task Handle(CreateOrUpdateAssetDeviceRequest request)

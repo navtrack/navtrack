@@ -25,12 +25,12 @@ export function OrganizationUsersPage() {
   const { showNotification } = useNotification();
 
   const columns: ITableColumn<OrganizationUserModel>[] = [
-    { labelId: "generic.email", row: (user) => user.email },
+    { labelId: "email", row: (user) => user.email },
     {
-      labelId: "generic.added-on",
+      labelId: "added-on",
       row: (user) => show.date(user.createdDate)
     },
-    { labelId: "generic.role", row: (user) => user.userRole },
+    { labelId: "role", row: (user) => user.userRole },
     {
       rowClassName: "flex justify-end space-x-2",
       row: (user) => (

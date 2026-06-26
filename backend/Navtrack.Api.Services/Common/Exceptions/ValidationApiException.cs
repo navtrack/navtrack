@@ -5,11 +5,11 @@ namespace Navtrack.Api.Services.Common.Exceptions;
 
 public class ValidationApiException : ApiException
 {
-    public ValidationApiException() : base(ApiErrorCodes.Validation_000001_Generic)
+    public ValidationApiException() : base(ApiErrorCodes.Validation_Generic)
     {
     }
     
-    public ValidationApiException(string propertyName, ApiError apiError) : base(ApiErrorCodes.Validation_000001_Generic)
+    public ValidationApiException(string propertyName, ApiError apiError) : base(ApiErrorCodes.Validation_Generic)
     {
         AddValidationError(propertyName, apiError);
     }

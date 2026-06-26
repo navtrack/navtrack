@@ -47,7 +47,7 @@ export function AuthenticatedLayoutSidebar() {
             id: `${currentOrganization.id}`
           })}>
           <Icon icon={faHdd} className="mr-2" />
-          <FormattedMessage id="generic.assets" />
+          <FormattedMessage id="assets" />
         </Link>
         <Authorize organizationUserRole={OrganizationUserRole.Owner}>
           <Link
@@ -55,7 +55,7 @@ export function AuthenticatedLayoutSidebar() {
               id: `${currentOrganization.id}`
             })}>
             <Button size="xs" color="success" icon={faPlus}>
-              <FormattedMessage id="generic.new-asset" />
+              <FormattedMessage id="new-asset" />
             </Button>
           </Link>
         </Authorize>

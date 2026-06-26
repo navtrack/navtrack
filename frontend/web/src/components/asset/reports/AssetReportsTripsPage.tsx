@@ -25,7 +25,7 @@ export function AssetReportsTripsPage() {
     rows: query.allTrips,
     columns: [
       {
-        labelId: "generic.date",
+        labelId: "date",
         row: (item) => (
           <div className="whitespace-nowrap h-full flex flex-col">
             <div className="flex-1">
@@ -49,7 +49,7 @@ export function AssetReportsTripsPage() {
         value: (item) => item.startPosition.date
       },
       {
-        labelId: "generic.location",
+        labelId: "location",
         row: (item) => (
           <div className="whitespace-nowrap text-ellipsis">
             <div className="">
@@ -63,7 +63,7 @@ export function AssetReportsTripsPage() {
         rowClassName: "w-full"
       },
       {
-        labelId: "generic.distance",
+        labelId: "distance",
         row: (item) => <>{show.distance(item.distance) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -73,7 +73,7 @@ export function AssetReportsTripsPage() {
         value: (item) => item.distance
       },
       {
-        labelId: "generic.duration",
+        labelId: "duration",
         row: (item) => <>{show.duration(item.duration) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -83,7 +83,7 @@ export function AssetReportsTripsPage() {
         value: (item) => item.distance
       },
       {
-        labelId: "generic.fuel-consumption",
+        labelId: "fuel-consumption",
         row: (item) => <>{show.volume(item.fuelConsumption) ?? "-"}</>,
         footer: () => (
           <span className="font-semibold">
@@ -93,7 +93,7 @@ export function AssetReportsTripsPage() {
         value: (item) => item.fuelConsumption
       },
       {
-        labelId: "generic.average-fuel-consumption",
+        labelId: "average-fuel-consumption",
         row: (item) => (
           <>{show.fuelConsumption(item.averageFuelConsumption) ?? "-"}</>
         ),

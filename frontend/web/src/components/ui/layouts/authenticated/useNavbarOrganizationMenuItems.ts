@@ -27,7 +27,7 @@ export function useNavbarOrganizationMenuItems() {
         order: 10
       },
       {
-        label: "generic.dashboard",
+        label: "dashboard",
         path: Paths.OrganizationDashboard,
         icon: faGauge,
         order: 20
@@ -39,13 +39,13 @@ export function useNavbarOrganizationMenuItems() {
         order: 25,
         subMenuItems: [
           {
-            label: "generic.distance",
+            label: "distance",
             path: Paths.OrganizationReportsDistance,
             icon: faTachometer,
             order: 10
           },
           {
-            label: "generic.fuel-consumption",
+            label: "fuel-consumption",
             path: Paths.OrganizationReportsFuelConsumption,
             icon: faGasPump,
             order: 20
@@ -53,21 +53,21 @@ export function useNavbarOrganizationMenuItems() {
         ]
       },
       {
-        label: "generic.assets",
+        label: "assets",
         path: Paths.OrganizationAssets,
         icon: faHdd,
         order: 25,
         count: currentOrganization.data?.assetsCount
       },
       {
-        label: "generic.teams",
+        label: "teams",
         path: Paths.OrganizationTeams,
         icon: faUsers,
         order: 30,
         count: currentOrganization.data?.teamsCount
       },
       {
-        label: "generic.users",
+        label: "users",
         path: Paths.OrganizationUsers,
         icon: faUser,
         order: 35,
@@ -75,7 +75,7 @@ export function useNavbarOrganizationMenuItems() {
         organizationRole: OrganizationUserRole.Owner
       },
       {
-        label: "generic.settings",
+        label: "settings",
         path: Paths.OrganizationSettings,
         icon: faCog,
         order: 40,

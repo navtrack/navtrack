@@ -51,7 +51,7 @@ export function OrganizationSettingsGeneralPage() {
   );
 
   const validationSchema: ObjectSchema<RenameOrganizationFormValues> = object({
-    name: string().required("generic.name.required")
+    name: string().required("name.required")
   }).defined();
 
   return (
@@ -74,7 +74,7 @@ export function OrganizationSettingsGeneralPage() {
                   <div className="col-span-7">
                     <FormikTextInput
                       name="name"
-                      label="generic.name"
+                      label="name"
                       loading={currentOrganization.data === undefined}
                       rightAddon={
                         <div className="ml-2 flex items-center">

@@ -26,7 +26,7 @@ export function TeamAssetsPage() {
 
   const columns: ITableColumn<TeamAssetModel>[] = [
     {
-      labelId: "generic.name",
+      labelId: "name",
       row: (asset) => (
         <Link
           to={generatePath(Paths.TeamUsers, { id: asset.assetId })}
@@ -36,7 +36,7 @@ export function TeamAssetsPage() {
       )
     },
     {
-      labelId: "generic.added-on",
+      labelId: "added-on",
       row: (user) => show.date(user.createdDate)
     },
     {

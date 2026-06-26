@@ -29,12 +29,12 @@ public class DeleteAssetDeviceRequestHandler(
 
         if (await deviceRepository.IsActive(asset.Id, device.Id))
         {
-            throw new ApiException(ApiErrorCodes.Device_000003_DeviceIsActive);
+            throw new ApiException(ApiErrorCodes.Device_DeviceIsActive);
         }
 
         if (await deviceMessageRepository.DeviceHasMessages(asset.Id, device.Id))
         {
-            throw new ApiException(ApiErrorCodes.Device_000004_DeviceHasMessages);
+            throw new ApiException(ApiErrorCodes.Device_DeviceHasMessages);
         }
     }
 

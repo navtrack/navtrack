@@ -50,7 +50,7 @@ export function RegisterPage() {
                 <Form className="space-y-3">
                   <FormikTextInput
                     name="email"
-                    label="generic.email"
+                    label="email"
                     value={values.email}
                     autoComplete="username"
                     className="pl-8"
@@ -62,7 +62,7 @@ export function RegisterPage() {
                   />
                   <FormikTextInput
                     name="password"
-                    label="generic.password"
+                    label="password"
                     className="pl-8"
                     type="password"
                     autoComplete="new-password"
@@ -75,7 +75,7 @@ export function RegisterPage() {
                   />
                   <FormikTextInput
                     name="confirmPassword"
-                    label="generic.confirm-password"
+                    label="confirm-password"
                     className="pl-8"
                     type="password"
                     autoComplete="new-password"

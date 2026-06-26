@@ -27,7 +27,7 @@ export function TeamUsersPage() {
 
   const columns: ITableColumn<TeamUserModel>[] = [
     {
-      labelId: "generic.email",
+      labelId: "email",
       row: (user) => (
         <Link
           to={generatePath(Paths.TeamUsers, { id: user.userId })}
@@ -36,9 +36,9 @@ export function TeamUsersPage() {
         </Link>
       )
     },
-    { labelId: "generic.role", row: (user) => user.userRole },
+    { labelId: "role", row: (user) => user.userRole },
     {
-      labelId: "generic.added-on",
+      labelId: "added-on",
       row: (user) => show.date(user.createdDate)
     },
     {
@@ -92,7 +92,7 @@ export function TeamUsersPage() {
     <TeamLayout team={team.data} isLoading={team.isLoading}>
       <div className="flex justify-between">
         <Heading type="h1">
-          <FormattedMessage id="generic.manage-users" />
+          <FormattedMessage id="manage-users" />
         </Heading>
         <Authorize teamUserRole="Owner">
           <CreateTeamUserModal teamId={id} />

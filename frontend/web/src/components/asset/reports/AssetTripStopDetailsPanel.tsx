@@ -53,7 +53,7 @@ export function AssetTripStopDetailsPanel(props: AssetTripDetailsPanelProps) {
               <div className="relative flex h-full flex-col overflow-y-auto bg-white py-6 shadow-xl space-y-4">
                 <div className="px-4 border-b border-gray-200 flex justify-between pb-4 items-center">
                   <DialogTitle className="text-base font-semibold text-gray-900">
-                    <FormattedMessage id="generic.stop-details" />
+                    <FormattedMessage id="stop-details" />
                   </DialogTitle>
                   <div className="flex space-x-2">
                     <Button
@@ -61,14 +61,14 @@ export function AssetTripStopDetailsPanel(props: AssetTripDetailsPanelProps) {
                       size="sm"
                       color="white"
                       disabled={props.previousDisabled}>
-                      <FormattedMessage id="generic.previous" />
+                      <FormattedMessage id="previous" />
                     </Button>
                     <Button
                       onClick={props.next}
                       size="sm"
                       color="white"
                       disabled={props.nextDisabled}>
-                      <FormattedMessage id="generic.next" />
+                      <FormattedMessage id="next" />
                     </Button>
                     <button
                       type="button"
@@ -83,7 +83,7 @@ export function AssetTripStopDetailsPanel(props: AssetTripDetailsPanelProps) {
                     icon={faFlagCheckered}
                     title={
                       <FormattedMessage
-                        id="generic.arrived-at"
+                        id="arrived-at"
                         values={{ date: show.dateTime(props.stop.arrivalDate) }}
                       />
                     }
@@ -97,7 +97,7 @@ export function AssetTripStopDetailsPanel(props: AssetTripDetailsPanelProps) {
                     icon={faStopwatch}
                     title={
                       <FormattedMessage
-                        id="generic.stopped-for"
+                        id="stopped-for"
                         values={{
                           duration: show.duration(props.stop.duration)
                         }}
@@ -110,7 +110,7 @@ export function AssetTripStopDetailsPanel(props: AssetTripDetailsPanelProps) {
                       last
                       title={
                         <FormattedMessage
-                          id="generic.departed-at"
+                          id="departed-at"
                           values={{
                             date: show.dateTime(props.stop.departureDate)
                           }}

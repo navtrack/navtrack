@@ -37,7 +37,7 @@ export function useRenameAsset() {
   );
 
   const validationSchema: ObjectSchema<{ name: string }> = object({
-    name: string().required("generic.name.required")
+    name: string().required("name.required")
   }).defined();
 
   return {

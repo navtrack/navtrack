@@ -15,7 +15,7 @@ export function OrganizationTeamsPage() {
 
   const columns: ITableColumn<TeamModel>[] = [
     {
-      labelId: "generic.name",
+      labelId: "name",
       row: (team) => (
         <Link
           to={generatePath(Paths.TeamUsers, { id: team.id })}
@@ -24,8 +24,8 @@ export function OrganizationTeamsPage() {
         </Link>
       )
     },
-    { labelId: "generic.users", row: (team) => team.usersCount },
-    { labelId: "generic.assets", row: (team) => team.assetsCount }
+    { labelId: "users", row: (team) => team.usersCount },
+    { labelId: "assets", row: (team) => team.assetsCount }
   ];
 
   const navigate = useNavigate();

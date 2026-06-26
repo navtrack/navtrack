@@ -21,9 +21,9 @@ export function useCreateAssetUser(props: CreateAssetUserProps) {
 
   const validationSchema: ObjectSchema<CreateAssetUserFormValues> = object({
     email: string()
-      .email("generic.email.invalid")
-      .required("generic.email.required"),
-    role: string().required("generic.password.required").defined()
+      .email("email.invalid")
+      .required("email.required"),
+    role: string().required("password.required").defined()
   });
 
   const handleSubmit = useCallback(

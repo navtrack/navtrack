@@ -28,7 +28,7 @@ public class DeleteTeamAssetRequestHandler(ITeamRepository teamRepository, IAsse
 
         if (asset.Teams.All(x => x.Id != team.Id))
         {
-            throw new ApiException(ApiErrorCodes.Team_000005_AssetNotInTeam);
+            throw new ApiException(ApiErrorCodes.Team_AssetNotInTeam);
         }
     }
 

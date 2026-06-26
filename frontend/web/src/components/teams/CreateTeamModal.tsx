@@ -33,7 +33,7 @@ export function CreateTeamModal() {
   const navigate = useNavigate();
 
   const validationSchema: ObjectSchema<CreateTeamFormValues> = object({
-    name: string().required("generic.name.required")
+    name: string().required("name.required")
   }).defined();
 
   const handleSubmit = useCallback(
@@ -97,7 +97,7 @@ export function CreateTeamModal() {
                     <div className="mt-2 space-y-4">
                       <FormikTextInput
                         name={nameOf<CreateTeamFormValues>("name")}
-                        label="generic.name"
+                        label="name"
                       />
                     </div>
                   </ModalBody>
@@ -106,7 +106,7 @@ export function CreateTeamModal() {
                   <Button
                     type="submit"
                     isLoading={createTeamMutation.isPending}>
-                    <FormattedMessage id="generic.save" />
+                    <FormattedMessage id="save" />
                   </Button>
                 </ModalActions>
               </ModalContainer>

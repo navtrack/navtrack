@@ -105,7 +105,7 @@ export function AssetReportsWorkingHoursPage() {
     rows: query.isLoading ? undefined : tableRows,
     columns: [
       {
-        labelId: "generic.date",
+        labelId: "date",
         row: (item) => (
           <div className="whitespace-nowrap">{show.date(item.date)}</div>
         ),
@@ -113,7 +113,7 @@ export function AssetReportsWorkingHoursPage() {
         sort: "desc"
       },
       {
-        labelId: "generic.location",
+        labelId: "location",
         header: () => (
           <div className="flex h-full flex-1 bg-gray-100 space-x-px border-x border-gray-200">
             {[...Array(24).keys()].map((_, index) => (
@@ -174,19 +174,19 @@ export function AssetReportsWorkingHoursPage() {
                       <tbody>
                         <tr>
                           <td className="pr-1">
-                            <FormattedMessage id="generic.start" />
+                            <FormattedMessage id="start" />
                           </td>
                           <td>{show.time(trip.startPosition.date)}</td>
                         </tr>
                         <tr>
                           <td className="pr-1">
-                            <FormattedMessage id="generic.end" />
+                            <FormattedMessage id="end" />
                           </td>
                           <td>{show.time(trip.endPosition.date)}</td>
                         </tr>
                         <tr>
                           <td className="pr-1">
-                            <FormattedMessage id="generic.duration" />
+                            <FormattedMessage id="duration" />
                           </td>
                           <td>{show.duration(trip.duration)}</td>
                         </tr>
@@ -200,7 +200,7 @@ export function AssetReportsWorkingHoursPage() {
         )
       },
       {
-        labelId: "generic.during-schedule",
+        labelId: "during-schedule",
         row: (item) => (
           <div className="whitespace-nowrap">
             {show.duration(item.workHoursDuration)}
@@ -210,7 +210,7 @@ export function AssetReportsWorkingHoursPage() {
         footer: (total) => <>{show.duration(total)}</>
       },
       {
-        labelId: "generic.off-schedule",
+        labelId: "off-schedule",
         row: (item) => (
           <div className="whitespace-nowrap">
             {show.duration(item.offHoursDuration)}
@@ -220,7 +220,7 @@ export function AssetReportsWorkingHoursPage() {
         footer: (total) => <>{show.duration(total)}</>
       },
       {
-        labelId: "generic.trips-total",
+        labelId: "trips-total",
         row: (item) => (
           <div className="whitespace-nowrap">
             {show.duration(item.totalDuration)}
@@ -230,7 +230,7 @@ export function AssetReportsWorkingHoursPage() {
         footer: (total) => <>{show.duration(total)}</>
       },
       {
-        labelId: "generic.start-time",
+        labelId: "start-time",
         row: (item) => (
           <div className="whitespace-nowrap">
             {show.time(item.trips[0]?.startPosition.date)}
@@ -239,7 +239,7 @@ export function AssetReportsWorkingHoursPage() {
         value: (item) => item.trips[0]?.startPosition.date
       },
       {
-        labelId: "generic.end-time",
+        labelId: "end-time",
         row: (item) => (
           <div className="whitespace-nowrap">
             {show.time(item.trips[item.trips.length - 1]?.endPosition.date)}
@@ -248,7 +248,7 @@ export function AssetReportsWorkingHoursPage() {
         value: (item) => item.trips[item.trips.length - 1]?.endPosition.date
       },
       {
-        labelId: "generic.total-duration",
+        labelId: "total-duration",
         row: (item) => (
           <div className="whitespace-nowrap">
             {show.duration(getTotalDuration(item))}

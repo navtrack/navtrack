@@ -19,11 +19,11 @@ export function PositionCardItems(props: PositionCardItemsProps) {
   return (
     <>
       <PositionCardItem
-        label="generic.date"
+        label="date"
         value={show.dateTime(props.position.date)}
       />
       <PositionCardItem
-        label="generic.latitude-longitude"
+        label="latitude-longitude"
         value={`${showCoordinate(props.position.coordinates.latitude)}, ${showCoordinate(props.position.coordinates.longitude)}`}
         copyable
         labelExtra={
@@ -34,23 +34,23 @@ export function PositionCardItems(props: PositionCardItemsProps) {
         }
       />
       <PositionCardItem
-        label="generic.speed"
+        label="speed"
         value={show.speed(props.position.speed)}
       />
       <PositionCardItem
-        label="generic.altitude"
+        label="altitude"
         value={show.altitude(props.position.altitude)}
       />
       <PositionCardItem
-        label="generic.heading"
+        label="heading"
         value={showHeading(props.position.heading)}
       />
       <PositionCardItem
-        label="generic.satellites"
+        label="satellites"
         value={showProperty(props.position.satellites)}
       />
       <PositionCardItem
-        label="generic.hdop"
+        label="hdop"
         value={showNumber(props.position.hdop, 2)}
       />
     </>

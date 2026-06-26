@@ -54,12 +54,12 @@ export function useChangePassword() {
         [ref("currentPassword")],
         "settings.password.different-password"
       )
-      .required("generic.password.required")
-      .min(8, "generic.password.requirements.length"),
+      .required("password.required")
+      .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
-      .required("generic.confirm-password.required")
-      .min(8, "generic.password.requirements.length")
+      .oneOf([ref("password")], "confirm-password.requirements.match")
+      .required("confirm-password.required")
+      .min(8, "password.requirements.length")
   }).defined();
 
   return {

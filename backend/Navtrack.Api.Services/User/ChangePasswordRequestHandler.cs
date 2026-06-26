@@ -34,7 +34,7 @@ public class ChangePasswordRequestHandler(
                 currentUser.PasswordSalt))
         {
             apiException.AddValidationError(nameof(request.Model.CurrentPassword),
-                ApiErrorCodes.User_000008_InvalidCurrentPassword);
+                ApiErrorCodes.User_InvalidCurrentPassword);
         }
 
         BasePasswordModelValidator.ValidatePasswords(request.Model, apiException, request.Model.CurrentPassword);

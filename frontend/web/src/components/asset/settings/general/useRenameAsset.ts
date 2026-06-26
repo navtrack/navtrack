@@ -40,7 +40,7 @@ export function useRenameAsset() {
   const intl = useIntl();
 
   const validationSchema: ObjectSchema<{ name: string }> = object({
-    name: string().required(intl.formatMessage({ id: "generic.name.required" }))
+    name: string().required(intl.formatMessage({ id: "name.required" }))
   }).defined();
 
   return {

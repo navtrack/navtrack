@@ -58,14 +58,14 @@ export function CreateOrganizationModal(props: CreateOrganizationModalProps) {
                   <div className="mt-2 space-y-4">
                     <FormikTextInput
                       name={nameOf<CreateOrganizationFormValues>("name")}
-                      label="generic.name"
+                      label="name"
                     />
                   </div>
                 </ModalBody>
               </ModalContent>
               <ModalActions cancel={() => props.setOpen(false)}>
                 <Button type="submit" isLoading={createOrganization.isLoading}>
-                  <FormattedMessage id="generic.save" />
+                  <FormattedMessage id="save" />
                 </Button>
               </ModalActions>
             </ModalContainer>

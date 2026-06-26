@@ -38,7 +38,7 @@ public class UpdateOrganizationUserRequestHandler(
             context.Request.Model.UserRole != OrganizationUserRole.Owner)
         {
             throw new ValidationApiException().AddValidationError(nameof(context.Request.Model.UserRole),
-                ApiErrorCodes.Organization_000002_OneOwnerRequired);
+                ApiErrorCodes.Organization_OneOwnerRequired);
         }
     }
 
