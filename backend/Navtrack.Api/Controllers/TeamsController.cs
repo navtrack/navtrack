@@ -35,6 +35,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.OrganizationTeams)]
     [ProducesResponseType(typeof(TeamModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string organizationId, [FromBody] CreateTeamModel model)
     {
@@ -62,6 +63,7 @@ public class TeamsController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.TeamById)]
     [NavtrackAuthorize(OrganizationUserRole.Owner)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromRoute] string teamId, [FromBody] UpdateTeamModel model)
     {
         await requestHandler.Handle(new UpdateTeamRequest

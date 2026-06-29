@@ -11,6 +11,8 @@ type UseRegisterProps = {
 export const useRegister = (props?: UseRegisterProps) => {
   const registerAccountMutation = useRegisterAccountMutation();
 
+  console.log(registerAccountMutation.isPending);
+
   const register = useCallback(
     (
       values: RegisterFormValues,
@@ -36,7 +38,8 @@ export const useRegister = (props?: UseRegisterProps) => {
 
   return {
     register,
-    loading: registerAccountMutation.isPending,
+    loading:
+      registerAccountMutation.isPending && !registerAccountMutation.isError,
     success: registerAccountMutation.isSuccess
   };
 };

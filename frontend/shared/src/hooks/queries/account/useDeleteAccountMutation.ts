@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useAccountDelete } from "../../../api";
-import { ErrorModel } from "../../../api/model";
+import { ValidationProblemDetails } from "../../../api/model";
 
 type UseDeleteAccountMutationProps = {
   onSuccess?: () => void;
-  onError?: (error: ErrorModel) => void;
+  onError?: (error: ValidationProblemDetails) => void;
 };
 
 export function useDeleteAccountMutation(

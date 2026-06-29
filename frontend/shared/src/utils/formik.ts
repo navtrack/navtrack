@@ -1,21 +1,31 @@
 import { FormikHelpers } from "formik";
-import { getError } from "./api";
+import { ValidationProblemDetails } from "../api/model";
+import { toCamelCase } from "./string";
 
-export const mapErrors = <T>(error: any, formikHelpers: FormikHelpers<T>) => {
-  const response = getError(error);
-
+export const mapErrors = <T>(
+  error: ValidationProblemDetails,
+  formikHelpers: FormikHelpers<T>
+) => {
   formikHelpers.setSubmitting(false);
 
-  if (response.errors !== undefined && response.errors !== null) {
-    Object.keys(response.errors).forEach((x) => {
-      formikHelpers.setFieldError(x, response.errors![x][0]);
+  if (error.errors !== undefined && error.errors !== null) {
+    Object.keys(error.errors).forEach((x) => {
+      formikHelpers.setFieldError(toCamelCase(x), error.errors![x][0]);
     });
   }
 
-  if (!response.errors?.length) {
+  if (!hasErrors(error)) {
     formikHelpers.setStatus({
-      code: response.code,
-      message: response.message
+      code: error.code,
+      message: error.detail ?? error.title
     });
   }
 };
+
+function hasErrors(error: ValidationProblemDetails) {
+  return (
+    error.errors !== undefined &&
+    error.errors !== null &&
+    Object.keys(error.errors).length !== 0
+  );
+}

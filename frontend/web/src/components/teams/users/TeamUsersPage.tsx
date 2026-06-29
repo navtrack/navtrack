@@ -10,12 +10,12 @@ import { DeleteModal } from "../../ui/modal/DeleteModal";
 import { useNotification } from "../../ui/notification/useNotification";
 import { FormattedMessage } from "react-intl";
 import { useDeleteTeamUserMutation } from "@navtrack/shared/hooks/queries/teams/useDeleteTeamUserMutation";
-import { getError } from "@navtrack/shared/utils/api";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 import { CreateTeamUserModal } from "./CreateTeamUserModal";
 import { UpdateTeamUserModal } from "./UpdateTeamUserModal";
 import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function TeamUsersPage() {
   const { id } = useParams();
@@ -63,11 +63,9 @@ export function TeamUsersPage() {
                       });
                     },
                     onError: (error) => {
-                      const model = getError(error);
-
                       showNotification({
                         type: "error",
-                        description: `${model.message}`
+                        description: formatErrorMessage(error.title)
                       });
                     }
                   }

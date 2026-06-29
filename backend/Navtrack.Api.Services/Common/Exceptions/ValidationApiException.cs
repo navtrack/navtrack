@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Navtrack.Api.Model.Errors;
 
@@ -5,6 +6,8 @@ namespace Navtrack.Api.Services.Common.Exceptions;
 
 public class ValidationApiException : ApiException
 {
+    public readonly List<ValidationError> ValidationErrors = [];
+    
     public ValidationApiException() : base(ApiErrorCodes.Validation_Generic)
     {
     }
@@ -14,7 +17,7 @@ public class ValidationApiException : ApiException
         AddValidationError(propertyName, apiError);
     }
     
-    public ApiException AddValidationError(string propertyName, ApiError apiError)
+    public ValidationApiException AddValidationError(string propertyName, ApiError apiError)
     {
         ValidationErrors.Add(new ValidationError
         {
@@ -25,7 +28,7 @@ public class ValidationApiException : ApiException
         return this;
     }
     
-    public ApiException AddErrorIfTrue(bool? check, string propertyName, ApiError apiError)
+    public ValidationApiException AddErrorIfTrue(bool? check, string propertyName, ApiError apiError)
     {
         if (check.GetValueOrDefault())
         {
@@ -39,7 +42,7 @@ public class ValidationApiException : ApiException
         return this;
     }
     
-    public ApiException AddErrorIfNull([NotNull]object? @object, string propertyName, ApiError apiError)
+    public ValidationApiException AddErrorIfNull([NotNull]object? @object, string propertyName, ApiError apiError)
     {
         if (@object == null)
         {

@@ -5,9 +5,9 @@ namespace Navtrack.Api.Model.Assets;
 
 public class CreateAssetUserModel
 {
-    [Required]
+    [Required(ErrorMessage = "email.required")]
     public string Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "userRole.required")]
     public AssetUserRole UserRole { get; set; }
 }

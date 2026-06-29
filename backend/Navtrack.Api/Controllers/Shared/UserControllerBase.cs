@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Account;
-using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.User;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Api.Services.User;
@@ -18,7 +17,7 @@ public abstract class UserControllerBase(IRequestHandler requestHandler)
 {
     [HttpPost(ApiPaths.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] UpdateUserModel model)
     {
         await requestHandler.Handle(new UpdateUserRequest
@@ -31,7 +30,7 @@ public abstract class UserControllerBase(IRequestHandler requestHandler)
 
     [HttpPost(ApiPaths.UserChangePassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordModel model)
     {
         await requestHandler.Handle(new ChangePasswordRequest

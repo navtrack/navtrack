@@ -8,13 +8,13 @@ import { TeamLayout } from "../TeamLayout";
 import { DeleteModal } from "../../ui/modal/DeleteModal";
 import { useNotification } from "../../ui/notification/useNotification";
 import { FormattedMessage } from "react-intl";
-import { getError } from "@navtrack/shared/utils/api";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 import { CreateTeamAssetModal } from "./CreateTeamAssetModal";
 import { useTeamAssetsQuery } from "@navtrack/shared/hooks/queries/teams/useTeamAssetsQuery";
 import { useDeleteTeamAssetMutation } from "@navtrack/shared/hooks/queries/teams/useDeleteTeamAssetMutation";
 import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function TeamAssetsPage() {
   const { id } = useParams();
@@ -60,11 +60,9 @@ export function TeamAssetsPage() {
                       });
                     },
                     onError: (error) => {
-                      const model = getError(error);
-
                       showNotification({
                         type: "error",
-                        description: `${model.message}`
+                        description: formatErrorMessage(error.title)
                       });
                     }
                   }

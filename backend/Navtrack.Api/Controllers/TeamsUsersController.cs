@@ -36,7 +36,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
 
     [HttpPost(ApiPaths.TeamUsers)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string teamId, [FromBody] CreateTeamUserModel model)
@@ -52,7 +52,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
 
     [HttpPost(ApiPaths.TeamUserById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string teamId, [FromRoute] string userId,
@@ -70,7 +70,7 @@ public class TeamsUsersController(IRequestHandler requestHandler) : ControllerBa
 
     [HttpDelete(ApiPaths.TeamUserById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string teamId, [FromRoute] string userId)

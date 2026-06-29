@@ -47,18 +47,15 @@ export function useChangePassword() {
 
   const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
     currentPassword: currentUser.data?.authentication?.password
-      ? string().required("settings.password.current-password.required")
+      ? string().required("currentPassword.required")
       : string().optional(),
     password: string()
-      .notOneOf(
-        [ref("currentPassword")],
-        "settings.password.different-password"
-      )
+      .notOneOf([ref("currentPassword")], "password.different-password")
       .required("password.required")
       .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .oneOf([ref("password")], "confirm-password.requirements.match")
-      .required("confirm-password.required")
+      .oneOf([ref("password")], "confirmPassword.requirements.match")
+      .required("confirmPassword.required")
       .min(8, "password.requirements.length")
   }).defined();
 

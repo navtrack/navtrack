@@ -3,7 +3,6 @@ import { CreateOrganizationUserModal } from "./CreateOrganizationUserModal";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 import { Heading } from "../ui/heading/Heading";
 import { OrganizationUserModel } from "@navtrack/shared/api/model";
-import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";
 import { ITableColumn, useTable } from "../ui/table/useTable";
@@ -13,6 +12,7 @@ import { TableV2 } from "../ui/table/TableV2";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useOrganizationUsersQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationUsersQuery";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function OrganizationUsersPage() {
   const currentUser = useCurrentUserQuery();
@@ -53,11 +53,9 @@ export function OrganizationUsersPage() {
                       });
                     },
                     onError: (error) => {
-                      const model = getError(error);
-
                       showNotification({
                         type: "error",
-                        description: `${model.message}`
+                        description: formatErrorMessage(error.title)
                       });
                     }
                   }

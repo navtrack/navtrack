@@ -23,7 +23,7 @@ public abstract class BaseOrganizationsController(
 {
     [HttpPost(ApiPaths.Organizations)]
     [ProducesResponseType(typeof(Entity), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<Entity> Create([FromBody] CreateOrganizationModel model)
     {
         Entity result = await requestHandler.Handle<CreateOrganizationRequest, Entity>(new CreateOrganizationRequest
@@ -37,7 +37,7 @@ public abstract class BaseOrganizationsController(
 
     [HttpPost(ApiPaths.OrganizationById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string organizationId, [FromBody] UpdateOrganizationModel model)

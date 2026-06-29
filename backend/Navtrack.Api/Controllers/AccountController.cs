@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Account;
-using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Account;
 using Navtrack.Api.Services.Requests;
 
@@ -15,7 +14,7 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
 {
     [HttpPost(ApiPaths.Account)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel model)
     {
         await requestHandler.Handle(new CreateAccountRequest
@@ -29,7 +28,7 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
     [HttpDelete(ApiPaths.Account)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromBody] DeleteAccountModel model)
     {
         await requestHandler.Handle(new DeleteAccountRequest
@@ -42,7 +41,7 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.AccountForgotPassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
     {
         await requestHandler.Handle(new ForgotPasswordRequest
@@ -55,7 +54,7 @@ public class AccountController(IRequestHandler requestHandler) : ControllerBase
 
     [HttpPost(ApiPaths.AccountResetPassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
     {
         await requestHandler.Handle(new ResetPasswordRequest

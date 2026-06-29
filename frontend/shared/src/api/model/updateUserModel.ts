@@ -4,11 +4,9 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
-import type { UpdateUserModelUnitsType } from "./updateUserModelUnitsType";
+import type { UnitsType } from "./unitsType";
 
 export interface UpdateUserModel {
-  /** @nullable */
-  email?: string | null;
-  /** @nullable */
-  unitsType?: UpdateUserModelUnitsType;
+  email?: string;
+  unitsType?: UnitsType;
 }

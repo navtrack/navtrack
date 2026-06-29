@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Common.ActionFilters;
 using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Api.Services.Common.IdentityServer;
@@ -33,6 +32,7 @@ public abstract class BaseApiProgram<T>
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddCustomServices<T>();
+        builder.Services.AddProblemDetails();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApiDocument(c => { c.Title = assembly.GetName().Name; });
@@ -66,10 +66,9 @@ public abstract class BaseApiProgram<T>
             {
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    ValidationProblemDetails problemDetails = new(context.ModelState);
-                    ErrorModel error = ErrorMapper.Map(problemDetails);
-
-                    return new BadRequestObjectResult(error);
+                    ValidationProblemDetails problemDetails = ProblemDetailsMapper.Map(context.ModelState);
+               
+                    return new BadRequestObjectResult(problemDetails);
                 };
             })
             .AddJsonOptions(options => ConfigureJsonOptions(options.JsonSerializerOptions));
@@ -84,6 +83,7 @@ public abstract class BaseApiProgram<T>
 
         builder.Services.AddLocalApiAuthentication();
         builder.Services.AddLogging();
+        builder.Services.AddExceptionHandler<NavtrackExceptionHandler>();
 
         builder.Services.AddSingleton<IClientErrorFactory, CustomClientErrorFactory>();  
         
@@ -114,7 +114,7 @@ public abstract class BaseApiProgram<T>
         app.UseAuthorization();
         app.UseIdentityServer();
 
-        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseExceptionHandler();
         app.UseMiddleware<NavtrackRequestContextMiddleware>();
 
         app.MapControllers();

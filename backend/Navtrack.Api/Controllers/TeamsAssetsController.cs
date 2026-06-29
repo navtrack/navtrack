@@ -37,7 +37,7 @@ public class TeamsAssetsController(IRequestHandler requestHandler) : ControllerB
 
     [HttpPost(ApiPaths.TeamAssets)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Create([FromRoute] string teamId, [FromBody] CreateTeamAssetModel model)
@@ -53,7 +53,7 @@ public class TeamsAssetsController(IRequestHandler requestHandler) : ControllerB
 
     [HttpDelete(ApiPaths.TeamAssetById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(TeamUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string teamId, [FromRoute] string assetId)

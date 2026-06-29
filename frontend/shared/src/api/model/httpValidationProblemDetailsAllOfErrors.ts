@@ -5,7 +5,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * @nullable
- */
-export type ErrorModelErrors = { [key: string]: string[] } | null;
+export type HttpValidationProblemDetailsAllOfErrors = {
+  [key: string]: string[];
+};

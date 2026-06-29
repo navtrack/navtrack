@@ -21,7 +21,7 @@ public abstract class BaseAssetsController(IRequestHandler requestHandler) : Con
 {
     [HttpPost(ApiPaths.OrganizationAssets)]
     [ProducesResponseType(typeof(Entity), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [NavtrackAuthorize(OrganizationUserRole.Owner)]
     public Task<Entity> Create([FromRoute] string organizationId, [FromBody] CreateAssetModel model) =>
         requestHandler.Handle<CreateAssetRequest, Entity>(new CreateAssetRequest
@@ -47,7 +47,7 @@ public abstract class BaseAssetsController(IRequestHandler requestHandler) : Con
 
     [HttpPost(ApiPaths.AssetById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(AssetUserRole.Owner)]
     public async Task<IActionResult> Update([FromRoute] string assetId, [FromBody] UpdateAssetModel model)

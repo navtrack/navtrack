@@ -1,6 +1,5 @@
 import { FormattedMessage } from "react-intl";
 import { AssetUserModel, AssetUserRole } from "@navtrack/shared/api/model";
-import { getError } from "@navtrack/shared/utils/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useAssetUsersQuery } from "@navtrack/shared/hooks/queries/assets/useAssetUsersQuery";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
@@ -12,6 +11,7 @@ import { useNotification } from "../../../ui/notification/useNotification";
 import { CreateAssetUserModal } from "./CreateAssetUserModal";
 import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function AssetUsersPage() {
   const currentAsset = useCurrentAsset();
@@ -46,11 +46,9 @@ export function AssetUsersPage() {
                     },
                     {
                       onError: (error) => {
-                        const model = getError(error);
-
                         showNotification({
                           type: "error",
-                          description: `${model.message}`
+                          description: formatErrorMessage(error.title)
                         });
                       }
                     }

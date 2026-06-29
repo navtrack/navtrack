@@ -34,8 +34,7 @@ public class UpdateUserRequestHandler(IUserRepository userRepository, INavtrackR
             }
         }
 
-        if (request.Model.UnitsType.HasValue &&
-            navtrackRequestContextAccessor.NavtrackContext.CurrentUser.UnitsType != request.Model.UnitsType)
+        if (navtrackRequestContextAccessor.NavtrackContext.CurrentUser.UnitsType != request.Model.UnitsType)
         {
             updateUser.UnitsType = request.Model.UnitsType;
         }

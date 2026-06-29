@@ -41,7 +41,7 @@ export function ChangePasswordCard() {
                   <FormikTextInput
                     autoComplete="current-password"
                     type="password"
-                    label="settings.password.current-password"
+                    label="password.current-password"
                     name={nameOf<ChangePasswordFormValues>("currentPassword")}
                     disabled={
                       currentUser.isSuccess &&

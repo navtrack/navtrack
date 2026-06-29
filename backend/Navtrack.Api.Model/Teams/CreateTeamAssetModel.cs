@@ -4,6 +4,6 @@ namespace Navtrack.Api.Model.Teams;
 
 public class CreateTeamAssetModel
 {
-    [Required]
+    [Required(ErrorMessage = "assetId.required")]
     public string AssetId { get; set; }
 }

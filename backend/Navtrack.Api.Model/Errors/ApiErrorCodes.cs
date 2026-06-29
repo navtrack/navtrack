@@ -2,6 +2,8 @@ namespace Navtrack.Api.Model.Errors;
 
 public abstract class ApiErrorCodes
 {
+    public static readonly ApiError Internal = new("internal");
+    
     public static readonly ApiError Validation_Generic = new("validation.generic");
     public static readonly ApiError Validation_InvalidCaptcha = new("validation.invalid-captcha");
    

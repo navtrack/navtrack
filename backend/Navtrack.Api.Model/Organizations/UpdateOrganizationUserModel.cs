@@ -5,6 +5,6 @@ namespace Navtrack.Api.Model.Organizations;
 
 public class UpdateOrganizationUserModel
 {
-    [Required]
+    [Required(ErrorMessage = "userRole.required")]
     public OrganizationUserRole UserRole { get; set; }
 }

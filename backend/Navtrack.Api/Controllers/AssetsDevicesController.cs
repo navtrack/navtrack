@@ -38,7 +38,7 @@ public class AssetsDevicesController(IRequestHandler requestHandler) : Controlle
     [HttpPost(ApiPaths.AssetDevices)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [NavtrackAuthorize(AssetUserRole.Owner)]
     public async Task<IActionResult> CreateOrUpdate([FromRoute] string assetId, [FromBody] CreateOrUpdateAssetDeviceModel model)
     {
@@ -54,7 +54,7 @@ public class AssetsDevicesController(IRequestHandler requestHandler) : Controlle
     [HttpDelete(ApiPaths.AssetDeviceById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [NavtrackAuthorize(AssetUserRole.Owner)]
     public async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string deviceId)
     {
