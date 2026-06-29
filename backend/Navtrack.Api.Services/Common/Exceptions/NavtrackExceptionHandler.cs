@@ -16,12 +16,14 @@ public class NavtrackExceptionHandler : IExceptionHandler
         if (exception is ValidationApiException validationApiException)
         {
             ValidationProblemDetails model = ProblemDetailsMapper.Map(validationApiException);
+            httpContext.Response.StatusCode = model.Status.GetValueOrDefault(StatusCodes.Status400BadRequest);
             
             await httpContext.Response.WriteAsJsonAsync(model, cancellationToken);
         }
         else if (exception is ApiException apiException)
         {
             ProblemDetails model = ProblemDetailsMapper.Map(apiException);
+            httpContext.Response.StatusCode = model.Status.GetValueOrDefault(StatusCodes.Status400BadRequest);
 
             await httpContext.Response.WriteAsJsonAsync(model, cancellationToken);
         }
