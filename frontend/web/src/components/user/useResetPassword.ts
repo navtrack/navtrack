@@ -45,9 +45,9 @@ export const useResetPassword = () => {
       .required("password.required")
       .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .required("confirm-password.required")
+      .required("confirmPassword.required")
       .min(8, "password.requirements.length")
-      .oneOf([ref("password")], "confirm-password.requirements.match")
+      .oneOf([ref("password")], "confirmPassword.requirements.match")
   }).defined();
 
   return {

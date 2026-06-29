@@ -47,7 +47,7 @@ export function useChangePassword() {
 
   const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
     currentPassword: currentUser.data?.authentication?.password
-      ? string().required("currentPassword.required")
+      ? string().required("password.current-password.required")
       : string().optional(),
     password: string()
       .notOneOf([ref("currentPassword")], "password.different-password")
