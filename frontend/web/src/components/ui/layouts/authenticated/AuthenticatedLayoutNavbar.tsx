@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { generatePath, Link, NavLink } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { AuthenticatedLayoutNavbarProfile } from "./AuthenticatedLayoutNavbarProfile";
 import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
@@ -19,6 +19,8 @@ import { SlotContext } from "../../../../app/SlotContext";
 import { useAuthorize } from "@navtrack/shared/hooks/current/useAuthorize";
 import { useNavbarAssetMenuItems } from "./useNavbarAssetMenuItems";
 import { useNavbarOrganizationMenuItems } from "./useNavbarOrganizationMenuItems";
+import { Button } from "../../button/Button";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 type AuthenticatedLayoutNavbarProps = {
   hideLogo?: boolean;
@@ -89,6 +91,17 @@ export function AuthenticatedLayoutNavbar(
           <NavbarBreadcrumbs />
         </div>
         <div className="flex items-center space-x-4">
+          {currentOrganization.id &&
+            authorize.organization(OrganizationUserRole.Owner) && (
+              <Link
+                to={generatePath(Paths.OrganizationAssetsNew, {
+                  id: currentOrganization.id
+                })}>
+                <Button size="sm" color="success" icon={faPlus}>
+                  <FormattedMessage id="new-asset" />
+                </Button>
+              </Link>
+            )}
           {slots?.navbarAdditional}
           <NavbarOrganization />
           {/*<button
