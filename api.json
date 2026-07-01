@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Navtrack.Api",
@@ -2488,8 +2488,7 @@
           },
           "date": {
             "type": "string",
-            "format": "date-time",
-            "minLength": 1
+            "format": "date-time"
           },
           "speed": {
             "type": "number",
@@ -2877,8 +2876,7 @@
         "properties": {
           "date": {
             "type": "string",
-            "format": "date-time",
-            "minLength": 1
+            "format": "date-time"
           },
           "distance": {
             "type": "number",
@@ -3146,8 +3144,7 @@
           },
           "createdDate": {
             "type": "string",
-            "format": "date-time",
-            "minLength": 1
+            "format": "date-time"
           }
         }
       },
@@ -3414,8 +3411,7 @@
           },
           "createdDate": {
             "type": "string",
-            "format": "date-time",
-            "minLength": 1
+            "format": "date-time"
           }
         }
       },
@@ -3509,8 +3505,7 @@
           },
           "createdDate": {
             "type": "string",
-            "format": "date-time",
-            "minLength": 1
+            "format": "date-time"
           }
         }
       },
@@ -3684,8 +3679,7 @@
           },
           "createdDate": {
             "type": "string",
-            "format": "date-time",
-            "minLength": 1
+            "format": "date-time"
           }
         }
       },
@@ -3848,6 +3842,9 @@
       "UpdateUserModel": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "email"
+        ],
         "properties": {
           "email": {
             "type": "string",

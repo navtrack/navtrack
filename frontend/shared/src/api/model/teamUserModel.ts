@@ -12,6 +12,5 @@ export interface TeamUserModel {
   /** @minLength 1 */
   email: string;
   userRole: TeamUserRole;
-  /** @minLength 1 */
   createdDate: string;
 }

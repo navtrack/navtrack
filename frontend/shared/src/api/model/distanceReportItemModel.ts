@@ -6,7 +6,6 @@
  */
 
 export interface DistanceReportItemModel {
-  /** @minLength 1 */
   date: string;
   distance: number;
   duration: number;

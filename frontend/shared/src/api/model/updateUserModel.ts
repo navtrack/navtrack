@@ -7,6 +7,6 @@
 import type { UnitsType } from "./unitsType";
 
 export interface UpdateUserModel {
-  email?: string;
+  email: string;
   unitsType?: UnitsType;
 }

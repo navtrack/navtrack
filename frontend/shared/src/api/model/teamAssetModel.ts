@@ -10,6 +10,5 @@ export interface TeamAssetModel {
   assetId: string;
   /** @minLength 1 */
   name: string;
-  /** @minLength 1 */
   createdDate: string;
 }
