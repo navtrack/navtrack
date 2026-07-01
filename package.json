@@ -53,9 +53,9 @@
     "yup": "1.4.0"
   },
   "scripts": {
-    "start:web": "cd frontend/web && npm run start",
-    "build:web": "cd frontend/web && npm run build",
-    "watch:web": "d frontend/web && tsc --noEmit --watch",
+    "start": "cd frontend/web && npm run start",
+    "watch": "tsc --noEmit --watch",
+    "build": "cd frontend/web && npm run build",
     "clean": "rm -rf node_modules && rm -rf frontend/shared/node_modules && rm -rf frontend/web/node_modules && rm -rf package-lock.json"
   },
   "eslintConfig": {
