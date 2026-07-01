@@ -1,4 +1,4 @@
-import { generatePath, Link, NavLink } from "react-router-dom";
+import { generatePath, Link, NavLink, useMatch } from "react-router-dom";
 import { Paths } from "../../../../app/Paths";
 import { AuthenticatedLayoutNavbarProfile } from "./AuthenticatedLayoutNavbarProfile";
 import { NavtrackLogoDark } from "../../logo/NavtrackLogoDark";
@@ -46,6 +46,7 @@ export function AuthenticatedLayoutNavbar(
   const authorize = useAuthorize();
   const assetMenuItems = useNavbarAssetMenuItems();
   const organizationMenuItems = useNavbarOrganizationMenuItems();
+  const organizationAssetsMatch = useMatch(Paths.OrganizationAssets);
 
   const menuItems = useMemo(
     () =>
@@ -92,6 +93,7 @@ export function AuthenticatedLayoutNavbar(
         </div>
         <div className="flex items-center space-x-4">
           {currentOrganization.id &&
+            !organizationAssetsMatch &&
             authorize.organization(OrganizationUserRole.Owner) && (
               <Link
                 to={generatePath(Paths.OrganizationAssetsNew, {
