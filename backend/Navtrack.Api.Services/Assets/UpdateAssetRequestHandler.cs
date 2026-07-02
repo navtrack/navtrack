@@ -11,26 +11,19 @@ namespace Navtrack.Api.Services.Assets;
 [Service(typeof(IRequestHandler<UpdateAssetRequest>))]
 public class UpdateAssetRequestHandler(IAssetRepository assetRepository) : BaseRequestHandler<UpdateAssetRequest>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<UpdateAssetRequest> context)
+    public override async Task Handle(UpdateAssetRequest request)
     {
-        asset = await assetRepository.GetById(context.Request.AssetId);
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
         asset.Return404IfNull();
 
-        bool nameIsUsed =
-            await assetRepository.NameIsUsed(asset.OrganizationId, context.Request.Model.Name, asset.Id);
+        bool nameIsUsed = await assetRepository.NameIsUsed(asset.OrganizationId, request.Model.Name, asset.Id);
 
-        context.ValidationException.AddErrorIfTrue(
-            nameIsUsed,
-            nameof(context.Request.Model.Name),
-            ApiErrorCodes.Asset_NameAlreadyUsed);
-    }
+        new ValidationApiException()
+            .AddErrorIfTrue(nameIsUsed, nameof(request.Model.Name), ApiErrorCodes.Asset_NameAlreadyUsed)
+            .ThrowIfInvalid();
 
-    public override Task Handle(UpdateAssetRequest request)
-    {
         asset!.Name = request.Model.Name;
         
-        return assetRepository.Update(asset);
+        await assetRepository.Update(asset);
     }
 }

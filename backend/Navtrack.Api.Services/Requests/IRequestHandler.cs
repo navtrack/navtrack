@@ -10,12 +10,10 @@ public interface IRequestHandler
 
 public interface IRequestHandler<TRequest, TResult>
 {
-    Task Validate(RequestValidationContext<TRequest> context);
     Task<TResult> Handle(TRequest request);
 }
 
 public interface IRequestHandler<TRequest>
 {
-    Task Validate(RequestValidationContext<TRequest> context);
     Task Handle(TRequest request);
 }

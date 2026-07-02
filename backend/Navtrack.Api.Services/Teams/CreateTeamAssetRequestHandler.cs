@@ -18,15 +18,12 @@ public class CreateTeamAssetRequestHandler(
     IAssetRepository assetRepository,
     INavtrackRequestContextAccessor navtrackRequestContextAccessor) : BaseRequestHandler<CreateTeamAssetRequest>
 {
-    private TeamEntity? team;
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<CreateTeamAssetRequest> context)
+    public override async Task Handle(CreateTeamAssetRequest request)
     {
-        team = await teamRepository.GetById(context.Request.TeamId);
+        TeamEntity? team = await teamRepository.GetById(request.TeamId);
         team.Return404IfNull();
 
-        asset = await assetRepository.GetById(context.Request.Model.AssetId);
+        AssetEntity? asset = await assetRepository.GetById(request.Model.AssetId);
         asset.Return404IfNull();
 
         if (team.OrganizationId != asset.OrganizationId)
@@ -34,13 +31,11 @@ public class CreateTeamAssetRequestHandler(
             throw new ApiException(ApiErrorCodes.Team_TeamAndAssetNotInSameOrganization);
         }
 
-        context.ValidationException.AddErrorIfTrue(
-            asset.Teams.Any(x => x.Id == team.Id),
-            nameof(context.Request.Model.AssetId), ApiErrorCodes.Team_AssetAlreadyInTeam);
-    }
-
-    public override async Task Handle(CreateTeamAssetRequest request)
-    {
-        await teamRepository.AddAsset(team!.Id, asset!.Id, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
+        new ValidationApiException()
+            .AddErrorIfTrue(asset.Teams.Any(x => x.Id == team.Id), nameof(request.Model.AssetId),
+                ApiErrorCodes.Team_AssetAlreadyInTeam)
+            .ThrowIfInvalid();
+        
+        await teamRepository.AddAsset(team.Id, asset.Id, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
     }
 }

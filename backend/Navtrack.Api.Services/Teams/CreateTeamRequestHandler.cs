@@ -20,26 +20,21 @@ public class CreateTeamRequestHandler(
     INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<CreateTeamRequest, TeamModel>
 {
-    private OrganizationEntity? organization;
-
-    public override async Task Validate(RequestValidationContext<CreateTeamRequest> context)
-    {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
-        organization.Return404IfNull();
-        
-        context.ValidationException.AddErrorIfTrue(
-            await teamRepository.NameIsUsed(context.Request.Model.Name, organization.Id),
-            nameof(context.Request.Model.Name),
-            ApiErrorCodes.Team_NameIsUsed);
-    }
-
     public override async Task<TeamModel> Handle(CreateTeamRequest request)
     {
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
+        organization.Return404IfNull();
+        
+        new ValidationApiException()
+            .AddErrorIfTrue(await teamRepository.NameIsUsed(request.Model.Name, organization.Id),
+                nameof(request.Model.Name), ApiErrorCodes.Team_NameIsUsed)
+            .ThrowIfInvalid();
+        
         TeamEntity team = TeamEntityMapper.Map(request.Model, organization.Id,
             navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
         await teamRepository.Add(team);
-        await organizationRepository.UpdateTeamsCount(organization!.Id);
+        await organizationRepository.UpdateTeamsCount(organization.Id);
 
         TeamModel result = TeamMapper.Map(team);
 

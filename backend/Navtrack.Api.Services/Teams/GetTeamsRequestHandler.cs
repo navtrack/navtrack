@@ -24,17 +24,12 @@ public class GetTeamsRequestHandler(
     INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<GetTeamsRequest, ListModel<TeamModel>>
 {
-    private OrganizationEntity? organization;
-    
-    public override async Task Validate(RequestValidationContext<GetTeamsRequest> context)
-    {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
-        organization.Return404IfNull();
-    }
-
     public override async Task<ListModel<TeamModel>> Handle(GetTeamsRequest request)
     {
-        List<TeamEntity> teams = await GetTeams(organization!.Id);
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
+        organization.Return404IfNull();
+        
+        List<TeamEntity> teams = await GetTeams(organization.Id);
 
         ListModel<TeamModel> result = ListMapper.Map(teams, TeamMapper.Map);
 

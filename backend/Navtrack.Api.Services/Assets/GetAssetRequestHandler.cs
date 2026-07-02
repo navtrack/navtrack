@@ -15,20 +15,15 @@ namespace Navtrack.Api.Services.Assets;
 public class GetAssetRequestHandler(IAssetRepository assetRepository, IDeviceTypeRepository deviceTypeRepository)
     : BaseRequestHandler<GetAssetRequest, AssetModel>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<GetAssetRequest> context)
+    public override async Task<AssetModel> Handle(GetAssetRequest request)
     {
-        asset = await assetRepository.GetById(context.Request.AssetId);
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
         asset.Return404IfNull();
-    }
 
-    public override Task<AssetModel> Handle(GetAssetRequest request)
-    {
-        DeviceType? deviceType = asset!.Device != null ? deviceTypeRepository.GetById(asset.Device.DeviceTypeId) : null;
+        DeviceType? deviceType = asset.Device != null ? deviceTypeRepository.GetById(asset.Device.DeviceTypeId) : null;
 
         AssetModel result = AssetMapper.Map(asset, deviceType);
 
-        return Task.FromResult(result);
+        return result;
     }
 }

@@ -17,16 +17,15 @@ public class ResetPasswordRequestHandler(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher) : BaseRequestHandler<ResetPasswordRequest>
 {
-    private UserPasswordResetEntity? passwordReset;
-
-    public override async Task Validate(RequestValidationContext<ResetPasswordRequest> context)
+    public override async Task Handle(ResetPasswordRequest request)
     {
-        BasePasswordModelValidator.ValidatePasswords(context.Request.Model, context.ValidationException);
-        context.ValidationException.ThrowIfInvalid();
+        ValidationApiException validationException = new();
+        BasePasswordModelValidator.ValidatePasswords(request.Model, validationException);
+        validationException.ThrowIfInvalid();
 
-        passwordReset = await passwordResetRepository.GetLatestFromId(context.Request.Model.Id);
+        UserPasswordResetEntity? passwordReset = await passwordResetRepository.GetLatestFromId(request.Model.Id);
 
-        if (passwordReset == null || passwordReset.Invalid || passwordReset.Id != Guid.Parse(context.Request.Model.Id))
+        if (passwordReset == null || passwordReset.Invalid || passwordReset.Id != Guid.Parse(request.Model.Id))
         {
             throw new ApiException(ApiErrorCodes.User_InvalidPasswordResetHash);
         }
@@ -35,10 +34,7 @@ public class ResetPasswordRequestHandler(
         {
             throw new ApiException(ApiErrorCodes.User_ExpiredPasswordResetHash);
         }
-    }
 
-    public override async Task Handle(ResetPasswordRequest request)
-    {
         (string hash, string salt) = passwordHasher.Hash(request.Model.Password);
 
         await userRepository.Update(passwordReset.CreatedBy, new UpdateUser

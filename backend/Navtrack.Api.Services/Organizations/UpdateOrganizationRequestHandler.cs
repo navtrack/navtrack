@@ -14,24 +14,19 @@ namespace Navtrack.Api.Services.Organizations;
 public class UpdateOrganizationRequestHandler(
     IOrganizationRepository organizationRepository) : BaseRequestHandler<UpdateOrganizationRequest>
 {
-    private OrganizationEntity? organization;
-
-    public override async Task Validate(RequestValidationContext<UpdateOrganizationRequest> context)
-    {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
-        organization.Return404IfNull();
-    }
-
     public override async Task Handle(UpdateOrganizationRequest request)
     {
-        if (!string.IsNullOrEmpty(request.Model.Name) && organization!.Name != request.Model.Name)
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
+        organization.Return404IfNull();
+        
+        if (!string.IsNullOrEmpty(request.Model.Name) && organization.Name != request.Model.Name)
         {
             await organizationRepository.UpdateName(request.OrganizationId, request.Model.Name);
         }
 
         if (request.Model.WorkSchedules is { Count: > 0 })
         {
-            WorkScheduleEntity workSchedule = organization!.WorkSchedule ?? new WorkScheduleEntity();
+            WorkScheduleEntity workSchedule = organization.WorkSchedule ?? new WorkScheduleEntity();
 
             foreach (WorkScheduleDayModel newSchedule in request.Model.WorkSchedules)
             {

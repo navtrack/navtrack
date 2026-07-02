@@ -21,20 +21,18 @@ public class DeleteAccountRequestHandler(
     IPasswordHasher passwordHasher)
     : BaseRequestHandler<DeleteAccountRequest>
 {
-    private UserEntity? currentUser;
-
-    public override async Task Validate(RequestValidationContext<DeleteAccountRequest> context)
+    public override async Task Handle(DeleteAccountRequest request)
     {
-        currentUser = navtrackRequestContextAccessor.NavtrackContext?.CurrentUser;
+        UserEntity? currentUser = navtrackRequestContextAccessor.NavtrackContext?.CurrentUser;
         currentUser.ThrowApiExceptionIfNull(HttpStatusCode.Unauthorized);
 
         ValidationApiException apiException = new();
 
-        if (!passwordHasher.CheckPassword(context.Request.Model.Password,
+        if (!passwordHasher.CheckPassword(request.Model.Password,
                 currentUser.PasswordHash,
                 currentUser.PasswordSalt))
         {
-            apiException.AddValidationError(nameof(context.Request.Model.Password),
+            apiException.AddValidationError(nameof(request.Model.Password),
                 ApiErrorCodes.User_InvalidPassword);
         }
 
@@ -53,10 +51,7 @@ public class DeleteAccountRequestHandler(
                 throw new ApiException(ApiErrorCodes.User_SoleOrganizationOwner);
             }
         }
-    }
 
-    public override Task Handle(DeleteAccountRequest request)
-    {
-        return userRepository.Delete(currentUser!);
+        await userRepository.Delete(currentUser);
     }
 }

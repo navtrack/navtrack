@@ -17,36 +17,29 @@ public class UpdateOrganizationUserRequestHandler(
     IUserRepository userRepository)
     : BaseRequestHandler<UpdateOrganizationUserRequest>
 {
-    private OrganizationEntity? organization;
-    private UserEntity? user;
-    private OrganizationUserEntity? userOrganization;
-
-    public override async Task Validate(RequestValidationContext<UpdateOrganizationUserRequest> context)
+    public override async Task Handle(UpdateOrganizationUserRequest request)
     {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
         organization.Return404IfNull();
 
-        user = await userRepository.GetById(context.Request.UserId);
+        UserEntity? user = await userRepository.GetById(request.UserId);
         user.Return404IfNull();
 
-        userOrganization = user.OrganizationUsers.FirstOrDefault(x => x.OrganizationId == organization.Id);
+        OrganizationUserEntity? userOrganization = user.OrganizationUsers.FirstOrDefault(x => x.OrganizationId == organization.Id);
         userOrganization.Return404IfNull();
 
         int ownersCount = await userRepository.GetOrganizationOwnersCount(organization.Id);
 
         if (ownersCount == 1 && userOrganization.UserRole == OrganizationUserRole.Owner &&
-            context.Request.Model.UserRole != OrganizationUserRole.Owner)
+            request.Model.UserRole != OrganizationUserRole.Owner)
         {
-            throw new ValidationApiException().AddValidationError(nameof(context.Request.Model.UserRole),
+            throw new ValidationApiException().AddValidationError(nameof(request.Model.UserRole),
                 ApiErrorCodes.Organization_OneOwnerRequired);
         }
-    }
-
-    public override async Task Handle(UpdateOrganizationUserRequest request)
-    {
-        if (userOrganization!.UserRole != request.Model.UserRole)
+        
+        if (userOrganization.UserRole != request.Model.UserRole)
         {
-            await userRepository.UpdateOrganizationUser(user!.Id, userOrganization.OrganizationId,
+            await userRepository.UpdateOrganizationUser(user.Id, userOrganization.OrganizationId,
                 request.Model.UserRole);
         }
     }

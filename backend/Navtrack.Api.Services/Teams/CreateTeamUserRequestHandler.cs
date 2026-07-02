@@ -20,32 +20,28 @@ public class CreateTeamUserRequestHandler(
     INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<CreateTeamUserRequest>
 {
-    private TeamEntity? team;
-    private UserEntity? user;
-
-    public override async Task Validate(RequestValidationContext<CreateTeamUserRequest> context)
-    {
-        team = await teamRepository.GetById(context.Request.TeamId);
-        team.Return404IfNull();
-
-        user = await userRepository.GetByEmail(context.Request.Model.Email);
-        user.ThrowValidationApiIfNull(x => x.AddValidationError(nameof(context.Request.Model.Email),
-            ApiErrorCodes.User_EmailNotFound));
-
-        context.ValidationException.AddErrorIfTrue(
-            user.OrganizationUsers.All(x => x.OrganizationId != team.OrganizationId),
-            nameof(context.Request.Model.Email),
-            ApiErrorCodes.Team_UserNotInSameOrganization);
-
-        context.ValidationException.AddErrorIfTrue(
-            user.Teams.Any(x => x.Id == team.Id),
-            nameof(context.Request.Model.Email),
-            ApiErrorCodes.Team_UserAlreadyInTeam);
-    }
-
     public override async Task Handle(CreateTeamUserRequest source)
     {
-        TeamUserEntity entity = TeamUserEntityMapper.Map(team!.Id, user!.Id, source.Model.UserRole,
+        TeamEntity? team = await teamRepository.GetById(source.TeamId);
+        team.Return404IfNull();
+
+        UserEntity? user = await userRepository.GetByEmail(source.Model.Email);
+        user.ThrowValidationApiIfNull(x => x.AddValidationError(nameof(source.Model.Email),
+            ApiErrorCodes.User_EmailNotFound));
+
+        ValidationApiException validationException = new();
+        validationException.AddErrorIfTrue(
+            user.OrganizationUsers.All(x => x.OrganizationId != team.OrganizationId),
+            nameof(source.Model.Email),
+            ApiErrorCodes.Team_UserNotInSameOrganization);
+
+        validationException.AddErrorIfTrue(
+            user.Teams.Any(x => x.Id == team.Id),
+            nameof(source.Model.Email),
+            ApiErrorCodes.Team_UserAlreadyInTeam);
+        validationException.ThrowIfInvalid();
+        
+        TeamUserEntity entity = TeamUserEntityMapper.Map(team.Id, user.Id, source.Model.UserRole,
             navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
         await userRepository.AddUserToTeam(entity);

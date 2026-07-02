@@ -17,18 +17,13 @@ public class GetDistanceReportRequestHandler(
     IReportRepository reportRepository)
     : BaseRequestHandler<GetDistanceReportRequest, DistanceReportModel>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<GetDistanceReportRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-    }
-
     public override async Task<DistanceReportModel> Handle(GetDistanceReportRequest request)
     {
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+        
         List<DistanceReportItem> distanceReportItems =
-            await reportRepository.GetDistanceReportItems(asset!.Id, request.Model.StartDate, request.Model.EndDate);
+            await reportRepository.GetDistanceReportItems(asset.Id, request.Model.StartDate, request.Model.EndDate);
 
         DistanceReportModel result = new()
         {

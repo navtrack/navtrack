@@ -17,27 +17,22 @@ namespace Navtrack.Api.Services.Assets;
 public class CreateAssetUserRequestHandler(IAssetRepository assetRepository, IUserRepository userRepository, INavtrackRequestContextAccessor navtrackRequestContextAccessor)
     : BaseRequestHandler<CreateAssetUserRequest>
 {
-    private AssetEntity? asset;
-    private UserEntity? user;
-
-    public override async Task Validate(RequestValidationContext<CreateAssetUserRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-
-        user = await userRepository.GetByEmail(context.Request.Model.Email);
-        context.ValidationException.AddErrorIfNull(user, nameof(context.Request.Model.Email),
-            ApiErrorCodes.User_EmailNotFound);
-
-        context.ValidationException.AddErrorIfTrue(
-            user?.Assets.Any(x => x.Id == asset.Id),
-            nameof(context.Request.Model.Email), ApiErrorCodes.Asset_UserAlreadyHasRole);
-    }
-
     public override async Task Handle(CreateAssetUserRequest request)
     {
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+
+        UserEntity? user = await userRepository.GetByEmail(request.Model.Email);
+        ValidationApiException validationException = new();
+
+        validationException.AddErrorIfNull(user, nameof(request.Model.Email), ApiErrorCodes.User_EmailNotFound);
+        validationException.AddErrorIfTrue(
+            user?.Assets.Any(x => x.Id == asset.Id),
+            nameof(request.Model.Email), ApiErrorCodes.Asset_UserAlreadyHasRole);
+        validationException.ThrowIfInvalid();
+
         AssetUserEntity userAsset = UserAssetElementMapper.Map(user.Id, asset!.Id, request.Model.UserRole, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
 
-        await userRepository.AddAssetToUser(user!.Id, userAsset);
+        await userRepository.AddAssetToUser(user.Id, userAsset);
     }
 }

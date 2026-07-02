@@ -17,22 +17,17 @@ namespace Navtrack.Api.Controllers;
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
 [OpenApiTag(ControllerTags.AssetsReports)]
 public class AssetsReportsController(IRequestHandler requestHandler)
-    : ControllerBase
+    : NavtrackControllerBase(requestHandler)
 {
     [HttpGet(ApiPaths.AssetReportsDistance)]
     [ProducesResponseType(typeof(DistanceReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [NavtrackAuthorize(AssetUserRole.Viewer)]
-    public async Task<DistanceReportModel> GetDistanceReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilterModel filter)
-    {
-        DistanceReportModel result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReportModel>(
-            new GetDistanceReportRequest
-            {
-                AssetId = assetId,
-                Model = filter
-            });
-
-        return result;
-    }
+    public Task<DistanceReportModel> GetDistanceReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilterModel filter) =>
+        Query<GetDistanceReportRequest, DistanceReportModel>(new GetDistanceReportRequest
+        {
+            AssetId = assetId,
+            Model = filter
+        });
 }

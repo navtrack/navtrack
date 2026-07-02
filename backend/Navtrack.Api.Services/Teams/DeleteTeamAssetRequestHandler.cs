@@ -15,26 +15,20 @@ namespace Navtrack.Api.Services.Teams;
 public class DeleteTeamAssetRequestHandler(ITeamRepository teamRepository, IAssetRepository assetRepository)
     : BaseRequestHandler<DeleteTeamAssetRequest>
 {
-    private TeamEntity? team;
-    private AssetEntity? asset;
-    
-    public override async Task Validate(RequestValidationContext<DeleteTeamAssetRequest> context)
+    public override async Task Handle(DeleteTeamAssetRequest request)
     {
-        team = await teamRepository.GetById(context.Request.TeamId);
+        TeamEntity? team = await teamRepository.GetById(request.TeamId);
         team.Return404IfNull();
 
-        asset = await assetRepository.GetById(context.Request.AssetId);
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
         asset.Return404IfNull();
 
         if (asset.Teams.All(x => x.Id != team.Id))
         {
             throw new ApiException(ApiErrorCodes.Team_AssetNotInTeam);
         }
-    }
-
-    public override async Task Handle(DeleteTeamAssetRequest request)
-    {
-        await assetRepository.RemoveAssetFromTeam(team!.Id, asset!.Id);
-        await teamRepository.UpdateAssetsCount(team!.Id);
+        
+        await assetRepository.RemoveAssetFromTeam(team.Id, asset.Id);
+        await teamRepository.UpdateAssetsCount(team.Id);
     }
 }

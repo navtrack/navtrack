@@ -3,6 +3,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Navtrack.Api.Controllers.Shared;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Services.Devices;
@@ -12,15 +13,10 @@ namespace Navtrack.Api.Controllers;
 
 [ApiController]
 [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-public class DevicesController(IRequestHandler requestHandler) : ControllerBase
+public class DevicesController(IRequestHandler requestHandler) : NavtrackControllerBase(requestHandler)
 {
     [HttpGet(ApiPaths.DeviceTypes)]
     [ProducesResponseType(typeof(ListModel<DeviceTypeModel>), StatusCodes.Status200OK)]
-    public async Task<ListModel<DeviceTypeModel>> GetList()
-    {
-        ListModel<DeviceTypeModel> result =
-            await requestHandler.Handle<GetDeviceTypesRequest, ListModel<DeviceTypeModel>>(new GetDeviceTypesRequest());
-
-        return result;
-    }
+    public Task<ListModel<DeviceTypeModel>> GetList() =>
+        Query<GetDeviceTypesRequest, ListModel<DeviceTypeModel>>(new GetDeviceTypesRequest());
 }

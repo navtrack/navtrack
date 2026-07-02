@@ -18,20 +18,15 @@ public class DeleteAssetRequestHandler(
     IUserRepository userRepository,
     IOrganizationRepository organizationRepository) : BaseRequestHandler<DeleteAssetRequest>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<DeleteAssetRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-    }
-
     public override async Task Handle(DeleteAssetRequest request)
     {
-        await assetRepository.Delete(asset!);
-        await deviceRepository.DeleteByAssetId(asset!.Id);
-        await deviceMessageRepository.DeleteByAssetId(asset!.Id);
-        await userRepository.RemoveAssetFromUsers(asset!.Id);
-        await organizationRepository.UpdateAssetsCount(asset!.OrganizationId);
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+
+        await assetRepository.Delete(asset);
+        await deviceRepository.DeleteByAssetId(asset.Id);
+        await deviceMessageRepository.DeleteByAssetId(asset.Id);
+        await userRepository.RemoveAssetFromUsers(asset.Id);
+        await organizationRepository.UpdateAssetsCount(asset.OrganizationId);
     }
 }

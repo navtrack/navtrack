@@ -25,17 +25,12 @@ public class GetAssetsRequestHandler(
     IOrganizationRepository organizationRepository)
     : BaseRequestHandler<GetAssetsRequest, Model.Common.ListModel<AssetModel>>
 {
-    private OrganizationEntity? organization;
-
-    public override async Task Validate(RequestValidationContext<GetAssetsRequest> context)
-    {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
-        organization.Return404IfNull();
-    }
-
     public override async Task<Model.Common.ListModel<AssetModel>> Handle(GetAssetsRequest request)
     {
-        List<AssetEntity> assets = await GetAssetsByOrganizationId(organization!.Id);
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
+        organization.Return404IfNull();
+
+        List<AssetEntity> assets = await GetAssetsByOrganizationId(organization.Id);
 
         List<string> assetDeviceTypes =
             assets.Where(x => x.Device != null)
@@ -55,18 +50,18 @@ public class GetAssetsRequestHandler(
     {
         if (navtrackRequestContextAccessor.NavtrackContext.HasOrganizationUserRole(OrganizationUserRole.Owner))
         {
-            return assetRepository.GetByOrganizationId(organization!.Id);
+            return assetRepository.GetByOrganizationId(organizationId);
         }
 
         List<Guid> assetIds =
             navtrackRequestContextAccessor.NavtrackContext.CurrentUser?.Assets
-                .Where(x => x.OrganizationId == organization!.Id)
+                .Where(x => x.OrganizationId == organizationId)
                 .Select(x => x.Id).ToList() ??
             [];
 
         List<Guid> teamIds =
             navtrackRequestContextAccessor.NavtrackContext.CurrentUser?.Teams?
-                .Where(x => x.OrganizationId == organization!.Id)
+                .Where(x => x.OrganizationId == organizationId)
                 .Select(x => x.Id).ToList() ?? [];
 
         return assetRepository.GetByAssetAndTeamIds(assetIds, teamIds);

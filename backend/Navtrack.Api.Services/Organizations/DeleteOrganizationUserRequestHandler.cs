@@ -17,15 +17,12 @@ public class DeleteOrganizationUserRequestHandler(
     IUserRepository userRepository)
     : BaseRequestHandler<DeleteOrganizationUserRequest>
 {
-    private OrganizationEntity? organization;
-    private UserEntity? user;
-
-    public override async Task Validate(RequestValidationContext<DeleteOrganizationUserRequest> context)
+    public override async Task Handle(DeleteOrganizationUserRequest request)
     {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
         organization.Return404IfNull();
 
-        user = await userRepository.GetById(context.Request.UserId);
+        UserEntity? user = await userRepository.GetById(request.UserId);
         user.Return404IfNull();
 
         OrganizationUserEntity? userOrganization = user.OrganizationUsers.FirstOrDefault(x => x.OrganizationId == organization.Id);
@@ -37,11 +34,8 @@ public class DeleteOrganizationUserRequestHandler(
         {
             throw new ApiException(ApiErrorCodes.Organization_OneOwnerRequired);
         }
-    }
-
-    public override async Task Handle(DeleteOrganizationUserRequest request)
-    {
-        await userRepository.DeleteUserFromOrganization(user!.Id, organization!.Id);
+        
+        await userRepository.DeleteUserFromOrganization(user.Id, organization.Id);
         await organizationRepository.UpdateUsersCount(organization.Id);
     }
 }

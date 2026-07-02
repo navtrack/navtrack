@@ -15,18 +15,13 @@ namespace Navtrack.Api.Services.Organizations;
 public class GetOrganizationUsersRequestHandler(IOrganizationRepository organizationRepository)
     : BaseRequestHandler<GetOrganizationUsersRequest, ListModel<OrganizationUserModel>>
 {
-    private OrganizationEntity? organization;
-
-    public override async Task Validate(RequestValidationContext<GetOrganizationUsersRequest> context)
-    {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
-        organization.Return404IfNull();
-    }
-
     public override async Task<ListModel<OrganizationUserModel>> Handle(GetOrganizationUsersRequest request)
     {
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
+        organization.Return404IfNull();
+        
         System.Collections.Generic.List<OrganizationUserEntity> organizationUsers =
-            await organizationRepository.GetUsers(organization!.Id);
+            await organizationRepository.GetUsers(organization.Id);
 
         ListModel<OrganizationUserModel> result = ListMapper.Map(organizationUsers, OrganizationUserModelMapper.Map);
 

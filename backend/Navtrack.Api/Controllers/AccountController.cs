@@ -3,6 +3,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Navtrack.Api.Controllers.Shared;
 using Navtrack.Api.Model.Account;
 using Navtrack.Api.Services.Account;
 using Navtrack.Api.Services.Requests;
@@ -10,58 +11,42 @@ using Navtrack.Api.Services.Requests;
 namespace Navtrack.Api.Controllers;
 
 [ApiController]
-public class AccountController(IRequestHandler requestHandler) : ControllerBase
+public class AccountController(IRequestHandler requestHandler) : NavtrackControllerBase(requestHandler)
 {
     [HttpPost(ApiPaths.Account)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel model)
-    {
-        await requestHandler.Handle(new CreateAccountRequest
+    public async Task<IActionResult> CreateAccount([FromBody] CreateAccountModel model) =>
+        await Command(new CreateAccountRequest
         {
             Model = model
         });
-
-        return Ok();
-    }
 
     [HttpDelete(ApiPaths.Account)]
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete([FromBody] DeleteAccountModel model)
-    {
-        await requestHandler.Handle(new DeleteAccountRequest
+    public async Task<IActionResult> Delete([FromBody] DeleteAccountModel model) =>
+        await Command(new DeleteAccountRequest
         {
             Model = model
         });
-
-        return Ok();
-    }
 
     [HttpPost(ApiPaths.AccountForgotPassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
-    {
-        await requestHandler.Handle(new ForgotPasswordRequest
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model) =>
+        await Command(new ForgotPasswordRequest
         {
             Model = model
         });
-
-        return Ok();
-    }
 
     [HttpPost(ApiPaths.AccountResetPassword)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
-    {
-        await requestHandler.Handle(new ResetPasswordRequest
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model) =>
+        await Command(new ResetPasswordRequest
         {
             Model = model
         });
-
-        return Ok();
-    }
 }

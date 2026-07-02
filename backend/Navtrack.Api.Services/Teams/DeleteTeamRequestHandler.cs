@@ -18,18 +18,13 @@ public class DeleteTeamRequestHandler(
     IAssetRepository assetRepository)
     : BaseRequestHandler<DeleteTeamRequest>
 {
-    private TeamEntity? team;
-
-    public override async Task Validate(RequestValidationContext<DeleteTeamRequest> context)
-    {
-        team = await teamRepository.GetById(context.Request.TeamId);
-        team.Return404IfNull();
-    }
-
     public override async Task Handle(DeleteTeamRequest source)
     {
-        await teamRepository.Delete(team!);
-        await organizationRepository.UpdateTeamsCount(team!.OrganizationId);
+        TeamEntity? team = await teamRepository.GetById(source.TeamId);
+        team.Return404IfNull();
+        
+        await teamRepository.Delete(team);
+        await organizationRepository.UpdateTeamsCount(team.OrganizationId);
         await userRepository.RemoveTeamFromUsers(team.Id);
         await assetRepository.RemoveTeamFromAssets(team.Id);
     }
