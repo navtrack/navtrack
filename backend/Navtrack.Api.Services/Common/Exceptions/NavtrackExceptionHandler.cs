@@ -19,15 +19,20 @@ public class NavtrackExceptionHandler : IExceptionHandler
             httpContext.Response.StatusCode = model.Status.GetValueOrDefault(StatusCodes.Status400BadRequest);
             
             await httpContext.Response.WriteAsJsonAsync(model, cancellationToken);
+
+            return true;
         }
-        else if (exception is ApiException apiException)
+
+        if (exception is ApiException apiException)
         {
             ProblemDetails model = ProblemDetailsMapper.Map(apiException);
             httpContext.Response.StatusCode = model.Status.GetValueOrDefault(StatusCodes.Status400BadRequest);
 
             await httpContext.Response.WriteAsJsonAsync(model, cancellationToken);
+
+            return true;
         }
         
-        return true;
+        return false;
     }
 }
