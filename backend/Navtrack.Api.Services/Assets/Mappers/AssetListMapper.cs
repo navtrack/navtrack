@@ -16,7 +16,7 @@ public static class AssetListMapper
             Items = source
                 .Select(x =>
                 {
-                    DeviceType deviceType = deviceTypes.First(y => y.Id == x.Device?.DeviceTypeId.ToString());
+                    DeviceType? deviceType = deviceTypes.FirstOrDefault(y => y.Id == x.Device?.DeviceTypeId.ToString());
 
                     return AssetMapper.Map(x, deviceType);
                 })
