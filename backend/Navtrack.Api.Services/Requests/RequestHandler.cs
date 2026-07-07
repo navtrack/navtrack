@@ -1,27 +1,56 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Services.Requests;
 
 [Service(typeof(IRequestHandler))]
-public class RequestHandler(IServiceProvider serviceProvider) : IRequestHandler
+public class RequestHandler(IServiceProvider serviceProvider, DbContext dbContext) : IRequestHandler
 {
-    public async Task Handle<TRequest>(TRequest request)
+    public Task Handle<TRequest>(TRequest request)
     {
         IRequestHandler<TRequest> handler = serviceProvider.GetRequiredService<IRequestHandler<TRequest>>();
 
-        await handler.Handle(request);
+        return ExecuteInTransaction(() => handler.Handle(request));
     }
 
-    public async Task<TResult> Handle<TRequest, TResult>(TRequest request)
+    public Task<TResult> Handle<TRequest, TResult>(TRequest request)
     {
         IRequestHandler<TRequest, TResult> handler =
             serviceProvider.GetRequiredService<IRequestHandler<TRequest, TResult>>();
 
-        TResult result = await handler.Handle(request);
+        return ExecuteInTransaction(() => handler.Handle(request));
+    }
 
-        return result;
+    private Task ExecuteInTransaction(Func<Task> operation)
+    {
+        return ExecuteInTransaction(async () =>
+        {
+            await operation();
+
+            return true;
+        });
+    }
+
+    private async Task<TResult> ExecuteInTransaction<TResult>(Func<Task<TResult>> operation)
+    {
+        await using IDbContextTransaction transaction = await dbContext.Database.BeginTransactionAsync();
+
+        try
+        {
+            TResult result = await operation();
+            await transaction.CommitAsync();
+
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+
+            throw;
+        }
     }
 }
