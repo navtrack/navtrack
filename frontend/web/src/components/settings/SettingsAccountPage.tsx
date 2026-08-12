@@ -20,8 +20,8 @@ import { DeleteCard } from "../ui/card/DeleteCard";
 import { DeleteAccountModal } from "./DeleteAccountModal";
 
 type AccountSettingsFormValues = {
-  email?: string;
-  units?: UnitsType;
+  email: string;
+  units: UnitsType;
 };
 
 const units: SelectOption[] = [
@@ -76,8 +76,8 @@ export function SettingsAccountPage() {
         </CardHeader>
         <Formik<AccountSettingsFormValues>
           initialValues={{
-            email: user.data?.email,
-            units: user.data?.units
+            email: user.data?.email ?? "",
+            units: user.data?.units ?? UnitsType.Metric
           }}
           enableReinitialize
           onSubmit={(values, formikHelpers) =>
