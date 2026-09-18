@@ -37,6 +37,12 @@ public class RequestHandler(IServiceProvider serviceProvider, DbContext dbContex
 
     private async Task<TResult> ExecuteInTransaction<TResult>(Func<Task<TResult>> operation)
     {
+        // Nested handlers share the transaction owned by the outer request.
+        if (dbContext.Database.CurrentTransaction != null)
+        {
+            return await operation();
+        }
+
         await using IDbContextTransaction transaction = await dbContext.Database.BeginTransactionAsync();
 
         try
