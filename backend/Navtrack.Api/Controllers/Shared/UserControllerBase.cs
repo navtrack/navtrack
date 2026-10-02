@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,7 @@ using Navtrack.Api.Services.User;
 namespace Navtrack.Api.Controllers.Shared;
 
 [ApiController]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+[Authorize]
 public abstract class UserControllerBase(IRequestHandler requestHandler)
     : NavtrackControllerBase(requestHandler)
 {

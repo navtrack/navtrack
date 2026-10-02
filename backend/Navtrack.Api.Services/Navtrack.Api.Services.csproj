@@ -7,6 +7,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="IdentityServer4" Version="4.1.2"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+        <PackageReference Include="OpenIddict.AspNetCore" Version="7.7.1"/>
+        <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="7.7.1"/>
     </ItemGroup>
 </Project>

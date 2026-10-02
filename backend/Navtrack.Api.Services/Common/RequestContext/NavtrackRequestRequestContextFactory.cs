@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Navtrack.Api.Services.Common.ActionFilters;
-using Navtrack.Api.Services.Common.IdentityServer;
+using Navtrack.Api.Services.Common.Authentication;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Organizations;
 using Navtrack.Database.Model.Teams;

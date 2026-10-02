@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +15,7 @@ using NSwag.Annotations;
 namespace Navtrack.Api.Controllers;
 
 [ApiController]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+[Authorize]
 [OpenApiTag(ControllerTags.Teams)]
 public class TeamsController(IRequestHandler requestHandler) : NavtrackControllerBase(requestHandler)
 {

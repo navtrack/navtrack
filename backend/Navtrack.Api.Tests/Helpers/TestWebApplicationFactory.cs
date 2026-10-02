@@ -15,6 +15,7 @@ public class TestWebApplicationFactory<TProgram>(TestWebApplicationFactoryOption
 {
     protected override IHost CreateHost(IHostBuilder hostBuilder)
     {
+        hostBuilder.UseEnvironment("Testing");
         hostBuilder.ConfigureServices(services =>
         {
             services.AddSingleton<IStartupFilter, FakeRemoteIpAddressFilter>();

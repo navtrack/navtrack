@@ -7,6 +7,7 @@ import {
 } from "../../queries/authentication/useTokenMutation";
 import { add, isAfter, parseISO, sub } from "date-fns";
 import { randomInteger } from "../../../utils/numbers";
+import { useLogoutMutation } from "../../queries/authentication/useLogoutMutation";
 import { LoginFormValues } from "../../user/login/LoginFormValues";
 import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { appConfigStore } from "../../../state/appConfig";
@@ -24,21 +25,8 @@ type Token = {
   date: string;
 };
 
-type RefreshLock = {
-  date: string;
-};
-
-let localRefreshLock: RefreshLock | undefined = undefined;
-
-async function clearRefreshLock(force?: boolean) {
-  if (
-    force ||
-    (localRefreshLock !== undefined &&
-      isAfter(new Date(), add(parseISO(localRefreshLock.date), { seconds: 2 })))
-  ) {
-    localRefreshLock = undefined;
-  }
-}
+// All consumers in this runtime share the same refresh request.
+let refreshRequest: Promise<string | undefined> | undefined;
 
 function tokenIsExpired(expiryDate: string): boolean {
   const expiryDateAdjusted = sub(parseISO(expiryDate), {
@@ -59,12 +47,14 @@ type AuthenticationState = {
   };
 };
 
+const authenticationStorageKey = "Navtrack:Authentication:OpenIddict";
+const authenticationStorage = IS_WEB
+  ? createJSONStorage<AuthenticationState>(() => AsyncLocalStorage)
+  : createJSONStorage<AuthenticationState>(() => AsyncStorage);
 const authenticationAtom = atomWithStorage<AuthenticationState>(
-  "Navtrack:Authentication",
+  authenticationStorageKey,
   {},
-  IS_WEB
-    ? createJSONStorage(() => AsyncLocalStorage)
-    : createJSONStorage(() => AsyncStorage),
+  authenticationStorage,
   { getOnInit: true }
 );
 
@@ -76,6 +66,7 @@ type AuthenticationProps = {
 export function useAuthentication(props?: AuthenticationProps) {
   const queryClient = useQueryClient();
   const [state, setState] = useAtom(authenticationAtom);
+  const logoutMutation = useLogoutMutation({});
 
   const tokenMutation = useTokenMutation({
     options: {
@@ -101,7 +92,7 @@ export function useAuthentication(props?: AuthenticationProps) {
           date: new Date().toISOString()
         };
 
-        setState(async (p) => {
+        await setState(async (p) => {
           const prev = await p;
           const newState: AuthenticationState = {
             ...prev,
@@ -154,34 +145,35 @@ export function useAuthentication(props?: AuthenticationProps) {
   });
 
   const getAccessToken = useCallback(async () => {
-    await clearRefreshLock();
-    const state = await jotaiStore.get(authenticationAtom);
+    if (refreshRequest) return refreshRequest;
 
-    if (
-      !localRefreshLock &&
-      !!state?.token &&
-      tokenIsExpired(state.token.expiryDate)
-    ) {
-      try {
-        localRefreshLock = {
-          date: new Date().toISOString()
-        };
-
-        const data = {
-          grant_type: "refresh_token",
-          client_id: appConfigStore.config?.authentication?.clientId!,
-          refresh_token: state.token.refreshToken
-        };
-
-        const response = await tokenMutation.mutateAsync(data);
-
-        return response.access_token;
-      } finally {
-        await clearRefreshLock(true);
+    const refresh = async () => {
+      // Read persistence after acquiring the browser lock: another tab may have rotated the token.
+      const state = IS_WEB
+        ? await authenticationStorage.getItem(authenticationStorageKey, {})
+        : await jotaiStore.get(authenticationAtom);
+      if (!state.token || !tokenIsExpired(state.token.expiryDate)) {
+        return state.token?.accessToken;
       }
-    }
+      const response = await tokenMutation.mutateAsync({
+        grant_type: "refresh_token",
+        client_id: appConfigStore.config?.authentication?.clientId!,
+        refresh_token: state.token.refreshToken
+      });
+      return response.access_token;
+    };
 
-    return state?.token?.accessToken;
+    refreshRequest =
+      IS_WEB && typeof navigator !== "undefined" && navigator.locks
+        ? Promise.resolve(
+            navigator.locks.request("Navtrack:RefreshToken", refresh)
+          )
+        : refresh();
+    try {
+      return await refreshRequest;
+    } finally {
+      refreshRequest = undefined;
+    }
   }, [tokenMutation]);
 
   const internalLogin = useCallback(
@@ -190,7 +182,7 @@ export function useAuthentication(props?: AuthenticationProps) {
         grant_type: "password",
         username: values.email,
         password: values.password,
-        scope: "offline_access IdentityServerApi openid",
+        scope: "offline_access openid",
         client_id: appConfigStore.config?.authentication?.clientId!
       };
 
@@ -210,7 +202,7 @@ export function useAuthentication(props?: AuthenticationProps) {
         grant_type: provider,
         code: token,
         password: password,
-        scope: "offline_access IdentityServerApi openid",
+        scope: "offline_access openid",
         client_id: appConfigStore.config?.authentication?.clientId!
       };
 
@@ -220,15 +212,20 @@ export function useAuthentication(props?: AuthenticationProps) {
     [props, tokenMutation]
   );
 
-  const logout = useCallback(() => {
-    setState({
-      token: undefined,
-      error: undefined,
-      external: undefined
-    });
-    queryClient.clear();
-    props?.onLogout?.();
-  }, [props, queryClient, setState]);
+  const logout = useCallback(async () => {
+    try {
+      const accessToken = await getAccessToken();
+      if (accessToken) {
+        await logoutMutation.mutateAsync();
+      }
+    } catch {
+      // An unavailable server must not prevent clearing this device's session.
+    } finally {
+      await setState({});
+      queryClient.clear();
+      props?.onLogout?.();
+    }
+  }, [getAccessToken, logoutMutation, props, queryClient, setState]);
 
   const clearErrors = useCallback(
     () =>

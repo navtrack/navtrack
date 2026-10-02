@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ public class AccountController(IRequestHandler requestHandler) : NavtrackControl
         });
 
     [HttpDelete(ApiPaths.Account)]
-    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromBody] DeleteAccountModel model) =>

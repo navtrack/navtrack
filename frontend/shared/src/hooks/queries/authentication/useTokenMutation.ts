@@ -44,7 +44,7 @@ export function useTokenMutation(props: UseTokenMutationProps) {
   >({
     mutationFn: async (data: TokenRequest) =>
       axiosInstance<TokenResponse>({
-        url: `/connect/token`,
+        url: `/auth/token`,
         method: "post",
         data: queryString.stringify(data),
         headers: {

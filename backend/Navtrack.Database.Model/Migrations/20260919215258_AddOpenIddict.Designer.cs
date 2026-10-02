@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.Database.Model;
 using Navtrack.Database.Model.Shared;
@@ -14,9 +15,11 @@ using NpgsqlTypes;
 namespace Navtrack.Database.Model.Migrations
 {
     [DbContext(typeof(NavtrackDbContext))]
-    partial class NavtrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260919215258_AddOpenIddict")]
+    partial class AddOpenIddict
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,6 +106,53 @@ namespace Navtrack.Database.Model.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("assets_users");
+                });
+
+            modelBuilder.Entity("Navtrack.Database.Model.Authentication.AuthRefreshTokenEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ConsumedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiryTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Hash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("JwtId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Lifetime")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("auth_refresh_tokens");
                 });
 
             modelBuilder.Entity("Navtrack.Database.Model.Devices.DeviceConnectionDataEntity", b =>
@@ -635,7 +685,7 @@ namespace Navtrack.Database.Model.Migrations
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("auth_applications", (string)null);
+                    b.ToTable("OpenIddictApplications", (string)null);
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>
@@ -677,7 +727,7 @@ namespace Navtrack.Database.Model.Migrations
 
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
-                    b.ToTable("auth_authorizations", (string)null);
+                    b.ToTable("OpenIddictAuthorizations", (string)null);
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", b =>
@@ -718,7 +768,7 @@ namespace Navtrack.Database.Model.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("auth_scopes", (string)null);
+                    b.ToTable("OpenIddictScopes", (string)null);
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken", b =>
@@ -778,7 +828,7 @@ namespace Navtrack.Database.Model.Migrations
 
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
-                    b.ToTable("auth_tokens", (string)null);
+                    b.ToTable("OpenIddictTokens", (string)null);
                 });
 
             modelBuilder.Entity("Navtrack.Database.Model.Assets.AssetEntity", b =>

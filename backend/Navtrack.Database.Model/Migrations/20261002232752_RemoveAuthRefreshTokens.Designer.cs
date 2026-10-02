@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Navtrack.Database.Model;
 using Navtrack.Database.Model.Shared;
@@ -14,9 +15,11 @@ using NpgsqlTypes;
 namespace Navtrack.Database.Model.Migrations
 {
     [DbContext(typeof(NavtrackDbContext))]
-    partial class NavtrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261002232752_RemoveAuthRefreshTokens")]
+    partial class RemoveAuthRefreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -635,7 +638,7 @@ namespace Navtrack.Database.Model.Migrations
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("auth_applications", (string)null);
+                    b.ToTable("OpenIddictApplications", (string)null);
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>
@@ -677,7 +680,7 @@ namespace Navtrack.Database.Model.Migrations
 
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
-                    b.ToTable("auth_authorizations", (string)null);
+                    b.ToTable("OpenIddictAuthorizations", (string)null);
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", b =>
@@ -718,7 +721,7 @@ namespace Navtrack.Database.Model.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("auth_scopes", (string)null);
+                    b.ToTable("OpenIddictScopes", (string)null);
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken", b =>
@@ -778,7 +781,7 @@ namespace Navtrack.Database.Model.Migrations
 
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
-                    b.ToTable("auth_tokens", (string)null);
+                    b.ToTable("OpenIddictTokens", (string)null);
                 });
 
             modelBuilder.Entity("Navtrack.Database.Model.Assets.AssetEntity", b =>

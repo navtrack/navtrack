@@ -2,6 +2,10 @@ namespace Navtrack.Api;
 
 public static class ApiPaths
 {
+    public const string AuthToken = "auth/token";
+    public const string AuthRevocation = "auth/revocation";
+    public const string AuthLogout = "auth/logout";
+
     public const string Account = "account";
     public const string AccountForgotPassword = "account/forgot-password";
     public const string AccountResetPassword = "account/reset-password";
