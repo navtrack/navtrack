@@ -61,11 +61,9 @@ public static class AuthenticationServiceExtensions
                     options.AddEncryptionKey(LoadEncryptionKey(configuration));
                 }
 
-                OpenIddictServerAspNetCoreBuilder host = options.UseAspNetCore().EnableTokenEndpointPassthrough();
-                if (environment.IsDevelopment() || environment.IsEnvironment("Testing"))
-                {
-                    host.DisableTransportSecurityRequirement();
-                }
+                options.UseAspNetCore()
+                    .EnableTokenEndpointPassthrough()
+                    .DisableTransportSecurityRequirement();
             })
             .AddValidation(options =>
             {
