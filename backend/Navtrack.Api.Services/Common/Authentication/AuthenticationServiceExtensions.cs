@@ -1,10 +1,11 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
 
@@ -56,8 +57,8 @@ public static class AuthenticationServiceExtensions
                 }
                 else
                 {
-                    options.AddSigningCertificate(LoadCertificate(configuration, "Signing"));
-                    options.AddEncryptionCertificate(LoadCertificate(configuration, "Encryption"));
+                    options.AddSigningKey(LoadSigningKey(configuration));
+                    options.AddEncryptionKey(LoadEncryptionKey(configuration));
                 }
 
                 OpenIddictServerAspNetCoreBuilder host = options.UseAspNetCore().EnableTokenEndpointPassthrough();
@@ -87,14 +88,65 @@ public static class AuthenticationServiceExtensions
         if (!environment.IsEnvironment("NSwag")) services.AddHostedService<AuthenticationClientInitializer>();
     }
 
-    private static X509Certificate2 LoadCertificate(IConfiguration configuration, string name)
+    private static RsaSecurityKey LoadSigningKey(IConfiguration configuration)
     {
-        string path = configuration[$"Authentication:{name}CertificatePath"] ??
-            throw new InvalidOperationException($"Authentication:{name}CertificatePath is required outside development.");
-        X509Certificate2 certificate = X509CertificateLoader.LoadPkcs12FromFile(path,
-            configuration[$"Authentication:{name}CertificatePassword"], X509KeyStorageFlags.EphemeralKeySet);
-        if (!certificate.HasPrivateKey)
-            throw new InvalidOperationException($"The authentication {name.ToLowerInvariant()} certificate must contain a private key.");
-        return certificate;
+        byte[] key = LoadKey(configuration, "Signing");
+        try
+        {
+            using RSA algorithm = RSA.Create();
+            algorithm.ImportPkcs8PrivateKey(key, out int bytesRead);
+            if (bytesRead != key.Length || algorithm.KeySize < 2048)
+            {
+                throw new InvalidOperationException(
+                    "Authentication:SigningKey must contain a single PKCS#8 RSA private key of at least 2048 bits.");
+            }
+
+            return new RsaSecurityKey(algorithm.ExportParameters(includePrivateParameters: true))
+            {
+                KeyId = Base64UrlEncoder.Encode(SHA256.HashData(algorithm.ExportSubjectPublicKeyInfo()))
+            };
+        }
+        catch (CryptographicException)
+        {
+            throw new InvalidOperationException("Authentication:SigningKey must be a base64-encoded PKCS#8 RSA private key.");
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(key);
+        }
+    }
+
+    private static SymmetricSecurityKey LoadEncryptionKey(IConfiguration configuration)
+    {
+        byte[] key = LoadKey(configuration, "Encryption");
+        if (key.Length != 32)
+        {
+            CryptographicOperations.ZeroMemory(key);
+            throw new InvalidOperationException("Authentication:EncryptionKey must contain exactly 32 bytes (256 bits).");
+        }
+
+        return new SymmetricSecurityKey(key)
+        {
+            KeyId = Base64UrlEncoder.Encode(SHA256.HashData(key))
+        };
+    }
+
+    private static byte[] LoadKey(IConfiguration configuration, string name)
+    {
+        string? value = configuration[$"Authentication:{name}Key"];
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new InvalidOperationException(
+                $"Authentication:{name}Key is required outside development. Set Authentication__{name}Key in the environment.");
+        }
+
+        try
+        {
+            return Convert.FromBase64String(value);
+        }
+        catch (FormatException)
+        {
+            throw new InvalidOperationException($"Authentication:{name}Key must be base64-encoded.");
+        }
     }
 }
