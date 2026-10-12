@@ -76,13 +76,13 @@ export function NavbarOrganization() {
                       "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                     )}>
                     <IconWithText icon={faPlus}>
-                      <FormattedMessage id="generic.new-organization" />
+                      <FormattedMessage id="new-organization" />
                     </IconWithText>
                   </div>
                 )}
               </MenuItem>
             </div>
-            {organizations.data?.items.map((organization) => (
+            {(organizations.data?.items ?? []).map((organization) => (
               <MenuItem key={organization.id}>
                 {({ active }) => (
                   <button

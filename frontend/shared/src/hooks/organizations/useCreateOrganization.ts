@@ -39,7 +39,7 @@ export function useCreateOrganization() {
   );
 
   const validationSchema: ObjectSchema<CreateOrganizationFormValues> = object({
-    name: string().required("generic.name.required")
+    name: string().required("name.required")
   }).defined();
 
   return {

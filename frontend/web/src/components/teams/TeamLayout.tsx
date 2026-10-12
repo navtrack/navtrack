@@ -42,7 +42,7 @@ export function TeamLayout(props: TeamLayoutProps) {
           <Skeleton isLoading={props.isLoading}>
             <Heading type="h1">
               {props.isLoading ? (
-                <FormattedMessage id="generic.loading" />
+                <FormattedMessage id="loading" />
               ) : (
                 props.team?.name
               )}

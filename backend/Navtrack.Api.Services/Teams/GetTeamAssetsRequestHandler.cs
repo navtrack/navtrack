@@ -18,17 +18,12 @@ public class GetTeamAssetsRequestHandler(
     ITeamRepository teamRepository,
     IAssetRepository assetRepository) : BaseRequestHandler<GetTeamAssetsRequest, ListModel<TeamAssetModel>>
 {
-    private TeamEntity? team;
-
-    public override async Task Validate(RequestValidationContext<GetTeamAssetsRequest> context)
-    {
-        team = await teamRepository.GetById(context.Request.TeamId);
-        team.ThrowApiExceptionIfNull(HttpStatusCode.NotFound);
-    }
-
     public override async Task<ListModel<TeamAssetModel>> Handle(GetTeamAssetsRequest request)
     {
-        System.Collections.Generic.List<TeamAssetEntity> assets = await assetRepository.GetByTeamId(team!.Id);
+        TeamEntity? team = await teamRepository.GetById(request.TeamId);
+        team.ThrowApiExceptionIfNull(HttpStatusCode.NotFound);
+        
+        System.Collections.Generic.List<TeamAssetEntity> assets = await assetRepository.GetByTeamId(team.Id);
         
         ListModel<TeamAssetModel> result = ListMapper.Map(assets, TeamAssetMapper.Map);
 

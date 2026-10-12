@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Navtrack.Database.Model.Assets;
-using Navtrack.Database.Model.Authentication;
 using Navtrack.Database.Model.Devices;
 using Navtrack.Database.Model.Organizations;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Model.Users;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace Navtrack.Database.Model;
 
@@ -12,14 +12,12 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
 {
     public DbSet<AssetEntity> Assets { get; set; }
     public DbSet<AssetUserEntity> AssetUsers { get; set; }
-    public DbSet<AuthRefreshTokenEntity> AuthRefreshTokens { get; set; }
     public DbSet<DeviceConnectionEntity> DeviceConnections { get; set; }
     public DbSet<DeviceConnectionDataEntity> DeviceConnectionData { get; set; }
     public DbSet<DeviceEntity> Devices { get; set; }
     public DbSet<DeviceMessageEntity> DeviceMessages { get; set; }
     public DbSet<OrganizationEntity> Organizations { get; set; }
     public DbSet<OrganizationUserEntity> OrganizationUsers { get; set; }
-    public DbSet<SystemEventEntity> SystemEvents { get; set; }
     public DbSet<SystemSettingEntity> SystemSettings { get; set; }
     public DbSet<TeamAssetEntity> TeamAssets { get; set; }
     public DbSet<TeamEntity> Teams { get; set; }
@@ -29,6 +27,13 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseOpenIddict();
+
+        modelBuilder.Entity<OpenIddictEntityFrameworkCoreApplication>().ToTable("auth_applications");
+        modelBuilder.Entity<OpenIddictEntityFrameworkCoreAuthorization>().ToTable("auth_authorizations");
+        modelBuilder.Entity<OpenIddictEntityFrameworkCoreScope>().ToTable("auth_scopes");
+        modelBuilder.Entity<OpenIddictEntityFrameworkCoreToken>().ToTable("auth_tokens");
+
         modelBuilder.Entity<AssetEntity>(entity =>
         {
             entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
@@ -61,11 +66,6 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
             entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
 
             entity.HasAlternateKey(x => new { x.AssetId, x.UserId });
-        });
-
-        modelBuilder.Entity<AuthRefreshTokenEntity>(entity =>
-        {
-            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
         });
 
         modelBuilder.Entity<DeviceConnectionEntity>(entity =>
@@ -109,6 +109,9 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
             entity.HasMany(x => x.Users)
                 .WithMany(x => x.Organizations)
                 .UsingEntity<OrganizationUserEntity>();
+            
+            entity.Property(x => x.WorkSchedule)
+                .HasColumnType("jsonb");
         });
 
         modelBuilder.Entity<OrganizationUserEntity>(entity =>
@@ -116,13 +119,6 @@ public abstract class BaseNavtrackDbContext(DbContextOptions options) : DbContex
             entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
 
             entity.HasAlternateKey(x => new { x.OrganizationId, x.UserId });
-        });
-
-        modelBuilder.Entity<SystemEventEntity>(entity =>
-        {
-            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
-
-            entity.Property(x => x.Payload).HasColumnType("jsonb");
         });
 
         modelBuilder.Entity<SystemSettingEntity>(entity =>

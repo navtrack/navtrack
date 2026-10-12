@@ -6,10 +6,12 @@ import { Modal } from "../../../../ui/modal/Modal";
 import { TextInputRightAddon } from "../../../../ui/form/text-input/TextInputRightAddon";
 import { FilterModal } from "../FilterModal";
 import { AltitudeFilterFormValues } from "../locationFilterTypes";
-import { useAltitudeFilter } from "./useAltitudeFilter";
-import { useAltitudeFilterFormValidation } from "./useAltitudeFilterFormValidation";
 import { useCurrentUnits } from "@navtrack/shared/hooks/util/useCurrentUnits";
 import { nameOf } from "@navtrack/shared/utils/typescript";
+import { number, object, ObjectSchema } from "yup";
+import { useAtom } from "jotai";
+import { altitudeFilterAtom } from "../locationFilterState";
+import { useCallback } from "react";
 
 type AltitudeFilterModalProps = {
   average?: boolean;
@@ -18,15 +20,42 @@ type AltitudeFilterModalProps = {
 
 export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
   const units = useCurrentUnits();
-  const validationSchema = useAltitudeFilterFormValidation();
-  const { initialValues, state, close, handleSubmit } = useAltitudeFilter(
-    props.filterKey
+  const [state, setState] = useAtom(altitudeFilterAtom(props.filterKey));
+
+  const handleSubmit = useCallback(
+    (values: AltitudeFilterFormValues) => {
+      const minAltitude =
+        values.minAltitude !== undefined ? values.minAltitude : undefined;
+      const maxAltitude =
+        values.maxAltitude !== undefined ? values.maxAltitude : undefined;
+      setState({
+        ...state,
+        minAltitude:
+          minAltitude !== undefined && isNaN(minAltitude)
+            ? undefined
+            : minAltitude,
+        maxAltitude:
+          maxAltitude !== undefined && isNaN(maxAltitude)
+            ? undefined
+            : maxAltitude,
+        active: !!values.minAltitude || !!values.maxAltitude,
+        open: false
+      });
+    },
+    [setState, state]
   );
 
+  const validationSchema: ObjectSchema<AltitudeFilterFormValues> = object({
+    minAltitude: number().typeError("number.required"),
+    maxAltitude: number().typeError("number.required")
+  }).defined();
+
   return (
-    <Modal open={state.open} close={close}>
+    <Modal
+      open={state.open}
+      close={() => setState((prev) => ({ ...prev, open: false }))}>
       <Formik<AltitudeFilterFormValues>
-        initialValues={initialValues}
+        initialValues={state}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}>
         {({ values, setFieldValue }) => (
@@ -34,7 +63,7 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
             <FilterModal
               icon={faMountain}
               className="max-w-sm"
-              onCancel={close}>
+              onCancel={() => setState((prev) => ({ ...prev, open: false }))}>
               <h3 className="text-lg font-medium leading-6 text-gray-900">
                 <FormattedMessage
                   id={
@@ -48,8 +77,9 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
                 <div className="flex space-x-4">
                   <FormikTextInput
                     name={nameOf<AltitudeFilterFormValues>("minAltitude")}
-                    label="generic.min"
+                    label="min"
                     value={values.minAltitude}
+                    type="number"
                     rightAddon={
                       <TextInputRightAddon>{units.length}</TextInputRightAddon>
                     }
@@ -57,7 +87,7 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
                       const newValue = parseInt(e.target.value);
                       if (
                         values.maxAltitude !== undefined &&
-                        newValue > parseInt(values.maxAltitude)
+                        newValue > values.maxAltitude
                       ) {
                         setFieldValue(
                           nameOf<AltitudeFilterFormValues>("maxAltitude"),
@@ -68,8 +98,9 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
                   />
                   <FormikTextInput
                     name={nameOf<AltitudeFilterFormValues>("maxAltitude")}
-                    label="generic.max"
+                    label="max"
                     value={values.maxAltitude}
+                    type="number"
                     rightAddon={
                       <TextInputRightAddon>{units.length}</TextInputRightAddon>
                     }
@@ -77,7 +108,7 @@ export function AltitudeFilterModal(props: AltitudeFilterModalProps) {
                       const newValue = parseInt(e.target.value);
                       if (
                         values.minAltitude !== undefined &&
-                        newValue < parseInt(values.minAltitude)
+                        newValue < values.minAltitude
                       ) {
                         setFieldValue(
                           nameOf<AltitudeFilterFormValues>("minAltitude"),

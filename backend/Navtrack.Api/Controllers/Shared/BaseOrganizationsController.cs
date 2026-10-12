@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Navtrack.Api.Model.Common;
 using Navtrack.Api.Model.Organizations;
 using Navtrack.Api.Services.Common.ActionFilters;
-using Navtrack.Api.Services.Common.Context;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Organizations;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Organizations;
@@ -15,20 +14,20 @@ using NSwag.Annotations;
 namespace Navtrack.Api.Controllers.Shared;
 
 [ApiController]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+[Authorize]
 [OpenApiTag(ControllerTags.Organizations)]
 public abstract class BaseOrganizationsController(
     IRequestHandler requestHandler,
-    INavtrackContextAccessor navtrackContextAccessor) : ControllerBase
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor) : NavtrackControllerBase(requestHandler)
 {
     [HttpPost(ApiPaths.Organizations)]
     [ProducesResponseType(typeof(Entity), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<Entity> Create([FromBody] CreateOrganizationModel model)
     {
-        Entity result = await requestHandler.Handle<CreateOrganizationRequest, Entity>(new CreateOrganizationRequest
+        Entity result = await Query<CreateOrganizationRequest, Entity>(new CreateOrganizationRequest
         {
-            OwnerId = navtrackContextAccessor.NavtrackContext.User.Id,
+            OwnerId = navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id,
             Model = model
         });
 
@@ -37,31 +36,23 @@ public abstract class BaseOrganizationsController(
 
     [HttpPost(ApiPaths.OrganizationById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
-    public async Task<IActionResult> Update([FromRoute] string organizationId, [FromBody] UpdateOrganizationModel model)
-    {
-        await requestHandler.Handle(new UpdateOrganizationRequest
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
+    public async Task<IActionResult> Update([FromRoute] string organizationId, [FromBody] UpdateOrganizationModel model) =>
+        await Command(new UpdateOrganizationRequest
         {
             OrganizationId = organizationId,
             Model = model
         });
 
-        return Ok();
-    }
-
     [HttpDelete(ApiPaths.OrganizationById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeOrganization(OrganizationUserRole.Owner)]
-    public async Task<IActionResult> Delete([FromRoute] string organizationId)
-    {
-        await requestHandler.Handle(new DeleteOrganizationRequest
+    [NavtrackAuthorize(OrganizationUserRole.Owner)]
+    public async Task<IActionResult> Delete([FromRoute] string organizationId) =>
+        await Command(new DeleteOrganizationRequest
         {
             OrganizationId = organizationId
         });
-
-        return Ok();
-    }
 }

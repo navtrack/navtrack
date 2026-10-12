@@ -1,6 +1,5 @@
-import { useFixtureInput } from "react-cosmos/client";
 import { TableV2 } from "./TableV2";
-import { ITableColumn } from "./useTable";
+import { ITableColumn, useTable } from "./useTable";
 
 type User = {
   email: string;
@@ -14,45 +13,52 @@ const users: User[] = Array.from({ length: 1000 }, (_, i) => ({
 
 const columns: ITableColumn<User>[] = [
   {
-    labelId: "generic.email",
+    labelId: "email",
     rowClassName: "py-1",
-    sortValue: (user) => user.email,
+    value: (user) => user.email,
     row: (user) => user.email
   },
   {
-    labelId: "generic.role",
+    labelId: "role",
     rowClassName: "py-1",
-    sortValue: (user) => user.role,
+    value: (user) => user.role,
     row: (user) => user.role
   }
 ];
 
 export default {
-  Default: <TableV2 className="h-80" columns={columns} rows={users} />,
+  Default: () => {
+    const table = useTable({ columns, rows: users });
+
+    return <TableV2 className="h-80" {...table.props} />;
+  },
   "With footer": () => {
     const columnsWithFooter = columns.map((column, i) => ({
       ...column,
       footer: () => `Footer ${i + 1}`
     }));
+    const table = useTable({ columns: columnsWithFooter, rows: users });
 
-    return (
-      <TableV2 className="h-80" columns={columnsWithFooter} rows={users} />
-    );
+    return <TableV2 className="h-80" {...table.props} />;
   },
-  Loading: <TableV2 columns={columns} rows={undefined} />,
-  "No Items": <TableV2 columns={columns} rows={[]} />,
-  "With Selected Item": () => {
-    const [user, setUser] = useFixtureInput<User | undefined>("user", users[2]);
+  Loading: () => {
+    const table = useTable({ columns, rows: undefined });
 
-    return (
-      <TableV2
-        className="h-80"
-        columns={columns}
-        rows={users}
-        setSelectedItem={setUser}
-        selectedItem={user}
-        equals={(a, b) => a.email === b.email}
-      />
-    );
+    return <TableV2 {...table.props} />;
+  },
+  "No Items": () => {
+    const table = useTable({ columns, rows: [] });
+
+    return <TableV2 {...table.props} />;
+  },
+  "With Selected Item": () => {
+    const table = useTable({
+      columns,
+      rows: users,
+      selection: true,
+      equals: (a, b) => a.email === b.email
+    });
+
+    return <TableV2 className="h-80" {...table.props} />;
   }
 };

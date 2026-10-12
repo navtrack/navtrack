@@ -3,10 +3,10 @@ import { useAtom } from "jotai";
 import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
-import { geofenceFilterAtom } from "../locationFilterState";
 import { FormattedMessage } from "react-intl";
 import { showCoordinate } from "@navtrack/shared/utils/coordinates";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
+import { geofenceFilterAtom } from "../locationFilterState";
 
 type GeofenceFilterBadgeProps = {
   filterKey: string;
@@ -19,10 +19,10 @@ export function GeofenceFilterBadge(props: GeofenceFilterBadgeProps) {
 
   return (
     <>
-      {state.enabled && (
+      {state.active && (
         <FilterBadge
           order={state.order}
-          onClick={() => setState((x) => ({ ...x, open: true }))}
+          onClick={() => setState((prev) => ({ ...prev, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faMapMarkedAlt}>
             <FormattedMessage

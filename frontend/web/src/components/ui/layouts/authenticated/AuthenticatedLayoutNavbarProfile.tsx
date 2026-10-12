@@ -74,7 +74,7 @@ export function AuthenticatedLayoutNavbarProfile() {
                     "block cursor-pointer px-4 py-2 text-sm text-gray-700"
                   )}>
                   <IconWithText icon={faSignOutAlt}>
-                    <FormattedMessage id="generic.log-out" />
+                    <FormattedMessage id="log-out" />
                   </IconWithText>
                 </div>
               )}

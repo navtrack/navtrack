@@ -5,15 +5,37 @@ import { useAtom } from "jotai";
 import { useResetAtom } from "jotai/utils";
 import { FilterBadge } from "../FilterBadge";
 import { IconWithText } from "../../../../ui/icon/IconWithText";
-import { speedFilterAtom } from "../locationFilterState";
+import { averageSpeedFilterAtom, speedFilterAtom } from "../locationFilterState";
 
 type SpeedFilterBadgeProps = {
   filterKey: string;
 };
 
 export function SpeedFilterBadge(props: SpeedFilterBadgeProps) {
-  const [state, setState] = useAtom(speedFilterAtom(props.filterKey));
-  const reset = useResetAtom(speedFilterAtom(props.filterKey));
+  return (
+    <SpeedFilterBadgeBase
+      filterAtom={speedFilterAtom}
+      filterKey={props.filterKey}
+    />
+  );
+}
+
+export function AverageSpeedFilterBadge(props: SpeedFilterBadgeProps) {
+  return (
+    <SpeedFilterBadgeBase
+      filterAtom={averageSpeedFilterAtom}
+      filterKey={props.filterKey}
+    />
+  );
+}
+
+type SpeedFilterBadgeBaseProps = SpeedFilterBadgeProps & {
+  filterAtom: typeof speedFilterAtom;
+};
+
+function SpeedFilterBadgeBase(props: SpeedFilterBadgeBaseProps) {
+  const [state, setState] = useAtom(props.filterAtom(props.filterKey));
+  const reset = useResetAtom(props.filterAtom(props.filterKey));
   const units = useCurrentUnits();
 
   const text = useMemo(() => {
@@ -24,14 +46,14 @@ export function SpeedFilterBadge(props: SpeedFilterBadgeProps) {
     } else if (state.maxSpeed !== undefined) {
       return `< ${state.maxSpeed} (${units.speed})`;
     }
-  }, [state.maxSpeed, state.minSpeed, units.speed]);
+  }, [state, units.speed]);
 
   return (
     <>
-      {state.enabled && (
+      {state.active && (
         <FilterBadge
           order={state.order}
-          onClick={() => setState((x) => ({ ...x, open: true }))}
+          onClick={() => setState((prev) => ({ ...prev, open: true }))}
           onCloseClick={reset}>
           <IconWithText icon={faTachometerAlt}>{text}</IconWithText>
         </FilterBadge>

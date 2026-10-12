@@ -5,9 +5,9 @@ namespace Navtrack.Api.Model.Teams;
 
 public class CreateTeamUserModel
 {
-    [Required]
+    [Required(ErrorMessage = "email.required")]
     public string Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "userRole.required")]
     public TeamUserRole UserRole { get; set; }
 }

@@ -121,19 +121,19 @@ export function GeofenceCircle(props: GeofenceCircleProps) {
           <>
             <div>
               <span className="flex font-semibold">
-                <FormattedMessage id="generic.latitude" />
+                <FormattedMessage id="latitude" />
               </span>
               <span>{showCoordinate(geofence.latitude)}</span>
             </div>
             <div>
               <span className="flex font-semibold">
-                <FormattedMessage id="generic.longitude" />
+                <FormattedMessage id="longitude" />
               </span>
               <span>{showCoordinate(geofence.longitude)}</span>
             </div>
             <div>
               <span className="flex font-semibold">
-                <FormattedMessage id="generic.radius" />
+                <FormattedMessage id="radius" />
               </span>
               <span>{show.distance(geofence.radius, false)}</span>
             </div>

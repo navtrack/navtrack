@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityModel;
+using OpenIddict.Abstractions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
@@ -14,7 +14,7 @@ public sealed class FakePolicyEvaluator(string userId) : IPolicyEvaluator
     {
         ClaimsPrincipal claimsPrincipal = new(new ClaimsIdentity(new[]
         {
-            new Claim(JwtClaimTypes.Subject, userId)
+            new Claim(OpenIddictConstants.Claims.Subject, userId)
         }, "TestScheme"));
 
         return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal,

@@ -99,7 +99,7 @@ export function useConvert() {
         );
       }
 
-      return customMessage ?? intl.formatMessage({ id: "generic.na" });
+      return customMessage ?? intl.formatMessage({ id: "na" });
     },
     [intl]
   );
@@ -108,7 +108,7 @@ export function useConvert() {
     (date?: string): string =>
       date
         ? format(parseISO(date), "HH:mm:ss")
-        : intl.formatMessage({ id: "generic.na" }),
+        : intl.formatMessage({ id: "na" }),
     [intl]
   );
 
@@ -116,7 +116,7 @@ export function useConvert() {
     (date?: string): string =>
       date
         ? `${showDate(date)} ${showTime(date)}`
-        : intl.formatMessage({ id: "generic.na" }),
+        : intl.formatMessage({ id: "na" }),
     [intl, showDate, showTime]
   );
 

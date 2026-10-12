@@ -12,12 +12,11 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Navtrack.Api.Model.Common;
 using Navtrack.Api.Services.Common.ActionFilters;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
-using Navtrack.Api.Services.Common.IdentityServer;
+using Navtrack.Api.Services.Common.Authentication;
 using Navtrack.Api.Services.Common.Mappers;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Shared.Library.DI;
 
 namespace Navtrack.Api.Shared;
@@ -33,6 +32,7 @@ public abstract class BaseApiProgram<T>
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddCustomServices<T>();
+        builder.Services.AddProblemDetails();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApiDocument(c => { c.Title = assembly.GetName().Name; });
@@ -48,9 +48,7 @@ public abstract class BaseApiProgram<T>
 
         builder.Services.AddControllers(options =>
             {
-                options.Filters.Add<AuthorizeOrganizationActionFilter>();
-                options.Filters.Add<AuthorizeTeamActionFilter>();
-                options.Filters.Add<AuthorizeAssetActionFilter>();
+                options.Filters.Add<NavtrackAuthorizeActionFilter>();
 
                 baseProgramOptions?.Filters?.ForEach(x => options.Filters.Add(x));
             })
@@ -68,10 +66,9 @@ public abstract class BaseApiProgram<T>
             {
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    ValidationProblemDetails problemDetails = new(context.ModelState);
-                    ErrorModel error = ErrorMapper.Map(problemDetails);
-
-                    return new BadRequestObjectResult(error);
+                    ValidationProblemDetails problemDetails = ProblemDetailsMapper.Map(context.ModelState);
+               
+                    return new BadRequestObjectResult(problemDetails);
                 };
             })
             .AddJsonOptions(options => ConfigureJsonOptions(options.JsonSerializerOptions));
@@ -79,13 +76,10 @@ public abstract class BaseApiProgram<T>
         builder.Services.Configure<JsonSerializerOptions>(ConfigureJsonOptions);
 
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddIdentityServer()
-            .AddInMemoryClients(IdentityServerConfig.GetClients())
-            .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-            .AddInMemoryApiScopes(IdentityServerConfig.GetScopes());
-
-        builder.Services.AddLocalApiAuthentication();
+        builder.Services.AddNavtrackAuthentication(builder.Configuration, builder.Environment,
+            baseProgramOptions?.AuthenticationGrantTypes ?? [], ApiPaths.AuthToken, ApiPaths.AuthRevocation);
         builder.Services.AddLogging();
+        builder.Services.AddExceptionHandler<NavtrackExceptionHandler>();
 
         builder.Services.AddSingleton<IClientErrorFactory, CustomClientErrorFactory>();  
         
@@ -111,16 +105,13 @@ public abstract class BaseApiProgram<T>
         app.UseCors(defaultCorsPolicy);
         app.UseRouting();
 
-        // app.UseSignalRQueryStringAuthentication();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseIdentityServer();
 
-        app.UseMiddleware<ExceptionMiddleware>();
-        app.UseMiddleware<NavtrackContextMiddleware>();
+        app.UseExceptionHandler();
+        app.UseMiddleware<NavtrackRequestContextMiddleware>();
 
         app.MapControllers();
-        // app.MapHub<AssetsHub>(ApiConstants.HubUrl("assets"));
 
         if (app.Environment.IsProduction() && baseProgramOptions?.MigrateDatabase == true)
         {

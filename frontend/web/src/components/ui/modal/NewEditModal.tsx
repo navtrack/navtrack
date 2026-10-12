@@ -84,7 +84,7 @@ export function NewEditModal<T extends FormikValues>(
                       color="primary"
                       type="submit"
                       isLoading={props.isLoading}>
-                      <FormattedMessage id="generic.save" />
+                      <FormattedMessage id="save" />
                     </Button>
                   </ModalActions>
                 </ModalContainer>

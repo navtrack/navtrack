@@ -10,8 +10,8 @@ export function useDeleteOrganizationUserMutation() {
 
   const mutation = useOrganizationsUsersDelete({
     mutation: {
-      onSuccess: (_, variables) =>
-        Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getOrganizationsUsersListQueryKey(
               variables.organizationId
@@ -20,7 +20,8 @@ export function useDeleteOrganizationUserMutation() {
           queryClient.invalidateQueries({
             queryKey: getOrganizationsGetQueryKey(variables.organizationId)
           })
-        ])
+        ]);
+      }
     }
   });
 

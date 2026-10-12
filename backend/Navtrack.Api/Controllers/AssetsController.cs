@@ -15,16 +15,10 @@ public class AssetsController(IRequestHandler requestHandler) : BaseAssetsContro
 {
     [HttpGet(ApiPaths.OrganizationAssets)]
     [ProducesResponseType(typeof(ListModel<AssetModel>), StatusCodes.Status200OK)]
-    [AuthorizeOrganization(OrganizationUserRole.Member)]
-    public async Task<ListModel<AssetModel>> GetList([FromRoute] string organizationId)
-    {
-        ListModel<AssetModel> result =
-            await requestHandler.Handle<GetAssetsRequest, ListModel<AssetModel>>(
-                new GetAssetsRequest
-                {
-                    OrganizationId = organizationId
-                });
-
-        return result;
-    }
+    [NavtrackAuthorize(OrganizationUserRole.Member)]
+    public Task<ListModel<AssetModel>> GetList([FromRoute] string organizationId) =>
+        Query<GetAssetsRequest, ListModel<AssetModel>>(new GetAssetsRequest
+        {
+            OrganizationId = organizationId
+        });
 }

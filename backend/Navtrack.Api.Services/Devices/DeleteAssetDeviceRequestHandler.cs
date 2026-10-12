@@ -16,30 +16,24 @@ public class DeleteAssetDeviceRequestHandler(
     IDeviceRepository deviceRepository,
     IDeviceMessageRepository deviceMessageRepository) : BaseRequestHandler<DeleteAssetDeviceRequest>
 {
-    private AssetEntity? asset;
-    private DeviceEntity? device;
-
-    public override async Task Validate(RequestValidationContext<DeleteAssetDeviceRequest> context)
+    public override async Task Handle(DeleteAssetDeviceRequest request)
     {
-        asset = await assetRepository.GetById(context.Request.AssetId);
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
         asset.Return404IfNull();
 
-        device = await deviceRepository.GetById(context.Request.DeviceId);
+        DeviceEntity? device = await deviceRepository.GetById(request.DeviceId);
         device.Return404IfNull();
 
         if (await deviceRepository.IsActive(asset.Id, device.Id))
         {
-            throw new ApiException(ApiErrorCodes.Device_000003_DeviceIsActive);
+            throw new ApiException(ApiErrorCodes.Device_DeviceIsActive);
         }
 
         if (await deviceMessageRepository.DeviceHasMessages(asset.Id, device.Id))
         {
-            throw new ApiException(ApiErrorCodes.Device_000004_DeviceHasMessages);
+            throw new ApiException(ApiErrorCodes.Device_DeviceHasMessages);
         }
-    }
 
-    public override Task Handle(DeleteAssetDeviceRequest request)
-    {
-        return deviceRepository.Delete(device!);
+        await deviceRepository.Delete(device);
     }
 }

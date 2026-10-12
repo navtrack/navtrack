@@ -5,7 +5,7 @@ namespace Navtrack.Api.Model.User;
 
 public class UpdateUserModel
 {
-    [EmailAddress]
-    public string? Email { get; set; }
-    public UnitsType? UnitsType { get; set; }
+    [EmailAddress(ErrorMessage = "email.invalid")]
+    public required string Email { get; set; }
+    public UnitsType UnitsType { get; set; }
 }

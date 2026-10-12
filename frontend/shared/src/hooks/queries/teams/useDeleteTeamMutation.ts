@@ -14,15 +14,16 @@ export function useDeleteTeamMutation(props: DeleteTeamMutationProps) {
 
   const mutation = useTeamsDelete({
     mutation: {
-      onSuccess: (_, variables) =>
-        Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getTeamsAssetsListQueryKey(variables.teamId)
           }),
           queryClient.invalidateQueries({
             queryKey: getOrganizationsGetQueryKey(props.organizationId!)
           })
-        ])
+        ]);
+      }
     }
   });
 

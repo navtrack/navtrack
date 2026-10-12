@@ -9,8 +9,8 @@ export function useDeleteDeviceMutation() {
 
   const mutation = useAssetsDevicesDelete({
     mutation: {
-      onSuccess: (_, variables) => {
-        return Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getAssetsDevicesGetListQueryKey(variables.assetId)
           })

@@ -10,8 +10,8 @@ export function useUpdateTeamMutation() {
 
   const mutation = useTeamsUpdate({
     mutation: {
-      onSuccess: (_, variables) => {
-        return Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getTeamsGetQueryKey(variables.teamId)
           }),

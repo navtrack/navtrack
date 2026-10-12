@@ -1,6 +1,6 @@
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
-import { useRegisterAccountMutation } from "../../queries/users/useRegisterAccountMutation";
+import { useRegisterAccountMutation } from "../../queries/account/useRegisterAccountMutation";
 import { mapErrors } from "../../../utils/formik";
 import { RegisterFormValues } from "./RegisterFormValues";
 
@@ -10,6 +10,8 @@ type UseRegisterProps = {
 
 export const useRegister = (props?: UseRegisterProps) => {
   const registerAccountMutation = useRegisterAccountMutation();
+
+  console.log(registerAccountMutation.isPending);
 
   const register = useCallback(
     (
@@ -36,7 +38,8 @@ export const useRegister = (props?: UseRegisterProps) => {
 
   return {
     register,
-    loading: registerAccountMutation.isPending,
+    loading:
+      registerAccountMutation.isPending && !registerAccountMutation.isError,
     success: registerAccountMutation.isSuccess
   };
 };

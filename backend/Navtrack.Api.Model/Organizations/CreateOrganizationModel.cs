@@ -4,6 +4,6 @@ namespace Navtrack.Api.Model.Organizations;
 
 public class CreateOrganizationModel
 {
-    [Required]
+    [Required(ErrorMessage = "name.required")]
     public string Name { get; set; }
 }

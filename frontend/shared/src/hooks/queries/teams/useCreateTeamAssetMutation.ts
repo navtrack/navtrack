@@ -10,15 +10,16 @@ export function useCreateTeamAssetMutation() {
 
   const mutation = useTeamsAssetsCreate({
     mutation: {
-      onSuccess: (_, variables) =>
-        Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getTeamsAssetsListQueryKey(variables.teamId)
           }),
           queryClient.invalidateQueries({
             queryKey: getTeamsGetQueryKey(variables.teamId)
           })
-        ])
+        ]);
+      }
     }
   });
 

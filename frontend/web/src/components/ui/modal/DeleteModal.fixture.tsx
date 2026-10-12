@@ -5,7 +5,6 @@ export default {
     return (
       <DeleteModal
         onConfirm={() => {
-          console.log("confirm");
           return Promise.resolve();
         }}
         renderButton={(open) => (

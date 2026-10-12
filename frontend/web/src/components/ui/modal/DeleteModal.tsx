@@ -85,7 +85,7 @@ export function DeleteModal(props: DeleteModalProps) {
                 type="submit"
                 isLoading={props.isLoading}
                 onClick={handleConfirm}>
-                <FormattedMessage id="generic.delete" />
+                <FormattedMessage id="delete" />
               </Button>
             </ModalActions>
           </ModalContainer>

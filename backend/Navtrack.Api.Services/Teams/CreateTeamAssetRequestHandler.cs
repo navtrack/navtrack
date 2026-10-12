@@ -1,16 +1,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Requests;
-using Navtrack.Api.Services.Teams.Events;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Services.Assets;
 using Navtrack.Database.Services.Teams;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Teams;
 
@@ -18,38 +16,26 @@ namespace Navtrack.Api.Services.Teams;
 public class CreateTeamAssetRequestHandler(
     ITeamRepository teamRepository,
     IAssetRepository assetRepository,
-    INavtrackContextAccessor navtrackContextAccessor) : BaseRequestHandler<CreateTeamAssetRequest>
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor) : BaseRequestHandler<CreateTeamAssetRequest>
 {
-    private TeamEntity? team;
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<CreateTeamAssetRequest> context)
+    public override async Task Handle(CreateTeamAssetRequest request)
     {
-        team = await teamRepository.GetById(context.Request.TeamId);
+        TeamEntity? team = await teamRepository.GetById(request.TeamId);
         team.Return404IfNull();
 
-        asset = await assetRepository.GetById(context.Request.Model.AssetId);
+        AssetEntity? asset = await assetRepository.GetById(request.Model.AssetId);
         asset.Return404IfNull();
 
         if (team.OrganizationId != asset.OrganizationId)
         {
-            throw new ApiException(ApiErrorCodes.Team_000002_TeamAndAssetNotInSameOrganization);
+            throw new ApiException(ApiErrorCodes.Team_TeamAndAssetNotInSameOrganization);
         }
 
-        context.ValidationException.AddErrorIfTrue(
-            asset.Teams.Any(x => x.Id == team.Id),
-            nameof(context.Request.Model.AssetId), ApiErrorCodes.Team_000003_AssetAlreadyInTeam);
+        new ValidationApiException()
+            .AddErrorIfTrue(asset.Teams.Any(x => x.Id == team.Id), nameof(request.Model.AssetId),
+                ApiErrorCodes.Team_AssetAlreadyInTeam)
+            .ThrowIfInvalid();
+        
+        await teamRepository.AddAsset(team.Id, asset.Id, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id);
     }
-
-    public override async Task Handle(CreateTeamAssetRequest request)
-    {
-        await teamRepository.AddAsset(team!.Id, asset!.Id, navtrackContextAccessor.NavtrackContext.User.Id);
-    }
-
-    public override IEvent GetEvent(CreateTeamAssetRequest request) =>
-        new TeamAssetCreatedEvent
-        {
-            AssetId = asset!.Id.ToString(),
-            TeamId = team!.Id.ToString()
-        };
 }

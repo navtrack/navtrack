@@ -16,26 +16,21 @@ public class GetAssetStatsRequestHandler(
     IAssetRepository assetRepository,
     IDeviceMessageRepository deviceMessageRepository) : BaseRequestHandler<GetAssetStatsRequest, AssetStatsModel>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<GetAssetStatsRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-    }
-
     public override async Task<AssetStatsModel> Handle(GetAssetStatsRequest request)
     {
-        int? initialOdometer = await deviceMessageRepository.GetFirstOdometer(asset!.Id);
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+        
+        int? initialOdometer = await deviceMessageRepository.GetFirstOdometer(asset.Id);
 
         DateTime? middle = AssetStatsDateRangeMapper.GetMidDate(request.Period);
         DateTime? first = AssetStatsDateRangeMapper.GetFirstDate(request.Period, middle);
         DateTime? last = AssetStatsDateRangeMapper.GetEndDate(request.Period, middle);
 
         GetFirstAndLastPositionResult currentRangePositions =
-            await deviceMessageRepository.GetFirstAndLast(asset!.Id, middle, last);
+            await deviceMessageRepository.GetFirstAndLast(asset.Id, middle, last);
         GetFirstAndLastPositionResult previousRangePositions =
-            await deviceMessageRepository.GetFirstAndLast(asset!.Id, first, middle);
+            await deviceMessageRepository.GetFirstAndLast(asset.Id, first, middle);
 
         AssetStatsModel model =
             AssetStatItemMapper.Map(initialOdometer, currentRangePositions, previousRangePositions);

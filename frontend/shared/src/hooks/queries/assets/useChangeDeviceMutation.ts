@@ -13,8 +13,8 @@ export function useChangeDeviceMutation() {
 
   const mutation = useAssetsDevicesCreateOrUpdate({
     mutation: {
-      onSuccess: (_, variables) => {
-        return Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getAssetsGetQueryKey(variables.assetId)
           }),

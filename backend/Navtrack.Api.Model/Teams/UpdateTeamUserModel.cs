@@ -5,6 +5,6 @@ namespace Navtrack.Api.Model.Teams;
 
 public class UpdateTeamUserModel
 {
-    [Required]
+    [Required(ErrorMessage = "userRole.required")]
     public TeamUserRole UserRole { get; set; }
 }

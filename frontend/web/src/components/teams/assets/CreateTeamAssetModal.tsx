@@ -36,7 +36,7 @@ export function CreateTeamAssetModal(props: CreateTeamUserModalProps) {
   });
 
   const validationSchema: ObjectSchema<CreateAssetFormValues> = object({
-    assetId: string().required("generic.asset.required")
+    assetId: string().required("asset.required")
   }).defined();
 
   const handleSubmit = useCallback(
@@ -72,7 +72,7 @@ export function CreateTeamAssetModal(props: CreateTeamUserModalProps) {
   return (
     <>
       <Button onClick={() => setOpen(true)} icon={faPlus}>
-        <FormattedMessage id="generic.add-asset" />
+        <FormattedMessage id="add-asset" />
       </Button>
       <Modal
         open={open}
@@ -94,7 +94,7 @@ export function CreateTeamAssetModal(props: CreateTeamUserModalProps) {
                     <div className="mt-2 space-y-4">
                       <FormikAutocomplete
                         name={nameOf<CreateAssetFormValues>("assetId")}
-                        label="generic.asset"
+                        label="asset"
                         placeholder="teams.assets.add.search-placeholder"
                         options={assets.data?.items.map((x) => ({
                           label: x.name,
@@ -106,7 +106,7 @@ export function CreateTeamAssetModal(props: CreateTeamUserModalProps) {
                 </ModalContent>
                 <ModalActions cancel={() => setOpen(false)}>
                   <Button type="submit" isLoading={createTeamAsset.isPending}>
-                    <FormattedMessage id="generic.save" />
+                    <FormattedMessage id="save" />
                   </Button>
                 </ModalActions>
               </ModalContainer>

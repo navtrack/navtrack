@@ -45,7 +45,7 @@ export function MapShowAllControl(props: MapShowAllControlProps) {
           "mb-2 cursor-pointer rounded-lg bg-white px-2 py-0.5 text-sm font-medium text-gray-900 shadow-md hover:bg-gray-100"
         )}>
         <Icon icon={faMaximize} className="mr-1" />
-        <FormattedMessage id="generic.show-all" />
+        <FormattedMessage id="show-all" />
       </div>
     </div>
   );

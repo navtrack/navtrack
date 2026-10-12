@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Navtrack.Database.Model.Assets;
 using Navtrack.Database.Model.Devices;
+using Navtrack.Database.Model.Shared;
 using Navtrack.Database.Model.Teams;
 using Navtrack.Database.Model.Users;
 using Navtrack.Database.Postgres;
@@ -25,4 +26,5 @@ public class OrganizationEntity : BaseEntity
     public List<UserEntity> Users { get; set; } = [];
     public List<OrganizationUserEntity> OrganizationUsers { get; set; } = [];
     public string? OldId { get; set; }
+    public WorkScheduleEntity? WorkSchedule { get; set; }
 }

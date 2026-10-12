@@ -11,16 +11,11 @@ namespace Navtrack.Api.Services.Organizations;
 public class DeleteOrganizationRequestHandler(
     IOrganizationRepository organizationRepository) : BaseRequestHandler<DeleteOrganizationRequest>
 {
-    private OrganizationEntity? organization;
-
-    public override async Task Validate(RequestValidationContext<DeleteOrganizationRequest> context)
+    public override async Task Handle(DeleteOrganizationRequest request)
     {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
         organization.Return404IfNull();
-    }
-
-    public override Task Handle(DeleteOrganizationRequest request)
-    {
-        return organizationRepository.Delete(organization!);
+        
+        await organizationRepository.Delete(organization);
     }
 }

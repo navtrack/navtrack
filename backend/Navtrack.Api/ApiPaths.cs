@@ -2,6 +2,10 @@ namespace Navtrack.Api;
 
 public static class ApiPaths
 {
+    public const string AuthToken = "auth/token";
+    public const string AuthRevocation = "auth/revocation";
+    public const string AuthLogout = "auth/logout";
+
     public const string Account = "account";
     public const string AccountForgotPassword = "account/forgot-password";
     public const string AccountResetPassword = "account/reset-password";
@@ -25,8 +29,6 @@ public static class ApiPaths
     public const string AssetMessages = "assets/{assetId}/messages";
     public const string AssetStats = "assets/{assetId}/stats/{period}";
     public const string AssetReportsDistance = "assets/{assetId}/reports/distance";
-    public const string AssetReportsFuelConsumption = "assets/{assetId}/reports/fuel-consumption";
-    public const string AssetReportsTrips = "assets/{assetId}/reports/trips";
     
     public const string TeamById = "teams/{teamId}";
     public const string TeamUsers = "teams/{teamId}/users";

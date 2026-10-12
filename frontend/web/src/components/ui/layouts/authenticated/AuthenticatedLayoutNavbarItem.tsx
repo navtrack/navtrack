@@ -9,6 +9,8 @@ import { NavbarMenuItem } from "./AuthenticatedLayoutNavbar";
 import { useCallback, useMemo } from "react";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
+import { Icon } from "../../icon/Icon";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 export function AuthenticatedLayoutNavbarItem(props: NavbarMenuItem) {
   const currentAsset = useCurrentAsset();
@@ -18,7 +20,7 @@ export function AuthenticatedLayoutNavbarItem(props: NavbarMenuItem) {
   const getPath = useCallback(
     (path: string) => {
       const isAsset = path.includes("/assets/:id");
-      const isOrganization = path.includes("/orgs/:id");
+      const isOrganization = path.includes("/organizations/:id");
 
       return generatePath(path, {
         id: `${
@@ -56,6 +58,9 @@ export function AuthenticatedLayoutNavbarItem(props: NavbarMenuItem) {
       <IconWithText icon={props.icon}>
         <FormattedMessage id={props.label} />
       </IconWithText>
+      {(props.subMenuItems?.length ?? 0) > 0 && (
+        <Icon icon={faAngleDown} className="ml-2" />
+      )}
       {props.count !== undefined && (
         <BadgeFlatPill className="ml-2">{props.count}</BadgeFlatPill>
       )}
@@ -65,7 +70,7 @@ export function AuthenticatedLayoutNavbarItem(props: NavbarMenuItem) {
   if (props.subMenuItems) {
     return (
       <Menu as="div" className="relative h-14 text-left">
-        <MenuButton className="h-14 inline-flex">
+        <MenuButton className="h-14 inline-flex cursor-pointer">
           <NavMenuItem {...props} isActive={subMenuIsActive} />
         </MenuButton>
         <MenuItems

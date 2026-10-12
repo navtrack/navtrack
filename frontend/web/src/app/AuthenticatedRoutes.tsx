@@ -21,19 +21,20 @@ import { OrganizationUsersPage } from "../components/users/OrganizationUsersPage
 import { TeamUsersPage } from "../components/teams/users/TeamUsersPage";
 import { TeamSettingsPage } from "../components/teams/settings/TeamSettingsPage";
 import { TeamAssetsPage } from "../components/teams/assets/TeamAssetsPage";
-import { OrganizationReportsPage } from "../components/reports/OrganizationReportsPage";
 import { OrganizationSettingsLayout } from "../components/organizations/settings/shared/OrganizationSettingsLayout";
 import { NotFoundPage } from "../components/shared/NotFoundPage";
 import { AuthenticatedLayoutOneColumn } from "../components/ui/layouts/authenticated/AuthenticatedLayoutOneColumn";
 import { OrganizationsPage } from "../components/organizations/OrganizationsPage";
-import { useSetCurrentAssetFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentAssetFromRoute";
-import { useSetCurrentOrganizationFromRoute } from "@navtrack/shared/hooks/current/useSetCurrentOrganizationFromRoute";
 import { AssetUsersPage } from "../components/asset/settings/access/AssetUsersPage";
 import { AssetReportsFuelConsumptionPage } from "../components/asset/reports/AssetReportsFuelConsumptionPage";
 import { AssetReportsTripsPage } from "../components/asset/reports/AssetReportsTripsPage";
 import { AssetReportsDistancePage } from "../components/asset/reports/AssetReportsDistancePage";
 import { OrganizationDashboardPage } from "../components/organizations/dashboard/OrganizationDashboardPage";
 import { AssetReportsTripStopsPage } from "../components/asset/reports/AssetReportsTripStopsPage";
+import { AssetReportsWorkingHoursPage } from "../components/asset/reports/AssetReportsWorkingHoursPage";
+import { OrganizationSettingsWorkSchedulePage } from "../components/organizations/settings/work-schedule/OrganizationSettingsWorkSchedulePage";
+import { OrganizationReportsDistancePage } from "../components/organizations/reports/OrganizationReportsDistancePage";
+import { OrganizationReportsFuelConsumptionPage } from "../components/organizations/reports/OrganizationReportsFuelConsumptionPage";
 
 type AuthenticatedRoutesProps = {
   mainRoutes?: ReactNode;
@@ -44,9 +45,6 @@ type AuthenticatedRoutesProps = {
 };
 
 export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
-  useSetCurrentAssetFromRoute();
-  useSetCurrentOrganizationFromRoute();
-
   return (
     <Routes>
       <Route element={<AuthenticatedLayoutTwoColumns />}>
@@ -72,6 +70,10 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
           path={Paths.AssetReportsStops}
           element={<AssetReportsTripStopsPage />}
         />
+        <Route
+          path={Paths.AssetReportsWorkingHours}
+          element={<AssetReportsWorkingHoursPage />}
+        />
         <Route path={Paths.AssetTrips} element={<AssetTripsPage />} />
         <Route
           path={Paths.OrganizationLive}
@@ -82,8 +84,20 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
           element={<OrganizationDashboardPage />}
         />
         <Route
-          path={Paths.OrganizationReports}
-          element={<OrganizationReportsPage />}
+          path={Paths.OrganizationReportsDistance}
+          element={<OrganizationReportsDistancePage />}
+        />
+        <Route
+          path={Paths.OrganizationReportsFuelConsumption}
+          element={<OrganizationReportsFuelConsumptionPage />}
+        />
+        <Route
+          path={Paths.AssetReportsDistance}
+          element={<AssetReportsDistancePage />}
+        />
+        <Route
+          path={Paths.AssetReportsFuelConsumption}
+          element={<AssetReportsFuelConsumptionPage />}
         />
         <Route
           path={Paths.OrganizationTeams}
@@ -99,6 +113,10 @@ export function AuthenticatedRoutes(props: AuthenticatedRoutesProps) {
         <Route
           path={Paths.OrganizationSettings}
           element={<OrganizationSettingsGeneralPage />}
+        />
+        <Route
+          path={Paths.OrganizationSettingsWorkSchedule}
+          element={<OrganizationSettingsWorkSchedulePage />}
         />
       </Route>
       <Route>

@@ -10,15 +10,16 @@ export function useCreateTeamUserMutation() {
 
   const mutation = useTeamsUsersCreate({
     mutation: {
-      onSuccess: (_, variables) =>
-        Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getTeamsGetQueryKey(variables.teamId)
           }),
           queryClient.invalidateQueries({
             queryKey: getTeamsUsersListQueryKey(variables.teamId)
           })
-        ])
+        ]);
+      }
     }
   });
 
