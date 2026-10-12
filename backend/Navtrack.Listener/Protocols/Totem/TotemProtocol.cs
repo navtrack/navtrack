@@ -12,11 +12,11 @@ public class TotemProtocol : BaseProtocol
     public override byte[] MessageStart => [0x24, 0x24];
     public override int? GetMessageLength(byte[] buffer, int bytesReadCount)
     {
-        if (buffer.Length >= 6)
+        if (bytesReadCount >= 6)
         {
-            int? headerIndex = buffer.GetStartIndex(MessageStart);
+            int? headerIndex = buffer[..bytesReadCount].GetStartIndex(MessageStart);
 
-            if (headerIndex.HasValue)
+            if (headerIndex.HasValue && bytesReadCount >= headerIndex.Value + 6)
             {
                 int lengthStartIndex = headerIndex.Value + 2; // 2 = header
                 int lengthEndIndex = lengthStartIndex + 4; // 4 = length 

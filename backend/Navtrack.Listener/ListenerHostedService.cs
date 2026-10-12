@@ -10,22 +10,29 @@ using Navtrack.Shared.Library.DI;
 namespace Navtrack.Listener;
 
 [Service(typeof(IHostedService), ServiceLifetime.Singleton)]
-public class ListenerHostedService(IProtocolListener protocolListener, IEnumerable<IProtocol> protocols) : IHostedService
+public class ListenerHostedService(IProtocolListener protocolListener, IEnumerable<IProtocol> protocols) : BackgroundService
 {
-    public async Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         List<IProtocol> orderedProtocols = protocols.OrderBy(x => x.Port).ToList();
 
-        foreach (IProtocol protocol in orderedProtocols)
+        if (orderedProtocols.Count == 0)
         {
-            _ = protocolListener.Start(protocol, cancellationToken);
+            return;
         }
 
-        await Task.Delay(Timeout.Infinite, cancellationToken);
-    }
+        using CancellationTokenSource cancellation = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
+        List<Task> listeners = orderedProtocols.Select(protocol => protocolListener.Start(protocol, cancellation.Token)).ToList();
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
+        try
+        {
+            Task completed = await Task.WhenAny(listeners);
+            await completed;
+        }
+        finally
+        {
+            await cancellation.CancelAsync();
+            await Task.WhenAll(listeners);
+        }
     }
 }

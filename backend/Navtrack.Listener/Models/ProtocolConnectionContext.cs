@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Navtrack.Listener.Server;
 
@@ -15,6 +16,11 @@ public class ProtocolConnectionContext(INetworkStreamWrapper networkStream, IPro
 
     public void SetDevice(string serialNumber)
     {
+        if (serialNumber.Contains('\0'))
+        {
+            throw new InvalidDataException("The device serial number contains a NUL character.");
+        }
+
         if (!string.IsNullOrEmpty(serialNumber) && Device == null)
         {
             Device = new Device(serialNumber);

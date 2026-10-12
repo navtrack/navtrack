@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Navtrack.Listener.Server;
@@ -35,6 +37,11 @@ public class NetworkStreamWrapper(TcpClientAdapter tcpClient) : INetworkStreamWr
         {
             return 0;
         }
+    }
+
+    public ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken)
+    {
+        return networkStream.ReadAsync(buffer, cancellationToken);
     }
 
     public void WriteByte(byte value)

@@ -16,7 +16,7 @@ public class Program
         HostApplicationBuilder hostApplicationBuilder = Host.CreateApplicationBuilder();
 
         DbContextUtils.AddDbContext<NavtrackDbContext>(hostApplicationBuilder.Services,
-            hostApplicationBuilder.Configuration);
+            hostApplicationBuilder.Configuration, enableRetryOnFailure: true);
 
         hostApplicationBuilder.Services.AddCustomServices<Program>();
 

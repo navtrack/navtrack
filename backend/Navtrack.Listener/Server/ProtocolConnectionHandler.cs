@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,62 +19,81 @@ public class ProtocolConnectionHandler(
     public async Task HandleConnection(TcpClientAdapter tcpClient, IProtocol protocol,
         CancellationToken cancellationToken)
     {
-        ProtocolConnectionContext protocolConnectionContext =
+        await using ProtocolConnectionContext protocolConnectionContext =
             await protocolConnectionContextFactory.GetConnectionContext(protocol, tcpClient);
 
         logger.LogDebug("{Protocol}: connected {EndPoint}", protocolConnectionContext.Protocol,
             protocolConnectionContext.NetworkStream.RemoteEndPoint);
 
-        byte[] buffer = new byte[ServerVariables.BufferLength];
-        int length;
-
-        do
+        try
         {
-            length = ReadMessage(protocolConnectionContext.NetworkStream, buffer, protocolConnectionContext.Protocol,
-                cancellationToken);
+            byte[] buffer = new byte[ServerVariables.BufferLength];
+            int length;
 
-            if (length > 0)
+            do
             {
-                logger.LogDebug("{ClientProtocol}: received {Length} bytes", protocolConnectionContext.Protocol, length);
+                length = await ReadMessage(protocolConnectionContext.NetworkStream, buffer, protocolConnectionContext.Protocol,
+                    cancellationToken);
 
-                int startIndex = GetStartIndex(buffer, length, protocolConnectionContext.Protocol);
+                if (length > 0)
+                {
+                    logger.LogDebug("{ClientProtocol}: received {Length} bytes", protocolConnectionContext.Protocol, length);
 
-                await handler.HandleMessage(protocolConnectionContext, protocolConnectionContext.NetworkStream,
-                    buffer[startIndex..length]);
-            }
-        } while (!cancellationToken.IsCancellationRequested && length > 0 && protocolConnectionContext.NetworkStream.CanRead);
+                    int startIndex = GetStartIndex(buffer, length, protocolConnectionContext.Protocol);
+
+                    await handler.HandleMessage(protocolConnectionContext, protocolConnectionContext.NetworkStream,
+                        buffer[startIndex..length]);
+                }
+            } while (!cancellationToken.IsCancellationRequested && length > 0 && protocolConnectionContext.NetworkStream.CanRead);
+        }
+        catch (InvalidDataException exception)
+        {
+            logger.LogWarning("{Protocol}: rejected packet from {EndPoint}: {Reason}", protocolConnectionContext.Protocol,
+                protocolConnectionContext.NetworkStream.RemoteEndPoint, exception.Message);
+        }
 
         logger.LogDebug("{ClientProtocol}: disconnected {EndPoint}", protocolConnectionContext.Protocol,
             protocolConnectionContext.NetworkStream.RemoteEndPoint);
-
-        await protocolConnectionContext.DisposeAsync();
     }
 
-    private static int ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
+    private static async Task<int> ReadMessage(INetworkStreamWrapper networkStream, byte[] buffer, IProtocol protocol,
         CancellationToken cancellationToken)
     {
         int totalBytesReadCount = 0;
         bool readOneByte;
         int? messageLength = null;
+        byte[] oneByteBuffer = new byte[1];
 
         do
         {
-            byte[] oneByteBuffer = new byte[1];
-
-            readOneByte = networkStream.Read(oneByteBuffer, 0, 1) > 0;
+            readOneByte = await networkStream.ReadAsync(oneByteBuffer, cancellationToken) > 0;
 
             if (readOneByte)
             {
                 buffer[totalBytesReadCount++] = oneByteBuffer[0];
 
                 messageLength ??= protocol.GetMessageLength(buffer, totalBytesReadCount);
+
+                if (messageLength.HasValue && (messageLength < totalBytesReadCount || messageLength > buffer.Length))
+                {
+                    throw new InvalidDataException("The declared packet length is invalid or exceeds the buffer size.");
+                }
             }
         } while (!cancellationToken.IsCancellationRequested &&
-                 networkStream is { CanRead: true, DataAvailable: true } &&
+                 networkStream.CanRead &&
+                 (protocol.HasMessageLength || messageLength.HasValue || networkStream.DataAvailable) &&
                  readOneByte &&
                  totalBytesReadCount < ServerVariables.BufferLength &&
                  (!messageLength.HasValue || totalBytesReadCount < messageLength) &&
                  !ReachedEnd(buffer, totalBytesReadCount, protocol));
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if ((messageLength.HasValue && totalBytesReadCount != messageLength) ||
+            (protocol.HasMessageLength && !messageLength.HasValue && totalBytesReadCount > 0))
+        {
+            throw new InvalidDataException("The connection ended before a complete packet was received.");
+        }
 
         return totalBytesReadCount;
     }
@@ -82,7 +102,7 @@ public class ProtocolConnectionHandler(
     {
         if (protocol.MessageStart.Length > 0)
         {
-            for (int i = 0; i < length - protocol.MessageStart.Length; i++)
+            for (int i = 0; i <= length - protocol.MessageStart.Length; i++)
             {
                 int endIndex = i + protocol.MessageStart.Length;
 
@@ -102,7 +122,7 @@ public class ProtocolConnectionHandler(
         {
             int startIndex = bytesReadCount - bytes.Length;
 
-            return startIndex > 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
+            return startIndex >= 0 && bytes.IsEqual(buffer[startIndex..bytesReadCount]);
         });
     }
 }

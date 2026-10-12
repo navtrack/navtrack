@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -144,6 +145,9 @@ public class ProtocolTester<TProtocol, TMessageHandler> : IProtocolTester
         mock
             .Setup(x => x.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns<byte[], int, int>((x, y, z) => sendStream.Read(x, y, z));
+        mock
+            .Setup(x => x.ReadAsync(It.IsAny<Memory<byte>>(), It.IsAny<CancellationToken>()))
+            .Returns<Memory<byte>, CancellationToken>((buffer, token) => ValueTask.FromResult(sendStream.Read(buffer.Span)));
         mock
             .Setup(x => x.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns<byte[], int, int>((x, y, z) => sendStream.Read(x, y, z));

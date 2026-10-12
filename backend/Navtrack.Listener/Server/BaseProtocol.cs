@@ -10,6 +10,7 @@ public abstract class BaseProtocol : IProtocol
     public virtual byte[] MessageStart => [];
     public virtual IEnumerable<byte[]> MessageEnd => new List<byte[]> { Array.Empty<byte>() };
     public virtual string SplitMessageBy => Empty;
+    public virtual bool HasMessageLength => false;
 
     public virtual int? GetMessageLength(byte[] buffer, int bytesReadCount)
     {

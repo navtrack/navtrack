@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Navtrack.Database.Model.Devices;
 using Navtrack.Listener.Helpers;
@@ -127,7 +128,7 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         int min = input.DataMessage.ByteReader.GetOne();
         int sec = input.DataMessage.ByteReader.GetOne();
 
-        return new DateTime(2000 + year, month, day, hour, min, sec);
+        return CreateDateTime(2000 + year, month, day, hour, min, sec);
     }
 
     private static DateTime GetDateTimeV2(MessageInput input)
@@ -135,7 +136,18 @@ public class AutofonMessageHandler : BaseMessageHandler<AutofonProtocol>
         int time = input.DataMessage.ByteReader.GetMediumIntLe();
         int date = input.DataMessage.ByteReader.GetMediumIntLe();
 
-        return new DateTime(2000 + date % 100, date / 100 % 100, date / 10000, time / 10000,
+        return CreateDateTime(2000 + date % 100, date / 100 % 100, date / 10000, time / 10000,
             time / 100 % 100, time % 100);
+    }
+
+    private static DateTime CreateDateTime(int year, int month, int day, int hour, int minute, int second)
+    {
+        if (month is < 1 or > 12 || day < 1 || day > DateTime.DaysInMonth(year, month) ||
+            hour is < 0 or > 23 || minute is < 0 or > 59 || second is < 0 or > 59)
+        {
+            throw new InvalidDataException("The Autofon packet contains an invalid date or time.");
+        }
+
+        return new DateTime(year, month, day, hour, minute, second);
     }
 }

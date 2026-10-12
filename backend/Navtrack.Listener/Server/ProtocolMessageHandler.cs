@@ -26,7 +26,8 @@ public class ProtocolMessageHandler(
     public async Task HandleMessage(ProtocolConnectionContext connectionContext, INetworkStreamWrapper networkStream,
         byte[] bytes)
     {
-        ICustomMessageHandler customMessageHandler = GetMessageHandler(connectionContext.Protocol);
+        await using AsyncServiceScope serviceScope = provider.CreateAsyncScope();
+        ICustomMessageHandler customMessageHandler = GetMessageHandler(serviceScope.ServiceProvider, connectionContext.Protocol);
 
         MessageInput messageInput = new()
         {
@@ -98,13 +99,12 @@ public class ProtocolMessageHandler(
         }
     }
 
-    private ICustomMessageHandler GetMessageHandler(IProtocol protocol)
+    private static ICustomMessageHandler GetMessageHandler(IServiceProvider serviceProvider, IProtocol protocol)
     {
         Type type = typeof(ICustomMessageHandler<>).MakeGenericType(protocol.GetType());
 
-        IServiceScope serviceScope = provider.CreateScope();
         ICustomMessageHandler? customMessageHandler =
-            (ICustomMessageHandler?)serviceScope.ServiceProvider.GetService(type);
+            (ICustomMessageHandler?)serviceProvider.GetService(type);
 
         if (customMessageHandler == null)
         {

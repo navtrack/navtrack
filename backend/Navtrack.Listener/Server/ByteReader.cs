@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Navtrack.Listener.Server;
@@ -112,6 +113,7 @@ public class ByteReader(byte[] bytes, string[] hex)
 
     private byte[] GetNext(int i, bool skipOne, bool count = true, bool reverse = false)
     {
+        EnsureAvailable(i);
         int endIndex = Index + i;
 
         byte[] sub = bytes[Index..endIndex];
@@ -133,6 +135,7 @@ public class ByteReader(byte[] bytes, string[] hex)
     {
         if (i > 0)
         {
+            EnsureAvailable(i);
             Index += i;
         }
 
@@ -142,6 +145,11 @@ public class ByteReader(byte[] bytes, string[] hex)
     public byte[] GetUntil(byte b, int? extra = null)
     {
         int newIndex = Array.IndexOf(bytes.Skip(Index).ToArray(), b);
+
+        if (newIndex < 0)
+        {
+            throw new InvalidDataException("The packet delimiter was not found.");
+        }
 
         if (extra.HasValue)
         {
@@ -172,6 +180,7 @@ public class ByteReader(byte[] bytes, string[] hex)
 
     public string[] GetHexStringArray(int i)
     {
+        EnsureAvailable(i);
         int endIndex = Index + i;
 
         string[] sub = hex[Index..endIndex];
@@ -179,6 +188,14 @@ public class ByteReader(byte[] bytes, string[] hex)
         Index = Index + i;
 
         return sub;
+    }
+
+    private void EnsureAvailable(int count)
+    {
+        if (Index < 0 || Index > bytes.Length || count < 0 || count > bytes.Length - Index)
+        {
+            throw new InvalidDataException("The packet does not contain enough bytes for the requested field.");
+        }
     }
     
     
