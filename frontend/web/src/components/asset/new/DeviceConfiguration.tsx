@@ -19,7 +19,7 @@ export function DeviceConfiguration(props: DeviceConfigurationProps) {
             <td
               className="border border-gray-200 bg-gray-100 p-2 text-xs font-medium text-gray-700"
               style={{ width: "120px" }}>
-              <FormattedMessage id="generic.hostname" />
+              <FormattedMessage id="hostname" />
             </td>
             <td className="border border-gray-200 p-2 font-medium">
               {import.meta.env.VITE_LISTENER_HOSTNAME}
@@ -27,7 +27,7 @@ export function DeviceConfiguration(props: DeviceConfigurationProps) {
           </tr>
           <tr>
             <td className="border border-gray-200 bg-gray-100 p-2 text-xs font-medium text-gray-700">
-              <FormattedMessage id="generic.ip-address" />
+              <FormattedMessage id="ip-address" />
             </td>
             <td className="border border-gray-200 p-2 font-medium">
               {import.meta.env.VITE_LISTENER_IP}
@@ -35,7 +35,7 @@ export function DeviceConfiguration(props: DeviceConfigurationProps) {
           </tr>
           <tr>
             <td className="border border-gray-200 bg-gray-100 p-2 text-xs font-medium text-gray-700">
-              <FormattedMessage id="generic.port" />
+              <FormattedMessage id="port" />
             </td>
             <td className="border border-gray-200 p-2 font-medium">
               {props.deviceType ? (

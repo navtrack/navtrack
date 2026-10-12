@@ -30,9 +30,10 @@ export function useAssetTripsStopsQueries(props: AssetTripsQueriesProps) {
   const tripsQuery = useAssetTripsQueries(props);
 
   const tripStops = useMemo(() => {
-    const ordered = tripsQuery.items.sort((a, b) =>
-      a.startPosition.date < b.startPosition.date ? -1 : 1
-    );
+    const ordered =
+      tripsQuery.allTrips?.sort((a, b) =>
+        a.startPosition.date < b.startPosition.date ? -1 : 1
+      ) ?? [];
 
     const stops: TripStopModel[] = [];
 
@@ -53,7 +54,7 @@ export function useAssetTripsStopsQueries(props: AssetTripsQueriesProps) {
     });
 
     return stops.toReversed();
-  }, [tripsQuery.items]);
+  }, [tripsQuery.allTrips]);
 
   return tripStops;
 }

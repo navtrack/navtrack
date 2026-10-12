@@ -1,5 +1,5 @@
 import { Heading } from "../../ui/heading/Heading";
-import { ITableColumn } from "../../ui/table/useTable";
+import { ITableColumn, useTable } from "../../ui/table/useTable";
 import { TeamUserModel } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
@@ -10,11 +10,12 @@ import { DeleteModal } from "../../ui/modal/DeleteModal";
 import { useNotification } from "../../ui/notification/useNotification";
 import { FormattedMessage } from "react-intl";
 import { useDeleteTeamUserMutation } from "@navtrack/shared/hooks/queries/teams/useDeleteTeamUserMutation";
-import { getError } from "@navtrack/shared/utils/api";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 import { CreateTeamUserModal } from "./CreateTeamUserModal";
 import { UpdateTeamUserModal } from "./UpdateTeamUserModal";
+import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function TeamUsersPage() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ export function TeamUsersPage() {
 
   const columns: ITableColumn<TeamUserModel>[] = [
     {
-      labelId: "generic.email",
+      labelId: "email",
       row: (user) => (
         <Link
           to={generatePath(Paths.TeamUsers, { id: user.userId })}
@@ -35,15 +36,15 @@ export function TeamUsersPage() {
         </Link>
       )
     },
-    { labelId: "generic.role", row: (user) => user.userRole },
+    { labelId: "role", row: (user) => user.userRole },
     {
-      labelId: "generic.added-on",
+      labelId: "added-on",
       row: (user) => show.date(user.createdDate)
     },
     {
       rowClassName: "flex justify-end space-x-2",
       row: (user) => (
-        <>
+        <Authorize teamUserRole="Owner">
           <UpdateTeamUserModal user={user} teamId={team.data?.id} />
           <DeleteModal
             isLoading={deleteUser.isPending}
@@ -62,11 +63,9 @@ export function TeamUsersPage() {
                       });
                     },
                     onError: (error) => {
-                      const model = getError(error);
-
                       showNotification({
                         type: "error",
-                        description: `${model.message}`
+                        description: formatErrorMessage(error.title)
                       });
                     }
                   }
@@ -81,20 +80,23 @@ export function TeamUsersPage() {
               }}
             />
           </DeleteModal>
-        </>
+        </Authorize>
       )
     }
   ];
+  const table = useTable({ rows: users.data?.items, columns });
 
   return (
     <TeamLayout team={team.data} isLoading={team.isLoading}>
       <div className="flex justify-between">
         <Heading type="h1">
-          <FormattedMessage id="generic.manage-users" />
+          <FormattedMessage id="manage-users" />
         </Heading>
-        <CreateTeamUserModal teamId={id} />
+        <Authorize teamUserRole="Owner">
+          <CreateTeamUserModal teamId={id} />
+        </Authorize>
       </div>
-      <TableV2 rows={users.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </TeamLayout>
   );
 }

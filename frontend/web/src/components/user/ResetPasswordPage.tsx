@@ -62,7 +62,7 @@ export const ResetPasswordPage = () => {
                   <Form className="space-y-4">
                     <FormikTextInput
                       name="password"
-                      label="generic.password"
+                      label="password"
                       type="password"
                       value={values.password}
                       autoComplete="new-password"
@@ -75,7 +75,7 @@ export const ResetPasswordPage = () => {
                     />
                     <FormikTextInput
                       name="confirmPassword"
-                      label="generic.confirm-password"
+                      label="confirm-password"
                       className="pl-8"
                       type="password"
                       autoComplete="new-password"

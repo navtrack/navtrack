@@ -16,17 +16,15 @@ export function useDeleteOrganizationMutation(
 
   const mutation = useOrganizationsDelete({
     mutation: {
-      onSuccess: (_, variables) => {
-        props.onSuccess?.();
-
-        return Promise.all([
-          queryClient.refetchQueries({
+      onSuccess: async () => {
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: getUserGetQueryKey() }),
+          queryClient.invalidateQueries({
             queryKey: getOrganizationsListQueryKey()
-          }),
-          queryClient.refetchQueries({
-            queryKey: getUserGetQueryKey()
           })
         ]);
+
+        props.onSuccess?.();
       }
     }
   });

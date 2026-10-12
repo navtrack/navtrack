@@ -11,7 +11,7 @@ import { InputLabel } from "../InputLabel";
 export type TextInputProps = {
   label?: string;
   placeholder?: string;
-  type?: "text" | "password" | "number";
+  type?: "text" | "password" | "number" | "time";
   name?: string;
   value?: string | number;
   disabled?: boolean;

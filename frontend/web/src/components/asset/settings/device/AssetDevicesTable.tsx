@@ -5,7 +5,7 @@ import { useNotification } from "../../../ui/notification/useNotification";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAssetsDevicesGetListQueryKey } from "@navtrack/shared/api";
 import { useCurrentAsset } from "@navtrack/shared/hooks/current/useCurrentAsset";
-import { ITableColumn } from "../../../ui/table/useTable";
+import { ITableColumn, useTable } from "../../../ui/table/useTable";
 import { TableV1 } from "../../../ui/table/TableV1";
 import { DeleteModal } from "../../../ui/modal/DeleteModal";
 
@@ -22,30 +22,30 @@ export function AssetDevicesTable(props: AssetDevicesTableProps) {
 
   const columns: ITableColumn<DeviceModel>[] = [
     {
-      labelId: "generic.device-type",
+      labelId: "device-type",
       row: (device) => device.deviceType.displayName
     },
     {
-      labelId: "generic.serial-number",
+      labelId: "serial-number",
       row: (device) => device.serialNumber
     },
     {
-      labelId: "generic.status",
+      labelId: "status",
       row: (device) => (
         <>
           {device.active ? (
             <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-0.5 text-sm font-medium text-green-800">
-              <FormattedMessage id="generic.active" />
+              <FormattedMessage id="active" />
             </span>
           ) : (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium text-gray-800">
-              <FormattedMessage id="generic.inactive" />
+              <FormattedMessage id="inactive" />
             </span>
           )}
         </>
       )
     },
-    { labelId: "generic.positions", row: (device) => device.positions },
+    { labelId: "positions", row: (device) => device.positions },
     {
       rowClassName: "flex justify-end",
       row: (device) => (
@@ -105,5 +105,7 @@ export function AssetDevicesTable(props: AssetDevicesTableProps) {
     }
   ];
 
-  return <TableV1 rows={props.rows} columns={columns} />;
+  const table = useTable({ rows: props.rows, columns });
+
+  return <TableV1 {...table.props} />;
 }

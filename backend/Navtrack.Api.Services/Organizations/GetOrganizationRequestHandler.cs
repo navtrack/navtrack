@@ -13,18 +13,13 @@ namespace Navtrack.Api.Services.Organizations;
 public class GetOrganizationRequestHandler(
     IOrganizationRepository organizationRepository) : BaseRequestHandler<GetOrganizationRequest, OrganizationModel>
 {
-    private OrganizationEntity? organization;
-    
-    public override async Task Validate(RequestValidationContext<GetOrganizationRequest> context)
+    public override async Task<OrganizationModel> Handle(GetOrganizationRequest request)
     {
-        organization = await organizationRepository.GetById(context.Request.OrganizationId);
+        OrganizationEntity? organization = await organizationRepository.GetById(request.OrganizationId);
         organization.Return404IfNull();
-    }
-    
-    public override Task<OrganizationModel> Handle(GetOrganizationRequest request)
-    {
-        OrganizationModel result = OrganizationModelMapper.Map(organization!);
         
-        return Task.FromResult(result);
+        OrganizationModel result = OrganizationModelMapper.Map(organization);
+        
+        return result;
     }
 }

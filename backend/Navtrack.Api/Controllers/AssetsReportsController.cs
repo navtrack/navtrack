@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,59 +13,20 @@ using NSwag.Annotations;
 namespace Navtrack.Api.Controllers;
 
 [ApiController]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+[Authorize]
 [OpenApiTag(ControllerTags.AssetsReports)]
 public class AssetsReportsController(IRequestHandler requestHandler)
-    : ControllerBase
+    : NavtrackControllerBase(requestHandler)
 {
     [HttpGet(ApiPaths.AssetReportsDistance)]
     [ProducesResponseType(typeof(DistanceReportModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<DistanceReportModel> GetDistanceReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilterModel filter)
-    {
-        DistanceReportModel result = await requestHandler.Handle<GetDistanceReportRequest, DistanceReportModel>(
-            new GetDistanceReportRequest
-            {
-                AssetId = assetId,
-                Model = filter
-            });
-
-        return result;
-    }
-    
-    [HttpGet(ApiPaths.AssetReportsFuelConsumption)]
-    [ProducesResponseType(typeof(FuelConsumptionReportModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<FuelConsumptionReportModel> GetFuelConsumptionReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilterModel filter)
-    {
-        FuelConsumptionReportModel result = await requestHandler.Handle<GetFuelConsumptionReportRequest, FuelConsumptionReportModel>(
-            new GetFuelConsumptionReportRequest
-            {
-                AssetId = assetId,
-                Model = filter
-            });
-
-        return result;
-    }
-    
-    [HttpGet(ApiPaths.AssetReportsTrips)]
-    [ProducesResponseType(typeof(TripReportModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<TripReportModel> GetTripReport([FromRoute] string assetId,
-        [FromQuery] BaseReportFilterModel filter)
-    {
-        TripReportModel result = await requestHandler.Handle<GetTripReportRequest, TripReportModel>(
-            new GetTripReportRequest
-            {
-                AssetId = assetId,
-                Model = filter
-            });
-
-        return result;
-    }
+    [NavtrackAuthorize(AssetUserRole.Viewer)]
+    public Task<DistanceReportModel> GetDistanceReport([FromRoute] string assetId,
+        [FromQuery] BaseReportFilterModel filter) =>
+        Query<GetDistanceReportRequest, DistanceReportModel>(new GetDistanceReportRequest
+        {
+            AssetId = assetId,
+            Model = filter
+        });
 }

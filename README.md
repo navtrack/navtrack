@@ -15,7 +15,7 @@
 
 #### Requirements
 
-- .NET 9 SDK (https://dotnet.microsoft.com/download/dotnet/9.0)
+- .NET 10 SDK (https://dotnet.microsoft.com/download/dotnet/10.0)
 - Node.js (https://nodejs.org/)
 - Docker (to run PostgreSQL) (https://docs.docker.com/get-docker/)
 - Optional: Rider or Visual Studio

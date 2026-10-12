@@ -8,7 +8,6 @@ import type { LatLong } from "./latLong";
 
 export interface PositionDataModel {
   coordinates: LatLong;
-  /** @minLength 1 */
   date: string;
   speed?: number;
   heading?: number;

@@ -4,6 +4,6 @@ namespace Navtrack.Api.Model.Account;
 
 public class ForgotPasswordModel
 {
-    [Required]
+    [Required(ErrorMessage = "email.required")]
     public string Email { get; set; }
 }

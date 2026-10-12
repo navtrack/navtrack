@@ -1,5 +1,5 @@
 import { Heading } from "../../ui/heading/Heading";
-import { ITableColumn } from "../../ui/table/useTable";
+import { ITableColumn, useTable } from "../../ui/table/useTable";
 import { TeamAssetModel } from "@navtrack/shared/api/model";
 import { generatePath, Link, useParams } from "react-router-dom";
 import { Paths } from "../../../app/Paths";
@@ -8,12 +8,13 @@ import { TeamLayout } from "../TeamLayout";
 import { DeleteModal } from "../../ui/modal/DeleteModal";
 import { useNotification } from "../../ui/notification/useNotification";
 import { FormattedMessage } from "react-intl";
-import { getError } from "@navtrack/shared/utils/api";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
 import { useTeamQuery } from "@navtrack/shared/hooks/queries/teams/useTeamQuery";
 import { CreateTeamAssetModal } from "./CreateTeamAssetModal";
 import { useTeamAssetsQuery } from "@navtrack/shared/hooks/queries/teams/useTeamAssetsQuery";
 import { useDeleteTeamAssetMutation } from "@navtrack/shared/hooks/queries/teams/useDeleteTeamAssetMutation";
+import { Authorize } from "@navtrack/shared/components/authorize/Authorize";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function TeamAssetsPage() {
   const { id } = useParams();
@@ -25,7 +26,7 @@ export function TeamAssetsPage() {
 
   const columns: ITableColumn<TeamAssetModel>[] = [
     {
-      labelId: "generic.name",
+      labelId: "name",
       row: (asset) => (
         <Link
           to={generatePath(Paths.TeamUsers, { id: asset.assetId })}
@@ -35,13 +36,13 @@ export function TeamAssetsPage() {
       )
     },
     {
-      labelId: "generic.added-on",
+      labelId: "added-on",
       row: (user) => show.date(user.createdDate)
     },
     {
       rowClassName: "flex justify-end space-x-2",
       row: (asset) => (
-        <>
+        <Authorize teamUserRole="Owner">
           <DeleteModal
             isLoading={deleteAsset.isPending}
             onConfirm={(close) => {
@@ -59,11 +60,9 @@ export function TeamAssetsPage() {
                       });
                     },
                     onError: (error) => {
-                      const model = getError(error);
-
                       showNotification({
                         type: "error",
-                        description: `${model.message}`
+                        description: formatErrorMessage(error.title)
                       });
                     }
                   }
@@ -78,10 +77,11 @@ export function TeamAssetsPage() {
               }}
             />
           </DeleteModal>
-        </>
+        </Authorize>
       )
     }
   ];
+  const table = useTable({ rows: assets.data?.items, columns });
 
   return (
     <TeamLayout team={team.data} isLoading={team.isLoading}>
@@ -89,9 +89,11 @@ export function TeamAssetsPage() {
         <Heading type="h1">
           <FormattedMessage id="teams.assets.title" />
         </Heading>
-        <CreateTeamAssetModal teamId={id} />
+        <Authorize teamUserRole="Owner">
+          <CreateTeamAssetModal teamId={id} />
+        </Authorize>
       </div>
-      <TableV2 rows={assets.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </TeamLayout>
   );
 }

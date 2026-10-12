@@ -42,7 +42,7 @@ export function MapFollowControl(props: MapFollowControlProps) {
         )}>
         <Icon icon={faLocationArrow} className="mr-1" />
         <FormattedMessage
-          id={follow ? "generic.follow-on" : "generic.follow-off"}
+          id={follow ? "follow-on" : "follow-off"}
         />
       </div>
       {follow ? <MapCenter position={props.position} /> : null}

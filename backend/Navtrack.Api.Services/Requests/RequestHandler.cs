@@ -1,73 +1,62 @@
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Navtrack.Api.Services.Common.Exceptions;
 using Navtrack.Shared.Library.DI;
-using Navtrack.Shared.Library.Events;
 
 namespace Navtrack.Api.Services.Requests;
 
 [Service(typeof(IRequestHandler))]
-public class RequestHandler(IServiceProvider serviceProvider, IPost post) : IRequestHandler
+public class RequestHandler(IServiceProvider serviceProvider, DbContext dbContext) : IRequestHandler
 {
-    public async Task Handle<TRequest>(TRequest request)
+    public Task Handle<TRequest>(TRequest request)
     {
         IRequestHandler<TRequest> handler = serviceProvider.GetRequiredService<IRequestHandler<TRequest>>();
 
-        ValidationApiException validationException = new();
-
-        await handler.Validate(new RequestValidationContext<TRequest>
-        {
-            Request = request,
-            ValidationException = validationException
-        });
-
-        validationException.ThrowIfInvalid();
-
-        await handler.Handle(request);
-
-        IEvent? @event = handler.GetEvent(request);
-
-        await SendEvent(@event);
+        return ExecuteInTransaction(() => handler.Handle(request));
     }
 
-    public async Task<TResult> Handle<TRequest, TResult>(TRequest request)
+    public Task<TResult> Handle<TRequest, TResult>(TRequest request)
     {
         IRequestHandler<TRequest, TResult> handler =
             serviceProvider.GetRequiredService<IRequestHandler<TRequest, TResult>>();
 
-        ValidationApiException validationException = new();
-
-        await handler.Validate(new RequestValidationContext<TRequest>
-        {
-            Request = request,
-            ValidationException = validationException
-        });
-
-        validationException.ThrowIfInvalid();
-
-        TResult result = await handler.Handle(request);
-
-        IEvent? @event = handler.GetEvent(request, result);
-
-        await SendEvent(@event);
-
-        return result;
+        return ExecuteInTransaction(() => handler.Handle(request));
     }
 
-    private async Task SendEvent(IEvent? @event)
+    private Task ExecuteInTransaction(Func<Task> operation)
     {
-        if (@event != null)
+        return ExecuteInTransaction(async () =>
         {
-            Type eventType = @event.GetType();
+            await operation();
 
-            MethodInfo? sendMethod = typeof(IPost).GetMethod(nameof(IPost.Send))?.MakeGenericMethod(eventType);
+            return true;
+        });
+    }
 
-            if (sendMethod != null)
-            {
-                await (Task)sendMethod.Invoke(post, [@event]);
-            }
+    private async Task<TResult> ExecuteInTransaction<TResult>(Func<Task<TResult>> operation)
+    {
+        // Nested handlers share the transaction owned by the outer request.
+        if (dbContext.Database.CurrentTransaction != null)
+        {
+            return await operation();
+        }
+
+        await using IDbContextTransaction transaction = await dbContext.Database.BeginTransactionAsync();
+
+        try
+        {
+            TResult result = await operation();
+            await transaction.CommitAsync();
+
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+
+            throw;
         }
     }
 }

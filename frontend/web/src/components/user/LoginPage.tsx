@@ -51,7 +51,7 @@ export function LoginPage() {
             <Form className="space-y-3">
               <FormikTextInput
                 name="email"
-                label="generic.email"
+                label="email"
                 value={values.email}
                 autoComplete="username"
                 className="pl-8"
@@ -63,7 +63,7 @@ export function LoginPage() {
               />
               <FormikTextInput
                 name="password"
-                label="generic.password"
+                label="password"
                 type="password"
                 value={values.password}
                 autoComplete="current-password"
@@ -81,7 +81,7 @@ export function LoginPage() {
                   size="lg"
                   isLoading={authentication.isLoading}
                   full>
-                  <FormattedMessage id="generic.log-in" />
+                  <FormattedMessage id="log-in" />
                 </Button>
               </div>
             </Form>

@@ -33,8 +33,8 @@ export function DeleteOrganizationModal() {
   const validationSchema: ObjectSchema<DeleteOrganizationFormValues> = object()
     .shape({
       name: string()
-        .oneOf([`${currentOrganization.data?.name}`], "generic.name.not-match")
-        .required("generic.name.not-match")
+        .oneOf([`${currentOrganization.data?.name}`], "name.not-match")
+        .required("name.not-match")
     })
     .defined();
 

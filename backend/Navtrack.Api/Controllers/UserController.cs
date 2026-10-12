@@ -12,11 +12,6 @@ public class UserController(IRequestHandler requestHandler) : UserControllerBase
 {
     [HttpGet(ApiPaths.User)]
     [ProducesResponseType(typeof(CurrentUserModel), StatusCodes.Status200OK)]
-    public async Task<CurrentUserModel> Get()
-    {
-        CurrentUserModel result =
-            await requestHandler.Handle<GetCurrentUserRequest, CurrentUserModel>(new GetCurrentUserRequest());
-
-        return result;
-    }
+    public Task<CurrentUserModel> Get() =>
+        Query<GetCurrentUserRequest, CurrentUserModel>(new GetCurrentUserRequest());
 }

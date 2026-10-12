@@ -1,4 +1,4 @@
-import { useChangePasswordMutation } from "@navtrack/shared/hooks/queries/users/useChangePasswordMutation";
+import { useChangePasswordMutation } from "@navtrack/shared/hooks/queries/account/useChangePasswordMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
@@ -47,19 +47,16 @@ export function useChangePassword() {
 
   const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
     currentPassword: currentUser.data?.authentication?.password
-      ? string().required("settings.password.current-password.required")
+      ? string().required("password.current-password.required")
       : string().optional(),
     password: string()
-      .notOneOf(
-        [ref("currentPassword")],
-        "settings.password.different-password"
-      )
-      .required("generic.password.required")
-      .min(8, "generic.password.requirements.length"),
+      .notOneOf([ref("currentPassword")], "password.different-password")
+      .required("password.required")
+      .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
-      .required("generic.confirm-password.required")
-      .min(8, "generic.password.requirements.length")
+      .oneOf([ref("password")], "confirmPassword.requirements.match")
+      .required("confirmPassword.required")
+      .min(8, "password.requirements.length")
   }).defined();
 
   return {

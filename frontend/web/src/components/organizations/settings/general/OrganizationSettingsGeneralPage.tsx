@@ -9,7 +9,7 @@ import { CardBody } from "../../../ui/card/CardBody";
 import { Heading } from "../../../ui/heading/Heading";
 import { Button } from "../../../ui/button/Button";
 import { object, ObjectSchema, string } from "yup";
-import { useRenameOrganizationMutation } from "@navtrack/shared/hooks/queries/organizations/useRenameOrganizationMutation";
+import { useUpdateOrganizationMutation } from "@navtrack/shared/hooks/queries/organizations/useUpdateOrganizationMutation";
 import { useCallback, useState } from "react";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { DeleteCard } from "../../../ui/card/DeleteCard";
@@ -22,7 +22,7 @@ export type RenameOrganizationFormValues = {
 
 export function OrganizationSettingsGeneralPage() {
   const currentOrganization = useCurrentOrganization();
-  const renameOrganizationMutation = useRenameOrganizationMutation();
+  const renameOrganizationMutation = useUpdateOrganizationMutation();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const submit = useCallback(
@@ -51,7 +51,7 @@ export function OrganizationSettingsGeneralPage() {
   );
 
   const validationSchema: ObjectSchema<RenameOrganizationFormValues> = object({
-    name: string().required("generic.name.required")
+    name: string().required("name.required")
   }).defined();
 
   return (
@@ -74,7 +74,7 @@ export function OrganizationSettingsGeneralPage() {
                   <div className="col-span-7">
                     <FormikTextInput
                       name="name"
-                      label="generic.name"
+                      label="name"
                       loading={currentOrganization.data === undefined}
                       rightAddon={
                         <div className="ml-2 flex items-center">

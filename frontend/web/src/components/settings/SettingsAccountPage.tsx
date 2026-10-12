@@ -4,7 +4,6 @@ import { FormikTextInput } from "../ui/form/text-input/FormikTextInput";
 import { FormattedMessage } from "react-intl";
 import { FormikSelect } from "../ui/form/select/FormikSelect";
 import { useNotification } from "../ui/notification/useNotification";
-import { useUpdateUserMutation } from "@navtrack/shared/hooks/queries/users/useUpdateUserMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { nameOf } from "@navtrack/shared/utils/typescript";
 import { SelectOption } from "../ui/form/select/Select";
@@ -16,19 +15,22 @@ import { Heading } from "../ui/heading/Heading";
 import { CardBody } from "../ui/card/CardBody";
 import { CardFooter } from "../ui/card/CardFooter";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
+import { useUpdateUserMutation } from "@navtrack/shared/hooks/queries/user/useUpdateUserMutation";
+import { DeleteCard } from "../ui/card/DeleteCard";
+import { DeleteAccountModal } from "./DeleteAccountModal";
 
 type AccountSettingsFormValues = {
-  email?: string;
-  units?: UnitsType;
+  email: string;
+  units: UnitsType;
 };
 
 const units: SelectOption[] = [
   {
-    label: "generic.units.metric",
+    label: "units.metric",
     value: `${UnitsType.Metric}`
   },
   {
-    label: "generic.units.imperial",
+    label: "units.imperial",
     value: `${UnitsType.Imperial}`
   }
 ];
@@ -74,8 +76,8 @@ export function SettingsAccountPage() {
         </CardHeader>
         <Formik<AccountSettingsFormValues>
           initialValues={{
-            email: user.data?.email,
-            units: user.data?.units
+            email: user.data?.email ?? "",
+            units: user.data?.units ?? UnitsType.Metric
           }}
           enableReinitialize
           onSubmit={(values, formikHelpers) =>
@@ -88,7 +90,7 @@ export function SettingsAccountPage() {
                   <div className="col-span-3">
                     <FormikTextInput
                       name={nameOf<AccountSettingsFormValues>("email")}
-                      label="generic.email"
+                      label="email"
                       loading={user.isLoading}
                     />
                   </div>
@@ -96,7 +98,7 @@ export function SettingsAccountPage() {
                   <div className="col-span-3">
                     <FormikSelect
                       name={nameOf<AccountSettingsFormValues>("units")}
-                      label="generic.units"
+                      label="units"
                       options={units}
                       loading={user.isLoading}
                     />
@@ -109,13 +111,28 @@ export function SettingsAccountPage() {
                   type="submit"
                   disabled={!user}
                   isLoading={updateUserMutation.isPending}>
-                  <FormattedMessage id="generic.save" />
+                  <FormattedMessage id="save" />
                 </Button>
               </CardFooter>
             </Form>
           )}
         </Formik>
       </Card>
+      <DeleteCard>
+        <CardBody>
+          <div className="">
+            <Heading type="h2">
+              <FormattedMessage id="settings.account.delete.title" />
+            </Heading>
+            <p className="mt-2 text-sm text-gray-500">
+              <FormattedMessage id="settings.account.delete.info" />
+            </p>
+            <div className="mt-4 text-right">
+              <DeleteAccountModal />
+            </div>
+          </div>
+        </CardBody>
+      </DeleteCard>
     </>
   );
 }

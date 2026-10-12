@@ -3,11 +3,11 @@ import { SelectOption } from "../../ui/form/select/Select";
 
 export const teamRoles: SelectOption[] = [
   {
-    label: "generic.member",
+    label: "member",
     value: TeamUserRole.Member
   },
   {
-    label: "generic.owner",
+    label: "owner",
     value: TeamUserRole.Owner
   }
 ];

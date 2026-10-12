@@ -6,8 +6,8 @@ export function useUpdateTeamUserMutation() {
 
   const mutation = useTeamsUsersUpdate({
     mutation: {
-      onSuccess: (_, variables) => {
-        return Promise.all([
+      onSuccess: async (_, variables) => {
+        await Promise.all([
           queryClient.invalidateQueries({
             queryKey: getTeamsUsersListQueryKey(variables.teamId)
           })

@@ -18,10 +18,10 @@ type DashboardItemProps = {
 };
 
 const perivousPeriodLabelIds: Record<AssetStatsPeriod, string> = {
-  [AssetStatsPeriod.Day]: "generic.yesterday",
-  [AssetStatsPeriod.Week]: "generic.last-week",
-  [AssetStatsPeriod.Month]: "generic.last-month",
-  [AssetStatsPeriod.Year]: "generic.last-year"
+  [AssetStatsPeriod.Day]: "yesterday",
+  [AssetStatsPeriod.Week]: "last-week",
+  [AssetStatsPeriod.Month]: "last-month",
+  [AssetStatsPeriod.Year]: "last-year"
 };
 
 export function DashboardItem(props: DashboardItemProps) {

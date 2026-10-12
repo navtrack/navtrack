@@ -4,7 +4,11 @@
  * Navtrack.Api
  * OpenAPI spec version: 1.0.0
  */
+import type { WorkScheduleDayModel } from "./workScheduleDayModel";
 
 export interface UpdateOrganizationModel {
-  name?: string;
+  /** @nullable */
+  name?: string | null;
+  /** @nullable */
+  workSchedules?: WorkScheduleDayModel[] | null;
 }

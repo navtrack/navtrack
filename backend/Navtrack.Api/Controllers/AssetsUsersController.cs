@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,55 +14,41 @@ using NSwag.Annotations;
 namespace Navtrack.Api.Controllers;
 
 [ApiController]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+[Authorize]
 [OpenApiTag(ControllerTags.AssetsUsers)]
-public class AssetsUsersController(IRequestHandler requestHandler) : ControllerBase
+public class AssetsUsersController(IRequestHandler requestHandler) : NavtrackControllerBase(requestHandler)
 {
     [HttpGet(ApiPaths.AssetUsers)]
     [ProducesResponseType(typeof(ListModel<AssetUserModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Owner)]
-    public async Task<ListModel<AssetUserModel>> GetList([FromRoute] string assetId)
-    {
-        ListModel<AssetUserModel> result =
-            await requestHandler.Handle<GetAssetUsersRequest, ListModel<AssetUserModel>>(
-                new GetAssetUsersRequest
-                {
-                    AssetId = assetId
-                });
-
-        return result;
-    }
+    [NavtrackAuthorize(AssetUserRole.Owner)]
+    public Task<ListModel<AssetUserModel>> GetList([FromRoute] string assetId) =>
+        Query<GetAssetUsersRequest, ListModel<AssetUserModel>>(new GetAssetUsersRequest
+        {
+            AssetId = assetId
+        });
 
     [HttpPost(ApiPaths.AssetUsers)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-    [AuthorizeAsset(AssetUserRole.Owner)]
-    public async Task<IActionResult> Create([FromRoute] string assetId, [FromBody] CreateAssetUserModel model)
-    {
-        await requestHandler.Handle(new CreateAssetUserRequest
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [NavtrackAuthorize(AssetUserRole.Owner)]
+    public async Task<IActionResult> Create([FromRoute] string assetId, [FromBody] CreateAssetUserModel model) =>
+        await Command(new CreateAssetUserRequest
         {
             AssetId = assetId,
             Model = model
         });
 
-        return Ok();
-    }
-
     [HttpDelete(ApiPaths.AssetUserById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-    [AuthorizeAsset(AssetUserRole.Owner)]
-    public async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string userId)
-    {
-        await requestHandler.Handle(new DeleteAssetUserRequest
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [NavtrackAuthorize(AssetUserRole.Owner)]
+    public async Task<IActionResult> Delete([FromRoute] string assetId, [FromRoute] string userId) =>
+        await Command(new DeleteAssetUserRequest
         {
             AssetId = assetId,
             UserId = userId
         });
-
-        return Ok();
-    }
 }

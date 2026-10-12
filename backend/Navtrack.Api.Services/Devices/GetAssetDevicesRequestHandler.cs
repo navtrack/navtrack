@@ -23,16 +23,11 @@ public class GetAssetDevicesRequestHandler(
     IDeviceMessageRepository deviceMessageRepository)
     : BaseRequestHandler<GetAssetDevicesRequest, Model.Common.ListModel<DeviceModel>>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<GetAssetDevicesRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-    }
-    
     public override async Task<Model.Common.ListModel<DeviceModel>> Handle(GetAssetDevicesRequest request)
     {
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+
         List<DeviceEntity> devices = await deviceRepository.GetDevicesByAssetId(asset.Id);
         List<DeviceType> deviceTypes = deviceTypeRepository
             .GetDeviceTypes()
@@ -42,7 +37,7 @@ public class GetAssetDevicesRequestHandler(
         Dictionary<Guid, int> locationCount = await deviceMessageRepository
             .GetMessagesCountByDeviceIds(devices.Select(x => x.Id));
 
-        Model.Common.ListModel<DeviceModel> result = DeviceListMapper.Map(devices, deviceTypes, locationCount, asset!);
+        Model.Common.ListModel<DeviceModel> result = DeviceListMapper.Map(devices, deviceTypes, locationCount, asset);
 
         return result;
     }

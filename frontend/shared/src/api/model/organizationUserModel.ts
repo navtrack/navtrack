@@ -12,6 +12,5 @@ export interface OrganizationUserModel {
   userRole: OrganizationUserRole;
   /** @minLength 1 */
   userId: string;
-  /** @minLength 1 */
   createdDate: string;
 }

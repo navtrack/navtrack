@@ -6,10 +6,13 @@
  */
 
 export interface DistanceReportItemModel {
-  /** @minLength 1 */
   date: string;
   distance: number;
   duration: number;
   averageSpeed: number;
   maxSpeed: number;
+  /** @nullable */
+  fuelConsumption?: number | null;
+  /** @nullable */
+  averageFuelConsumption?: number | null;
 }

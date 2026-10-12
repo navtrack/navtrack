@@ -45,7 +45,6 @@ export function Select(props: SelectProps) {
           //placeholder={props.placeholder} TODO
           disabled={props.disabled || props.loading}
           onChange={(e) => {
-            console.log(e.target.value);
             const item = props.options.find((x) => x.value === e.target.value);
             if (item) {
               props.onChange?.(item.value);

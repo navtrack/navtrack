@@ -53,7 +53,7 @@ export function CreateAssetUserModal() {
   return (
     <>
       <Button onClick={() => setOpen(true)} icon={faUserPlus}>
-        <FormattedMessage id="generic.add-user" />
+        <FormattedMessage id="add-user" />
       </Button>
       <Modal
         open={open}
@@ -75,7 +75,7 @@ export function CreateAssetUserModal() {
                     <div className="mt-2 space-y-2">
                       <FormikAutocomplete
                         name={nameOf<CreateAssetUserFormValues>("email")}
-                        label="generic.user"
+                        label="user"
                         placeholder="teams.users.add.search-placeholder"
                         options={organizationsUsersQuery.data?.items.map(
                           (user) => ({
@@ -86,7 +86,7 @@ export function CreateAssetUserModal() {
                       />
                       <FormikSelect
                         name="role"
-                        label="generic.role"
+                        label="role"
                         placeholder="Select a role"
                         options={roles.map((x) => ({
                           value: x.value,
@@ -98,7 +98,7 @@ export function CreateAssetUserModal() {
                 </ModalContent>
                 <ModalActions cancel={() => setOpen(false)}>
                   <Button type="submit" isLoading={loading}>
-                    <FormattedMessage id="generic.save" />
+                    <FormattedMessage id="save" />
                   </Button>
                 </ModalActions>
               </ModalContainer>

@@ -3,16 +3,16 @@ import { CreateOrganizationUserModal } from "./CreateOrganizationUserModal";
 import { useCurrentUserQuery } from "@navtrack/shared/hooks/queries/user/useCurrentUserQuery";
 import { Heading } from "../ui/heading/Heading";
 import { OrganizationUserModel } from "@navtrack/shared/api/model";
-import { getError } from "@navtrack/shared/utils/api";
 import { DeleteModal } from "../ui/modal/DeleteModal";
 import { useNotification } from "../ui/notification/useNotification";
-import { ITableColumn } from "../ui/table/useTable";
+import { ITableColumn, useTable } from "../ui/table/useTable";
 import { UpdateOrganizationUserModal } from "./UpdateOrganizationUserModal";
 import { useDeleteOrganizationUserMutation } from "@navtrack/shared/hooks/queries/organizations/useDeleteOrganizationUserMutation";
 import { TableV2 } from "../ui/table/TableV2";
 import { useCurrentOrganization } from "@navtrack/shared/hooks/current/useCurrentOrganization";
 import { useOrganizationUsersQuery } from "@navtrack/shared/hooks/queries/organizations/useOrganizationUsersQuery";
 import { useShow } from "@navtrack/shared/hooks/util/useShow";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function OrganizationUsersPage() {
   const currentUser = useCurrentUserQuery();
@@ -25,12 +25,12 @@ export function OrganizationUsersPage() {
   const { showNotification } = useNotification();
 
   const columns: ITableColumn<OrganizationUserModel>[] = [
-    { labelId: "generic.email", row: (user) => user.email },
+    { labelId: "email", row: (user) => user.email },
     {
-      labelId: "generic.added-on",
+      labelId: "added-on",
       row: (user) => show.date(user.createdDate)
     },
-    { labelId: "generic.role", row: (user) => user.userRole },
+    { labelId: "role", row: (user) => user.userRole },
     {
       rowClassName: "flex justify-end space-x-2",
       row: (user) => (
@@ -53,11 +53,9 @@ export function OrganizationUsersPage() {
                       });
                     },
                     onError: (error) => {
-                      const model = getError(error);
-
                       showNotification({
                         type: "error",
-                        description: `${model.message}`
+                        description: formatErrorMessage(error.title)
                       });
                     }
                   }
@@ -80,6 +78,7 @@ export function OrganizationUsersPage() {
       )
     }
   ];
+  const table = useTable({ rows: organizationUsers.data?.items, columns });
 
   return (
     <>
@@ -89,7 +88,7 @@ export function OrganizationUsersPage() {
         </Heading>
         <CreateOrganizationUserModal />
       </div>
-      <TableV2 rows={organizationUsers.data?.items} columns={columns} />
+      <TableV2 {...table.props} />
     </>
   );
 }

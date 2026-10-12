@@ -76,7 +76,7 @@ export function OrganizationDashboardRow(props: OrganizationDashboardRowProps) {
         <dl className="mt-2 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden md:grid-cols-4 md:divide-x md:divide-y-0">
           <DashboardItem
             period={props.period}
-            labelId="generic.distance"
+            labelId="distance"
             showFunction={(value) => show.distance(value, true)}
             mainValue={stats.distance}
             secondaryValue={stats.distancePrevious}
@@ -84,7 +84,7 @@ export function OrganizationDashboardRow(props: OrganizationDashboardRowProps) {
           />
           <DashboardItem
             period={props.period}
-            labelId="generic.duration"
+            labelId="duration"
             showFunction={show.duration}
             mainValue={stats.duration}
             secondaryValue={stats.durationPrevious}
@@ -92,7 +92,7 @@ export function OrganizationDashboardRow(props: OrganizationDashboardRowProps) {
           />
           <DashboardItem
             period={props.period}
-            labelId="generic.fuel-consumed"
+            labelId="fuel-consumed"
             showFunction={show.volume}
             mainValue={stats.fuelConsumption}
             secondaryValue={stats.fuelConsumptionPrevious}
@@ -100,7 +100,7 @@ export function OrganizationDashboardRow(props: OrganizationDashboardRowProps) {
           />
           <DashboardItem
             period={props.period}
-            labelId="generic.average-fuel-consumption"
+            labelId="average-fuel-consumption"
             showFunction={show.fuelConsumption}
             mainValue={stats.fuelConsumptionAverage}
             secondaryValue={stats.fuelConsumptionAveragePrevious}

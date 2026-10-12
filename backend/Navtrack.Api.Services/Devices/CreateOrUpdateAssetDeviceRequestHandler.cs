@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Navtrack.Api.Model.Devices;
 using Navtrack.Api.Model.Errors;
-using Navtrack.Api.Services.Common.Context;
 using Navtrack.Api.Services.Common.Exceptions;
+using Navtrack.Api.Services.Common.RequestContext;
 using Navtrack.Api.Services.Devices.Mappers;
 using Navtrack.Api.Services.Requests;
 using Navtrack.Database.Model.Assets;
@@ -21,28 +21,26 @@ public class CreateOrUpdateAssetDeviceRequestHandler(
     IAssetRepository assetRepository,
     IDeviceRepository deviceRepository,
     IDeviceTypeRepository deviceTypeRepository,
-    INavtrackContextAccessor navtrackContextAccessor) : BaseRequestHandler<CreateOrUpdateAssetDeviceRequest>
+    INavtrackRequestContextAccessor navtrackRequestContextAccessor) : BaseRequestHandler<CreateOrUpdateAssetDeviceRequest>
 {
-    private AssetEntity? asset;
-    private DeviceType? deviceType;
-
-    public override async Task Validate(RequestValidationContext<CreateOrUpdateAssetDeviceRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-
-        deviceType = deviceTypeRepository.GetById(context.Request.Model.DeviceTypeId);
-        context.ValidationException.AddErrorIfNull(
-            deviceType, nameof(context.Request.Model.DeviceTypeId), ApiErrorCodes.Device_000001_DeviceTypeInvalid);
-
-        context.ValidationException.AddErrorIfTrue(
-            await deviceRepository.SerialNumberIsUsed(context.Request.Model.SerialNumber, deviceType.Protocol.Port,
-                asset.Id),
-            nameof(context.Request.Model.SerialNumber), ApiErrorCodes.Device_000002_SerialNumberUsed);
-    }
-
     public override async Task Handle(CreateOrUpdateAssetDeviceRequest request)
     {
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+
+        DeviceType? deviceType = deviceTypeRepository.GetById(request.Model.DeviceTypeId);
+        ValidationApiException validationException = new();
+
+        validationException.AddErrorIfNull(
+            deviceType, nameof(request.Model.DeviceTypeId), ApiErrorCodes.Device_DeviceTypeInvalid);
+        validationException.ThrowIfInvalid();
+
+        validationException.AddErrorIfTrue(
+            await deviceRepository.SerialNumberIsUsed(request.Model.SerialNumber, deviceType.Protocol.Port,
+                asset.Id),
+            nameof(request.Model.SerialNumber), ApiErrorCodes.Device_SerialNumberUsed);
+        validationException.ThrowIfInvalid();
+
         List<DeviceEntity> devices = await deviceRepository.GetDevicesByAssetId(asset.Id);
         CreateOrUpdateAssetDeviceModel model = request.Model;
 
@@ -51,16 +49,16 @@ public class CreateOrUpdateAssetDeviceRequestHandler(
 
         if (existingDevice != null)
         {
-            await assetRepository.SetActiveDevice(asset!.Id, existingDevice.Id);
+            await assetRepository.SetActiveDevice(asset.Id, existingDevice.Id);
         }
         else
         {
-            DeviceEntity newDevice = DeviceDocumentMapper.Map(asset!, navtrackContextAccessor.NavtrackContext.User.Id,
-                model.SerialNumber, deviceType!);
+            DeviceEntity newDevice = DeviceDocumentMapper.Map(asset, navtrackRequestContextAccessor.NavtrackContext.CurrentUser.Id,
+                model.SerialNumber, deviceType);
 
             await deviceRepository.Add(newDevice);
 
-            await assetRepository.SetActiveDevice(asset!.Id, newDevice.Id);
+            await assetRepository.SetActiveDevice(asset.Id, newDevice.Id);
         }
     }
 }

@@ -1,5 +1,3 @@
-import { atom } from "jotai";
-
 export type AppConfig = {
   api: {
     url: string;
@@ -29,4 +27,19 @@ export type AppConfig = {
   };
 };
 
-export const appConfigAtom = atom<AppConfig | undefined>(undefined);
+class AppConfigStore {
+  public config: AppConfig = {
+    api: {
+      url: ""
+    },
+    authentication: {
+      clientId: ""
+    },
+    map: {
+      tileUrl: ""
+    }
+  };
+  public initialized = false;
+}
+
+export const appConfigStore = new AppConfigStore();

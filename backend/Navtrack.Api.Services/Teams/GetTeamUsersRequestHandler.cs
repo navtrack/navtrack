@@ -18,18 +18,14 @@ namespace Navtrack.Api.Services.Teams;
 public class GetTeamUsersRequestHandler(ITeamRepository teamRepository, IUserRepository userRepository)
     : BaseRequestHandler<GetTeamUsersRequest, ListModel<TeamUserModel>>
 {
-    private TeamEntity? team;
-    public override async Task Validate(RequestValidationContext<GetTeamUsersRequest> context)
-    {
-        team = await teamRepository.GetById(context.Request.TeamId);
-        team.ThrowApiExceptionIfNull(HttpStatusCode.NotFound);
-    }
-
     public override async Task<ListModel<TeamUserModel>> Handle(GetTeamUsersRequest request)
     {
+        TeamEntity? team = await teamRepository.GetById(request.TeamId);
+        team.ThrowApiExceptionIfNull(HttpStatusCode.NotFound);
+        
         System.Collections.Generic.List<UserEntity> users = await userRepository.GetByTeamId(team.Id);
 
-        ListModel<TeamUserModel> result = ListMapper.Map(users, x => TeamUserMapper.Map(x, team!));
+        ListModel<TeamUserModel> result = ListMapper.Map(users, x => TeamUserMapper.Map(x, team));
         
         return result;
     }

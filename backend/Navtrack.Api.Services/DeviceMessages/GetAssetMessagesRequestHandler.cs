@@ -17,16 +17,11 @@ public class GetAssetMessagesRequestHandler(
     IDeviceMessageRepository deviceMessageRepository)
     : BaseRequestHandler<GetAssetMessagesRequest, MessageList>
 {
-    private AssetEntity? asset;
-
-    public override async Task Validate(RequestValidationContext<GetAssetMessagesRequest> context)
-    {
-        asset = await assetRepository.GetById(context.Request.AssetId);
-        asset.Return404IfNull();
-    }
-
     public override async Task<MessageList> Handle(GetAssetMessagesRequest request)
     {
+        AssetEntity? asset = await assetRepository.GetById(request.AssetId);
+        asset.Return404IfNull();
+        
         GetMessagesResult messages = await deviceMessageRepository.GetMessages(new GetMessagesOptions
         {
             AssetId = asset.Id,

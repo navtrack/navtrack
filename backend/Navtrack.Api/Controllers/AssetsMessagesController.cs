@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,29 +14,24 @@ using NSwag.Annotations;
 namespace Navtrack.Api.Controllers;
 
 [ApiController]
-[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+[Authorize]
 [OpenApiTag(ControllerTags.AssetsMessages)]
-public class AssetsMessagesController(IRequestHandler requestHandler) : ControllerBase
+public class AssetsMessagesController(IRequestHandler requestHandler) : NavtrackControllerBase(requestHandler)
 {
     [HttpGet(ApiPaths.AssetMessages)]
     [ProducesResponseType(typeof(MessageList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AuthorizeAsset(AssetUserRole.Viewer)]
-    public async Task<MessageList> GetList(
+    [NavtrackAuthorize(AssetUserRole.Viewer)]
+    public Task<MessageList> GetList(
         [FromRoute] string assetId,
         [FromQuery] MessageFilterModel filter,
         [FromQuery] int page = 0,
-        [FromQuery] [Range(0, 1000)] int size = 1000)
-    {
-        MessageList result = await requestHandler.Handle<GetAssetMessagesRequest, MessageList>(
-            new GetAssetMessagesRequest
-            {
-                AssetId = assetId,
-                Filter = filter,
-                Page = page,
-                Size = size
-            });
-
-        return result;
-    }
+        [FromQuery] [Range(0, 1000)] int size = 1000) =>
+        Query<GetAssetMessagesRequest, MessageList>(new GetAssetMessagesRequest
+        {
+            AssetId = assetId,
+            Filter = filter,
+            Page = page,
+            Size = size
+        });
 }

@@ -8,6 +8,7 @@ namespace Navtrack.Api.Controllers;
 public class HealthController : ControllerBase
 {
     [HttpGet(ApiPaths.Health)]
+    [HttpHead(ApiPaths.Health)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Get()
     {

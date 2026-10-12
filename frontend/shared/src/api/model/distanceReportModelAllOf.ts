@@ -10,4 +10,8 @@ export type DistanceReportModelAllOf = {
   totalDuration: number;
   averageSpeed: number;
   maxSpeed: number;
+  /** @nullable */
+  totalFuelConsumption?: number | null;
+  /** @nullable */
+  averageFuelConsumption?: number | null;
 };

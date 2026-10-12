@@ -38,7 +38,7 @@ export function AssetSettingsGeneralPage() {
                       <div className="col-span-7">
                         <FormikTextInput
                           name="name"
-                          label="generic.name"
+                          label="name"
                           loading={currentAsset.data === undefined}
                           rightAddon={
                             <div className="ml-2 flex items-center">

@@ -4,9 +4,9 @@ namespace Navtrack.Api.Model.Devices;
 
 public class CreateOrUpdateAssetDeviceModel
 {
-    [Required]
+    [Required(ErrorMessage = "serialNumber.required")]
     public string SerialNumber { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "deviceTypeId.required")]
     public string DeviceTypeId { get; set; }
 }

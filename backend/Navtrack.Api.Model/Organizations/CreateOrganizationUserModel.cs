@@ -5,9 +5,9 @@ namespace Navtrack.Api.Model.Organizations;
 
 public class CreateOrganizationUserModel
 {
-    [Required]
+    [Required(ErrorMessage = "email.required")]
     public string Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "userRole.required")]
     public OrganizationUserRole UserRole { get; set; }
 }

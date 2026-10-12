@@ -11,10 +11,17 @@ public class DistanceReportModel : ListModel<DistanceReportItemModel>
 
     [Required]
     public double TotalDuration => Items.Sum(x => x.Duration);
-    
+
     [Required]
-    public double? AverageSpeed => Items.Any() ? Items.Average(x => x.AverageSpeed) : null;
-    
+    public double AverageSpeed => Items.Any() ? Items.Average(x => x.AverageSpeed) : 0;
+
     [Required]
-    public double? MaxSpeed => Items.Any() ? Items.Max(x => x.MaxSpeed) : null;
+    public double MaxSpeed => Items.Any() ? Items.Max(x => x.MaxSpeed) : 0;
+
+    public double? TotalFuelConsumption =>
+        Items.Any(x => x.FuelConsumption != null) ? Items.Sum(x => x.FuelConsumption) : null;
+
+    public double? AverageFuelConsumption => Items.Any(x => x.AverageFuelConsumption != null)
+        ? Items.Average(x => x.AverageFuelConsumption)
+        : null;
 }

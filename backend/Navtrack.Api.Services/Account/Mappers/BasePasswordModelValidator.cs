@@ -11,11 +11,11 @@ public static class BasePasswordModelValidator
     {
         if (model.Password != model.ConfirmPassword)
         {
-            apiException.AddValidationError(nameof(model.ConfirmPassword), ApiErrorCodes.User_000003_PasswordsNotEqual);
+            apiException.AddValidationError(nameof(model.ConfirmPassword), ApiErrorCodes.User_PasswordsNotEqual);
         }
         else if (model.Password == currentPassword)
         {
-            apiException.AddValidationError(nameof(model.Password), ApiErrorCodes.User_000009_PasswordMustBeDifferent);
+            apiException.AddValidationError(nameof(model.Password), ApiErrorCodes.User_PasswordMustBeDifferent);
         }
     }
 }

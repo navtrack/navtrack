@@ -1,29 +1,21 @@
-import { RefObject, useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 
-export const useHTMLElementSize = (elementRef: RefObject<HTMLElement>) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [init, setInit] = useState(false);
+export function useHTMLElementSize<T extends HTMLElement>() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
 
-  const handleResize = useCallback(() => {
-    if (elementRef.current !== null) {
-      setWidth(elementRef.current.offsetWidth);
-      setHeight(elementRef.current.offsetHeight);
-    }
-  }, [elementRef]);
+  const ref = useCallback((node: T | null) => {
+    if (!node) return;
 
-  useEffect(() => {
-    if (!init) {
-      setInit(true);
-      handleResize();
-    }
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const { width, height } = entry.contentRect;
+      setSize({ width, height });
+    });
 
-    window.addEventListener("resize", handleResize);
+    observer.observe(node);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [handleResize, init, elementRef]);
+    return () => observer.disconnect();
+  }, []);
 
-  return { width, height };
-};
+  return { ref, ...size };
+}

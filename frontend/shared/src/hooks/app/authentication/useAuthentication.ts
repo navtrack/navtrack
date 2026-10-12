@@ -1,17 +1,20 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import {
   TokenRequest,
   useTokenMutation
 } from "../../queries/authentication/useTokenMutation";
-import { appConfigAtom } from "../../../state/appConfig";
 import { add, isAfter, parseISO, sub } from "date-fns";
 import { randomInteger } from "../../../utils/numbers";
+import { useLogoutMutation } from "../../queries/authentication/useLogoutMutation";
 import { LoginFormValues } from "../../user/login/LoginFormValues";
-import { useResetCurrent } from "../../current/useResetCurrent";
-import { atomWithStorage } from "jotai/utils";
-import { getFromAsyncStorage } from "../../../utils/asyncStorage";
+import { atomWithStorage, createJSONStorage } from "jotai/utils";
+import { appConfigStore } from "../../../state/appConfig";
+import { jotaiStore } from "../../../state/store";
+import { AsyncLocalStorage } from "../../../utils/asyncLocalStorage";
+import { IS_WEB } from "../../../utils/web";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ExternalAuthenticationProvider = "apple" | "microsoft" | "google";
 
@@ -22,21 +25,8 @@ type Token = {
   date: string;
 };
 
-type RefreshLock = {
-  date: string;
-};
-
-let localRefreshLock: RefreshLock | undefined = undefined;
-
-async function clearRefreshLock(force?: boolean) {
-  if (
-    force ||
-    (localRefreshLock !== undefined &&
-      isAfter(new Date(), add(parseISO(localRefreshLock.date), { seconds: 2 })))
-  ) {
-    localRefreshLock = undefined;
-  }
-}
+// All consumers in this runtime share the same refresh request.
+let refreshRequest: Promise<string | undefined> | undefined;
 
 function tokenIsExpired(expiryDate: string): boolean {
   const expiryDateAdjusted = sub(parseISO(expiryDate), {
@@ -49,7 +39,6 @@ function tokenIsExpired(expiryDate: string): boolean {
 }
 
 type AuthenticationState = {
-  initialized: boolean;
   error?: string;
   token?: Token;
   external?: {
@@ -58,31 +47,38 @@ type AuthenticationState = {
   };
 };
 
-const storageKey = "Navtrack:Authentication";
-
+const authenticationStorageKey = "Navtrack:Authentication:OpenIddict";
+const authenticationStorage = IS_WEB
+  ? createJSONStorage<AuthenticationState>(() => AsyncLocalStorage)
+  : createJSONStorage<AuthenticationState>(() => AsyncStorage);
 const authenticationAtom = atomWithStorage<AuthenticationState>(
-  storageKey,
-  {
-    initialized: false
-  },
-  undefined,
+  authenticationStorageKey,
+  {},
+  authenticationStorage,
   { getOnInit: true }
 );
 
-export function useAuthentication() {
-  const appConfig = useAtomValue(appConfigAtom);
+type AuthenticationProps = {
+  onLogin?: () => void;
+  onLogout?: () => void;
+};
+
+export function useAuthentication(props?: AuthenticationProps) {
   const queryClient = useQueryClient();
-  const resetCurrent = useResetCurrent();
   const [state, setState] = useAtom(authenticationAtom);
+  const logoutMutation = useLogoutMutation({});
 
   const tokenMutation = useTokenMutation({
     options: {
       onMutate: () => {
-        setState((prev) => {
+        setState(async (p) => {
+          const prev = await p;
+
           const newState: AuthenticationState = {
             ...prev,
             error: undefined
           };
+
           return newState;
         });
       },
@@ -96,7 +92,8 @@ export function useAuthentication() {
           date: new Date().toISOString()
         };
 
-        setState((prev) => {
+        await setState(async (p) => {
+          const prev = await p;
           const newState: AuthenticationState = {
             ...prev,
             error: undefined,
@@ -111,9 +108,8 @@ export function useAuthentication() {
         const accountNotLinkedError =
           error.response?.data.code === "LOGIN_000002";
 
-        resetCurrent();
-
-        setState((prev) => {
+        setState(async (p) => {
+          const prev = await p;
           const newState: AuthenticationState = {
             ...prev,
             token: undefined,
@@ -136,46 +132,49 @@ export function useAuthentication() {
         });
       },
       onSettled: () => {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false
-        }));
+        setState(async (p) => {
+          const prev = await p;
+
+          return {
+            ...prev,
+            isLoading: false
+          };
+        });
       }
     }
   });
 
   const getAccessToken = useCallback(async () => {
-    await clearRefreshLock();
+    if (refreshRequest) return refreshRequest;
 
-    const storageState =
-      await getFromAsyncStorage<AuthenticationState>(storageKey);
-
-    if (
-      !localRefreshLock &&
-      !!storageState?.token &&
-      tokenIsExpired(storageState.token.expiryDate)
-    ) {
-      try {
-        localRefreshLock = {
-          date: new Date().toISOString()
-        };
-
-        const data = {
-          grant_type: "refresh_token",
-          client_id: appConfig?.authentication?.clientId!,
-          refresh_token: storageState.token.refreshToken
-        };
-
-        const response = await tokenMutation.mutateAsync(data);
-
-        return response.access_token;
-      } finally {
-        await clearRefreshLock(true);
+    const refresh = async () => {
+      // Read persistence after acquiring the browser lock: another tab may have rotated the token.
+      const state = IS_WEB
+        ? await authenticationStorage.getItem(authenticationStorageKey, {})
+        : await jotaiStore.get(authenticationAtom);
+      if (!state.token || !tokenIsExpired(state.token.expiryDate)) {
+        return state.token?.accessToken;
       }
-    }
+      const response = await tokenMutation.mutateAsync({
+        grant_type: "refresh_token",
+        client_id: appConfigStore.config?.authentication?.clientId!,
+        refresh_token: state.token.refreshToken
+      });
+      return response.access_token;
+    };
 
-    return storageState?.token?.accessToken;
-  }, [appConfig?.authentication?.clientId, tokenMutation]);
+    refreshRequest =
+      IS_WEB && typeof navigator !== "undefined" && navigator.locks
+        ? Promise.resolve(
+            navigator.locks.request("Navtrack:RefreshToken", refresh)
+          )
+        : refresh();
+    try {
+      return await refreshRequest;
+    } finally {
+      refreshRequest = undefined;
+    }
+  }, [tokenMutation]);
 
   const internalLogin = useCallback(
     (values: LoginFormValues) => {
@@ -183,13 +182,14 @@ export function useAuthentication() {
         grant_type: "password",
         username: values.email,
         password: values.password,
-        scope: "offline_access IdentityServerApi openid",
-        client_id: appConfig?.authentication?.clientId!
+        scope: "offline_access openid",
+        client_id: appConfigStore.config?.authentication?.clientId!
       };
 
       tokenMutation.mutate(data);
+      props?.onLogin?.();
     },
-    [appConfig?.authentication?.clientId, tokenMutation]
+    [props, tokenMutation]
   );
 
   const externalLogin = useCallback(
@@ -202,34 +202,30 @@ export function useAuthentication() {
         grant_type: provider,
         code: token,
         password: password,
-        scope: "offline_access IdentityServerApi openid",
-        client_id: appConfig?.authentication.clientId!
+        scope: "offline_access openid",
+        client_id: appConfigStore.config?.authentication?.clientId!
       };
 
       tokenMutation.mutate(data);
+      props?.onLogin?.();
     },
-    [appConfig?.authentication.clientId, tokenMutation]
+    [props, tokenMutation]
   );
 
-  const logout = useCallback(() => {
-    setState({
-      initialized: true,
-      token: undefined,
-      error: undefined,
-      external: undefined
-    });
-    queryClient.clear();
-    resetCurrent();
-  }, [queryClient, resetCurrent, setState]);
-
-  const initialize = useCallback(async () => {
-    getAccessToken().finally(() => {
-      setState((prev) => ({
-        ...prev,
-        initialized: true
-      }));
-    });
-  }, [getAccessToken, setState]);
+  const logout = useCallback(async () => {
+    try {
+      const accessToken = await getAccessToken();
+      if (accessToken) {
+        await logoutMutation.mutateAsync();
+      }
+    } catch {
+      // An unavailable server must not prevent clearing this device's session.
+    } finally {
+      await setState({});
+      queryClient.clear();
+      props?.onLogout?.();
+    }
+  }, [getAccessToken, logoutMutation, props, queryClient, setState]);
 
   const clearErrors = useCallback(
     () =>
@@ -253,7 +249,6 @@ export function useAuthentication() {
   return {
     isAuthenticated: !!state.token,
     isLoading: tokenMutation.isPending,
-    initialize,
     getAccessToken,
     internalLogin,
     externalLogin,

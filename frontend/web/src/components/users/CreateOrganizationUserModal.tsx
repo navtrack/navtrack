@@ -35,9 +35,9 @@ export function CreateOrganizationUserModal() {
 
   const validationSchema: ObjectSchema<CreateUserFormValues> = object({
     email: string()
-      .email("generic.email.invalid")
-      .required("generic.email.required"),
-    role: mixed<TeamUserRole>().required("generic.password.required")
+      .email("email.invalid")
+      .required("email.required"),
+    role: mixed<TeamUserRole>().required("password.required")
   }).defined();
 
   const handleSubmit = useCallback(
@@ -79,7 +79,7 @@ export function CreateOrganizationUserModal() {
   return (
     <>
       <Button onClick={() => setOpen(true)} icon={faUserPlus}>
-        <FormattedMessage id="generic.add-user" />
+        <FormattedMessage id="add-user" />
       </Button>
       <Modal
         open={open}
@@ -101,12 +101,12 @@ export function CreateOrganizationUserModal() {
                     <div className="mt-2 space-y-4">
                       <FormikTextInput
                         name={nameOf<CreateUserFormValues>("email")}
-                        label="generic.email"
+                        label="email"
                         autoComplete="off"
                       />
                       <FormikSelect
                         name={nameOf<CreateUserFormValues>("role")}
-                        label="generic.role"
+                        label="role"
                         placeholder="Select a role"
                         options={organizationUserRoles}
                       />
@@ -117,7 +117,7 @@ export function CreateOrganizationUserModal() {
                   <Button
                     type="submit"
                     isLoading={createOrganizationUserMutation.isPending}>
-                    <FormattedMessage id="generic.save" />
+                    <FormattedMessage id="save" />
                   </Button>
                 </ModalActions>
               </ModalContainer>

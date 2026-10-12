@@ -3,11 +3,13 @@ import { FormattedMessage } from "react-intl";
 import { Card } from "../card/Card";
 import { Icon } from "../icon/Icon";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { TableProps, useTable } from "./useTable";
+import { TableProps } from "./useTable";
 import { LoadingIndicator } from "@navtrack/shared/components/components/ui/loading-indicator/LoadingIndicator";
 
 export function TableV2<T>(props: TableProps<T>) {
-  const table = useTable(props);
+  const hasFooter = props.columns?.some(
+    (column) => column.footer !== undefined
+  );
 
   return (
     <Card className="overflow-hidden">
@@ -20,31 +22,40 @@ export function TableV2<T>(props: TableProps<T>) {
               {props.columns.map((column, index) => (
                 <th
                   onClick={() =>
-                    !!column.sortValue ? table.handleHeaderClick(index) : null
+                    column.value !== undefined
+                      ? props.headerClickHandler?.(index)
+                      : undefined
                   }
                   key={`${column.labelId}${index}`}
                   className={classNames(
                     "sticky top-0 border-b border-gray-900/5 bg-gray-50 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500",
-                    c(!!column.sortValue, "cursor-pointer"),
+                    c(!!column.value, "cursor-pointer"),
                     column.headerClassName
-                  )}>
-                  <div className="flex items-center">
-                    {column.labelId !== undefined && (
-                      <FormattedMessage id={column.labelId} />
-                    )}
-                    {!!column.sortValue && (
-                      <div className="w-6">
-                        {table.sort.column === index && (
-                          <Icon
-                            className="ml-2"
-                            icon={
-                              table.sort.direction === "asc"
-                                ? faArrowUp
-                                : faArrowDown
-                            }
-                          />
+                  )}
+                  style={{ zIndex: 1 }}>
+                  <div className="flex items-center h-full">
+                    {column.header !== undefined ? (
+                      column.header(index)
+                    ) : (
+                      <>
+                        {column.labelId !== undefined && (
+                          <FormattedMessage id={column.labelId} />
                         )}
-                      </div>
+                        {!!column.value && (
+                          <div className="w-6">
+                            {props.sort?.column === index && (
+                              <Icon
+                                className="ml-2"
+                                icon={
+                                  props.sort?.direction === "asc"
+                                    ? faArrowUp
+                                    : faArrowDown
+                                }
+                              />
+                            )}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </th>
@@ -52,44 +63,42 @@ export function TableV2<T>(props: TableProps<T>) {
             </tr>
           </thead>
           <tbody className="text-sm text-gray-900">
-            {table.sortedRows === undefined || props.isLoading ? (
+            {props.rows === undefined ? (
               <tr>
                 <td className="p-3 text-center" colSpan={props.columns.length}>
                   <LoadingIndicator className="text-xl" />
                 </td>
               </tr>
-            ) : table.sortedRows.length === 0 ? (
+            ) : props.rows.length === 0 ? (
               <tr>
                 <td className="p-3 text-center" colSpan={props.columns.length}>
                   <FormattedMessage id="ui.table.no-items" />
                 </td>
               </tr>
             ) : (
-              table.sortedRows.map((row, rowIndex) => (
+              props.rows.map((row, rowIndex) => (
                 <tr
                   key={`row${rowIndex}`}
                   onClick={() => {
-                    if (table.selectionEnabled) {
-                      table.setIndex(rowIndex);
+                    if (props.selection) {
+                      props.setSelectedIndex?.(rowIndex);
                     }
-                    props.rowClick?.(row);
+                    props.rowClickHandler?.(row);
                   }}
                   ref={(el) => {
-                    table.tableRows.current[rowIndex] = el;
+                    if (props.tableRows) {
+                      props.tableRows.current[rowIndex] = el;
+                    }
                   }}
                   className={classNames(
                     c(
-                      table.selectionEnabled &&
-                        rowIndex === table.selectedIndex,
+                      props.selection && rowIndex === props.selectedIndex,
                       "bg-gray-200",
                       c(rowIndex % 2 !== 0, "bg-gray-50")
                     ),
+                    c(props.selection, "cursor-pointer hover:bg-gray-200"),
                     c(
-                      table.selectionEnabled,
-                      "cursor-pointer hover:bg-gray-100"
-                    ),
-                    c(
-                      props.rowClick !== undefined,
+                      props.rowClickHandler !== undefined,
                       "hover:cursor-pointer hover:bg-gray-100"
                     )
                   )}>
@@ -111,23 +120,27 @@ export function TableV2<T>(props: TableProps<T>) {
               ))
             )}
           </tbody>
-          {table.hasFooter && (
+          {hasFooter && (
             <tfoot>
               <tr>
                 {props.columns
-                  .filter(
-                    (x) =>
-                      x.footer !== undefined || x.footerColSpan !== undefined
-                  )
+                  .filter((column) => column.footer !== null)
                   .map((column, index) => (
                     <td
                       colSpan={column.footerColSpan}
                       key={`footer${index}`}
                       className={classNames(
-                        "sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
+                        "font-bold sticky bottom-0 h-7 border-t border-gray-900/5 bg-gray-50 px-2 py-1 text-left text-xs text-gray-900",
                         column.footerClassName
                       )}>
-                      {column.footer?.(props.rows)}
+                      {index === 0 &&
+                      column.footer === undefined &&
+                      props.rows === undefined ? (
+                        <div className="flex">
+                          <LoadingIndicator />
+                        </div>
+                      ) : null}
+                      {column.footer?.(props.getColumnTotal?.(column))}
                     </td>
                   ))}
               </tr>

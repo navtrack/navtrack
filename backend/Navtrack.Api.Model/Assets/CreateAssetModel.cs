@@ -4,12 +4,12 @@ namespace Navtrack.Api.Model.Assets;
 
 public class CreateAssetModel
 {
-    [Required]
+    [Required(ErrorMessage = "name.required")]
     public string Name { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "deviceTypeId.required")]
     public string DeviceTypeId { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "serialNumber.required")]
     public string SerialNumber { get; set; }
 }

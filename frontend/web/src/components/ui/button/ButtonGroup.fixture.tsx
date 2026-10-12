@@ -11,10 +11,10 @@ export default {
     );
 
     const options: ButtonGroupOption[] = [
-      { label: "generic.distance", value: "distance" },
-      { label: "generic.duration", value: "duration" },
-      { label: "generic.average-speed", value: "average-speed" },
-      { label: "generic.max-speed", value: "max-speed" }
+      { label: "distance", value: "distance" },
+      { label: "duration", value: "duration" },
+      { label: "average-speed", value: "average-speed" },
+      { label: "max-speed", value: "max-speed" }
     ];
 
     return <ButtonGroup options={options} />;

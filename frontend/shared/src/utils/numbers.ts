@@ -1,5 +1,5 @@
-export function isNumeric(value: string) {
-  return !isNaN(+value);
+export function isNumeric(value?: string | number | null): boolean {
+  return value !== undefined && value !== null && !isNaN(+value);
 }
 
 export function randomInteger(min: number, max: number) {

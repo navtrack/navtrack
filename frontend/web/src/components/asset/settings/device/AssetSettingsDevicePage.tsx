@@ -76,8 +76,8 @@ export function AssetSettingsDevicePage() {
   ]);
 
   const validationSchema: ObjectSchema<ChangeDeviceFormValues> = object({
-    deviceTypeId: string().required("generic.device-type.required"),
-    serialNumber: string().required("generic.serial-number.required")
+    deviceTypeId: string().required("device-type.required"),
+    serialNumber: string().required("serial-number.required")
   }).defined();
 
   return (
@@ -103,7 +103,7 @@ export function AssetSettingsDevicePage() {
                   <div className="col-span-3 space-y-3">
                     <FormikAutocomplete
                       name="deviceTypeId"
-                      label="generic.device-type"
+                      label="device-type"
                       placeholder="Select a device type"
                       loading={
                         deviceTypes === undefined ||
@@ -121,7 +121,7 @@ export function AssetSettingsDevicePage() {
                     />
                     <FormikTextInput
                       name="serialNumber"
-                      label="generic.serial-number"
+                      label="serial-number"
                       placeholder="assets.add.serial-number.placeholder"
                       loading={currentAsset.data === undefined}
                     />
@@ -134,7 +134,7 @@ export function AssetSettingsDevicePage() {
                           currentAsset.data === undefined
                         }
                         isLoading={changeDeviceMutation.isPending}>
-                        <FormattedMessage id="generic.save" />
+                        <FormattedMessage id="save" />
                       </Button>
                     </div>
                   </div>

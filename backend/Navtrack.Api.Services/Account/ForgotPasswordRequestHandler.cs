@@ -25,35 +25,29 @@ public class ForgotPasswordRequestHandler(
     IEmailService emailService,
     ISettingService settingService) : BaseRequestHandler<ForgotPasswordRequest>
 {
-    private UserEntity? user;
-    private string? ipAddress;
-    
-    public override async Task Validate(RequestValidationContext<ForgotPasswordRequest> context)
+    public override async Task Handle(ForgotPasswordRequest request)
     {
-        ipAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+        string? ipAddress = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
         ipAddress.ReturnIfNull(HttpStatusCode.BadRequest);
 
         int passwordResetsIn24H =
-            await passwordResetRepository.GetCountOfPasswordResets(ipAddress!, context.Request.Model.Email,
+            await passwordResetRepository.GetCountOfPasswordResets(ipAddress, request.Model.Email,
                 DateTime.UtcNow.AddDays(-1));
         
         if (passwordResetsIn24H >= ApiConstants.MaxPasswordResetIn24Hours)
         {
             throw new ValidationApiException(nameof(ForgotPasswordModel.Email),
-                ApiErrorCodes.User_000005_MaxPasswordResetsExceeded);
+                ApiErrorCodes.User_MaxPasswordResetsExceeded);
         }
 
-        user = await userRepository.GetByEmail(context.Request.Model.Email);
+        UserEntity? user = await userRepository.GetByEmail(request.Model.Email);
         user.ReturnValidationErrorIfNull(nameof(ForgotPasswordModel.Email),
-            ApiErrorCodes.User_000001_EmailNotFound);
-    }
+            ApiErrorCodes.User_EmailNotFound);
 
-    public override async Task Handle(ForgotPasswordRequest request)
-    {
         await passwordResetRepository.MarkAsInvalidByUserId(user.Id);
 
         UserPasswordResetEntity document =
-            PasswordResetEntityMapper.Map(request.Model.Email, user!.Id, ipAddress!);
+            PasswordResetEntityMapper.Map(request.Model.Email, user.Id, ipAddress);
                                                                 
         await passwordResetRepository.Add(document);
 

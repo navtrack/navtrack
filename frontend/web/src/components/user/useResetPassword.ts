@@ -1,4 +1,4 @@
-import { useResetPasswordMutation } from "@navtrack/shared/hooks/queries/users/useResetPasswordMutation";
+import { useResetPasswordMutation } from "@navtrack/shared/hooks/queries/account/useResetPasswordMutation";
 import { mapErrors } from "@navtrack/shared/utils/formik";
 import { FormikHelpers } from "formik";
 import { useCallback } from "react";
@@ -42,12 +42,12 @@ export const useResetPassword = () => {
 
   const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
     password: string()
-      .required("generic.password.required")
-      .min(8, "generic.password.requirements.length"),
+      .required("password.required")
+      .min(8, "password.requirements.length"),
     confirmPassword: string()
-      .required("generic.confirm-password.required")
-      .min(8, "generic.password.requirements.length")
-      .oneOf([ref("password")], "generic.confirm-password.requirements.match")
+      .required("confirmPassword.required")
+      .min(8, "password.requirements.length")
+      .oneOf([ref("password")], "confirmPassword.requirements.match")
   }).defined();
 
   return {

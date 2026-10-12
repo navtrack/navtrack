@@ -12,18 +12,13 @@ namespace Navtrack.Api.Services.Teams;
 [Service(typeof(IRequestHandler<GetTeamRequest, TeamModel>))]
 public class GetTeamRequestHandler(ITeamRepository teamRepository) : BaseRequestHandler<GetTeamRequest, TeamModel>
 {
-    private TeamEntity? team;
-
-    public override async Task Validate(RequestValidationContext<GetTeamRequest> context)
+    public override async Task<TeamModel> Handle(GetTeamRequest request)
     {
-        team = await teamRepository.GetById(context.Request.TeamId);
+        TeamEntity? team = await teamRepository.GetById(request.TeamId);
         team.Return404IfNull();
-    }
+        
+        TeamModel result = TeamMapper.Map(team);
 
-    public override Task<TeamModel> Handle(GetTeamRequest request)
-    {
-        TeamModel result = TeamMapper.Map(team!);
-
-        return Task.FromResult(result);
+        return result;
     }
 }
