@@ -32,7 +32,7 @@
     "formik": "2.4.6",
     "jotai": "2.19.0",
     "leaflet": "1.9.4",
-    "maplibre-gl": "4.7.1",
+    "maplibre-gl": "6.4.1",
     "orval": "7.13.2",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.7.0",
