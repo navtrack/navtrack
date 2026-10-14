@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { atom } from "jotai";
-import { atomFamily, atomWithReset } from "jotai/utils";
+import { atomFamily } from "jotai-family";
+import { atomWithReset } from "jotai/utils";
 import {
   AltitudeFilter,
   CircleGeofenceFilter,

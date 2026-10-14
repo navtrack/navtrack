@@ -31,6 +31,7 @@
     "eslint-plugin-react-hooks": "4.6.2",
     "formik": "2.4.6",
     "jotai": "2.19.0",
+    "jotai-family": "1.1.0",
     "leaflet": "1.9.4",
     "maplibre-gl": "4.7.1",
     "orval": "7.13.2",
