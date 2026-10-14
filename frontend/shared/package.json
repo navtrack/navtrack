@@ -1,6 +1,6 @@
 {
   "name": "@navtrack/shared",
-  "version": "0.1.0",
+  "version": "26.10.3",
   "scripts": {
     "generate": "orval --config ./orval.config.ts"
   }
