@@ -17,8 +17,8 @@ export const authAxiosInstance = <T>(
   })
     .then(({ data }) => data)
     .catch((error) => {
-      console.log(error);
-      console.log(error.response?.data);
+      // console.log(error);
+      // console.log(error.response?.data);
 
       return Promise.reject(error.response?.data);
     });
