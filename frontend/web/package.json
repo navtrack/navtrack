@@ -1,6 +1,6 @@
 {
   "name": "@navtrack/web",
-  "version": "26.10.3",
+  "version": "26.10.4",
   "private": true,
   "scripts": {
     "start": "vite",

@@ -6,4 +6,11 @@
     </PropertyGroup>
 
     <Import Project="../Directory.Build.props" Condition="Exists('../Directory.Build.props')" />
+
+    <Target Name="ReplaceVersion" BeforeTargets="BeforeBuild">
+        <PropertyGroup>
+            <Version Condition="'$(VERSION)' == ''">26.10.4.0</Version>
+            <Version Condition="'$(VERSION)' != ''">$(VERSION)</Version>
+        </PropertyGroup>
+    </Target>
 </Project>
