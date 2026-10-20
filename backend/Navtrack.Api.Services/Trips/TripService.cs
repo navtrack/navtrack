@@ -18,6 +18,7 @@ namespace Navtrack.Api.Services.Trips;
 public class TripService(IDeviceMessageRepository repository) : ITripService
 {
     private const int MinTripDistanceInMeters = 300; // 1000 feet
+    private const int MinTripStartToEndDistanceInMeters = 100;
     private const int MaxDistanceBetweenPositionsInMeters = 1000;
     private const double MaxTimeBetweenTripInMinutes = 5;
 
@@ -172,6 +173,10 @@ public class TripService(IDeviceMessageRepository repository) : ITripService
     {
         filteredTrips = filteredTrips
             .Where(x => x.Distance > MinTripDistanceInMeters)
+            .Where(x => !DistanceCalculator.IsInRadius(
+                new LatLong(x.StartMessage.Latitude, x.StartMessage.Longitude),
+                new LatLong(x.EndMessage.Latitude, x.EndMessage.Longitude),
+                MinTripStartToEndDistanceInMeters))
             .ToList();
 
         return filteredTrips;
