@@ -55,6 +55,7 @@
     "yup": "1.4.0"
   },
   "scripts": {
+    "test": "npm run test --workspace=@navtrack/web",
     "start": "cd frontend/web && npm run start",
     "watch": "tsc --noEmit --watch",
     "build": "cd frontend/web && npm run build",

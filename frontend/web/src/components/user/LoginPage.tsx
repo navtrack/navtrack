@@ -20,6 +20,7 @@ import { Button } from "../ui/button/Button";
 import { SlotContext } from "../../app/SlotContext";
 import { useAuthentication } from "@navtrack/shared/hooks/app/authentication/useAuthentication";
 import { useUnmount } from "@navtrack/shared/hooks/util/useUnmount";
+import { formatErrorMessage } from "@navtrack/shared/utils/errors";
 
 export function LoginPage() {
   const slots = useContext(SlotContext);
@@ -39,7 +40,7 @@ export function LoginPage() {
       <Card className="mx-auto mt-8 w-full max-w-md p-8">
         {authentication.state.error !== undefined && (
           <Alert className="mb-3">
-            <FormattedMessage id={authentication.state.error} />
+            <FormattedMessage id={formatErrorMessage(authentication.state.error)} />
           </Alert>
         )}
         <Formik

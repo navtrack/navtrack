@@ -22,7 +22,7 @@ export type TokenResponse = {
   error: string;
 };
 
-type TokenError = {
+export type TokenError = {
   error: string;
   error_description: string;
   code?: string;

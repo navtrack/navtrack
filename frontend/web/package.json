@@ -5,6 +5,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "test": "node --test \"../{web,shared}/tests/**/*.{test,spec}.{js,cjs,mjs}\"",
     "serve": "vite preview",
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export",
