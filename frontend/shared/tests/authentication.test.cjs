@@ -237,8 +237,13 @@ test("failed social login resolves false and preserves the account-link flow", a
   const app = runtime();
   let callbacks = 0;
   const auth = await app.hook({ onLogin: () => callbacks++ });
-  const login = auth.externalLogin("provider-code", "google");
+  const login = auth.externalLogin(
+    "provider-code",
+    "google",
+    "authorization_code"
+  );
   await waitFor(() => app.pending.length === 1);
+  assert.equal(app.requests[0].data.credential_type, "authorization_code");
   app.pending[0].reject(
     oauthError("invalid_grant", 400, {
       code: "LOGIN_000002",
@@ -249,9 +254,36 @@ test("failed social login resolves false and preserves the account-link flow", a
   assert.equal(callbacks, 0);
   assert.deepEqual(app.read().external, {
     provider: "google",
-    token: "linking-token"
+    token: "linking-token",
+    credentialType: "id_token"
   });
   assert.equal((await app.hook()).isLoading, false);
+
+  const external = app.read().external;
+  const linked = auth.externalLogin(
+    external.token,
+    external.provider,
+    external.credentialType,
+    "linking-password"
+  );
+  await waitFor(() => app.pending.length === 2);
+  assert.equal(app.requests[1].data.code, "linking-token");
+  assert.equal(app.requests[1].data.credential_type, "id_token");
+  assert.equal(app.requests[1].data.password, "linking-password");
+  app.pending[1].resolve(response());
+  assert.equal(await linked, true);
+  assert.equal(callbacks, 1);
+});
+
+test("mobile Google login sends its ID token with an explicit credential type", async () => {
+  const app = runtime(environment(), { web: false });
+  const auth = await app.hook();
+  const login = auth.externalLogin("google-id-token", "google", "id_token");
+  await waitFor(() => app.pending.length === 1);
+  assert.equal(app.requests[0].data.code, "google-id-token");
+  assert.equal(app.requests[0].data.credential_type, "id_token");
+  app.pending[0].resolve(response());
+  assert.equal(await login, true);
 });
 
 test("concurrent consumers share one refresh without showing login loading", async () => {

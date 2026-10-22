@@ -2,6 +2,7 @@ import { atom, useAtomValue } from "jotai";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import {
+  ExternalCredentialType,
   TokenError,
   TokenRequest,
   TokenResponse,
@@ -20,6 +21,7 @@ import { IS_WEB } from "../../../utils/web";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ExternalAuthenticationProvider = "apple" | "microsoft" | "google";
+export type { ExternalCredentialType } from "../../queries/authentication/useTokenMutation";
 
 type Token = {
   accessToken: string;
@@ -36,6 +38,7 @@ type AuthenticationState = {
   external?: {
     provider: ExternalAuthenticationProvider;
     token?: string;
+    credentialType: ExternalCredentialType;
   };
 };
 
@@ -246,7 +249,10 @@ export function useAuthentication(props?: AuthenticationProps) {
                     ? {
                         provider:
                           data.grant_type as ExternalAuthenticationProvider,
-                        token: tokenError?.token ?? data.code
+                        token: tokenError?.token ?? data.code,
+                        credentialType: tokenError?.token
+                          ? "id_token"
+                          : (data.credential_type ?? "id_token")
                       }
                     : undefined)
               }
@@ -279,11 +285,13 @@ export function useAuthentication(props?: AuthenticationProps) {
     (
       token: string,
       provider: ExternalAuthenticationProvider,
+      credentialType: ExternalCredentialType,
       password: string | undefined = undefined
     ) =>
       signIn({
         grant_type: provider,
         code: token,
+        credential_type: credentialType,
         password,
         scope: "offline_access openid",
         client_id: appConfigStore.config.authentication.clientId

@@ -3,9 +3,12 @@ import { axiosInstance } from "../../../axios/axiosInstance";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
+export type ExternalCredentialType = "authorization_code" | "id_token";
+
 export type TokenRequest = {
   grant_type: string;
   code?: string;
+  credential_type?: ExternalCredentialType;
   username?: string;
   password?: string;
   scope?: string;
