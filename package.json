@@ -1,6 +1,6 @@
 {
   "name": "@navtrack/frontend",
-  "version": "26.10.5",
+  "version": "26.10.6",
   "workspaces": [
     "frontend/web",
     "frontend/shared"
