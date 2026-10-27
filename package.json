@@ -51,7 +51,7 @@
     "recharts": "3.4.1",
     "tailwindcss": "^4.1.14",
     "typescript": "5.9.3",
-    "vite": "7.1.11",
+    "vite": "7.3.7",
     "yup": "1.4.0"
   },
   "scripts": {
